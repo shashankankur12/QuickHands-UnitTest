@@ -19,5 +19,11 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, ForgotPasswordActivity::class.java))
             overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out)
         }
+
+        button_login.setOnClickListener {
+            startActivity(Intent(this, DashboardActivity::class.java))
+            overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out)
+        }
+
     }
 }
