@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_lumper">
+
+    <fragment
+        android:id="@+id/nav_lumper"
+        android:name="com.quickhandslogistics.utils.ui.lumper.LumperFragment"
+        android:label="@string/string_lumper"
+        tools:layout="@layout/fragment_lumper" />
+
+    <fragment
+        android:id="@+id/nav_schedule"
+        android:name="com.quickhandslogistics.utils.ui.schedule.ScheduleFragment"
+        android:label="@string/string_schedule"
+        tools:layout="@layout/fragment_schedule" />
+
+    <fragment
+        android:id="@+id/nav_reports"
+        android:name="com.quickhandslogistics.utils.ui.reports.ReportFragment"
+        android:label="@string/string_reports"
+        tools:layout="@layout/fragment_report" />
+</navigation>
