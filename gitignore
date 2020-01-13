@@ -30,6 +30,7 @@ local.properties
 .idea/gradle.xml
 .idea/codeStyles/Project.xml
 .idea/navEditor.xml
+.idea/*
 
 .idea/vcs.xml
 *.iml

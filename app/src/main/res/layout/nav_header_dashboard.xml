@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/nav_header_height"
+    android:layout_height="wrap_content"
     android:background="@drawable/side_nav_bar"
     android:gravity="bottom"
+    android:padding="@dimen/_20sdp"
     android:orientation="vertical"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
@@ -17,14 +18,18 @@
         android:paddingTop="@dimen/_5sdp"
         android:paddingRight="@dimen/_10sdp"
         android:paddingBottom="@dimen/_5sdp"
+        android:layout_centerHorizontal="true"
         app:srcCompat="@mipmap/ic_launcher" />
 
     <TextView
+        android:id="@+id/text_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/nav_header_title"
+        android:text="Manager Name"
         android:textColor="@color/colorBlack"
         android:paddingLeft="@dimen/_10sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/imageView"
         android:paddingRight="@dimen/_10sdp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
@@ -34,13 +39,15 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorLightGrey"
         android:paddingLeft="@dimen/_10sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/text_name"
         android:paddingRight="@dimen/_10sdp"
-        android:text="@string/nav_header_subtitle" />
+        android:text="abcd@quickhands.com" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginTop="@dimen/_10sdp"/>
 
-</LinearLayout>
+</RelativeLayout>
 
