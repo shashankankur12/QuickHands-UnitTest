@@ -11,9 +11,7 @@ class LumperDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lumper_details)
-
-        Utils.changeStatusBar(this)
-
+        
         image_back.setOnClickListener {
             Utils.finishActivity(this)
         }

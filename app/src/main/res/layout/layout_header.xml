@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
+    android:background="@color/colorBlue"
     android:orientation="vertical">
 
     <ImageView
@@ -12,6 +13,7 @@
         android:layout_marginLeft="@dimen/_5sdp"
         android:padding="@dimen/_5sdp"
         android:src="@drawable/ic_arrow_back"
+        android:tint="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,7 +26,7 @@
         app:layout_constraintLeft_toRightOf="@id/image_back"
         android:layout_marginLeft="@dimen/_10sdp"
         android:text="@string/string_forgot_password"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/colorWhite"
         android:textSize="@dimen/_14ssp"
         app:layout_constraintTop_toTopOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

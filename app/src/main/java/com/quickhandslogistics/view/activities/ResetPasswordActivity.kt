@@ -13,8 +13,6 @@ class ResetPasswordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reset_password)
 
-        Utils.changeStatusBar(this)
-
         image_back.setOnClickListener {
             Utils.finishActivity(this)
         }

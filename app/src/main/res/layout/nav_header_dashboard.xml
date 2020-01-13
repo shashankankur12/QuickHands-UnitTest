@@ -11,15 +11,15 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_70sdp"
         android:contentDescription="@string/nav_header_desc"
         android:paddingLeft="@dimen/_10sdp"
         android:paddingTop="@dimen/_5sdp"
         android:paddingRight="@dimen/_10sdp"
         android:paddingBottom="@dimen/_5sdp"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@mipmap/ic_launcher" />
+        app:srcCompat="@drawable/quickhands_logo" />
 
     <TextView
         android:id="@+id/text_name"
