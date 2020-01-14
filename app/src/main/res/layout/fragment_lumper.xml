@@ -7,5 +7,6 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_lumper"
         android:layout_width="match_parent"
+        android:layoutAnimation="@anim/recycler_anim"
         android:layout_height="match_parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
