@@ -1,23 +1,18 @@
 package com.quickhandslogistics.view.activities
 
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
-import androidx.navigation.NavController
 import com.quickhandslogistics.R
-import com.quickhandslogistics.utils.DialogHelper
-import kotlinx.android.synthetic.main.activity_dashboard.*
 
 class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -28,16 +23,26 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_dashboard)
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
+       /* val relativeLayout = findViewById<RelativeLayout>(R.id.relative_root)
+
+        relativeLayout.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        })*/
+
+
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_lumper, R.id.nav_schedule, R.id.nav_reports
+                R.id.nav_dashboard, R.id.nav_schedule, R.id.nav_lumper, R.id.nav_reports, R.id.nav_lumper_sheet,
+                R.id.nav_customer_sheet, R.id.nav_settings
             ), drawerLayout
         )
 
@@ -60,3 +65,4 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         return false
     }
 }
+
