@@ -13,4 +13,8 @@
         android:id="@+id/reports"
         android:icon="@drawable/ic_launcher_foreground"
         android:title="@string/string_reports" />
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="@string/string_logout" />
 </menu>

@@ -13,14 +13,20 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
+import android.view.MenuItem
+import androidx.navigation.NavController
 import com.quickhandslogistics.R
+import com.quickhandslogistics.utils.DialogHelper
+import kotlinx.android.synthetic.main.activity_dashboard.*
 
-class DashboardActivity : AppCompatActivity() {
+class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var navController : NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_dashboard)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -34,6 +40,7 @@ class DashboardActivity : AppCompatActivity() {
                 R.id.nav_lumper, R.id.nav_schedule, R.id.nav_reports
             ), drawerLayout
         )
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
@@ -41,5 +48,15 @@ class DashboardActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onNavigationItemSelected(menu: MenuItem): Boolean {
+        when(menu.itemId) {
+            R.id.nav_logout -> {
+             //   navController.navigate(R.id.)
+            }
+        }
+
+        return false
     }
 }
