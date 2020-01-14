@@ -1,35 +1,27 @@
 package com.quickhandslogistics.view.activities
 
-import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.widget.RelativeLayout
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
 import com.quickhandslogistics.R
-import com.quickhandslogistics.view.fragments.DashboardFragment
-import kotlinx.android.synthetic.main.nav_header_dashboard.*
 
 class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var navController : NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_dashboard)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -53,6 +45,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 R.id.nav_customer_sheet, R.id.nav_settings
             ), drawerLayout
         )
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
@@ -62,5 +55,14 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+    override fun onNavigationItemSelected(menu: MenuItem): Boolean {
+        when(menu.itemId) {
+            R.id.nav_logout -> {
+             //   navController.navigate(R.id.)
+            }
+        }
+
+        return false
+    }
 }
 

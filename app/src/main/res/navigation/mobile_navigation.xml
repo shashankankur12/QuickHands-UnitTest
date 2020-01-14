@@ -30,6 +30,11 @@
         tools:layout="@layout/fragment_report" />
 
     <fragment
+        android:id="@+id/nav_logout"
+        android:name="com.quickhandslogistics.view.fragments.LogoutDialog"
+        tools:layout="@layout/fragment_report" />
+
+    <fragment
         android:id="@+id/nav_lumper_sheet"
         android:name="com.quickhandslogistics.view.fragments.LumperSheetFragment"
         android:label="@string/string_lumper_sheet"
@@ -46,5 +51,4 @@
         android:name="com.quickhandslogistics.view.fragments.SettingsFragment"
         android:label="@string/string_settings"
         tools:layout="@layout/fragment_settings" />
-
 </navigation>

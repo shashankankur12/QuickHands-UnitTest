@@ -2,7 +2,8 @@
     <string name="app_name">Quick Hands</string>
     <string name="string_email">Email</string>
     <string name="string_login">Login</string>
-    <string name="string_forgot_password">Forgot Password?</string>
+    <string name="string_forgot_password"><u>Forgot Password?</u></string>
+    <string name="string_forgot_password_heading">Forgot Password</string>
     <string name="string_reset_password_text">Please enter your registered email to reset password</string>
     <string name="string_next">Next</string>
     <string name="string_old_password">Old Password</string>
@@ -38,6 +39,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="string_lumper_details">Lumper Details</string>
     <string name="string_logout">Logout</string>
+    <string name="string_profile">Profile</string>
     <string name="string_no">No</string>
     <string name="string_yes">Yes</string>
 </resources>

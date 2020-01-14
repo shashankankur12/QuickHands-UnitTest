@@ -1,14 +1,15 @@
 package com.quickhandslogistics.utils
 
-import android.R.color.black
 import android.R.color.white
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.quickhandslogistics.R
+import android.graphics.Typeface
 
 class Utils {
 
@@ -31,6 +32,14 @@ class Utils {
                 decor.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                 window.statusBarColor = activity.resources.getColor(R.color.colorLightGrey)
             }
+        }
+
+        fun getPoppinsRegularTypeface(context : Context) : Typeface {
+            return Typeface.createFromAsset(context.assets, "fonts/poppinsregular.ttf")
+        }
+
+        fun getPoppinsSemiBoldTypeface(context : Context) : Typeface {
+            return Typeface.createFromAsset(context.assets, "fonts/poppinssemibold.ttf.ttf")
         }
 
         fun navigateToActivity(currentActivity: Activity, destinationActivity : Activity) {
