@@ -27,14 +27,31 @@
         <TextView
             android:id="@+id/text_lumper"
             style="@style/textSizeNormalRegFont"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginLeft="@dimen/_10sdp"
-            android:fontFamily="@font/poppinsregular"
+            android:fontFamily="@font/poppinssemibold"
             android:textColor="@color/colorBlack"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:singleLine="true"
+            app:layout_constraintRight_toLeftOf="@id/image_arrow"
             app:layout_constraintLeft_toRightOf="@+id/image_lumper_logo"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/image_lumper_logo" />
+
+        <TextView
+            android:id="@+id/text_last_name"
+            style="@style/textSizeSmallRegFont"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppinsregular"
+            android:singleLine="true"
+            android:text="Emp Id: 1001"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintRight_toLeftOf="@id/image_arrow"
+            app:layout_constraintLeft_toLeftOf="@id/text_lumper"
+            app:layout_constraintTop_toBottomOf="@id/text_lumper"/>
+
+
 
         <ImageView
             android:id="@+id/image_arrow"

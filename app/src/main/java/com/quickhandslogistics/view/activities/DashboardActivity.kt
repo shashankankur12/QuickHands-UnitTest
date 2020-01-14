@@ -62,5 +62,9 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+    override fun onNavigationItemSelected(p0: MenuItem): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
 }
 
