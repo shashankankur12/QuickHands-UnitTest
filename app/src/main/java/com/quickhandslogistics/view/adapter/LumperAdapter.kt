@@ -20,10 +20,11 @@ class LumperAdapter(val items: ArrayList<String>, val context: Context) : Adapte
     }
 
     override fun getItemCount(): Int {
-        return 12
+        return items.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder?.lumperText?.text = items.get(position)
         holder.constraintRoot.setOnClickListener {
             context.startActivity(Intent(context, LumperDetailsActivity::class.java))
         }

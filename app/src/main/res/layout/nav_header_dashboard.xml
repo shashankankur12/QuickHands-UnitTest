@@ -4,9 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/side_nav_bar"
-    android:gravity="bottom"
+    android:id="@+id/relative_root"
     android:padding="@dimen/_20sdp"
-    android:orientation="vertical"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
@@ -21,16 +20,28 @@
         android:layout_centerHorizontal="true"
         app:srcCompat="@drawable/quickhands_logo" />
 
+    <ImageView
+        android:id="@+id/image_profile_logo"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_alignBottom="@+id/textView"
+        android:layout_marginTop="@dimen/_70sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:contentDescription="@string/nav_header_desc"
+        app:srcCompat="@drawable/ic_basic_info_placeholder" />
+
     <TextView
         android:id="@+id/text_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Manager Name"
+        android:text="Lead Name"
+        android:textStyle="bold"
         android:textColor="@color/colorBlack"
         android:paddingLeft="@dimen/_10sdp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/imageView"
         android:paddingRight="@dimen/_10sdp"
+        android:fontFamily="@font/poppinssemibold"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
@@ -38,11 +49,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorLightGrey"
-        android:paddingLeft="@dimen/_10sdp"
-        android:layout_centerHorizontal="true"
         android:layout_below="@id/text_name"
-        android:paddingRight="@dimen/_10sdp"
-        android:text="abcd@quickhands.com" />
+        android:layout_alignStart="@+id/text_name"
+        style="@style/textSizeSmallRegFont"
+        android:fontFamily="@font/poppinsregular"
+        android:text="abc@quickhands.com" />
 
     <View
         android:layout_width="match_parent"
