@@ -61,8 +61,5 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
              //   navController.navigate(R.id.)
             }
         }
-
-        return false
-    }
 }
 

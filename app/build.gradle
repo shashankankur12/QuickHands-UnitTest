@@ -55,4 +55,5 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.android.support:design: 10.0.2'
     implementation 'com.github.gayanvoice:android-animations:1.0.2'
+    implementation 'com.github.blocoio:faker:1.0.1'
 }
