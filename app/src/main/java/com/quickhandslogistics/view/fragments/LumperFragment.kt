@@ -1,5 +1,6 @@
 package com.quickhandslogistics.view.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.view.adapter.LumperAdapter
 import kotlinx.android.synthetic.main.fragment_lumper.*
+import kotlinx.android.synthetic.main.layout_header.*
 
 class LumperFragment : Fragment() {
 
@@ -25,6 +27,9 @@ class LumperFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+            text_title?.text = getString(R.string.lumper_job_details)+ arguments?.getString("lumper_detail")
+
         lumperAttendance()
 
         recycler_lumper.layoutManager = LinearLayoutManager(context)
