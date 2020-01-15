@@ -44,6 +44,8 @@ local.properties
         .idea/vcs.xml
         .idea/workspace.xml
 
+        Quick Hands.iml
+
 
 .idea/vcs.xml
 *.iml
