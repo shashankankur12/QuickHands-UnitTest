@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.view.activities.LumperDetailsActivity
+import com.quickhandslogistics.view.activities.LumperJobHistoryActivity
 import com.squareup.picasso.Picasso
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_lumper_layout.view.*
@@ -32,7 +33,8 @@ class LumperAdapter(val items: ArrayList<String>, val context: Context) : Adapte
         Picasso.get().load(faker.avatar.image()).error(R.drawable.ic_basic_info_placeholder).into(holder?.profilePic)
 
         holder.constraintRoot.setOnClickListener {
-            context.startActivity(Intent(context, LumperDetailsActivity::class.java))
+          //  context.startActivity(Intent(context, LumperDetailsActivity::class.java))
+            context.startActivity(Intent(context, LumperJobHistoryActivity::class.java))
         }
     }
 }

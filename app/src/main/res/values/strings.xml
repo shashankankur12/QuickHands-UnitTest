@@ -28,6 +28,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Dashboard Activity</string>
@@ -42,4 +43,10 @@
     <string name="string_profile">Profile</string>
     <string name="string_no">No</string>
     <string name="string_yes">Yes</string>
+    <string name="job_history">Job History</string>
+    <string name="lumper_job_history">Lumper Job History</string>
+    <string name="lumper_job_details">Lumper Job Details</string>
+    <string name="filter">Filter By Date</string>
+    <string name="customer_id">Customer Id</string>
+    <string name="Building_id">Building Name</string>
 </resources>
