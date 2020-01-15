@@ -49,4 +49,6 @@
     <string name="filter">Filter By Date</string>
     <string name="customer_id">Customer Id</string>
     <string name="Building_id">Building Name</string>
+    <string name="string_event_details">Event Details</string>
+    <string name="string_send_for_approval">Send for Approval</string>
 </resources>

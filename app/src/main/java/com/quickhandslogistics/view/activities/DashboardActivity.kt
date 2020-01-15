@@ -17,7 +17,7 @@ import com.quickhandslogistics.R
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.layout_header.*
 
-class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class DashboardActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController : NavController
@@ -37,7 +37,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         if (intent.hasExtra("drawer_tab"))
             moveToLumper()
-       /* val relativeLayout = findViewById<RelativeLayout>(R.id.relative_root)
+        /* val relativeLayout = findViewById<RelativeLayout>(R.id.relative_root)
 
         relativeLayout.setOnClickListener(View.OnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
@@ -46,8 +46,13 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_dashboard, R.id.nav_schedule, R.id.nav_lumper, R.id.nav_reports, R.id.nav_lumper_sheet,
-                R.id.nav_customer_sheet, R.id.nav_settings
+                R.id.nav_dashboard,
+                R.id.nav_schedule,
+                R.id.nav_lumper,
+                R.id.nav_reports,
+                R.id.nav_lumper_sheet,
+                R.id.nav_customer_sheet,
+                R.id.nav_settings
             ), drawerLayout
         )
 
