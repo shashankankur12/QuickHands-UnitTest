@@ -1,7 +1,10 @@
 package com.quickhandslogistics.view.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
@@ -14,6 +17,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.quickhandslogistics.R
+import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.layout_header.*
 
@@ -32,17 +36,21 @@ class DashboardActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        
+        val navView: NavigationView = findViewById(R.id.nav_view)
+        val view:View = navView.getHeaderView(0)
+        val navController = findNavController(R.id.nav_host_fragment)
 
         navController = findNavController(R.id.nav_host_fragment)
 
         if (intent.hasExtra("drawer_tab"))
             moveToLumper()
-        /* val relativeLayout = findViewById<RelativeLayout>(R.id.relative_root)
+        val relativeLayout = view.findViewById<RelativeLayout>(R.id.relative_root)
 
         relativeLayout.setOnClickListener(View.OnClickListener {
-            val intent = Intent(this, ProfileActivity::class.java)
+            val intent = Intent(this, LeadProfileActivity::class.java)
             startActivity(intent)
-        })*/
+        })
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -90,4 +98,5 @@ class DashboardActivity : AppCompatActivity() {
         }
     }
 }
+
 

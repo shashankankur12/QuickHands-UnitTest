@@ -10,6 +10,10 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.quickhandslogistics.R
 import android.graphics.Typeface
+import java.io.File
+import java.io.InputStream
+import java.io.OutputStream
+import java.nio.file.Files.copy
 
 class Utils {
 
