@@ -56,4 +56,5 @@ dependencies {
     implementation 'com.android.support:design: 10.0.2'
     implementation 'com.github.gayanvoice:android-animations:1.0.2'
     implementation 'com.github.blocoio:faker:1.0.1'
+    implementation 'com.github.alamkanak:android-week-view:1.2.6'
 }

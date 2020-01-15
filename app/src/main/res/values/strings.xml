@@ -42,4 +42,6 @@
     <string name="string_profile">Profile</string>
     <string name="string_no">No</string>
     <string name="string_yes">Yes</string>
+    <string name="string_event_details">Event Details</string>
+    <string name="string_send_for_approval">Send for Approval</string>
 </resources>
