@@ -57,6 +57,12 @@
     <string name="string_title">Title</string>
     <string name="string_district_manager">District Manager</string>
     <string name="string_save">Save</string>
+    <string name="job_history">Job History</string>
+    <string name="lumper_job_history">Lumper Job History</string>
+    <string name="lumper_job_details">Lumper Job Details</string>
+    <string name="filter">Filter By Date</string>
+    <string name="customer_id">Customer Id</string>
+    <string name="Building_id">Building Name</string>
     <string name="string_event_details">Event Details</string>
     <string name="string_send_for_approval">Send for Approval</string>
 </resources>

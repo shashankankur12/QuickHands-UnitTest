@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".view.activities.LeadProfileActivity"></activity>
+        <activity android:name=".view.activities.LumperJobHistoryActivity" />
+        <activity android:name=".view.activities.MainActivity" />
+        <activity android:name=".view.activities.AssignLumpersActivity" />
         <activity android:name=".view.activities.ProfileActivity" />
         <activity android:name=".view.activities.LumperDetailsActivity" />
         <activity android:name=".view.activities.ResetPasswordActivity" />

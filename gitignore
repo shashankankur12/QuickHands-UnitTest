@@ -47,6 +47,8 @@ local.properties
 
 app/app.iml
 
+        Quick Hands.iml
+
 
 .idea/vcs.xml
 *.iml

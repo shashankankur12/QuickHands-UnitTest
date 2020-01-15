@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    tools:context=".view.activities.LumperJobHistoryActivity">
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/layout_header" />
+
+    <TextView
+        android:id="@+id/text_filter_by"
+        style="@style/textSizeSmallRegFont"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="@string/filter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        android:textColor="@color/colorBlack"
+        android:fontFamily="@font/poppinsregular" />
+    <TextView
+        android:id="@+id/text_customer_id"
+        style="@style/textSizeSmallRegFont"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="10001"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_filter_by"
+        android:textColor="@color/colorBlack"
+        android:fontFamily="@font/poppinsregular" />
+    <TextView
+        android:id="@+id/text_building_name"
+        style="@style/textSizeSmallRegFont"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="Crownstack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_customer_id"
+        android:textColor="@color/colorBlack"
+        android:fontFamily="@font/poppinsregular" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_lumper_job_history"
+        android:layoutAnimation="@anim/recycler_anim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_below="@+id/text_building_name"
+        tools:listitem="@layout/lumper_job_history_item"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

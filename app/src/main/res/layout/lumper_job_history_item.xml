@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_2sdp"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/_12sdp">
+
+
+        <TextView
+            android:id="@+id/text_job_serial_number"
+            style="@style/textSizeSmallRegFont"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:maxLines="2"
+            android:paddingStart="@dimen/_2ssp"
+            android:text="Customer Name"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/linear_pickup"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:fontFamily="@font/poppinssemibold" />
+
+        <TextView
+            android:id="@+id/text_jobs_value"
+            style="@style/textSizeSmallRegFont"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxLines="2"
+            android:text="ABC1-0009282575"
+            android:paddingStart="@dimen/_2sdp"
+            android:paddingEnd="@dimen/_2sdp"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/linear_dropoff"
+            app:layout_constraintStart_toStartOf="@+id/text_job_serial_number"
+            app:layout_constraintTop_toBottomOf="@+id/text_job_serial_number"
+            android:fontFamily="@font/poppinssemibold" />
+
+        <TextView
+            android:id="@+id/text_job_description"
+            style="@style/textSizeSmallRegFont"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:ellipsize="end"
+            android:textAllCaps="false"
+            android:text="Door"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_jobs_value"
+            android:fontFamily="@font/poppinssemibold" />
+
+        <TextView
+            android:id="@+id/text_job_outlet"
+            style="@style/textSizeSmallRegFont"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:ellipsize="end"
+            android:text="48"
+            android:paddingStart="@dimen/_2sdp"
+            android:paddingEnd="@dimen/_2sdp"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_job_description"
+            android:fontFamily="@font/poppinssemibold" />
+        <TextView
+            android:id="@+id/text_job_weight"
+            style="@style/textSizeSmallRegFont"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:ellipsize="end"
+            android:textAllCaps="false"
+            android:text="Weight"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_job_outlet"
+            android:fontFamily="@font/poppinssemibold" />
+
+        <TextView
+            android:id="@+id/text_job_weight_kg"
+            style="@style/textSizeSmallRegFont"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:ellipsize="end"
+            android:text="67 Kg"
+            android:paddingStart="@dimen/_2sdp"
+            android:paddingEnd="@dimen/_2sdp"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_job_weight"
+            android:fontFamily="@font/poppinssemibold" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/vertical_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.17" />
+
+        <LinearLayout
+            android:id="@+id/linear_pickup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/image_icon_pickup_label"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:src="@drawable/ic_time_and_date"
+                android:tint="@color/colorPrimary" />
+
+            <TextView
+                android:id="@+id/text_pickup_start_value"
+                style="@style/textSizeSmallRegFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Start Time"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintEnd_toStartOf="@+id/image_icon_pickup_label"
+                android:fontFamily="@font/poppinssemibold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_dropoff"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/linear_pickup"
+            app:layout_constraintTop_toBottomOf="@+id/linear_pickup">
+
+            <TextView
+                android:id="@+id/text_dropoff_more"
+                style="@style/textSizeSmallRegFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:ellipsize="end"
+                android:text="9:00 AM"
+                android:singleLine="true"
+                android:textColor="@color/colorBlack"
+                android:fontFamily="@font/poppinssemibold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_end_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:gravity="center"
+            android:orientation="horizontal"
+           app:layout_constraintTop_toBottomOf="@+id/linear_dropoff"
+            app:layout_constraintEnd_toEndOf="@id/linear_dropoff"
+            app:layout_constraintTop_toTopOf="@id/linear_dropoff">
+
+            <ImageView
+                android:id="@+id/image_icon_time"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:src="@drawable/ic_time_and_date"
+                android:tint="@color/colorPrimary" />
+
+            <TextView
+                android:id="@+id/text_pickup_end_value"
+                style="@style/textSizeSmallRegFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="End Time "
+                android:textColor="@color/colorBlack"
+                app:layout_constraintEnd_toStartOf="@+id/image_icon_time"
+                android:fontFamily="@font/poppinssemibold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_end_dropoff"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/linear_end_time"
+            app:layout_constraintTop_toBottomOf="@+id/linear_end_time">
+
+            <TextView
+                android:id="@+id/text_dropoff_end"
+                style="@style/textSizeSmallRegFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:ellipsize="end"
+                android:text="9:00 AM"
+                android:singleLine="true"
+                android:textColor="@color/colorBlack"
+                android:fontFamily="@font/poppinssemibold" />
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
