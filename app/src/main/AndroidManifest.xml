@@ -18,17 +18,17 @@
         <activity android:name=".view.activities.ResetPasswordActivity" />
         <activity android:name=".view.activities.ForgotPasswordActivity" />
         <activity android:name=".view.activities.LoginActivity" />
-        <activity android:name=".view.activities.SplashActivity">
+        <activity android:name=".view.activities.SplashActivity" />
+        <activity
+            android:name=".view.activities.DashboardActivity"
+            android:label="@string/title_activity_dashboard"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".view.activities.DashboardActivity"
-            android:label="@string/title_activity_dashboard"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

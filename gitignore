@@ -14,6 +14,7 @@ local.properties
 .signing/
 
 # User-specific configurations
+.idea
 .idea/libraries/
 .idea/workspace.xml
 .idea/tasks.xml
@@ -36,17 +37,20 @@ local.properties
 .idea/codeStyles/
 .idea/gradle.xml
 .idea/libraries/
-        .idea/misc.xml
-        .idea/modules.xml
-        .idea/navEditor.xml
-        .idea/quickhands-android.iml
-        .idea/runConfigurations.xml
-        .idea/vcs.xml
-        .idea/workspace.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/navEditor.xml
+.idea/quickhands-android.iml
+.idea/runConfigurations.xml
+.idea/vcs.xml
+.idea/workspace.xml
+
+app/app.iml
 
 
 .idea/vcs.xml
 *.iml
+.gradle
 
 # OS-specific files
 .DS_Store

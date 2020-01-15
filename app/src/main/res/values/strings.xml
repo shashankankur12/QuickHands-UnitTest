@@ -57,4 +57,6 @@
     <string name="string_title">Title</string>
     <string name="string_district_manager">District Manager</string>
     <string name="string_save">Save</string>
+    <string name="string_event_details">Event Details</string>
+    <string name="string_send_for_approval">Send for Approval</string>
 </resources>
