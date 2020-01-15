@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Quick Hands</string>
     <string name="string_email">Email</string>
+    <string name="string_employee_id">Employee Id</string>
     <string name="string_login">Login</string>
     <string name="string_forgot_password"><u>Forgot Password?</u></string>
     <string name="string_forgot_password_heading">Forgot Password</string>
@@ -28,6 +29,10 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <string name="numbers">0123456789</string>
+    <string name="digits">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789</string>
+    <string name="alphabet">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</string>
+
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Dashboard Activity</string>
@@ -42,4 +47,14 @@
     <string name="string_profile">Profile</string>
     <string name="string_no">No</string>
     <string name="string_yes">Yes</string>
+    <string name="string_upload_image">Upload Image</string>
+    <string name="string_first_name">First Name</string>
+    <string name="string_last_name">Last Name</string>
+    <string name="string_email_address">Email Address</string>
+    <string name="string_lead_employee_id">Employee_id</string>
+    <string name="string_shifting_hours">Shift Hours</string>
+    <string name="stirng_general_info">General Info</string>
+    <string name="string_title">Title</string>
+    <string name="string_district_manager">District Manager</string>
+    <string name="string_save">Save</string>
 </resources>

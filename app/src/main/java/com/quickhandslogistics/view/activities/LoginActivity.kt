@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.quickhandslogistics.R
+import com.quickhandslogistics.utils.DialogHelper
 import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.activity_login.*
@@ -24,24 +25,29 @@ class LoginActivity : AppCompatActivity() {
 
         button_login.setOnClickListener {
 
-            var email = edit_email.text.toString().trim()
+            var employeeId = edit_employee_id.text.toString().trim()
             var password = edit_password.text.toString().trim()
 
-            validateForm(email, password)
+            validateForm(employeeId,password)
+        }
+
+        text_forgot_password.setOnClickListener {
+
+            DialogHelper.showDialog(this)
         }
 
     }
 
-    private fun validateForm(email : String, password : String) {
+    private fun validateForm(employeeId : String, password : String) {
 
         when {
-            TextUtils.isEmpty(email) -> {
-                text_input_email.error = "Email cannot be empty"
+            TextUtils.isEmpty(employeeId) -> {
+                text_input_email.error = "Employee Id cannot be empty"
             }
 
-            !StringUtils.isValidEmailId(email) -> {
+            /*!StringUtils.isValidEmailId(email) -> {
                 text_input_email.error = "Email should be valid"
-            }
+            }*/
 
             TextUtils.isEmpty(password) -> {
                 text_input_password.error = "Password cannot be empty"
