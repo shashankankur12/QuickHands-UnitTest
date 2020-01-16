@@ -2,12 +2,10 @@ package com.quickhandslogistics.view.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -17,11 +15,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.quickhandslogistics.R
-import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
-import kotlinx.android.synthetic.main.layout_header.*
 
-class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class DashboardActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController : NavController
@@ -39,7 +35,6 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         
         var navView: NavigationView = findViewById(R.id.nav_view)
         var view:View = navView.getHeaderView(0)
-        var navController = findNavController(R.id.nav_host_fragment)
 
         navController = findNavController(R.id.nav_host_fragment)
 
@@ -65,6 +60,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         )
 
         setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
         nav_view.setupWithNavController(navController)
     }
 
@@ -73,31 +69,23 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-
     fun moveToLumper() {
         mDrawerTab = intent.getIntExtra("drawer_tab", -1)
-        var bundle = bundleOf("lumper_detail" to "lum")
+        val bundle = Bundle()
+        bundle.putString("lumper_detail", "lumper")
 
         when (mDrawerTab) {
 
             0 -> navController?.navigate(R.id.nav_dashboard)
             1 -> navController?.navigate(R.id.nav_schedule)
-            2 ->  navController?.navigate(R.id.nav_lumper,bundle)
+            2 -> navController?.navigate(R.id.nav_lumper,bundle)
             3 -> navController?.navigate(R.id.nav_reports)
             4 -> navController?.navigate(R.id.nav_lumper_sheet)
             5 -> navController?.navigate(R.id.nav_customer_sheet)
             6 -> navController?.navigate(R.id.nav_settings)
         }
     }
-
-    override fun onNavigationItemSelected(p0: MenuItem): Boolean {
-        when (p0.itemId) {
-            R.id.nav_logout -> {
-                //   navController.navigate(R.id.)
-            }
-        }
-        return false
-    }
 }
+
 
 

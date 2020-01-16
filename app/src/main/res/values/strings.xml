@@ -65,4 +65,21 @@
     <string name="Building_id">Building Name</string>
     <string name="string_event_details">Event Details</string>
     <string name="string_send_for_approval">Send for Approval</string>
+    <string name="name">Customer Name</string>
+    <string name="Date">Date</string>
+    <string name="Door">Door</string>
+    <string name="container">Container</string>
+    <string name="cs">CS</string>
+    <string name="item_po_lots">Item PO Lots</string>
+    <string name="weight">weight</string>
+    <string name="mix">Mix</string>
+    <string name="rush">Rush</string>
+    <string name="over_70">Over 70 \"</string>
+    <string name="start_time">Start Time</string>
+    <string name="end_time">End Time</string>
+    <string name="total_time">Total time</string>
+    <string name="lunch_out">Lunch Out</string>
+    <string name="lunch_in">Lunch In</string>
+    <string name="notes">Notes</string>
+    <string name="signature">Signature</string>
 </resources>
