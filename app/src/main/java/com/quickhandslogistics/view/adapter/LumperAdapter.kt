@@ -17,7 +17,7 @@ import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_lumper_layout.view.*
 
 
-class LumperAdapter(val items: ArrayList<String>, val context: Context) : Adapter<ViewHolder>() {
+class LumperAdapter(val items: ArrayList<String>, val context: Context, var lumperJobDetails : String) : Adapter<ViewHolder>() {
 
     var faker = Faker()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,8 +37,9 @@ class LumperAdapter(val items: ArrayList<String>, val context: Context) : Adapte
         Picasso.get().load(faker.avatar.image()).error(R.drawable.ic_basic_info_placeholder).into(holder?.profilePic)
 
         holder.constraintRoot.setOnClickListener {
-          //  context.startActivity(Intent(context, LumperDetailsActivity::class.java))
+            if(lumperJobDetails == "lumper")
             context.startActivity(Intent(context, LumperJobHistoryActivity::class.java))
+            else   context.startActivity(Intent(context, LumperDetailsActivity::class.java))
         }
 
         holder.imagePhone.setOnClickListener {
@@ -55,8 +56,6 @@ class LumperAdapter(val items: ArrayList<String>, val context: Context) : Adapte
         )
     }
 }
-
-
 
 class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     var lumperText = view.text_lumper

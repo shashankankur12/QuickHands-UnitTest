@@ -10,11 +10,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.view.adapter.LumperAdapter
 import kotlinx.android.synthetic.main.fragment_lumper.*
-import kotlinx.android.synthetic.main.layout_header.*
+
 
 class LumperFragment : Fragment() {
 
-    val lumperList: ArrayList<String> = ArrayList();
+    val lumperList: ArrayList<String> = ArrayList()
+    var lumperJobDetail: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,12 +29,15 @@ class LumperFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-            text_title?.text = getString(R.string.lumper_job_details)+ arguments?.getString("lumper_detail")
+        val bundle = arguments
+
+        if(bundle != null)
+        lumperJobDetail = bundle!!.getString("lumper_detail").toString()
 
         lumperAttendance()
 
         recycler_lumper.layoutManager = LinearLayoutManager(context)
-        recycler_lumper.adapter = context?.let { LumperAdapter(lumperList, it) }
+        recycler_lumper.adapter = context?.let { LumperAdapter(lumperList, it,lumperJobDetail) }
     }
 
     fun lumperAttendance() {
