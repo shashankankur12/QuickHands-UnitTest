@@ -7,9 +7,9 @@
     android:background="@color/colorWhite"
     tools:context=".view.activities.LumperJobHistoryActivity">
 
-        <include
-            android:id="@+id/header"
-            layout="@layout/layout_header" />
+    <include
+        android:id="@+id/header"
+        layout="@layout/layout_header" />
 
     <TextView
         android:id="@+id/text_filter_by"
@@ -49,89 +49,92 @@
         android:layout_height="@dimen/_15sdp"
         android:layout_marginStart="@dimen/_8sdp"
         android:src="@drawable/ic_date_range_black_24dp"
-        app:layout_constraintTop_toBottomOf="@+id/header"
-        app:layout_constraintTop_toTopOf="@id/text_filter_by_date"
         app:layout_constraintBottom_toBottomOf="@+id/text_filter_by_date"
-        app:layout_constraintStart_toEndOf="@id/text_filter_by_date"/>
+        app:layout_constraintStart_toEndOf="@id/text_filter_by_date"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        app:layout_constraintTop_toTopOf="@id/text_filter_by_date" />
 
     <TextView
         android:id="@+id/text_customer_id_heading"
         style="@style/textSizeSmallRegFont"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="start"
-        android:paddingStart="@dimen/_2sdp"
-        android:paddingEnd="@dimen/_2sdp"
         android:layout_marginStart="@dimen/_12sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_8sdp"
+        android:fontFamily="@font/poppinssemibold"
+        android:gravity="start"
+        android:paddingStart="@dimen/_2sdp"
+        android:paddingEnd="@dimen/_2sdp"
         android:text="Customer Id"
+        android:textColor="@color/colorBlack"
         app:layout_constraintEnd_toStartOf="@+id/text_customer_id"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_filter_by"
-        android:textColor="@color/colorBlack"
-        android:fontFamily="@font/poppinssemibold" />
+        app:layout_constraintTop_toBottomOf="@+id/text_filter_by" />
+
     <TextView
         android:id="@+id/text_customer_id"
         style="@style/textSizeSmallRegFont"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/_2sdp"
-        android:paddingEnd="@dimen/_2sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_8sdp"
+        android:fontFamily="@font/poppinsregular"
+        android:paddingStart="@dimen/_2sdp"
+        android:paddingEnd="@dimen/_2sdp"
         android:text="1001"
-        app:layout_constraintStart_toEndOf="@+id/text_customer_id_heading"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_filter_by_date"
         android:textColor="@color/colorBlack"
-        android:fontFamily="@font/poppinsregular" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/text_customer_id_heading"
+        app:layout_constraintTop_toBottomOf="@+id/text_filter_by_date" />
+
     <TextView
         android:id="@+id/text_building_name_heading"
         style="@style/textSizeSmallRegFont"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="start"
-        android:paddingStart="@dimen/_2sdp"
-        android:paddingEnd="@dimen/_2sdp"
         android:layout_marginStart="@dimen/_12sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_8sdp"
+        android:fontFamily="@font/poppinssemibold"
+        android:gravity="start"
+        android:paddingStart="@dimen/_2sdp"
+        android:paddingEnd="@dimen/_2sdp"
         android:text="Building Name"
+        android:textColor="@color/colorBlack"
         app:layout_constraintEnd_toStartOf="@+id/text_building_name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_customer_id_heading"
-        android:textColor="@color/colorBlack"
-        android:fontFamily="@font/poppinssemibold" />
+        app:layout_constraintTop_toBottomOf="@+id/text_customer_id_heading" />
+
     <TextView
         android:id="@+id/text_building_name"
         style="@style/textSizeSmallRegFont"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:fontFamily="@font/poppinsregular"
         android:gravity="start"
         android:paddingStart="@dimen/_2sdp"
         android:paddingEnd="@dimen/_2sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_8sdp"
         android:text="Crownstack"
+        android:textColor="@color/colorBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/text_building_name_heading"
-        app:layout_constraintTop_toBottomOf="@+id/text_customer_id"
-        android:textColor="@color/colorBlack"
-        android:fontFamily="@font/poppinsregular" />
+        app:layout_constraintTop_toBottomOf="@+id/text_customer_id" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_lumper_job_history"
-        android:layoutAnimation="@anim/recycler_anim"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
-        app:layout_constraintTop_toBottomOf="@id/text_building_name"
+        android:layoutAnimation="@anim/recycler_anim"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/lumper_job_history_item"/>
+        app:layout_constraintTop_toBottomOf="@id/text_building_name"
+        tools:listitem="@layout/lumper_job_history_item" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -60,7 +60,6 @@ class DashboardActivity : AppCompatActivity() {
         )
 
         setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
         nav_view.setupWithNavController(navController)
     }
 
