@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
 
         text_forgot_password.setOnClickListener {
 
-            DialogHelper.showDialog(this)
+            DialogHelper.showDialog("Please Contact your admin for forgot password request.",this )
         }
 
     }

@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.dialog_forgot_password.*
 class DialogHelper {
 
     companion object {
-        fun showDialog(activity : Activity) {
+        fun showDialog(title : String, activity : Activity) {
             val dialog = Dialog(activity)
             dialog .requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
