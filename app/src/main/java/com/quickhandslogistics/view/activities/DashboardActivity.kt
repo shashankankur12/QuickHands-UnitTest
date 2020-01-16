@@ -45,6 +45,7 @@ class DashboardActivity : AppCompatActivity() {
         relativeLayout.setOnClickListener(View.OnClickListener {
             val intent = Intent(this, LeadProfileActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out)
         })
 
         appBarConfiguration = AppBarConfiguration(
