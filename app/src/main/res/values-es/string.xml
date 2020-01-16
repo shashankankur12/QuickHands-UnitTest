@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Quick Hands</string>
+    <string name="string_email">Correo electrónico</string>
+    <string name="string_employee_id">ID del empleado</string>
+    <string name="string_login">Iniciar sesión</string>
+    <string name="string_forgot_password"><u>Olvidé mi contraseña</u></string>
+    <string name="string_forgot_password_heading">Olvidé mi contraseña</string>
+    <string name="string_reset_password_text">Ingrese su correo electrónico registrado para restablecer la contraseña</string>
+    <string name="string_next">Siguiente</string>
+    <string name="string_old_password">Contraseña anterior</string>
+    <string name="string_new_password">Nueva contraseña</string>
+    <string name="string_confirm_password">Confirmar contraseña</string>
+    <string name="string_submit">Enviar</string>
+    <string name="string_enter_otp">Ingrese OTP</string>
+    <string name="string_otp_message">Por favor ingrese su OTP y su nueva contraseña</string>
+    <string name="string_lumper">Lumpers</string>
+    <string name="string_settings">Configuraciones</string>
+    <string name="msg_confirm_logout">Estás seguro de que quieres cerrar sesión?</string>
+    <string name="string_customer_sheet">Hoja del cliente</string>
+    <string name="string_lumper_sheet">Hoja de lumper</string>
+    <string name="string_schedule">Horario</string>
+    <string name="string_dashboard">Tablero de instrumentos</string>
+    <string name="string_reports">Informes</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Configuraciones</string>
+    <string name="string_password">Contraseña</string>
+
+    <string name="numbers">0123456789</string>
+    <string name="digits">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789</string>
+    <string name="alphabet">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Dashboard Activity</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="string_lumper_details">Detalles del enganche</string>
+    <string name="string_logout">Cerrar sesión</string>
+    <string name="string_profile">Perfil</string>
+    <string name="string_no">No hay</string>
+    <string name="string_yes">Si</string>
+    <string name="string_upload_image">Subir imagen</string>
+    <string name="string_first_name">Nombre</string>
+    <string name="string_last_name">Apellido</string>
+    <string name="string_email_address">Dirección de correo electrónico</string>
+    <string name="string_lead_employee_id">Id_Deempleado</string>
+    <string name="string_shifting_hours">Turno de horas</string>
+    <string name="stirng_general_info">General Info</string>
+    <string name="string_title">Titulo</string>
+    <string name="string_district_manager">Gerente de distrito</string>
+    <string name="string_save">Guardar</string>
+    <string name="job_history">Historia laboral</string>
+    <string name="lumper_job_history">Historial de trabajo de Lumper</string>
+    <string name="lumper_job_details">Detalles del trabajo de Lumper</string>
+    <string name="filter">Filtrar por fecha</string>
+    <string name="customer_id">ID del cliente</string>
+    <string name="Building_id">Nombre del edificio</string>
+    <string name="string_event_details">Detalles del evento</string>
+    <string name="string_send_for_approval">Enviar para aprobación</string>
+</resources>

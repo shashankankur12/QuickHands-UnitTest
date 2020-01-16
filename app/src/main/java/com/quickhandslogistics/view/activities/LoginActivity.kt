@@ -1,14 +1,20 @@
 package com.quickhandslogistics.view.activities
 
+import android.animation.Animator
+import android.animation.AnimatorSet
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.text.method.PasswordTransformationMethod
 import androidx.appcompat.app.AppCompatActivity
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.DialogHelper
 import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.activity_login.*
+import render.animations.Attention
+import render.animations.Bounce
+import render.animations.Render
 
 class LoginActivity : AppCompatActivity() {
 
@@ -17,6 +23,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         Utils.changeStatusBar(this)
+
+        edit_password.transformationMethod = PasswordTransformationMethod()
 
         text_forgot_password.setOnClickListener {
             startActivity(Intent(this, ForgotPasswordActivity::class.java))
@@ -33,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
 
         text_forgot_password.setOnClickListener {
 
-            DialogHelper.showDialog("Please Contact your admin for forgot password request.",this )
+            Utils.showForgotPasswordDialog("Please Contact your admin for forgot password request.",this )
         }
 
     }
@@ -42,7 +50,10 @@ class LoginActivity : AppCompatActivity() {
 
         when {
             TextUtils.isEmpty(employeeId) -> {
+                Utils.Shake(edit_employee_id)
+                //render.start()
                 text_input_email.error = "Employee Id cannot be empty"
+
             }
 
             /*!StringUtils.isValidEmailId(email) -> {
@@ -50,11 +61,13 @@ class LoginActivity : AppCompatActivity() {
             }*/
 
             TextUtils.isEmpty(password) -> {
+                Utils.Shake(edit_password)
                 text_input_password.error = "Password cannot be empty"
                 text_input_email.error = null
             }
 
             password.length < 8 -> {
+                Utils.Shake(edit_password)
                 text_input_password.error = "Password should contain atleast 8 characters"
             }
 
