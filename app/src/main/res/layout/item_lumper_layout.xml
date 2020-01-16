@@ -2,12 +2,9 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/_80sdp"
     app:cardCornerRadius="@dimen/_5sdp"
-    android:layout_marginRight="@dimen/_5sdp"
-    android:layout_marginLeft="@dimen/_5sdp"
-    android:layout_marginBottom="@dimen/_5sdp"
-    android:layout_marginTop="@dimen/_5sdp"
+    android:layout_margin="@dimen/_10sdp"
     android:elevation="@dimen/_5sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,14 +29,14 @@
             style="@style/textSizeNormalRegFont"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginLeft="@dimen/_10sdp"
             android:fontFamily="@font/poppinssemibold"
             android:textColor="@color/colorBlack"
             android:singleLine="true"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/_15sdp"
             app:layout_constraintRight_toLeftOf="@id/image_phone"
-            app:layout_constraintLeft_toRightOf="@+id/image_lumper_logo"
-            app:layout_constraintTop_toTopOf="@id/image_lumper_logo" />
+            app:layout_constraintLeft_toRightOf="@+id/image_lumper_logo" />
 
         <TextView
             android:id="@+id/text_last_name"
@@ -48,7 +45,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppinsregular"
             android:singleLine="true"
-            android:text="Emp Id: 1001"
+            android:text="Emp ID: 1001"
             android:textColor="@color/colorBlack"
             app:layout_constraintRight_toLeftOf="@id/image_phone"
             app:layout_constraintLeft_toLeftOf="@id/text_lumper"
@@ -56,7 +53,7 @@
 
         <TextView
             android:id="@+id/text_shift_hours"
-            style="@style/textSizeExtraSmallRegFont"
+            style="@style/textSizeSmallRegFont"
             android:layout_width="0dp"
             android:textStyle="italic"
             android:layout_height="wrap_content"

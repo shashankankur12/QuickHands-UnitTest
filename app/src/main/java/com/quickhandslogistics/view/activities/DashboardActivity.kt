@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.layout_header.*
 
-class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class DashboardActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController : NavController
@@ -39,7 +39,6 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         
         var navView: NavigationView = findViewById(R.id.nav_view)
         var view:View = navView.getHeaderView(0)
-        var navController = findNavController(R.id.nav_host_fragment)
 
         navController = findNavController(R.id.nav_host_fragment)
 
@@ -50,6 +49,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         relativeLayout.setOnClickListener(View.OnClickListener {
             val intent = Intent(this, LeadProfileActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out)
         })
 
         appBarConfiguration = AppBarConfiguration(
@@ -88,15 +88,6 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             5 -> navController?.navigate(R.id.nav_customer_sheet)
             6 -> navController?.navigate(R.id.nav_settings)
         }
-    }
-
-    override fun onNavigationItemSelected(p0: MenuItem): Boolean {
-        when (p0.itemId) {
-            R.id.nav_logout -> {
-                //   navController.navigate(R.id.)
-            }
-        }
-        return false
     }
 }
 
