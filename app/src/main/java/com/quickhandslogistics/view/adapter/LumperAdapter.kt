@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
+import com.quickhandslogistics.view.LumperModel
 import com.quickhandslogistics.view.activities.LumperDetailsActivity
 import com.quickhandslogistics.view.activities.LumperJobHistoryActivity
 import com.squareup.picasso.Picasso
@@ -17,12 +18,10 @@ import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_lumper_layout.view.*
 
 
-class LumperAdapter(val items: ArrayList<String>, val context: Context, var lumperJobDetails : String) : Adapter<ViewHolder>() {
+class LumperAdapter(var items: ArrayList<LumperModel>, val context: Context, var lumperJobDetails : String) : Adapter<ViewHolder>() {
 
-    var faker = Faker()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View =
-            LayoutInflater.from(context).inflate(R.layout.item_lumper_layout, parent, false)
+        val view: View =  LayoutInflater.from(context).inflate(R.layout.item_lumper_layout, parent, false)
         return ViewHolder(view)
     }
 
@@ -31,10 +30,8 @@ class LumperAdapter(val items: ArrayList<String>, val context: Context, var lump
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder?.lumperText?.text = faker.name.firstName() + " " + faker.name.lastName()
+        holder?.lumperText?.text = items.get(position)?.name + " " + items.get(position)?.lastName
         //holder?.lumperHours?.text = faker.time.between()
-
-        Picasso.get().load(faker.avatar.image()).error(R.drawable.ic_basic_info_placeholder).into(holder?.profilePic)
 
         holder.constraintRoot.setOnClickListener {
             if(lumperJobDetails == "lumper")
@@ -47,11 +44,17 @@ class LumperAdapter(val items: ArrayList<String>, val context: Context, var lump
         }
     }
 
+    public fun filterList(filteredName: ArrayList<LumperModel>) {
+        this.items = filteredName
+        notifyDataSetChanged()
+    }
+
     fun callPhone() {
+        val faker = Faker()
         context.startActivity(
             Intent(
                 Intent.ACTION_DIAL,
-                Uri.fromParts("tel", faker.phoneNumber.phoneNumber(), null)
+                Uri.fromParts("tel", faker?.phoneNumber?.phoneNumber(), null)
             )
         )
     }

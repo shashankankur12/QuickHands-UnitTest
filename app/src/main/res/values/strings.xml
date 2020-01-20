@@ -12,6 +12,7 @@
     <string name="string_confirm_password">Confirm Password</string>
     <string name="string_submit">Submit</string>
     <string name="string_enter_otp">Enter OTP</string>
+    <string name="string_search">Search by Name</string>
     <string name="string_otp_message">Please enter your OTP and new password</string>
     <string name="string_lumper"> Lumpers</string>
     <string name="string_settings">Settings</string>

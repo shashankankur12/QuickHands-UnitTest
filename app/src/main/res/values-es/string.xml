@@ -57,6 +57,7 @@
     <string name="string_shifting_hours">Turno de horas</string>
     <string name="stirng_general_info">General Info</string>
     <string name="string_title">Titulo</string>
+    <string name="string_search">Buscar</string>
     <string name="string_district_manager">Gerente de distrito</string>
     <string name="string_save">Guardar</string>
     <string name="job_history">Historia laboral</string>
@@ -67,4 +68,21 @@
     <string name="Building_id">Nombre del edificio</string>
     <string name="string_event_details">Detalles del evento</string>
     <string name="string_send_for_approval">Enviar para aprobación</string>
+    <string name="name">Nombre del cliente</string>
+    <string name="Date">Fecha</string>
+    <string name="Door">La puerta</string>
+    <string name="container">Contenedor</string>
+    <string name="cs">CS</string>
+    <string name="item_po_lots">Artículo PO Lotes</string>
+    <string name="weight">peso</string>
+    <string name="mix">Mezclar</string>
+    <string name="rush">Prisa</string>
+    <string name="over_70">Más de 70 \ "</string>
+    <string name="start_time">Hora de inicio</string>
+    <string name="end_time">Hora final</string>
+    <string name="total_time">Tiempo total</string>
+    <string name="lunch_out">Almuerzo fuera</string>
+    <string name="lunch_in">Almuerzo en</string>
+    <string name="notes">Notas</string>
+    <string name="signature">Firma</string>
 </resources>
