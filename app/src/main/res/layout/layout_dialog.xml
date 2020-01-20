@@ -26,9 +26,9 @@
 
         <TextView
             android:id="@+id/text_yes"
-            style="@style/textSizeNormalRegFont"
+            style="@style/textSizeSmallRegFont"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_40sdp"
             android:layout_weight="1"
             android:gravity="center"
             android:layout_margin="@dimen/_10sdp"
@@ -41,9 +41,9 @@
 
         <TextView
             android:id="@+id/text_no"
-            style="@style/textSizeNormalRegFont"
+            style="@style/textSizeSmallRegFont"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_40sdp"
             android:layout_weight="1"
             android:gravity="center"
             android:background="@drawable/round_background_white"
