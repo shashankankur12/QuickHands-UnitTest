@@ -10,9 +10,17 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.view.adapter.ReportAdapter
 import kotlinx.android.synthetic.main.fragment_send.*
 
+import java.util.*
+import kotlin.collections.ArrayList
+
+
 class ReportFragment : Fragment() {
 
     val reportList: ArrayList<String> = ArrayList()
+    val reportImages = ArrayList(
+        Arrays.asList(
+            R.drawable.job_history,
+            R.drawable.lumper_history))
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +36,7 @@ class ReportFragment : Fragment() {
         reportSheet()
 
         recycler_report.layoutManager = LinearLayoutManager(context)
-        recycler_report.adapter = context?.let { ReportAdapter(reportList, it) }
+        recycler_report.adapter = context?.let { ReportAdapter(reportList,reportImages, it) }
     }
 
     fun reportSheet() {
