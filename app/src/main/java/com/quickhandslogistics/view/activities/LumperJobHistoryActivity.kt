@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_lumper_job_history.*
 import kotlinx.android.synthetic.main.layout_header.*
 import android.app.DatePickerDialog.OnDateSetListener
 import android.app.DatePickerDialog
+import io.bloco.faker.Faker
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -18,12 +19,13 @@ import kotlin.collections.ArrayList
 class LumperJobHistoryActivity : AppCompatActivity() {
 
     val lumperJobList: ArrayList<String> = ArrayList()
+    var faker = Faker()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lumper_job_history)
 
-        text_title?.text = getString(R.string.lumper_job_details)
+        text_title?.text = faker.name.firstName()+" "+faker.name.lastName()
 
         lumperData()
 
@@ -39,7 +41,7 @@ class LumperJobHistoryActivity : AppCompatActivity() {
         recycler_lumper_job_history.layoutManager = LinearLayoutManager(this)
         recycler_lumper_job_history.adapter = this?.let { lumperJobDetailAdapter(lumperJobList, it) }
 
-        img_timer.setOnClickListener(View.OnClickListener {
+        linear_root.setOnClickListener(View.OnClickListener {
             val datePickerDialog = DatePickerDialog(
                 this@LumperJobHistoryActivity,
                 OnDateSetListener { view, year, monthOfYear, dayOfMonth ->

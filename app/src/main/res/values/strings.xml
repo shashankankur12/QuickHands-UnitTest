@@ -67,6 +67,7 @@
     <string name="string_event_details">Event Details</string>
     <string name="string_send_for_approval">Send for Approval</string>
     <string name="name">Customer Name</string>
+    <string name="container_number">Container Number</string>
     <string name="Date">Date</string>
     <string name="Door">Door</string>
     <string name="container">Container</string>
@@ -84,4 +85,8 @@
     <string name="notes">Notes</string>
     <string name="signature">Signature</string>
     <string name="string_password">Password</string>
+    <string name="lumper">Lumper Name </string>
+    <string name="customer_name">Customer Name</string>
+    <string name="building_name">Building Name</string>
+    <string name="choose_lumper">Choose Lumper</string>
 </resources>

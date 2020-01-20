@@ -85,4 +85,9 @@
     <string name="lunch_in">Almuerzo en</string>
     <string name="notes">Notas</string>
     <string name="signature">Firma</string>
+    <string name="lumper">Nombre de Lumper</string>
+    <string name="container_number">Número de contenedor</string>
+    <string name="customer_name">Nombre del cliente</string>
+    <string name="building_name">Nombre del edificioe</string>
+    <string name="choose_lumper">Elige Lumper</string>
 </resources>

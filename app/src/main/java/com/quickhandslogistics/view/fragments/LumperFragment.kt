@@ -1,5 +1,6 @@
 package com.quickhandslogistics.view.fragments
 
+import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,12 +9,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.view.LumperModel
+import com.quickhandslogistics.view.activities.DashboardActivity
 import com.quickhandslogistics.view.adapter.LumperAdapter
 import io.bloco.faker.Faker
+import kotlinx.android.synthetic.main.app_bar_dashboard.*
 import kotlinx.android.synthetic.main.fragment_lumper.*
+import kotlinx.android.synthetic.main.layout_header.*
 
 
 class LumperFragment : Fragment() {
@@ -33,11 +39,6 @@ class LumperFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val bundle = arguments
-
-        if(bundle != null)
-        lumperJobDetail = bundle!!.getString("lumper_detail").toString()
 
        // lumperAttendance()
         searchLumper()
@@ -89,6 +90,8 @@ class LumperFragment : Fragment() {
             text_no_record_found?.visibility = View.GONE
         }
     }
+
+
 
   /*  fun lumperAttendance() {
         lumperList.add("Nigel")
