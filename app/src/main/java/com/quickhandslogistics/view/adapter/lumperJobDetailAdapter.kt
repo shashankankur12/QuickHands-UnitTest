@@ -28,18 +28,16 @@ class lumperJobDetailAdapter(val items: ArrayList<String>, val context: Context)
     }
 
     override fun onBindViewHolder(holder: JobViewHolder, position: Int) {
-        holder?.lumperTextName?.text = faker.name.firstName()
+        holder?.lumperContainerNumber?.text = faker.number.hexadecimal(8)
         holder?.lumperDoor.text = faker.number.digit()
         holder?.lumperWeight.text = faker.number.digit()
-        holder?.lumperStartTime.text = faker.time.forward(5).toString()
-        holder?.lumperEndTime.text = faker.time.backward(2).toString()
         holder.constraintRoot.setOnClickListener {
             context.startActivity(Intent(context, CompleteLumperJobHistoryDetails::class.java))
         }
         }
 
     class JobViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var lumperTextName = view.text_name
+        var lumperContainerNumber = view.input_container_number
         var lumperDoor = view.text_door
         var lumperWeight = view.text_job_weight_kg
         var constraintRoot = view.constraint_root_item

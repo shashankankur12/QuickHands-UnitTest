@@ -20,7 +20,6 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/_10sdp"
             android:src="@drawable/lumper_history"
-            android:layout_marginLeft="@dimen/_10sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
