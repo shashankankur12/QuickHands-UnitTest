@@ -54,6 +54,7 @@
     <string name="string_last_name">Apellido</string>
     <string name="string_email_address">Dirección de correo electrónico</string>
     <string name="string_lead_employee_id">Id_Deempleado</string>
+    <string name="string_logout_dialog">Seguro que quieres cerrar sesión?</string>
     <string name="string_shifting_hours">Turno de horas</string>
     <string name="stirng_general_info">General Info</string>
     <string name="string_title">Titulo</string>
@@ -89,5 +90,10 @@
     <string name="container_number">Número de contenedor</string>
     <string name="customer_name">Nombre del cliente</string>
     <string name="building_name">Nombre del edificioe</string>
+    <string name="string_change_language">Cambiar idioma</string>
+    <string name="string_notification">Notificación</string>
+    <string name="string_location">Ubicación</string>
     <string name="choose_lumper">Elige Lumper</string>
+    <string name="string_forgot_password_request">Póngase en contacto con su administrador para solicitar una contraseña olvidada.</string>
+    <string name="string_ok">Ok</string>
 </resources>
