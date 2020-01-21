@@ -85,6 +85,9 @@
     <string name="notes">Notes</string>
     <string name="signature">Signature</string>
     <string name="string_password">Password</string>
+    <string name="string_change_language">Change Language</string>
+    <string name="string_notification">Notification</string>
+    <string name="string_location">Location</string>
     <string name="lumper">Lumper Name </string>
     <string name="customer_name">Customer Name</string>
     <string name="building_name">Building Name</string>

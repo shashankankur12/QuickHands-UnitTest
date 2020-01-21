@@ -1,13 +1,14 @@
 package com.quickhandslogistics.view.fragments
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -53,12 +54,23 @@ class LumperFragment : Fragment() {
         lumperAdapter =  LumperAdapter(lumperList, context!!,lumperJobDetail)
         recycler_lumper.adapter = context?.let { lumperAdapter}
 
-    }
+        image_cancel.setOnClickListener {
+           edit_search_lumper.text.clear()
+            val imm =
+                activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(edit_search_lumper!!.windowToken, 0)
+            }
+        }
 
     fun searchLumper() {
         edit_search_lumper.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(editable: Editable?) {
                 filter(editable.toString())
+                if(edit_search_lumper.text.isNullOrEmpty()) {
+                    val imm =
+                        activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(edit_search_lumper!!.windowToken, 0)
+                }
             }
 
             override fun beforeTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -93,36 +105,5 @@ class LumperFragment : Fragment() {
 
 
 
-  /*  fun lumperAttendance() {
-        lumperList.add("Nigel")
-        lumperList.add("Mason")
-        lumperList.add("Brent")
-        lumperList.add("Denton")
-        lumperList.add("Herman")
-        lumperList.add("Cody")
-        lumperList.add("Griffin")
-        lumperList.add("Fletcher")
-        lumperList.add("Leroy")
-        lumperList.add("Nissim")
-        lumperList.add("Brock")
-        lumperList.add("Orson")
-        lumperList.add("Jasper")
-        lumperList.add("Dexter")
-        lumperList.add("Fulton")
-        lumperList.add("Caleb")
-        lumperList.add("Alfonso")
-        lumperList.add("Bert")
-        lumperList.add("Bert")
-        lumperList.add("Berk")
-        lumperList.add("Hall")
-        lumperList.add("Valentine")
-        lumperList.add("Yasir")
-        lumperList.add("Michael")
-        lumperList.add("Beck")
-        lumperList.add("Buckminster")
-        lumperList.add("Zeus")
-        lumperList.add("Carl")
-        lumperList.add("Raphael")
-        lumperList.add("Quinn")
-    }*/
+ 
 }

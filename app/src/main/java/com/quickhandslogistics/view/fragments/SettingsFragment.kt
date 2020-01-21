@@ -1,16 +1,21 @@
 package com.quickhandslogistics.view.fragments
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
+import android.content.res.Configuration
+import android.content.res.Resources
+import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import android.widget.CompoundButton
+import androidx.fragment.app.Fragment
+import co.clicke.databases.SharedPreferenceHandler
 import com.quickhandslogistics.R
+import com.quickhandslogistics.utils.LanguageManager
 import kotlinx.android.synthetic.main.fragment_settings.*
+import java.util.*
+
 
 class SettingsFragment : Fragment() {
 
@@ -24,11 +29,21 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        SharedPreferenceHandler.getInstance(activity!!)
+        switch_language.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
+            override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+                SharedPreferenceHandler.setBoolean("checked", true)
+                setLanguageData("es")
+            }
+        })
 
-        constraint_root_settings.setOnClickListener {
-            val intent = Intent(Intent.ACTION_MAIN)
-            intent.setClassName("com.android.settings", "com.android.settings.LanguageSettings")
-            startActivity(intent)
-        }
+    }
+
+    fun setLanguageData(language: String?) {
+        SharedPreferenceHandler.setLanguageSelected(language)
+        LanguageManager.setLanguage(activity, language)
+        val intent = activity!!.intent
+        activity!!.finish()
+        activity!!.startActivity(intent)
     }
 }

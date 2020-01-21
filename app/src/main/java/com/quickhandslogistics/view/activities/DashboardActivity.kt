@@ -1,6 +1,7 @@
 package com.quickhandslogistics.view.activities
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.RelativeLayout
@@ -14,6 +15,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import com.quickhandslogistics.BuildConfig
 import com.quickhandslogistics.R
 import kotlinx.android.synthetic.main.activity_dashboard.*
 
@@ -27,6 +29,8 @@ class DashboardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_dashboard)
+
+        text_version.text = "v " + BuildConfig.VERSION_NAME
 
         var toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -78,7 +82,7 @@ class DashboardActivity : AppCompatActivity() {
 
             0 -> navController?.navigate(R.id.nav_dashboard)
             1 -> navController?.navigate(R.id.nav_schedule)
-            2 -> navController?.navigate(R.id.nav_lumper,bundle)
+            2 -> navController?.navigate(R.id.nav_lumper, bundle)
             3 -> navController?.navigate(R.id.nav_reports)
             4 -> navController?.navigate(R.id.nav_lumper_sheet)
             5 -> navController?.navigate(R.id.nav_customer_sheet)
