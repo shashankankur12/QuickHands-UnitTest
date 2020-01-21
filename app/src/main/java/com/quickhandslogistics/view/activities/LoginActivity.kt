@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.text.method.PasswordTransformationMethod
 import androidx.appcompat.app.AppCompatActivity
+import co.clicke.databases.SharedPreferenceHandler
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.DialogHelper
+import com.quickhandslogistics.utils.LanguageManager
 import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.activity_login.*
@@ -43,8 +45,13 @@ class LoginActivity : AppCompatActivity() {
 
             Utils.showForgotPasswordDialog("Please Contact your admin for forgot password request.",this )
         }
-
     }
+
+    fun setLanguageData(language: String?) {
+        SharedPreferenceHandler.setLanguageSelected(language)
+        LanguageManager.setLanguage(this, language)
+    }
+
 
     private fun validateForm(employeeId : String, password : String) {
 

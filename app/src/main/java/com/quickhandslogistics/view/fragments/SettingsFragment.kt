@@ -18,6 +18,7 @@ import java.util.*
 
 
 class SettingsFragment : Fragment() {
+    var isChecked:Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,13 +31,20 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         SharedPreferenceHandler.getInstance(activity!!)
+        changeLanguageCheck()
         switch_language.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
             override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
-                SharedPreferenceHandler.setBoolean("checked", true)
-                setLanguageData("es")
+                if(p1) {
+                    SharedPreferenceHandler.setBoolean("checked", p1)
+                    SharedPreferenceHandler.setString("language", "(english)")
+                    setLanguageData("es")
+                } else {
+                    SharedPreferenceHandler.setBoolean("checked", p1)
+                    SharedPreferenceHandler.setString("language", "(español)")
+                    setLanguageData("en-us")
+                }
             }
         })
-
     }
 
     fun setLanguageData(language: String?) {
@@ -45,5 +53,10 @@ class SettingsFragment : Fragment() {
         val intent = activity!!.intent
         activity!!.finish()
         activity!!.startActivity(intent)
+    }
+
+    fun changeLanguageCheck() {
+        switch_language.isChecked = SharedPreferenceHandler.getBoolean("checked")
+        text_espanol.text = SharedPreferenceHandler.getString("language")
     }
 }
