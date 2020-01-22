@@ -1,32 +1,24 @@
 package com.quickhandslogistics.view.fragments
 
-import android.content.Intent
-import android.graphics.RectF
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
-import kotlinx.android.synthetic.main.fragment_schedule.*
-import com.alamkanak.weekview.WeekViewEvent
-import com.alamkanak.weekview.MonthLoader
-import com.alamkanak.weekview.WeekView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.model.DatesModel
 import com.quickhandslogistics.model.ScheduledEvents
-import com.quickhandslogistics.utils.Utils
-import com.quickhandslogistics.view.activities.AssignLumpersActivity
 import com.quickhandslogistics.view.adapter.DatesAdapter
 import com.quickhandslogistics.view.adapter.EventsAdapter
+import kotlinx.android.synthetic.main.fragment_schedule.*
+import java.text.DateFormat
 import java.text.DateFormatSymbols
-import java.time.Month
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 class ScheduleFragment : Fragment(){
 
@@ -88,8 +80,19 @@ class ScheduleFragment : Fragment(){
         month = mycal.get(Calendar.MONTH)
 
         text_month_year.text = day.toString() + " " + getMonth(month) + " " + year
+        //dateFormat()
     }
 
+  /*  fun dateFormat() {
+
+        val dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault())
+
+
+        //val dateFormat: DateFormat = SimpleDateFormat("dd MMM yyyy")
+        val date = Date()
+        text_month_year.text= dateFormat.format(date)
+    }
+*/
     fun getMonth(month: Int): String {
         return DateFormatSymbols().months[month]
     }
