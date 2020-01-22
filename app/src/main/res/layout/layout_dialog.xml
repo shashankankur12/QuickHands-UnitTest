@@ -3,18 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/round_style_white"
-    android:layout_margin="@dimen/_12sdp">
+    android:background="@drawable/round_style_white">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_alert"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:layout_gravity="center"/>
 
     <TextView
         android:id="@+id/text_message"
         style="@style/textSizeLargeRegFont"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_250sdp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="@dimen/_5sdp"
         android:text="@string/string_logout_dialog"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:gravity="center"
         android:fontFamily="@font/poppinssemibold"
         android:textColor="@color/colorBlack" />

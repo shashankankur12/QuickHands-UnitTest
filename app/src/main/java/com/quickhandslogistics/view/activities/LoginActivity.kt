@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.text.method.PasswordTransformationMethod
 import androidx.appcompat.app.AppCompatActivity
 import co.clicke.databases.SharedPreferenceHandler
+import com.fileutils.testMain
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.DialogHelper
 import com.quickhandslogistics.utils.LanguageManager
@@ -43,8 +44,14 @@ class LoginActivity : AppCompatActivity() {
 
         text_forgot_password.setOnClickListener {
 
-            Utils.showForgotPasswordDialog("Please Contact your admin for forgot password request.",this )
+            Utils.showForgotPasswordDialog(R.style.dialogAnimation, getString(R.string.string_request_message),this )
         }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        testMain()
     }
 
     fun setLanguageData(language: String?) {
@@ -59,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
             TextUtils.isEmpty(employeeId) -> {
                 Utils.Shake(edit_employee_id)
                 //render.start()
-                text_input_email.error = "Employee Id cannot be empty"
+                text_input_email.error = resources.getString(R.string.text_employee_error_msg)
 
             }
 
@@ -69,13 +76,13 @@ class LoginActivity : AppCompatActivity() {
 
             TextUtils.isEmpty(password) -> {
                 Utils.Shake(edit_password)
-                text_input_password.error = "Password cannot be empty"
+                text_input_password.error = resources.getString(R.string.text_password_err_msg)
                 text_input_email.error = null
             }
 
             password.length < 8 -> {
                 Utils.Shake(edit_password)
-                text_input_password.error = "Password should contain atleast 8 characters"
+                text_input_password.error = resources.getString(R.string.text_password_err_length)
             }
 
             else -> {

@@ -60,10 +60,11 @@ class Utils {
             return ContextCompat.checkSelfPermission(activity, permissions) == PackageManager.PERMISSION_GRANTED
         }
 
-        fun showForgotPasswordDialog(title: String, activity: Activity) {
+        fun showForgotPasswordDialog(animation: Int, title: String, activity: Activity) {
             val dialog = Dialog(activity)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            dialog.window?.attributes?.windowAnimations = animation
             dialog.setCancelable(false)
             dialog.setContentView(R.layout.dialog_forgot_password)
             dialog.setCancelable(true)
