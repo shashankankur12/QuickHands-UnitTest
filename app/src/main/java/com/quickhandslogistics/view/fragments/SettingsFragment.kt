@@ -16,7 +16,6 @@ import com.quickhandslogistics.utils.LanguageManager
 import kotlinx.android.synthetic.main.fragment_settings.*
 import java.util.*
 
-
 class SettingsFragment : Fragment() {
     var isChecked:Boolean = false
 
