@@ -8,17 +8,13 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Typeface
 import android.os.Build
 import android.view.View
+import android.view.Window
 import androidx.core.content.ContextCompat
 import com.quickhandslogistics.R
-import android.graphics.Typeface
-import android.view.Window
 import kotlinx.android.synthetic.main.dialog_forgot_password.*
-import java.io.File
-import java.io.InputStream
-import java.io.OutputStream
-import java.nio.file.Files.copy
 
 class Utils {
 

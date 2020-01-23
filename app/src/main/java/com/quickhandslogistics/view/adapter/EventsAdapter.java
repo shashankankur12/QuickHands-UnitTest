@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.quickhandslogistics.R;
 import com.quickhandslogistics.model.ScheduledEvents;
-import com.quickhandslogistics.utils.DialogHelper;
 import com.quickhandslogistics.view.fragments.ScheduleFragment;
 
 import java.util.ArrayList;

@@ -1,10 +1,6 @@
 package com.quickhandslogistics.view.fragments
 
-import android.content.res.Configuration
-import android.content.res.Resources
-import android.os.Build
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +14,6 @@ import com.quickhandslogistics.utils.AppConstant.Companion.ESPANOL
 import com.quickhandslogistics.utils.AppConstant.Companion.LANGUAGE
 import com.quickhandslogistics.utils.LanguageManager
 import kotlinx.android.synthetic.main.fragment_settings.*
-import java.util.*
 
 class SettingsFragment : Fragment() {
     var isChecked:Boolean = false

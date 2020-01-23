@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.view.activities.CompleteLumperJobHistoryDetails
-import com.quickhandslogistics.view.activities.LumperDetailsActivity
-import com.quickhandslogistics.view.activities.LumperJobHistoryActivity
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.lumper_job_history_item.view.*
 

@@ -13,9 +13,7 @@ import com.quickhandslogistics.model.ScheduledEvents
 import com.quickhandslogistics.view.adapter.DatesAdapter
 import com.quickhandslogistics.view.adapter.EventsAdapter
 import kotlinx.android.synthetic.main.fragment_schedule.*
-import java.text.DateFormat
 import java.text.DateFormatSymbols
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 

@@ -3,13 +3,16 @@ package com.quickhandslogistics.view.activities
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.view.animation.LinearInterpolator
+import android.view.animation.RotateAnimation
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.crashlytics.CrashlyticsRegistrar
-import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.google.firebase.crashlytics.core.CrashlyticsCore
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.Utils
+import kotlinx.android.synthetic.main.activity_splash.*
+
 
 class SplashActivity : AppCompatActivity() {
 
@@ -20,7 +23,18 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
+       /* val anim = RotateAnimation(0f, 350f, 15f, 15f)
+        anim.interpolator = LinearInterpolator()
+        anim.repeatCount = Animation.ABSOLUTE
+        anim.duration = 700*/
+
+       val anim =  AnimationUtils.loadAnimation(this, R.anim.anim_slide_up)
+        anim.duration = 700
+        image_splash_logo.startAnimation(anim)
+
+
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+
         Utils.changeStatusBar(this)
 
         mSplashHandler = Runnable {

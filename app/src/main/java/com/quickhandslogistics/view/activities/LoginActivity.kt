@@ -1,23 +1,18 @@
 package com.quickhandslogistics.view.activities
 
-import android.animation.Animator
-import android.animation.AnimatorSet
 import android.content.Intent
 import android.os.Bundle
+import android.os.FileUtils
 import android.text.TextUtils
 import android.text.method.PasswordTransformationMethod
 import androidx.appcompat.app.AppCompatActivity
 import co.clicke.databases.SharedPreferenceHandler
-import com.fileutils.testMain
+import com.fileutils.File
+import com.fileutils.mainTest
 import com.quickhandslogistics.R
-import com.quickhandslogistics.utils.DialogHelper
 import com.quickhandslogistics.utils.LanguageManager
-import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.activity_login.*
-import render.animations.Attention
-import render.animations.Bounce
-import render.animations.Render
 
 class LoginActivity : AppCompatActivity() {
 
@@ -49,10 +44,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-   /* override fun onResume() {
+    override fun onResume() {
         super.onResume()
-        //testMain()
-    }*/
+        mainTest()
+    }
 
     fun setLanguageData(language: String?) {
         SharedPreferenceHandler.setLanguageSelected(language)
@@ -73,6 +68,7 @@ class LoginActivity : AppCompatActivity() {
             /*!StringUtils.isValidEmailId(email) -> {
                 text_input_email.error = "Email should be valid"
             }*/
+
 
             TextUtils.isEmpty(password) -> {
                 Utils.Shake(edit_password)
