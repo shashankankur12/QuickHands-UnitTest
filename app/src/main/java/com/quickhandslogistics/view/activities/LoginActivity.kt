@@ -49,10 +49,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-    override fun onResume() {
+   /* override fun onResume() {
         super.onResume()
-        testMain()
-    }
+        //testMain()
+    }*/
 
     fun setLanguageData(language: String?) {
         SharedPreferenceHandler.setLanguageSelected(language)

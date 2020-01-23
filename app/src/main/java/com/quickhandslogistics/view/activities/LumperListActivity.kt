@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.layout_header.*
 
 class LumperListActivity : AppCompatActivity() {
     val lumperList: ArrayList<LumperModel> = ArrayList()
+    val arrayList: ArrayList<String> = ArrayList()
     var lumperJobDetail: String = ""
     lateinit var lumperAdapter: LumperAdapter
 
