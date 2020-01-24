@@ -8,17 +8,13 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Typeface
 import android.os.Build
 import android.view.View
+import android.view.Window
 import androidx.core.content.ContextCompat
 import com.quickhandslogistics.R
-import android.graphics.Typeface
-import android.view.Window
 import kotlinx.android.synthetic.main.dialog_forgot_password.*
-import java.io.File
-import java.io.InputStream
-import java.io.OutputStream
-import java.nio.file.Files.copy
 
 class Utils {
 
@@ -60,10 +56,11 @@ class Utils {
             return ContextCompat.checkSelfPermission(activity, permissions) == PackageManager.PERMISSION_GRANTED
         }
 
-        fun showForgotPasswordDialog(title: String, activity: Activity) {
+        fun showForgotPasswordDialog(animation: Int, title: String, activity: Activity) {
             val dialog = Dialog(activity)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            dialog.window?.attributes?.windowAnimations = animation
             dialog.setCancelable(false)
             dialog.setContentView(R.layout.dialog_forgot_password)
             dialog.setCancelable(true)

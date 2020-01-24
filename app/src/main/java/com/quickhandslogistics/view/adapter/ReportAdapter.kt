@@ -5,14 +5,12 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.get
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
-import com.quickhandslogistics.view.activities.DashboardActivity
+import com.quickhandslogistics.view.activities.LumperListActivity
 import kotlinx.android.synthetic.main.item_lumper_layout.view.constraint_root
 import kotlinx.android.synthetic.main.report_item_layout.view.*
-import android.widget.Toast
-import com.quickhandslogistics.view.activities.LumperListActivity
 
 class ReportAdapter (val items: ArrayList<String>,val itemimages: ArrayList<Int>, val context: Context) : RecyclerView.Adapter<reportHolder>() {
 

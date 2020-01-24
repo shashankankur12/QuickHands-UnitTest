@@ -26,8 +26,6 @@ import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.util.Comparator;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

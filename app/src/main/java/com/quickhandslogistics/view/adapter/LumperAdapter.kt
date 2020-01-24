@@ -6,14 +6,12 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.view.LumperModel
 import com.quickhandslogistics.view.activities.LumperDetailsActivity
 import com.quickhandslogistics.view.activities.LumperJobHistoryActivity
-import com.squareup.picasso.Picasso
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_lumper_layout.view.*
 

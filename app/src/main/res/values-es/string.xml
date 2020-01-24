@@ -41,6 +41,10 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+    <string name="text_employee_error_msg">La identificación del empleado no puede estar vacía</string>
+    <string name="text_password_err_msg">La contraseña no puede estar vacía</string>
+    <string name="text_password_err_length">La contraseña debe contener al menos 8 caracteres</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

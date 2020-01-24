@@ -1,13 +1,12 @@
 package com.quickhandslogistics.view.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.activity_forgot_password.*
 import kotlinx.android.synthetic.main.layout_header.*
-import okhttp3.internal.Util
 
 class ForgotPasswordActivity : AppCompatActivity() {
 

@@ -1,14 +1,12 @@
 package com.quickhandslogistics.view.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.view.adapter.AssignedLumperAdapter
-import com.quickhandslogistics.view.adapter.LumperAdapter
 import kotlinx.android.synthetic.main.activity_assign_lumpers.*
-import kotlinx.android.synthetic.main.fragment_lumper.*
 import kotlinx.android.synthetic.main.layout_header.*
 
 class AssignLumpersActivity : AppCompatActivity() {

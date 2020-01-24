@@ -203,7 +203,6 @@
                     android:text="5" />
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_weight"
                 android:layout_width="match_parent"
@@ -516,11 +515,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:hint="@string/signature"
                 android:theme="@style/TextInputLabel"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/input_notes">
 
                 <EditText

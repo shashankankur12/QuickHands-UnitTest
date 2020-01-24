@@ -1,6 +1,5 @@
 package com.quickhandslogistics.utils
 
-import android.app.ActionBar
 import android.app.Activity
 import android.app.Dialog
 import android.view.Window

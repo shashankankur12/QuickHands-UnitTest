@@ -94,4 +94,9 @@
         <item name="android:textSize">@dimen/_12ssp</item>
     </style>
 
+    <style name="dialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/anim_slide_up</item>
+        <item name="android:windowExitAnimation">@anim/anim_slide_down</item>
+    </style>
+
 </resources>

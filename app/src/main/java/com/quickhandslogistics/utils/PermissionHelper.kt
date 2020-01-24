@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
 
-
 class PermissionHelper(private val mActivity: Activity) {
     fun checkPermission(vararg permissions: String?): Boolean {
         for (permission in permissions) {

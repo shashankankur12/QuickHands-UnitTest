@@ -13,9 +13,7 @@ import com.quickhandslogistics.model.ScheduledEvents
 import com.quickhandslogistics.view.adapter.DatesAdapter
 import com.quickhandslogistics.view.adapter.EventsAdapter
 import kotlinx.android.synthetic.main.fragment_schedule.*
-import java.text.DateFormat
 import java.text.DateFormatSymbols
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -30,6 +28,7 @@ class ScheduleFragment : Fragment(){
     var year: Int = 0
     var month: Int = 0
     var day: Int = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,12 +114,11 @@ class ScheduleFragment : Fragment(){
             date.selected = false
             date.eventAvailable = false
 
-            if (i == 2 || i ==7) date.eventAvailable = true
+            if (i == 2 || i == 7) date.eventAvailable = true
 
             datesList.add(date)
         }
 
         setUpDatesRecyclerView(recycler_monthView)
     }
-
 }

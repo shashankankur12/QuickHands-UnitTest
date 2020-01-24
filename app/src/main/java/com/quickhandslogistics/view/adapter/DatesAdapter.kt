@@ -8,19 +8,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
-
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.ArrayList
-import java.util.Date
-
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.quickhandslogistics.R
 import com.quickhandslogistics.model.DatesModel
 import com.quickhandslogistics.model.ScheduledEvents
 import com.quickhandslogistics.view.fragments.ScheduleFragment
 import kotlinx.android.synthetic.main.fragment_schedule.*
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class DatesAdapter(private val scheduleFragment: ScheduleFragment,
                    private val mDatesList: ArrayList<DatesModel>, private val mActivity: Activity,
