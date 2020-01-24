@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "968755620508-o6oql0f46n271v423tinc42d08j1lb3m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.quickhandslogistics",
+            "certificate_hash": "cb30483a568d549bdd0a03077d7399389d14d1ec"
+          }
+        },
+        {
           "client_id": "968755620508-1a9goap1unmledkpnpv57abn44n30kei.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
