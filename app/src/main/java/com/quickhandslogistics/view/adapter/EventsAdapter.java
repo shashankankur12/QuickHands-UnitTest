@@ -42,9 +42,9 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsHold
     @Override
     public void onBindViewHolder(@NonNull EventsHolder eventsHolder, int i) {
 
-        eventsHolder.textTitle.setText(Html.fromHtml("<b>Building Name : </b>Flipkart"));
-        eventsHolder.textCustomerName.setText(Html.fromHtml("<b>Door Number : </b>03"));
-        eventsHolder.textSubService.setText(Html.fromHtml("<b>Number of Lumpers Required : </b>05"));
+        eventsHolder.textTitle.setText(Html.fromHtml("<b>Building : </b>One97 Communications Private Limited"));
+        eventsHolder.textCustomerName.setText(Html.fromHtml("<b>Door : </b>03"));
+        eventsHolder.textSubService.setText(Html.fromHtml("<b>Lumpers Required : </b>05"));
 
         if (i == 0) {
             eventsHolder.textTime.setText("09:00 AM");
