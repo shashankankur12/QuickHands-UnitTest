@@ -1,4 +1,7 @@
 package com.fileutils
+
+import javax.inject.Inject
+
 open class File(val name: String){
 
     init {
@@ -36,4 +39,5 @@ open class Utils(name:String): File(name.capitalize()) {
 fun mainTest() {
   val utils = Utils("number")
     System.out.println("Number Message " + utils.num)
+
 }

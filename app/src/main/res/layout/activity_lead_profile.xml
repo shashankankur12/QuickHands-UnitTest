@@ -273,13 +273,13 @@
                 app:layout_constraintTop_toBottomOf="@id/text_district_manager" />
 
             <TextView
-                android:id="@+id/text_location"
+                android:id="@+id/text_phone"
                 style="@style/textSizeSmallRegFont"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/string_location"
+                android:text="@string/string_phone"
                 android:includeFontPadding="false"
                 android:textColor="@color/colorBlack"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -287,11 +287,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/edit_district_manager" />
 
             <EditText
-                android:id="@+id/edit_location"
+                android:id="@+id/edit_phone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:inputType="textCapWords"
                 android:clickable="false"
+                android:inputType="number"
                 android:focusable="false"
                 android:cursorVisible="false"
                 android:enabled="false"
@@ -301,8 +301,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textColor="@color/colorBlack"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/text_location"
-                app:layout_constraintTop_toBottomOf="@id/text_location" />
+                app:layout_constraintStart_toStartOf="@id/text_phone"
+                app:layout_constraintTop_toBottomOf="@id/text_phone" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

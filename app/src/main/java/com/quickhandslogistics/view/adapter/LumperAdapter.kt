@@ -42,7 +42,7 @@ class LumperAdapter(var items: ArrayList<LumperModel>, val context: Context, var
         }
     }
 
-    public fun filterList(filteredName: ArrayList<LumperModel>) {
+     fun filterList(filteredName: ArrayList<LumperModel>) {
         this.items = filteredName
         notifyDataSetChanged()
     }
@@ -50,9 +50,7 @@ class LumperAdapter(var items: ArrayList<LumperModel>, val context: Context, var
     fun callPhone() {
         val faker = Faker()
         context.startActivity(
-            Intent(
-                Intent.ACTION_DIAL,
-                Uri.fromParts("tel", faker?.phoneNumber?.phoneNumber(), null)
+            Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", faker?.phoneNumber?.phoneNumber(), null)
             )
         )
     }

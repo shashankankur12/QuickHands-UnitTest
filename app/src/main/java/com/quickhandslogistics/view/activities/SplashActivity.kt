@@ -23,7 +23,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-       /* val anim = RotateAnimation(0f, 350f, 15f, 15f)
+        /*val anim = RotateAnimation(0f, 350f, 15f, 15f)
         anim.interpolator = LinearInterpolator()
         anim.repeatCount = Animation.ABSOLUTE
         anim.duration = 700*/
