@@ -46,7 +46,7 @@ class ScheduleFragment : Fragment(){
         prepareDatesList(numberOfDays, eventsList)
 
         getCurrentMonthAndYear()
-       // setUpEventsRecyclerView(recycler_events, eventsList)
+        setUpEventsRecyclerView(recycler_events, eventsList)
     }
 
     private fun setUpDatesRecyclerView(recyclerView: RecyclerView) {

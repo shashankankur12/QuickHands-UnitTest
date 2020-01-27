@@ -31,7 +31,6 @@
             android:id="@+id/text_title"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="FlipKart"
             style="@style/textSizeSmallRegFont"
             android:textColor="@color/colorBlack"
             android:layout_width="match_parent"
