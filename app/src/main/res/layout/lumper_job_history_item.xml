@@ -20,11 +20,11 @@
 
         <TextView
             android:id="@+id/text_container_number"
-            style="@style/textSizeNormalRegFont"
+            style="@style/textSizeSmallRegFont"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_8sdp"
             android:paddingStart="@dimen/_2ssp"
             android:text="@string/container_number"
@@ -55,7 +55,7 @@
 
         <TextView
             android:id="@+id/text_door_heading"
-            style="@style/textSizeNormalRegFont"
+            style="@style/textSizeSmallRegFont"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -73,7 +73,7 @@
 
         <TextView
             android:id="@+id/text_job_weight"
-            style="@style/textSizeNormalRegFont"
+            style="@style/textSizeSmallRegFont"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_1sdp"
@@ -136,7 +136,7 @@
             android:id="@+id/linear_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_8sdp"
             android:gravity="center"
             android:orientation="horizontal"
@@ -152,8 +152,8 @@
                 android:tint="@color/colorPrimary" />
 
             <TextView
-                android:id="@+id/text_start_time"
-                style="@style/textSizeNormalRegFont"
+                android:id="@+id/textSizeSmallRegFont"
+                style="@style/textSizeSmallRegFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
@@ -210,7 +210,7 @@
 
             <TextView
                 android:id="@+id/text_end_value"
-                style="@style/textSizeNormalRegFont"
+                style="@style/textSizeSmallRegFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"

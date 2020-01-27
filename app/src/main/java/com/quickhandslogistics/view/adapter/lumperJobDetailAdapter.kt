@@ -26,7 +26,7 @@ class lumperJobDetailAdapter(val items: ArrayList<String>, val context: Context)
     }
 
     override fun onBindViewHolder(holder: JobViewHolder, position: Int) {
-        holder?.lumperContainerNumber?.text = faker.number.hexadecimal(8)
+        holder?.lumperContainerNumber?.text = faker.number.hexadecimal(8).toUpperCase()
         holder?.lumperDoor.text = faker.number.digit()
         holder?.lumperWeight.text = faker.number.digit()
         holder.constraintRoot.setOnClickListener {
