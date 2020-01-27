@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/round_style_white">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_alert"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/text_message"
+        style="@style/textSizeNormalRegFont"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="@dimen/_5sdp"
+        android:text="@string/string_language_dialog"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:gravity="center"
+        android:fontFamily="@font/poppinssemibold"
+        android:textColor="@color/colorBlack" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/text_yes"
+            style="@style/textSizeNormalRegFont"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:elevation="@dimen/_5sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/round_button_red"
+            android:padding="@dimen/_10sdp"
+            android:text="@string/string_yes"
+            android:fontFamily="@font/poppinssemibold"
+            android:textColor="@color/colorWhite" />
+
+
+        <TextView
+            android:id="@+id/text_no"
+            style="@style/textSizeNormalRegFont"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_weight="1"
+            android:elevation="@dimen/_5sdp"
+            android:gravity="center"
+            android:background="@drawable/round_background_white"
+            android:layout_margin="@dimen/_10sdp"
+            android:padding="@dimen/_10sdp"
+            android:text="@string/string_no"
+            android:fontFamily="@font/poppinssemibold"
+            android:textColor="@color/colorBlack" />
+    </LinearLayout>
+</LinearLayout>

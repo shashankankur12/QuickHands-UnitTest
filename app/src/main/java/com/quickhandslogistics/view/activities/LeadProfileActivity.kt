@@ -32,7 +32,7 @@ class LeadProfileActivity : AppCompatActivity(), GalleryPicker.GalleryPickerList
         edit_lead_emp_id.setText("JW_1001")
         edit_shift_hours.setText("09:00 AM TO 06:00 PM")
         edit_district_manager.setText("Garrett Hamill")
-        edit_location.setText("3200 E. Guasti RD Suite 100, Ontario, CA 91761")
+        edit_phone.setText("96545256654")
 
         image_back.setOnClickListener {
             finish()

@@ -10,7 +10,7 @@
                 android:width="1dp"
                 android:color="@color/colorLightGrey" />
             <corners
-                android:radius="20dp" />
+                android:radius="@dimen/_5sdp" />
             <padding
                 android:bottom="10dp"
                 android:left="10dp"

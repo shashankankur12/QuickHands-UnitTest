@@ -3,6 +3,7 @@ package com.quickhandslogistics.baseapplication
 import android.app.Application
 import android.content.res.Configuration
 import co.clicke.databases.SharedPreferenceHandler
+import com.google.firebase.analytics.FirebaseAnalytics
 import java.util.*
 
 
@@ -11,6 +12,7 @@ class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
         SharedPreferenceHandler.getInstance(this)
             val locale = Locale("es")
             Locale.setDefault(locale)

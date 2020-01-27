@@ -3,17 +3,29 @@ package com.quickhandslogistics.view.activities
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.Utils
+import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : AppCompatActivity() {
 
     lateinit var mSplashHandler: Runnable
+    private var mFirebaseAnalytics: FirebaseAnalytics? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+
+      
+        val anim =  AnimationUtils.loadAnimation(this, R.anim.anim_slide_up)
+        anim.duration = 700
+        image_splash_logo.startAnimation(anim)
+
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         Utils.changeStatusBar(this)
 

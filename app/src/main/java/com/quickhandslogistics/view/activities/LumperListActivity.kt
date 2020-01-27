@@ -13,15 +13,16 @@ import kotlinx.android.synthetic.main.layout_header.*
 
 class LumperListActivity : AppCompatActivity() {
     val lumperList: ArrayList<LumperModel> = ArrayList()
+    val arrayList: ArrayList<String> = ArrayList()
     var lumperJobDetail: String = ""
     lateinit var lumperAdapter: LumperAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lumper_list)
-        if(intent.hasExtra(getString(R.string.string_lumper)))
+        if (intent.hasExtra(getString(R.string.string_lumper)))
             lumperJobDetail = intent.getStringExtra(getString(R.string.string_lumper))
-            text_title?.setText(getString(R.string.choose_lumper))
+        text_title?.setText(getString(R.string.choose_lumper))
 
         image_back.setOnClickListener {
             Utils.finishActivity(this)
@@ -34,7 +35,7 @@ class LumperListActivity : AppCompatActivity() {
             lumperList.add(LumperModel(faker.name.firstName(), faker.name.lastName()))
         }
 
-        lumperAdapter =  LumperAdapter(lumperList, this@LumperListActivity!!,lumperJobDetail)
-        recycler_lumper.adapter = this@LumperListActivity?.let { lumperAdapter}
+        lumperAdapter = LumperAdapter(lumperList, this@LumperListActivity!!, lumperJobDetail)
+        recycler_lumper.adapter = this@LumperListActivity?.let { lumperAdapter }
     }
 }

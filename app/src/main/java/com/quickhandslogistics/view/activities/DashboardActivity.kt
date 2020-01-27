@@ -1,7 +1,6 @@
 package com.quickhandslogistics.view.activities
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.RelativeLayout
@@ -15,7 +14,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
-import com.quickhandslogistics.BuildConfig
+import com.intuit.sdp.BuildConfig
 import com.quickhandslogistics.R
 import kotlinx.android.synthetic.main.activity_dashboard.*
 

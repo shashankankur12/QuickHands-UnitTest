@@ -1,9 +1,6 @@
 package com.quickhandslogistics.view.adapter
 
 import android.app.Activity
-import android.app.Dialog
-import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.DialogHelper
-import com.quickhandslogistics.view.activities.LumperDetailsActivity
 import com.squareup.picasso.Picasso
 import io.bloco.faker.Faker
-import kotlinx.android.synthetic.main.item_lumper_layout.view.*
 import kotlinx.android.synthetic.main.item_lumper_layout.view.constraint_root
 import kotlinx.android.synthetic.main.item_lumper_layout.view.image_lumper_logo
 import kotlinx.android.synthetic.main.item_lumper_layout.view.text_last_name

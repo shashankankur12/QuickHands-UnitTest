@@ -1,8 +1,7 @@
 package com.quickhandslogistics.view.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.layout_header.*

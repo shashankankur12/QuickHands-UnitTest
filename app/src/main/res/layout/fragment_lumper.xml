@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:shimmer="http://schemas.android.com/tools"
     android:id="@+id/constraint_root"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -17,6 +17,8 @@
         android:drawableTint="@color/colorLightGrey"
         android:drawablePadding="@dimen/_2sdp"
         style="@style/textSizeNormalRegFont"
+        android:imeOptions="actionDone"
+        android:fontFamily="@font/poppinssemibold"
         android:background="@drawable/edit_search_bg"
         android:layout_margin="@dimen/_10sdp"/>
 

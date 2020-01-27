@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:layoutAnimation="@anim/recycler_anim"
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
@@ -21,26 +22,37 @@
         android:background="?android:attr/selectableItemBackground"
         android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/image_language"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_global"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginLeft="@dimen/_10sdp"/>
+
         <TextView
             android:id="@+id/report_text"
             style="@style/textSizeNormalRegFont"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_2sdp"
-            android:layout_marginLeft="@dimen/_10sdp"
             android:fontFamily="@font/poppinssemibold"
             android:textColor="@color/colorBlack"
             android:singleLine="true"
+            android:layout_marginLeft="@dimen/_2sdp"
             android:padding="10dip"
+            app:layout_constraintLeft_toRightOf="@+id/image_language"
             android:text="@string/string_change_language"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_espanol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="(español)"
+            android:text="(Español)"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/report_text"/>
@@ -78,20 +90,32 @@
             android:background="?android:attr/selectableItemBackground"
             android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/image_notification"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_bell"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginLeft="@dimen/_10sdp"/>
+
             <TextView
                 android:id="@+id/text_notification"
                 style="@style/textSizeNormalRegFont"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_2sdp"
-                android:layout_marginLeft="@dimen/_10sdp"
                 android:fontFamily="@font/poppinssemibold"
                 android:textColor="@color/colorBlack"
                 android:singleLine="true"
                 android:padding="10dip"
+                android:layout_marginLeft="@dimen/_2sdp"
+                app:layout_constraintLeft_toRightOf="@+id/image_notification"
                 android:text="@string/string_notification"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <Switch
                 android:id="@+id/switch_notification"

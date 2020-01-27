@@ -41,6 +41,10 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+    <string name="text_employee_error_msg">La identificación del empleado no puede estar vacía</string>
+    <string name="text_password_err_msg">La contraseña no puede estar vacía</string>
+    <string name="text_password_err_length">La contraseña debe contener al menos 8 caracteres</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -81,6 +85,7 @@
     <string name="over_70">Más de 70 \ "</string>
     <string name="start_time">Hora de inicio</string>
     <string name="end_time">Hora final</string>
+    <string name="string_language_dialog">Seguro que quieres cambiar el idioma?</string>
     <string name="total_time">Tiempo total</string>
     <string name="lunch_out">Almuerzo fuera</string>
     <string name="lunch_in">Almuerzo en</string>
@@ -94,6 +99,7 @@
     <string name="string_notification">Notificación</string>
     <string name="string_location">Ubicación</string>
     <string name="choose_lumper">Elige Lumper</string>
+    <string name="string_phone">Número de teléfono</string>
     <string name="string_forgot_password_request">Póngase en contacto con su administrador para solicitar una contraseña olvidada.</string>
     <string name="string_ok">Ok</string>
 </resources>

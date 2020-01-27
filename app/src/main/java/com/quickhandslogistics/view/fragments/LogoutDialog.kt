@@ -9,7 +9,6 @@ import android.view.Window
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.quickhandslogistics.R
-import kotlinx.android.synthetic.*
 
 class LogoutDialog : DialogFragment() {
 
@@ -20,10 +19,10 @@ class LogoutDialog : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val dialog = Dialog(this.requireContext())
         dialog .requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.window?.attributes?.windowAnimations = R.style.dialogAnimation
         dialog .setCancelable(false)
         dialog .setContentView(R.layout.layout_dialog)
 
