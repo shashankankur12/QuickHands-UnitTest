@@ -19,6 +19,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
+      
         val anim =  AnimationUtils.loadAnimation(this, R.anim.anim_slide_up)
         anim.duration = 700
         image_splash_logo.startAnimation(anim)
