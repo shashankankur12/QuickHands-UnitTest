@@ -55,13 +55,13 @@
 
         <TextView
             android:id="@+id/text_status"
-            style="@style/textSizeSmallRegFont"
+            style="@style/textSizeExtraSmallRegFont"
             android:layout_width="0dp"
-            android:textStyle="italic"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppinsregular"
             android:singleLine="true"
             android:text="In Progress"
+            android:paddingLeft="@dimen/_3sdp"
             android:background="@drawable/bg_timer"
             android:paddingTop="@dimen/_3sdp"
             android:paddingRight="@dimen/_3sdp"

@@ -13,7 +13,7 @@
     <color name="colorBlue">#00274F</color>
     <color name="colorLightGallery">#eff0f1</color>
     <color name="colorLightBlue">#E9F3FA</color>
-    <color name="colorLightRed">#F05151</color>
+    <color name="colorLightRed">#FFCCCC</color>
     <color name="colorGreen">#214103</color>
-    <color name="colorLightGreen">#59A314</color>
+    <color name="colorLightGreen">#CCFFCC</color>
 </resources>
