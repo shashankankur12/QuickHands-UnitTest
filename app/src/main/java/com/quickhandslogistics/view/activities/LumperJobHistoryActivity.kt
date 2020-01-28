@@ -1,17 +1,17 @@
 package com.quickhandslogistics.view.activities
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.Utils
 import com.quickhandslogistics.view.adapter.lumperJobDetailAdapter
+import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.activity_lumper_job_history.*
 import kotlinx.android.synthetic.main.layout_header.*
-import android.app.DatePickerDialog.OnDateSetListener
-import android.app.DatePickerDialog
-import io.bloco.faker.Faker
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -32,6 +32,9 @@ class LumperJobHistoryActivity : AppCompatActivity() {
         image_back.setOnClickListener {
             Utils.finishActivity(this)
         }
+
+        val locale = resources.configuration.locale
+        Locale.setDefault(locale)
 
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)

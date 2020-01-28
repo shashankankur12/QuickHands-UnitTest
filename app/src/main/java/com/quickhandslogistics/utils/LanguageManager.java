@@ -21,6 +21,7 @@ public class LanguageManager {
             return language;
         }
     }
+
     public static void setLanguage(Activity activity, String language) {
         Locale locale = new Locale(language);
         Locale.setDefault(locale);

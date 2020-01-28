@@ -12,9 +12,12 @@ import android.graphics.Typeface
 import android.os.Build
 import android.view.View
 import android.view.Window
+import android.widget.TextView
 import androidx.core.content.ContextCompat
+import co.clicke.databases.SharedPreferenceHandler
 import com.quickhandslogistics.R
 import kotlinx.android.synthetic.main.dialog_forgot_password.*
+import kotlinx.android.synthetic.main.fragment_settings.*
 
 class Utils {
 
@@ -62,13 +65,36 @@ class Utils {
             dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
             dialog.window?.attributes?.windowAnimations = animation
             dialog.setCancelable(false)
-            dialog.setContentView(R.layout.dialog_forgot_password)
+            dialog.setContentView(R.layout.dialog_change_language)
             dialog.setCancelable(true)
 
             dialog.text_ok.setOnClickListener {
                 dialog.dismiss()
             }
 
+            dialog.show()
+        }
+
+        fun dialogChangeLanguage(animation: Int, activity: Activity, iOnClick: IOnClick) {
+            val dialog = Dialog(activity)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            dialog.window?.attributes?.windowAnimations = animation
+            dialog.setCancelable(false)
+            dialog.setContentView(R.layout.dialog_change_language)
+            dialog.setCancelable(true)
+
+            var textYes = dialog.findViewById<TextView>(R.id.text_yes)
+            var textNo = dialog.findViewById<TextView>(R.id.text_no)
+
+            textYes.setOnClickListener {
+                iOnClick.onConfirm()
+            }
+
+            textNo.setOnClickListener {
+                iOnClick.onDismiss()
+                dialog.dismiss()
+            }
             dialog.show()
         }
 
@@ -82,5 +108,10 @@ class Utils {
             animatorSet.start()
             return animatorSet
         }
+    }
+
+    interface IOnClick {
+        fun onConfirm()
+        fun onDismiss()
     }
 }
