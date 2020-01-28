@@ -29,9 +29,11 @@ class lumperJobDetailAdapter(val items: ArrayList<String>, val context: Context)
         holder?.lumperContainerNumber?.text = faker.number.hexadecimal(8).toUpperCase()
         holder?.lumperDoor.text = faker.number.digit()
         holder?.lumperWeight.text = faker.number.digit()
+
         holder.constraintRoot.setOnClickListener {
             context.startActivity(Intent(context, CompleteLumperJobHistoryDetails::class.java))
         }
+
         }
 
     class JobViewHolder(view: View) : RecyclerView.ViewHolder(view) {

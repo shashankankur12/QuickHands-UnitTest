@@ -102,4 +102,6 @@
     <string name="string_phone">Número de teléfono</string>
     <string name="string_forgot_password_request">Póngase en contacto con su administrador para solicitar una contraseña olvidada.</string>
     <string name="string_ok">Ok</string>
+    <string name="in_progress">En progreso</string>
+    <string name="complete">Completar</string>
 </resources>

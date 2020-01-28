@@ -101,4 +101,6 @@
     <string name="string_forgot_password_request">Please Contact your admin for forgot password request.</string>
     <string name="string_ok">OK</string>
     <string name="string_request_message">Please Contact your admin for forgot password request.</string>
+    <string name="in_progress">In Progress</string>
+    <string name="complete">Complete</string>
 </resources>
