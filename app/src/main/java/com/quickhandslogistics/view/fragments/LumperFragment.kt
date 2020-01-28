@@ -76,6 +76,7 @@ class LumperFragment : Fragment() {
         })
 
     }
+
     fun filter(text:String) {
 
         var filterName = ArrayList<LumperModel>()
@@ -96,8 +97,4 @@ class LumperFragment : Fragment() {
             text_no_record_found?.visibility = View.GONE
         }
     }
-
-
-
- 
 }

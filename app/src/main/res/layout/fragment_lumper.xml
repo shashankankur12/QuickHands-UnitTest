@@ -17,6 +17,8 @@
         android:drawableTint="@color/colorLightGrey"
         android:drawablePadding="@dimen/_2sdp"
         style="@style/textSizeNormalRegFont"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
         android:imeOptions="actionDone"
         android:fontFamily="@font/poppinssemibold"
         android:background="@drawable/edit_search_bg"
