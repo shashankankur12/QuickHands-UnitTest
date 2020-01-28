@@ -8,8 +8,12 @@
     <color name="colorWhite">#ffffff</color>
     <color name="colorLightGrey">#808080</color>
     <color name="colorHint">#8b8b8e</color>
+    <color name="colorGrey">#d3d3d3</color>
 
     <color name="colorBlue">#00274F</color>
     <color name="colorLightGallery">#eff0f1</color>
     <color name="colorLightBlue">#E9F3FA</color>
+    <color name="colorLightRed">#FFCCCC</color>
+    <color name="colorGreen">#214103</color>
+    <color name="colorLightGreen">#CCFFCC</color>
 </resources>

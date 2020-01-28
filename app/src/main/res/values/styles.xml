@@ -23,6 +23,11 @@
         <item name="android:fontFamily">@font/poppinsregular</item>
     </style>
 
+    <style name="textSizeExtraMaxSmallRegFont">
+        <item name="android:textSize">@dimen/_6ssp</item>
+        <item name="android:fontFamily">@font/poppinsregular</item>
+    </style>
+
     <style name="textSizeSmallRegFont">
         <item name="android:textSize">@dimen/_10ssp</item>
         <item name="android:fontFamily">@font/poppinsregular</item>
