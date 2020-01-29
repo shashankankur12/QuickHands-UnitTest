@@ -14,7 +14,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
-import com.intuit.sdp.BuildConfig
+import com.quickhandslogistics.BuildConfig
 import com.quickhandslogistics.R
 import kotlinx.android.synthetic.main.activity_dashboard.*
 
@@ -29,7 +29,7 @@ class DashboardActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_dashboard)
 
-      //  text_version.text = "v " + BuildConfig.VERSION_NAME
+        text_version.text = "v " + BuildConfig.VERSION_NAME
 
         var toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)

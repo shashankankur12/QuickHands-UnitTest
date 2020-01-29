@@ -33,6 +33,7 @@
         android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginEnd="@dimen/_20sdp"
         android:tint="@color/colorLightGrey"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/edit_search_lumper"
         app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -57,5 +58,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

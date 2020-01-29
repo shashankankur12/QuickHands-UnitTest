@@ -35,7 +35,6 @@ class LumperFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-       // lumperAttendance()
         searchLumper()
 
         recycler_lumper.layoutManager = LinearLayoutManager(context)
@@ -64,6 +63,9 @@ class LumperFragment : Fragment() {
                     val imm =
                         activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(edit_search_lumper!!.windowToken, 0)
+                    image_cancel.visibility = View.GONE
+                } else {
+                    image_cancel.visibility = View.VISIBLE
                 }
             }
 

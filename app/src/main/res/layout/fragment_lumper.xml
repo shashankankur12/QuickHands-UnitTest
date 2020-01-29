@@ -32,6 +32,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginEnd="@dimen/_20sdp"
+        android:visibility="gone"
         android:tint="@color/colorLightGrey"
         app:layout_constraintBottom_toBottomOf="@+id/edit_search_lumper"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -49,7 +50,7 @@
         android:id="@+id/text_no_record_found"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No Record Found"
+        android:text="@string/string_no_record_found"
         android:visibility="gone"
         style="@style/textSizeNormalRegFont"
         android:fontFamily="@font/poppinssemibold"
@@ -57,5 +58,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

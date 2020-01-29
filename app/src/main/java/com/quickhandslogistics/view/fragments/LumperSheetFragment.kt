@@ -25,7 +25,7 @@ class LumperSheetFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_lumper_sheet2, container, false)
     }
 
@@ -62,6 +62,9 @@ class LumperSheetFragment : Fragment() {
                     val imm =
                         context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(edit_search_lumper!!.windowToken, 0)
+                    image_cancel.visibility = View.GONE
+                } else {
+                    image_cancel.visibility = View.VISIBLE
                 }
             }
 

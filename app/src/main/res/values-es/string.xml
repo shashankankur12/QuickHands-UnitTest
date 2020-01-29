@@ -86,8 +86,10 @@
     <string name="start_time">Hora de inicio</string>
     <string name="end_time">Hora final</string>
     <string name="string_language_dialog">Seguro que quieres cambiar el idioma?</string>
+    <string name="string_delete_lumper">¿Estás seguro de que deseas eliminar este lumper?</string>
     <string name="total_time">Tiempo total</string>
     <string name="lunch_out">Almuerzo fuera</string>
+    <string name="string_no_record_found">ningún record fue encontrado</string>
     <string name="lunch_in">Almuerzo en</string>
     <string name="notes">Notas</string>
     <string name="signature">Firma</string>

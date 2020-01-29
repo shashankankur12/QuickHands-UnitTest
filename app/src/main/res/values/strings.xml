@@ -52,6 +52,8 @@
     <string name="string_upload_image">Upload Image</string>
     <string name="string_logout_dialog">Are you sure want to logout ?</string>
     <string name="string_language_dialog">Are you sure want to Change Language ?</string>
+    <string name="string_delete_lumper">Are you sure you want to delete this lumper ?</string>
+    <string name="string_no_record_found">No Record Found</string>
     <string name="string_first_name">First Name</string>
     <string name="string_last_name">Last Name</string>
     <string name="string_email_address">Email Address</string>

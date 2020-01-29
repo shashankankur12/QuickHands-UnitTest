@@ -60,15 +60,9 @@ class LoginActivity : AppCompatActivity() {
         when {
             TextUtils.isEmpty(employeeId) -> {
                 Utils.Shake(edit_employee_id)
-                //render.start()
                 text_input_email.error = resources.getString(R.string.text_employee_error_msg)
 
             }
-
-            /*!StringUtils.isValidEmailId(email) -> {
-                text_input_email.error = "Email should be valid"
-            }*/
-
 
             TextUtils.isEmpty(password) -> {
                 Utils.Shake(edit_password)

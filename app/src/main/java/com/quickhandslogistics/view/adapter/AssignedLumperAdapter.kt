@@ -1,6 +1,7 @@
 package com.quickhandslogistics.view.adapter
 
 import android.app.Activity
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +36,7 @@ class AssignedLumperAdapter(val items: ArrayList<String>, val context: Activity)
         Picasso.get().load(faker.avatar.image()).error(R.drawable.ic_basic_info_placeholder).into(holder?.profilePic)
 
         holder?.delete.setOnClickListener {
-            DialogHelper.showDialog("Are you sure you want to delete this lumper ?", context)
+            DialogHelper.showDialog(context.resources.getString(R.string.string_delete_lumper), context)
         }
     }
 }

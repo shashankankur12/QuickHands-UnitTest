@@ -42,7 +42,7 @@ class SettingsFragment : Fragment() {
 
         getLocale()
 
-        switch_language.setOnClickListener {
+        linear_switch.setOnClickListener {
             openChangeDialog()
         }
     }
@@ -50,19 +50,19 @@ class SettingsFragment : Fragment() {
     fun openChangeDialog() {
         Utils.dialogChangeLanguage(R.style.dialogAnimation, activity!!, object : Utils.IOnClick {
             override fun onConfirm() {
-                switch_language.isChecked = true
+                 switch_language.isChecked = !switch_language.isChecked
 
                 if (!currentLocale!!.equals(ESPANOL, true)) {
                     SharedPreferenceHandler.setString(LANGUAGE, "(English)")
                     setLanguageData(ESPANOL)
-                } else  {
+                } else {
                     SharedPreferenceHandler.setString(LANGUAGE, "(Español)")
                     setLanguageData(ENGLISH)
                 }
             }
 
             override fun onDismiss() {
-                switch_language.isChecked = false
+                switch_language.isChecked = switch_language.isChecked
             }
         })
     }

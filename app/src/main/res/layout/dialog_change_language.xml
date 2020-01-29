@@ -45,7 +45,6 @@
             android:fontFamily="@font/poppinssemibold"
             android:textColor="@color/colorWhite" />
 
-
         <TextView
             android:id="@+id/text_no"
             style="@style/textSizeNormalRegFont"
