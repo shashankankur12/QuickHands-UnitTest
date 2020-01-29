@@ -11,7 +11,7 @@
         android:id="@+id/header"
         layout="@layout/layout_header" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linear_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,7 +20,6 @@
         android:layout_marginEnd="@dimen/_6sdp"
         android:background="@drawable/bg_timer"
         android:orientation="horizontal"
-        android:weightSum="3"
         android:layout_margin="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,44 +30,44 @@
             style="@style/textSizeNormalRegFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_8sdp"
-            android:layout_weight="1"
             android:layout_marginStart="@dimen/_4sdp"
             android:fontFamily="@font/poppinsregular"
             android:text="@string/filter"
-            android:textColor="@color/colorBlack"
-            app:layout_constraintEnd_toEndOf="@+id/text_customer_id_heading"
-            app:layout_constraintStart_toStartOf="@+id/text_customer_id_heading"
-            app:layout_constraintTop_toBottomOf="@+id/header" />
+            android:includeFontPadding="false"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="@color/colorBlack" />
 
         <TextView
             android:id="@+id/text_filter_by_date"
             style="@style/textSizeNormalRegFont"
-            android:layout_width="@dimen/_50sdp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_2sdp"
-            android:layout_weight=".8"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:gravity="center"
             android:fontFamily="@font/poppinssemibold"
+            app:layout_constraintTop_toTopOf="parent"
+            android:includeFontPadding="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/text_filter_by"
             android:text="16/1/2020"
-            android:textColor="@color/colorBlack"
-            app:layout_constraintStart_toStartOf="@+id/text_customer_id" />
+            app:layout_constraintEnd_toStartOf="@+id/img_timer"
+            android:textColor="@color/colorBlack" />
 
         <ImageView
             android:id="@+id/img_timer"
             android:layout_width="@dimen/_15sdp"
             android:layout_height="@dimen/_15sdp"
             android:layout_marginStart="@dimen/_2sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_weight=".5"
-            android:src="@drawable/ic_date_range_black_24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/text_filter_by_date"
-            app:layout_constraintStart_toEndOf="@id/text_filter_by_date"
-            app:layout_constraintTop_toBottomOf="@+id/header"
-            app:layout_constraintTop_toTopOf="@id/text_filter_by_date" />
-    </LinearLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="@dimen/_3sdp"
+            app:layout_constraintLeft_toRightOf="@+id/text_filter_by_date"
+            android:src="@drawable/ic_date_range_black_24dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/text_customer_id_heading"
@@ -145,12 +144,8 @@
         android:id="@+id/recycler_lumper_job_history"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
         android:layoutAnimation="@anim/recycler_anim"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_building_name"
         tools:listitem="@layout/lumper_job_history_item" />
 
