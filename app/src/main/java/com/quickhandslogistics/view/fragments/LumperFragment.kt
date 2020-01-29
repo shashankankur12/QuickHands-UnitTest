@@ -74,9 +74,7 @@ class LumperFragment : Fragment() {
 
             override fun onTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
-
         })
-
     }
 
     fun filter(text:String) {
