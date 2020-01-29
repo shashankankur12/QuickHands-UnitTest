@@ -1,12 +1,10 @@
 package com.quickhandslogistics.view.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +13,13 @@ import com.quickhandslogistics.view.LumperModel
 import com.quickhandslogistics.view.adapter.LumperSheetAdapter
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.fragment_lumper_sheet2.*
+import android.view.*
+import android.widget.Toast
+import androidx.appcompat.widget.PopupMenu
+import com.quickhandslogistics.view.activities.LumperDetailsActivity
+import com.quickhandslogistics.view.activities.LumperListActivity
+import com.quickhandslogistics.view.activities.LumperSheetDetailActivity
+
 
 class LumperSheetFragment : Fragment() {
     val lumperList: ArrayList<LumperModel> = ArrayList()
@@ -52,7 +57,26 @@ class LumperSheetFragment : Fragment() {
             imm.hideSoftInputFromWindow(edit_search_lumper!!.windowToken, 0)
         }
 
+        fab_show_lumper.setOnClickListener {
+            context!!.startActivity(Intent(context, LumperListActivity::class.java))
+        }
+
+        image_filter.setOnClickListener {
+            val popupMenu: PopupMenu = PopupMenu(context!!,image_filter)
+            popupMenu.menuInflater.inflate(R.menu.filtermenu,popupMenu.menu)
+            popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+                when(item.itemId) {
+                    R.id.menu_complete ->
+                        Toast.makeText(context, "You Clicked : " + item.title, Toast.LENGTH_SHORT).show()
+                    R.id.mnu_prgrs ->
+                        Toast.makeText(context, "You Clicked : " + item.title, Toast.LENGTH_SHORT).show()
+                }
+                true
+            })
+            popupMenu.show()
+        }
     }
+
 
     fun searchLumper() {
         edit_search_lumper.addTextChangedListener(object : TextWatcher {
@@ -93,6 +117,28 @@ class LumperSheetFragment : Fragment() {
 
         lumperSheetAdapter.filterLumperList(filterName)
         if(filterName.isEmpty()) {
+            text_no_record_found?.visibility = View.VISIBLE
+        } else {
+            text_no_record_found?.visibility = View.GONE
+        }
+    }
+
+
+    fun filterStatus(text:String) {
+
+        var filterStatus = ArrayList<LumperModel>()
+
+        for (s in lumperList) {
+            var fullName = s.name.toLowerCase()+ " "+ s.lastName.toLowerCase()
+            if (s.name.toLowerCase().contains(text.toLowerCase()) || s.lastName.toLowerCase().contains(text.toLowerCase())) {
+                filterStatus.add(s)
+            } else if (fullName.contains(text.toLowerCase())) {
+                filterStatus.add(s)
+            }
+        }
+
+        lumperSheetAdapter.filterLumperList(filterStatus)
+        if(filterStatus.isEmpty()) {
             text_no_record_found?.visibility = View.VISIBLE
         } else {
             text_no_record_found?.visibility = View.GONE
