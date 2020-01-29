@@ -29,7 +29,7 @@ class DashboardActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_dashboard)
 
-        text_version.text = "v " + BuildConfig.VERSION_NAME
+      //  text_version.text = "v " + BuildConfig.VERSION_NAME
 
         var toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)

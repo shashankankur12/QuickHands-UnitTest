@@ -8,21 +8,9 @@ import java.util.*
 
 
 class BaseApplication : Application() {
-    val languages:String ?= null
+    val languages: String? = null
 
     override fun onCreate() {
         super.onCreate()
-
-        SharedPreferenceHandler.getInstance(this)
-            val locale = Locale("es")
-            Locale.setDefault(locale)
-
-            val config = Configuration()
-            config.locale = locale
-
-            resources.updateConfiguration(
-                config,
-                resources.displayMetrics
-            )
-        }
     }
+}
