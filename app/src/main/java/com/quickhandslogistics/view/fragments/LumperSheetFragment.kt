@@ -51,7 +51,6 @@ class LumperSheetFragment : Fragment() {
                 context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(edit_search_lumper!!.windowToken, 0)
         }
-
     }
 
     fun searchLumper() {
