@@ -35,6 +35,7 @@
         app:layout_constraintTop_toBottomOf="@+id/header"
         android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginEnd="@dimen/_20sdp"
+        android:visibility="gone"
         android:tint="@color/colorLightGrey"
         app:layout_constraintBottom_toBottomOf="@+id/edit_search_lumper"
         app:layout_constraintEnd_toEndOf="parent"/>

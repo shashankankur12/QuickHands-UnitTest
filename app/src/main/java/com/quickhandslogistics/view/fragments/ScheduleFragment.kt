@@ -78,20 +78,8 @@ class ScheduleFragment : Fragment(){
         year = mycal.get(Calendar.YEAR)
         month = mycal.get(Calendar.MONTH)
 
-        text_month_year.text = day.toString() + " " + getMonth(month) + " " + year
-        //dateFormat()
-    }
+        text_month_year.text = day.toString() + " " + getMonth(month) + " " }
 
-  /*  fun dateFormat() {
-
-        val dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault())
-
-
-        //val dateFormat: DateFormat = SimpleDateFormat("dd MMM yyyy")
-        val date = Date()
-        text_month_year.text= dateFormat.format(date)
-    }
-*/
     fun getMonth(month: Int): String {
         return DateFormatSymbols().months[month]
     }

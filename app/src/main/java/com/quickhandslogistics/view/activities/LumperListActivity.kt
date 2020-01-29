@@ -58,10 +58,13 @@ class LumperListActivity : AppCompatActivity() {
         edit_search_lumper.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(editable: Editable?) {
                 filter(editable.toString())
-                if(edit_search_lumper.text.isNullOrEmpty()) {
+                if (edit_search_lumper.text.isNullOrEmpty()) {
                     val imm =
-                       this@LumperListActivity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        this@LumperListActivity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(edit_search_lumper!!.windowToken, 0)
+                    image_cancel.visibility = View.GONE
+                } else {
+                    image_cancel.visibility = View.VISIBLE
                 }
             }
 

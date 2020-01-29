@@ -245,7 +245,7 @@
                 android:singleLine="true"
                 android:textColor="@color/colorBlack"
                 android:fontFamily="@font/poppinssemibold" />
-        </LinearLayout>
 
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

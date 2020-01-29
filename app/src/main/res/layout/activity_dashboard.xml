@@ -38,9 +38,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_30sdp"
             style="@style/textSizeSmallRegFont"
-            android:text="v 1.0.6" />
+            android:text="version" />
         </LinearLayout>
-
     </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>
