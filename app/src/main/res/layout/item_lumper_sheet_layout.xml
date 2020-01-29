@@ -30,7 +30,7 @@
         <TextView
             android:id="@+id/text_lumper_name"
             style="@style/textSizeNormalRegFont"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_12sdp"
             android:fontFamily="@font/poppinssemibold"
@@ -44,7 +44,7 @@
         <TextView
             android:id="@+id/text_date"
             style="@style/textSizeSmallRegFont"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppinsregular"
             android:singleLine="true"
@@ -56,7 +56,7 @@
         <TextView
             android:id="@+id/text_status"
             style="@style/textSizeExtraSmallRegFont"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppinsregular"
             android:singleLine="true"
