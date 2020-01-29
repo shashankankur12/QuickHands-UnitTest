@@ -27,12 +27,12 @@ class AssignLumpersActivity : AppCompatActivity() {
         setData()
 
         recycler_assigned_lumpers.layoutManager = LinearLayoutManager(this)
-        recycler_assigned_lumpers.adapter = let { AssignedLumperAdapter(lumperList, it) }
+        recycler_assigned_lumpers.adapter = AssignedLumperAdapter(lumperList, this)
     }
 
     private fun setData() {
-        text_location.text = Html.fromHtml("<b>Location</b>  :  FlipKart, Gurgaon")
-        text_lumper_count.text = Html.fromHtml("<b>Lumpers Required</b>  :  5")
-        text_date.text = Html.fromHtml("<b>Date</b>  :  Wed Jan 15, 2020, 3:00 AM")
+        text_location.text = Html.fromHtml("<b>Building : One97 Communications Private Limited</b>")
+        text_lumper_count.text = Html.fromHtml("<b>Door : </b>03")
+        text_date.text = Html.fromHtml("<b>Lumpers : </b>05")
     }
 }
