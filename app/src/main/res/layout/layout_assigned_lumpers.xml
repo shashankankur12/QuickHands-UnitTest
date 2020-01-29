@@ -34,32 +34,27 @@
             android:textStyle="bold"
             android:textColor="@color/colorBlack"
             android:singleLine="true"
-            app:layout_constraintRight_toLeftOf="@id/image_arrow"
             app:layout_constraintLeft_toRightOf="@+id/image_lumper_logo"
             app:layout_constraintTop_toTopOf="@id/image_lumper_logo" />
 
+
         <TextView
-            android:id="@+id/text_last_name"
-            style="@style/textSizeSmallRegFont"
-            android:layout_width="0dp"
+            android:id="@+id/text_status"
+            style="@style/textSizeExtraSmallRegFont"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppinsregular"
             android:singleLine="true"
-            android:text="Emp Id: 1001"
+            android:text="Show"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:paddingLeft="@dimen/_5sdp"
+            android:background="@drawable/chip_in_progress"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingRight="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
             android:textColor="@color/colorBlack"
-            app:layout_constraintRight_toLeftOf="@id/image_delete"
             app:layout_constraintLeft_toLeftOf="@id/text_lumper"
             app:layout_constraintTop_toBottomOf="@id/text_lumper"/>
-
-        <ImageView
-            android:id="@+id/image_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/_10sdp"
-            android:src="@drawable/ic_delete_black_24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/text_lumper"
-            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
