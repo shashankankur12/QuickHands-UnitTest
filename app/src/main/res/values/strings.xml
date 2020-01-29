@@ -105,4 +105,6 @@
     <string name="string_request_message">Please Contact your admin for forgot password request.</string>
     <string name="in_progress">In Progress</string>
     <string name="complete">Complete</string>
+    <string name="string_comment">Comment</string>
+    <string name="string_ask_new_lumper">Do you want to assign new lumper ?</string>
 </resources>

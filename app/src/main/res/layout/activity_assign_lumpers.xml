@@ -24,7 +24,8 @@
             style="@style/textSizeNormalRegFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Location : FlipKart, Gurgaon"
+            android:text="Building : One97 Communications Private Limited"
+            android:textStyle="bold"
             android:textColor="@color/colorBlack" />
 
         <TextView
@@ -32,7 +33,7 @@
             style="@style/textSizeNormalRegFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lumpers Required : 5"
+            android:text="Lumpers : 5"
             android:textColor="@color/colorBlack" />
 
         <TextView

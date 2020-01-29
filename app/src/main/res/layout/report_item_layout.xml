@@ -20,7 +20,7 @@
             android:id="@+id/lumper_history_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
             android:src="@drawable/lumper_history"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,12 +32,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_2sdp"
-            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginLeft="@dimen/_2sdp"
             android:fontFamily="@font/poppinssemibold"
             android:textColor="@color/colorBlack"
             android:singleLine="true"
             android:padding="10dip"
-            app:layout_constraintStart_toEndOf="@id/lumper_history_image"
+            app:layout_constraintLeft_toRightOf="@+id/lumper_history_image"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
