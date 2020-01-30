@@ -33,10 +33,9 @@ class LumperAdapter(var items: ArrayList<LumperModel>, val context: Context, var
 
         holder.constraintRoot.setOnClickListener {
             if(lumperJobDetails == context.getString(R.string.string_lumper))
-
+                context.startActivity(Intent(context, LumperJobHistoryActivity::class.java))
             else if((lumperJobDetails == context.getString(R.string.string_lumper_sheet)))
                 context.startActivity(Intent(context, LumperSheetDetailActivity::class.java))
-
                 else context.startActivity(Intent(context, LumperDetailsActivity::class.java))
         }
 
@@ -53,9 +52,7 @@ class LumperAdapter(var items: ArrayList<LumperModel>, val context: Context, var
     fun callPhone() {
         val faker = Faker()
         context.startActivity(
-            Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", faker?.phoneNumber?.phoneNumber(), null)
-            )
-        )
+            Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", faker?.phoneNumber?.phoneNumber(), null)))
     }
 }
 
