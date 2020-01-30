@@ -13,11 +13,12 @@ import com.quickhandslogistics.model.CustomerModel
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_lumper_layout.view.*
 
-
 class CustomerAdapter (var items: ArrayList<CustomerModel>, val context: Context) : Adapter<CustomerViewHolder>() {
 
+    val faker = Faker()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomerViewHolder {
-        val view: View =  LayoutInflater.from(context).inflate(R.layout.item_lumper_layout, parent, false)
+        val view: View =  LayoutInflater.from(context).inflate(R.layout.item_customer_layout, parent, false)
         return CustomerViewHolder(view)
     }
 
@@ -41,11 +42,7 @@ class CustomerAdapter (var items: ArrayList<CustomerModel>, val context: Context
     override fun onBindViewHolder(holder: CustomerViewHolder, position: Int) {
 
         holder?.lumperText?.text = items.get(position)?.name
-        //holder?.lumperHours?.text = faker.time.between()
-
-        holder.imagePhone.setOnClickListener {
-            callPhone()
-        }
+        holder?.lumperHours?.text = faker.address.streetAddress()
     }
 }
 
@@ -55,5 +52,4 @@ class CustomerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     var profilePic = view.image_lumper_logo
     var constraintRoot = view.constraint_root
     var lumperHours = view.text_shift_hours
-    var imagePhone = view.image_phone
 }

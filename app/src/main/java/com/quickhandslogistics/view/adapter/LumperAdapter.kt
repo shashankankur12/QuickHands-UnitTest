@@ -34,7 +34,7 @@ class LumperAdapter(var items: ArrayList<LumperModel>, val context: Context, var
         holder.constraintRoot.setOnClickListener {
             if(lumperJobDetails == context.getString(R.string.string_lumper))
             context.startActivity(Intent(context, LumperJobHistoryActivity::class.java))
-            else   context.startActivity(Intent(context, LumperDetailsActivity::class.java))
+            //else   context.startActivity(Intent(context, LumperDetailsActivity::class.java))
         }
 
         holder.imagePhone.setOnClickListener {

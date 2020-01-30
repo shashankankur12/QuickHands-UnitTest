@@ -13,6 +13,8 @@
         android:id="@+id/constraint_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
         android:background="?android:attr/selectableItemBackground"
         android:orientation="vertical">
 
@@ -47,7 +49,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppinsregular"
-            android:singleLine="true"
             android:text="28 Jan 2020"
             android:textColor="@color/colorBlack"
             app:layout_constraintLeft_toLeftOf="@id/text_lumper_name"

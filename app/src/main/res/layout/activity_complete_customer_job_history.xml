@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    tools:context=".view.activities.CompleteCustomerJobHistory">
+    tools:context=".view.activities.CompleteLumperJobHistoryDetails">
 
     <include
         android:id="@+id/header"
@@ -23,7 +23,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            
+
             <TextView
                 android:id="@+id/input_name"
                 style="@style/textSizeSmallRegFont"
