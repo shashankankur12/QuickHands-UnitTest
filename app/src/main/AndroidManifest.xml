@@ -39,12 +39,8 @@
         <activity android:name=".view.activities.LumperSheetDetailActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".view.activities.CustomerBuildingsActivity"></activity>
-        <activity android:name=".view.activities.CompleteCustomerJobHistory" />
-        <activity android:name=".view.activities.CustomerDetailActivity" />
-        <activity android:name=".view.activities.CustomerLoadActivity" />
-        <activity android:name=".view.activities.CustomerActivity" />
-        <activity android:name=".view.activities.LumperSheetDetailActivity" />
+        <activity android:name=".view.activities.CustomerBuildingsActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".view.activities.LumperListActivity"
             android:screenOrientation="portrait"

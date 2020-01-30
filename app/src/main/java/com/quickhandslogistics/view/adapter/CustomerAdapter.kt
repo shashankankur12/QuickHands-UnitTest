@@ -41,7 +41,7 @@ class CustomerAdapter (var items: ArrayList<CustomerModel>,val mActivity: Activi
         })
 
         holder.constraintRoot.setOnClickListener {
-            context.startActivity(Intent(context, CustomerBuildingsActivity::class.java).putExtra("name", holder.lumperText?.text))
+            mActivity.startActivity(Intent(mActivity, CustomerBuildingsActivity::class.java).putExtra("name", holder.lumperText?.text))
         }
     }
 }
