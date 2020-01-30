@@ -60,7 +60,6 @@
             android:textStyle="italic"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppinsregular"
-            android:singleLine="true"
             android:text="@string/building_name"
             android:paddingTop="@dimen/_3sdp"
             android:paddingBottom="@dimen/_3sdp"

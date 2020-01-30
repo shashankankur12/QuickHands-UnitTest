@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
+import com.quickhandslogistics.utils.DialogHelper
 import com.quickhandslogistics.utils.Utils
 import com.quickhandslogistics.view.adapter.CustomerJobDetailAdapter
 import com.quickhandslogistics.view.adapter.lumperJobDetailAdapter
@@ -31,8 +32,26 @@ class CustomerLoadActivity : AppCompatActivity() {
             Utils.finishActivity(this)
         }
 
+        image_notes.visibility = View.VISIBLE
+        image_signature.visibility = View.VISIBLE
+
         recycler_customer_sheet_history.layoutManager = LinearLayoutManager(this)
         recycler_customer_sheet_history.adapter = this?.let { CustomerJobDetailAdapter(lumperSheetList, it) }
+
+        fab_add_customer_sheet.setOnClickListener { view ->
+            val intent = Intent(this, CustomerChooseActivity::class.java)
+            startActivity(intent)
+        }
+
+        image_notes.setOnClickListener(View.OnClickListener { view ->
+
+            DialogHelper.showNotesDialog(R.style.dialogAnimation, this)
+        })
+
+        image_signature.setOnClickListener(View.OnClickListener { view ->
+            val intent = Intent(this, SignatureActivity::class.java)
+            startActivity(intent)
+        })
     }
 
     fun lumperSheetData() {
