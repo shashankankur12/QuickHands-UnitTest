@@ -62,23 +62,22 @@ class LumperSheetFragment : Fragment() {
                 context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(edit_search_lumper!!.windowToken, 0)
         }
+
         fab_show_lumper.setOnClickListener {
-            context!!.startActivity(Intent(context, LumperListActivity::class.java))
+            val intent = Intent(context, LumperListActivity::class.java)
+            intent.putExtra(context!!.getString(R.string.string_lumper_sheet),context!!.getString(R.string.string_lumper_sheet) )
+            context!!.startActivity(intent)
         }
 
         image_filter.setOnClickListener {
-            val title : String = ""
             val popupMenu: PopupMenu = PopupMenu(context!!,image_filter)
             popupMenu.menuInflater.inflate(R.menu.filtermenu,popupMenu.menu)
             popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
                 when(item.itemId) {
                     R.id.menu_complete ->
-                       // title = item.title
                         filterStatus(item.title.toString())
-                        //Toast.makeText(context, "You Clicked : " + item.title, Toast.LENGTH_SHORT).show()
                     R.id.mnu_prgrs ->
                             filterStatus(item.title.toString())
-                            //Toast.makeText(context, "You Clicked : " + item.title, Toast.LENGTH_SHORT).show()
                 }
                 true
             })

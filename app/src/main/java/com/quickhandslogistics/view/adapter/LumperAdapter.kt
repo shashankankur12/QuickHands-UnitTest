@@ -12,6 +12,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.view.LumperModel
 import com.quickhandslogistics.view.activities.LumperDetailsActivity
 import com.quickhandslogistics.view.activities.LumperJobHistoryActivity
+import com.quickhandslogistics.view.activities.LumperSheetDetailActivity
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_lumper_layout.view.*
 
@@ -29,12 +30,13 @@ class LumperAdapter(var items: ArrayList<LumperModel>, val context: Context, var
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder?.lumperText?.text = items.get(position)?.name + " " + items.get(position)?.lastName
-        //holder?.lumperHours?.text = faker.time.between()
 
         holder.constraintRoot.setOnClickListener {
             if(lumperJobDetails == context.getString(R.string.string_lumper))
             context.startActivity(Intent(context, LumperJobHistoryActivity::class.java))
-            else   context.startActivity(Intent(context, LumperDetailsActivity::class.java))
+            else if((lumperJobDetails == context.getString(R.string.string_lumper_sheet)))
+                context.startActivity(Intent(context, LumperSheetDetailActivity::class.java))
+                else context.startActivity(Intent(context, LumperDetailsActivity::class.java))
         }
 
         holder.imagePhone.setOnClickListener {

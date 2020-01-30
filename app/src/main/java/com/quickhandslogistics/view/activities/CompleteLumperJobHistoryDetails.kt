@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.Utils
 import io.bloco.faker.Faker
@@ -56,7 +57,7 @@ class CompleteLumperJobHistoryDetails : AppCompatActivity() {
 
     fun UpdateLumperSheetDetail(){
         text_name?.setText(faker.name.firstName()+" "+faker.name.lastName() )
-        edit_Date?.setText(faker.date.backward(9).toString())
+        edit_Date?.setText("30 Jan 2020")
         edit_door.setText(faker.number.digit().toString())
         edit_container.setText(faker.number.digit().toString())
         edit_cs.setText(faker.number.digit().toString())
@@ -65,14 +66,13 @@ class CompleteLumperJobHistoryDetails : AppCompatActivity() {
         edit_mix.setText(faker.name.firstName().toString())
         edit_rush.setText(faker.name.firstName().toString())
         edit_over_70.setText(faker.number.digit().toString())
-        edit_start_time.setText(faker.date.backward(5).toString())
-        edit_end_time.setText(faker.date.backward(5).toString())
-        edit_total_time.setText(faker.date.backward(5).toString())
-        edit_lunch_out.setText(faker.date.backward(5).toString())
-        edit_lunch_in.setText(faker.date.backward(5).toString())
+        edit_start_time.setText("6:00 AM")
+        edit_end_time.setText("9:00 AM")
+        edit_total_time.setText("15 Hrs")
+        edit_lunch_out.setText("1:00 PM")
+        edit_lunch_in.setText("2:00 PM")
         edit_notes.setText(faker.company.name().toString())
         edit_sign.setText(faker.company.name().toString())
-
 
         text_name.isEnabled = false
         edit_Date.isEnabled = false
@@ -91,6 +91,8 @@ class CompleteLumperJobHistoryDetails : AppCompatActivity() {
         edit_lunch_in.isEnabled = false
         edit_notes.isEnabled = false
         edit_sign.isEnabled = false
+        button_submit.setBackgroundResource(R.drawable.bg_timer)
+        button_submit.isEnabled = false
 
         text_name.isCursorVisible = false
         edit_Date.isCursorVisible = false

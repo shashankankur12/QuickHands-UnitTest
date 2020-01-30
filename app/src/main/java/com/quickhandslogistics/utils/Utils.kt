@@ -35,10 +35,10 @@ class Utils {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 decor.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                window.statusBarColor = activity.resources.getColor(white)
+                window.statusBarColor = ContextCompat.getColor(activity, white)
             } else {
                 decor.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                window.statusBarColor = activity.resources.getColor(R.color.colorLightGrey)
+                window.statusBarColor = ContextCompat.getColor(activity,R.color.colorLightGrey)
             }
         }
 
