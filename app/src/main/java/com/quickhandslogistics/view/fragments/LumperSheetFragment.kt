@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_lumper_sheet2.*
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
+import com.quickhandslogistics.model.StatusModel
 import com.quickhandslogistics.view.activities.LumperDetailsActivity
 import com.quickhandslogistics.view.activities.LumperListActivity
 import com.quickhandslogistics.view.activities.LumperSheetDetailActivity
@@ -23,7 +24,7 @@ import com.quickhandslogistics.view.activities.LumperSheetDetailActivity
 
 class LumperSheetFragment : Fragment() {
     val lumperList: ArrayList<LumperModel> = ArrayList()
-    val lumperStatusList: ArrayList<String> = ArrayList()
+    val lumperStatusList: ArrayList<StatusModel> = ArrayList()
     lateinit var lumperSheetAdapter: LumperSheetAdapter
 
     override fun onCreateView(
@@ -38,13 +39,18 @@ class LumperSheetFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         searchLumper()
-        lumperStatusSheet()
 
         recycler_lumper_sheet.layoutManager = LinearLayoutManager(context)
 
         val faker = Faker()
+
         for (i in 1..20) {
             lumperList.add(LumperModel(faker.name.firstName(), faker.name.lastName()))
+        }
+
+        for (i in 1..20) {
+            lumperStatusList.add(StatusModel(getString(R.string.in_progress)))
+            lumperStatusList.add(StatusModel(getString(R.string.complete)))
         }
 
         lumperSheetAdapter =  LumperSheetAdapter(lumperList, context!!, lumperStatusList)
@@ -61,14 +67,18 @@ class LumperSheetFragment : Fragment() {
         }
 
         image_filter.setOnClickListener {
+            val title : String = ""
             val popupMenu: PopupMenu = PopupMenu(context!!,image_filter)
             popupMenu.menuInflater.inflate(R.menu.filtermenu,popupMenu.menu)
             popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
                 when(item.itemId) {
                     R.id.menu_complete ->
-                        Toast.makeText(context, "You Clicked : " + item.title, Toast.LENGTH_SHORT).show()
+                       // title = item.title
+                        filterStatus(item.title.toString())
+                        //Toast.makeText(context, "You Clicked : " + item.title, Toast.LENGTH_SHORT).show()
                     R.id.mnu_prgrs ->
-                        Toast.makeText(context, "You Clicked : " + item.title, Toast.LENGTH_SHORT).show()
+                            filterStatus(item.title.toString())
+                            //Toast.makeText(context, "You Clicked : " + item.title, Toast.LENGTH_SHORT).show()
                 }
                 true
             })
@@ -122,48 +132,20 @@ class LumperSheetFragment : Fragment() {
         }
     }
 
-
     fun filterStatus(text:String) {
 
-        var filterStatus = ArrayList<LumperModel>()
+        var filterStatus = ArrayList<StatusModel>()
 
-        for (s in lumperList) {
-            var fullName = s.name.toLowerCase()+ " "+ s.lastName.toLowerCase()
-            if (s.name.toLowerCase().contains(text.toLowerCase()) || s.lastName.toLowerCase().contains(text.toLowerCase())) {
+        for (s in lumperStatusList) {
+
+            if (s.status.contains(text)) {
                 filterStatus.add(s)
-            } else if (fullName.contains(text.toLowerCase())) {
+            } else if (s.status.contains(text)) {
                 filterStatus.add(s)
             }
         }
 
-        lumperSheetAdapter.filterLumperList(filterStatus)
-        if(filterStatus.isEmpty()) {
-            text_no_record_found?.visibility = View.VISIBLE
-        } else {
-            text_no_record_found?.visibility = View.GONE
-        }
+        lumperSheetAdapter.filterStatusList(filterStatus)
     }
 
-    fun lumperStatusSheet() {
-        lumperStatusList.add(getString(R.string.in_progress))
-        lumperStatusList.add(getString(R.string.complete))
-        lumperStatusList.add(getString(R.string.in_progress))
-        lumperStatusList.add(getString(R.string.complete))
-        lumperStatusList.add(getString(R.string.in_progress))
-        lumperStatusList.add(getString(R.string.complete))
-        lumperStatusList.add(getString(R.string.in_progress))
-        lumperStatusList.add(getString(R.string.complete))
-        lumperStatusList.add(getString(R.string.in_progress))
-        lumperStatusList.add(getString(R.string.complete))
-        lumperStatusList.add(getString(R.string.in_progress))
-        lumperStatusList.add(getString(R.string.complete))
-        lumperStatusList.add(getString(R.string.in_progress))
-        lumperStatusList.add(getString(R.string.complete))
-        lumperStatusList.add(getString(R.string.in_progress))
-        lumperStatusList.add(getString(R.string.complete))
-        lumperStatusList.add(getString(R.string.in_progress))
-        lumperStatusList.add(getString(R.string.complete))
-        lumperStatusList.add(getString(R.string.in_progress))
-        lumperStatusList.add(getString(R.string.complete))
-    }
 }

@@ -20,8 +20,8 @@
         android:hint="@string/string_search"
         android:imeOptions="actionDone"
         android:singleLine="true"
+        android:paddingRight="@dimen/_25sdp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/image_filter"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -33,8 +33,9 @@
         android:layout_marginTop="@dimen/_8sdp"
         android:tint="@color/colorLightGrey"
         android:visibility="gone"
-        app:layout_constraintLeft_toRightOf="@id/image_filter"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:layout_marginRight="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/edit_search_lumper"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_search_lumper" />
 
     <ImageView
         android:id="@+id/image_filter"

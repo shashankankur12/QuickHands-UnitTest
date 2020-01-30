@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/app/Documents-quickhands-android-app.iml" filepath="$PROJECT_DIR$/app/Documents-quickhands-android-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Quick Hands.iml" filepath="$PROJECT_DIR$/Quick Hands.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/ctpl-Documents-quickhands-android-app.iml" filepath="$PROJECT_DIR$/app/ctpl-Documents-quickhands-android-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/ctpl-Documents-quickhands-android-app~1.iml" filepath="$PROJECT_DIR$/app/ctpl-Documents-quickhands-android-app~1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/ctpl-Documents-quickhands-android-app~2.iml" filepath="$PROJECT_DIR$/app/ctpl-Documents-quickhands-android-app~2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/quickhands-android.iml" filepath="$PROJECT_DIR$/.idea/quickhands-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/quickhands-android-Quick Hands.iml" filepath="$PROJECT_DIR$/quickhands-android-Quick Hands.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/quickhands-android-app.iml" filepath="$PROJECT_DIR$/app/quickhands-android-app.iml" />
+    </modules>
+  </component>
+</project>
