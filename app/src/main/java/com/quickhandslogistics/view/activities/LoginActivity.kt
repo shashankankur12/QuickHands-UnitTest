@@ -2,12 +2,10 @@ package com.quickhandslogistics.view.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.FileUtils
 import android.text.TextUtils
 import android.text.method.PasswordTransformationMethod
 import androidx.appcompat.app.AppCompatActivity
 import co.clicke.databases.SharedPreferenceHandler
-import com.fileutils.File
 import com.fileutils.mainTest
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.LanguageManager
