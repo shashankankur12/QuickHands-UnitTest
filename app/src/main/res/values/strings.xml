@@ -109,4 +109,5 @@
     <string name="string_ask_new_lumper">Do you want to assign new lumper ?</string>
     <string name="All">All</string>
     <string name="string_lumper_sheet_status">lumper_sheet_status</string>
+    <string name="string_building">Buildings</string>
 </resources>
