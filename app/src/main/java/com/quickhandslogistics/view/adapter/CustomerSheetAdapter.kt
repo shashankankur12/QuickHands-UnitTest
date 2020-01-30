@@ -32,7 +32,7 @@ class CustomerSheetAdapter(var items: ArrayList<CustomerModel>, val context: Con
     override fun onBindViewHolder(holder: CustomerSheetAdapter.CustomerSheetViewHolder, position: Int) {
 
         holder?.lumperName?.text = items.get(position)?.name
-        holder?.lumperDate?.text = faker.date.backward(6).toString()
+        holder?.lumperDate?.text = faker.address.streetAddress()
         holder?.lumperStatus.text = statusItems.get(position).toUpperCase()
 
         if(TextUtils.equals(statusItems.get(position), context.resources.getString(R.string.complete))){

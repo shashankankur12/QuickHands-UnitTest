@@ -17,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/_12sdp"
+        android:background="?android:attr/selectableItemBackground"
         android:id="@+id/constraint_root_item">
 
         <TextView
@@ -29,6 +30,7 @@
             android:layout_marginEnd="@dimen/_8sdp"
             android:paddingStart="@dimen/_2ssp"
             android:text="@string/container_number"
+            android:includeFontPadding="false"
             android:textColor="@color/colorBlack"
             app:layout_constraintEnd_toStartOf="@+id/linear_start"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,6 +45,7 @@
             android:ellipsize="end"
             android:text="ABC1-0009282575"
             android:singleLine="true"
+            android:includeFontPadding="false"
             android:paddingStart="@dimen/_2sdp"
             android:paddingEnd="@dimen/_2sdp"
             android:layout_marginTop="@dimen/_1sdp"
@@ -60,12 +63,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="@dimen/_1sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_8sdp"
             android:paddingStart="@dimen/_2sdp"
             android:paddingEnd="@dimen/_2sdp"
             android:ellipsize="end"
             android:text="@string/Door"
+            android:includeFontPadding="false"
             android:textColor="@color/colorBlack"
             app:layout_constraintEnd_toStartOf="@+id/text_job_weight"
             app:layout_constraintStart_toStartOf="parent"
@@ -77,11 +81,12 @@
             style="@style/textSizeSmallRegFont"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_1sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:paddingStart="@dimen/_2sdp"
             android:paddingEnd="@dimen/_2sdp"
             android:ellipsize="end"
             android:text="@string/weight"
+            android:includeFontPadding="false"
             android:maxLines="1"
             android:textColor="@color/colorBlack"
             app:layout_constraintEnd_toEndOf="@+id/input_container_number"
@@ -95,12 +100,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="@dimen/_1sdp"
             android:layout_marginEnd="@dimen/_8sdp"
             android:paddingStart="@dimen/_2sdp"
             android:paddingEnd="@dimen/_2sdp"
             android:ellipsize="end"
             android:text="48"
+            android:includeFontPadding="false"
             android:singleLine="true"
             android:textColor="@color/colorBlack"
             app:layout_constraintEnd_toStartOf="@+id/text_job_weight_kg"
@@ -113,18 +118,17 @@
             style="@style/textSizeNormalRegFont"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_1sdp"
             android:paddingStart="@dimen/_2sdp"
             android:paddingEnd="@dimen/_2sdp"
             android:ellipsize="end"
             android:text="67 Kg"
+            android:includeFontPadding="false"
             android:singleLine="true"
             android:textColor="@color/colorBlack"
             app:layout_constraintEnd_toEndOf="@+id/text_job_weight"
             app:layout_constraintStart_toEndOf="@+id/text_door"
             app:layout_constraintTop_toBottomOf="@+id/text_job_weight"
             android:fontFamily="@font/poppinssemibold" />
-
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/vertical_guideline"
@@ -161,6 +165,7 @@
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:ellipsize="end"
                 android:text="@string/start_time"
+                android:includeFontPadding="false"
                 android:textColor="@color/colorBlack"
                 app:layout_constraintEnd_toStartOf="@+id/image_icon_start_label"
                 android:fontFamily="@font/poppinsregular" />
@@ -187,6 +192,7 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="6:00 AM"
+                android:includeFontPadding="false"
                 android:textColor="@color/colorBlack"
                 android:fontFamily="@font/poppinssemibold" />
         </LinearLayout>
@@ -195,7 +201,7 @@
             android:id="@+id/linear_end_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_1sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@+id/linear_start_time"
@@ -218,6 +224,7 @@
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:ellipsize="end"
                 android:text="@string/end_time"
+                android:includeFontPadding="false"
                 android:textColor="@color/colorBlack"
                 app:layout_constraintEnd_toStartOf="@+id/image_icon_end_time"
                 android:fontFamily="@font/poppinsregular" />
@@ -244,9 +251,10 @@
                 android:ellipsize="end"
                 android:text="3:00 AM"
                 android:singleLine="true"
+                android:includeFontPadding="false"
                 android:textColor="@color/colorBlack"
                 android:fontFamily="@font/poppinssemibold" />
-
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.cardview.widget.CardView>
