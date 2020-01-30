@@ -28,6 +28,10 @@ class LumperListActivity : AppCompatActivity() {
 
         if (intent.hasExtra(getString(R.string.string_lumper)))
             lumperJobDetail = intent.getStringExtra(getString(R.string.string_lumper))
+
+        if (intent.hasExtra(getString(R.string.string_lumper_sheet)))
+            lumperJobDetail = intent.getStringExtra(getString(R.string.string_lumper_sheet))
+
         text_title?.setText(getString(R.string.choose_lumper))
 
         searchLumper()

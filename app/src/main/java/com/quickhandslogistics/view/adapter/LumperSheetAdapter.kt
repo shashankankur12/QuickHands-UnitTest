@@ -9,13 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.model.StatusModel
 import com.quickhandslogistics.view.LumperModel
 import com.quickhandslogistics.view.activities.LumperJobHistoryActivity
+import com.quickhandslogistics.view.activities.LumperListActivity
 import com.quickhandslogistics.view.activities.LumperSheetDetailActivity
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_lumper_sheet_layout.view.*
 
-class LumperSheetAdapter(var items: ArrayList<LumperModel>, val context: Context, val statusItems: ArrayList<String>) : RecyclerView.Adapter<LumperSheetAdapter.LumperViewHolder>() {
+class LumperSheetAdapter(var items: ArrayList<LumperModel>, val context: Context, var statusItems: ArrayList<StatusModel>) : RecyclerView.Adapter<LumperSheetAdapter.LumperViewHolder>() {
 
     var faker = Faker()
 
@@ -31,21 +33,28 @@ class LumperSheetAdapter(var items: ArrayList<LumperModel>, val context: Context
 
     override fun onBindViewHolder(holder: LumperViewHolder, position: Int) {
         holder?.lumperName?.text = items.get(position)?.name + " " + items.get(position)?.lastName
-        holder?.lumperDate?.text = faker.date.backward(6).toString()
-        holder?.lumperStatus.text = statusItems.get(position).toUpperCase()
+        holder?.lumperDate?.text = "20 Jan 2020"
+        holder?.lumperStatus?.text = statusItems.get(position)?.status.toUpperCase()
 
-
-        if(TextUtils.equals(statusItems.get(position), context.resources.getString(R.string.complete))){
+        if(TextUtils.equals(statusItems.get(position).status, context.resources.getString(R.string.complete))){
             holder?.lumperStatus.setBackgroundResource(R.drawable.chip_complete)
         }else  holder?.lumperStatus.setBackgroundResource(R.drawable.chip_in_progress)
 
         holder.constraintRoot.setOnClickListener {
-            context.startActivity(Intent(context, LumperSheetDetailActivity::class.java))
+
+            val intent = Intent(context, LumperSheetDetailActivity::class.java)
+            intent.putExtra(context!!.getString(R.string.string_lumper_sheet_status),statusItems.get(position)?.status)
+            context!!.startActivity(intent)
         }
     }
 
     fun filterLumperList(filteredName: ArrayList<LumperModel>) {
         this.items = filteredName
+        notifyDataSetChanged()
+    }
+
+    fun filterStatusList(statusItems: ArrayList<StatusModel>) {
+        this.statusItems = statusItems
         notifyDataSetChanged()
     }
 

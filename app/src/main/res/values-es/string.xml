@@ -106,4 +106,6 @@
     <string name="string_ok">Ok</string>
     <string name="in_progress">En progreso</string>
     <string name="complete">Completar</string>
+    <string name="All">Todos</string>
+    <string name="string_lumper_sheet_status">lumper_sheet_status</string>
 </resources>
