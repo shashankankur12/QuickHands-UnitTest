@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.model.CustomerModel
+import com.quickhandslogistics.view.activities.CustomerBuildingsActivity
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_lumper_layout.view.*
 
@@ -38,6 +39,10 @@ class CustomerAdapter (var items: ArrayList<CustomerModel>,val mActivity: Activi
         holder?.constraintRoot.setOnClickListener(View.OnClickListener { view ->
             mActivity.finish()
         })
+
+        holder.constraintRoot.setOnClickListener {
+            context.startActivity(Intent(context, CustomerBuildingsActivity::class.java).putExtra("name", holder.lumperText?.text))
+        }
     }
 }
 

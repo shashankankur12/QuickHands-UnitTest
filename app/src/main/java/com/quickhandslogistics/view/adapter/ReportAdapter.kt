@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.view.activities.CustomerActivity
 import com.quickhandslogistics.view.activities.LumperListActivity
 import kotlinx.android.synthetic.main.item_lumper_layout.view.constraint_root
 import kotlinx.android.synthetic.main.report_item_layout.view.*
@@ -30,11 +31,18 @@ class ReportAdapter (val items: ArrayList<String>,val itemimages: ArrayList<Int>
 
         holder.constraintRoot.setOnClickListener {
 
-            if(position == 1){
-            val intent = Intent(context, LumperListActivity::class.java)
-                intent.putExtra(context.getString(R.string.string_lumper),context.getString(R.string.string_lumper) )
+            if (position == 1) {
+
+                val intent = Intent(context, LumperListActivity::class.java)
+                intent.putExtra(
+                    context.getString(R.string.string_lumper),
+                    context.getString(R.string.string_lumper)
+                )
                 context.startActivity(intent)
-            } else Toast.makeText(context, "Jobs Activity", Toast.LENGTH_SHORT).show()
+            } else if (position == 0) {
+                val intent = Intent(context, CustomerActivity::class.java)
+                context.startActivity(intent)
+            }
         }
     }
 }
