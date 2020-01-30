@@ -22,9 +22,11 @@
     <TextView
         android:id="@+id/text_title"
         style="@style/textSizeLargeRegFont"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_10sdp"
+        android:ellipsize="end"
+        android:paddingEnd="@dimen/_10sdp"
         android:text="@string/string_forgot_password_heading"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/_14ssp"
@@ -39,10 +41,32 @@
         android:layout_marginRight="@dimen/_5sdp"
         android:padding="@dimen/_5sdp"
         android:src="@drawable/ic_cancel_black_24dp"
-        android:visibility="gone"
         android:tint="@color/colorWhite"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/image_notes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/_50sdp"
+        android:src="@drawable/ic_document"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/image_signature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:src="@drawable/ic_pen"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/image_notes"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -52,8 +76,8 @@
         android:layout_marginRight="@dimen/_5sdp"
         android:padding="@dimen/_5sdp"
         android:src="@drawable/ic_profile"
-        android:visibility="gone"
         android:tint="@color/colorWhite"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

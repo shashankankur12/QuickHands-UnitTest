@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_10sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/round_style_white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp">
+
+    <TextView
+        android:id="@+id/title_add_notes"
+        style="@style/textSizeNormalRegFont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Add a Notes"
+        android:fontFamily="@font/poppinssemibold"/>
+
+    <ImageView
+        android:id="@+id/image_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:tint="@color/colorLightGrey"
+        app:srcCompat="@drawable/ic_cancel_black_24dp" />
+
+    <EditText
+        android:id="@+id/edit_notes"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/round_corner_edittext_grey"
+        android:padding="@dimen/_10sdp"
+        android:gravity="top"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_close" />
+
+        <Button
+            android:id="@+id/button_save"
+            style="@style/textSizeNormalRegFont"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@drawable/round_button_red"
+            android:elevation="@dimen/_5sdp"
+            android:fontFamily="@font/poppinssemibold"
+            android:gravity="center"
+            android:padding="@dimen/_10sdp"
+            android:text="@string/string_save"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintEnd_toEndOf="@+id/edit_notes"
+            app:layout_constraintStart_toStartOf="@+id/edit_notes"
+            app:layout_constraintTop_toBottomOf="@+id/edit_notes" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

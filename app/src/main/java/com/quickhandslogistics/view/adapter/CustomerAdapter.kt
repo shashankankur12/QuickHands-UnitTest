@@ -1,5 +1,6 @@
 package com.quickhandslogistics.view.adapter
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -13,12 +14,12 @@ import com.quickhandslogistics.model.CustomerModel
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_lumper_layout.view.*
 
-class CustomerAdapter (var items: ArrayList<CustomerModel>, val context: Context) : Adapter<CustomerViewHolder>() {
+class CustomerAdapter (var items: ArrayList<CustomerModel>,val mActivity: Activity) : Adapter<CustomerViewHolder>() {
 
     val faker = Faker()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomerViewHolder {
-        val view: View =  LayoutInflater.from(context).inflate(R.layout.item_customer_layout, parent, false)
+        val view: View =  LayoutInflater.from(mActivity).inflate(R.layout.item_customer_layout, parent, false)
         return CustomerViewHolder(view)
     }
 
@@ -31,18 +32,12 @@ class CustomerAdapter (var items: ArrayList<CustomerModel>, val context: Context
         notifyDataSetChanged()
     }
 
-    fun callPhone() {
-        val faker = Faker()
-        context.startActivity(
-            Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", faker?.phoneNumber?.phoneNumber(), null)
-            )
-        )
-    }
-
     override fun onBindViewHolder(holder: CustomerViewHolder, position: Int) {
-
         holder?.lumperText?.text = items.get(position)?.name
         holder?.lumperHours?.text = faker.address.streetAddress()
+        holder?.constraintRoot.setOnClickListener(View.OnClickListener { view ->
+            mActivity.finish()
+        })
     }
 }
 

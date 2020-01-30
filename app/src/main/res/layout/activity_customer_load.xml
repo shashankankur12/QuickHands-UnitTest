@@ -21,13 +21,13 @@
         tools:listitem="@layout/lumper_job_history_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add_lumper"
+        android:id="@+id/fab_add_customer_sheet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
         android:src="@android:drawable/ic_input_add"
         android:tint="@color/colorWhite"
-        android:visibility="gone"
+        android:visibility="visible"
         app:backgroundTint="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
