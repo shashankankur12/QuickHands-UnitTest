@@ -9,7 +9,7 @@
     <EditText
         android:id="@+id/edit_search_lumper"
         style="@style/textSizeNormalRegFont"
-        android:layout_width="@dimen/_270sdp"
+        android:layout_width="@dimen/_260sdp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
         android:background="@drawable/edit_search_bg"
@@ -44,7 +44,6 @@
         android:src="@drawable/filter"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="@dimen/_8sdp"
-        android:tint="@color/colorLightGrey"
         app:layout_constraintBottom_toBottomOf="@+id/edit_search_lumper"
         app:layout_constraintStart_toEndOf="@id/edit_search_lumper"
         app:layout_constraintEnd_toEndOf="parent"/>

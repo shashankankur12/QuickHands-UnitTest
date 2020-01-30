@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.layout_header.*
 
 class LumperSheetDetailActivity : AppCompatActivity() {
 
+    var lumperJobDetail: String = ""
     val lumperSheetList: ArrayList<String> = ArrayList()
     var faker = Faker()
 
@@ -27,6 +28,15 @@ class LumperSheetDetailActivity : AppCompatActivity() {
 
         image_back.setOnClickListener {
             Utils.finishActivity(this)
+        }
+
+        if (intent.hasExtra(getString(R.string.string_lumper_sheet_status))) {
+            lumperJobDetail = intent.getStringExtra(getString(R.string.string_lumper_sheet_status))
+            if (lumperJobDetail.equals(getString(R.string.complete))) {
+                fab_add_lumper.visibility = View.GONE
+            } else if (lumperJobDetail.equals(getString(R.string.in_progress))) {
+                fab_add_lumper.visibility = View.VISIBLE
+            }
         }
 
         fab_add_lumper.setOnClickListener {

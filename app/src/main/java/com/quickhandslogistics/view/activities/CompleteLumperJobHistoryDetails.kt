@@ -2,6 +2,7 @@ package com.quickhandslogistics.view.activities
 
 import android.content.Context
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -91,8 +92,7 @@ class CompleteLumperJobHistoryDetails : AppCompatActivity() {
         edit_lunch_in.isEnabled = false
         edit_notes.isEnabled = false
         edit_sign.isEnabled = false
-        button_submit.setBackgroundResource(R.drawable.bg_timer)
-        button_submit.isEnabled = false
+        button_submit.visibility = View.GONE
 
         text_name.isCursorVisible = false
         edit_Date.isCursorVisible = false

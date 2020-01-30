@@ -78,13 +78,14 @@ class LumperSheetFragment : Fragment() {
                         filterStatus(item.title.toString())
                     R.id.mnu_prgrs ->
                             filterStatus(item.title.toString())
+                    R.id.menu_all ->
+                        filterStatus("")
                 }
                 true
             })
             popupMenu.show()
         }
     }
-
 
     fun searchLumper() {
         edit_search_lumper.addTextChangedListener(object : TextWatcher {
@@ -138,8 +139,6 @@ class LumperSheetFragment : Fragment() {
         for (s in lumperStatusList) {
 
             if (s.status.contains(text)) {
-                filterStatus.add(s)
-            } else if (s.status.contains(text)) {
                 filterStatus.add(s)
             }
         }
