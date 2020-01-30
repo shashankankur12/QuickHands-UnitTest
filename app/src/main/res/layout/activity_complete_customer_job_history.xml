@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    tools:context=".view.activities.CompleteCustomerJobHistory">
+    tools:context=".view.activities.CompleteLumperJobHistoryDetails">
 
     <include
         android:id="@+id/header"
@@ -23,7 +23,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            
+
             <TextView
                 android:id="@+id/input_name"
                 style="@style/textSizeSmallRegFont"
@@ -604,24 +604,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/input_sign" />
-
-            <Button
-                android:id="@+id/button_submit"
-                style="@style/textSizeLargeRegFont"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:background="@drawable/round_button_red"
-                android:fontFamily="@font/poppinsregular"
-                android:text="@string/string_submit"
-                android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
-                app:layout_constraintTop_toBottomOf="@+id/edit_sign"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

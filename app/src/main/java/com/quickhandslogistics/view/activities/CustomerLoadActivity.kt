@@ -7,8 +7,10 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.Utils
+import com.quickhandslogistics.view.adapter.CustomerJobDetailAdapter
 import com.quickhandslogistics.view.adapter.lumperJobDetailAdapter
 import io.bloco.faker.Faker
+import kotlinx.android.synthetic.main.activity_customer_load.*
 import kotlinx.android.synthetic.main.activity_lumper_sheet_detail.*
 import kotlinx.android.synthetic.main.layout_header.*
 
@@ -19,7 +21,7 @@ class CustomerLoadActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_lumper_sheet_detail)
+        setContentView(R.layout.activity_customer_load)
 
         text_title?.text = faker?.company?.name()
 
@@ -29,8 +31,8 @@ class CustomerLoadActivity : AppCompatActivity() {
             Utils.finishActivity(this)
         }
 
-        recycler_lumper_sheet_history.layoutManager = LinearLayoutManager(this)
-        recycler_lumper_sheet_history.adapter = this?.let { lumperJobDetailAdapter(lumperSheetList, it) }
+        recycler_customer_sheet_history.layoutManager = LinearLayoutManager(this)
+        recycler_customer_sheet_history.adapter = this?.let { CustomerJobDetailAdapter(lumperSheetList, it) }
     }
 
     fun lumperSheetData() {

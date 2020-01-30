@@ -45,7 +45,6 @@ class LumperSheetAdapter(var items: ArrayList<LumperModel>, val context: Context
             val intent = Intent(context, LumperSheetDetailActivity::class.java)
             intent.putExtra(context!!.getString(R.string.string_lumper_sheet_status),statusItems.get(position)?.status)
             context!!.startActivity(intent)
-           // context.startActivity(Intent(context, LumperSheetDetailActivity::class.java))
         }
     }
 

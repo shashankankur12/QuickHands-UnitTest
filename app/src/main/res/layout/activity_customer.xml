@@ -24,6 +24,7 @@
         android:layout_marginRight="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_10sdp"
         android:imeOptions="actionDone"
+        android:paddingEnd="@dimen/_30sdp"
         android:fontFamily="@font/poppinssemibold"
         android:background="@drawable/edit_search_bg"
         app:layout_constraintTop_toBottomOf="@+id/header"
@@ -45,6 +46,7 @@
         android:id="@+id/recycler_customer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layoutAnimation="@anim/recycler_bottom_to_up"
         android:layout_marginTop="@dimen/_10sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_search_customer" />
