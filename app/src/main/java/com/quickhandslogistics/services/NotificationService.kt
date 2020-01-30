@@ -24,8 +24,6 @@ class NotificationService : FirebaseMessagingService() {
 
     private fun createNotification(message : RemoteMessage) {
 
-
-
         var notification = NotificationCompat.Builder(this, CHANNELID)
             .setSmallIcon(android.R.drawable.stat_notify_chat)
             .setContentTitle(message.notification?.title?: "QuickHands")
@@ -37,18 +35,6 @@ class NotificationService : FirebaseMessagingService() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
 
         val pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, 0)
-
-       /* var remoteInput: RemoteInput = RemoteInput.Builder("KEY_RESULT").setLabel(replyLabel).build()
-        //Notification Action with RemoteInput instance added.
-        val replyAction = NotificationCompat.Action.Builder(R.drawable.sym_action_chat, "REPLY", pendingIntent)
-
-            .addRemoteInput(remoteInput)
-            .setAllowGeneratedReplies(true)
-            .build()
-
-        //Notification.Action instance added to Notification Builder.
-        //Notification.Action instance added to Notification Builder.
-        notification.addAction(replyAction)*/
 
         notification.setContentIntent(pendingIntent)
 

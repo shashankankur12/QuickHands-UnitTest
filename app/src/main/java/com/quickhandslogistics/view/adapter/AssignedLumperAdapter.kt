@@ -46,7 +46,7 @@ class AssignedLumperAdapter(val items: ArrayList<String>, val context: Activity)
 
         if (position == 2 || position == 4) {
             holder.textStatus.setBackgroundResource(R.drawable.chip_complete)
-            holder.textStatus.text = "No Show"
+            holder.textStatus.text = "NO SHOW"
         }
 
         holder.constraintRoot.setOnClickListener {
