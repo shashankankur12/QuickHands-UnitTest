@@ -79,6 +79,7 @@
         android:layout_marginBottom="@dimen/_10sdp"
         android:background="@drawable/round_button_red"
         android:fontFamily="@font/poppinsregular"
+        android:visibility="gone"
         android:text="@string/string_send_for_approval"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"

@@ -65,7 +65,7 @@ class Utils {
             dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
             dialog.window?.attributes?.windowAnimations = animation
             dialog.setCancelable(false)
-            dialog.setContentView(R.layout.dialog_change_language)
+            dialog.setContentView(R.layout.dialog_forgot_password)
             dialog.setCancelable(true)
 
             dialog.text_ok.setOnClickListener {
