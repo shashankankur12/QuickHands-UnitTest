@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.model.CustomerModel
+import com.quickhandslogistics.view.activities.CustomerBuildingsActivity
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_lumper_layout.view.*
 
@@ -31,18 +32,14 @@ class CustomerAdapter (var items: ArrayList<CustomerModel>, val context: Context
         notifyDataSetChanged()
     }
 
-    fun callPhone() {
-        val faker = Faker()
-        context.startActivity(
-            Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", faker?.phoneNumber?.phoneNumber(), null)
-            )
-        )
-    }
-
     override fun onBindViewHolder(holder: CustomerViewHolder, position: Int) {
 
         holder?.lumperText?.text = items.get(position)?.name
         holder?.lumperHours?.text = faker.address.streetAddress()
+
+        holder.constraintRoot.setOnClickListener {
+            context.startActivity(Intent(context, CustomerBuildingsActivity::class.java).putExtra("name", holder.lumperText?.text))
+        }
     }
 }
 
