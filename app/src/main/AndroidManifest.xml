@@ -22,10 +22,12 @@
             android:screenOrientation="portrait"/>
 
         <activity android:name=".view.activities.CustomerChooseActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
 
         <activity android:name=".view.activities.CompleteCustomerJobHistory"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
 
         <activity android:name=".view.activities.CustomerDetailActivity"
             android:screenOrientation="portrait"/>
@@ -34,7 +36,8 @@
             android:screenOrientation="portrait"/>
 
         <activity android:name=".view.activities.CustomerActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
 
         <activity android:name=".view.activities.LumperSheetDetailActivity"
             android:screenOrientation="portrait"/>

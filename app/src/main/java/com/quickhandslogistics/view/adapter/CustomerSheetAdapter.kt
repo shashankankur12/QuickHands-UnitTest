@@ -10,12 +10,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.model.CustomerModel
+import com.quickhandslogistics.model.StatusModel
 import com.quickhandslogistics.view.activities.CustomerLoadActivity
 import com.quickhandslogistics.view.activities.LumperSheetDetailActivity
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_lumper_sheet_layout.view.*
 
-class CustomerSheetAdapter(var items: ArrayList<CustomerModel>, val context: Context, val statusItems: ArrayList<String>) : RecyclerView.Adapter<CustomerSheetAdapter.CustomerSheetViewHolder>() {
+class CustomerSheetAdapter(var items: ArrayList<CustomerModel>, val context: Context, val statusItems: ArrayList<StatusModel>) : RecyclerView.Adapter<CustomerSheetAdapter.CustomerSheetViewHolder>() {
 
     var faker = Faker()
 
@@ -33,13 +34,14 @@ class CustomerSheetAdapter(var items: ArrayList<CustomerModel>, val context: Con
 
         holder?.lumperName?.text = items.get(position)?.name
         holder?.lumperDate?.text = faker.address.streetAddress()
-        holder?.lumperStatus.text = statusItems.get(position).toUpperCase()
+        holder?.lumperStatus.text = statusItems.get(position).status.toUpperCase()
 
-        if(TextUtils.equals(statusItems.get(position), context.resources.getString(R.string.complete))){
+        if(TextUtils.equals(statusItems.get(position).status, context.resources.getString(R.string.complete))){
             holder?.lumperStatus.setBackgroundResource(R.drawable.chip_complete)
         }else  holder?.lumperStatus.setBackgroundResource(R.drawable.chip_in_progress)
 
         holder.constraintRoot.setOnClickListener {
+
             context.startActivity(Intent(context, CustomerLoadActivity::class.java))
         }
     }

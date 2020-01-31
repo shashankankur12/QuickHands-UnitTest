@@ -32,11 +32,9 @@ class LumperSheetDetailActivity : AppCompatActivity() {
 
         if (intent.hasExtra(getString(R.string.string_lumper_sheet_status))) {
             lumperJobDetail = intent.getStringExtra(getString(R.string.string_lumper_sheet_status))
-            if (lumperJobDetail.equals(getString(R.string.complete))) {
-                fab_add_lumper.visibility = View.GONE
-            } else if (lumperJobDetail.equals(getString(R.string.in_progress))) {
-                fab_add_lumper.visibility = View.VISIBLE
-            }
+
+            fab_add_lumper.visibility = if (lumperJobDetail.equals(getString(R.string.complete))) View.GONE else View.VISIBLE
+
         }
 
         fab_add_lumper.setOnClickListener {

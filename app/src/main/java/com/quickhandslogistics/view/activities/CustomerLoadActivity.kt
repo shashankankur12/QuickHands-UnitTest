@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.layout_header.*
 
 class CustomerLoadActivity : AppCompatActivity() {
 
+    var lumperJobDetail: String = ""
     val lumperSheetList: ArrayList<String> = ArrayList()
     var faker = Faker()
 

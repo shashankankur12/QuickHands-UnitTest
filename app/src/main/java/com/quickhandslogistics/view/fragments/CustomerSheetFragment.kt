@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.model.CustomerModel
+import com.quickhandslogistics.model.StatusModel
 import com.quickhandslogistics.view.LumperModel
 import com.quickhandslogistics.view.activities.CustomerActivity
 import com.quickhandslogistics.view.adapter.CustomerSheetAdapter
@@ -24,7 +25,7 @@ import java.util.Locale.filter
 
 class CustomerSheetFragment : Fragment() {
     val lumperList: ArrayList<CustomerModel> = ArrayList()
-    val lumperStatusList: ArrayList<String> = ArrayList()
+    val lumperStatusList: ArrayList<StatusModel> = ArrayList()
     lateinit var customerSheetAdapter: CustomerSheetAdapter
 
     override fun onCreateView(
@@ -37,13 +38,16 @@ class CustomerSheetFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        customerStatusSheet()
         recycler_customer_sheet.layoutManager = LinearLayoutManager(context)
 
         val faker = Faker()
         for (i in 1..20) {
             lumperList.add(CustomerModel(faker.company.name()))
+        }
+
+        for (i in 1..20) {
+            lumperStatusList.add(StatusModel(getString(R.string.in_progress)))
+            lumperStatusList.add(StatusModel(getString(R.string.complete)))
         }
 
         customerSheetAdapter =  CustomerSheetAdapter(lumperList, context!!, lumperStatusList)
@@ -55,26 +59,4 @@ class CustomerSheetFragment : Fragment() {
         })
     }
 
-    fun customerStatusSheet() {
-        lumperStatusList.add(getString(R.string.in_progress))
-        lumperStatusList.add(getString(R.string.complete))
-        lumperStatusList.add(getString(R.string.in_progress))
-        lumperStatusList.add(getString(R.string.complete))
-        lumperStatusList.add(getString(R.string.in_progress))
-        lumperStatusList.add(getString(R.string.complete))
-        lumperStatusList.add(getString(R.string.in_progress))
-        lumperStatusList.add(getString(R.string.complete))
-        lumperStatusList.add(getString(R.string.in_progress))
-        lumperStatusList.add(getString(R.string.complete))
-        lumperStatusList.add(getString(R.string.in_progress))
-        lumperStatusList.add(getString(R.string.complete))
-        lumperStatusList.add(getString(R.string.in_progress))
-        lumperStatusList.add(getString(R.string.complete))
-        lumperStatusList.add(getString(R.string.in_progress))
-        lumperStatusList.add(getString(R.string.complete))
-        lumperStatusList.add(getString(R.string.in_progress))
-        lumperStatusList.add(getString(R.string.complete))
-        lumperStatusList.add(getString(R.string.in_progress))
-        lumperStatusList.add(getString(R.string.complete))
-    }
 }
