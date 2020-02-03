@@ -1,18 +1,16 @@
 package com.quickhandslogistics.view.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.DialogHelper
 import com.quickhandslogistics.utils.Utils
 import com.quickhandslogistics.view.adapter.CustomerJobDetailAdapter
-import com.quickhandslogistics.view.adapter.lumperJobDetailAdapter
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.activity_customer_load.*
-import kotlinx.android.synthetic.main.activity_lumper_sheet_detail.*
 import kotlinx.android.synthetic.main.layout_header.*
 
 class CustomerLoadActivity : AppCompatActivity() {

@@ -1,5 +1,6 @@
 package com.quickhandslogistics.view.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -22,7 +23,7 @@ class LumperSheetDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lumper_sheet_detail)
 
-        text_title?.text = faker.name.firstName()+" "+faker.name.lastName()
+        text_title?.text = faker.name.firstName() + " " + faker.name.lastName()
 
         lumperSheetData()
 
@@ -38,13 +39,18 @@ class LumperSheetDetailActivity : AppCompatActivity() {
         }
 
         fab_add_lumper.setOnClickListener {
-            val intent = Intent(this@LumperSheetDetailActivity, CompleteLumperJobHistoryDetails::class.java)
-            intent.putExtra(this@LumperSheetDetailActivity.getString(R.string.string_lumper_sheet),this@LumperSheetDetailActivity.getString(R.string.string_lumper_sheet) )
+            val intent =
+                Intent(this@LumperSheetDetailActivity, CompleteLumperJobHistoryDetails::class.java)
+            intent.putExtra(
+                this@LumperSheetDetailActivity.getString(R.string.string_lumper_sheet),
+                this@LumperSheetDetailActivity.getString(R.string.string_lumper_sheet)
+            )
             this@LumperSheetDetailActivity.startActivity(intent)
         }
 
         recycler_lumper_sheet_history.layoutManager = LinearLayoutManager(this)
-        recycler_lumper_sheet_history.adapter = this?.let { lumperJobDetailAdapter(lumperSheetList, it) }
+        recycler_lumper_sheet_history.adapter =
+            this?.let { lumperJobDetailAdapter(lumperSheetList, it) }
     }
 
     fun lumperSheetData() {

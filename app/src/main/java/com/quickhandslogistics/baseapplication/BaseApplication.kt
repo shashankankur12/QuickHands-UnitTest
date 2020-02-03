@@ -8,9 +8,12 @@ import java.util.*
 
 
 class BaseApplication : Application() {
+
     val languages: String? = null
 
     override fun onCreate() {
         super.onCreate()
+
+        SharedPreferenceHandler.getInstance(this)
     }
 }
