@@ -52,7 +52,7 @@ class CompleteCustomerJobHistory : AppCompatActivity() {
 
     fun UpdateLumperSheetDetail(){
         text_name?.setText(faker.name.firstName()+" "+faker.name.lastName() )
-        edit_Date?.setText(faker.date.backward(9).toString())
+        edit_Date?.setText("31 Jan 2020")
         edit_door.setText(faker.number.digit().toString())
         edit_container.setText(faker.number.digit().toString())
         edit_cs.setText(faker.number.digit().toString())
@@ -61,11 +61,11 @@ class CompleteCustomerJobHistory : AppCompatActivity() {
         edit_mix.setText(faker.name.firstName().toString())
         edit_rush.setText(faker.name.firstName().toString())
         edit_over_70.setText(faker.number.digit().toString())
-        edit_start_time.setText(faker.date.backward(5).toString())
-        edit_end_time.setText(faker.date.backward(5).toString())
-        edit_total_time.setText(faker.date.backward(5).toString())
-        edit_lunch_out.setText(faker.date.backward(5).toString())
-        edit_lunch_in.setText(faker.date.backward(5).toString())
+        edit_start_time.setText("1 Feb 2020")
+        edit_end_time.setText("8 Feb 2020")
+        edit_total_time.setText("15 Hrs")
+        edit_lunch_out.setText("1 : 00 PM")
+        edit_lunch_in.setText("2 : 00 PM")
         edit_notes.setText(faker.company.name().toString())
         edit_sign.setText(faker.company.name().toString())
 

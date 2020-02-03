@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_10sdp"
         android:ellipsize="end"
-        android:paddingEnd="@dimen/_10sdp"
+        android:paddingRight="@dimen/_15sdp"
         android:text="@string/string_forgot_password_heading"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/_14ssp"
