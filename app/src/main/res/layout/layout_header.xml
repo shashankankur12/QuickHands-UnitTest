@@ -26,12 +26,14 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_10sdp"
         android:ellipsize="end"
-        android:paddingRight="@dimen/_15sdp"
+        android:maxLength="20"
+        android:paddingEnd="@dimen/_10sdp"
         android:text="@string/string_forgot_password_heading"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/_14ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/image_back"
+        app:layout_constraintRight_toLeftOf="@id/image_notes"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -51,22 +53,24 @@
         android:id="@+id/image_notes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/_50sdp"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:padding="@dimen/_5sdp"
         android:src="@drawable/ic_document"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/image_signature"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/image_signature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:padding="@dimen/_5sdp"
         android:src="@drawable/ic_pen"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/image_notes"
+        app:layout_constraintRight_toLeftOf="@id/image_profile"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
