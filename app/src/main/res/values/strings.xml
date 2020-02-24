@@ -110,4 +110,5 @@
     <string name="All">All</string>
     <string name="string_lumper_sheet_status">lumper_sheet_status</string>
     <string name="string_building">Buildings</string>
+    <string name="no_internet">No internet connection!</string>
 </resources>

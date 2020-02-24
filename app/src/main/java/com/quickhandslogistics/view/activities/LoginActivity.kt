@@ -8,11 +8,19 @@ import androidx.appcompat.app.AppCompatActivity
 import co.clicke.databases.SharedPreferenceHandler
 import com.fileutils.mainTest
 import com.quickhandslogistics.R
-import com.quickhandslogistics.utils.LanguageManager
-import com.quickhandslogistics.utils.Utils
+import com.quickhandslogistics.model.login.Data
+import com.quickhandslogistics.model.login.LoginRequest
+import com.quickhandslogistics.model.login.LoginResponse
+import com.quickhandslogistics.network.DataManager
+import com.quickhandslogistics.network.ResponseListener
+import com.quickhandslogistics.session.SessionManager
+import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : AppCompatActivity() {
+
+
+
+class LoginActivity : BaseActivity(), AppConstant {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,11 +36,16 @@ class LoginActivity : AppCompatActivity() {
         }
 
         button_login.setOnClickListener {
+            Utils.hideSoftKeyboard(this)
 
             var employeeId = edit_employee_id.text.toString().trim()
             var password = edit_password.text.toString().trim()
+            val loginRequest = LoginRequest(employeeId, password)
 
-            validateForm(employeeId,password)
+            if (validateForm(loginRequest)) {
+                getLogin(loginRequest)
+            }
+           // validateForm(employeeId,password)
         }
 
         text_forgot_password.setOnClickListener {
@@ -53,34 +66,77 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-    private fun validateForm(employeeId : String, password : String) {
+    private fun validateForm(loginrequest: LoginRequest): Boolean {
+        val employeeId = loginrequest.id
+        val password = loginrequest.password
 
         when {
             TextUtils.isEmpty(employeeId) -> {
                 Utils.Shake(edit_employee_id)
-                text_input_email.error = resources.getString(R.string.text_employee_error_msg)
-
+                SnackBarFactory.createSnackBar(
+                    this,
+                    scroll_top,
+                    resources.getString(R.string.text_employee_error_msg)
+                )
+                return false
             }
 
             TextUtils.isEmpty(password) -> {
                 Utils.Shake(edit_password)
-                text_input_password.error = resources.getString(R.string.text_password_err_msg)
-                text_input_email.error = null
+                SnackBarFactory.createSnackBar(
+                    this,
+                    scroll_top,
+                    resources.getString(R.string.text_password_err_msg)
+                )
+                return false
             }
 
             password.length < 8 -> {
                 Utils.Shake(edit_password)
-                text_input_password.error = resources.getString(R.string.text_password_err_length)
-            }
-
-            else -> {
-
-                text_input_email.error = null
-                text_input_password.error = null
-
-                startActivity(Intent(this, DashboardActivity::class.java))
-                overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out)
+                SnackBarFactory.createSnackBar(
+                    this,
+                    scroll_top,
+                    resources.getString(R.string.text_password_err_length)
+                )
+                return false
             }
         }
+        return true
+    }
+
+    private fun getLogin(loginrequest: LoginRequest) {
+        val dialog = CustomProgressBar.getInstance(this).showProgressDialog("Logging in...")
+        DataManager.doLogin(this, loginrequest, object : ResponseListener<LoginResponse> {
+            override fun onSuccess(response: LoginResponse) {
+                dialog.dismiss()
+                if (response.data == null) return
+
+                dialog.dismiss()
+                val loginData = response.data.get(0)
+                saveUserData(loginData)
+            }
+
+            override fun onError(error: Any) {
+                dialog.dismiss()
+                Utils.showError(this@LoginActivity, scroll_top, error)
+            }
+        })
+    }
+
+
+    private fun saveUserData(loginData: Data) {
+        SessionManager.setSession(loginData)
+
+        navigateActivity()
+    }
+
+    private fun navigateActivity() {
+        startActivity(
+            Intent(this, DashboardActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        )
+        overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out)
+        finish()
     }
 }
