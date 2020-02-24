@@ -108,4 +108,9 @@
     <string name="complete">Completar</string>
     <string name="All">Todos</string>
     <string name="string_lumper_sheet_status">lumper_sheet_status</string>
+    <string name="no_internet">¡Sin conexión a Internet!</string>
+    <string name="string_building">Edificios</string>
+    <string name="string_comment">Comentario</string>
+    <string name="string_request_message">Póngase en contacto con su administrador para solicitar una contraseña olvidada.</string>
+    <string name="string_ask_new_lumper">¿Quieres asignar un nuevo lumper?</string>
 </resources>

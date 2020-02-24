@@ -12,12 +12,14 @@ import android.graphics.Typeface
 import android.os.Build
 import android.view.View
 import android.view.Window
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import co.clicke.databases.SharedPreferenceHandler
 import com.quickhandslogistics.R
 import kotlinx.android.synthetic.main.dialog_forgot_password.*
 import kotlinx.android.synthetic.main.fragment_settings.*
+import java.util.*
 
 class Utils {
 
@@ -108,10 +110,34 @@ class Utils {
             animatorSet.start()
             return animatorSet
         }
+
+        fun hideSoftKeyboard(activity: Activity) {
+            try {
+                val inputMethodManager = activity.getSystemService(
+                    Activity.INPUT_METHOD_SERVICE
+                ) as InputMethodManager
+                if (Objects.requireNonNull(inputMethodManager).isActive) {
+                    inputMethodManager.hideSoftInputFromWindow(
+                        Objects.requireNonNull<View>(activity.currentFocus).windowToken, 0
+                    )
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+        }
+
+        fun showError(activity: Activity?, view: View, error: Any) {
+            if (activity == null) return
+
+            val errorManager = ErrorManager(activity, view, error)
+            errorManager.handleErrorResponse()
+        }
     }
 
     interface IOnClick {
         fun onConfirm()
         fun onDismiss()
     }
+
 }
