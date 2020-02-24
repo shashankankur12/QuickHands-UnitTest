@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.text.method.PasswordTransformationMethod
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
 import co.clicke.databases.SharedPreferenceHandler
 import com.fileutils.mainTest
 import com.quickhandslogistics.R
@@ -16,8 +16,6 @@ import com.quickhandslogistics.network.ResponseListener
 import com.quickhandslogistics.session.SessionManager
 import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.activity_login.*
-
-
 
 
 class LoginActivity : BaseActivity(), AppConstant {
@@ -45,7 +43,6 @@ class LoginActivity : BaseActivity(), AppConstant {
             if (validateForm(loginRequest)) {
                 getLogin(loginRequest)
             }
-           // validateForm(employeeId,password)
         }
 
         text_forgot_password.setOnClickListener {
@@ -91,7 +88,7 @@ class LoginActivity : BaseActivity(), AppConstant {
                 return false
             }
 
-            password.length < 8 -> {
+            password.length < 2 -> {
                 Utils.Shake(edit_password)
                 SnackBarFactory.createSnackBar(
                     this,
@@ -109,11 +106,14 @@ class LoginActivity : BaseActivity(), AppConstant {
         DataManager.doLogin(this, loginrequest, object : ResponseListener<LoginResponse> {
             override fun onSuccess(response: LoginResponse) {
                 dialog.dismiss()
+                if(response.success){
                 if (response.data == null) return
 
-                dialog.dismiss()
-                val loginData = response.data.get(0)
+                val loginData = response.data
+
                 saveUserData(loginData)
+                    Toast.makeText(this@LoginActivity,response.message,Toast.LENGTH_SHORT).show()
+                }else Toast.makeText(this@LoginActivity,response.message,Toast.LENGTH_SHORT).show()
             }
 
             override fun onError(error: Any) {
@@ -122,7 +122,6 @@ class LoginActivity : BaseActivity(), AppConstant {
             }
         })
     }
-
 
     private fun saveUserData(loginData: Data) {
         SessionManager.setSession(loginData)
