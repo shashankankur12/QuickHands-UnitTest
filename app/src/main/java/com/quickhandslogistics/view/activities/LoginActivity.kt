@@ -51,7 +51,6 @@ class LoginActivity : BaseActivity(), AppConstant {
         }
     }
 
-
     override fun onResume() {
         super.onResume()
         mainTest()
@@ -61,7 +60,6 @@ class LoginActivity : BaseActivity(), AppConstant {
         SharedPreferenceHandler.setLanguageSelected(language)
         LanguageManager.setLanguage(this, language)
     }
-
 
     private fun validateForm(loginrequest: LoginRequest): Boolean {
         val employeeId = loginrequest.id
