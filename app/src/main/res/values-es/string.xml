@@ -41,8 +41,8 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
-    <string name="text_employee_error_msg">La identificación del empleado no puede estar vacía</string>
-    <string name="text_password_err_msg">La contraseña no puede estar vacía</string>
+    <string name="text_employee_error_msg">El ID de correo electrónico no puede estar vacío</string>
+    <string name="text_password_err_msg">Por favor, ingrese contraseña</string>
     <string name="text_password_err_length">La contraseña debe contener al menos 8 caracteres</string>
 
 
@@ -111,6 +111,7 @@
     <string name="no_internet">¡Sin conexión a Internet!</string>
     <string name="string_building">Edificios</string>
     <string name="string_comment">Comentario</string>
+    <string name="text_employee_valid_email_error_msg">Por favor ingrese una dirección de correo electrónico válida</string>
     <string name="string_request_message">Póngase en contacto con su administrador para solicitar una contraseña olvidada.</string>
     <string name="string_ask_new_lumper">¿Quieres asignar un nuevo lumper?</string>
 </resources>

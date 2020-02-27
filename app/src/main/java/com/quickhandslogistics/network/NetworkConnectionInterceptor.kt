@@ -16,6 +16,7 @@ class NetworkConnectionInterceptor : Interceptor {
         val value = networkInfo != null && networkInfo.isConnected
         return value
     }
+
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         if (!isNetwork()) {
@@ -24,9 +25,11 @@ class NetworkConnectionInterceptor : Interceptor {
         val builder = chain.request().newBuilder()
         return chain.proceed(builder.build())
     }
+
     inner class NoConnectivityException : IOException() {
         override fun getLocalizedMessage(): String {
             return "Network Connection exception"
         }
     }
+
 }

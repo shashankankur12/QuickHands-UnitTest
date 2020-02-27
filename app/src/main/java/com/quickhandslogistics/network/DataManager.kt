@@ -1,11 +1,12 @@
 package com.quickhandslogistics.network
 
 import android.app.Activity
-import android.content.Context
-import com.quickhandslogistics.BuildConfig
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
 import com.quickhandslogistics.model.login.LoginRequest
 import com.quickhandslogistics.model.login.LoginResponse
 import com.quickhandslogistics.utils.AppConstant
+import kotlinx.coroutines.*
+
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -22,8 +23,6 @@ object DataManager : AppConstant {
     private val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
     private val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
 
-
-
     private val okHttpClient = OkHttpClient.Builder()
         .connectTimeout(2, TimeUnit.MINUTES)
         .readTimeout(2, TimeUnit.MINUTES)
@@ -31,6 +30,7 @@ object DataManager : AppConstant {
         .addInterceptor(NetworkConnectionInterceptor())
         .addInterceptor(interceptor)
         .build()
+
     private fun getDataManager(): Retrofit? {
         if (retrofitStandard == null) {
             retrofitStandard = Retrofit.Builder()
@@ -38,6 +38,7 @@ object DataManager : AppConstant {
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
+
         }
         return retrofitStandard
     }
@@ -62,25 +63,28 @@ object DataManager : AppConstant {
         return getMockDataManager()!!.create(IApiInterface::class.java)
     }
 
-    fun doLogin(activity: Activity, loginRequest: LoginRequest, listener: ResponseListener<LoginResponse>) {
-        val call = DataManager.getService().doLogin( loginRequest)
-        call.enqueue(object : Callback<LoginResponse> {
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                if (!response.isSuccessful) {
-                    response.errorBody()?.let { listener.onError(it) }
-                    return
-                }
+     fun doLogin(activity: Activity, loginRequest: LoginRequest, listener: ResponseListener<LoginResponse>) {
+           val call = getService().doLogin(loginRequest)
+               call.enqueue(object : Callback<LoginResponse> {
+                   override fun onResponse(
+                       call: Call<LoginResponse>,
+                       response: Response<LoginResponse>
+                   ) {
+                       if (!response.isSuccessful) {
+                           response.errorBody()?.let { listener.onError(it) }
+                           return
+                       }
 
-                if (response.body()?.success != null && response.body()?.success == true)
-                    listener.onSuccess(response.body()!!)
+                       if (response.body()?.success != null && response.body()?.success == true)
+                           listener.onSuccess(response.body()!!)
+                       else
+                           listener.onError(response.body()!!.message)
+                   }
 
-                else
-                    listener.onError(response.body()!!.message)
-            }
+                   override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                       listener.onError(t)
+                   }
+               })
+           }
+       }
 
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                listener.onError(t)
-            }
-        })
-    }
-    }
