@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Quick Hands</string>
-    <string name="string_email">Email</string>
+    <string name="string_email">Email Id</string>
     <string name="string_employee_id">Employee ID</string>
     <string name="string_login">Login</string>
     <string name="string_forgot_password"><u>Forgot Password?</u></string>
@@ -112,4 +112,5 @@
     <string name="string_lumper_sheet_status">lumper_sheet_status</string>
     <string name="string_building">Buildings</string>
     <string name="no_internet">No internet connection!</string>
+    <string name="invalid_email_password">Please enter valid email/password</string>
 </resources>

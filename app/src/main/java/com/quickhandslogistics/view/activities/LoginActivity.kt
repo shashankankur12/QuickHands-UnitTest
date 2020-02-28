@@ -1,13 +1,11 @@
 package com.quickhandslogistics.view.activities
 
-import android.app.Dialog
+
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.text.method.PasswordTransformationMethod
-import android.util.Patterns
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import co.clicke.databases.SharedPreferenceHandler
 import com.fileutils.mainTest
 import com.quickhandslogistics.R
@@ -19,12 +17,10 @@ import com.quickhandslogistics.network.ResponseListener
 import com.quickhandslogistics.session.SessionManager
 import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.coroutines.*
 import java.util.regex.Pattern
 
 
 class LoginActivity : BaseActivity(), AppConstant {
-   private val EMAIL_REGEX = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,38 +71,25 @@ class LoginActivity : BaseActivity(), AppConstant {
 
             TextUtils.isEmpty(employeeEmailId) -> {
                 Utils.Shake(edit_employee_login_id)
-                SnackBarFactory.createSnackBar(
-                    this,
-                    scroll_top,
-                    resources.getString(R.string.text_employee_error_msg)
-                )
+                SnackBarFactory.createSnackBar(this, scroll_top, resources.getString(R.string.text_employee_error_msg))
                 return false
             }
 
             !validateEmail(employeeEmailId) -> {
                 Utils.Shake(edit_employee_login_id)
-                SnackBarFactory.createSnackBar(this, scroll_top, resources.getString(R.string.text_employee_valid_email_error_msg)
-                )
+                SnackBarFactory.createSnackBar(this, scroll_top, resources.getString(R.string.text_employee_valid_email_error_msg))
                 return false
             }
 
             TextUtils.isEmpty(password) -> {
                 Utils.Shake(edit_password)
-                SnackBarFactory.createSnackBar(
-                    this,
-                    scroll_top,
-                    resources.getString(R.string.text_password_err_msg)
-                )
+                SnackBarFactory.createSnackBar(this, scroll_top, resources.getString(R.string.text_password_err_msg))
                 return false
             }
 
             password.length < 2 -> {
                 Utils.Shake(edit_password)
-                SnackBarFactory.createSnackBar(
-                    this,
-                    scroll_top,
-                    resources.getString(R.string.text_password_err_length)
-                )
+                SnackBarFactory.createSnackBar(this, scroll_top, resources.getString(R.string.text_password_err_length))
                 return false
             }
         }
@@ -129,26 +112,26 @@ class LoginActivity : BaseActivity(), AppConstant {
 
                       override fun onError(error: Any) {
                           dialog.dismiss()
-                          Utils.showError(this@LoginActivity, scroll_top, error)
+                          Utils.Shake(edit_employee_login_id)
+                          Utils.Shake(edit_password)
+                          SnackBarFactory.createSnackBar(this@LoginActivity, scroll_top, resources.getString(R.string.invalid_email_password))
                       }
                   })
           }
 
     private fun saveUserData(loginData: Data) {
         SessionManager.setSession(loginData)
-
         navigateActivity()
     }
 
     private fun navigateActivity() {
-        startActivity(
-            Intent(this, DashboardActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        startActivity(Intent(this, DashboardActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out)
         finish()
     }
 
     fun validateEmail(email: String): Boolean {
-        val pattern = Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE)
+        val pattern = Pattern.compile(AppConstant.EMAIL_REGEX, Pattern.CASE_INSENSITIVE)
         val matcher = pattern.matcher(email)
         return matcher.matches()
     }

@@ -40,7 +40,7 @@
                 android:fontFamily="@font/poppinssemibold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/string_login"
+                android:hint="@string/string_email"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -23,26 +23,37 @@ object SessionManager : AppConstant {
 
     public fun setSession(loginData: Data) {
         if(loginData != null) {
+
             if(!TextUtils.isEmpty(loginData.token))
             AppPreference.getInstance().setString(PREF_TOKEN_ID, loginData.token)
+
             if(!TextUtils.isEmpty(loginData.email))
             AppPreference.getInstance().setString(PREF_EMAIL, loginData.email)
+
             if(!TextUtils.isEmpty(loginData.role))
             AppPreference.getInstance().setString(PREF_ROLE, loginData.role)
+
             //  AppPreference.getInstance().setString(PREF_USERIMAGE, loginData?.profile?.profile_image)
             if(!TextUtils.isEmpty(loginData.firstName))
             AppPreference.getInstance().setString(PREF_USERFIRSTNAME, loginData.firstName)
+
             AppPreference.getInstance().setBoolean(PREF_IS_LOGIN, true)
+
             if(loginData.isActive != null)
             AppPreference.getInstance().setBoolean(PREF_IS_ACTIVE, loginData.isActive)
+
             if(loginData.isEmailVerified != null)
             AppPreference.getInstance().setBoolean(PREF_IS_EMAIL_VERFD, loginData.isEmailVerified)
+
             if(loginData.isPhoneVerified != null)
             AppPreference.getInstance().setBoolean(PREF_IS_PHONE_VERFD, loginData.isPhoneVerified)
+
             if(!TextUtils.isEmpty(loginData.lastName))
-            AppPreference.getInstance().setString(PREF_USERLASTNAME, loginData.lastName)
+                AppPreference.getInstance().setString(PREF_USERLASTNAME, loginData.lastName)
+
             if(!TextUtils.isEmpty(loginData.phone))
             AppPreference.getInstance().setString(PREF_USERPHONE, loginData.phone)
+
             if(!TextUtils.isEmpty(loginData.id))
             AppPreference.getInstance().setString(PREF_USERID, loginData.id)
         }

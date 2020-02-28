@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Quick Hands</string>
-    <string name="string_email">Correo electrónico</string>
+    <string name="string_email">Identificación de correo</string>
     <string name="string_employee_id">ID del empleado</string>
     <string name="string_login">Iniciar sesión</string>
     <string name="string_forgot_password"><u>Olvidé mi contraseña</u></string>
@@ -114,4 +114,5 @@
     <string name="text_employee_valid_email_error_msg">Por favor ingrese una dirección de correo electrónico válida</string>
     <string name="string_request_message">Póngase en contacto con su administrador para solicitar una contraseña olvidada.</string>
     <string name="string_ask_new_lumper">¿Quieres asignar un nuevo lumper?</string>
+    <string name="invalid_email_password">Por favor ingrese un correo electrónico / contraseña válida</string>
 </resources>
