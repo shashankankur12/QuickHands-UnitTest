@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.Utils
+import kotlinx.android.synthetic.main.activity_lumper_details.*
 import kotlinx.android.synthetic.main.layout_header.*
 
 class LumperDetailsActivity : AppCompatActivity() {
@@ -14,16 +15,26 @@ class LumperDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lumper_details)
 
-        image_profile.visibility = View.VISIBLE
+       // image_profile.visibility = View.VISIBLE
         text_title.text = getString(R.string.string_lumper_details)
+        button_submit.visibility = View.GONE
 
         image_back.setOnClickListener {
             Utils.finishActivity(this)
         }
+        getIntentValue()
 
-        image_profile.setOnClickListener {
+        /*image_profile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
             overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out)
+        }*/
+    }
+
+    private fun getIntentValue() {
+        if (intent.hasExtra("lumperData")) {
+           // mId = intent.getStringExtra(AppConstant.USER_PROFILE_ID)
         }
+
+
     }
 }

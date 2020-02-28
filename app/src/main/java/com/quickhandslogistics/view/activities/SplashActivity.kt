@@ -32,6 +32,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun isLogin() {
         val handler = Handler()
+
         if (AppPreference.getInstance(this).getBoolean(AppConstant.PREF_IS_ACTIVE)) {
             handler.postDelayed({
                 startActivity(Intent(this, DashboardActivity::class.java))

@@ -80,7 +80,7 @@ fun showDialog(name: String, activity: Activity) {
 
     var textName = dialog.findViewById<TextView>(R.id.text_lumper_name)
     var radioAttendance = dialog.findViewById<RadioGroup>(R.id.radio_attendance)
-    var comment = dialog.findViewById<EditText>(R.id.text_comment)
+  //  var comment = dialog.findViewById<EditText>(R.id.text_comment)
     var buttonSubmit = dialog.findViewById<TextView>(R.id.text_submit)
     var group = dialog.findViewById<Group>(R.id.group_comment)
 

@@ -19,7 +19,6 @@ import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.activity_login.*
 import java.util.regex.Pattern
 
-
 class LoginActivity : BaseActivity(), AppConstant {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -121,10 +120,24 @@ class LoginActivity : BaseActivity(), AppConstant {
 
     private fun saveUserData(loginData: Data) {
         SessionManager.setSession(loginData)
-        navigateActivity()
+
+        AppPreference.create(this)
+        AppPreference.setloggedInStatus(true)
+
+        if (loginData == null)
+            return
+
+        if (loginData!= null) {
+
+            if (!TextUtils.isEmpty(loginData.token))
+                AppPreference.setSessionId(loginData.token)
+            navigateActivity()
+        }
+
     }
 
     private fun navigateActivity() {
+
         startActivity(Intent(this, DashboardActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out)
         finish()

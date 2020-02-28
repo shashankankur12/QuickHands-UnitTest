@@ -54,8 +54,8 @@ class LumperListActivity : AppCompatActivity() {
             lumperList.add(LumperModel(faker.name.firstName(), faker.name.lastName()))
         }
 
-        lumperAdapter = LumperAdapter(lumperList, this@LumperListActivity!!, lumperJobDetail)
-        recycler_lumper.adapter = this@LumperListActivity?.let { lumperAdapter }
+       /* lumperAdapter = LumperAdapter(lumperList, this@LumperListActivity!!, lumperJobDetail)
+        recycler_lumper.adapter = this@LumperListActivity?.let { lumperAdapter }*/
     }
 
     fun searchLumper() {
@@ -94,7 +94,7 @@ class LumperListActivity : AppCompatActivity() {
             }
         }
 
-        lumperAdapter.filterList(filterName)
+       // lumperAdapter.filterList(filterName)
         if(filterName.isEmpty()) {
             text_no_record_found?.visibility = View.VISIBLE
         } else {

@@ -43,7 +43,7 @@
             app:layout_constraintLeft_toRightOf="@+id/image_lumper_logo" />
 
         <TextView
-            android:id="@+id/text_last_name"
+            android:id="@+id/text_cus_id"
             style="@style/textSizeSmallRegFont"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
             app:layout_constraintTop_toBottomOf="@id/text_lumper"/>
 
         <TextView
-            android:id="@+id/text_shift_hours"
+            android:id="@+id/text_building_name"
             style="@style/textSizeSmallRegFont"
             android:layout_width="0dp"
             android:textStyle="italic"
@@ -71,7 +71,7 @@
             android:textColor="@color/colorBlack"
             app:layout_constraintRight_toLeftOf="@id/image_phone"
             app:layout_constraintLeft_toLeftOf="@id/text_lumper"
-            app:layout_constraintTop_toBottomOf="@id/text_last_name"/>
+            app:layout_constraintTop_toBottomOf="@id/text_cus_id"/>
 
         <ImageView
             android:id="@+id/image_phone"

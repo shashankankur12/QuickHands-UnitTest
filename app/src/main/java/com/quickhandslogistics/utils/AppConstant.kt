@@ -22,6 +22,9 @@ interface AppConstant {
         val PREF_ROLE = "pref_user_role"
         val PREF_USERID = "pref_user_id"
         val PREF_USERIMAGE = "pref_userimage"
+        val PREF_KEY_USER_LOGGED_IN = "PREF_KEY_USER_LOGGED_IN"
+        val PREF_KEY_USER_SESSION = "PREF_KEY_USER_SESSION"
+        val PREF_SESSION_ID = "pref_session_id"
 
     }
 }

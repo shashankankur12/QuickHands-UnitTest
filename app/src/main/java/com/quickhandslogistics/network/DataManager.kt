@@ -1,11 +1,11 @@
 package com.quickhandslogistics.network
 
 import android.app.Activity
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
 import com.quickhandslogistics.model.login.LoginRequest
 import com.quickhandslogistics.model.login.LoginResponse
+import com.quickhandslogistics.model.lumper.AllLumpersResponse
 import com.quickhandslogistics.utils.AppConstant
-import kotlinx.coroutines.*
+import com.quickhandslogistics.utils.AppPreference
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -17,7 +17,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object DataManager : AppConstant {
-
     private var retrofit: Retrofit? = null
     private var retrofitStandard: Retrofit? = null
     private val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -58,7 +57,6 @@ object DataManager : AppConstant {
         return getDataManager()!!.create(IApiInterface::class.java)
     }
 
-
     fun getMockService(): IApiInterface {
         return getMockDataManager()!!.create(IApiInterface::class.java)
     }
@@ -86,5 +84,29 @@ object DataManager : AppConstant {
                    }
                })
            }
+
+    fun getAllLumpersData(activity: Activity, listener: ResponseListener<AllLumpersResponse>) {
+        val call = getService().getAllLumpersData("Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImthcmlzaG1hQGNyb3duc3RhY2suY29tIiwiaWF0IjoxNTgyODA5MzQ4fQ.D7yUAge14KVPtH1Ckat_4TL8lcOdSjBppkQICRYOrrc")
+        call.enqueue(object : Callback<AllLumpersResponse> {
+            override fun onResponse(
+                call: Call<AllLumpersResponse>,
+                response: Response<AllLumpersResponse>
+            ) {
+                if (!response.isSuccessful) {
+                    response.errorBody()?.let { listener.onError(it) }
+                    return
+                }
+
+                if (response.body()?.success != null && response.body()?.success == true)
+                    listener.onSuccess(response.body()!!)
+                else
+                    listener.onError(response.body()!!.message)
+            }
+
+            override fun onFailure(call: Call<AllLumpersResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
        }
 
