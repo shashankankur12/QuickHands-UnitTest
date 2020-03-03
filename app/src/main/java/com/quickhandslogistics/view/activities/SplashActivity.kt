@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.AppPreference
+import com.quickhandslogistics.utils.SharedPref
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.activity_splash.*
 
@@ -32,8 +32,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun isLogin() {
         val handler = Handler()
-
-        if (AppPreference.getInstance(this).getBoolean(AppConstant.PREF_IS_ACTIVE)) {
+        if (SharedPref.getInstance().getBoolean(AppConstant.PREF_IS_ACTIVE)) {
             handler.postDelayed({
                 startActivity(Intent(this, DashboardActivity::class.java))
                 overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out)

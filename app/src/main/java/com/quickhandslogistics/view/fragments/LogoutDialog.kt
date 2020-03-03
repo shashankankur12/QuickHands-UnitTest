@@ -12,7 +12,10 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.AppPreference
+import com.quickhandslogistics.utils.AppConstant.Companion.PREF_AUTH_TOKEN
+import com.quickhandslogistics.utils.AppConstant.Companion.PREF_EMP_ID
+import com.quickhandslogistics.utils.AppConstant.Companion.PREF_IS_ACTIVE
+import com.quickhandslogistics.utils.SharedPref
 import com.quickhandslogistics.view.activities.LoginActivity
 
 class LogoutDialog : DialogFragment() {
@@ -36,8 +39,10 @@ class LogoutDialog : DialogFragment() {
 
         textYes.setOnClickListener {
             dialog.dismiss()
-            AppPreference.getInstance(activity!!).setBoolean(AppConstant.PREF_IS_LOGIN, false)
-            AppPreference.clearSessionId(activity!!)
+            SharedPref.getInstance().setString(PREF_AUTH_TOKEN, "")
+            SharedPref.getInstance().setBoolean(PREF_IS_ACTIVE, false)
+            //SharedPref.getInstance().clearAllShareperece()
+
 
           Toast.makeText(this.requireContext(),"you have successfully logged out",Toast.LENGTH_SHORT).show()
 

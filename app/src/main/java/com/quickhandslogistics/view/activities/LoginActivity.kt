@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.text.method.PasswordTransformationMethod
 import android.widget.Toast
-import co.clicke.databases.SharedPreferenceHandler
 import com.fileutils.mainTest
 import com.quickhandslogistics.R
 import com.quickhandslogistics.model.login.Data
@@ -14,12 +13,21 @@ import com.quickhandslogistics.model.login.LoginRequest
 import com.quickhandslogistics.model.login.LoginResponse
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
-import com.quickhandslogistics.session.SessionManager
 import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.AppConstant.Companion.PREF_AUTH_TOKEN
+import com.quickhandslogistics.utils.AppConstant.Companion.PREF_EMAIL
+import com.quickhandslogistics.utils.AppConstant.Companion.PREF_EMP_ID
+import com.quickhandslogistics.utils.AppConstant.Companion.PREF_IS_ACTIVE
+import com.quickhandslogistics.utils.AppConstant.Companion.PREF_ROLE
+import com.quickhandslogistics.utils.AppConstant.Companion.PREF_USERFIRSTNAME
+import com.quickhandslogistics.utils.AppConstant.Companion.PREF_USERLASTNAME
+import com.quickhandslogistics.utils.AppConstant.Companion.PREF_USERPHONE
+import com.quickhandslogistics.utils.AppConstant.Companion.PREF_USER_NAME
 import kotlinx.android.synthetic.main.activity_login.*
 import java.util.regex.Pattern
 
 class LoginActivity : BaseActivity(), AppConstant {
+    var empId  : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +35,7 @@ class LoginActivity : BaseActivity(), AppConstant {
 
         Utils.changeStatusBar(this)
 
+        setEmpId()
         edit_password.transformationMethod = PasswordTransformationMethod()
 
         text_forgot_password.setOnClickListener {
@@ -54,16 +63,16 @@ class LoginActivity : BaseActivity(), AppConstant {
 
     override fun onResume() {
         super.onResume()
-        mainTest()
+        setEmpId()
     }
 
     fun setLanguageData(language: String?) {
-        SharedPreferenceHandler.setLanguageSelected(language)
+
         LanguageManager.setLanguage(this, language)
     }
 
     private fun validateForm(loginrequest: LoginRequest): Boolean {
-        val employeeEmailId = loginrequest.email
+        val employeeEmailId = loginrequest.id
         val password = loginrequest.password
 
         when {
@@ -74,11 +83,11 @@ class LoginActivity : BaseActivity(), AppConstant {
                 return false
             }
 
-            !validateEmail(employeeEmailId) -> {
+          /*  !validateEmail(employeeEmailId) -> {
                 Utils.Shake(edit_employee_login_id)
                 SnackBarFactory.createSnackBar(this, scroll_top, resources.getString(R.string.text_employee_valid_email_error_msg))
                 return false
-            }
+            }*/
 
             TextUtils.isEmpty(password) -> {
                 Utils.Shake(edit_password)
@@ -95,14 +104,14 @@ class LoginActivity : BaseActivity(), AppConstant {
         return true
     }
 
-   fun  getLogin(loginrequest: LoginRequest) {
+   private fun  getLogin(loginrequest: LoginRequest) {
            val dialog = CustomProgressBar.getInstance(this@LoginActivity).showProgressDialog("Logging in...")
 
-              DataManager.doLogin(this@LoginActivity, loginrequest, object : ResponseListener<LoginResponse> {
+              DataManager.doLogin( loginrequest, object : ResponseListener<LoginResponse> {
                       override fun onSuccess(response: LoginResponse) {
                             dialog.dismiss()
                           if (response.success) {
-                              if (response.data == null) return
+
                               val loginData = response.data
                               saveUserData(loginData)
                               Toast.makeText(this@LoginActivity, response.message, Toast.LENGTH_SHORT).show()
@@ -119,21 +128,18 @@ class LoginActivity : BaseActivity(), AppConstant {
           }
 
     private fun saveUserData(loginData: Data) {
-        SessionManager.setSession(loginData)
 
-        AppPreference.create(this)
-        AppPreference.setloggedInStatus(true)
+                SharedPref.getInstance().setBoolean(PREF_IS_ACTIVE,loginData.isActive)
+                SharedPref.getInstance().setString(PREF_AUTH_TOKEN, loginData.token)
+                SharedPref.getInstance().setString(PREF_EMP_ID,loginData.employeeId)
+                SharedPref.getInstance().setString(PREF_USERPHONE,loginData.phone)
+                SharedPref.getInstance().setString(PREF_EMAIL,loginData.email)
+                SharedPref.getInstance().setString(PREF_ROLE,loginData.role)
+                SharedPref.getInstance().setString(PREF_USER_NAME,loginData.firstName + " " + loginData.lastName)
+                SharedPref.getInstance().setString(PREF_USERFIRSTNAME,loginData.firstName)
+                SharedPref.getInstance().setString(PREF_USERLASTNAME,loginData.lastName)
 
-        if (loginData == null)
-            return
-
-        if (loginData!= null) {
-
-            if (!TextUtils.isEmpty(loginData.token))
-                AppPreference.setSessionId(loginData.token)
             navigateActivity()
-        }
-
     }
 
     private fun navigateActivity() {
@@ -147,5 +153,14 @@ class LoginActivity : BaseActivity(), AppConstant {
         val pattern = Pattern.compile(AppConstant.EMAIL_REGEX, Pattern.CASE_INSENSITIVE)
         val matcher = pattern.matcher(email)
         return matcher.matches()
+    }
+
+    fun setEmpId(){
+
+        if(!TextUtils.isEmpty(SharedPref.getInstance().getString(PREF_EMP_ID))) {
+            empId = SharedPref.getInstance().getString(PREF_EMP_ID)
+            edit_employee_login_id.setText(empId)
+            edit_employee_login_id.setSelection(empId.length)
+        }
     }
 }

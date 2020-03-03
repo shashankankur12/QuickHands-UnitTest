@@ -118,7 +118,7 @@ class LumperFragment : Fragment() {
     fun  getLumperList() {
         val dialog = CustomProgressBar.getInstance(activity!!).showProgressDialog("Please wait while data is loading...")
 
-        DataManager.getAllLumpersData(activity!!,  object :
+        DataManager.getAllLumpersData(  object :
             ResponseListener<AllLumpersResponse> {
             override fun onSuccess(response: AllLumpersResponse) {
                 dialog.dismiss()

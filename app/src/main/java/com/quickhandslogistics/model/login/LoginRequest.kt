@@ -1,7 +1,7 @@
 package com.quickhandslogistics.model.login
 
 data class LoginRequest(
-    val email: String,
+    val id: String,
     val password: String
 
 )

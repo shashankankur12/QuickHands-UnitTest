@@ -11,6 +11,6 @@
         android:layout_height="120dp"
         android:layout_marginBottom="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:background="@drawable/quickhands_logo"/>
+        android:background="@drawable/ic_splash_logo"/>
 
 </LinearLayout>

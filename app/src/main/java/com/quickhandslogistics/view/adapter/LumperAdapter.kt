@@ -19,6 +19,7 @@ import com.quickhandslogistics.view.activities.LumperJobHistoryActivity
 import com.quickhandslogistics.view.activities.LumperSheetDetailActivity
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_lumper_layout.view.*
+import java.io.Serializable
 
 
 class LumperAdapter(var items: List<LumperData>, val context: Context, var lumperJobDetails : String) : Adapter<ViewHolder>() {
@@ -34,9 +35,9 @@ class LumperAdapter(var items: List<LumperData>, val context: Context, var lumpe
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.lumperText?.text = items.get(position).firstName + " " + items.get(position).lastName
+        holder.lumperText?.text = items.get(position).firstName.capitalize() + " " + items.get(position).lastName.capitalize()
         holder.lumperCustId?.text = items.get(position).email
-        holder.lumperBuilding?.text = items.get(position).role
+        holder.lumperBuilding?.text = items.get(position).role.capitalize()
         var phone =  items.get(position).phone
 
         holder.constraintRoot.setOnClickListener {
@@ -46,9 +47,10 @@ class LumperAdapter(var items: List<LumperData>, val context: Context, var lumpe
                 context.startActivity(Intent(context, LumperSheetDetailActivity::class.java))
                 else {
                 val intent = Intent(context, LumperDetailsActivity::class.java)
-                intent.putExtra("lumperData", items.get(position))
+                val lumperData = items.get(position)
+                if (lumperData != null)
+                    intent.putExtra("lumperData", lumperData as Serializable)
                 context.startActivity(intent)
-
 
             }
         }

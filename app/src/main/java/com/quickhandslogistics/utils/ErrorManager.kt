@@ -20,7 +20,7 @@ class ErrorManager(private val mActivity: Activity, private val mView: View, pri
         if (mObject is NetworkConnectionInterceptor.NoConnectivityException) {
             SnackBarFactory.createSnackBar(mActivity, mView, mActivity.resources.getString(R.string.no_internet))
         } else if (mObject is Throwable)
-            SnackBarFactory.createSnackBar(mActivity, mView, mObject.localizedMessage)
+            SnackBarFactory.createSnackBar(mActivity, mView, mObject.localizedMessage!!)
 
         if (mObject is Error) {
             val response = mObject as Error?
@@ -39,7 +39,7 @@ class ErrorManager(private val mActivity: Activity, private val mView: View, pri
         SnackBarFactory.createSnackBar(mActivity, mView, "Your session has expired. Please login.")
 
         Handler().postDelayed({
-            AppPreference.getInstance(mActivity).setBoolean(AppConstant.PREF_IS_LOGIN, false)
+            //AppPreference.getInstance(mActivity).setBoolean(AppConstant.PREF_IS_LOGIN, false)
           //  AuthRepo.clearSessionId(mActivity)
             mActivity.startActivity(Intent(mActivity, LoginActivity::class.java)
                 .putExtra("down", true)

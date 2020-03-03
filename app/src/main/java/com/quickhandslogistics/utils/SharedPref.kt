@@ -1,19 +1,32 @@
-package co.clicke.databases
+package com.quickhandslogistics.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import com.quickhandslogistics.application.MyApplication
 import com.quickhandslogistics.utils.AppConstant.Companion.APP_SHARED_PREFERENCE
 import com.quickhandslogistics.utils.AppConstant.Companion.PREF_LANGUAGE_SELECT
 
-object SharedPreferenceHandler {
+class SharedPref private constructor(context: Context): AppConstant {
 
     var SharedPreferencesFileName: String = "MyPref"
     var sharedPreferences: SharedPreferences? = null
     var editor: SharedPreferences.Editor? = null
 
-    fun getInstance(context: Context) {
+   init {
         sharedPreferences = context.getSharedPreferences(SharedPreferencesFileName, 0)
         editor = sharedPreferences?.edit()
+    }
+
+    companion object {
+        private var instance : SharedPref? = null
+
+        fun  getInstance(): SharedPref {
+            if (instance == null)
+                instance = SharedPref(MyApplication.mApp!!)
+
+            return instance!!
+        }
     }
 
     fun clearAllShareperece() {
@@ -55,7 +68,7 @@ object SharedPreferenceHandler {
     }
 
     fun setFirebaseToken(key: String, token: String) {
-        editor!!.putString(key, token)
+        editor!!.putString(key, token).apply()
     }
 
     fun setLanguageSelected(language: String?) {

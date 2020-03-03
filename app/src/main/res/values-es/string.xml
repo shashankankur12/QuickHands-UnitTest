@@ -2,8 +2,8 @@
 <resources>
     <string name="app_name">Quick Hands</string>
     <string name="string_email">Identificación de correo</string>
-    <string name="string_employee_id">ID del empleado</string>
-    <string name="string_login">Iniciar sesión</string>
+    <string name="string_employee_id"><font size="20"></font>ID del empleado</string>
+    <string name="string_login">Registrarse</string>
     <string name="string_forgot_password"><u>Olvidé mi contraseña</u></string>
     <string name="string_forgot_password_heading">Olvidé mi contraseña</string>
     <string name="string_reset_password_text">Ingrese su correo electrónico registrado para restablecer la contraseña</string>
@@ -29,7 +29,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Configuraciones</string>
-    <string name="string_password">Contraseña</string>
+    <string name="string_password"><font size="20"></font>Contraseña</string>
 
     <string name="numbers">0123456789</string>
     <string name="digits">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789</string>

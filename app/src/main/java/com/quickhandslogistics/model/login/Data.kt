@@ -11,5 +11,6 @@ data class Data(
     val isEmailVerified: Boolean,
     val isPhoneVerified: Boolean,
     val role: String,
+    val employeeId: String,
     val token: String
 )

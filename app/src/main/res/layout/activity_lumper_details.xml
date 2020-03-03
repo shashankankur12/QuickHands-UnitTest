@@ -37,55 +37,21 @@
                     />
 
                 <TextView
-                    android:id="@+id/input_id"
-                    style="@style/textSizeSmallRegFont"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:text="Lumper Id"
-                    android:includeFontPadding="false"
-                    android:textColor="@color/colorBlack"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/image_profile"/>
-
-                <TextView
-                    android:id="@+id/text_id"
-                    style="@style/textSizeNormalRegFont"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:includeFontPadding="false"
-                    android:fontFamily="@font/poppinssemibold"
-                    android:imeOptions="actionNext"
-                    android:inputType="textNoSuggestions"
-                    android:maxLines="1"
-                    android:nextFocusDown="@id/edit_password"
-                    android:singleLine="true"
-                    android:textColor="@color/colorBlack"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/input_id" />
-
-                <TextView
                     android:id="@+id/input_name"
                     style="@style/textSizeSmallRegFont"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:text="Lumper Name"
                     android:includeFontPadding="false"
                     android:textColor="@color/colorBlack"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_id" />
+                    app:layout_constraintTop_toBottomOf="@+id/image_profile" />
 
-                <TextView
+                <EditText
                     android:id="@+id/text_name"
                     style="@style/textSizeNormalRegFont"
                     android:layout_width="0dp"
@@ -97,6 +63,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="textNoSuggestions"
                     android:maxLines="1"
+                    android:enabled="false"
                     android:nextFocusDown="@id/edit_password"
                     android:singleLine="true"
                     android:textColor="@color/colorBlack"
@@ -119,7 +86,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/text_name" />
 
-                <TextView
+                <EditText
                     android:id="@+id/edit_email"
                     style="@style/textSizeNormalRegFont"
                     android:layout_width="0dp"
@@ -131,6 +98,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="textNoSuggestions"
                     android:maxLines="1"
+                    android:enabled="false"
                     android:nextFocusDown="@id/edit_password"
                     android:singleLine="true"
                     android:textColor="@color/colorBlack"
@@ -153,7 +121,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_email" />
 
-                <TextView
+                <EditText
                     android:id="@+id/edit_phone"
                     style="@style/textSizeNormalRegFont"
                     android:layout_width="0dp"
@@ -166,6 +134,7 @@
                     android:inputType="phone"
                     android:maxLength="15"
                     android:maxLines="1"
+                    android:enabled="false"
                     android:nextFocusDown="@id/edit_password"
                     android:singleLine="true"
                     android:textColor="@color/colorBlack"
@@ -188,7 +157,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_phone" />
 
-                <TextView
+                <EditText
                     android:id="@+id/edit_role"
                     style="@style/textSizeNormalRegFont"
                     android:layout_width="0dp"
@@ -201,6 +170,7 @@
                     android:maxLines="5"
                     android:includeFontPadding="false"
                     android:minLines="1"
+                    android:enabled="false"
                     android:nextFocusDown="@id/edit_password"
                     android:textColor="@color/colorBlack"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -222,7 +192,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_role" />
 
-                <TextView
+                <EditText
                     android:id="@+id/edit_Created_at"
                     style="@style/textSizeNormalRegFont"
                     android:layout_width="0dp"
@@ -232,6 +202,7 @@
                     android:includeFontPadding="false"
                     android:fontFamily="@font/poppinssemibold"
                     android:imeOptions="actionNext"
+                    android:enabled="false"
                     android:inputType="textNoSuggestions"
                     android:nextFocusDown="@id/edit_password"
                     android:textColor="@color/colorBlack"
@@ -254,7 +225,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_Created_at" />
 
-                <TextView
+                <EditText
                     android:id="@+id/edit_updated_at"
                     style="@style/textSizeNormalRegFont"
                     android:layout_width="0dp"
@@ -266,6 +237,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="textNoSuggestions"
                     android:maxLines="1"
+                    android:enabled="false"
                     android:nextFocusDown="@id/edit_password"
                     android:singleLine="true"
                     android:textColor="@color/colorBlack"
@@ -288,7 +260,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/edit_updated_at" />
 
-                <TextView
+                <EditText
                     android:id="@+id/edit_sign"
                     style="@style/textSizeNormalRegFont"
                     android:layout_width="0dp"
@@ -300,6 +272,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="textNoSuggestions"
                     android:maxLines="1"
+                    android:enabled="false"
                     android:nextFocusDown="@id/edit_password"
                     android:singleLine="true"
                     android:textColor="@color/colorBlack"
@@ -328,6 +301,5 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

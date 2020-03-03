@@ -5,7 +5,7 @@ import com.quickhandslogistics.model.login.LoginRequest
 import com.quickhandslogistics.model.login.LoginResponse
 import com.quickhandslogistics.model.lumper.AllLumpersResponse
 import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.AppPreference
+import com.quickhandslogistics.utils.SharedPref
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -61,7 +61,7 @@ object DataManager : AppConstant {
         return getMockDataManager()!!.create(IApiInterface::class.java)
     }
 
-     fun doLogin(activity: Activity, loginRequest: LoginRequest, listener: ResponseListener<LoginResponse>) {
+     fun doLogin(loginRequest: LoginRequest, listener: ResponseListener<LoginResponse>) {
            val call = getService().doLogin(loginRequest)
                call.enqueue(object : Callback<LoginResponse> {
                    override fun onResponse(
@@ -85,13 +85,10 @@ object DataManager : AppConstant {
                })
            }
 
-    fun getAllLumpersData(activity: Activity, listener: ResponseListener<AllLumpersResponse>) {
-        val call = getService().getAllLumpersData("Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImthcmlzaG1hQGNyb3duc3RhY2suY29tIiwiaWF0IjoxNTgyODA5MzQ4fQ.D7yUAge14KVPtH1Ckat_4TL8lcOdSjBppkQICRYOrrc")
+    fun getAllLumpersData(listener: ResponseListener<AllLumpersResponse>) {
+        val call = getService().getAllLumpersData("Bearer " + SharedPref.getInstance().getString(AppConstant.PREF_AUTH_TOKEN))
         call.enqueue(object : Callback<AllLumpersResponse> {
-            override fun onResponse(
-                call: Call<AllLumpersResponse>,
-                response: Response<AllLumpersResponse>
-            ) {
+            override fun onResponse(call: Call<AllLumpersResponse>, response: Response<AllLumpersResponse>) {
                 if (!response.isSuccessful) {
                     response.errorBody()?.let { listener.onError(it) }
                     return

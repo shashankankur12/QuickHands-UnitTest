@@ -1,5 +1,4 @@
 package com.quickhandslogistics.utils
-
 interface AppConstant {
 
     companion  object {
@@ -24,7 +23,10 @@ interface AppConstant {
         val PREF_USERIMAGE = "pref_userimage"
         val PREF_KEY_USER_LOGGED_IN = "PREF_KEY_USER_LOGGED_IN"
         val PREF_KEY_USER_SESSION = "PREF_KEY_USER_SESSION"
-        val PREF_SESSION_ID = "pref_session_id"
+        val PREF_EMP_ID = "pref_emp_id"
+        val PREF_AUTH_TOKEN = "pref_auth_token"
+        val EDIT_DIALOG = "edit_dialog"
+        val PREF_USER_NAME = "pref_user_name"
 
     }
 }

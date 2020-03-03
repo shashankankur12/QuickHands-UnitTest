@@ -2,6 +2,8 @@ package com.quickhandslogistics.view.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.SharedMemory
+import android.text.TextUtils
 import android.view.View
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -16,13 +18,21 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.quickhandslogistics.BuildConfig
 import com.quickhandslogistics.R
+import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.AppConstant.Companion.PREF_USERFIRSTNAME
+import com.quickhandslogistics.utils.AppConstant.Companion.PREF_USER_NAME
+import com.quickhandslogistics.utils.SharedPref
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.nav_header_dashboard.*
+import org.w3c.dom.Text
 
 class DashboardActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController : NavController
     private var mDrawerTab = 0
+    private var leadName  : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,6 +98,7 @@ class DashboardActivity : AppCompatActivity() {
             6 -> navController?.navigate(R.id.nav_settings)
         }
     }
+
 }
 
 

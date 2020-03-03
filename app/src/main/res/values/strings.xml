@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Quick Hands</string>
     <string name="string_email">Email Id</string>
-    <string name="string_employee_id">Employee ID</string>
-    <string name="string_login">Login</string>
+    <string name="string_employee_id"><font size="20"></font>Employee ID  </string>
+    <string name="string_login">Sign In</string>
     <string name="string_forgot_password"><u>Forgot Password?</u></string>
     <string name="string_forgot_password_heading">Forgot Password</string>
     <string name="string_reset_password_text">Please enter your registered email to reset password</string>
@@ -90,7 +90,7 @@
     <string name="lunch_in">Lunch In</string>
     <string name="notes">Notes</string>
     <string name="signature">Signature</string>
-    <string name="string_password">Password</string>
+    <string name="string_password"><font size="20"></font>Password</string>
     <string name="string_change_language">Change Language</string>
     <string name="string_notification">Notification</string>
     <string name="string_location">Location</string>

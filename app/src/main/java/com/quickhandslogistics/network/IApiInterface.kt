@@ -7,7 +7,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface IApiInterface {
-    @POST("employees/login")
+    @POST("employees/lead/login")
     fun doLogin(@Body loginRequest: LoginRequest): Call<LoginResponse>
 
     @GET("employees/lead/lumpers")

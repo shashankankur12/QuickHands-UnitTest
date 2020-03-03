@@ -18,7 +18,7 @@
         android:paddingRight="@dimen/_10sdp"
         android:paddingBottom="@dimen/_5sdp"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/quickhands_logo" />
+        app:srcCompat="@drawable/ic_splash_logo" />
 
     <ImageView
         android:id="@+id/image_profile_logo"

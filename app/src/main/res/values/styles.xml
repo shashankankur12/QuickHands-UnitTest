@@ -35,7 +35,7 @@
 
     <style name="textSizeNormalRegFont">
         <item name="android:textSize">@dimen/_12ssp</item>
-        <item name="android:fontFamily">@font/poppinsregular</item>
+        <item name="android:fontFamily">@font/poppinssemibold</item>
     </style>
 
     <style name="textSizeLargeRegFont">

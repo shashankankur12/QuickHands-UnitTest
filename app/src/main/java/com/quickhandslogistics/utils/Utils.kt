@@ -15,11 +15,12 @@ import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import co.clicke.databases.SharedPreferenceHandler
 import com.quickhandslogistics.R
 import kotlinx.android.synthetic.main.dialog_forgot_password.*
-import kotlinx.android.synthetic.main.fragment_settings.*
+import java.text.SimpleDateFormat
 import java.util.*
+import java.text.ParseException
+
 
 class Utils {
 
@@ -27,7 +28,10 @@ class Utils {
 
         fun finishActivity(activity: Activity) {
             activity.finish()
-            activity.overridePendingTransition(R.anim.anim_prev_slide_in, R.anim.anim_prev_slide_out)
+            activity.overridePendingTransition(
+                R.anim.anim_prev_slide_in,
+                R.anim.anim_prev_slide_out
+            )
         }
 
         fun changeStatusBar(activity: Activity) {
@@ -40,25 +44,31 @@ class Utils {
                 window.statusBarColor = ContextCompat.getColor(activity, white)
             } else {
                 decor.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                window.statusBarColor = ContextCompat.getColor(activity,R.color.colorLightGrey)
+                window.statusBarColor = ContextCompat.getColor(activity, R.color.colorLightGrey)
             }
         }
 
-        fun getPoppinsRegularTypeface(context : Context) : Typeface {
+        fun getPoppinsRegularTypeface(context: Context): Typeface {
             return Typeface.createFromAsset(context.assets, "fonts/poppinsregular.ttf")
         }
 
-        fun getPoppinsSemiBoldTypeface(context : Context) : Typeface {
+        fun getPoppinsSemiBoldTypeface(context: Context): Typeface {
             return Typeface.createFromAsset(context.assets, "fonts/poppinssemibold.ttf.ttf")
         }
 
-        fun navigateToActivity(currentActivity: Activity, destinationActivity : Activity) {
+        fun navigateToActivity(currentActivity: Activity, destinationActivity: Activity) {
             currentActivity.startActivity(Intent(currentActivity, destinationActivity::class.java))
-            currentActivity.overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out)
+            currentActivity.overridePendingTransition(
+                R.anim.anim_next_slide_in,
+                R.anim.anim_next_slide_out
+            )
         }
 
-        fun askForPermissions(activity: Activity, permissions: String) : Boolean {
-            return ContextCompat.checkSelfPermission(activity, permissions) == PackageManager.PERMISSION_GRANTED
+        fun askForPermissions(activity: Activity, permissions: String): Boolean {
+            return ContextCompat.checkSelfPermission(
+                activity,
+                permissions
+            ) == PackageManager.PERMISSION_GRANTED
         }
 
         fun showForgotPasswordDialog(animation: Int, title: String, activity: Activity) {
@@ -100,11 +110,13 @@ class Utils {
             dialog.show()
         }
 
-        fun Shake (view: View) : AnimatorSet {
+        fun Shake(view: View): AnimatorSet {
             val animatorSet = AnimatorSet()
 
-            val object1: ObjectAnimator = ObjectAnimator.ofFloat(view, "scaleX", 1f, 1.75f, 1.75f, 1.75f, 1f)
-            val object2: ObjectAnimator = ObjectAnimator.ofFloat(view, "scaleY", 1f, 1.75f, 1.75f, 0.85f, 1f)
+            val object1: ObjectAnimator =
+                ObjectAnimator.ofFloat(view, "scaleX", 1f, 1.75f, 1.75f, 1.75f, 1f)
+            val object2: ObjectAnimator =
+                ObjectAnimator.ofFloat(view, "scaleY", 1f, 1.75f, 1.75f, 0.85f, 1f)
 
             animatorSet.playTogether(object1, object2)
             animatorSet.start()
@@ -132,6 +144,22 @@ class Utils {
 
             val errorManager = ErrorManager(activity, view, error)
             errorManager.handleErrorResponse()
+        }
+
+        fun convertLocalToUTC(inputTime: String): String {
+            var formattedDate = ""
+            val originalFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+            val targetFormat = SimpleDateFormat("dd MMM yyyy")
+            targetFormat.timeZone = TimeZone.getTimeZone("UTC")
+            var date: Date? = null
+            try {
+                date = originalFormat.parse(inputTime)
+            } catch (e: ParseException) {
+                e.printStackTrace()
+            }
+
+            formattedDate = targetFormat.format(date)
+            return formattedDate
         }
     }
 

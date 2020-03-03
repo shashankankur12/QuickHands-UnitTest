@@ -2,8 +2,6 @@ package com.quickhandslogistics.application
 
 import android.app.Application
 import android.content.Context
-import co.clicke.databases.SharedPreferenceHandler
-import io.bloco.faker.components.App
 
 class MyApplication : Application() {
 
@@ -11,8 +9,6 @@ class MyApplication : Application() {
         super.onCreate()
         application = this
         mApp = this
-        SharedPreferenceHandler.getInstance(this)
-
     }
 
     companion object {
