@@ -24,7 +24,7 @@ class SettingsFragment : Fragment() {
 
     fun getLocale() {
          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-             currentLocale = resources.configuration.locale.language
+             currentLocale = resources.configuration.locales.get(0).language
 
              switch_language.isChecked = currentLocale!!.equals(ESPANOL)
         }

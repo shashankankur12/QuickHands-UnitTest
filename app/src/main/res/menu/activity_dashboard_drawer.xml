@@ -34,7 +34,7 @@
             android:icon="@drawable/ic_result"
             android:title="@string/string_reports" />
 
-        <item
+        <!--<item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_wheel"
             android:title="@string/string_settings" />
@@ -42,8 +42,24 @@
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_logout"
-            android:title="@string/string_logout" />
+            android:title="@string/string_logout" />-->
 
     </group>
+
+    <item android:title="">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_settings"
+                    android:icon="@drawable/ic_wheel"
+                    android:title="@string/string_settings" />
+
+                <item
+                    android:id="@+id/nav_logout"
+                    android:icon="@drawable/ic_logout"
+                    android:title="@string/string_logout" />
+            </group>
+        </menu>
+    </item>
 
 </menu>

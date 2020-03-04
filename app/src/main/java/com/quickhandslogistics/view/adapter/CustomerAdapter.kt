@@ -35,7 +35,7 @@ class CustomerAdapter (var items: ArrayList<CustomerModel>,val mActivity: Activi
 
     override fun onBindViewHolder(holder: CustomerViewHolder, position: Int) {
         holder.lumperText.text = items.get(position).name
-        holder.lumperHours.text = faker.address.streetAddress()
+//        holder.lumperHours.text = faker?.address.streetAddress()
        /* holder.constraintRoot.setOnClickListener(View.OnClickListener { view ->
             mActivity.finish()
         })*/

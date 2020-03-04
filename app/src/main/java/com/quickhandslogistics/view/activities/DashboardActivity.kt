@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -45,6 +46,7 @@ class DashboardActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         var drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+
         
         var navView: NavigationView = findViewById(R.id.nav_view)
         var view:View = navView.getHeaderView(0)
@@ -53,7 +55,7 @@ class DashboardActivity : AppCompatActivity() {
 
         if (intent.hasExtra("drawer_tab"))
             moveToLumper()
-        val relativeLayout = view.findViewById<RelativeLayout>(R.id.relative_root)
+        val relativeLayout = view.findViewById<ConstraintLayout>(R.id.relative_root)
 
         relativeLayout.setOnClickListener(View.OnClickListener {
             val intent = Intent(this, LeadProfileActivity::class.java)

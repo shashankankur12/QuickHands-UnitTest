@@ -1,76 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/side_nav_bar"
     android:id="@+id/relative_root"
-    android:padding="@dimen/_20sdp"
+    android:padding="@dimen/_5sdp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="@dimen/_150sdp"
-        android:layout_height="@dimen/_70sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:contentDescription="@string/nav_header_desc"
-        android:paddingLeft="@dimen/_10sdp"
-        android:paddingTop="@dimen/_5sdp"
-        android:paddingRight="@dimen/_10sdp"
-        android:paddingBottom="@dimen/_5sdp"
-        android:layout_centerHorizontal="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_splash_logo" />
 
-    <ImageView
-        android:id="@+id/image_profile_logo"
-        android:layout_width="@dimen/_30sdp"
-        android:layout_height="@dimen/_30sdp"
-        android:layout_alignBottom="@+id/textView"
-        android:layout_marginTop="@dimen/_70sdp"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:contentDescription="@string/nav_header_desc"
-        app:srcCompat="@drawable/ic_basic_info_placeholder" />
-
     <TextView
-        android:id="@+id/text_name"
+        android:id="@+id/text_lead_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Lead Name"
-        android:textStyle="bold"
+        android:gravity="start"
         android:textColor="@color/colorBlack"
-        android:paddingLeft="@dimen/_10sdp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/imageView"
-        android:paddingRight="@dimen/_10sdp"
-        android:fontFamily="@font/poppinssemibold"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/image_profile_logo"
+        android:fontFamily="@font/poppinssemibold" />
+
+    <ImageView
+        android:id="@+id/image_profile_logo"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:gravity="start"
+        android:contentDescription="@string/nav_header_desc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@drawable/ic_basic_info_placeholder" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/text_email_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="abc@quickhands.com"
+        app:layout_constraintEnd_toEndOf="parent"
         android:textColor="@color/colorLightGrey"
-        android:layout_below="@id/text_name"
-        android:layout_alignStart="@+id/text_name"
-        style="@style/textSizeSmallRegFont"
-        android:fontFamily="@font/poppinsregular"
-        android:text="abc@quickhands.com" />
+        app:layout_constraintStart_toEndOf="@+id/image_profile_logo"
+        app:layout_constraintTop_toBottomOf="@+id/text_lead_name" />
 
     <TextView
         android:id="@+id/text_employee_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorLightGrey"
-        android:layout_below="@id/textView"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        style="@style/textSizeSmallRegFont"
-        android:fontFamily="@font/poppinsregular"
+        android:textColor="@color/colorBlack"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/image_profile_logo"
+        app:layout_constraintTop_toBottomOf="@+id/text_email_id"
         android:text="Emp ID: 1001" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginTop="@dimen/_10sdp"/>
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_employee_id"/>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
