@@ -35,7 +35,7 @@ class LumperAdapter(var items: List<LumperData>, val context: Context, var lumpe
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.lumperText?.text = items.get(position).firstName.capitalize() + " " + items.get(position).lastName.capitalize()
+        //holder.lumperText?.text = items.get(position).firstName.capitalize() + " " + items.get(position).lastName.capitalize()
         holder.lumperCustId?.text = items.get(position).email
         holder.lumperBuilding?.text = items.get(position).role.capitalize()
         var phone =  items.get(position).phone

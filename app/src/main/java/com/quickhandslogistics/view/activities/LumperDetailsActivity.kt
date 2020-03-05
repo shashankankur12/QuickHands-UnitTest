@@ -3,6 +3,7 @@ package com.quickhandslogistics.view.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import com.quickhandslogistics.R
 import com.quickhandslogistics.model.lumper.LumperData
@@ -45,12 +46,19 @@ class LumperDetailsActivity : AppCompatActivity() {
 
     private fun setLumperDetail(lumperdata : LumperData){
 
+        if(!TextUtils.isEmpty(lumperdata.firstName) && !TextUtils.isEmpty(lumperdata.lastName))
         text_name.setText(lumperdata.firstName.capitalize() + " " +lumperdata.lastName.capitalize())
+        if(!TextUtils.isEmpty(lumperdata.email))
         edit_email.setText(lumperdata.email)
+        if(!TextUtils.isEmpty(lumperdata.phone))
         edit_phone.setText(lumperdata.phone)
+        if(!TextUtils.isEmpty(lumperdata.role))
         edit_role.setText(lumperdata.role.capitalize())
+        if(!TextUtils.isEmpty(lumperdata.created_at))
         edit_Created_at.setText(Utils.convertLocalToUTC(lumperdata.created_at))
+        if(!TextUtils.isEmpty(lumperdata.updated_at))
         edit_updated_at.setText(Utils.convertLocalToUTC(lumperdata.updated_at))
+        if(!TextUtils.isEmpty(lumperdata.firstName) && !TextUtils.isEmpty(lumperdata.lastName))
         edit_sign.setText(lumperdata.firstName.capitalize() + " " +lumperdata.lastName.capitalize())
     }
 }
