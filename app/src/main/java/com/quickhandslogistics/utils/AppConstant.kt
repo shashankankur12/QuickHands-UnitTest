@@ -1,8 +1,8 @@
 package com.quickhandslogistics.utils
-
 interface AppConstant {
 
     companion  object {
+        val EMAIL_REGEX = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$"
         const val PREF_LANGUAGE_SELECT = "pref_language_select"
         const val APP_SHARED_PREFERENCE = "app_shared_prefrences"
         const val CHECKED = "checked"
@@ -21,6 +21,12 @@ interface AppConstant {
         val PREF_ROLE = "pref_user_role"
         val PREF_USERID = "pref_user_id"
         val PREF_USERIMAGE = "pref_userimage"
+        val PREF_KEY_USER_LOGGED_IN = "PREF_KEY_USER_LOGGED_IN"
+        val PREF_KEY_USER_SESSION = "PREF_KEY_USER_SESSION"
+        val PREF_EMP_ID = "pref_emp_id"
+        val PREF_AUTH_TOKEN = "pref_auth_token"
+        val EDIT_DIALOG = "edit_dialog"
+        val PREF_USER_NAME = "pref_user_name"
 
     }
 }

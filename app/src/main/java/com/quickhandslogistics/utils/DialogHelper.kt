@@ -5,12 +5,9 @@ import android.app.Dialog
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.view.animation.Animation
-import android.widget.AdapterViewAnimator
-import android.widget.EditText
 import android.widget.TextView
-import co.clicke.databases.SharedPreferenceHandler
 import com.quickhandslogistics.R
+import com.quickhandslogistics.utils.AppConstant.Companion.EDIT_DIALOG
 import kotlinx.android.synthetic.main.dialog_add_notes.*
 import kotlinx.android.synthetic.main.dialog_forgot_password.*
 
@@ -54,19 +51,18 @@ class DialogHelper {
             dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
             dialog.window?.attributes?.windowAnimations = animation
 
-            SharedPreferenceHandler.getInstance(activity)
-            dialog?.edit_notes?.setText(SharedPreferenceHandler.getString("Edit"))
+            dialog.edit_notes?.setText(SharedPref.getInstance().getString(EDIT_DIALOG))
 
             val lp = WindowManager.LayoutParams()
-            lp.copyFrom(dialog?.window?.attributes)
+            lp.copyFrom(dialog.window?.attributes)
             lp.width = WindowManager.LayoutParams.MATCH_PARENT
             lp.height = WindowManager.LayoutParams.WRAP_CONTENT
 
-            dialog?.window?.attributes = lp
+            dialog.window?.attributes = lp
             dialog.setCancelable(true)
 
             dialog.button_save.setOnClickListener(View.OnClickListener { view ->
-                SharedPreferenceHandler.setString("Edit", dialog.edit_notes.text.toString())
+                SharedPref.getInstance().setString(EDIT_DIALOG, dialog.edit_notes.text.toString())
                 dialog.dismiss()
             })
 

@@ -8,12 +8,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
+import com.quickhandslogistics.model.lumper.AllLumpersResponse
+import com.quickhandslogistics.model.lumper.LumperData
+import com.quickhandslogistics.network.DataManager
+import com.quickhandslogistics.network.ResponseListener
+import com.quickhandslogistics.utils.CustomProgressBar
+import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.view.LumperModel
 import com.quickhandslogistics.view.adapter.LumperAdapter
-import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.fragment_lumper.*
 
 
@@ -35,7 +41,9 @@ class LumperFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchLumper()
+        getLumperList()
+
+ /*       searchLumper()
 
         recycler_lumper.layoutManager = LinearLayoutManager(context)
 
@@ -52,10 +60,18 @@ class LumperFragment : Fragment() {
             val imm =
                 activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(edit_search_lumper!!.windowToken, 0)
-            }
+            }*/
+
+
+        image_cancel.setOnClickListener {
+            edit_search_lumper.text.clear()
+            val imm =
+                activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(edit_search_lumper!!.windowToken, 0)
+        }
         }
 
-    fun searchLumper() {
+   /* fun searchLumper() {
         edit_search_lumper.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(editable: Editable?) {
                 filter(editable.toString())
@@ -75,9 +91,9 @@ class LumperFragment : Fragment() {
             override fun onTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
         })
-    }
+    }*/
 
-    fun filter(text:String) {
+    /*fun filter(text:String) {
 
         var filterName = ArrayList<LumperModel>()
 
@@ -96,5 +112,38 @@ class LumperFragment : Fragment() {
         } else {
             text_no_record_found?.visibility = View.GONE
         }
+    }*/
+
+
+    fun  getLumperList() {
+        val dialog = CustomProgressBar.getInstance(activity!!).showProgressDialog("Please wait while data is loading...")
+
+        DataManager.getAllLumpersData(  object :
+            ResponseListener<AllLumpersResponse> {
+            override fun onSuccess(response: AllLumpersResponse) {
+                dialog.dismiss()
+                if (response.success) {
+                   /* if (response.data == null)
+                        text_no_record_found.visibility = View.VISIBLE
+                    return
+*/
+                    val lumperData = response.data
+                    setLumperData(lumperData)
+                    Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()
+                } else Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onError(error: Any) {
+                dialog.dismiss()
+                SnackBarFactory.createSnackBar(context, constraint_root, "Internal server error")
+            }
+        })
+    }
+
+    fun setLumperData(lumperData: List<LumperData>){
+        recycler_lumper.layoutManager = LinearLayoutManager(context)
+        lumperAdapter =  LumperAdapter(lumperData, context!!,lumperJobDetail)
+        recycler_lumper.adapter = context?.let { lumperAdapter}
+
     }
 }

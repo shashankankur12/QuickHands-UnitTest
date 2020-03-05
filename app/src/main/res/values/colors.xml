@@ -9,6 +9,7 @@
     <color name="colorLightGrey">#808080</color>
     <color name="colorHint">#8b8b8e</color>
     <color name="colorGrey">#d3d3d3</color>
+    <color name="nav_color">#f5f9ff</color>
 
     <color name="colorBlue">#00274F</color>
     <color name="colorLightGallery">#eff0f1</color>

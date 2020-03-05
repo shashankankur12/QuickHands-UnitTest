@@ -34,11 +34,11 @@ class CustomerAdapter (var items: ArrayList<CustomerModel>,val mActivity: Activi
     }
 
     override fun onBindViewHolder(holder: CustomerViewHolder, position: Int) {
-        holder?.lumperText?.text = items.get(position)?.name
-        holder?.lumperHours?.text = faker.address.streetAddress()
-        holder?.constraintRoot.setOnClickListener(View.OnClickListener { view ->
+        holder.lumperText.text = items.get(position).name
+//        holder.lumperHours.text = faker?.address.streetAddress()
+       /* holder.constraintRoot.setOnClickListener(View.OnClickListener { view ->
             mActivity.finish()
-        })
+        })*/
 
         holder.constraintRoot.setOnClickListener {
             mActivity.startActivity(Intent(mActivity, CustomerBuildingsActivity::class.java).putExtra("name", holder.lumperText?.text))
@@ -48,8 +48,8 @@ class CustomerAdapter (var items: ArrayList<CustomerModel>,val mActivity: Activi
 
 class CustomerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     var lumperText = view.text_lumper
-    var lumperLastName = view.text_last_name
+    var lumperLastName = view.text_cus_id
     var profilePic = view.image_lumper_logo
     var constraintRoot = view.constraint_root
-    var lumperHours = view.text_shift_hours
+    var lumperHours = view.text_building_name
 }

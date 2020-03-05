@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Quick Hands</string>
-    <string name="string_email">Correo electrónico</string>
-    <string name="string_employee_id">ID del empleado</string>
-    <string name="string_login">Iniciar sesión</string>
+    <string name="string_email">Identificación de correo</string>
+    <string name="string_employee_id"><font size="20"></font>ID del empleado</string>
+    <string name="string_login">Registrarse</string>
     <string name="string_forgot_password"><u>Olvidé mi contraseña</u></string>
     <string name="string_forgot_password_heading">Olvidé mi contraseña</string>
     <string name="string_reset_password_text">Ingrese su correo electrónico registrado para restablecer la contraseña</string>
@@ -29,7 +29,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Configuraciones</string>
-    <string name="string_password">Contraseña</string>
+    <string name="string_password"><font size="20"></font>Contraseña</string>
 
     <string name="numbers">0123456789</string>
     <string name="digits">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789</string>
@@ -41,8 +41,8 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
-    <string name="text_employee_error_msg">La identificación del empleado no puede estar vacía</string>
-    <string name="text_password_err_msg">La contraseña no puede estar vacía</string>
+    <string name="text_employee_error_msg">El ID de correo electrónico no puede estar vacío</string>
+    <string name="text_password_err_msg">Por favor, ingrese contraseña</string>
     <string name="text_password_err_length">La contraseña debe contener al menos 8 caracteres</string>
 
 
@@ -111,6 +111,8 @@
     <string name="no_internet">¡Sin conexión a Internet!</string>
     <string name="string_building">Edificios</string>
     <string name="string_comment">Comentario</string>
+    <string name="text_employee_valid_email_error_msg">Por favor ingrese una dirección de correo electrónico válida</string>
     <string name="string_request_message">Póngase en contacto con su administrador para solicitar una contraseña olvidada.</string>
     <string name="string_ask_new_lumper">¿Quieres asignar un nuevo lumper?</string>
+    <string name="invalid_email_password">Por favor ingrese un correo electrónico / contraseña válida</string>
 </resources>
