@@ -12,6 +12,7 @@
 bin/
 gen/
 out/
+classes/
 
 # Gradle files
 .gradle/
@@ -31,6 +32,13 @@ proguard/
 
 # Android Studio captures folder
 captures/
+
+# Android Studio
+/.gradle
+/local.properties
+/.idea
+/build
+/captures
 
 # IntelliJ
 *.iml
