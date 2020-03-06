@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.model.DatesModel
 import com.quickhandslogistics.model.ScheduledEvents
-import com.quickhandslogistics.view.fragments.ScheduleFragment
+import com.quickhandslogistics.view.legacy.ScheduleFragment
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.text.ParseException
 import java.text.SimpleDateFormat

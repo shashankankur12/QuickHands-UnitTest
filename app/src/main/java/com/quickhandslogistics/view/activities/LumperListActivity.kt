@@ -12,6 +12,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.Utils
 import com.quickhandslogistics.view.LumperModel
 import com.quickhandslogistics.view.adapter.LumperAdapter
+import com.quickhandslogistics.view.adapter.LumperDummyAdapter
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.fragment_lumper.*
 import kotlinx.android.synthetic.main.layout_header.*
@@ -20,7 +21,7 @@ class LumperListActivity : AppCompatActivity() {
     val lumperList: ArrayList<LumperModel> = ArrayList()
     val arrayList: ArrayList<String> = ArrayList()
     var lumperJobDetail: String = ""
-    lateinit var lumperAdapter: LumperAdapter
+    lateinit var lumperAdapter: LumperDummyAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,8 +55,8 @@ class LumperListActivity : AppCompatActivity() {
             lumperList.add(LumperModel(faker.name.firstName(), faker.name.lastName()))
         }
 
-       /* lumperAdapter = LumperAdapter(lumperList, this@LumperListActivity!!, lumperJobDetail)
-        recycler_lumper.adapter = this@LumperListActivity?.let { lumperAdapter }*/
+        lumperAdapter = LumperDummyAdapter(lumperList, this@LumperListActivity, lumperJobDetail)
+        recycler_lumper.adapter = this@LumperListActivity.let { lumperAdapter }
     }
 
     fun searchLumper() {
@@ -94,7 +95,7 @@ class LumperListActivity : AppCompatActivity() {
             }
         }
 
-       // lumperAdapter.filterList(filterName)
+        lumperAdapter.filterList(filterName)
         if(filterName.isEmpty()) {
             text_no_record_found?.visibility = View.VISIBLE
         } else {

@@ -113,6 +113,15 @@
     <string name="string_comment">Comentario</string>
     <string name="text_employee_valid_email_error_msg">Por favor ingrese una dirección de correo electrónico válida</string>
     <string name="string_request_message">Póngase en contacto con su administrador para solicitar una contraseña olvidada.</string>
-    <string name="string_ask_new_lumper">¿Quieres asignar un nuevo lumper?</string>
     <string name="invalid_email_password">Por favor ingrese un correo electrónico / contraseña válida</string>
+
+    <string name="schedule_detail">**Schedule Detail**</string>
+    <string name="scheduled">**Scheduled**</string>
+    <string name="unscheduled">**UnScheduled**</string>
+    <string name="mark_attendance">**Mark Attendance**</string>
+    <string name="replace">**Replace**</string>
+    <string name="string_ask_new_lumper">**Do you want to request for lumper replacement?**</string>
+    <string name="add_lumpers">**Add Lumpers**</string>
+    <string name="replacementRequested">**Replacement\nRequested**</string>
+    <string name="business_operations">**Business Operations**</string>
 </resources>

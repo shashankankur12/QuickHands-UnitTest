@@ -1,7 +1,6 @@
 package com.quickhandslogistics.view.adapter;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -14,32 +13,30 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quickhandslogistics.R;
-import com.quickhandslogistics.model.ScheduledEvents;
-import com.quickhandslogistics.view.activities.AssignLumpersActivity;
-import com.quickhandslogistics.view.fragments.ScheduleFragment;
+import com.quickhandslogistics.view.activities.ScheduleDetailActivity;
 
-import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsHolder> {
+public class EventsSchduledAdapter extends RecyclerView.Adapter<EventsSchduledAdapter.EventsHolder> {
 
+    private int size = 4;
     private Activity mActivity;
     private LayoutInflater mLayoutInflater;
-    protected ArrayList<ScheduledEvents> eventsList;
-    private Dialog mProgressDialog;
-    private ScheduleFragment eventFragment;
+    private Long time;
 
-    public EventsAdapter(Activity mActivity, ArrayList<ScheduledEvents> eventsList, ScheduleFragment eventFragment) {
+    public EventsSchduledAdapter(Activity mActivity, Long time) {
         this.mActivity = mActivity;
         mLayoutInflater = LayoutInflater.from(mActivity);
-        this.eventsList = eventsList;
-        this.eventFragment = eventFragment;
+        this.time = time;
+
+        size = ThreadLocalRandom.current().nextInt(1, 10);
     }
 
     @NonNull
     @Override
     public EventsHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = mLayoutInflater.inflate(R.layout.layout_item_events, viewGroup, false);
-        return new EventsAdapter.EventsHolder(view);
+        return new EventsSchduledAdapter.EventsHolder(view);
     }
 
     @Override
@@ -47,7 +44,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsHold
 
         eventsHolder.textTitle.setText(Html.fromHtml("<b>Building : One97 Communications Private Limited</b>"));
         eventsHolder.textCustomerName.setText(Html.fromHtml("<b>Door : </b>03"));
-        eventsHolder.textSubService.setText(Html.fromHtml("<b>Lumpers : </b>05"));
+        eventsHolder.textSubService.setText(Html.fromHtml("<b>Work Items : </b>05"));
 
         if (i == 0) {
             eventsHolder.textTime.setText("09:00 AM");
@@ -57,18 +54,23 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsHold
             eventsHolder.textTime.setText("05:45 PM");
         }
 
-        eventsHolder.constraintRoot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mActivity.startActivity(new Intent(mActivity, AssignLumpersActivity.class));
-                mActivity.overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out);
-            }
+        eventsHolder.constraintRoot.setOnClickListener(view -> {
+            Intent intent = new Intent(mActivity, ScheduleDetailActivity.class);
+            intent.putExtra("time", time.longValue());
+            mActivity.startActivity(intent);
+            mActivity.overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out);
         });
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return size;
+    }
+
+    public void updateData(long time) {
+        this.time = time;
+        size = ThreadLocalRandom.current().nextInt(1, 10);
+        notifyDataSetChanged();
     }
 
     class EventsHolder extends RecyclerView.ViewHolder {

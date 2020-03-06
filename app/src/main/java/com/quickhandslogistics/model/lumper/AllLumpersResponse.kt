@@ -3,5 +3,5 @@ package com.quickhandslogistics.model.lumper
 data class AllLumpersResponse(
     val success: Boolean,
     val message: String,
-    val data: List<LumperData>
+    val data: ArrayList<LumperData>
 )

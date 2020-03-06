@@ -18,16 +18,15 @@ import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.view.LumperModel
 import com.quickhandslogistics.view.adapter.LumperAdapter
 import kotlinx.android.synthetic.main.fragment_lumper.*
 
 
 class LumperFragment : Fragment() {
 
-    val lumperList: ArrayList<LumperModel> = ArrayList()
+    var lumperList: ArrayList<LumperData> = ArrayList()
     var lumperJobDetail: String = ""
-    lateinit var lumperAdapter:LumperAdapter
+    lateinit var lumperAdapter: LumperAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,25 +41,25 @@ class LumperFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         getLumperList()
+        searchLumper()
+        /*       searchLumper()
 
- /*       searchLumper()
+               recycler_lumper.layoutManager = LinearLayoutManager(context)
 
-        recycler_lumper.layoutManager = LinearLayoutManager(context)
+               val faker = Faker()
+               for (i in 1..20) {
+                   lumperList.add(LumperModel(faker.name.firstName(), faker.name.lastName()))
+               }
 
-        val faker = Faker()
-        for (i in 1..20) {
-            lumperList.add(LumperModel(faker.name.firstName(), faker.name.lastName()))
-        }
+               lumperAdapter =  LumperAdapter(lumperList, context!!,lumperJobDetail)
+               recycler_lumper.adapter = context?.let { lumperAdapter}
 
-        lumperAdapter =  LumperAdapter(lumperList, context!!,lumperJobDetail)
-        recycler_lumper.adapter = context?.let { lumperAdapter}
-
-        image_cancel.setOnClickListener {
-           edit_search_lumper.text.clear()
-            val imm =
-                activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(edit_search_lumper!!.windowToken, 0)
-            }*/
+               image_cancel.setOnClickListener {
+                  edit_search_lumper.text.clear()
+                   val imm =
+                       activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                   imm.hideSoftInputFromWindow(edit_search_lumper!!.windowToken, 0)
+                   }*/
 
 
         image_cancel.setOnClickListener {
@@ -69,13 +68,13 @@ class LumperFragment : Fragment() {
                 activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(edit_search_lumper!!.windowToken, 0)
         }
-        }
+    }
 
-   /* fun searchLumper() {
-        edit_search_lumper.addTextChangedListener(object : TextWatcher{
+    fun searchLumper() {
+        edit_search_lumper.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(editable: Editable?) {
                 filter(editable.toString())
-                if(edit_search_lumper.text.isNullOrEmpty()) {
+                if (edit_search_lumper.text.isNullOrEmpty()) {
                     val imm =
                         activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(edit_search_lumper!!.windowToken, 0)
@@ -91,15 +90,15 @@ class LumperFragment : Fragment() {
             override fun onTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
         })
-    }*/
+    }
 
-    /*fun filter(text:String) {
+    fun filter(text: String) {
 
-        var filterName = ArrayList<LumperModel>()
+        var filterName = ArrayList<LumperData>()
 
         for (s in lumperList) {
-            var fullName = s.name.toLowerCase()+ " "+ s.lastName.toLowerCase()
-            if (s.name.toLowerCase().contains(text.toLowerCase()) || s.lastName.toLowerCase().contains(text.toLowerCase())) {
+            var fullName = s.email.toLowerCase()
+            if (s.email.toLowerCase().contains(text.toLowerCase())) {
                 filterName.add(s)
             } else if (fullName.contains(text.toLowerCase())) {
                 filterName.add(s)
@@ -107,26 +106,27 @@ class LumperFragment : Fragment() {
         }
 
         lumperAdapter.filterList(filterName)
-        if(filterName.isEmpty()) {
+        if (filterName.isEmpty()) {
             text_no_record_found?.visibility = View.VISIBLE
         } else {
             text_no_record_found?.visibility = View.GONE
         }
-    }*/
+    }
 
 
-    fun  getLumperList() {
-        val dialog = CustomProgressBar.getInstance(activity!!).showProgressDialog("Please wait while data is loading...")
+    fun getLumperList() {
+        val dialog = CustomProgressBar.getInstance(activity!!)
+            .showProgressDialog("Please wait while data is loading...")
 
-        DataManager.getAllLumpersData(  object :
+        DataManager.getAllLumpersData(object :
             ResponseListener<AllLumpersResponse> {
             override fun onSuccess(response: AllLumpersResponse) {
                 dialog.dismiss()
                 if (response.success) {
-                   /* if (response.data == null)
-                        text_no_record_found.visibility = View.VISIBLE
-                    return
-*/
+                    /* if (response.data == null)
+                         text_no_record_found.visibility = View.VISIBLE
+                     return
+ */
                     val lumperData = response.data
                     setLumperData(lumperData)
                     Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()
@@ -140,10 +140,10 @@ class LumperFragment : Fragment() {
         })
     }
 
-    fun setLumperData(lumperData: List<LumperData>){
+    fun setLumperData(lumperData: ArrayList<LumperData>) {
+        lumperList = lumperData
         recycler_lumper.layoutManager = LinearLayoutManager(context)
-        lumperAdapter =  LumperAdapter(lumperData, context!!,lumperJobDetail)
-        recycler_lumper.adapter = context?.let { lumperAdapter}
-
+        lumperAdapter = LumperAdapter(lumperData, context!!, lumperJobDetail)
+        recycler_lumper.adapter = context?.let { lumperAdapter }
     }
 }

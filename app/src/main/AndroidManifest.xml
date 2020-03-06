@@ -60,7 +60,22 @@
             android:name=".view.activities.LumperJobHistoryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.AssignLumpersActivity"
+            android:name=".view.legacy.AssignLumpersActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.ScheduleDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.UnScheduleDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.WorkItemLumpersActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.AddWorkItemLumpersActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.BusinessOperationsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activities.ProfileActivity"
