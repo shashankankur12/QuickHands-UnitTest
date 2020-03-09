@@ -107,10 +107,19 @@
     <string name="in_progress">In Progress</string>
     <string name="complete">Complete</string>
     <string name="string_comment">Comment</string>
-    <string name="string_ask_new_lumper">Do you want to assign new lumper ?</string>
     <string name="All">All</string>
     <string name="string_lumper_sheet_status">lumper_sheet_status</string>
     <string name="string_building">Buildings</string>
     <string name="no_internet">No internet connection!</string>
     <string name="invalid_email_password">Please enter valid email/password</string>
+
+    <string name="schedule_detail">Schedule Detail</string>
+    <string name="scheduled">Scheduled</string>
+    <string name="unscheduled">UnScheduled</string>
+    <string name="mark_attendance">Mark Attendance</string>
+    <string name="replace">Replace</string>
+    <string name="string_ask_new_lumper">Do you want to request for lumper replacement?</string>
+    <string name="add_lumpers">Add Lumpers</string>
+    <string name="replacementRequested">Replacement\nRequested</string>
+    <string name="business_operations">Business Operations</string>
 </resources>

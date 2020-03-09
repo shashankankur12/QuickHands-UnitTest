@@ -60,10 +60,10 @@ class LumperAdapter(var items: List<LumperData>, val context: Context, var lumpe
         }
     }
 
-   /*  fun filterList(filteredName: ArrayList<LumperModel>) {
+     fun filterList(filteredName: ArrayList<LumperData>) {
         this.items = filteredName
         notifyDataSetChanged()
-    }*/
+    }
 
     fun callPhone(phone :String) {
         val faker = Faker()

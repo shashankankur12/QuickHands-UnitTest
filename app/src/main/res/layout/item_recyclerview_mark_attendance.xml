@@ -32,7 +32,7 @@
             android:text="dfjksdbf sdsfnds b asjdb"
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/layout"
+            app:layout_constraintEnd_toStartOf="@+id/button_replace"
             app:layout_constraintStart_toEndOf="@+id/image_lumper_logo"
             app:layout_constraintTop_toTopOf="@+id/image_lumper_logo" />
 
@@ -53,36 +53,12 @@
             app:layout_constraintLeft_toLeftOf="@id/text_lumper"
             app:layout_constraintTop_toBottomOf="@id/text_lumper" />
 
-        <RelativeLayout
-            android:id="@+id/layout"
+        <Switch
+            android:id="@+id/switch_show"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_30ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <Button
-                android:id="@+id/button_replace"
-                style="@style/textSizeSmallRegFont"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_30ssp"
-                android:background="@drawable/round_button_red"
-                android:text="@string/replace"
-                android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/text_replaced"
-                style="@style/textSizeNormalRegFont"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="@string/replacementRequested"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/_10ssp"
-                android:visibility="gone" />
-
-        </RelativeLayout>
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

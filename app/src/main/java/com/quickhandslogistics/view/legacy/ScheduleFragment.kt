@@ -1,4 +1,4 @@
-package com.quickhandslogistics.view.fragments
+package com.quickhandslogistics.view.legacy
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,17 +11,16 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.model.DatesModel
 import com.quickhandslogistics.model.ScheduledEvents
 import com.quickhandslogistics.view.adapter.DatesAdapter
-import com.quickhandslogistics.view.adapter.EventsAdapter
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.text.DateFormatSymbols
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ScheduleFragment : Fragment(){
+class ScheduleFragment : Fragment() {
 
-    private lateinit var datesAdapter : DatesAdapter
-    public lateinit var eventsList : ArrayList<ScheduledEvents>
+    private lateinit var datesAdapter: DatesAdapter
+    public lateinit var eventsList: ArrayList<ScheduledEvents>
     private var numberOfDays: Int = 0
     lateinit var datesList: java.util.ArrayList<DatesModel>
 
@@ -34,7 +33,11 @@ class ScheduleFragment : Fragment(){
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_schedule, container, false)
     }
 
@@ -54,20 +57,24 @@ class ScheduleFragment : Fragment(){
             LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.setLayoutManager(mLinearLayoutManager)
 
-        datesAdapter = DatesAdapter(this, datesList, this.requireActivity(), month, year, eventsList)
+        datesAdapter =
+            DatesAdapter(this, datesList, this.requireActivity(), month, year, eventsList)
         recyclerView.adapter = datesAdapter
         recyclerView.scheduleLayoutAnimation()
     }
 
-    fun setUpEventsRecyclerView(recyclerView: RecyclerView, eventsList: java.util.ArrayList<ScheduledEvents>) {
+    fun setUpEventsRecyclerView(
+        recyclerView: RecyclerView,
+        eventsList: java.util.ArrayList<ScheduledEvents>
+    ) {
 
-        val mLinearLayoutManager = LinearLayoutManager(activity)
+       /* val mLinearLayoutManager = LinearLayoutManager(activity)
         mLinearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView.setLayoutManager(mLinearLayoutManager)
 
-        val eventsAdapter = EventsAdapter(activity, eventsList, this)
+        val eventsAdapter = EventsAdapter(activity, eventsList)
         recyclerView.setAdapter(eventsAdapter)
-        recyclerView.scheduleLayoutAnimation()
+        recyclerView.scheduleLayoutAnimation()*/
     }
 
 
@@ -78,7 +85,8 @@ class ScheduleFragment : Fragment(){
         year = mycal.get(Calendar.YEAR)
         month = mycal.get(Calendar.MONTH)
 
-        text_month_year.text = day.toString() + " " + getMonth(month) + " " }
+        text_month_year.text = day.toString() + " " + getMonth(month) + " "
+    }
 
     fun getMonth(month: Int): String {
         return DateFormatSymbols().months[month]

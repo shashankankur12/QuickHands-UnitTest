@@ -1,4 +1,4 @@
-package com.quickhandslogistics.view.activities
+package com.quickhandslogistics.view.legacy
 
 import android.os.Bundle
 import android.text.Html
@@ -27,7 +27,7 @@ class AssignLumpersActivity : AppCompatActivity() {
         setData()
 
         recycler_assigned_lumpers.layoutManager = LinearLayoutManager(this)
-        recycler_assigned_lumpers.adapter = AssignedLumperAdapter(lumperList, this)
+        recycler_assigned_lumpers.adapter = AssignedLumperAdapter(this, true)
     }
 
     private fun setData() {
