@@ -6,7 +6,7 @@ import android.os.Handler
 import android.view.View
 import com.quickhandslogistics.R
 import com.quickhandslogistics.network.NetworkConnectionInterceptor
-import com.quickhandslogistics.view.activities.LoginActivity
+import com.quickhandslogistics.modified.views.activities.LoginActivity
 import com.quickhandslogistics.model.error.Error
 
 

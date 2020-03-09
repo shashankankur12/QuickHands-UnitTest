@@ -18,33 +18,43 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-      
-        <activity android:name=".view.activities.SignatureActivity"
-            android:screenOrientation="portrait"/>
 
-        <activity android:name=".view.activities.CustomerChooseActivity"
+        <activity android:name=".modified.views.BaseActivity" />
+
+        <activity
+            android:name=".view.activities.SignatureActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.activities.CustomerChooseActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
 
-        <activity android:name=".view.activities.CompleteCustomerJobHistory"
+        <activity
+            android:name=".view.activities.CompleteCustomerJobHistory"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
 
-        <activity android:name=".view.activities.CustomerDetailActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activities.CustomerDetailActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".view.activities.CustomerLoadActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activities.CustomerLoadActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".view.activities.CustomerActivity"
+        <activity
+            android:name=".view.activities.CustomerActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
 
-        <activity android:name=".view.activities.LumperSheetDetailActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activities.LumperSheetDetailActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".view.activities.CustomerBuildingsActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activities.CustomerBuildingsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.activities.LumperListActivity"
             android:screenOrientation="portrait"
@@ -90,9 +100,9 @@
             android:name=".view.activities.ForgotPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.LoginActivity"
+            android:name=".modified.views.activities.LoginActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.activities.SplashActivity">
+        <activity android:name=".modified.views.activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -100,7 +110,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.activities.DashboardActivity"
+            android:name=".modified.views.activities.DashBoardActivity"
             android:label="@string/title_activity_dashboard"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />

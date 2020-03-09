@@ -2,7 +2,7 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -14,15 +14,15 @@
         android:layout_height="match_parent" />
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
+        android:id="@+id/navView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:itemIconTint="@drawable/drawer_item_color"
-        app:itemTextColor="@drawable/drawer_item_color"
-        app:itemTextAppearance="@style/navTextViewStyle"
+        android:fitsSystemWindows="false"
         app:headerLayout="@layout/nav_header_dashboard"
+        app:itemIconTint="@drawable/drawer_item_color"
+        app:itemTextAppearance="@style/navTextViewStyle"
+        app:itemTextColor="@drawable/drawer_item_color"
         app:menu="@menu/activity_dashboard_drawer">
 
         <LinearLayout
@@ -32,14 +32,14 @@
             android:layout_gravity="center|bottom"
             android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/text_version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorBlack"
-            android:fontFamily="@font/poppins_medium"
-            android:layout_marginBottom="@dimen/_30sdp"
-            style="@style/textSizeSmallRegFont" />
+            <TextView
+                android:id="@+id/text_version"
+                style="@style/textSizeSmallRegFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/colorBlack" />
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>
 

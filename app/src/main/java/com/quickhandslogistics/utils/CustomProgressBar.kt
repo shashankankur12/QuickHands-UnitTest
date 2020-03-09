@@ -41,7 +41,7 @@ class CustomProgressBar private constructor(context: Context) {
             val textProgress = dialog.findViewById<TextView>(R.id.text_progress)
             textProgress?.text = progressMsg
 
-        return dialog as Dialog
+        return dialog
     }
 
     public fun showSimpleProgressBar(): Dialog {

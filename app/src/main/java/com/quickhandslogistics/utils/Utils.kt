@@ -34,20 +34,6 @@ class Utils {
             )
         }
 
-        fun changeStatusBar(activity: Activity) {
-
-            var window = activity.window
-            val decor = window.decorView
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                decor.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                window.statusBarColor = ContextCompat.getColor(activity, white)
-            } else {
-                decor.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                window.statusBarColor = ContextCompat.getColor(activity, R.color.colorLightGrey)
-            }
-        }
-
         fun getPoppinsRegularTypeface(context: Context): Typeface {
             return Typeface.createFromAsset(context.assets, "fonts/poppinsregular.ttf")
         }
@@ -108,19 +94,6 @@ class Utils {
                 dialog.dismiss()
             }
             dialog.show()
-        }
-
-        fun Shake(view: View): AnimatorSet {
-            val animatorSet = AnimatorSet()
-
-            val object1: ObjectAnimator =
-                ObjectAnimator.ofFloat(view, "scaleX", 1f, 1.75f, 1.75f, 1.75f, 1f)
-            val object2: ObjectAnimator =
-                ObjectAnimator.ofFloat(view, "scaleY", 1f, 1.75f, 1.75f, 0.85f, 1f)
-
-            animatorSet.playTogether(object1, object2)
-            animatorSet.start()
-            return animatorSet
         }
 
         fun hideSoftKeyboard(activity: Activity) {

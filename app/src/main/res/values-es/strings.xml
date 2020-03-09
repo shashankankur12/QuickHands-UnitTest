@@ -41,7 +41,7 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
-    <string name="text_employee_error_msg">El ID de correo electrónico no puede estar vacío</string>
+    <string name="text_employee_error_msg">**Employee Id cannot be empty**</string>
     <string name="text_password_err_msg">Por favor, ingrese contraseña</string>
     <string name="text_password_err_length">La contraseña debe contener al menos 8 caracteres</string>
 
@@ -124,4 +124,5 @@
     <string name="add_lumpers">**Add Lumpers**</string>
     <string name="replacementRequested">**Replacement\nRequested**</string>
     <string name="business_operations">**Business Operations**</string>
+    <string name="logging_in">**Logging In...**</string>
 </resources>

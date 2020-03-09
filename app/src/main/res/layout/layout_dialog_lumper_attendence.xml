@@ -77,7 +77,6 @@
             android:includeFontPadding="false"
             android:inputType="textNoSuggestions"
             android:maxLines="3"
-            android:nextFocusDown="@id/edit_password"
             android:singleLine="true"
             android:textColor="@color/colorBlack"
             app:layout_constraintEnd_toEndOf="parent"

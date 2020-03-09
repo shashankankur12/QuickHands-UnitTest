@@ -29,7 +29,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-    <string name="text_employee_error_msg">Email Id cannot be empty</string>
+    <string name="text_employee_error_msg">Employee Id cannot be empty</string>
     <string name="text_employee_valid_email_error_msg">Please enter valid email address</string>
     <string name="text_password_err_msg">Please enter password</string>
     <string name="text_password_err_length">Password should contain atleast 8 characters</string>
@@ -122,4 +122,5 @@
     <string name="add_lumpers">Add Lumpers</string>
     <string name="replacementRequested">Replacement\nRequested</string>
     <string name="business_operations">Business Operations</string>
+    <string name="logging_in">Logging In...</string>
 </resources>

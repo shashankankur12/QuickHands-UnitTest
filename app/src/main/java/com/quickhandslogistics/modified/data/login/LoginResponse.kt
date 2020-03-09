@@ -1,6 +1,4 @@
-package com.quickhandslogistics.model.login
-
-import com.quickhandslogistics.model.error.Error
+package com.quickhandslogistics.modified.data.login
 
 data class LoginResponse(
     val success: Boolean,

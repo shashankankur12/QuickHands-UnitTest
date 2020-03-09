@@ -1,8 +1,7 @@
 package com.quickhandslogistics.network
 
-import android.app.Activity
-import com.quickhandslogistics.model.login.LoginRequest
-import com.quickhandslogistics.model.login.LoginResponse
+import com.quickhandslogistics.modified.data.login.LoginRequest
+import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.model.lumper.AllLumpersResponse
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref

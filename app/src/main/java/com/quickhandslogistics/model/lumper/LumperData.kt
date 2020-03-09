@@ -1,6 +1,5 @@
 package com.quickhandslogistics.model.lumper
 
-import com.quickhandslogistics.model.login.Data
 import java.io.Serializable
 
 data class LumperData(
