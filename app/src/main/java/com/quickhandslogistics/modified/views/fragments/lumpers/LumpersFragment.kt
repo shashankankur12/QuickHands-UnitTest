@@ -11,15 +11,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.data.lumpers.LumperData
 import com.quickhandslogistics.modified.contracts.lumpers.LumpersContract
+import com.quickhandslogistics.modified.data.lumpers.LumperData
 import com.quickhandslogistics.modified.presenters.lumpers.LumpersPresenter
 import com.quickhandslogistics.modified.views.BaseFragment
+import com.quickhandslogistics.modified.views.activities.LumperDetailActivity
 import com.quickhandslogistics.modified.views.adapters.LumpersAdapter
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
-import com.quickhandslogistics.view.activities.LumperDetailsActivity
 import kotlinx.android.synthetic.main.fragment_lumpers.*
 
 class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.OnClickListener,
@@ -112,8 +112,8 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     */
     override fun onItemClick(lumperData: LumperData) {
         val bundle = Bundle()
-        bundle.putSerializable(LumperDetailsActivity.ARG_LUMPER_DATA, lumperData)
-        startIntent(LumperDetailsActivity::class.java, bundle = bundle)
+        bundle.putSerializable(LumperDetailActivity.ARG_LUMPER_DATA, lumperData)
+        startIntent(LumperDetailActivity::class.java, bundle = bundle)
 //        when (lumperJobDetails) {
 //            context.getString(R.string.string_lumper) -> context.startActivity(
 //                Intent(

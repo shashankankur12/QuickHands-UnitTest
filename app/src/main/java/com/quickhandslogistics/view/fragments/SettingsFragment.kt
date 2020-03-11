@@ -10,29 +10,33 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.AppConstant.Companion.ENGLISH
 import com.quickhandslogistics.utils.AppConstant.Companion.ESPANOL
 import com.quickhandslogistics.utils.AppConstant.Companion.LANGUAGE
+import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_LANGUAGE
 import com.quickhandslogistics.utils.LanguageManager
 import com.quickhandslogistics.utils.SharedPref
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.fragment_settings.*
 
 class SettingsFragment : Fragment() {
-    var currentLocale: String?=null
+    var currentLocale: String? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
     fun getLocale() {
-         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-             currentLocale = resources.configuration.locales.get(0).language
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            currentLocale = resources.configuration.locales.get(0).language
 
-             switch_language.isChecked = currentLocale!!.equals(ESPANOL)
+            switch_language.isChecked = currentLocale!!.equals(ESPANOL)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       // SharedPreferenceHandler.getInstance()
 
         getLocale()
 
@@ -44,7 +48,7 @@ class SettingsFragment : Fragment() {
     fun openChangeDialog() {
         Utils.dialogChangeLanguage(R.style.dialogAnimation, activity!!, object : Utils.IOnClick {
             override fun onConfirm() {
-                 switch_language.isChecked = !switch_language.isChecked
+                switch_language.isChecked = !switch_language.isChecked
 
                 if (!currentLocale!!.equals(ESPANOL, true)) {
                     SharedPref.getInstance().setString(LANGUAGE, "(English)")
@@ -62,7 +66,7 @@ class SettingsFragment : Fragment() {
     }
 
     fun setLanguageData(language: String?) {
-        SharedPref.getInstance().setLanguageSelected(language)
+        SharedPref.getInstance().setString(PREFERENCE_LANGUAGE, language)
         LanguageManager.setLanguage(activity, language)
         val intent = activity!!.intent
         activity!!.finish()

@@ -10,7 +10,7 @@ import androidx.fragment.app.DialogFragment
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.views.activities.LoginActivity
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_IS_ACTIVE
-import com.quickhandslogistics.utils.AppConstant.Companion.PREF_AUTH_TOKEN
+import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_AUTH_TOKEN
 import com.quickhandslogistics.utils.SharedPref
 import kotlinx.android.synthetic.main.layout_dialog.*
 
@@ -39,7 +39,7 @@ class LogoutDialog : DialogFragment() {
         }
 
         text_yes.setOnClickListener {
-            SharedPref.getInstance().setString(PREF_AUTH_TOKEN, "")
+            SharedPref.getInstance().setString(PREFERENCE_AUTH_TOKEN, "")
             SharedPref.getInstance().setBoolean(PREFERENCE_IS_ACTIVE, false)
 
             Toast.makeText(

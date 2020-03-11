@@ -85,7 +85,7 @@ object DataManager : AppConstant {
            }
 
     fun getAllLumpersData(listener: ResponseListener<AllLumpersResponse>) {
-        val call = getService().getAllLumpersData("Bearer " + SharedPref.getInstance().getString(AppConstant.PREF_AUTH_TOKEN))
+        val call = getService().getAllLumpersData("Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN))
         call.enqueue(object : Callback<AllLumpersResponse> {
             override fun onResponse(call: Call<AllLumpersResponse>, response: Response<AllLumpersResponse>) {
                 if (!response.isSuccessful) {
