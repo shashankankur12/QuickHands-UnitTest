@@ -107,6 +107,11 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        lumpersPresenter.onDestroy()
+    }
+
     /*
     * Adapter Item Click Listeners
     */

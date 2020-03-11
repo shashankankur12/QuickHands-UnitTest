@@ -32,7 +32,7 @@ class MyApplication : Application() {
 
     @TargetApi(Build.VERSION_CODES.N)
     private fun updateResources(selectedLanguage: String) {
-        val locale = Locale(if (selectedLanguage.isEmpty()) "es" else selectedLanguage)
+        val locale = Locale(if (selectedLanguage.isEmpty()) "en" else selectedLanguage)
         Locale.setDefault(locale)
         val configuration = resources.configuration
         configuration.setLocale(locale)
@@ -41,7 +41,7 @@ class MyApplication : Application() {
 
     @Suppress("DEPRECATION")
     private fun updateResourcesLegacy(selectedLanguage: String) {
-        val locale = Locale(if (selectedLanguage.isEmpty()) "es" else selectedLanguage)
+        val locale = Locale(if (selectedLanguage.isEmpty()) "en" else selectedLanguage)
         Locale.setDefault(locale)
         val resources: Resources = resources
         val configuration = resources.configuration

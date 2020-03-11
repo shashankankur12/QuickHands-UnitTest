@@ -5,54 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    tools:context=".view.legacy.ScheduleFragment">
-
-    <TextView
-        android:id="@+id/text_month_year"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_5sdp"
-        android:gravity="center"
-        android:padding="@dimen/_5sdp"
-        style="@style/textSizeSmallRegFont"
-        android:textColor="@color/colorBlack"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linear_dates" />
-
-    <LinearLayout
-        android:id="@+id/linear_dates"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_50sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_monthView"
-            android:layout_width="match_parent"
-            android:layoutAnimation="@anim/falldown_animation"
-            android:layout_height="@dimen/_40sdp" />
-    </LinearLayout>
+    android:padding="@dimen/_8sdp"
+    tools:context=".modified.views.fragments.schedule.ScheduleFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_events"
-        android:layout_width="match_parent"
+        android:id="@+id/recyclerViewSchedule"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layoutAnimation="@anim/falldown_animation"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_month_year" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_calender"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_10sdp"
-        android:src="@android:drawable/ic_input_add"
-        android:visibility="gone"
-        android:tint="@color/colorWhite"
-        app:backgroundTint="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

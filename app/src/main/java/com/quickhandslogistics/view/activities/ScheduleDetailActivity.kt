@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleFragment
 import com.quickhandslogistics.view.adapter.LumperAttendanceAdapter
 import com.quickhandslogistics.view.adapter.ScheduledWorkItemAdapter
 import kotlinx.android.synthetic.main.activity_schedule_detail.*
@@ -30,7 +31,13 @@ class ScheduleDetailActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val time = intent.getLongExtra("time", 0)
+        var time: Long = 0
+        intent.extras?.let {
+            if (it.containsKey(ScheduleFragment.ARG_SELECTED_TIME)) {
+                time = it.getLong(ScheduleFragment.ARG_SELECTED_TIME)
+            }
+        }
+
         val cal1 = Calendar.getInstance()
         val cal2 = Calendar.getInstance()
         cal1.timeInMillis = time

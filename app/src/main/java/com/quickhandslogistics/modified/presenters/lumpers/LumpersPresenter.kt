@@ -8,7 +8,7 @@ import com.quickhandslogistics.modified.contracts.lumpers.LumpersContract
 import com.quickhandslogistics.modified.models.lumpers.LumpersModel
 
 class LumpersPresenter(
-    private val lumpersView: LumpersContract.View?,
+    private var lumpersView: LumpersContract.View?,
     private val resources: Resources
 ) : LumpersContract.Presenter, LumpersContract.Model.OnFinishedListener {
 
@@ -17,6 +17,10 @@ class LumpersPresenter(
     override fun fetchLumpersList() {
         lumpersView?.showProgressDialog(resources.getString(R.string.api_loading_message))
         lumpersModel.fetchLumpersList(this)
+    }
+
+    override fun onDestroy() {
+        lumpersView = null
     }
 
     override fun onFailure(message: String) {

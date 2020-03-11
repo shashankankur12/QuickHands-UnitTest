@@ -9,6 +9,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleFragment
 import com.quickhandslogistics.view.adapter.UnScheduledWorkItemAdapter
 import kotlinx.android.synthetic.main.activity_unschedule_detail.*
 import kotlinx.android.synthetic.main.container_unschedule_detail.*
@@ -25,7 +26,12 @@ class UnScheduleDetailActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val time = intent.getLongExtra("time", 0)
+        var time: Long = 0
+        intent.extras?.let {
+            if (it.containsKey(ScheduleFragment.ARG_SELECTED_TIME)) {
+                time = it.getLong(ScheduleFragment.ARG_SELECTED_TIME)
+            }
+        }
         val cal1 = Calendar.getInstance()
         val cal2 = Calendar.getInstance()
         cal1.timeInMillis = time

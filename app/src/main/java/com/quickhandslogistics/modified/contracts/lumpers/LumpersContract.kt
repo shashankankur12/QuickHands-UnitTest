@@ -27,6 +27,6 @@ class LumpersContract {
 
     interface Presenter {
         fun fetchLumpersList()
-
+        fun onDestroy()
     }
 }
