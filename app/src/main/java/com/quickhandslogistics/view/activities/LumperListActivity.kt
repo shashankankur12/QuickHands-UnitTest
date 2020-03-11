@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.Utils
 import com.quickhandslogistics.view.LumperModel
-import com.quickhandslogistics.view.adapter.LumperAdapter
 import com.quickhandslogistics.view.adapter.LumperDummyAdapter
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.fragment_lumper.*

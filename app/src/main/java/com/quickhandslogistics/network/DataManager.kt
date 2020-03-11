@@ -2,7 +2,7 @@ package com.quickhandslogistics.network
 
 import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
-import com.quickhandslogistics.model.lumper.AllLumpersResponse
+import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 

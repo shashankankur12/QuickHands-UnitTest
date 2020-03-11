@@ -2,7 +2,7 @@ package com.quickhandslogistics.network
 
 import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
-import com.quickhandslogistics.model.lumper.AllLumpersResponse
+import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import retrofit2.Call
 import retrofit2.http.*
 

@@ -1,26 +1,20 @@
 package com.quickhandslogistics.view.activities
 
 import android.content.Context
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.model.CustomerModel
 import com.quickhandslogistics.utils.Utils
-import com.quickhandslogistics.view.LumperModel
 import com.quickhandslogistics.view.adapter.CustomerAdapter
-import com.quickhandslogistics.view.adapter.CustomerSheetAdapter
-import com.quickhandslogistics.view.adapter.LumperAdapter
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.activity_customer.*
-import kotlinx.android.synthetic.main.fragment_customer_sheet.*
 import kotlinx.android.synthetic.main.fragment_lumper.*
-import kotlinx.android.synthetic.main.fragment_lumper.image_cancel
 import kotlinx.android.synthetic.main.layout_header.*
 
 class CustomerActivity : AppCompatActivity() {
@@ -48,9 +42,10 @@ class CustomerActivity : AppCompatActivity() {
             customerList.add(CustomerModel(faker.company.name()))
         }
 
-        customerAdapter =  CustomerAdapter(customerList, this)
+        customerAdapter = CustomerAdapter(customerList, this)
         recycler_customer.adapter = this?.let {
-            customerAdapter}
+            customerAdapter
+        }
 
         image_cancel_customer.setOnClickListener {
             edit_search_customer.text.clear()
@@ -63,7 +58,7 @@ class CustomerActivity : AppCompatActivity() {
         edit_search_customer.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(editable: Editable?) {
                 filter(editable.toString())
-                if(edit_search_customer.text.isNullOrEmpty()) {
+                if (edit_search_customer.text.isNullOrEmpty()) {
                     val imm =
                         getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(edit_search_customer!!.windowToken, 0)
@@ -81,7 +76,7 @@ class CustomerActivity : AppCompatActivity() {
         })
     }
 
-    fun filter(text:String) {
+    fun filter(text: String) {
 
         var filterName = ArrayList<CustomerModel>()
 
@@ -95,7 +90,7 @@ class CustomerActivity : AppCompatActivity() {
         }
 
         customerAdapter.filterList(filterName)
-        if(filterName.isEmpty()) {
+        if (filterName.isEmpty()) {
             text_no_record_found?.visibility = View.VISIBLE
         } else {
             text_no_record_found?.visibility = View.GONE

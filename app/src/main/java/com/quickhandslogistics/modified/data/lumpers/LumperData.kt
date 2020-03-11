@@ -1,17 +1,17 @@
-package com.quickhandslogistics.model.lumper
+package com.quickhandslogistics.modified.data.lumpers
 
 import java.io.Serializable
 
 data class LumperData(
     val id: String,
-    val firstName: String,
-    val lastName: String,
+    val firstName: String?,
+    val lastName: String?,
     val email: String,
     val phone: String,
     val role: String,
-   // val addedBy: String,
-   // val lumpers: String,
-   // val profileImageUrl: String,
+    // val addedBy: String,
+    // val lumpers: String,
+    // val profileImageUrl: String,
     val isEmailVerified: Boolean,
     val isPhoneVerified: Boolean,
     val isActive: Boolean,

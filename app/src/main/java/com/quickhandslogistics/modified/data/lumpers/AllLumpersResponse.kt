@@ -1,4 +1,4 @@
-package com.quickhandslogistics.model.lumper
+package com.quickhandslogistics.modified.data.lumpers
 
 data class AllLumpersResponse(
     val success: Boolean,
