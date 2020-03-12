@@ -93,7 +93,6 @@
     <string name="lunch_in">Almuerzo en</string>
     <string name="notes">Notas</string>
     <string name="signature">Firma</string>
-    <string name="lumper">Nombre de Lumper</string>
     <string name="container_number">Número de contenedor</string>
     <string name="customer_name">Nombre del cliente</string>
     <string name="building_name">Nombre del edificioe</string>
@@ -127,4 +126,11 @@
     <string name="logging_in">**Logging In...**</string>
     <string name="api_loading_message">**Please wait while data is loading...**</string>
     <string name="internal_server_error">**Internal Server Error**</string>
+    <string name="lumper_name">Nombre de Lumper</string>
+    <string name="role">**Role**</string>
+    <string name="created_at">**Created At**</string>
+    <string name="updated_at">**Updated At**</string>
+    <string name="signInCaption">**Sign in by entering the details below.**</string>
+    <string name="enter_employee_id">**Enter your employee ID**</string>
+    <string name="enter_password">**Enter Password**</string>
 </resources>

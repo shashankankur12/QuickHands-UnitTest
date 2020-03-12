@@ -71,6 +71,7 @@
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:padding="@dimen/_5sdp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
@@ -113,7 +114,21 @@
             android:shadowRadius="5"
             android:text="@string/mark_attendance"
             android:textColor="@color/colorBlack" />
-
     </LinearLayout>
+
+    <com.leinardi.android.speeddial.SpeedDialOverlayLayout
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.leinardi.android.speeddial.SpeedDialView
+        android:id="@+id/speedDialView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:sdMainFabClosedBackgroundColor="@color/colorPrimary"
+        app:sdMainFabClosedSrc="@drawable/ic_add"
+        app:sdOverlayLayout="@id/overlay" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

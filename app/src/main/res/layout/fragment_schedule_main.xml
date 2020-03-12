@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:padding="@dimen/_8sdp"
-    tools:context=".view.fragments.ScheduleMainFragment">
+    tools:context=".modified.views.fragments.schedule.ScheduleMainFragment">
 
     <LinearLayout
         android:id="@+id/layoutDate"
@@ -27,7 +27,7 @@
             android:textColor="@color/colorBlack" />
 
         <TextView
-            android:id="@+id/text_date"
+            android:id="@+id/textViewDate"
             style="@style/textSizeSmallRegFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
+        android:id="@+id/tabLayoutSchedule"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,13 +48,13 @@
         app:tabMode="fixed" />
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
+        android:id="@+id/viewPagerSchedule"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tabLayout" />
+        app:layout_constraintTop_toBottomOf="@id/tabLayoutSchedule" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

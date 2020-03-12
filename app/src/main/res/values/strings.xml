@@ -95,7 +95,6 @@
     <string name="string_notification">Notification</string>
     <string name="string_location">Location</string>
     <string name="string_phone">Phone Number</string>
-    <string name="lumper">Lumper Name </string>
     <string name="customer_name">Customer Name</string>
     <string name="building_name">Building Name</string>
     <string name="choose_lumper">Choose Lumper</string>
@@ -125,4 +124,11 @@
     <string name="logging_in">Logging In...</string>
     <string name="api_loading_message">Please wait while data is loading...</string>
     <string name="internal_server_error">Internal Server Error</string>
+    <string name="lumper_name">Lumper Name</string>
+    <string name="role">Role</string>
+    <string name="created_at">Created At</string>
+    <string name="updated_at">Updated At</string>
+    <string name="signInCaption">Sign in by entering the details below.</string>
+    <string name="enter_employee_id">Enter your employee ID</string>
+    <string name="enter_password">Enter Password</string>
 </resources>

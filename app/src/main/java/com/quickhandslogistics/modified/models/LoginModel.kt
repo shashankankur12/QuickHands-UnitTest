@@ -72,7 +72,7 @@ class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
         onFinishedListener: LoginContract.Model.OnFinishedListener
     ) {
         SharedPref.getInstance().setBoolean(AppConstant.PREFERENCE_IS_ACTIVE, data.isActive)
-        SharedPref.getInstance().setString(AppConstant.PREF_AUTH_TOKEN, data.token)
+        SharedPref.getInstance().setString(AppConstant.PREFERENCE_AUTH_TOKEN, data.token)
         SharedPref.getInstance().setString(PREFERENCE_EMPLOYEE_ID, data.employeeId)
         SharedPref.getInstance().setString(AppConstant.PREFERENCE_USER_PHONE, data.phone)
         SharedPref.getInstance().setString(AppConstant.PREFERENCE_USER_EMAIL, data.email)
