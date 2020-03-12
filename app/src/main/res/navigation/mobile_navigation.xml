@@ -36,9 +36,9 @@
 
     <fragment
         android:id="@+id/nav_lumper_sheet"
-        android:name="com.quickhandslogistics.view.fragments.LumperSheetFragment"
+        android:name="com.quickhandslogistics.modified.views.fragments.lumperSheet.LumperSheetFragment"
         android:label="@string/string_lumper_sheet"
-        tools:layout="@layout/fragment_lumper_sheet2" />
+        tools:layout="@layout/fragment_lumper_sheet" />
 
     <fragment
         android:id="@+id/nav_customer_sheet"

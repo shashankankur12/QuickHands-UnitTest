@@ -102,7 +102,7 @@
         <activity
             android:name=".modified.views.activities.LoginActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".modified.views.activities.SplashActivity">
+        <activity android:name=".modified.views.activities.DashBoardActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -110,7 +110,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".modified.views.activities.DashBoardActivity"
+            android:name=".modified.views.activities.SplashActivity"
             android:label="@string/title_activity_dashboard"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />

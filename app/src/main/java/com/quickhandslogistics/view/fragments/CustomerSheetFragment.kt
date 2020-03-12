@@ -1,27 +1,19 @@
 package com.quickhandslogistics.view.fragments
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.model.CustomerModel
-import com.quickhandslogistics.model.StatusModel
-import com.quickhandslogistics.view.LumperModel
+import com.quickhandslogistics.modified.data.lumperSheet.StatusModel
 import com.quickhandslogistics.view.activities.CustomerActivity
 import com.quickhandslogistics.view.adapter.CustomerSheetAdapter
-import com.quickhandslogistics.view.adapter.LumperSheetAdapter
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.fragment_customer_sheet.*
-import kotlinx.android.synthetic.main.fragment_lumper_sheet2.*
-import java.util.Locale.filter
 
 class CustomerSheetFragment : Fragment() {
     val lumperList: ArrayList<CustomerModel> = ArrayList()
@@ -46,8 +38,16 @@ class CustomerSheetFragment : Fragment() {
         }
 
         for (i in 1..20) {
-            lumperStatusList.add(StatusModel(getString(R.string.in_progress)))
-            lumperStatusList.add(StatusModel(getString(R.string.complete)))
+            lumperStatusList.add(
+                StatusModel(
+                    getString(R.string.in_progress)
+                )
+            )
+            lumperStatusList.add(
+                StatusModel(
+                    getString(R.string.complete)
+                )
+            )
         }
 
         customerSheetAdapter =  CustomerSheetAdapter(lumperList, context!!, lumperStatusList)
