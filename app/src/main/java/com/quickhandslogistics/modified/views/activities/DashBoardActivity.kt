@@ -2,6 +2,7 @@ package com.quickhandslogistics.modified.views.activities
 
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -12,6 +13,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.quickhandslogistics.BuildConfig
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.views.BaseActivity
+import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.SharedPref
 import com.quickhandslogistics.view.activities.LeadProfileActivity
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.app_bar_dashboard.*
@@ -41,6 +44,18 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener {
         navController = findNavController(R.id.nav_host_fragment)
 
         mainHeaderLayout = headerView.findViewById(R.id.mainHeaderLayout)
+        val textViewLeadName = headerView.findViewById<TextView>(R.id.textViewLeadName)
+        textViewLeadName.text =
+            SharedPref.getInstance().getString(AppConstant.PREFERENCE_USER_FULL_NAME)
+        val textViewEmail = headerView.findViewById<TextView>(R.id.textViewEmail)
+        textViewEmail.text =
+            SharedPref.getInstance().getString(AppConstant.PREFERENCE_USER_EMAIL)
+        val textViewEmployeeId = headerView.findViewById<TextView>(R.id.textViewEmployeeId)
+        textViewEmployeeId.text = String.format(
+            "Emp ID: %s",
+            SharedPref.getInstance().getString(AppConstant.PREFERENCE_EMPLOYEE_ID)
+        )
+
         mainHeaderLayout.setOnClickListener(this)
 
         appBarConfiguration = AppBarConfiguration(
