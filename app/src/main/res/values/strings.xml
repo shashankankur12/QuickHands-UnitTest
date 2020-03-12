@@ -128,4 +128,7 @@
     <string name="role">Role</string>
     <string name="created_at">Created At</string>
     <string name="updated_at">Updated At</string>
+    <string name="signInCaption">Sign in by entering the details below.</string>
+    <string name="enter_employee_id">Enter your employee ID</string>
+    <string name="enter_password">Enter Password</string>
 </resources>

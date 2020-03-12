@@ -28,19 +28,6 @@ open class BaseActivity : AppCompatActivity() {
         sharedPref = SharedPref.getInstance()
     }
 
-    protected fun configStatusBar() {
-        val window = activity.window
-        val decor = window.decorView
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            decor.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            window.statusBarColor = ContextCompat.getColor(activity, android.R.color.white)
-        } else {
-            decor.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            window.statusBarColor = ContextCompat.getColor(activity, R.color.colorLightGrey)
-        }
-    }
-
     protected fun setupToolbar(title: String) {
         toolbar.title = ""
         setSupportActionBar(toolbar)
@@ -72,17 +59,5 @@ open class BaseActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(R.anim.anim_prev_slide_in, R.anim.anim_prev_slide_out)
-    }
-
-    protected fun startShakeAnimation(view: View) {
-        val animatorSet = AnimatorSet()
-
-        val object1: ObjectAnimator =
-            ObjectAnimator.ofFloat(view, "scaleX", 1f, 1.75f, 1.75f, 1.75f, 1f)
-        val object2: ObjectAnimator =
-            ObjectAnimator.ofFloat(view, "scaleY", 1f, 1.75f, 1.75f, 0.85f, 1f)
-
-        animatorSet.playTogether(object1, object2)
-        animatorSet.start()
     }
 }
