@@ -8,10 +8,12 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.SharedPref
+import kotlinx.android.synthetic.main.layout_toolbar.*
 
 open class BaseActivity : AppCompatActivity() {
 
@@ -37,6 +39,14 @@ open class BaseActivity : AppCompatActivity() {
             decor.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             window.statusBarColor = ContextCompat.getColor(activity, R.color.colorLightGrey)
         }
+    }
+
+    protected fun setupToolbar(title: String) {
+        toolbar.title = ""
+        setSupportActionBar(toolbar)
+
+        textViewTitle.text = title
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     protected fun startIntent(

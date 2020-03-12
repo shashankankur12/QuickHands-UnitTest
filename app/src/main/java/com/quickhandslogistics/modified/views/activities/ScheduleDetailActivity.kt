@@ -1,16 +1,19 @@
-package com.quickhandslogistics.view.activities
+package com.quickhandslogistics.modified.views.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.leinardi.android.speeddial.SpeedDialActionItem
+import com.leinardi.android.speeddial.SpeedDialView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleFragment
+import com.quickhandslogistics.view.activities.BusinessOperationsActivity
 import com.quickhandslogistics.view.adapter.LumperAttendanceAdapter
 import com.quickhandslogistics.view.adapter.ScheduledWorkItemAdapter
 import kotlinx.android.synthetic.main.activity_schedule_detail.*
@@ -18,18 +21,14 @@ import kotlinx.android.synthetic.main.bottom_sheet_lumpers_attendance.*
 import kotlinx.android.synthetic.main.container_schedule_detail.*
 import java.util.*
 
-
-class ScheduleDetailActivity : AppCompatActivity() {
+class ScheduleDetailActivity : BaseActivity(), SpeedDialView.OnActionSelectedListener {
 
     private var sheetBehavior: BottomSheetBehavior<ConstraintLayout>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_schedule_detail)
-        toolbar.title = ""
-        setSupportActionBar(toolbar)
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setupToolbar(getString(R.string.schedule_detail))
 
         var time: Long = 0
         intent.extras?.let {
@@ -38,32 +37,16 @@ class ScheduleDetailActivity : AppCompatActivity() {
             }
         }
 
+        speedDialView.inflate(R.menu.menu_schedule)
+        speedDialView.setOnActionSelectedListener(this)
+
         val cal1 = Calendar.getInstance()
         val cal2 = Calendar.getInstance()
         cal1.timeInMillis = time
         val sameDay =
             cal1[Calendar.DAY_OF_YEAR] == cal2[Calendar.DAY_OF_YEAR] && cal1[Calendar.YEAR] == cal2[Calendar.YEAR]
-        if (sameDay) {
-            fab_mark_attendance.visibility = View.VISIBLE
-            textView_mark_attendance.visibility = View.VISIBLE
-        } else {
-            fab_mark_attendance.visibility = View.GONE
-            textView_mark_attendance.visibility = View.GONE
-        }
-
-        fab_mark_attendance.setOnClickListener {
-            if (sheetBehavior?.state != BottomSheetBehavior.STATE_EXPANDED) {
-                sheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED;
-                bg.visibility = View.VISIBLE
-            } else {
-                sheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED;
-                bg.visibility = View.GONE
-            }
-        }
-
-        fab_business_operations.setOnClickListener {
-            startActivity(Intent(this, BusinessOperationsActivity::class.java))
-            overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out)
+        if (!sameDay) {
+            speedDialView.removeActionItemById(R.id.actionMarkAttendance)
         }
 
         imageViewClose.setOnClickListener {
@@ -104,5 +87,31 @@ class ScheduleDetailActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onActionSelected(actionItem: SpeedDialActionItem?): Boolean {
+        actionItem?.let {
+            when (actionItem.id) {
+                R.id.actionBusinessOperations -> {
+                    speedDialView.close(true)
+                    startActivity(Intent(this, BusinessOperationsActivity::class.java))
+                    overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out)
+                    return true
+                }
+                R.id.actionMarkAttendance -> {
+                    speedDialView.close(true)
+                    if (sheetBehavior?.state != BottomSheetBehavior.STATE_EXPANDED) {
+                        sheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED;
+                        bg.visibility = View.VISIBLE
+                    } else {
+                        sheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED;
+                        bg.visibility = View.GONE
+                    }
+                    return true
+                }
+                else -> return false
+            }
+        }
+        return false
     }
 }

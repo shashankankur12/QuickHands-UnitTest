@@ -19,11 +19,7 @@ class LumperDetailActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lumper_detail)
-        toolbar.title = ""
-        setSupportActionBar(toolbar)
-
-        textViewTitle.text = getString(R.string.string_lumper_details)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setupToolbar(getString(R.string.string_lumper_details))
 
         displayLumperDetails()
     }
