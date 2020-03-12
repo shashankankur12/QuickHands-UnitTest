@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.Utils
-import com.quickhandslogistics.view.LumperModel
+import com.quickhandslogistics.modified.data.lumperSheet.LumperModel
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_lumper_layout.view.*
 

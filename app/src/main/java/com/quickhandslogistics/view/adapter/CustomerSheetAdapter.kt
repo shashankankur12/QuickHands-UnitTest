@@ -2,7 +2,6 @@ package com.quickhandslogistics.view.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +9,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.model.CustomerModel
-import com.quickhandslogistics.model.StatusModel
+import com.quickhandslogistics.modified.data.lumperSheet.StatusModel
 import com.quickhandslogistics.view.activities.CustomerLoadActivity
-import com.quickhandslogistics.view.activities.LumperSheetDetailActivity
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_lumper_sheet_layout.view.*
 

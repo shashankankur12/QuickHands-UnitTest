@@ -19,6 +19,10 @@ class LumperSheetDetailActivity : AppCompatActivity() {
     val lumperSheetList: ArrayList<String> = ArrayList()
     var faker = Faker()
 
+    companion object {
+        const val ARG_LUMPER_SHEET_DATA = "ARG_LUMPER_SHEET_DATA"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lumper_sheet_detail)
