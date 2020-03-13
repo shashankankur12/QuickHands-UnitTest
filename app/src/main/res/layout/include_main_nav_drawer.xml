@@ -7,16 +7,26 @@
     android:background="@color/appBackground"
     android:fitsSystemWindows="false">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/nav_header_dashboard" />
+        <include
+            android:id="@+id/headerLayout"
+            layout="@layout/nav_header_dashboard" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_below="@+id/headerLayout"
+            android:layout_marginTop="-15dp"
+            android:background="@drawable/shadow_effect" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/headerLayout"
             android:background="@drawable/top_left_round_background">
 
             <LinearLayout
@@ -46,5 +56,5 @@
                     android:paddingBottom="16dp" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
-    </LinearLayout>
+    </RelativeLayout>
 </com.google.android.material.navigation.NavigationView>

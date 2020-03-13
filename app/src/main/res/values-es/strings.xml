@@ -134,4 +134,5 @@
     <string name="enter_password">**Enter Password**</string>
     <string name="emailAddress">**Email Address**</string>
     <string name="search_by_name">**Search by name...**</string>
+    <string name="my_profile">**My Profile**</string>
 </resources>

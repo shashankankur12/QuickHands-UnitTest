@@ -45,7 +45,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layoutDate"
-        app:tabMode="fixed" />
+        app:tabIndicatorColor="@color/buttonRed"
+        app:tabIndicatorFullWidth="false"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@android:color/black"
+        app:tabTextAppearance="@style/TabTextAppearance"
+        app:tabTextColor="@color/detailHeader" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPagerSchedule"

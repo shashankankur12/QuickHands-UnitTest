@@ -6,7 +6,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.DashBoardContract
 import com.quickhandslogistics.modified.presenters.DashBoardPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.view.activities.LeadProfileActivity
+import kotlinx.android.synthetic.main.include_main_nav_drawer.*
 import kotlinx.android.synthetic.main.nav_header_dashboard.*
 
 class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContract.View {
@@ -17,7 +17,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         setupToolbar(showBackButton = false)
         setUpNavigationBar()
 
-        mainHeaderLayout.setOnClickListener(this)
+        headerLayout.setOnClickListener(this)
 
         val dashBoardPresenter = DashBoardPresenter(this, sharedPref)
         dashBoardPresenter.loadLeadProfileData()
@@ -26,7 +26,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
-                mainHeaderLayout.id -> {
+                headerLayout.id -> {
                     toggleDrawer(false)
                     startIntent(LeadProfileActivity::class.java)
                 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,15 +8,15 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_20ssp">
+        android:padding="@dimen/_15ssp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circleImageViewProfile"
             android:layout_width="@dimen/_70sdp"
             android:layout_height="@dimen/_70sdp"
-            android:contentDescription="@string/nav_header_desc"
             android:src="@drawable/dummy"
             app:civ_border_color="@color/imageBorder"
             app:civ_border_width="1dp"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
             android:gravity="center"
-            android:text="@string/lumper_name"
+            android:text="John Snow"
             android:textColor="@android:color/black"
             android:textSize="@dimen/_14ssp"
             android:textStyle="bold"
@@ -40,18 +40,24 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <include layout="@layout/layout_top_left_shadow" />
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/top_left_round_background">
+        android:layout_below="@+id/constraintLayout"
+        android:background="@drawable/top_left_round_background"
+        android:paddingTop="@dimen/_25ssp"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingStart="@dimen/_20ssp"
-            android:paddingTop="@dimen/_25ssp"
-            android:paddingEnd="@dimen/_20ssp">
+            android:paddingEnd="@dimen/_20ssp"
+            android:paddingBottom="@dimen/_25ssp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -142,6 +148,69 @@
                     android:layout_marginTop="@dimen/_2sdp"
                     android:text="+91-9087898789" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/detailTextHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/string_shifting_hours" />
+
+                <TextView
+                    android:id="@+id/textViewShiftHours"
+                    style="@style/detailTextValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:text="9:00am - 6:00pm" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/detailTextHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/string_district_manager" />
+
+                <TextView
+                    android:id="@+id/textViewDistrictManager"
+                    style="@style/detailTextValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:text="Garrett Hamill" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/detailTextHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/string_location" />
+
+                <TextView
+                    android:id="@+id/textViewLocation"
+                    style="@style/detailTextValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:text="Ontario, CA" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -167,4 +236,4 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
