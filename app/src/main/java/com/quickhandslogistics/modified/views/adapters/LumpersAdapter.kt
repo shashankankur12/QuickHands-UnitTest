@@ -8,8 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.data.lumpers.LumperData
 import com.quickhandslogistics.modified.contracts.lumpers.LumpersContract
+import com.quickhandslogistics.modified.data.lumpers.LumperData
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_lumper_layout.view.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -50,24 +51,24 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
-        var lumperText: TextView = view.text_lumper
-        var lumperCustId: TextView = view.text_cus_id
-        var profilePic: ImageView = view.image_lumper_logo
-        var lumperBuilding: TextView = view.text_building_name
-        var imagePhone: ImageView = view.image_phone
+        var textViewLumperName: TextView = view.textViewLumperName
+        var textViewEmployeeId: TextView = view.textViewEmployeeId
+        var circleImageViewProfile: CircleImageView = view.circleImageViewProfile
+        var textViewShiftHours: TextView = view.textViewShiftHours
+        var imageViewCall: ImageView = view.imageViewCall
 
         fun bind(lumperData: LumperData) {
             if (lumperData.firstName != null && lumperData.lastName != null) {
-                lumperText.text = String.format(
+                textViewLumperName.text = String.format(
                     "%s %s",
                     lumperData.firstName.toUpperCase(Locale.getDefault()),
                     lumperData.lastName.toUpperCase(Locale.getDefault())
                 )
             }
-            lumperCustId.text = lumperData.email
-            lumperBuilding.text = lumperData.role.toUpperCase(Locale.getDefault())
+            //lumperCustId.text = String.format("(Emp ID: %s)", lumperData.id)
+            //lumperBuilding.text = lumperData.role.toUpperCase(Locale.getDefault())
 
-            imagePhone.setOnClickListener(this)
+            imageViewCall.setOnClickListener(this)
             itemView.setOnClickListener(this)
         }
 
@@ -78,7 +79,7 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
                         val lumperData = getItem(adapterPosition)
                         adapterItemClickListener.onItemClick(lumperData)
                     }
-                    imagePhone.id -> {
+                    imageViewCall.id -> {
                         val lumperData = getItem(adapterPosition)
                         adapterItemClickListener.onPhoneViewClick(lumperData.phone)
                     }

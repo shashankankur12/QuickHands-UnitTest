@@ -1,89 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_root"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_80sdp"
-    app:cardCornerRadius="@dimen/_5sdp"
-    android:layout_marginLeft="@dimen/_10sdp"
-    android:layout_marginRight="@dimen/_10sdp"
-    android:layout_marginTop="@dimen/_10sdp"
-    android:elevation="@dimen/_5sdp">
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/_10ssp"
+    android:paddingBottom="@dimen/_10ssp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint_root"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?android:attr/selectableItemBackground"
-        android:orientation="vertical">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageViewProfile"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:contentDescription="@string/nav_header_desc"
+        android:src="@drawable/dummy"
+        app:civ_border_color="@color/colorLightGrey"
+        app:civ_border_width="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/image_lumper_logo"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginRight="@dimen/_10sdp"
-            android:src="@drawable/ic_basic_info_placeholder"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/textViewLumperName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="John Snow"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/_14ssp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/imageViewCall"
+        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/text_lumper"
-            style="@style/textSizeNormalRegFont"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:fontFamily="@font/poppinssemibold"
-            android:textColor="@color/colorBlack"
-            android:singleLine="true"
-            android:includeFontPadding="false"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="@dimen/_15sdp"
-            app:layout_constraintRight_toLeftOf="@id/image_phone"
-            app:layout_constraintLeft_toRightOf="@+id/image_lumper_logo" />
+    <TextView
+        android:id="@+id/textViewEmployeeId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="(Emp ID: 1001)"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toStartOf="@id/imageViewCall"
+        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
 
-        <TextView
-            android:id="@+id/text_cus_id"
-            style="@style/textSizeSmallRegFont"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppinsregular"
-            android:singleLine="true"
-            android:text="Customer ID: 1001"
-            android:includeFontPadding="false"
-            android:textColor="@color/colorBlack"
-            app:layout_constraintRight_toLeftOf="@id/image_phone"
-            app:layout_constraintLeft_toLeftOf="@id/text_lumper"
-            app:layout_constraintTop_toBottomOf="@id/text_lumper"/>
+    <TextView
+        android:id="@+id/textViewShiftHours"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="Shift Hours: 9:00am to 6:00pm"
+        android:textColor="@color/detailHeader"
+        app:layout_constraintEnd_toStartOf="@id/imageViewCall"
+        app:layout_constraintStart_toEndOf="@id/circleImageViewProfile"
+        app:layout_constraintTop_toBottomOf="@id/textViewEmployeeId" />
 
-        <TextView
-            android:id="@+id/text_building_name"
-            style="@style/textSizeSmallRegFont"
-            android:layout_width="0dp"
-            android:textStyle="italic"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppinsregular"
-            android:singleLine="true"
-            android:text="@string/building_name"
-            android:paddingTop="@dimen/_3sdp"
-            android:paddingBottom="@dimen/_3sdp"
-            android:includeFontPadding="false"
-            android:textColor="@color/colorBlack"
-            app:layout_constraintRight_toLeftOf="@id/image_phone"
-            app:layout_constraintLeft_toLeftOf="@id/text_lumper"
-            app:layout_constraintTop_toBottomOf="@id/text_cus_id"/>
-
-        <ImageView
-            android:id="@+id/image_phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_phone_call"
-            android:tint="@color/colorBlue"
-            android:layout_marginRight="@dimen/_20sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/text_lumper"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+    <ImageView
+        android:id="@+id/imageViewCall"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:src="@drawable/ic_call"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

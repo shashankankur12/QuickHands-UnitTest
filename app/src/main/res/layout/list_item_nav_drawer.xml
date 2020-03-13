@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:gravity="start|center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/_12ssp"
+    android:paddingEnd="@dimen/_12ssp">
+
+    <ImageView
+        android:id="@+id/list_item_nav_drawer_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_12ssp"
+        android:src="@drawable/ic_sidemenu_dashboard" />
+
+    <TextView
+        android:id="@+id/list_item_nav_drawer_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Menu Item"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold" />
+</LinearLayout>

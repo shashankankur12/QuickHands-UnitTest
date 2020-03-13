@@ -101,9 +101,7 @@
         </activity>
         <activity
             android:name=".modified.views.activities.DashBoardActivity"
-            android:label="@string/title_activity_dashboard"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -9,6 +9,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.lumpers.LumpersContract
@@ -45,7 +46,11 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
         super.onViewCreated(view, savedInstanceState)
 
         recyclerViewLumpers.apply {
-            layoutManager = LinearLayoutManager(fragmentActivity!!)
+            val linearLayoutManager = LinearLayoutManager(fragmentActivity!!)
+            layoutManager = linearLayoutManager
+            val dividerItemDecoration =
+                DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
+            addItemDecoration(dividerItemDecoration)
             lumpersAdapter = LumpersAdapter(this@LumpersFragment)
             adapter = lumpersAdapter
         }

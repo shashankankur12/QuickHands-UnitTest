@@ -28,7 +28,7 @@ class ScheduleDetailActivity : BaseActivity(), SpeedDialView.OnActionSelectedLis
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_schedule_detail)
-        setupToolbar(getString(R.string.schedule_detail))
+        setupToolbar(title = getString(R.string.schedule_detail))
 
         var time: Long = 0
         intent.extras?.let {

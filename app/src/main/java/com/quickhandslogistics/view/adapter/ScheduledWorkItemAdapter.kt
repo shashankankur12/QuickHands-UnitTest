@@ -11,7 +11,6 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.view.activities.WorkItemLumpersActivity
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_lumper_layout.view.constraint_root
-import kotlinx.android.synthetic.main.item_lumper_layout.view.text_lumper
 import kotlinx.android.synthetic.main.layout_scheduled_work_item.view.*
 
 class ScheduledWorkItemAdapter(private val activity: Activity, private val sameDay: Boolean) :

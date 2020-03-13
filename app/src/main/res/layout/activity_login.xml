@@ -38,85 +38,78 @@
                 android:src="@drawable/login_illustration" />
         </LinearLayout>
 
-        <androidx.cardview.widget.CardView
+        <LinearLayout
             android:id="@+id/layout"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:cardBackgroundColor="@android:color/transparent"
-            app:cardElevation="@dimen/_50sdp"
+            android:background="@drawable/login_form_background"
+            android:orientation="vertical"
+            android:padding="@dimen/_20ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutLogo">
 
-            <LinearLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signInCaption"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/editTextEmployeeId"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/login_form_background"
-                android:orientation="vertical"
-                android:padding="@dimen/_20ssp">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/edittext_background"
+                android:drawableStart="@drawable/ic_employee_id_deselect"
+                android:drawablePadding="@dimen/_10ssp"
+                android:hint="@string/enter_employee_id"
+                android:inputType="textPersonName"
+                android:paddingStart="@dimen/_14ssp"
+                android:paddingTop="@dimen/_10ssp"
+                android:paddingEnd="@dimen/_14ssp"
+                android:paddingBottom="@dimen/_10ssp"
+                android:textSize="@dimen/_12ssp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/signInCaption"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/_12ssp"
-                    android:textStyle="bold" />
+            <EditText
+                android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/edittext_background"
+                android:drawableStart="@drawable/ic_password_deselect"
+                android:drawablePadding="@dimen/_10ssp"
+                android:hint="@string/enter_password"
+                android:inputType="textPassword"
+                android:paddingStart="@dimen/_14ssp"
+                android:paddingTop="@dimen/_10ssp"
+                android:paddingEnd="@dimen/_14ssp"
+                android:paddingBottom="@dimen/_10ssp"
+                android:textSize="@dimen/_12ssp" />
 
-                <EditText
-                    android:id="@+id/editTextEmployeeId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@drawable/edittext_background"
-                    android:drawableStart="@drawable/ic_employee_id_deselect"
-                    android:drawablePadding="@dimen/_10ssp"
-                    android:hint="@string/enter_employee_id"
-                    android:inputType="textPersonName"
-                    android:paddingStart="@dimen/_14ssp"
-                    android:paddingTop="@dimen/_10ssp"
-                    android:paddingEnd="@dimen/_14ssp"
-                    android:paddingBottom="@dimen/_10ssp"
-                    android:textSize="@dimen/_12ssp" />
+            <TextView
+                android:id="@+id/textViewForgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:padding="@dimen/_10sdp"
+                android:text="@string/string_forgot_password"
+                android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/editTextPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@drawable/edittext_background"
-                    android:drawableStart="@drawable/ic_password_deselect"
-                    android:drawablePadding="@dimen/_10ssp"
-                    android:hint="@string/enter_password"
-                    android:inputType="textPassword"
-                    android:paddingStart="@dimen/_14ssp"
-                    android:paddingTop="@dimen/_10ssp"
-                    android:paddingEnd="@dimen/_14ssp"
-                    android:paddingBottom="@dimen/_10ssp"
-                    android:textSize="@dimen/_12ssp" />
-
-                <TextView
-                    android:id="@+id/textViewForgotPassword"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    android:padding="@dimen/_10sdp"
-                    android:text="@string/string_forgot_password"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/buttonLogin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/round_button_red_new"
-                    android:text="@string/string_login"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/_12ssp" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+            <Button
+                android:id="@+id/buttonLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_button_red_new"
+                android:text="@string/string_login"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_12ssp" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

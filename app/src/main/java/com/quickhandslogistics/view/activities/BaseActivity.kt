@@ -25,7 +25,7 @@ open class BaseActivity : AppCompatActivity() {
 //        if (backPress) customToolBarHelper.enableBackPress()
 //
 //        if (changeicon)
-//        customToolBarHelper.setLogoIcon(R.drawable.ic_cancel_black_24dp)
+//        customToolBarHelper.setLogoIcon(R.drawable.ic_cancel)
 //    }
 
     protected fun setGroupToolbar(activity: Activity?, title: String, subtitle: String) {

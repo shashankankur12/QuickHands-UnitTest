@@ -6,11 +6,14 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.Utils
 import com.quickhandslogistics.modified.data.lumperSheet.LumperModel
+import de.hdodenhof.circleimageview.CircleImageView
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_lumper_layout.view.*
 
@@ -58,11 +61,11 @@ class LumperDummyAdapter(
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var lumperText = view.text_lumper
-        var lumperCustId = view.text_cus_id
-        var profilePic = view.image_lumper_logo
         var constraintRoot = view.constraint_root
-        var lumperBuilding = view.text_building_name
-        var imagePhone = view.image_phone
+        var lumperText: TextView = view.textViewLumperName
+        var lumperCustId: TextView = view.textViewEmployeeId
+        var profilePic: CircleImageView = view.circleImageViewProfile
+        var lumperBuilding: TextView = view.textViewShiftHours
+        var imagePhone: ImageView = view.imageViewCall
     }
 }

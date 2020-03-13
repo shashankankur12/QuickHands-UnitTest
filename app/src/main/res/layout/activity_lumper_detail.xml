@@ -7,6 +7,6 @@
 
     <include layout="@layout/layout_toolbar" />
 
-    <include layout="@layout/content_lumper_detail" />
+    <include layout="@layout/content_lumper_detail_new" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
