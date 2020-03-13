@@ -86,7 +86,7 @@
             android:name=".view.activities.ResetPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.ForgotPasswordActivity"
+            android:name=".modified.views.activities.ForgotPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".modified.views.activities.LoginActivity"

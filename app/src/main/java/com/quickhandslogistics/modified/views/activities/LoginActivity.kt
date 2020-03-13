@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
 import android.view.View
-import android.view.WindowManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.LoginContract
 import com.quickhandslogistics.modified.presenters.LoginPresenter
@@ -36,11 +35,7 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
         view?.let {
             when (view.id) {
                 textViewForgotPassword.id -> {
-                    Utils.showForgotPasswordDialog(
-                        R.style.dialogAnimation,
-                        getString(R.string.string_request_message),
-                        activity
-                    )
+                    startIntent(ForgotPasswordActivity::class.java, isFinish = false)
                 }
                 buttonLogin.id -> {
                     Utils.hideSoftKeyboard(activity)

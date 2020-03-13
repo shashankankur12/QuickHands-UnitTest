@@ -1,8 +1,14 @@
-package com.quickhandslogistics.network
+package com.quickhandslogistics.modified.network
 
+import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRequest
+import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordResponse
 import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.network.AppConfiguration
+import com.quickhandslogistics.network.IApiInterface
+import com.quickhandslogistics.network.NetworkConnectionInterceptor
+import com.quickhandslogistics.network.ResponseListener
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 
@@ -57,7 +63,8 @@ object DataManager : AppConstant {
     }
 
     fun getMockService(): IApiInterface {
-        return getMockDataManager()!!.create(IApiInterface::class.java)
+        return getMockDataManager()!!.create(
+            IApiInterface::class.java)
     }
 
      fun doLogin(loginRequest: LoginRequest, listener: ResponseListener<LoginResponse>) {
@@ -83,6 +90,30 @@ object DataManager : AppConstant {
                    }
                })
            }
+
+    fun doPasswordReset(forgotPasswordRequest: ForgotPasswordRequest, listener: ResponseListener<ForgotPasswordResponse>) {
+        val call = getService().doResetPassword(forgotPasswordRequest)
+        call.enqueue(object : Callback<ForgotPasswordResponse> {
+            override fun onResponse(
+                call: Call<ForgotPasswordResponse>,
+                response: Response<ForgotPasswordResponse>
+            ) {
+                if (!response.isSuccessful) {
+                    response.errorBody()?.let { listener.onError(it) }
+                    return
+                }
+
+                if (response.body()?.success != null && response.body()?.success == true)
+                    listener.onSuccess(response.body()!!)
+                else
+                    listener.onError(response.body()!!.message)
+            }
+
+            override fun onFailure(call: Call<ForgotPasswordResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
 
     fun getAllLumpersData(listener: ResponseListener<AllLumpersResponse>) {
         val call = getService().getAllLumpersData("Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN))

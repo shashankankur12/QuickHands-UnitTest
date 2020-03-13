@@ -1,15 +1,9 @@
 package com.quickhandslogistics.modified.views
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.SharedPref

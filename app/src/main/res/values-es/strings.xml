@@ -113,6 +113,10 @@
     <string name="text_employee_valid_email_error_msg">Por favor ingrese una dirección de correo electrónico válida</string>
     <string name="string_request_message">Póngase en contacto con su administrador para solicitar una contraseña olvidada.</string>
     <string name="invalid_email_password">Por favor ingrese un correo electrónico / contraseña válida</string>
+    <string name="string_reset_password">Restablecer la contraseña</string>
+    <string name="forgotPasswordInCaption">Solo necesitamos su ID de empleado registrado para restablecer su contraseña.</string>
+    <string name="invalid_emp_id">Por favor ingrese ID de empleado válida</string>
+    <string name="please_wait">Por favor espera...</string>
 
     <string name="schedule_detail">**Schedule Detail**</string>
     <string name="scheduled">**Scheduled**</string>
@@ -133,4 +137,6 @@
     <string name="signInCaption">**Sign in by entering the details below.**</string>
     <string name="enter_employee_id">**Enter your employee ID**</string>
     <string name="enter_password">**Enter Password**</string>
+
+
 </resources>

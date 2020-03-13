@@ -1,5 +1,7 @@
 package com.quickhandslogistics.network
 
+import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRequest
+import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordResponse
 import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
@@ -13,4 +15,6 @@ interface IApiInterface {
     @GET("employees/lead/lumpers")
     fun getAllLumpersData(@Header("Authorization") auth: String): Call<AllLumpersResponse>
 
+    @POST("emails/forgot-password/lead")
+    fun doResetPassword(@Body forgotPasswordRequest: ForgotPasswordRequest): Call<ForgotPasswordResponse>
 }
