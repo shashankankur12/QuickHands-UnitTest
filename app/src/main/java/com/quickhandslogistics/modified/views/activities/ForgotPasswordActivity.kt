@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.activity_forgot_password.*
 
 class ForgotPasswordActivity : BaseActivity(), ForgotPasswordContract.View, View.OnClickListener {
 
-
     private var progressDialog: Dialog? = null
     private lateinit var forgotPasswordPresenter: ForgotPasswordPresenter
 
@@ -27,15 +26,6 @@ class ForgotPasswordActivity : BaseActivity(), ForgotPasswordContract.View, View
         buttonPasswordReset.setOnClickListener(this)
 
         forgotPasswordPresenter = ForgotPasswordPresenter(this, resources)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onClick(view: View?) {
@@ -69,7 +59,6 @@ class ForgotPasswordActivity : BaseActivity(), ForgotPasswordContract.View, View
     override fun hideProgress() {
         progressDialog?.dismiss()
     }
-
 
     override fun showAPIErrorMessage(message: String) {
         editTextEmpId.requestFocus()
