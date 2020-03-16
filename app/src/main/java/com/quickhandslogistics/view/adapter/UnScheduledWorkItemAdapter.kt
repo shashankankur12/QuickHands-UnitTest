@@ -13,7 +13,6 @@ import com.quickhandslogistics.view.activities.WorkItemLumpersActivity
 import com.quickhandslogistics.view.activities.WorkItemLumpersActivity.Companion.ARG_CAN_REPLACE
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_lumper_layout.view.constraint_root
-import kotlinx.android.synthetic.main.item_lumper_layout.view.text_lumper
 import kotlinx.android.synthetic.main.layout_unscheduled_work_item.view.*
 
 class UnScheduledWorkItemAdapter(

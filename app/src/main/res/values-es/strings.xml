@@ -62,7 +62,6 @@
     <string name="string_shifting_hours">Turno de horas</string>
     <string name="stirng_general_info">General Info</string>
     <string name="string_title">Titulo</string>
-    <string name="string_search">Buscar</string>
     <string name="string_district_manager">Gerente de distrito</string>
     <string name="string_save">Guardar</string>
     <string name="job_history">Historia laboral</string>
@@ -139,4 +138,8 @@
     <string name="enter_password">**Enter Password**</string>
 
 
+
+    <string name="emailAddress">**Email Address**</string>
+    <string name="search_by_name">**Search by name...**</string>
+    <string name="my_profile">**My Profile**</string>
 </resources>

@@ -12,7 +12,6 @@
     <string name="string_confirm_password">Confirm Password</string>
     <string name="string_submit">Submit</string>
     <string name="string_enter_otp">Enter OTP</string>
-    <string name="string_search">Search by Name</string>
     <string name="string_otp_message">Please enter your OTP and new password</string>
     <string name="string_lumper"> Lumpers</string>
     <string name="string_settings">Settings</string>
@@ -135,4 +134,7 @@
     <string name="enter_password">Enter Password</string>
     <string name="string_reset_password">Reset Password</string>
     <string name="forgotPasswordInCaption">We just need your registered employee Id  to reset your password.</string>
+    <string name="emailAddress">Email Address</string>
+    <string name="search_by_name">Search by name...</string>
+    <string name="my_profile">My Profile</string>
 </resources>

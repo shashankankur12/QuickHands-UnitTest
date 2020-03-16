@@ -1,7 +1,9 @@
 package com.quickhandslogistics.modified.views.adapters
 
+import android.content.res.Resources
+import android.os.Parcelable
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.data.schedule.ScheduleMainResponse
@@ -9,11 +11,12 @@ import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleFragmen
 import java.util.*
 
 class ScheduleMainPagerAdapter(
-    private val fragmentActivity: FragmentActivity,
+    childFragmentManager: FragmentManager,
+    private val resources: Resources,
     time: Long
 ) :
     FragmentStatePagerAdapter(
-        fragmentActivity.supportFragmentManager,
+        childFragmentManager,
         BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
     ) {
 
@@ -32,11 +35,15 @@ class ScheduleMainPagerAdapter(
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return fragmentActivity.getString(tabTitles[position])
+        return resources.getString(tabTitles[position])
     }
 
     override fun getCount(): Int {
         return tabTitles.size
+    }
+
+    override fun saveState(): Parcelable? {
+        return null
     }
 
     fun updateScheduleList(

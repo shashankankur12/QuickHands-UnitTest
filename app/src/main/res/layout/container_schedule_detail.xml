@@ -127,7 +127,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:sdMainFabClosedBackgroundColor="@color/colorPrimary"
         app:sdMainFabClosedSrc="@drawable/ic_add"
         app:sdOverlayLayout="@id/overlay" />
 

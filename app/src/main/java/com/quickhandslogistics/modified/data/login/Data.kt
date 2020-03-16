@@ -10,7 +10,7 @@ data class Data(
     val isPhoneVerified: Boolean,
     val lastName: String,
     val phone: String,
-//    val profileImageUrl :Objects,
+    val profileImageUrl: String,
     val role: String,
     val token: String
 )

@@ -42,7 +42,7 @@
         android:layout_height="@dimen/_30sdp"
         android:layout_marginRight="@dimen/_5sdp"
         android:padding="@dimen/_5sdp"
-        android:src="@drawable/ic_cancel_black_24dp"
+        android:src="@drawable/ic_cancel"
         android:tint="@color/colorWhite"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

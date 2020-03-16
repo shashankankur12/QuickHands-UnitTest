@@ -9,21 +9,24 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainConstraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/appBackground">
 
         <EditText
             android:id="@+id/editTextSearch"
-            style="@style/textSizeNormalRegFont"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
+            android:layout_margin="@dimen/_12sdp"
             android:background="@drawable/edit_search_bg"
-            android:drawableStart="@drawable/ic_search_black_24dp"
-            android:drawablePadding="@dimen/_2sdp"
-            android:hint="@string/string_search"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="@dimen/_4sdp"
+            android:hint="@string/search_by_name"
             android:imeOptions="actionDone"
             android:inputType="textPersonName"
+            android:paddingStart="@dimen/_5sdp"
+            android:paddingTop="@dimen/_8sdp"
             android:paddingEnd="@dimen/_30sdp"
+            android:paddingBottom="@dimen/_8sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -32,37 +35,50 @@
             android:id="@+id/imageViewCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:src="@drawable/ic_cancel_black_24dp"
+            android:layout_marginEnd="@dimen/_17sdp"
+            android:src="@drawable/ic_cancel"
             android:tint="@color/colorLightGrey"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/editTextSearch"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/editTextSearch" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewLumpers"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@drawable/shadow_effect"
+            android:translationY="-15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layoutAnimation="@anim/recycler_anim"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@drawable/top_left_round_background"
+            android:paddingStart="@dimen/_20ssp"
+            android:paddingTop="@dimen/_10ssp"
+            android:paddingEnd="@dimen/_20ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextSearch" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextSearch">
 
-        <TextView
-            android:id="@+id/textViewEmptyData"
-            style="@style/textSizeNormalRegFont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppinssemibold"
-            android:text="@string/string_no_record_found"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewLumpers"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/textViewEmptyData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/string_no_record_found"
+                android:textSize="@dimen/_12ssp"
+                android:visibility="gone" />
+        </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </FrameLayout>

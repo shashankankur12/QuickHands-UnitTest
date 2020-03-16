@@ -50,7 +50,8 @@ class ScheduleMainFragment : BaseFragment(), ScheduleMainContract.View, View.OnC
 
         sectionsMainPagerAdapter =
             ScheduleMainPagerAdapter(
-                fragmentActivity!!,
+                childFragmentManager,
+                resources,
                 currentDate.time
             )
         viewPagerSchedule.adapter = sectionsMainPagerAdapter

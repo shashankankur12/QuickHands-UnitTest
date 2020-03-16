@@ -6,7 +6,6 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.data.lumpers.LumperData
 import com.quickhandslogistics.modified.views.BaseActivity
 import kotlinx.android.synthetic.main.content_lumper_detail.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
 
 class LumperDetailActivity : BaseActivity() {
 
@@ -19,16 +18,9 @@ class LumperDetailActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lumper_detail)
-        setupToolbar(getString(R.string.string_lumper_details))
+        setupToolbar()
 
         displayLumperDetails()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> onBackPressed()
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun displayLumperDetails() {
@@ -37,18 +29,14 @@ class LumperDetailActivity : BaseActivity() {
                 lumperData = it.getSerializable(ARG_LUMPER_DATA) as LumperData
 
                 lumperData?.let {
-                    editTextLumperName.setText(
-                        String.format(
-                            "%s %s",
-                            lumperData?.firstName,
-                            lumperData?.lastName
-                        )
+                    textViewLumperName.text = String.format(
+                        "%s %s",
+                        lumperData?.firstName,
+                        lumperData?.lastName
                     )
-                    editTextEmail.setText(lumperData?.email)
-                    editTextPhone.setText(lumperData?.phone)
-                    editTextRole.setText(lumperData?.role)
-                    editTextCreatedAt.setText(lumperData?.created_at)
-                    editTextUpdatedAt.setText(lumperData?.updated_at)
+                    textViewEmail.text = lumperData?.email
+                    textViewPhone.text = lumperData?.phone
+                    textViewRole.text = lumperData?.role
                 }
             }
         }
