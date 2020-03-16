@@ -6,23 +6,25 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.PopupMenu
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.leinardi.android.speeddial.SpeedDialActionItem
+import com.leinardi.android.speeddial.SpeedDialView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.lumperSheet.LumperSheetContract
 import com.quickhandslogistics.modified.data.lumperSheet.LumperModel
 import com.quickhandslogistics.modified.presenters.lumperSheet.LumperSheetPresenter
 import com.quickhandslogistics.modified.views.BaseFragment
+import com.quickhandslogistics.modified.views.activities.ChooseLumperActivity
 import com.quickhandslogistics.modified.views.adapters.LumperSheetAdapter
 import com.quickhandslogistics.utils.Utils
-import com.quickhandslogistics.view.activities.LumperListActivity
 import com.quickhandslogistics.view.activities.LumperSheetDetailActivity
 import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
 
 
 class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatcher,
     View.OnClickListener,
-    LumperSheetContract.View.OnAdapterItemClickListener {
+    LumperSheetContract.View.OnAdapterItemClickListener, SpeedDialView.OnActionSelectedListener {
 
     val lumperList: ArrayList<LumperModel> = ArrayList()
     private lateinit var lumperSheetAdapter: LumperSheetAdapter
@@ -43,17 +45,22 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recycler_lumper_sheet.apply {
-            layoutManager = LinearLayoutManager(fragmentActivity!!)
+        recyclerViewLumpersSheet.apply {
+            val linearLayoutManager = LinearLayoutManager(fragmentActivity!!)
+            layoutManager = linearLayoutManager
+            val dividerItemDecoration =
+                DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
+            addItemDecoration(dividerItemDecoration)
             lumperSheetAdapter =
                 LumperSheetAdapter(this@LumperSheetFragment)
             adapter = lumperSheetAdapter
         }
 
-        edit_search_lumper.addTextChangedListener(this)
-        image_cancel.setOnClickListener(this)
-        fab_show_lumper.setOnClickListener(this)
-        image_filter.setOnClickListener(this)
+        editTextSearch.addTextChangedListener(this)
+        imageViewCancel.setOnClickListener(this)
+
+        speedDialView.inflate(R.menu.menu_lumper_sheet)
+        speedDialView.setOnActionSelectedListener(this)
 
         lumperSheetPresenter.fetchLumpersList()
     }
@@ -63,11 +70,11 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     ) {
         lumperSheetAdapter.updateLumpersData(lumperList)
         if (lumperList.size > 0) {
-            text_no_record_found.visibility = View.GONE
-            recycler_lumper_sheet.visibility = View.VISIBLE
+            textViewEmptyData.visibility = View.GONE
+            recyclerViewLumpersSheet.visibility = View.VISIBLE
         } else {
-            recycler_lumper_sheet.visibility = View.GONE
-            text_no_record_found.visibility = View.VISIBLE
+            recyclerViewLumpersSheet.visibility = View.GONE
+            textViewEmptyData.visibility = View.VISIBLE
         }
     }
 
@@ -78,7 +85,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
         text?.let {
             lumperSheetAdapter.setSearchEnabled(text.isNotEmpty(), text.toString())
-            image_cancel.visibility = if (text.isNotEmpty()) View.VISIBLE else View.GONE
+            imageViewCancel.visibility = if (text.isNotEmpty()) View.VISIBLE else View.GONE
         }
     }
 
@@ -91,35 +98,34 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
-                image_cancel.id -> {
-                    edit_search_lumper.setText("")
+                imageViewCancel.id -> {
+                    editTextSearch.setText("")
                     Utils.hideSoftKeyboard(fragmentActivity!!)
-                }
-
-                image_filter.id -> {
-                    val popupMenu = PopupMenu(context!!, image_filter)
-                    popupMenu.menuInflater.inflate(R.menu.filtermenu, popupMenu.menu)
-                    popupMenu.setOnMenuItemClickListener { item ->
-                        when (item.itemId) {
-                            R.id.menu_complete ->
-                                lumperSheetAdapter.setStatusEnabled(item.title.toString())
-                            R.id.mnu_prgrs ->
-                                lumperSheetAdapter.setStatusEnabled(item.title.toString())
-                            R.id.menu_all ->
-                                lumperSheetAdapter.setStatusEnabled("")
-                        }
-                        true
-                    }
-                    popupMenu.show()
-                }
-
-                fab_show_lumper.id -> {
-                    val bundle = Bundle()
-                    bundle.putSerializable(LumperListActivity.ARG_LUMPER_LIST_SHEET, lumperList)
-                    startIntent(LumperListActivity::class.java, bundle = bundle)
-
                 }
             }
         }
+    }
+
+    override fun onActionSelected(actionItem: SpeedDialActionItem?): Boolean {
+        actionItem?.let {
+            return when (actionItem.id) {
+                R.id.actionAddLumper -> {
+                    speedDialView.close(true)
+                    startIntent(ChooseLumperActivity::class.java)
+                    true
+                }
+                R.id.actionEditNote -> {
+                    speedDialView.close(true)
+                    val dialog = EditNotesDialog();
+                    dialog.show(
+                        activity!!.supportFragmentManager,
+                        EditNotesDialog::class.simpleName
+                    )
+                    true
+                }
+                else -> false
+            }
+        }
+        return false
     }
 }

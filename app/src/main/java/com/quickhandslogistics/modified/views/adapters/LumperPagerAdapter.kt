@@ -6,13 +6,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.data.lumpers.LumperData
 import com.quickhandslogistics.modified.views.fragments.lumpers.LumperJobDetailFragment
 import com.quickhandslogistics.modified.views.fragments.lumpers.LumperPersonalDetailFragment
 import com.quickhandslogistics.modified.views.fragments.lumpers.LumperWorkDetailFragment
 
 class LumperPagerAdapter(
     fragmentManager: FragmentManager,
-    private val resources: Resources
+    private val resources: Resources,
+    lumperData: LumperData
 ) :
     FragmentStatePagerAdapter(
         fragmentManager,
@@ -20,11 +22,11 @@ class LumperPagerAdapter(
     ) {
 
     private var lumperPersonalDetailFragment =
-        LumperPersonalDetailFragment.newInstance()
+        LumperPersonalDetailFragment.newInstance(lumperData)
     private var lumperWorkDetailFragment =
-        LumperWorkDetailFragment.newInstance()
+        LumperWorkDetailFragment.newInstance(lumperData)
     private var lumperJobDetailFragment =
-        LumperJobDetailFragment.newInstance()
+        LumperJobDetailFragment.newInstance(lumperData)
 
     private val tabTitles = arrayOf(
         R.string.personal_detail,
@@ -51,12 +53,4 @@ class LumperPagerAdapter(
     override fun saveState(): Parcelable? {
         return null
     }
-
-//    fun updateScheduleList(
-//        selectedDate: Date,
-//        scheduleMainResponse: ScheduleMainResponse
-//    ) {
-//        scheduleFragment.updateList(selectedDate, scheduleMainResponse.scheduledData)
-//        unScheduleFragment.updateList(selectedDate, scheduleMainResponse.unScheduledData)
-//    }
 }

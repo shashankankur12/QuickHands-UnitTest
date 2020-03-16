@@ -12,7 +12,7 @@ import com.quickhandslogistics.model.CustomerModel
 import com.quickhandslogistics.modified.data.lumperSheet.StatusModel
 import com.quickhandslogistics.view.activities.CustomerLoadActivity
 import io.bloco.faker.Faker
-import kotlinx.android.synthetic.main.item_lumper_sheet_layout.view.*
+import kotlinx.android.synthetic.main.item_customer_sheet.view.*
 
 class CustomerSheetAdapter(var items: ArrayList<CustomerModel>, val context: Context, val statusItems: ArrayList<StatusModel>) : RecyclerView.Adapter<CustomerSheetAdapter.CustomerSheetViewHolder>() {
 
@@ -46,7 +46,7 @@ class CustomerSheetAdapter(var items: ArrayList<CustomerModel>, val context: Con
 
     class CustomerSheetViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var lumperName = view.text_lumper_name
-        var profilePic = view.image_lumper_logo
+        var profilePic = view.image_company_logo
         var constraintRoot = view.constraint_root
         var lumperDate = view.text_date
         var lumperStatus = view.text_status

@@ -20,7 +20,9 @@ class ReportFragment : Fragment() {
     val reportImages = ArrayList(
         Arrays.asList(
             R.drawable.job_history,
-            R.drawable.lumper_history))
+            R.drawable.lumper_history
+        )
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,10 +38,11 @@ class ReportFragment : Fragment() {
         reportSheet()
 
         recycler_report.layoutManager = LinearLayoutManager(context)
-        recycler_report.adapter = context?.let { ReportAdapter(reportList,reportImages, it) }
+        recycler_report.adapter = context?.let { ReportAdapter(reportList, reportImages, it) }
     }
 
     fun reportSheet() {
+        reportList.clear()
         reportList.add(getString(R.string.job_history))
         reportList.add(getString(R.string.lumper_job_history))
     }

@@ -30,7 +30,7 @@
         android:textColor="@android:color/black"
         android:textSize="@dimen/_14ssp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/imageViewCall"
+        app:layout_constraintEnd_toStartOf="@id/buttonSelect"
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,29 +43,32 @@
         android:layout_marginEnd="@dimen/_10sdp"
         android:text="(Emp ID: 1001)"
         android:textColor="@android:color/black"
-        app:layout_constraintEnd_toStartOf="@id/imageViewCall"
+        app:layout_constraintEnd_toStartOf="@id/buttonSelect"
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
 
     <TextView
-        android:id="@+id/textViewTotalTime"
+        android:id="@+id/textViewShiftHours"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_2sdp"
         android:layout_marginEnd="@dimen/_10sdp"
-        android:text="Total Time: 6 Hours"
+        android:text="Shift Hours: 9:00am to 6:00pm"
         android:textColor="@color/detailHeader"
-        app:layout_constraintEnd_toStartOf="@id/imageViewCall"
+        app:layout_constraintEnd_toStartOf="@id/buttonSelect"
         app:layout_constraintStart_toEndOf="@id/circleImageViewProfile"
         app:layout_constraintTop_toBottomOf="@id/textViewEmployeeId" />
 
-    <ImageView
-        android:id="@+id/imageViewCall"
-        android:layout_width="@dimen/_25sdp"
-        android:layout_height="@dimen/_25sdp"
-        android:src="@drawable/ic_call"
-        android:visibility="gone"
+    <Button
+        android:id="@+id/buttonSelect"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_button_red_new"
+        android:text="@string/string_select"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/_12ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

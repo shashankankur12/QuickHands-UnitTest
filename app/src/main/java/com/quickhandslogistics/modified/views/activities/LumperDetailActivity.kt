@@ -1,7 +1,6 @@
 package com.quickhandslogistics.modified.views.activities
 
 import android.os.Bundle
-import android.view.MenuItem
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.data.lumpers.LumperData
 import com.quickhandslogistics.modified.views.BaseActivity
@@ -23,28 +22,35 @@ class LumperDetailActivity : BaseActivity() {
         setupToolbar()
 
         displayLumperDetails()
-
-        lumperPagerAdapter = LumperPagerAdapter(supportFragmentManager, resources)
-        viewPagerLumperDetail.adapter = lumperPagerAdapter
-        tabLayoutLumperDetail.setupWithViewPager(viewPagerLumperDetail)
     }
 
     private fun displayLumperDetails() {
-        intent.extras?.let {
+        intent.extras?.let { it ->
             if (it.containsKey(ARG_LUMPER_DATA)) {
                 lumperData = it.getSerializable(ARG_LUMPER_DATA) as LumperData
 
-                lumperData?.let {
-//                    textViewLumperName.text = String.format(
-//                        "%s %s",
-//                        lumperData?.firstName,
-//                        lumperData?.lastName
-//                    )
-//                    textViewEmail.text = lumperData?.email
-//                    textViewPhone.text = lumperData?.phone
-//                    textViewRole.text = lumperData?.role
+                lumperData?.let { lumperData ->
+                    textViewLumperName.text = String.format(
+                        "%s %s",
+                        lumperData.firstName,
+                        lumperData.lastName
+                    )
+
+                    lumperData.employeeId.also {
+                        textViewEmployeeId.text = String.format("Emp ID: %s", lumperData.employeeId)
+                    } ?: run {
+                        textViewEmployeeId.text = "Emp ID: -"
+                    }
+
+                    initializeUI(lumperData)
                 }
             }
         }
+    }
+
+    private fun initializeUI(lumperData: LumperData) {
+        lumperPagerAdapter = LumperPagerAdapter(supportFragmentManager, resources, lumperData)
+        viewPagerLumperDetail.adapter = lumperPagerAdapter
+        tabLayoutLumperDetail.setupWithViewPager(viewPagerLumperDetail)
     }
 }
