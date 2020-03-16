@@ -6,7 +6,7 @@ import com.quickhandslogistics.modified.data.login.Data
 import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.contracts.LoginContract
 import com.quickhandslogistics.modified.data.login.LoginRequest
-import com.quickhandslogistics.network.DataManager
+import com.quickhandslogistics.modified.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_EMPLOYEE_ID
