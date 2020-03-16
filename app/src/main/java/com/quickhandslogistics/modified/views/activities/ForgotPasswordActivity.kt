@@ -2,7 +2,6 @@ package com.quickhandslogistics.modified.views.activities
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.ForgotPasswordContract

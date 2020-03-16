@@ -5,11 +5,13 @@ import android.view.MenuItem
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.data.lumpers.LumperData
 import com.quickhandslogistics.modified.views.BaseActivity
+import com.quickhandslogistics.modified.views.adapters.LumperPagerAdapter
 import kotlinx.android.synthetic.main.content_lumper_detail.*
 
 class LumperDetailActivity : BaseActivity() {
 
     private var lumperData: LumperData? = null
+    private lateinit var lumperPagerAdapter: LumperPagerAdapter
 
     companion object {
         const val ARG_LUMPER_DATA = "ARG_LUMPER_DATA"
@@ -21,6 +23,10 @@ class LumperDetailActivity : BaseActivity() {
         setupToolbar()
 
         displayLumperDetails()
+
+        lumperPagerAdapter = LumperPagerAdapter(supportFragmentManager, resources)
+        viewPagerLumperDetail.adapter = lumperPagerAdapter
+        tabLayoutLumperDetail.setupWithViewPager(viewPagerLumperDetail)
     }
 
     private fun displayLumperDetails() {
@@ -29,14 +35,14 @@ class LumperDetailActivity : BaseActivity() {
                 lumperData = it.getSerializable(ARG_LUMPER_DATA) as LumperData
 
                 lumperData?.let {
-                    textViewLumperName.text = String.format(
-                        "%s %s",
-                        lumperData?.firstName,
-                        lumperData?.lastName
-                    )
-                    textViewEmail.text = lumperData?.email
-                    textViewPhone.text = lumperData?.phone
-                    textViewRole.text = lumperData?.role
+//                    textViewLumperName.text = String.format(
+//                        "%s %s",
+//                        lumperData?.firstName,
+//                        lumperData?.lastName
+//                    )
+//                    textViewEmail.text = lumperData?.email
+//                    textViewPhone.text = lumperData?.phone
+//                    textViewRole.text = lumperData?.role
                 }
             }
         }

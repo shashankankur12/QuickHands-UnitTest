@@ -137,4 +137,16 @@
     <string name="emailAddress">Email Address</string>
     <string name="search_by_name">Search by name...</string>
     <string name="my_profile">My Profile</string>
+    <string name="personal_detail">Personal Detail</string>
+    <string name="work_detail">Work Detail</string>
+    <string name="job_detail">Job Detail</string>
+    <string name="string_shift">Shift</string>
+    <string name="string_availability">Availability</string>
+    <string name="string_ability_to_travel">Ability to travel between buildings</string>
+    <string name="string_primary_building">Primary Building</string>
+    <string name="string_miles_radius">Miles radius from primary building</string>
+    <string name="string_hiring_date">Hiring Date</string>
+    <string name="string_work_schedule">Work Schedule</string>
+    <string name="string_job_description">Job Description</string>
+    <string name="string_last_day_worked">Last day worked</string>
 </resources>

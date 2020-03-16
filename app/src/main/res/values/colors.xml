@@ -25,4 +25,5 @@
     <color name="detailHeader">#656565</color>
     <color name="searchBackground">#DCE0E6</color>
     <color name="navDrawerSelectedItemBackground">#12000000</color>
+    <color name="textBlack">#090909</color>
 </resources>
