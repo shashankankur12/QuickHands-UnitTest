@@ -1,18 +1,25 @@
 package com.quickhandslogistics.modified.views
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.franmontiel.localechanger.LocaleChanger
+import com.franmontiel.localechanger.utils.ActivityRecreationHelper
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.views.controls.NavDrawer
+import com.quickhandslogistics.modified.views.fragments.SettingsFragment
 import com.quickhandslogistics.modified.views.fragments.lumperSheet.LumperSheetFragment
 import com.quickhandslogistics.modified.views.fragments.lumpers.LumpersFragment
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment
 import com.quickhandslogistics.utils.SharedPref
-import com.quickhandslogistics.view.fragments.*
+import com.quickhandslogistics.view.fragments.CustomerSheetFragment
+import com.quickhandslogistics.view.fragments.LogoutDialog
+import com.quickhandslogistics.view.fragments.ReportFragment
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
 open class BaseActivity : AppCompatActivity() {
@@ -154,5 +161,25 @@ open class BaseActivity : AppCompatActivity() {
 
     protected fun toggleDrawer(show: Boolean) {
         navDrawer?.setOpen(show)
+    }
+
+    override fun attachBaseContext(context: Context?) {
+        val newBase = LocaleChanger.configureBaseContext(context)
+        super.attachBaseContext(newBase)
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        LocaleChanger.onConfigurationChanged()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ActivityRecreationHelper.onResume(this)
+    }
+
+    override fun onDestroy() {
+        ActivityRecreationHelper.onDestroy(this)
+        super.onDestroy()
     }
 }

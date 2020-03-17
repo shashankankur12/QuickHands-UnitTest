@@ -1,14 +1,11 @@
 package com.quickhandslogistics.application
 
-import android.annotation.TargetApi
 import android.app.Application
 import android.content.Context
-import android.content.res.Resources
-import android.os.Build
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.SharedPref
+import android.content.res.Configuration
+import com.franmontiel.localechanger.LocaleChanger
+import com.quickhandslogistics.R
 import java.util.*
-
 
 class MyApplication : Application() {
 
@@ -17,36 +14,16 @@ class MyApplication : Application() {
         application = this
         mApp = this
 
-        setLocale()
+        val supportedLocales = listOf(
+            Locale(getString(R.string.english)),
+            Locale(getString(R.string.spanish))
+        )
+        LocaleChanger.initialize(applicationContext, supportedLocales);
     }
 
-    private fun setLocale() {
-        val selectedLanguage: String =
-            SharedPref.getInstance().getString(AppConstant.PREFERENCE_LANGUAGE)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            updateResources(selectedLanguage)
-        } else {
-            updateResourcesLegacy(selectedLanguage)
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.N)
-    private fun updateResources(selectedLanguage: String) {
-        val locale = Locale(if (selectedLanguage.isEmpty()) "en" else selectedLanguage)
-        Locale.setDefault(locale)
-        val configuration = resources.configuration
-        configuration.setLocale(locale)
-        createConfigurationContext(configuration)
-    }
-
-    @Suppress("DEPRECATION")
-    private fun updateResourcesLegacy(selectedLanguage: String) {
-        val locale = Locale(if (selectedLanguage.isEmpty()) "en" else selectedLanguage)
-        Locale.setDefault(locale)
-        val resources: Resources = resources
-        val configuration = resources.configuration
-        configuration.locale = locale
-        resources.updateConfiguration(configuration, resources.displayMetrics)
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        LocaleChanger.onConfigurationChanged()
     }
 
     companion object {

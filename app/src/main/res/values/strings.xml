@@ -156,4 +156,6 @@
     <string name="string_view_details">View Details</string>
     <string name="full_time">Full Time</string>
     <string name="part_time">Part Time</string>
+    <string name="english">en-US</string>
+    <string name="spanish">es</string>
 </resources>

@@ -1,22 +1,20 @@
-package com.quickhandslogistics.view.fragments
+package com.quickhandslogistics.modified.views.fragments
 
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import com.franmontiel.localechanger.LocaleChanger
+import com.franmontiel.localechanger.utils.ActivityRecreationHelper
 import com.quickhandslogistics.R
-import com.quickhandslogistics.utils.AppConstant.Companion.ENGLISH
-import com.quickhandslogistics.utils.AppConstant.Companion.ESPANOL
-import com.quickhandslogistics.utils.AppConstant.Companion.LANGUAGE
+import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_LANGUAGE
-import com.quickhandslogistics.utils.LanguageManager
-import com.quickhandslogistics.utils.SharedPref
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.fragment_settings.*
+import java.util.*
 
-class SettingsFragment : Fragment() {
+class SettingsFragment : BaseFragment() {
     var currentLocale: String? = null
 
     override fun onCreateView(
@@ -27,11 +25,11 @@ class SettingsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
-    fun getLocale() {
+    private fun getLocale() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            currentLocale = resources.configuration.locales.get(0).language
+            currentLocale = sharedPref.getString(PREFERENCE_LANGUAGE)
 
-          //  radioBtnEnglish.isChecked = currentLocale!!.equals(ESPANOL)
+            //  radioBtnEnglish.isChecked = currentLocale!!.equals(ESPANOL)
         }
     }
 
@@ -49,18 +47,16 @@ class SettingsFragment : Fragment() {
         }
     }
 
-    fun openChangeDialog() {
+    private fun openChangeDialog() {
         Utils.dialogChangeLanguage(R.style.dialogAnimation, activity!!, object : Utils.IOnClick {
             override fun onConfirm() {
 
                 radioBtnEnglish.isChecked = !radioBtnEnglish.isChecked
 
-                if (!currentLocale!!.equals(ESPANOL, true)) {
-                    SharedPref.getInstance().setString(LANGUAGE, "(English)")
-                    setLanguageData(ESPANOL)
+                if (currentLocale!! != getString(R.string.spanish)) {
+                    setLanguageData(getString(R.string.spanish))
                 } else {
-                    SharedPref.getInstance().setString(LANGUAGE, "(Español)")
-                    setLanguageData(ENGLISH)
+                    setLanguageData(getString(R.string.english))
                 }
             }
 
@@ -70,11 +66,9 @@ class SettingsFragment : Fragment() {
         })
     }
 
-    fun setLanguageData(language: String?) {
-        SharedPref.getInstance().setString(PREFERENCE_LANGUAGE, language)
-        LanguageManager.setLanguage(activity, language)
-        val intent = activity!!.intent
-        activity!!.finish()
-        activity!!.startActivity(intent)
+    fun setLanguageData(selectedLanguage: String) {
+        sharedPref.setString(PREFERENCE_LANGUAGE, selectedLanguage)
+        LocaleChanger.setLocale(Locale(selectedLanguage))
+        ActivityRecreationHelper.recreate(fragmentActivity!!, false)
     }
 }
