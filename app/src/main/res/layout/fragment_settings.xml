@@ -3,137 +3,90 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layoutAnimation="@anim/recycler_anim"
-    android:layout_height="wrap_content">
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/change_settings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_10sdp"
-        android:elevation="@dimen/_5sdp"
-        app:cardCornerRadius="@dimen/_5sdp"
-        app:layout_constraintTop_toTopOf="parent">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint_root"
+        android:id="@+id/constraintRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:padding="@dimen/_10sdp"
+        android:background="@drawable/top_left_round_background">
+
+    <TextView
+        android:id="@+id/changeLanguageText"
+        style="@style/textSizeNormalRegFont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:orientation="vertical">
+        android:fontFamily="@font/poppinssemibold"
+        android:layout_marginLeft="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/textBlack"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Change Language" />
 
-        <ImageView
-            android:id="@+id/image_language"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_global"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:layout_marginLeft="@dimen/_10sdp"/>
-
-        <TextView
-            android:id="@+id/report_text"
-            style="@style/textSizeNormalRegFont"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:fontFamily="@font/poppinssemibold"
-            android:textColor="@color/colorBlack"
-            android:singleLine="true"
-            android:layout_marginLeft="@dimen/_2sdp"
-            android:padding="10dip"
-            app:layout_constraintLeft_toRightOf="@+id/image_language"
-            android:text="@string/string_change_language"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/text_espanol"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="(Español)"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/report_text"/>
-
-        <LinearLayout
-            android:id="@+id/linear_switch"
-            android:layout_marginRight="@dimen/_10sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/report_text"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <Switch
-                android:id="@+id/switch_language"
-                android:clickable="false"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_right" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:elevation="@dimen/_5sdp"
-        app:layout_constraintTop_toBottomOf="@+id/change_settings"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:cardCornerRadius="@dimen/_5sdp">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraint_notification"
+        <RadioGroup
+            android:id="@+id/radioLanguageGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/changeLanguageText">
 
-            <ImageView
-                android:id="@+id/image_notification"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
+            <RadioButton
+                android:id="@+id/radioBtnEnglish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_bell"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:layout_marginLeft="@dimen/_10sdp"/>
+                android:checked="true"
+                android:text="English"
+                android:textColor="@color/textBlack"
+                android:fontFamily="@font/poppinsregular"
+                android:layout_marginLeft="@dimen/_15sdp"/>
+
+            <RadioButton
+                android:id="@+id/radioBtnSpanish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Spanish"
+                android:textColor="@color/textBlack"
+                android:fontFamily="@font/poppinsregular"
+                android:layout_marginLeft="@dimen/_15sdp"/>
+
+        </RadioGroup>
+
+        <View
+            android:id="@+id/viewLine"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@+id/radioLanguageGroup"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/viewItemBackground" />
 
             <TextView
-                android:id="@+id/text_notification"
+                android:id="@+id/textViewNotification"
                 style="@style/textSizeNormalRegFont"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:fontFamily="@font/poppinssemibold"
-                android:textColor="@color/colorBlack"
-                android:singleLine="true"
-                android:padding="10dip"
-                android:layout_marginLeft="@dimen/_2sdp"
-                app:layout_constraintLeft_toRightOf="@+id/image_notification"
-                android:text="@string/string_notification"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-            <Switch
-                android:id="@+id/switch_notification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:src="@drawable/ic_arrow_right"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/text_notification"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:fontFamily="@font/poppinsregular"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:textColor="@color/detailHeader"
+                android:layout_marginTop="@dimen/_15sdp"
+                app:layout_constraintTop_toBottomOf="@+id/viewLine"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:text="@string/string_notification" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+            <Switch
+                android:id="@+id/switchNotification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewLine"
+                app:layout_constraintLeft_toRightOf="@+id/textViewNotification"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

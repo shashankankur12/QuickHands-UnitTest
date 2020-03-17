@@ -24,6 +24,7 @@ class LumperListActivity : AppCompatActivity() {
 
     companion object {
         const val ARG_LUMPER_LIST_SHEET = "ARG_LUMPER_LIST_SHEET"
+        const val ARG_STRING_LUMPER = "ARG_STRING_LUMPER"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

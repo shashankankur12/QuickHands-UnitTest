@@ -31,7 +31,7 @@ class SettingsFragment : Fragment() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             currentLocale = resources.configuration.locales.get(0).language
 
-            switch_language.isChecked = currentLocale!!.equals(ESPANOL)
+          //  radioBtnEnglish.isChecked = currentLocale!!.equals(ESPANOL)
         }
     }
 
@@ -40,7 +40,11 @@ class SettingsFragment : Fragment() {
 
         getLocale()
 
-        linear_switch.setOnClickListener {
+        radioBtnEnglish.setOnClickListener {
+            openChangeDialog()
+        }
+
+        radioBtnSpanish.setOnClickListener {
             openChangeDialog()
         }
     }
@@ -48,7 +52,8 @@ class SettingsFragment : Fragment() {
     fun openChangeDialog() {
         Utils.dialogChangeLanguage(R.style.dialogAnimation, activity!!, object : Utils.IOnClick {
             override fun onConfirm() {
-                switch_language.isChecked = !switch_language.isChecked
+
+                radioBtnEnglish.isChecked = !radioBtnEnglish.isChecked
 
                 if (!currentLocale!!.equals(ESPANOL, true)) {
                     SharedPref.getInstance().setString(LANGUAGE, "(English)")
@@ -60,7 +65,7 @@ class SettingsFragment : Fragment() {
             }
 
             override fun onDismiss() {
-                switch_language.isChecked = switch_language.isChecked
+                radioBtnEnglish.isChecked = radioBtnEnglish.isChecked
             }
         })
     }

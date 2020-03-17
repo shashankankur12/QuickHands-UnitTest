@@ -4,25 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
-import com.quickhandslogistics.view.adapter.ReportAdapter
+import com.quickhandslogistics.modified.views.BaseFragment
+import com.quickhandslogistics.view.activities.CustomerActivity
+import com.quickhandslogistics.view.activities.LumperListActivity
 import kotlinx.android.synthetic.main.fragment_send.*
 
-import java.util.*
-import kotlin.collections.ArrayList
-
-
-class ReportFragment : Fragment() {
-
-    val reportList: ArrayList<String> = ArrayList()
-    val reportImages = ArrayList(
-        Arrays.asList(
-            R.drawable.job_history,
-            R.drawable.lumper_history
-        )
-    )
+class ReportFragment : BaseFragment(), View.OnClickListener {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,19 +19,31 @@ class ReportFragment : Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_send, container, false)
         return root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        reportSheet()
 
-        recycler_report.layoutManager = LinearLayoutManager(context)
-        recycler_report.adapter = context?.let { ReportAdapter(reportList, reportImages, it) }
+        textViewJobHistory.setOnClickListener(this)
+        textViewLumperJobHistory.setOnClickListener(this)
     }
 
-    fun reportSheet() {
-        reportList.clear()
-        reportList.add(getString(R.string.job_history))
-        reportList.add(getString(R.string.lumper_job_history))
+    override fun onClick(view: View?) {
+        view?.let {
+            when (view.id) {
+                textViewJobHistory.id -> {
+                    val bundle = Bundle()
+                    bundle.putSerializable(
+                        LumperListActivity.ARG_STRING_LUMPER,
+                        R.string.string_lumper
+                    )
+                    startIntent(LumperListActivity::class.java, bundle = bundle)
+                }
+                textViewLumperJobHistory.id -> {
+                    startIntent(CustomerActivity::class.java, isFinish = false)
+                }
+            }
+        }
     }
 }

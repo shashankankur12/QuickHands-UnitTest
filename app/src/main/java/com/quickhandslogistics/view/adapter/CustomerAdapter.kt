@@ -2,6 +2,7 @@ package com.quickhandslogistics.view.adapter
 
 import android.app.Activity
 import android.content.Intent
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,12 +44,14 @@ class CustomerAdapter(var items: ArrayList<CustomerModel>, val mActivity: Activi
          })*/
 
         holder.constraintRoot.setOnClickListener {
-            mActivity.startActivity(
-                Intent(
-                    mActivity,
-                    CustomerBuildingsActivity::class.java
-                ).putExtra("name", holder.lumperText.text.toString())
-            )
+            if (!TextUtils.isEmpty(holder.lumperText.text)) {
+                mActivity.startActivity(
+                    Intent(
+                        mActivity,
+                        CustomerBuildingsActivity::class.java
+                    ).putExtra("name", holder.lumperText.text.toString())
+                )
+            }
         }
     }
 }
