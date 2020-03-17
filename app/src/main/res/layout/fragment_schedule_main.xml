@@ -4,39 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
+    android:background="@color/appBackground"
     android:padding="@dimen/_8sdp"
     tools:context=".modified.views.fragments.schedule.ScheduleMainFragment">
 
-    <LinearLayout
-        android:id="@+id/layoutDate"
+    <TextView
+        android:id="@+id/textViewDate"
+        style="@style/textSizeSmallRegFont"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/_8sdp"
+        android:layout_marginStart="@dimen/_10ssp"
+        android:text="sdnkjcbsd bsdhvbhs"
+        android:textColor="@color/textBlack"
+        android:textSize="@dimen/_12ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            style="@style/textSizeNormalRegFont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Date: "
-            android:textColor="@color/colorBlack" />
-
-        <TextView
-            android:id="@+id/textViewDate"
-            style="@style/textSizeSmallRegFont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10ssp"
-            android:gravity="center"
-            android:text=""
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_12ssp" />
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
         android:id="@+id/main_single_row_calendar"
@@ -45,7 +28,7 @@
         app:deselection="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutDate"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDate"
         app:longPress="false"
         app:multiSelection="false" />
 

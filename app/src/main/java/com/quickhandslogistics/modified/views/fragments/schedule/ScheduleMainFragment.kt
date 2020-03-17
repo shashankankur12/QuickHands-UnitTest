@@ -118,7 +118,6 @@ class ScheduleMainFragment : BaseFragment(), ScheduleMainContract.View {
 
     override fun showDateString(dateString: String, timeInMills: Long) {
         textViewDate.text = dateString
-        layoutDate.setTag(R.id.timeInMills, timeInMills)
     }
 
     override fun showScheduleData(
