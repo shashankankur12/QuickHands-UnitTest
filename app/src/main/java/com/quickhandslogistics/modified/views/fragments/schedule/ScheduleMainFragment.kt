@@ -30,7 +30,7 @@ class ScheduleMainFragment : BaseFragment(), ScheduleMainContract.View, View.OnC
         // Setup DatePicker Dates
         val calendar = Calendar.getInstance()
         maxCalendarDate = calendar.timeInMillis
-        calendar.add(Calendar.MONTH, -1)
+        calendar.add(Calendar.WEEK_OF_YEAR, -2)
         minCalendarDate = calendar.timeInMillis
     }
 
