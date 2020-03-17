@@ -3,20 +3,20 @@ package com.quickhandslogistics.modified.views.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.contracts.lumpers.LumpersContract
+import com.quickhandslogistics.modified.contracts.ChooseLumperContract
 import com.quickhandslogistics.modified.data.lumpers.LumperData
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.item_lumper_layout.view.*
+import kotlinx.android.synthetic.main.item_choose_lumper.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapterItemClickListener) :
-    Adapter<LumpersAdapter.ViewHolder>() {
+class ChooseLumperAdapter(var adapterItemClickListener: ChooseLumperContract.View.OnAdapterItemClickListener) :
+    Adapter<ChooseLumperAdapter.ViewHolder>() {
 
     private var searchEnabled = false
     private var searchTerm = ""
@@ -25,7 +25,7 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_lumper_layout, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_choose_lumper, parent, false)
         return ViewHolder(
             view
         )
@@ -55,7 +55,7 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
         var textViewEmployeeId: TextView = view.textViewEmployeeId
         var circleImageViewProfile: CircleImageView = view.circleImageViewProfile
         var textViewShiftHours: TextView = view.textViewShiftHours
-        var imageViewCall: ImageView = view.imageViewCall
+        var buttonSelect: Button = view.buttonSelect
 
         fun bind(lumperData: LumperData) {
             if (lumperData.firstName != null && lumperData.lastName != null) {
@@ -75,7 +75,7 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
                 textViewShiftHours.text = "Shift Hours: -"
             }
 
-            imageViewCall.setOnClickListener(this)
+            buttonSelect.setOnClickListener(this)
             itemView.setOnClickListener(this)
         }
 
@@ -84,13 +84,11 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
                 when (view.id) {
                     itemView.id -> {
                         val lumperData = getItem(adapterPosition)
-                        adapterItemClickListener.onItemClick(lumperData)
+                        adapterItemClickListener.onClickLumperDetail(lumperData)
                     }
-                    imageViewCall.id -> {
+                    buttonSelect.id -> {
                         val lumperData = getItem(adapterPosition)
-                        lumperData.phone?.let { it1 -> adapterItemClickListener.onPhoneViewClick(it1) }
-                    }
-                    else -> {
+                        adapterItemClickListener.onSelectLumper(lumperData)
                     }
                 }
             }

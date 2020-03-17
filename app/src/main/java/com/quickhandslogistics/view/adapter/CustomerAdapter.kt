@@ -8,17 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.model.CustomerModel
 import com.quickhandslogistics.view.activities.CustomerBuildingsActivity
-import de.hdodenhof.circleimageview.CircleImageView
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_customer_layout.view.*
-import kotlinx.android.synthetic.main.item_lumper_layout.view.*
-import kotlinx.android.synthetic.main.item_lumper_layout.view.constraint_root
 
 class CustomerAdapter(var items: ArrayList<CustomerModel>, val mActivity: Activity) :
     Adapter<CustomerViewHolder>() {
@@ -48,14 +44,14 @@ class CustomerAdapter(var items: ArrayList<CustomerModel>, val mActivity: Activi
          })*/
 
         holder.constraintRoot.setOnClickListener {
-           if(!TextUtils.isEmpty(holder.lumperText.text)) {
-               mActivity.startActivity(
-                   Intent(
-                       mActivity,
-                       CustomerBuildingsActivity::class.java
-                   ).putExtra("name", holder.lumperText.text.toString())
-               )
-           }
+            if (!TextUtils.isEmpty(holder.lumperText.text)) {
+                mActivity.startActivity(
+                    Intent(
+                        mActivity,
+                        CustomerBuildingsActivity::class.java
+                    ).putExtra("name", holder.lumperText.text.toString())
+                )
+            }
         }
     }
 }

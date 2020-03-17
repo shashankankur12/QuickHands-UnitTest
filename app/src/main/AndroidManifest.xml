@@ -103,6 +103,9 @@
         <activity
             android:name=".modified.views.activities.DashBoardActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".modified.views.activities.ChooseLumperActivity"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

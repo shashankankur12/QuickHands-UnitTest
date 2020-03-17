@@ -128,7 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15ssp"
             android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/layoutLocation"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labelBarrier2">
 
@@ -145,31 +145,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:text="+91 - 9876543210" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layoutLocation"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15ssp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/layoutPhoneNumber"
-            app:layout_constraintTop_toBottomOf="@+id/labelBarrier2">
-
-            <TextView
-                style="@style/detailTextHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/string_location" />
-
-            <TextView
-                android:id="@+id/textViewLocation"
-                style="@style/detailTextValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:text="3200 E. Guasti RS Suite 100, Ontario, CA 91761" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

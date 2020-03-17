@@ -18,6 +18,7 @@ class LumperSheetContract {
         fun showLumperSheetData(
             lumperList: ArrayList<LumperModel>
         )
+
         interface OnAdapterItemClickListener {
             fun onItemClick(lumperData: LumperModel)
         }

@@ -1,24 +1,29 @@
 package com.quickhandslogistics.modified.views.fragments.schedule
 
-import android.app.DatePickerDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
+import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
+import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
+import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
+import com.michalsvec.singlerowcalendar.utils.DateUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleMainContract
 import com.quickhandslogistics.modified.data.schedule.ScheduleMainResponse
 import com.quickhandslogistics.modified.presenters.schedule.ScheduleMainPresenter
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.adapters.ScheduleMainPagerAdapter
+import kotlinx.android.synthetic.main.calendar_item.view.*
 import kotlinx.android.synthetic.main.fragment_schedule_main.*
 import java.util.*
 
-class ScheduleMainFragment : BaseFragment(), ScheduleMainContract.View, View.OnClickListener {
+class ScheduleMainFragment : BaseFragment(), ScheduleMainContract.View {
 
-    private var maxCalendarDate: Long = 0
-    private var minCalendarDate: Long = 0
+    private lateinit var availableDates: List<Date>
 
     private lateinit var scheduleMainPresenter: ScheduleMainPresenter
     private lateinit var sectionsMainPagerAdapter: ScheduleMainPagerAdapter
@@ -28,10 +33,7 @@ class ScheduleMainFragment : BaseFragment(), ScheduleMainContract.View, View.OnC
         scheduleMainPresenter = ScheduleMainPresenter(this)
 
         // Setup DatePicker Dates
-        val calendar = Calendar.getInstance()
-        maxCalendarDate = calendar.timeInMillis
-        calendar.add(Calendar.MONTH, -1)
-        minCalendarDate = calendar.timeInMillis
+        availableDates = getAvailableDates()
     }
 
     override fun onCreateView(
@@ -44,8 +46,6 @@ class ScheduleMainFragment : BaseFragment(), ScheduleMainContract.View, View.OnC
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        layoutDate.setOnClickListener(this)
-
         val currentDate = Date()
 
         sectionsMainPagerAdapter =
@@ -57,38 +57,67 @@ class ScheduleMainFragment : BaseFragment(), ScheduleMainContract.View, View.OnC
         viewPagerSchedule.adapter = sectionsMainPagerAdapter
         tabLayoutSchedule.setupWithViewPager(viewPagerSchedule)
 
+        initializeCalendar()
+
         Handler().postDelayed({
-            scheduleMainPresenter.showSchedulesByDate(currentDate)
+            main_single_row_calendar.select(availableDates.size - 1)
         }, 500)
     }
 
-    override fun onClick(view: View?) {
-        when (view?.id) {
-            layoutDate.id -> {
-                val lastTimeSelected = layoutDate.getTag(R.id.timeInMills) as Long
-                val calendar = Calendar.getInstance()
-                calendar.timeInMillis = lastTimeSelected
+    private fun initializeCalendar() {
+        val myCalendarViewManager = object : CalendarViewManager {
+            override fun bindDataToCalendarView(
+                holder: SingleRowCalendarAdapter.CalendarViewHolder,
+                date: Date,
+                position: Int,
+                isSelected: Boolean
+            ) {
+                holder.itemView.tv_date_calendar_item.text = DateUtils.getDayNumber(date)
+                holder.itemView.tv_day_calendar_item.text = DateUtils.getDay3LettersName(date)
 
-                val picker = DatePickerDialog(
-                    fragmentActivity!!,
-                    DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                        calendar.set(year, month, dayOfMonth)
-                        scheduleMainPresenter.showSchedulesByDate(calendar.time)
-                    },
-                    calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH),
-                    calendar.get(Calendar.DAY_OF_MONTH)
-                )
-                picker.datePicker.maxDate = maxCalendarDate
-                picker.datePicker.minDate = minCalendarDate
-                picker.show()
+                if (isSelected) {
+                    holder.itemView.tv_date_calendar_item.setTextColor(Color.WHITE)
+                    holder.itemView.tv_date_calendar_item.setBackgroundResource(R.drawable.selected_calendar_item_background)
+                } else {
+                    holder.itemView.tv_date_calendar_item.setTextColor(Color.BLACK)
+                    holder.itemView.tv_date_calendar_item.setBackgroundColor(Color.TRANSPARENT)
+                }
             }
+
+            override fun setCalendarViewResourceId(
+                position: Int,
+                date: Date,
+                isSelected: Boolean
+            ): Int {
+                return R.layout.calendar_item
+            }
+        }
+
+        val myCalendarChangesObserver = object : CalendarChangesObserver {
+            override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
+                scheduleMainPresenter.showSchedulesByDate(date)
+                super.whenSelectionChanged(isSelected, position, date)
+            }
+        }
+
+        val mySelectionManager = object : CalendarSelectionManager {
+            override fun canBeItemSelected(position: Int, date: Date): Boolean {
+                return true
+            }
+        }
+
+        main_single_row_calendar.apply {
+            calendarViewManager = myCalendarViewManager
+            calendarChangesObserver = myCalendarChangesObserver
+            calendarSelectionManager = mySelectionManager
+            setDates(availableDates)
+            init()
+            scrollToPosition(availableDates.size - 1)
         }
     }
 
     override fun showDateString(dateString: String, timeInMills: Long) {
         textViewDate.text = dateString
-        layoutDate.setTag(R.id.timeInMills, timeInMills)
     }
 
     override fun showScheduleData(
@@ -97,5 +126,20 @@ class ScheduleMainFragment : BaseFragment(), ScheduleMainContract.View, View.OnC
     ) {
         tabLayoutSchedule.getTabAt(0)?.select()
         sectionsMainPagerAdapter.updateScheduleList(selectedDate, scheduleMainResponse)
+    }
+
+    private fun getAvailableDates(): List<Date> {
+        val list: MutableList<Date> = mutableListOf()
+
+        val calendar = Calendar.getInstance()
+        val currentDate = calendar[Calendar.DATE]
+        calendar.add(Calendar.WEEK_OF_YEAR, -2)
+
+        list.add(calendar.time)
+        while (currentDate != calendar[Calendar.DATE]) {
+            calendar.add(Calendar.DATE, 1)
+            list.add(calendar.time)
+        }
+        return list
     }
 }

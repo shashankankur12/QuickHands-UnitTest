@@ -151,4 +151,11 @@
     <string name="string_work_schedule">**Work Schedule**</string>
     <string name="string_job_description">**Job Description**</string>
     <string name="string_last_day_worked">**Last day worked**</string>
+    <string name="add_new_lumper">**Add New Lumper**</string>
+    <string name="edit_notes">**Edit Notes**</string>
+    <string name="enter_text_here">**Enter text here**</string>
+    <string name="string_select">**Select**</string>
+    <string name="string_view_details">**View Details**</string>
+    <string name="full_time">**Full Time**</string>
+    <string name="part_time">**Part Time**</string>
 </resources>

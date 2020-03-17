@@ -19,7 +19,7 @@ class ForgotPasswordContract {
 
         fun validatePasswordResetDetails(
             employeeLoginId: String,
-            onFinishedListener:OnFinishedListener
+            onFinishedListener: OnFinishedListener
         )
     }
 

@@ -10,7 +10,7 @@ import com.quickhandslogistics.view.activities.CustomerActivity
 import com.quickhandslogistics.view.activities.LumperListActivity
 import kotlinx.android.synthetic.main.fragment_send.*
 
-class ReportFragment : BaseFragment(),  View.OnClickListener {
+class ReportFragment : BaseFragment(), View.OnClickListener {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +34,10 @@ class ReportFragment : BaseFragment(),  View.OnClickListener {
             when (view.id) {
                 textViewJobHistory.id -> {
                     val bundle = Bundle()
-                    bundle.putSerializable(LumperListActivity.ARG_STRING_LUMPER, R.string.string_lumper)
+                    bundle.putSerializable(
+                        LumperListActivity.ARG_STRING_LUMPER,
+                        R.string.string_lumper
+                    )
                     startIntent(LumperListActivity::class.java, bundle = bundle)
                 }
                 textViewLumperJobHistory.id -> {
