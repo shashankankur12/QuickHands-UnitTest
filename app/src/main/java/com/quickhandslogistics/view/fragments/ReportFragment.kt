@@ -8,7 +8,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.view.activities.CustomerActivity
 import com.quickhandslogistics.view.activities.LumperListActivity
-import kotlinx.android.synthetic.main.fragment_send.*
+import kotlinx.android.synthetic.main.fragment_reports.*
 
 class ReportFragment : BaseFragment(), View.OnClickListener {
 
@@ -17,7 +17,7 @@ class ReportFragment : BaseFragment(), View.OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_send, container, false)
+        val root = inflater.inflate(R.layout.fragment_reports, container, false)
         return root
 
     }
