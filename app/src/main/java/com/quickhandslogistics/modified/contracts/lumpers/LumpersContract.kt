@@ -21,7 +21,7 @@ class LumpersContract {
 
         interface OnAdapterItemClickListener {
             fun onItemClick(lumperData: LumperData)
-            fun onPhoneViewClick(phone: String)
+            fun onPhoneViewClick(lumperName: String, phone: String)
         }
     }
 

@@ -1,6 +1,7 @@
 package com.quickhandslogistics.modified.views.fragments.lumpers
 
 import android.os.Bundle
+import android.telephony.PhoneNumberUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +41,7 @@ class LumperPersonalDetailFragment : BaseFragment() {
                 textViewEmployeeId.text = "-"
             }
             textViewEmailAddress.text = it.email
-            textViewPhoneNumber.text = it.phone
+            textViewPhoneNumber.text = PhoneNumberUtils.formatNumber(it.phone, "US")
         }
     }
 

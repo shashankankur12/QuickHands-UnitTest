@@ -12,12 +12,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.contracts.InfoDialogContract
 import com.quickhandslogistics.modified.contracts.lumpers.LumpersContract
 import com.quickhandslogistics.modified.data.lumpers.LumperData
 import com.quickhandslogistics.modified.presenters.lumpers.LumpersPresenter
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.activities.LumperDetailActivity
 import com.quickhandslogistics.modified.views.adapters.LumpersAdapter
+import com.quickhandslogistics.modified.views.fragments.InfoDialogFragment
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
@@ -145,7 +147,18 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
 //        }
     }
 
-    override fun onPhoneViewClick(phone: String) {
-        startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))
+    override fun onPhoneViewClick(lumperName: String, phone: String) {
+        val dialog = InfoDialogFragment.newInstance(
+            String.format(getString(R.string.call_lumper_dialog_message), lumperName),
+            onClickListener = object : InfoDialogContract.View.OnClickListener {
+                override fun onPositiveButtonClick() {
+                    startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))
+                }
+
+                override fun onNegativeButtonClick() {
+
+                }
+            })
+        dialog.show(childFragmentManager, InfoDialogFragment::class.simpleName)
     }
 }

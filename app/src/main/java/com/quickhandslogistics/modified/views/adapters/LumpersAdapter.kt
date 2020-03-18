@@ -88,7 +88,12 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
                     }
                     imageViewCall.id -> {
                         val lumperData = getItem(adapterPosition)
-                        lumperData.phone?.let { it1 -> adapterItemClickListener.onPhoneViewClick(it1) }
+                        lumperData.phone?.let { it1 ->
+                            adapterItemClickListener.onPhoneViewClick(
+                                textViewLumperName.text.toString(),
+                                it1
+                            )
+                        }
                     }
                     else -> {
                     }

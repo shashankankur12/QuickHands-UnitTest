@@ -158,4 +158,7 @@
     <string name="part_time">Part Time</string>
     <string name="english">en-US</string>
     <string name="spanish">es</string>
+    <string name="string_okay">Okay</string>
+    <string name="string_cancel">Cancel</string>
+    <string name="call_lumper_dialog_message">Do you want to call %s?</string>
 </resources>
