@@ -113,8 +113,8 @@
     <string name="invalid_emp_id">Please enter valid employee Id</string>
 
     <string name="schedule_detail">Schedule Detail</string>
-    <string name="scheduled">Scheduled</string>
-    <string name="unscheduled">UnScheduled</string>
+    <string name="scheduled_work">Scheduled Work</string>
+    <string name="unscheduled_work">UnScheduled Work</string>
     <string name="mark_attendance">Mark Attendance</string>
     <string name="replace">Replace</string>
     <string name="string_ask_new_lumper">Do you want to request for lumper replacement?</string>

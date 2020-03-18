@@ -26,8 +26,8 @@ class ScheduleMainPagerAdapter(
         ScheduleFragment.newInstance(isScheduled = false, selectedTime = time)
 
     private val tabTitles = arrayOf(
-        R.string.scheduled,
-        R.string.unscheduled
+        R.string.scheduled_work,
+        R.string.unscheduled_work
     )
 
     override fun getItem(position: Int): Fragment {

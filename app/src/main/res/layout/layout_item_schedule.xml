@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/schedule_item_background"
+    android:padding="@dimen/_10sdp">
+
+    <TextView
+        android:id="@+id/textViewBuildingName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Victory Valley Tower A"
+        android:textColor="@color/buildingTitle"
+        android:textSize="@dimen/_16ssp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewCreatedDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:drawableStart="@drawable/ic_schedule_calendar"
+        android:drawablePadding="@dimen/_5sdp"
+        android:text="Thursday March 5, 2020"
+        android:textColor="@color/scheduleDetail"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBuildingName" />
+
+    <TextView
+        android:id="@+id/textViewScheduleType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:drawableStart="@drawable/ic_schedule_type"
+        android:drawablePadding="@dimen/_5sdp"
+        android:text="Live Loads"
+        android:textColor="@color/scheduleDetail"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCreatedDate" />
+
+    <TextView
+        android:id="@+id/textViewWorkItemsCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:drawableStart="@drawable/ic_schedule_work_items"
+        android:drawablePadding="@dimen/_5sdp"
+        android:text="Work Items - 05"
+        android:textColor="@color/scheduleDetail"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

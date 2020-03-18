@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.modified.data.schedule.ScheduleData
+import kotlinx.android.synthetic.main.layout_item_schedule.view.*
 import java.util.*
 
 class ScheduleAdapter(var adapterItemClickListener: ScheduleContract.View.OnAdapterItemClickListener) :
@@ -20,7 +21,7 @@ class ScheduleAdapter(var adapterItemClickListener: ScheduleContract.View.OnAdap
     ): ScheduleViewHolder {
         val view =
             LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.layout_item_events, viewGroup, false)
+                .inflate(R.layout.layout_item_schedule, viewGroup, false)
         return ScheduleViewHolder(view)
     }
 
@@ -46,17 +47,13 @@ class ScheduleAdapter(var adapterItemClickListener: ScheduleContract.View.OnAdap
     inner class ScheduleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
 
-        var textTitle: TextView = itemView.findViewById(R.id.text_title)
-        var textCustomerName: TextView = itemView.findViewById(R.id.text_customer_name)
-        var textSubService: TextView = itemView.findViewById(R.id.text_service_subservice)
-        var textTime: TextView = itemView.findViewById(R.id.text_time)
+        var textViewBuildingName: TextView = itemView.textViewBuildingName
+        var textViewCreatedDate: TextView = itemView.textViewCreatedDate
+        var textViewScheduleType: TextView = itemView.textViewScheduleType
+        var textViewWorkItemsCount: TextView = itemView.textViewWorkItemsCount
+
 
         fun bind(item: ScheduleData) {
-            textTitle.text = item.title
-            textCustomerName.text = item.name
-            textSubService.text = item.subService
-            textTime.text = item.time
-
             itemView.setOnClickListener(this)
         }
 

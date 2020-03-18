@@ -9,6 +9,7 @@ import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.utils.StringUtils
 import kotlinx.android.synthetic.main.fragment_lumper_work_detail.*
+import java.util.*
 
 class LumperWorkDetailFragment : BaseFragment() {
 
@@ -29,11 +30,13 @@ class LumperWorkDetailFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_lumper_work_detail, container, false)
     }
 
+    @ExperimentalStdlibApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         employeeData?.let { it ->
-            textViewShift.text = if (!StringUtils.isNullOrEmpty(it.shift)) it.shift else "-"
+            textViewShift.text =
+                if (!StringUtils.isNullOrEmpty(it.shift)) it.shift!!.capitalize(Locale.getDefault()) else "-"
             textViewShiftHours.text =
                 if (!StringUtils.isNullOrEmpty(it.shiftHours)) it.shiftHours else "-"
             it.fullTime?.also { fullTime ->

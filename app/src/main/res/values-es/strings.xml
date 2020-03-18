@@ -118,8 +118,8 @@
     <string name="please_wait">Por favor espera...</string>
 
     <string name="schedule_detail">Detalle de horario</string>
-    <string name="scheduled">Programada</string>
-    <string name="unscheduled">No programado</string>
+    <string name="scheduled_work">Trabajo programado</string>
+    <string name="unscheduled_work">Trabajo no programado</string>
     <string name="mark_attendance">Mark asistencia</string>
     <string name="replace">Reemplazar</string>
     <string name="string_ask_new_lumper">¿Quieres solicitar el reemplazo de lumper?</string>
