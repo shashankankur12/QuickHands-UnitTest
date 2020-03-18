@@ -12,7 +12,7 @@ import com.franmontiel.localechanger.utils.ActivityRecreationHelper
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.views.controls.NavDrawer
-import com.quickhandslogistics.modified.views.fragments.SettingsFragment
+import com.quickhandslogistics.modified.views.fragments.setting.SettingsFragment
 import com.quickhandslogistics.modified.views.fragments.lumperSheet.LumperSheetFragment
 import com.quickhandslogistics.modified.views.fragments.lumpers.LumpersFragment
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment

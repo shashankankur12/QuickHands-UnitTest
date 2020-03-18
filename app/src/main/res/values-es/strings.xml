@@ -116,6 +116,8 @@
     <string name="forgotPasswordInCaption">Solo necesitamos su ID de empleado registrado para restablecer su contraseña.</string>
     <string name="invalid_emp_id">Por favor ingrese ID de empleado válida</string>
     <string name="please_wait">Por favor espera...</string>
+    <string name="string_english">Inglés</string>
+    <string name="string_spanish">Español</string>
 
     <string name="schedule_detail">**Schedule Detail**</string>
     <string name="scheduled">**Scheduled**</string>

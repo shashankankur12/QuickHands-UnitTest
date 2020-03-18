@@ -25,12 +25,13 @@
         app:layout_constraintTop_toTopOf="parent"
         android:textColor="@color/textBlack"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Change Language" />
+        android:text="@string/string_change_language" />
 
         <RadioGroup
             android:id="@+id/radioLanguageGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:checkedButton="@id/radioBtnEnglish"
             android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/changeLanguageText">
@@ -39,8 +40,7 @@
                 android:id="@+id/radioBtnEnglish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="English"
+                android:text="@string/string_english"
                 android:textColor="@color/textBlack"
                 android:fontFamily="@font/poppinsregular"
                 android:layout_marginLeft="@dimen/_15sdp"/>
@@ -49,7 +49,7 @@
                 android:id="@+id/radioBtnSpanish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Spanish"
+                android:text="@string/string_spanish"
                 android:textColor="@color/textBlack"
                 android:fontFamily="@font/poppinsregular"
                 android:layout_marginLeft="@dimen/_15sdp"/>
