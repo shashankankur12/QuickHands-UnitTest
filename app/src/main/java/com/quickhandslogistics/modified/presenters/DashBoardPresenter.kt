@@ -20,7 +20,12 @@ class DashBoardPresenter internal constructor(
         dashBoardModel.fetchLeadProfileData(this)
     }
 
-    override fun onLoadLeadProfile(fullName: String, email: String, employeeId: String) {
-        dashBoardView?.loadLeadProfile(fullName, email, employeeId)
+    override fun onLoadLeadProfile(
+        fullName: String,
+        email: String,
+        employeeId: String,
+        profileImageUrl: String
+    ) {
+        dashBoardView?.loadLeadProfile(fullName, email, employeeId, profileImageUrl)
     }
 }

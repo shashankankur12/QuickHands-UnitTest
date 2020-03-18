@@ -21,9 +21,6 @@ import com.quickhandslogistics.modified.views.fragments.InfoDialogFragment;
 
 import java.util.ArrayList;
 
-import static com.quickhandslogistics.utils.AppConstant.PREFERENCE_AUTH_TOKEN;
-import static com.quickhandslogistics.utils.AppConstant.PREFERENCE_IS_ACTIVE;
-
 public class NavDrawer {
 
     private final BaseActivity activity;
@@ -198,9 +195,7 @@ public class NavDrawer {
         }
 
         private void clearDataAndRestart(BaseActivity activity) {
-            activity.sharedPref.setString(PREFERENCE_AUTH_TOKEN, "");
-            activity.sharedPref.setBoolean(PREFERENCE_IS_ACTIVE, false);
-
+            activity.sharedPref.performLogout();
             activity.startIntent(LoginActivity.class, null, true, new Integer[]{Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK});
         }
 

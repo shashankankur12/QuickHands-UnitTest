@@ -2,7 +2,9 @@ package com.quickhandslogistics.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.gson.Gson
 import com.quickhandslogistics.application.MyApplication
+import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_EMPLOYEE_ID
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_NAME
 
 class SharedPref private constructor(context: Context) : AppConstant {
@@ -38,6 +40,11 @@ class SharedPref private constructor(context: Context) : AppConstant {
         return sharedPreferences.getString(key, "")!!
     }
 
+    fun getClassObject(key: String, javaClass: Class<*>): Any? {
+        val jsonString = getString(key)
+        return Gson().fromJson(jsonString, javaClass)
+    }
+
     fun setString(key: String, value: String?) {
         editor.putString(key, value)
         editor.apply()
@@ -49,5 +56,17 @@ class SharedPref private constructor(context: Context) : AppConstant {
 
     fun setInteger(activeJobPosition: Int, key: String) {
         editor.putInt(key, activeJobPosition).apply()
+    }
+
+    fun setClassObject(key: String, classObject: Any) {
+        val jsonString = Gson().toJson(classObject)
+        setString(key, jsonString)
+    }
+
+    fun performLogout() {
+        // Save the previous employeeId on Logout
+        val employeeId = getString(PREFERENCE_EMPLOYEE_ID)
+        editor.clear().apply()
+        setString(PREFERENCE_EMPLOYEE_ID, employeeId)
     }
 }

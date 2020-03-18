@@ -4,12 +4,12 @@ class SplashContract {
     interface Model {
         fun waitForSometime(onFinishedListener: OnFinishedListener?)
         interface OnFinishedListener {
-            fun onFinished()
+            fun onFinished(isLoggedIn: Boolean)
         }
     }
 
     interface View {
-        fun showNextScreen()
+        fun showNextScreen(isLoggedIn: Boolean)
     }
 
     interface Presenter {

@@ -1,7 +1,7 @@
 package com.quickhandslogistics.modified.contracts
 
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
-import com.quickhandslogistics.modified.data.lumpers.LumperData
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 
 class ChooseLumperContract {
     interface Model {
@@ -17,11 +17,11 @@ class ChooseLumperContract {
         fun hideProgressDialog()
         fun showProgressDialog(message: String)
         fun showAPIErrorMessage(message: String)
-        fun showLumpersData(lumperDataList: ArrayList<LumperData>)
+        fun showLumpersData(employeeDataList: ArrayList<EmployeeData>)
 
         interface OnAdapterItemClickListener {
-            fun onClickLumperDetail(lumperData: LumperData)
-            fun onSelectLumper(lumperData: LumperData)
+            fun onClickLumperDetail(employeeData: EmployeeData)
+            fun onSelectLumper(employeeData: EmployeeData)
         }
     }
 

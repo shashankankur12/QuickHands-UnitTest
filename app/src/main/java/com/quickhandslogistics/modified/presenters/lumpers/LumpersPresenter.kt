@@ -3,8 +3,8 @@ package com.quickhandslogistics.modified.presenters.lumpers
 import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.contracts.lumpers.LumpersContract
+import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.models.lumpers.LumpersModel
 
 class LumpersPresenter(

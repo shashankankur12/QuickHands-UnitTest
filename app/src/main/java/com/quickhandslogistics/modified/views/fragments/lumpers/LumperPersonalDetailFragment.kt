@@ -6,18 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.data.lumpers.LumperData
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.views.BaseFragment
+import com.quickhandslogistics.utils.StringUtils
 import kotlinx.android.synthetic.main.fragment_lumper_personal_detail.*
 
 class LumperPersonalDetailFragment : BaseFragment() {
 
-    private var lumperData: LumperData? = null
+    private var employeeData: EmployeeData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            lumperData = it.getSerializable(ARG_LUMPER_DATA) as LumperData?
+            employeeData = it.getSerializable(ARG_LUMPER_DATA) as EmployeeData?
         }
     }
 
@@ -32,16 +33,19 @@ class LumperPersonalDetailFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lumperData?.let {
-            textViewFirstName.text = it.firstName
-            textViewLastName.text = it.lastName
-            it.employeeId?.also { employeeId ->
-                textViewEmployeeId.text = employeeId as CharSequence?
-            } ?: run {
-                textViewEmployeeId.text = "-"
-            }
-            textViewEmailAddress.text = it.email
-            textViewPhoneNumber.text = PhoneNumberUtils.formatNumber(it.phone, "US")
+        employeeData?.let {
+            textViewFirstName.text =
+                if (!StringUtils.isNullOrEmpty(it.firstName)) it.firstName else "-"
+            textViewLastName.text =
+                if (!StringUtils.isNullOrEmpty(it.lastName)) it.lastName else "-"
+            textViewEmployeeId.text =
+                if (!StringUtils.isNullOrEmpty(it.employeeId)) it.employeeId else "-"
+            textViewEmailAddress.text = if (!StringUtils.isNullOrEmpty(it.email)) it.email else "-"
+            textViewPhoneNumber.text =
+                if (!StringUtils.isNullOrEmpty(it.phone)) PhoneNumberUtils.formatNumber(
+                    it.phone,
+                    "US"
+                ) else "-"
         }
     }
 
@@ -49,10 +53,10 @@ class LumperPersonalDetailFragment : BaseFragment() {
         private const val ARG_LUMPER_DATA = "ARG_LUMPER_DATA"
 
         @JvmStatic
-        fun newInstance(lumperData: LumperData) =
+        fun newInstance(employeeData: EmployeeData) =
             LumperPersonalDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(ARG_LUMPER_DATA, lumperData)
+                    putSerializable(ARG_LUMPER_DATA, employeeData)
                 }
             }
     }

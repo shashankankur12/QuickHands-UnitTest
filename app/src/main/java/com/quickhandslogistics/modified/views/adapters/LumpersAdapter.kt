@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.lumpers.LumpersContract
-import com.quickhandslogistics.modified.data.lumpers.LumperData
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.utils.StringUtils
+import com.quickhandslogistics.utils.ValueUtils
+import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_lumper_layout.view.*
 import java.util.*
@@ -20,8 +23,8 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
 
     private var searchEnabled = false
     private var searchTerm = ""
-    var items: ArrayList<LumperData> = ArrayList()
-    private var filteredItems: ArrayList<LumperData> = ArrayList()
+    var items: ArrayList<EmployeeData> = ArrayList()
+    private var filteredItems: ArrayList<EmployeeData> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View =
@@ -35,7 +38,7 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
         return if (searchEnabled) filteredItems.size else items.size
     }
 
-    private fun getItem(position: Int): LumperData {
+    private fun getItem(position: Int): EmployeeData {
         return if (searchEnabled) filteredItems[position] else items[position]
     }
 
@@ -43,9 +46,9 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
         holder.bind(getItem(position))
     }
 
-    fun updateLumpersData(lumperDataList: java.util.ArrayList<LumperData>) {
+    fun updateLumpersData(employeeDataList: java.util.ArrayList<EmployeeData>) {
         items.clear()
-        items.addAll(lumperDataList)
+        items.addAll(employeeDataList)
         notifyDataSetChanged()
     }
 
@@ -57,22 +60,30 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
         var textViewShiftHours: TextView = view.textViewShiftHours
         var imageViewCall: ImageView = view.imageViewCall
 
-        fun bind(lumperData: LumperData) {
-            if (lumperData.firstName != null && lumperData.lastName != null) {
-                textViewLumperName.text =
-                    String.format("%s %s", lumperData.firstName, lumperData.lastName)
+        fun bind(employeeData: EmployeeData) {
+            if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl))
+                Picasso.get().load(employeeData.profileImageUrl).placeholder(R.drawable.dummy)
+                    .error(R.drawable.dummy)
+                    .into(circleImageViewProfile)
+
+            textViewLumperName.text = String.format(
+                "%s %s",
+                ValueUtils.getDefaultOrValue(employeeData.firstName),
+                ValueUtils.getDefaultOrValue(employeeData.lastName)
+            )
+
+            if (StringUtils.isNullOrEmpty(employeeData.employeeId)) {
+                textViewEmployeeId.visibility = View.GONE
+            } else {
+                textViewEmployeeId.visibility = View.VISIBLE
+                textViewEmployeeId.text = String.format("(Emp ID: %s)", employeeData.employeeId)
             }
 
-            lumperData.employeeId?.also {
-                textViewEmployeeId.text = String.format("(Emp ID: %s)", lumperData.employeeId)
-            } ?: run {
-                textViewEmployeeId.text = "(Emp ID: -)"
-            }
-
-            lumperData.shiftHours?.also {
-                textViewShiftHours.text = String.format("(Shift Hours: %s)", lumperData.shiftHours)
-            } ?: run {
-                textViewShiftHours.text = "Shift Hours: -"
+            if (StringUtils.isNullOrEmpty(employeeData.shiftHours)) {
+                textViewShiftHours.visibility = View.GONE
+            } else {
+                textViewShiftHours.visibility = View.VISIBLE
+                textViewShiftHours.text = String.format("(Shift Hours: %s)", employeeData.shiftHours)
             }
 
             imageViewCall.setOnClickListener(this)

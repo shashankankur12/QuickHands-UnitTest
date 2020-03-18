@@ -39,19 +39,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/circleImageViewProfile" />
 
-        <TextView
-            android:id="@+id/textViewEmployeeId"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_5sdp"
-            android:gravity="center"
-            android:text="Emp ID: 079"
-            android:textColor="@color/textBlack"
-            android:textSize="@dimen/_10ssp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
-
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayoutLumperDetail"
             android:layout_width="wrap_content"
@@ -59,7 +46,7 @@
             android:layout_marginTop="@dimen/_8sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewEmployeeId"
+            app:layout_constraintTop_toBottomOf="@id/textViewLumperName"
             app:tabIndicatorColor="@color/buttonRed"
             app:tabIndicatorFullWidth="false"
             app:tabMode="scrollable"

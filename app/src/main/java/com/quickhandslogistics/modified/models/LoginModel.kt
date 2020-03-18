@@ -2,23 +2,24 @@ package com.quickhandslogistics.modified.models
 
 import android.text.TextUtils
 import android.util.Log
-import com.quickhandslogistics.modified.data.login.Data
-import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.contracts.LoginContract
 import com.quickhandslogistics.modified.data.login.LoginRequest
+import com.quickhandslogistics.modified.data.login.LoginResponse
+import com.quickhandslogistics.modified.data.login.UserData
 import com.quickhandslogistics.modified.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
-import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_AUTH_TOKEN
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_EMPLOYEE_ID
+import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_LEAD_PROFILE
 import com.quickhandslogistics.utils.SharedPref
+import com.quickhandslogistics.utils.StringUtils
 
 class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
 
-    override fun fetchEmployeeId(
-        onFinishedListener: LoginContract.Model.OnFinishedListener
-    ) {
-        if (!TextUtils.isEmpty(sharedPref.getString(PREFERENCE_EMPLOYEE_ID))) {
-            onFinishedListener.onLoadEmployeeId(sharedPref.getString(PREFERENCE_EMPLOYEE_ID))
+    override fun fetchEmployeeId(onFinishedListener: LoginContract.Model.OnFinishedListener) {
+        val employeeId = sharedPref.getString(PREFERENCE_EMPLOYEE_ID)
+        if (!StringUtils.isNullOrEmpty(employeeId)) {
+            onFinishedListener.onLoadEmployeeId(employeeId)
         }
     }
 
@@ -68,20 +69,12 @@ class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
     }
 
     override fun processLoginData(
-        data: Data,
+        userData: UserData,
         onFinishedListener: LoginContract.Model.OnFinishedListener
     ) {
-        SharedPref.getInstance().setBoolean(AppConstant.PREFERENCE_IS_ACTIVE, data.isActive)
-        SharedPref.getInstance().setString(AppConstant.PREFERENCE_AUTH_TOKEN, data.token)
-        SharedPref.getInstance().setString(PREFERENCE_EMPLOYEE_ID, data.employeeId)
-        SharedPref.getInstance().setString(AppConstant.PREFERENCE_USER_PHONE, data.phone)
-        SharedPref.getInstance().setString(AppConstant.PREFERENCE_USER_EMAIL, data.email)
-        SharedPref.getInstance().setString(AppConstant.PREFERENCE_USER_ROLE, data.role)
-        SharedPref.getInstance()
-            .setString(AppConstant.PREFERENCE_USER_FULL_NAME, "${data.firstName} ${data.lastName}")
-        SharedPref.getInstance().setString(AppConstant.PREFERENCE_USER_FIRST_NAME, data.firstName)
-        SharedPref.getInstance().setString(AppConstant.PREFERENCE_USER_LAST_NAME, data.lastName)
-
+        sharedPref.setClassObject(PREFERENCE_LEAD_PROFILE, userData)
+        sharedPref.setString(PREFERENCE_AUTH_TOKEN, userData.token)
+        sharedPref.setString(PREFERENCE_EMPLOYEE_ID, userData.employeeId)
         onFinishedListener.showNextScreen()
     }
 }
