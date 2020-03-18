@@ -120,15 +120,13 @@
     <string name="string_ask_new_lumper">Do you want to request for lumper replacement?</string>
     <string name="add_lumpers">Add Lumpers</string>
     <string name="replacementRequested">Replacement\nRequested</string>
-    <string name="business_operations">Business Operations</string>
+    <string name="building_operations">Building Operations</string>
     <string name="logging_in">Logging In...</string>
     <string name="please_wait">Please Wait...</string>
     <string name="api_loading_message">Please wait while data is loading...</string>
     <string name="internal_server_error">Internal Server Error</string>
     <string name="lumper_name">Lumper Name</string>
     <string name="role">Role</string>
-    <string name="created_at">Created At</string>
-    <string name="updated_at">Updated At</string>
     <string name="signInCaption">Sign in by entering the details below.</string>
     <string name="enter_employee_id">Enter your employee ID</string>
     <string name="enter_password">Enter Password</string>
