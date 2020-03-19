@@ -4,130 +4,118 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/appBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_schedule_detail">
 
-    <LinearLayout
-        android:id="@+id/linear_event_details"
+    <TextView
+        android:id="@+id/textViewBuildingName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorLightBlue"
-        android:orientation="vertical"
-        android:padding="@dimen/_10sdp"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/text_location"
-            style="@style/textSizeNormalRegFont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Building : One97 Communications Private Limited"
-            android:textColor="@color/colorBlack"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/text_lumper_count"
-            style="@style/textSizeNormalRegFont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Lumpers : 5"
-            android:textColor="@color/colorBlack" />
-
-        <TextView
-            android:id="@+id/text_date"
-            style="@style/textSizeNormalRegFont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date : Wed Jan 15, 2020, 3:00 AM"
-            android:textColor="@color/colorBlack" />
-    </LinearLayout>
+        android:layout_marginStart="@dimen/_10ssp"
+        android:layout_marginTop="@dimen/_5ssp"
+        android:layout_marginEnd="@dimen/_10ssp"
+        android:text="Victory Valley Tower A"
+        android:textColor="@color/buildingTitle"
+        android:textSize="@dimen/_16ssp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/text_work_items"
-        style="@style/textSizeNormalRegFont"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_10ssp"
-        android:text="Work Items :"
-        android:textColor="@color/colorBlack"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linear_event_details" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_work_items"
+        android:id="@+id/textViewCreatedDate"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:padding="@dimen/_10sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_work_items" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="@dimen/_5sdp"
-        android:visibility="gone"
+        android:layout_marginStart="@dimen/_10ssp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_10ssp"
+        android:drawableStart="@drawable/ic_schedule_calendar"
+        android:drawablePadding="@dimen/_5sdp"
+        android:text="Thursday March 5, 2020"
+        android:textColor="@color/scheduleDetail"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBuildingName" />
+
+    <TextView
+        android:id="@+id/textViewScheduleType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10ssp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginEnd="@dimen/_10ssp"
+        android:drawableStart="@drawable/ic_schedule_type"
+        android:drawablePadding="@dimen/_5sdp"
+        android:text="Live Loads"
+        android:textColor="@color/scheduleDetail"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCreatedDate" />
+
+    <TextView
+        android:id="@+id/textViewWorkItemsCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10ssp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginEnd="@dimen/_10ssp"
+        android:drawableStart="@drawable/ic_schedule_work_items"
+        android:drawablePadding="@dimen/_5sdp"
+        android:text="Work Items - 05"
+        android:textColor="@color/scheduleDetail"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/shadow_effect"
+        android:translationY="-15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:background="@drawable/top_left_round_background"
+        android:paddingStart="@dimen/_15ssp"
+        android:paddingTop="@dimen/_10ssp"
+        android:paddingEnd="@dimen/_15ssp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemsCount">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_business_operations"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:elevation="@dimen/_5sdp"
-            android:src="@drawable/ic_business"
-            android:tooltipText="@string/building_operations"
-            app:backgroundTint="@color/colorPrimary"
-            app:elevation="@dimen/_5sdp" />
-
-        <TextView
-            style="@style/textSizeSmallRegFont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:shadowColor="@android:color/black"
-            android:shadowRadius="5"
-            android:text="@string/building_operations"
-            android:textColor="@color/colorBlack" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_mark_attendance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:elevation="@dimen/_5sdp"
-            android:src="@drawable/ic_event_available"
-            android:tooltipText="@string/mark_attendance"
-            app:backgroundTint="@color/colorPrimary"
-            app:elevation="@dimen/_5sdp" />
-
-        <TextView
-            android:id="@+id/textView_mark_attendance"
-            style="@style/textSizeSmallRegFont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:shadowColor="@android:color/black"
-            android:shadowRadius="5"
-            android:text="@string/mark_attendance"
-            android:textColor="@color/colorBlack" />
-    </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_work_items"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
 
     <com.leinardi.android.speeddial.SpeedDialOverlayLayout
         android:id="@+id/overlay"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@color/fabBackgroundOverlay" />
 
     <com.leinardi.android.speeddial.SpeedDialView
         android:id="@+id/speedDialView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:sdMainFabClosedBackgroundColor="@color/buttonRed"
         app:sdMainFabClosedSrc="@drawable/ic_add"
+        app:sdMainFabOpenedBackgroundColor="@color/buttonRed"
         app:sdOverlayLayout="@id/overlay" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

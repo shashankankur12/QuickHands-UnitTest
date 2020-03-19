@@ -1,108 +1,140 @@
 package com.quickhandslogistics.modified.views.activities
 
-import android.content.Intent
 import android.os.Bundle
-import android.text.Html
-import android.view.MenuItem
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.contracts.schedule.ScheduleDetailContract
 import com.quickhandslogistics.modified.views.BaseActivity
+import com.quickhandslogistics.modified.views.adapters.ScheduledWorkItemAdapter
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleFragment
-import com.quickhandslogistics.view.activities.BusinessOperationsActivity
+import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.view.activities.BuildingOperationsActivity
+import com.quickhandslogistics.view.activities.WorkItemLumpersActivity
 import com.quickhandslogistics.view.adapter.LumperAttendanceAdapter
-import com.quickhandslogistics.view.adapter.ScheduledWorkItemAdapter
 import kotlinx.android.synthetic.main.activity_schedule_detail.*
 import kotlinx.android.synthetic.main.bottom_sheet_lumpers_attendance.*
 import kotlinx.android.synthetic.main.container_schedule_detail.*
-import java.util.*
 
-class ScheduleDetailActivity : BaseActivity(), SpeedDialView.OnActionSelectedListener {
+class ScheduleDetailActivity : BaseActivity(), SpeedDialView.OnActionSelectedListener,
+    ScheduleDetailContract.View.OnAdapterItemClickListener, View.OnClickListener {
 
+    private var isCurrentDate: Boolean = false
     private var sheetBehavior: BottomSheetBehavior<ConstraintLayout>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_schedule_detail)
-        setupToolbar(title = getString(R.string.schedule_detail))
+        setupToolbar()
 
-        var time: Long = 0
         intent.extras?.let {
             if (it.containsKey(ScheduleFragment.ARG_SELECTED_TIME)) {
-                time = it.getLong(ScheduleFragment.ARG_SELECTED_TIME)
+                val selectedTime = it.getLong(ScheduleFragment.ARG_SELECTED_TIME)
+                isCurrentDate = DateUtils.isCurrentDate(selectedTime)
             }
         }
 
-        speedDialView.inflate(R.menu.menu_schedule)
+        initializeUI()
+    }
+
+    private fun initializeUI() {
+        // Initialize Floating Action Menu
+        speedDialView.addActionItem(
+            SpeedDialActionItem.Builder(R.id.actionBuildingOperations, R.drawable.ic_business)
+                .setLabel(getString(R.string.building_operations))
+                .setLabelColor(ResourcesCompat.getColor(resources, R.color.textBlack, theme))
+                .create()
+        )
+
+        if (isCurrentDate) {
+            speedDialView.addActionItem(
+                SpeedDialActionItem.Builder(
+                        R.id.actionMarkAttendance,
+                        R.drawable.ic_event_available
+                    )
+                    .setLabel(getString(R.string.mark_attendance))
+                    .setLabelColor(ResourcesCompat.getColor(resources, R.color.textBlack, theme))
+                    .create()
+            )
+        }
         speedDialView.setOnActionSelectedListener(this)
-
-        val cal1 = Calendar.getInstance()
-        val cal2 = Calendar.getInstance()
-        cal1.timeInMillis = time
-        val sameDay =
-            cal1[Calendar.DAY_OF_YEAR] == cal2[Calendar.DAY_OF_YEAR] && cal1[Calendar.YEAR] == cal2[Calendar.YEAR]
-        if (!sameDay) {
-            speedDialView.removeActionItemById(R.id.actionMarkAttendance)
-        }
-
-        imageViewClose.setOnClickListener {
-            sheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED;
-            bg.visibility = View.GONE
-        }
-        bg.setOnClickListener {}
-
-        button_submit.setOnClickListener {
-            sheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED;
-            bg.visibility = View.GONE
-        }
-
-        setData()
-
-        recycler_work_items.layoutManager = LinearLayoutManager(this)
-        recycler_work_items.adapter = ScheduledWorkItemAdapter(this, sameDay)
 
         sheetBehavior = BottomSheetBehavior.from(bottom_sheet)
         sheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
 
-        recycler_lumpers.layoutManager = LinearLayoutManager(this)
-        recycler_lumpers.adapter = LumperAttendanceAdapter(this)
+        imageViewClose.setOnClickListener(this)
+        button_submit.setOnClickListener(this)
+
+        recycler_work_items.apply {
+            val linearLayoutManager = LinearLayoutManager(activity)
+            layoutManager = linearLayoutManager
+            val dividerItemDecoration =
+                DividerItemDecoration(activity, linearLayoutManager.orientation)
+            addItemDecoration(dividerItemDecoration)
+            adapter = ScheduledWorkItemAdapter(activity, this@ScheduleDetailActivity, isCurrentDate)
+        }
+
+        recycler_lumpers.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = LumperAttendanceAdapter(activity)
+        }
     }
 
-    private fun setData() {
-        text_location.text = Html.fromHtml("<b>Building : One97 Communications Private Limited</b>")
-        text_lumper_count.text = Html.fromHtml("<b>Door : </b>03")
-        text_date.text = Html.fromHtml("<b>Work Items : </b>05")
+    /*
+    * Native Views Listeners
+    */
+    override fun onClick(view: View?) {
+        view?.let {
+            when (view.id) {
+                imageViewClose.id -> {
+                    sheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED;
+                    bottomSheetBackground.visibility = View.GONE
+                }
+                button_submit.id -> {
+                    sheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED;
+                    bottomSheetBackground.visibility = View.GONE
+                }
+            }
+        }
     }
-
-
 
     override fun onActionSelected(actionItem: SpeedDialActionItem?): Boolean {
         actionItem?.let {
-            when (actionItem.id) {
-                R.id.actionBusinessOperations -> {
+            return when (actionItem.id) {
+                R.id.actionBuildingOperations -> {
                     speedDialView.close(true)
-                    startActivity(Intent(this, BusinessOperationsActivity::class.java))
-                    overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out)
-                    return true
+                    startIntent(BuildingOperationsActivity::class.java)
+                    true
                 }
                 R.id.actionMarkAttendance -> {
                     speedDialView.close(true)
                     if (sheetBehavior?.state != BottomSheetBehavior.STATE_EXPANDED) {
                         sheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED;
-                        bg.visibility = View.VISIBLE
+                        bottomSheetBackground.visibility = View.VISIBLE
                     } else {
                         sheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED;
-                        bg.visibility = View.GONE
+                        bottomSheetBackground.visibility = View.GONE
                     }
-                    return true
+                    true
                 }
-                else -> return false
+                else -> false
             }
         }
         return false
+    }
+
+    /*
+    * Adapter Item Click Listeners
+    */
+    override fun onWorkItemClick(sameDay: Boolean) {
+        val bundle = Bundle()
+        bundle.putBoolean(WorkItemLumpersActivity.ARG_CAN_REPLACE, sameDay)
+        startIntent(WorkItemLumpersActivity::class.java, bundle = bundle)
     }
 }

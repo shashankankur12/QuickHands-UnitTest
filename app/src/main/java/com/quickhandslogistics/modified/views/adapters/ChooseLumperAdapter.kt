@@ -70,7 +70,8 @@ class ChooseLumperAdapter(var adapterItemClickListener: ChooseLumperContract.Vie
             }
 
             employeeData.shiftHours?.also {
-                textViewShiftHours.text = String.format("(Shift Hours: %s)", employeeData.shiftHours)
+                textViewShiftHours.text =
+                    String.format("(Shift Hours: %s)", employeeData.shiftHours)
             } ?: run {
                 textViewShiftHours.text = "Shift Hours: -"
             }

@@ -161,4 +161,5 @@
     <string name="string_okay">Bueno</string>
     <string name="string_cancel">Cancelar</string>
     <string name="call_lumper_dialog_message">¿Quieres llamar a %s?</string>
+    <string name="start_time_container">Start Time - %s</string>
 </resources>

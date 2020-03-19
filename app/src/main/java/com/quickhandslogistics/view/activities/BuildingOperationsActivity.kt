@@ -3,14 +3,14 @@ package com.quickhandslogistics.view.activities
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.quickhandslogistics.R
-import kotlinx.android.synthetic.main.activity_business_operations.*
+import kotlinx.android.synthetic.main.activity_building_operations.*
 import kotlinx.android.synthetic.main.layout_header.*
 
-class BusinessOperationsActivity : AppCompatActivity() {
+class BuildingOperationsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_business_operations)
+        setContentView(R.layout.activity_building_operations)
 
         text_title.text = getString(R.string.building_operations)
 

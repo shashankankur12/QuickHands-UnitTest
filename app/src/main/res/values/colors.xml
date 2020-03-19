@@ -31,4 +31,6 @@
     <color name="scheduleItemBackground">#f0f6ff</color>
     <color name="buildingTitle">#012652</color>
     <color name="scheduleDetail">#345173</color>
+    <color name="startTimeBackground">#ecf0f6</color>
+    <color name="fabBackgroundOverlay">#1a000000</color>
 </resources>
