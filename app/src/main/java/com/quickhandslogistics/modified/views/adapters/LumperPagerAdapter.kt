@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.data.lumpers.LumperData
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.views.fragments.lumpers.LumperJobDetailFragment
 import com.quickhandslogistics.modified.views.fragments.lumpers.LumperPersonalDetailFragment
 import com.quickhandslogistics.modified.views.fragments.lumpers.LumperWorkDetailFragment
@@ -14,7 +14,7 @@ import com.quickhandslogistics.modified.views.fragments.lumpers.LumperWorkDetail
 class LumperPagerAdapter(
     fragmentManager: FragmentManager,
     private val resources: Resources,
-    lumperData: LumperData
+    employeeData: EmployeeData
 ) :
     FragmentStatePagerAdapter(
         fragmentManager,
@@ -22,11 +22,11 @@ class LumperPagerAdapter(
     ) {
 
     private var lumperPersonalDetailFragment =
-        LumperPersonalDetailFragment.newInstance(lumperData)
+        LumperPersonalDetailFragment.newInstance(employeeData)
     private var lumperWorkDetailFragment =
-        LumperWorkDetailFragment.newInstance(lumperData)
+        LumperWorkDetailFragment.newInstance(employeeData)
     private var lumperJobDetailFragment =
-        LumperJobDetailFragment.newInstance(lumperData)
+        LumperJobDetailFragment.newInstance(employeeData)
 
     private val tabTitles = arrayOf(
         R.string.personal_detail,

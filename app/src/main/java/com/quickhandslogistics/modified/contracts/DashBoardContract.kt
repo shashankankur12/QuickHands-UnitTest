@@ -4,12 +4,22 @@ class DashBoardContract {
     interface Model {
         fun fetchLeadProfileData(onFinishedListener: OnFinishedListener)
         interface OnFinishedListener {
-            fun onLoadLeadProfile(fullName: String, email: String, employeeId: String)
+            fun onLoadLeadProfile(
+                fullName: String,
+                email: String,
+                employeeId: String,
+                profileImageUrl: String
+            )
         }
     }
 
     interface View {
-        fun loadLeadProfile(fullName: String, email: String, employeeId: String)
+        fun loadLeadProfile(
+            fullName: String,
+            email: String,
+            employeeId: String,
+            profileImageUrl: String
+        )
     }
 
     interface Presenter {

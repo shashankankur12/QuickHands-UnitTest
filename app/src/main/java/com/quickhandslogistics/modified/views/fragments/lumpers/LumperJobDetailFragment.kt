@@ -5,18 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.data.lumpers.LumperData
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.views.BaseFragment
+import com.quickhandslogistics.utils.StringUtils
 import kotlinx.android.synthetic.main.fragment_lumper_job_detail.*
+import java.util.*
 
 class LumperJobDetailFragment : BaseFragment() {
 
-    private var lumperData: LumperData? = null
+    private var employeeData: EmployeeData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            lumperData = it.getSerializable(ARG_LUMPER_DATA) as LumperData?
+            employeeData = it.getSerializable(ARG_LUMPER_DATA) as EmployeeData?
         }
     }
 
@@ -31,20 +33,17 @@ class LumperJobDetailFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lumperData?.let {
-            textViewTitle.text = it.title
-            it.hiringDate?.also { hiringDate ->
-                textViewHiringDate.text = hiringDate as CharSequence?
-            } ?: run {
-                textViewHiringDate.text = "-"
-            }
-            textViewWorkSchedule.text = it.workSchedule
-            it.lastDayWorked?.also { lastDayWorked ->
-                textViewLastDayWorked.text = lastDayWorked as CharSequence?
-            } ?: run {
-                textViewLastDayWorked.text = "-"
-            }
-            textViewJobDescription.text = it.jobDescription
+        employeeData?.let {
+            textViewTitle.text =
+                if (!StringUtils.isNullOrEmpty(it.title)) it.title!!.toUpperCase(Locale.getDefault()) else "-"
+            textViewHiringDate.text =
+                if (!StringUtils.isNullOrEmpty(it.hiringDate)) it.hiringDate else "-"
+            textViewWorkSchedule.text =
+                if (!StringUtils.isNullOrEmpty(it.workSchedule)) it.workSchedule else "-"
+            textViewLastDayWorked.text =
+                if (!StringUtils.isNullOrEmpty(it.lastDayWorked)) it.lastDayWorked else "-"
+            textViewJobDescription.text =
+                if (!StringUtils.isNullOrEmpty(it.jobDescription)) it.jobDescription else "-"
         }
     }
 
@@ -52,10 +51,10 @@ class LumperJobDetailFragment : BaseFragment() {
         private const val ARG_LUMPER_DATA = "ARG_LUMPER_DATA"
 
         @JvmStatic
-        fun newInstance(lumperData: LumperData) =
+        fun newInstance(employeeData: EmployeeData) =
             LumperJobDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(ARG_LUMPER_DATA, lumperData)
+                    putSerializable(ARG_LUMPER_DATA, employeeData)
                 }
             }
     }

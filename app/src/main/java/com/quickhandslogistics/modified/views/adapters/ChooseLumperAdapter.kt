@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.ChooseLumperContract
-import com.quickhandslogistics.modified.data.lumpers.LumperData
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_choose_lumper.view.*
 import java.util.*
@@ -20,8 +20,8 @@ class ChooseLumperAdapter(var adapterItemClickListener: ChooseLumperContract.Vie
 
     private var searchEnabled = false
     private var searchTerm = ""
-    var items: ArrayList<LumperData> = ArrayList()
-    private var filteredItems: ArrayList<LumperData> = ArrayList()
+    var items: ArrayList<EmployeeData> = ArrayList()
+    private var filteredItems: ArrayList<EmployeeData> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View =
@@ -35,7 +35,7 @@ class ChooseLumperAdapter(var adapterItemClickListener: ChooseLumperContract.Vie
         return if (searchEnabled) filteredItems.size else items.size
     }
 
-    private fun getItem(position: Int): LumperData {
+    private fun getItem(position: Int): EmployeeData {
         return if (searchEnabled) filteredItems[position] else items[position]
     }
 
@@ -43,9 +43,9 @@ class ChooseLumperAdapter(var adapterItemClickListener: ChooseLumperContract.Vie
         holder.bind(getItem(position))
     }
 
-    fun updateLumpersData(lumperDataList: java.util.ArrayList<LumperData>) {
+    fun updateLumpersData(employeeDataList: java.util.ArrayList<EmployeeData>) {
         items.clear()
-        items.addAll(lumperDataList)
+        items.addAll(employeeDataList)
         notifyDataSetChanged()
     }
 
@@ -57,20 +57,20 @@ class ChooseLumperAdapter(var adapterItemClickListener: ChooseLumperContract.Vie
         var textViewShiftHours: TextView = view.textViewShiftHours
         var buttonSelect: Button = view.buttonSelect
 
-        fun bind(lumperData: LumperData) {
-            if (lumperData.firstName != null && lumperData.lastName != null) {
+        fun bind(employeeData: EmployeeData) {
+            if (employeeData.firstName != null && employeeData.lastName != null) {
                 textViewLumperName.text =
-                    String.format("%s %s", lumperData.firstName, lumperData.lastName)
+                    String.format("%s %s", employeeData.firstName, employeeData.lastName)
             }
 
-            lumperData.employeeId?.also {
-                textViewEmployeeId.text = String.format("(Emp ID: %s)", lumperData.employeeId)
+            employeeData.employeeId?.also {
+                textViewEmployeeId.text = String.format("(Emp ID: %s)", employeeData.employeeId)
             } ?: run {
                 textViewEmployeeId.text = "(Emp ID: -)"
             }
 
-            lumperData.shiftHours?.also {
-                textViewShiftHours.text = String.format("(Shift Hours: %s)", lumperData.shiftHours)
+            employeeData.shiftHours?.also {
+                textViewShiftHours.text = String.format("(Shift Hours: %s)", employeeData.shiftHours)
             } ?: run {
                 textViewShiftHours.text = "Shift Hours: -"
             }

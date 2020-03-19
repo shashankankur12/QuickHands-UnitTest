@@ -4,6 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center"
+    android:background="@android:color/transparent"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -12,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mon"
-        android:textColor="#7a7a7a"
+        android:textColor="@color/detailHeader"
         android:textSize="14sp" />
 
     <TextView
@@ -24,7 +25,7 @@
         android:gravity="center"
         android:padding="5dp"
         android:text="15"
-        android:textColor="@android:color/black"
+        android:textColor="@color/detailHeader"
         android:textSize="@dimen/_12ssp"
         android:textStyle="bold" />
 </LinearLayout>

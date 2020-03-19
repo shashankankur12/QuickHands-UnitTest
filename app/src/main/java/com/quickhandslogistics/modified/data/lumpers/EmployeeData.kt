@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-class LumperData : Serializable {
+open class EmployeeData : Serializable {
     @SerializedName("id")
     @Expose
     var id: String? = null
@@ -47,7 +47,7 @@ class LumperData : Serializable {
 
     @SerializedName("employeeId")
     @Expose
-    var employeeId: Any? = null
+    var employeeId: String? = null
 
     @SerializedName("shift")
     @Expose
@@ -55,7 +55,7 @@ class LumperData : Serializable {
 
     @SerializedName("shiftHours")
     @Expose
-    var shiftHours: Any? = null
+    var shiftHours: String? = null
 
     @SerializedName("workSchedule")
     @Expose
@@ -67,7 +67,7 @@ class LumperData : Serializable {
 
     @SerializedName("primaryBuilding")
     @Expose
-    var primaryBuilding: Any? = null
+    var primaryBuilding: String? = null
 
     @SerializedName("abilityToTravelBetweenBuildings")
     @Expose
@@ -79,7 +79,7 @@ class LumperData : Serializable {
 
     @SerializedName("hiringDate")
     @Expose
-    var hiringDate: Any? = null
+    var hiringDate: String? = null
 
     @SerializedName("jobDescription")
     @Expose
@@ -87,7 +87,7 @@ class LumperData : Serializable {
 
     @SerializedName("lastDayWorked")
     @Expose
-    var lastDayWorked: Any? = null
+    var lastDayWorked: String? = null
 
     @SerializedName("fullTime")
     @Expose

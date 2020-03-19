@@ -5,18 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.data.lumpers.LumperData
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.views.BaseFragment
+import com.quickhandslogistics.utils.StringUtils
 import kotlinx.android.synthetic.main.fragment_lumper_work_detail.*
+import java.util.*
 
 class LumperWorkDetailFragment : BaseFragment() {
 
-    private var lumperData: LumperData? = null
+    private var employeeData: EmployeeData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            lumperData = it.getSerializable(ARG_LUMPER_DATA) as LumperData?
+            employeeData = it.getSerializable(ARG_LUMPER_DATA) as EmployeeData?
         }
     }
 
@@ -28,16 +30,15 @@ class LumperWorkDetailFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_lumper_work_detail, container, false)
     }
 
+    @ExperimentalStdlibApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lumperData?.let { it ->
-            textViewShift.text = it.shift
-            it.shiftHours?.also { shiftHours ->
-                textViewShiftHours.text = shiftHours as CharSequence?
-            } ?: run {
-                textViewShiftHours.text = "-"
-            }
+        employeeData?.let { it ->
+            textViewShift.text =
+                if (!StringUtils.isNullOrEmpty(it.shift)) it.shift!!.capitalize(Locale.getDefault()) else "-"
+            textViewShiftHours.text =
+                if (!StringUtils.isNullOrEmpty(it.shiftHours)) it.shiftHours else "-"
             it.fullTime?.also { fullTime ->
                 textViewAvailability.text =
                     if (fullTime) getString(R.string.full_time) else getString(R.string.part_time)
@@ -52,12 +53,13 @@ class LumperWorkDetailFragment : BaseFragment() {
             } ?: run {
                 textViewAbilityTravel.text = "-"
             }
-            it.primaryBuilding?.also { primaryBuilding ->
-                textViewPrimaryBuilding.text = primaryBuilding as CharSequence?
-            } ?: run {
-                textViewPrimaryBuilding.text = "-"
-            }
-            textViewMilesRadius.text = String.format("%s Miles", it.milesRadiusFromPrimaryBuilding)
+            textViewPrimaryBuilding.text =
+                if (!StringUtils.isNullOrEmpty(it.primaryBuilding)) it.primaryBuilding else "-"
+            textViewMilesRadius.text =
+                if (!StringUtils.isNullOrEmpty(it.milesRadiusFromPrimaryBuilding)) String.format(
+                    "%s Miles",
+                    it.milesRadiusFromPrimaryBuilding
+                ) else "-"
         }
     }
 
@@ -65,10 +67,10 @@ class LumperWorkDetailFragment : BaseFragment() {
         private const val ARG_LUMPER_DATA = "ARG_LUMPER_DATA"
 
         @JvmStatic
-        fun newInstance(lumperData: LumperData) =
+        fun newInstance(employeeData: EmployeeData) =
             LumperWorkDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(ARG_LUMPER_DATA, lumperData)
+                    putSerializable(ARG_LUMPER_DATA, employeeData)
                 }
             }
     }

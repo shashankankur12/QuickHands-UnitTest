@@ -21,6 +21,7 @@ class EditNotesDialog : DialogFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        dialog?.window?.attributes?.windowAnimations = R.style.dialogAnimation
         dialog?.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT

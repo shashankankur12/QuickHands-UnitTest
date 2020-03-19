@@ -6,7 +6,6 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.SplashContract
 import com.quickhandslogistics.modified.presenters.SplashPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.utils.AppConstant
 import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : BaseActivity(), SplashContract.View {
@@ -23,7 +22,7 @@ class SplashActivity : BaseActivity(), SplashContract.View {
 
         showLogoAnimation()
 
-        splashPresenter = SplashPresenter(this)
+        splashPresenter = SplashPresenter(this, sharedPref)
         splashPresenter.decideNextActivity()
     }
 
@@ -33,8 +32,8 @@ class SplashActivity : BaseActivity(), SplashContract.View {
         imageViewSplashLogo.startAnimation(anim)
     }
 
-    override fun showNextScreen() {
-        if (sharedPref.getBoolean(AppConstant.PREFERENCE_IS_ACTIVE)) {
+    override fun showNextScreen(isLoggedIn: Boolean) {
+        if (isLoggedIn) {
             startIntent(DashBoardActivity::class.java, isFinish = true)
         } else {
             startIntent(LoginActivity::class.java, isFinish = true)

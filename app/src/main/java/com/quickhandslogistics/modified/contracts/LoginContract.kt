@@ -1,6 +1,6 @@
 package com.quickhandslogistics.modified.contracts
 
-import com.quickhandslogistics.modified.data.login.Data
+import com.quickhandslogistics.modified.data.login.UserData
 import com.quickhandslogistics.modified.data.login.LoginResponse
 
 class LoginContract {
@@ -12,7 +12,7 @@ class LoginContract {
             onFinishedListener: OnFinishedListener
         )
 
-        fun processLoginData(data: Data, onFinishedListener: OnFinishedListener)
+        fun processLoginData(userData: UserData, onFinishedListener: OnFinishedListener)
         fun validateLoginDetails(
             employeeLoginId: String,
             password: String,

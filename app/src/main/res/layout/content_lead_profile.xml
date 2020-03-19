@@ -11,7 +11,7 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_15ssp">
+        android:padding="@dimen/_10ssp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circleImageViewProfile"
@@ -30,8 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
             android:gravity="center"
-            android:text="John Snow"
-            android:textColor="@android:color/black"
+            android:text="Connor Davidson"
+            android:textColor="@color/textBlack"
             android:textSize="@dimen/_14ssp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -47,92 +47,106 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/constraintLayout"
         android:background="@drawable/top_left_round_background"
+        android:paddingStart="@dimen/_20ssp"
         android:paddingTop="@dimen/_25ssp"
+        android:paddingEnd="@dimen/_20ssp"
+        android:paddingBottom="@dimen/_25ssp"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingStart="@dimen/_20ssp"
-            android:paddingEnd="@dimen/_20ssp"
-            android:paddingBottom="@dimen/_25ssp">
+            android:layout_height="match_parent">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/layoutEmployeeId"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/detailTextHeader"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/string_employee_id" />
-
-                    <TextView
-                        android:id="@+id/textViewEmployeeId"
-                        style="@style/detailTextValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        android:text="EMP 001" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/detailTextHeader"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/role" />
-
-                    <TextView
-                        android:id="@+id/textViewRole"
-                        style="@style/detailTextValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        android:text="Lumper" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20ssp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                app:layout_constraintEnd_toStartOf="@+id/layoutRole"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     style="@style/detailTextHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/emailAddress" />
+                    android:text="@string/string_employee_id" />
 
                 <TextView
-                    android:id="@+id/textViewEmail"
+                    android:id="@+id/textViewEmployeeId"
                     style="@style/detailTextValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:text="sahil@crownstack.com" />
+                    android:text="079" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layoutRole"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/layoutEmployeeId"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    style="@style/detailTextHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/role" />
+
+                <TextView
+                    android:id="@+id/textViewRole"
+                    style="@style/detailTextValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:text="Lumper" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/labelBarrier1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20ssp"
-                android:orientation="vertical">
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="layoutEmployeeId,layoutRole" />
+
+            <LinearLayout
+                android:id="@+id/layoutEmailAddress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15ssp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/labelBarrier1">
+
+                <TextView
+                    style="@style/detailTextHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/string_email_address" />
+
+                <TextView
+                    android:id="@+id/textViewEmailAddress"
+                    style="@style/detailTextValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:text="connordavidson321@gmail.com" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutPhoneNumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15ssp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutEmailAddress">
 
                 <TextView
                     style="@style/detailTextHeader"
@@ -141,19 +155,23 @@
                     android:text="@string/string_phone" />
 
                 <TextView
-                    android:id="@+id/textViewPhone"
+                    android:id="@+id/textViewPhoneNumber"
                     style="@style/detailTextValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:text="+91-9087898789" />
+                    android:text="+91 - 9876543210" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/layoutShiftHours"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20ssp"
-                android:orientation="vertical">
+                android:layout_marginTop="@dimen/_15ssp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutPhoneNumber">
 
                 <TextView
                     style="@style/detailTextHeader"
@@ -167,73 +185,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:text="9:00am - 6:00pm" />
+                    android:text="9:00am to 6:00pm" />
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20ssp"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/detailTextHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/string_district_manager" />
-
-                <TextView
-                    android:id="@+id/textViewDistrictManager"
-                    style="@style/detailTextValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:text="Garrett Hamill" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20ssp"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/detailTextHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/string_location" />
-
-                <TextView
-                    android:id="@+id/textViewLocation"
-                    style="@style/detailTextValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:text="Ontario, CA" />
-            </LinearLayout>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="10dp">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_10ssp">
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
 </RelativeLayout>

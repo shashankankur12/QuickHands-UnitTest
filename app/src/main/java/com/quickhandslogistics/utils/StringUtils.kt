@@ -33,5 +33,17 @@ object StringUtils {
             StringBuilder(str.length)
                 .append(Character.toUpperCase(c)).append(str.substring(1)).toString()
     }
+
+    fun isNullOrEmpty(value: String?): Boolean {
+        var ret = false
+        value?.also {
+            if (value.trim().isEmpty()) {
+                ret = true
+            }
+        } ?: run {
+            ret = true
+        }
+        return ret
+    }
 }
 

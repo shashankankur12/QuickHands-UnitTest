@@ -6,6 +6,7 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
 import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
 import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
@@ -79,7 +80,12 @@ class ScheduleMainFragment : BaseFragment(), ScheduleMainContract.View {
                     holder.itemView.tv_date_calendar_item.setTextColor(Color.WHITE)
                     holder.itemView.tv_date_calendar_item.setBackgroundResource(R.drawable.selected_calendar_item_background)
                 } else {
-                    holder.itemView.tv_date_calendar_item.setTextColor(Color.BLACK)
+                    holder.itemView.tv_date_calendar_item.setTextColor(
+                        ContextCompat.getColor(
+                            fragmentActivity!!,
+                            R.color.detailHeader
+                        )
+                    )
                     holder.itemView.tv_date_calendar_item.setBackgroundColor(Color.TRANSPARENT)
                 }
             }

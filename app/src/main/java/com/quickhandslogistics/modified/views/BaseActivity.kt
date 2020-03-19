@@ -18,14 +18,13 @@ import com.quickhandslogistics.modified.views.fragments.lumpers.LumpersFragment
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment
 import com.quickhandslogistics.utils.SharedPref
 import com.quickhandslogistics.view.fragments.CustomerSheetFragment
-import com.quickhandslogistics.view.fragments.LogoutDialog
 import com.quickhandslogistics.view.fragments.ReportFragment
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
 open class BaseActivity : AppCompatActivity() {
 
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
-    protected lateinit var sharedPref: SharedPref
+    lateinit var sharedPref: SharedPref
 
     protected lateinit var activity: Activity
     private var navDrawer: NavDrawer? = null
@@ -47,7 +46,7 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
-    protected fun startIntent(
+    fun startIntent(
         className: Class<*>,
         bundle: Bundle? = null,
         isFinish: Boolean = false,
@@ -147,7 +146,7 @@ open class BaseActivity : AppCompatActivity() {
 
             it.addItem(
                 NavDrawer.ActivityNavDrawerItem(
-                    LogoutDialog(),
+                    null,
                     getString(R.string.string_logout),
                     R.drawable.ic_sidemenu_logout,
                     R.id.include_main_nav_drawer_bottomItems,

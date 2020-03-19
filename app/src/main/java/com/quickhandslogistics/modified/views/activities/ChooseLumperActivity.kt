@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.ChooseLumperContract
-import com.quickhandslogistics.modified.data.lumpers.LumperData
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.presenters.ChooseLumperPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.adapters.ChooseLumperAdapter
@@ -64,9 +64,9 @@ class ChooseLumperActivity : BaseActivity(), ChooseLumperContract.View, TextWatc
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }
 
-    override fun showLumpersData(lumperDataList: ArrayList<LumperData>) {
-        chooseLumperAdapter.updateLumpersData(lumperDataList)
-        if (lumperDataList.size > 0) {
+    override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
+        chooseLumperAdapter.updateLumpersData(employeeDataList)
+        if (employeeDataList.size > 0) {
             textViewEmptyData.visibility = View.GONE
             recyclerViewLumpers.visibility = View.VISIBLE
         } else {
@@ -108,13 +108,13 @@ class ChooseLumperActivity : BaseActivity(), ChooseLumperContract.View, TextWatc
     /*
     * Adapter Item Click Listeners
     */
-    override fun onClickLumperDetail(lumperData: LumperData) {
+    override fun onClickLumperDetail(employeeData: EmployeeData) {
         val bundle = Bundle()
-        bundle.putSerializable(LumperDetailActivity.ARG_LUMPER_DATA, lumperData)
+        bundle.putSerializable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
         startIntent(LumperDetailActivity::class.java, bundle = bundle)
     }
 
-    override fun onSelectLumper(lumperData: LumperData) {
+    override fun onSelectLumper(employeeData: EmployeeData) {
         onBackPressed()
     }
 }

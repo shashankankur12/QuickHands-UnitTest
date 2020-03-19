@@ -3,7 +3,7 @@
     <item
         android:id="@+id/actionBusinessOperations"
         android:icon="@drawable/ic_business"
-        android:title="@string/business_operations" />
+        android:title="@string/building_operations" />
 
     <item
         android:id="@+id/actionMarkAttendance"

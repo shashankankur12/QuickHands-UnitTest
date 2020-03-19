@@ -9,8 +9,9 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.modified.data.schedule.ScheduleData
 import com.quickhandslogistics.modified.views.BaseFragment
-import com.quickhandslogistics.modified.views.adapters.ScheduleAdapter
 import com.quickhandslogistics.modified.views.activities.ScheduleDetailActivity
+import com.quickhandslogistics.modified.views.adapters.ScheduleAdapter
+import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.view.activities.UnScheduleDetailActivity
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.util.*
@@ -43,6 +44,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
 
         recyclerViewSchedule.apply {
             layoutManager = LinearLayoutManager(fragmentActivity!!)
+            addItemDecoration(SpaceDividerItemDecorator(15))
             scheduleAdapter = ScheduleAdapter(this@ScheduleFragment)
             adapter = scheduleAdapter
             scheduleLayoutAnimation()

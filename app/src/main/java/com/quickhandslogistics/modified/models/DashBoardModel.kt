@@ -1,22 +1,24 @@
 package com.quickhandslogistics.modified.models
 
-import android.os.Handler
-import android.text.TextUtils
 import com.quickhandslogistics.modified.contracts.DashBoardContract
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_EMPLOYEE_ID
-import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_USER_EMAIL
-import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_USER_FULL_NAME
+import com.quickhandslogistics.modified.data.login.UserData
+import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_LEAD_PROFILE
 import com.quickhandslogistics.utils.SharedPref
+import com.quickhandslogistics.utils.ValueUtils
 
 class DashBoardModel(private val sharedPref: SharedPref) : DashBoardContract.Model {
 
     override fun fetchLeadProfileData(onFinishedListener: DashBoardContract.Model.OnFinishedListener) {
-        if (!TextUtils.isEmpty(sharedPref.getString(PREFERENCE_USER_FULL_NAME))) {
+        val leadProfile =
+            sharedPref.getClassObject(PREFERENCE_LEAD_PROFILE, UserData::class.java) as UserData?
+        leadProfile?.let {
             onFinishedListener.onLoadLeadProfile(
-                sharedPref.getString(PREFERENCE_USER_FULL_NAME),
-                sharedPref.getString(PREFERENCE_USER_EMAIL),
-                sharedPref.getString(PREFERENCE_EMPLOYEE_ID)
+                "${ValueUtils.getDefaultOrValue(leadProfile.firstName)} ${ValueUtils.getDefaultOrValue(
+                    leadProfile.lastName
+                )}",
+                ValueUtils.getDefaultOrValue(leadProfile.email),
+                ValueUtils.getDefaultOrValue(leadProfile.employeeId),
+                ValueUtils.getDefaultOrValue(leadProfile.profileImageUrl)
             )
         }
     }

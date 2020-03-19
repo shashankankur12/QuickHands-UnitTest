@@ -12,7 +12,7 @@ class BusinessOperationsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_business_operations)
 
-        text_title.text = getString(R.string.business_operations)
+        text_title.text = getString(R.string.building_operations)
 
         image_back.setOnClickListener {
             finish()

@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:elevation="@dimen/_5sdp"
             android:src="@drawable/ic_business"
-            android:tooltipText="@string/business_operations"
+            android:tooltipText="@string/building_operations"
             app:backgroundTint="@color/colorPrimary"
             app:elevation="@dimen/_5sdp" />
 
@@ -92,7 +92,7 @@
             android:layout_marginBottom="@dimen/_5sdp"
             android:shadowColor="@android:color/black"
             android:shadowRadius="5"
-            android:text="@string/business_operations"
+            android:text="@string/building_operations"
             android:textColor="@color/colorBlack" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -1,5 +1,6 @@
 package com.quickhandslogistics.modified.views.controls;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.quickhandslogistics.R;
 import com.quickhandslogistics.modified.views.BaseActivity;
-import com.quickhandslogistics.view.fragments.LogoutDialog;
+import com.quickhandslogistics.modified.views.activities.LoginActivity;
+import com.quickhandslogistics.modified.views.fragments.InfoDialogFragment;
 
 import java.util.ArrayList;
 
@@ -181,14 +183,20 @@ public class NavDrawer {
             final BaseActivity activity = navDrawer.activity;
             super.onClick(v);
 
-            if (targetFragment instanceof LogoutDialog) {
-                LogoutDialog dialog = new LogoutDialog();
-                dialog.show(activity.getSupportFragmentManager(), "logoutPrompt");
+            if (text.equals(activity.getString(R.string.string_logout))) {
+                InfoDialogFragment dialog = InfoDialogFragment.newInstance(activity.getString(R.string.string_logout_dialog),
+                        "", "", () -> clearDataAndRestart(activity));
+                dialog.show(activity.getSupportFragmentManager(), InfoDialogFragment.class.getSimpleName());
             } else {
                 toolbar.setTitle(text);
                 navDrawer.setSelectedItem(this);
                 showFragment(activity);
             }
+        }
+
+        private void clearDataAndRestart(BaseActivity activity) {
+            activity.sharedPref.performLogout();
+            activity.startIntent(LoginActivity.class, null, true, new Integer[]{Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK});
         }
 
         private void showFragment(BaseActivity activity) {
