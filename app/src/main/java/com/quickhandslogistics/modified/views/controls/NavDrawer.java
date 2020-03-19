@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.quickhandslogistics.R;
+import com.quickhandslogistics.modified.contracts.InfoDialogContract;
 import com.quickhandslogistics.modified.views.BaseActivity;
 import com.quickhandslogistics.modified.views.activities.LoginActivity;
 import com.quickhandslogistics.modified.views.fragments.InfoDialogFragment;
@@ -185,7 +186,16 @@ public class NavDrawer {
 
             if (text.equals(activity.getString(R.string.string_logout))) {
                 InfoDialogFragment dialog = InfoDialogFragment.newInstance(activity.getString(R.string.string_logout_dialog),
-                        "", "", () -> clearDataAndRestart(activity));
+                        "", "", new InfoDialogContract.View.OnClickListener() {
+                            @Override
+                            public void onPositiveButtonClick() {
+                                clearDataAndRestart(activity);
+                            }
+
+                            @Override
+                            public void onNegativeButtonClick() {
+                            }
+                        });
                 dialog.show(activity.getSupportFragmentManager(), InfoDialogFragment.class.getSimpleName());
             } else {
                 toolbar.setTitle(text);

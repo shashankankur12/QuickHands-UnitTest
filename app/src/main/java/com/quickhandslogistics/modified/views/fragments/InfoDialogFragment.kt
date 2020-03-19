@@ -90,6 +90,7 @@ class InfoDialogFragment(private val onClickListener: InfoDialogContract.View.On
                     dismiss()
                 }
                 buttonNegative.id -> {
+                    onClickListener.onNegativeButtonClick()
                     dismiss()
                 }
             }

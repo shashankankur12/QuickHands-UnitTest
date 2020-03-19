@@ -1,26 +1,20 @@
 package com.quickhandslogistics.utils
 
-import android.R.color.white
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Typeface
-import android.os.Build
 import android.view.View
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.quickhandslogistics.R
 import kotlinx.android.synthetic.main.dialog_forgot_password.*
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
-import java.text.ParseException
-
 
 class Utils {
 
@@ -73,29 +67,6 @@ class Utils {
             dialog.show()
         }
 
-        fun dialogChangeLanguage(animation: Int, activity: Activity, iOnClick: IOnClick) {
-            val dialog = Dialog(activity)
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-            dialog.window?.attributes?.windowAnimations = animation
-            dialog.setCancelable(false)
-            dialog.setContentView(R.layout.dialog_change_language)
-            dialog.setCancelable(true)
-
-            var textYes = dialog.findViewById<TextView>(R.id.text_yes)
-            var textNo = dialog.findViewById<TextView>(R.id.text_no)
-
-            textYes.setOnClickListener {
-                iOnClick.onConfirm()
-            }
-
-            textNo.setOnClickListener {
-                iOnClick.onDismiss()
-                dialog.dismiss()
-            }
-            dialog.show()
-        }
-
         fun hideSoftKeyboard(activity: Activity) {
             try {
                 val inputMethodManager = activity.getSystemService(
@@ -135,10 +106,4 @@ class Utils {
             return formattedDate
         }
     }
-
-    interface IOnClick {
-        fun onConfirm()
-        fun onDismiss()
-    }
-
 }

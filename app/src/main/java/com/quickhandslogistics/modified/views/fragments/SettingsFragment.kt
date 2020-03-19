@@ -1,21 +1,27 @@
 package com.quickhandslogistics.modified.views.fragments
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.franmontiel.localechanger.LocaleChanger
 import com.franmontiel.localechanger.utils.ActivityRecreationHelper
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.contracts.InfoDialogContract
+import com.quickhandslogistics.modified.contracts.setting.SettingContract
+import com.quickhandslogistics.modified.presenters.setting.SettingPresenter
 import com.quickhandslogistics.modified.views.BaseFragment
-import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_LANGUAGE
-import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.fragment_settings.*
-import java.util.*
 
-class SettingsFragment : BaseFragment() {
-    var currentLocale: String? = null
+class SettingsFragment : BaseFragment(), SettingContract.View,
+    View.OnClickListener {
+
+    private lateinit var settingPresenter: SettingPresenter
+    private lateinit var selectedLanguage: String
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        settingPresenter = SettingPresenter(this, sharedPref)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,50 +31,66 @@ class SettingsFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
-    private fun getLocale() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            currentLocale = sharedPref.getString(PREFERENCE_LANGUAGE)
-
-            //  radioBtnEnglish.isChecked = currentLocale!!.equals(ESPANOL)
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getLocale()
+        radioBtnEnglish.setOnClickListener(this)
+        radioBtnSpanish.setOnClickListener(this)
 
-        radioBtnEnglish.setOnClickListener {
-            openChangeDialog()
-        }
-
-        radioBtnSpanish.setOnClickListener {
-            openChangeDialog()
-        }
+        settingPresenter.checkSelectedLanguage()
     }
 
-    private fun openChangeDialog() {
-        Utils.dialogChangeLanguage(R.style.dialogAnimation, activity!!, object : Utils.IOnClick {
-            override fun onConfirm() {
-
-                radioBtnEnglish.isChecked = !radioBtnEnglish.isChecked
-
-                if (currentLocale!! != getString(R.string.spanish)) {
-                    setLanguageData(getString(R.string.spanish))
-                } else {
-                    setLanguageData(getString(R.string.english))
+    override fun onClick(view: View?) {
+        view?.let {
+            when (view.id) {
+                radioBtnEnglish.id -> {
+                    if (selectedLanguage != getString(R.string.english))
+                        shopwConfirmationDialog(getString(R.string.english))
+                }
+                radioBtnSpanish.id -> {
+                    if (selectedLanguage != getString(R.string.spanish))
+                        shopwConfirmationDialog(getString(R.string.spanish))
                 }
             }
-
-            override fun onDismiss() {
-                radioBtnEnglish.isChecked = radioBtnEnglish.isChecked
-            }
-        })
+        }
     }
 
-    fun setLanguageData(selectedLanguage: String) {
-        sharedPref.setString(PREFERENCE_LANGUAGE, selectedLanguage)
-        LocaleChanger.setLocale(Locale(selectedLanguage))
+    override fun onDestroy() {
+        super.onDestroy()
+        settingPresenter.onDestroy()
+    }
+
+    override fun restartActivity() {
         ActivityRecreationHelper.recreate(fragmentActivity!!, false)
     }
+
+    override fun showSelectedLanguage(selectedLanguage: String) {
+        this.selectedLanguage = selectedLanguage
+        if (selectedLanguage == getString(R.string.english))
+            radioBtnEnglish.isChecked = true
+        else
+            radioBtnSpanish.isChecked = true
+    }
+
+    private fun shopwConfirmationDialog(language: String) {
+        val dialog = InfoDialogFragment.newInstance(
+            getString(R.string.string_language_dialog),
+            positiveButtonText = getString(R.string.string_yes),
+            negativeButtonText = getString(R.string.string_no),
+            onClickListener = object : InfoDialogContract.View.OnClickListener {
+                override fun onPositiveButtonClick() {
+                    settingPresenter.saveSelectedLanguage(language)
+                }
+
+                override fun onNegativeButtonClick() {
+                    if (language == getString(R.string.english)) {
+                        radioBtnSpanish.isChecked = true
+                    } else {
+                        radioBtnEnglish.isChecked = true
+                    }
+                }
+            })
+        dialog.show(childFragmentManager, InfoDialogFragment::class.simpleName)
+    }
+
 }
