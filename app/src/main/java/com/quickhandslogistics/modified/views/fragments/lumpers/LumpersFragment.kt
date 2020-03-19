@@ -146,6 +146,9 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
                 override fun onPositiveButtonClick() {
                     startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))
                 }
+
+                override fun onNegativeButtonClick() {
+                }
             })
         dialog.show(childFragmentManager, InfoDialogFragment::class.simpleName)
     }
