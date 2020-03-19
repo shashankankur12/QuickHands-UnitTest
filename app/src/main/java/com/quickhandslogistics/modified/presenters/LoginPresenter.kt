@@ -53,11 +53,10 @@ class LoginPresenter(
         loginView?.hideProgress()
         loginModel.processLoginData(loginResponse.data, this)
     }
-
     override fun onFailure(message: String) {
         loginView?.hideProgress()
         if (TextUtils.isEmpty(message)) {
-            loginView?.showAPIErrorMessage(resources.getString(R.string.invalid_email_password))
+            loginView?.showAPIErrorMessage(resources.getString(R.string.invalid_emp_password))
         } else {
             loginView?.showAPIErrorMessage(message)
         }

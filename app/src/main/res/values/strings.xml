@@ -109,7 +109,7 @@
     <string name="string_lumper_sheet_status">lumper_sheet_status</string>
     <string name="string_building">Buildings</string>
     <string name="no_internet">No internet connection!</string>
-    <string name="invalid_email_password">Please enter valid email/password</string>
+    <string name="invalid_emp_password">Please enter valid Employee Id/ Password</string>
     <string name="invalid_emp_id">Please enter valid employee Id</string>
 
     <string name="schedule_detail">Schedule Detail</string>

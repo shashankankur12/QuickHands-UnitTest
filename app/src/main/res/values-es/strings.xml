@@ -111,7 +111,7 @@
     <string name="string_comment">Comentario</string>
     <string name="text_employee_valid_email_error_msg">Por favor ingrese una dirección de correo electrónico válida</string>
     <string name="string_request_message">Póngase en contacto con su administrador para solicitar una contraseña olvidada.</string>
-    <string name="invalid_email_password">Por favor ingrese un correo electrónico / contraseña válida</string>
+    <string name="invalid_emp_password">Por favor ingrese una identificación / contraseña de empleado válida</string>
     <string name="string_reset_password">Restablecer la contraseña</string>
     <string name="forgotPasswordInCaption">Solo necesitamos su ID de empleado registrado para restablecer su contraseña.</string>
     <string name="invalid_emp_id">Por favor ingrese ID de empleado válida</string>

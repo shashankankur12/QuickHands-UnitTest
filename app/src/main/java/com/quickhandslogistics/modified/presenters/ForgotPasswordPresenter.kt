@@ -34,11 +34,8 @@ class ForgotPasswordPresenter(
 
     override fun onFailure(message: String) {
         passwordView?.hideProgress()
-        if (TextUtils.isEmpty(message)) {
-            passwordView?.showAPIErrorMessage(resources.getString(R.string.invalid_emp_id))
-        } else {
-            passwordView?.showAPIErrorMessage(message)
-        }
+        passwordView?.showAPIErrorMessage("Too many requests too soon. take some rest")
+
     }
 
     override fun processPasswordReset(employeeId: String) {

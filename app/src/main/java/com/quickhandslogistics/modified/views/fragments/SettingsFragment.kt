@@ -21,7 +21,6 @@ class SettingsFragment : BaseFragment(), SettingContract.View, View.OnClickListe
         super.onCreate(savedInstanceState)
         settingPresenter = SettingPresenter(this, sharedPref)
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

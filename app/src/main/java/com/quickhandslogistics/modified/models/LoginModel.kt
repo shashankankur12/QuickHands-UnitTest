@@ -22,7 +22,6 @@ class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
             onFinishedListener.onLoadEmployeeId(employeeId)
         }
     }
-
     override fun validateLoginDetails(
         employeeLoginId: String,
         password: String,
