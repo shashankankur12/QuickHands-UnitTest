@@ -12,8 +12,7 @@ import com.quickhandslogistics.modified.presenters.setting.SettingPresenter
 import com.quickhandslogistics.modified.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_settings.*
 
-class SettingsFragment : BaseFragment(), SettingContract.View,
-    View.OnClickListener {
+class SettingsFragment : BaseFragment(), SettingContract.View, View.OnClickListener {
 
     private lateinit var settingPresenter: SettingPresenter
     private lateinit var selectedLanguage: String
@@ -92,5 +91,4 @@ class SettingsFragment : BaseFragment(), SettingContract.View,
             })
         dialog.show(childFragmentManager, InfoDialogFragment::class.simpleName)
     }
-
 }

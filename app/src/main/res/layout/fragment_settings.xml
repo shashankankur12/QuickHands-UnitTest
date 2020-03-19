@@ -1,37 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/appBackground">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/shadow_effect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/constraintRoot" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintRoot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/top_left_round_background"
+        android:padding="@dimen/_10ssp"
+        android:translationY="15dp"
         app:layout_constraintStart_toStartOf="parent"
-        android:padding="@dimen/_10sdp"
-        android:background="@drawable/top_left_round_background">
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/changeLanguageText"
-        style="@style/textSizeNormalRegFont"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppinssemibold"
-        android:layout_marginLeft="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_20sdp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@color/textBlack"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/string_change_language" />
+        <TextView
+            android:id="@+id/changeLanguageText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:text="@string/string_change_language"
+            android:textColor="@color/textBlack"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <RadioGroup
             android:id="@+id/radioLanguageGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checkedButton="@id/radioBtnEnglish"
             android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/changeLanguageText">
@@ -40,19 +48,19 @@
                 android:id="@+id/radioBtnEnglish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
                 android:text="@string/string_english"
-                android:textColor="@color/textBlack"
-                android:fontFamily="@font/poppinsregular"
-                android:layout_marginLeft="@dimen/_15sdp"/>
+                android:textColor="@drawable/radio_button_text_color"
+                android:textSize="@dimen/_12ssp" />
 
             <RadioButton
                 android:id="@+id/radioBtnSpanish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_15sdp"
                 android:text="@string/string_spanish"
-                android:textColor="@color/textBlack"
-                android:fontFamily="@font/poppinsregular"
-                android:layout_marginLeft="@dimen/_15sdp"/>
+                android:textColor="@drawable/radio_button_text_color"
+                android:textSize="@dimen/_12ssp" />
 
         </RadioGroup>
 
@@ -61,32 +69,31 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/_10sdp"
-            app:layout_constraintTop_toBottomOf="@+id/radioLanguageGroup"
-            app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/viewItemBackground"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="@color/viewItemBackground" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioLanguageGroup" />
 
-            <TextView
-                android:id="@+id/textViewNotification"
-                style="@style/textSizeNormalRegFont"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppinsregular"
-                android:layout_marginLeft="@dimen/_15sdp"
-                android:textColor="@color/detailHeader"
-                android:layout_marginTop="@dimen/_15sdp"
-                app:layout_constraintTop_toBottomOf="@+id/viewLine"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:text="@string/string_notification" />
+        <TextView
+            android:id="@+id/textViewNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/string_notification"
+            android:textColor="@color/textBlack"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewLine" />
 
-            <Switch
-                android:id="@+id/switchNotification"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/viewLine"
-                app:layout_constraintLeft_toRightOf="@+id/textViewNotification"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Switch
+            android:id="@+id/switchNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/textViewNotification"
+            app:layout_constraintTop_toBottomOf="@id/viewLine" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
