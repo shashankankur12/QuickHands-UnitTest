@@ -2,7 +2,6 @@ package com.quickhandslogistics.modified.presenters
 
 import android.content.res.Resources
 import android.text.TextUtils
-import android.widget.TextView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.ForgotPasswordContract
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordResponse
@@ -11,7 +10,7 @@ import com.quickhandslogistics.modified.models.ForgotPasswordModel
 class ForgotPasswordPresenter(
     private var passwordView: ForgotPasswordContract.View?,
     private val resources: Resources
-    ) : ForgotPasswordContract.Presenter, ForgotPasswordContract.Model.OnFinishedListener  {
+) : ForgotPasswordContract.Presenter, ForgotPasswordContract.Model.OnFinishedListener {
 
     private val forgotPasswordModel: ForgotPasswordModel = ForgotPasswordModel()
 
@@ -34,12 +33,15 @@ class ForgotPasswordPresenter(
 
     override fun onFailure(message: String) {
         passwordView?.hideProgress()
-        passwordView?.showAPIErrorMessage("Too many requests too soon. take some rest")
-
+        if (TextUtils.isEmpty(message)) {
+            passwordView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+        } else {
+            passwordView?.showAPIErrorMessage(message)
+        }
     }
 
     override fun processPasswordReset(employeeId: String) {
         passwordView?.showProgress(resources.getString(R.string.please_wait))
-        forgotPasswordModel.resetPasswordUsingEmpId(employeeId,this)
+        forgotPasswordModel.resetPasswordUsingEmpId(employeeId, this)
     }
 }

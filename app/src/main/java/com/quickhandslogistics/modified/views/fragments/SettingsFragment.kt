@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.franmontiel.localechanger.utils.ActivityRecreationHelper
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.contracts.InfoDialogContract
+import com.quickhandslogistics.modified.contracts.InfoDialogWarningContract
 import com.quickhandslogistics.modified.contracts.setting.SettingContract
 import com.quickhandslogistics.modified.presenters.setting.SettingPresenter
 import com.quickhandslogistics.modified.views.BaseFragment
@@ -21,6 +21,7 @@ class SettingsFragment : BaseFragment(), SettingContract.View, View.OnClickListe
         super.onCreate(savedInstanceState)
         settingPresenter = SettingPresenter(this, sharedPref)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -71,11 +72,11 @@ class SettingsFragment : BaseFragment(), SettingContract.View, View.OnClickListe
     }
 
     private fun shopwConfirmationDialog(language: String) {
-        val dialog = InfoDialogFragment.newInstance(
+        val dialog = InfoWarningDialogFragment.newInstance(
             getString(R.string.string_language_dialog),
             positiveButtonText = getString(R.string.string_yes),
             negativeButtonText = getString(R.string.string_no),
-            onClickListener = object : InfoDialogContract.View.OnClickListener {
+            onClickListener = object : InfoDialogWarningContract.View.OnClickListener {
                 override fun onPositiveButtonClick() {
                     settingPresenter.saveSelectedLanguage(language)
                 }
@@ -88,6 +89,6 @@ class SettingsFragment : BaseFragment(), SettingContract.View, View.OnClickListe
                     }
                 }
             })
-        dialog.show(childFragmentManager, InfoDialogFragment::class.simpleName)
+        dialog.show(childFragmentManager, InfoWarningDialogFragment::class.simpleName)
     }
 }

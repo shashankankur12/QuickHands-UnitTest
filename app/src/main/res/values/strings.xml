@@ -162,4 +162,5 @@
     <string name="string_cancel">Cancel</string>
     <string name="call_lumper_dialog_message">Do you want to call %s?</string>
     <string name="start_time_container">Start Time - %s</string>
+    <string name="something_went_wrong">Something went wrong, Please try again after sometime!!!</string>
 </resources>

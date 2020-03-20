@@ -22,6 +22,7 @@ class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
             onFinishedListener.onLoadEmployeeId(employeeId)
         }
     }
+
     override fun validateLoginDetails(
         employeeLoginId: String,
         password: String,
@@ -61,8 +62,10 @@ class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
             override fun onError(error: Any) {
                 if (error is Throwable) {
                     Log.e(LoginModel::class.simpleName, error.localizedMessage!!)
+                    onFinishedListener.onFailure()
+                } else if (error is String) {
+                    onFinishedListener.onFailure(error)
                 }
-                onFinishedListener.onFailure()
             }
         })
     }
