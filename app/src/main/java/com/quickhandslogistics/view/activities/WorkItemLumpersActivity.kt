@@ -26,9 +26,13 @@ class WorkItemLumpersActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.anim_prev_slide_in, R.anim.anim_prev_slide_out)
         }
 
-        val canReplace = intent.getBooleanExtra(ARG_CAN_REPLACE, true)
+        intent.extras?.let { it ->
+            if (it.containsKey(ARG_CAN_REPLACE)) {
+                val canReplace = it.getBoolean(ARG_CAN_REPLACE, true)
 
-        recycler_lumpers.layoutManager = LinearLayoutManager(this)
-        recycler_lumpers.adapter = AssignedLumperAdapter(this, canReplace)
+                recycler_lumpers.layoutManager = LinearLayoutManager(this)
+                recycler_lumpers.adapter = AssignedLumperAdapter(this, canReplace)
+            }
+        }
     }
 }

@@ -83,7 +83,8 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
                 textViewShiftHours.visibility = View.GONE
             } else {
                 textViewShiftHours.visibility = View.VISIBLE
-                textViewShiftHours.text = String.format("(Shift Hours: %s)", employeeData.shiftHours)
+                textViewShiftHours.text =
+                    String.format("(Shift Hours: %s)", employeeData.shiftHours)
             }
 
             imageViewCall.setOnClickListener(this)

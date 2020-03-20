@@ -10,5 +10,13 @@ class DateUtils {
             val dateFormat = SimpleDateFormat(pattern)
             return dateFormat.format(date)
         }
+
+        fun isCurrentDate(selectedTime: Long): Boolean {
+            val selectedCalendar = Calendar.getInstance()
+            selectedCalendar.timeInMillis = selectedTime
+            val currentCalendar = Calendar.getInstance()
+
+            return selectedCalendar[Calendar.DAY_OF_YEAR] == currentCalendar[Calendar.DAY_OF_YEAR] && selectedCalendar[Calendar.YEAR] == currentCalendar[Calendar.YEAR]
+        }
     }
 }
