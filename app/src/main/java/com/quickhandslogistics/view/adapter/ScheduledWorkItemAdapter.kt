@@ -5,18 +5,25 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.data.schedule.ImageData
+import com.quickhandslogistics.modified.views.adapters.SchduleLumperImagesAdapter
+import com.quickhandslogistics.modified.views.controls.OverlapDecoration
 import com.quickhandslogistics.view.activities.WorkItemLumpersActivity
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_lumper_layout.view.constraint_root
 import kotlinx.android.synthetic.main.layout_scheduled_work_item.view.*
+import java.util.ArrayList
 
-class ScheduledWorkItemAdapter(private val activity: Activity, private val sameDay: Boolean) :
+class ScheduledWorkItemAdapter(var activity: Activity, private val sameDay: Boolean,var lumperImages: ArrayList<ImageData>) :
     Adapter<ScheduledWorkItemAdapter.WorkItemViewHolder>() {
 
     var faker = Faker()
+    private lateinit var schduleImageAdapter: SchduleLumperImagesAdapter
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemViewHolder {
         val view: View =
             LayoutInflater.from(parent.context)
@@ -29,6 +36,7 @@ class ScheduledWorkItemAdapter(private val activity: Activity, private val sameD
     }
 
     override fun onBindViewHolder(holder: WorkItemViewHolder, position: Int) {
+
         holder.lumperText?.text = "#${faker.company?.name()}"
         if (position == 0) {
             holder.text_startDate.text = "Start Time: 08:00 AM"
@@ -50,11 +58,22 @@ class ScheduledWorkItemAdapter(private val activity: Activity, private val sameD
                 R.anim.anim_next_slide_out
             )
         }
+
+        holder.recyclerViewLumperImage.apply {
+            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            schduleImageAdapter = SchduleLumperImagesAdapter(lumperImages, activity)
+            addItemDecoration(OverlapDecoration())
+            adapter = schduleImageAdapter
+            scheduleLayoutAnimation()
+
+        }
     }
 
     class WorkItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var lumperText = view.text_lumper
         var text_startDate = view.text_startDate
         var constraintRoot = view.constraint_root
+        var recyclerViewLumperImage = view.recyclerViewLumpersImagesList
+
     }
 }

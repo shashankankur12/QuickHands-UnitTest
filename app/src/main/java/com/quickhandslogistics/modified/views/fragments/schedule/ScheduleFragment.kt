@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
+import com.quickhandslogistics.modified.data.schedule.ImageData
 import com.quickhandslogistics.modified.data.schedule.ScheduleData
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.activities.ScheduleDetailActivity
@@ -16,9 +17,11 @@ import com.quickhandslogistics.view.activities.UnScheduleDetailActivity
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.util.*
 
+
 class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClickListener {
 
     private lateinit var scheduleAdapter: ScheduleAdapter
+    private var lumperImages: ArrayList<ImageData> = ArrayList()
 
     private var isScheduled: Boolean = true
     private var selectedTime: Long = 0
@@ -41,11 +44,14 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        for (i in 1..5) {
+            lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
+        }
 
         recyclerViewSchedule.apply {
             layoutManager = LinearLayoutManager(fragmentActivity!!)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            scheduleAdapter = ScheduleAdapter(this@ScheduleFragment)
+            scheduleAdapter = ScheduleAdapter(this@ScheduleFragment,lumperImages)
             adapter = scheduleAdapter
             scheduleLayoutAnimation()
         }
