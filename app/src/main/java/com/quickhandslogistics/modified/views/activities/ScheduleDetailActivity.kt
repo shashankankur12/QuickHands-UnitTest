@@ -25,7 +25,6 @@ import java.util.*
 class ScheduleDetailActivity : BaseActivity(), SpeedDialView.OnActionSelectedListener {
 
     private var sheetBehavior: BottomSheetBehavior<ConstraintLayout>? = null
-    private var lumperImages: ArrayList<ImageData> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,10 +36,6 @@ class ScheduleDetailActivity : BaseActivity(), SpeedDialView.OnActionSelectedLis
             if (it.containsKey(ScheduleFragment.ARG_SELECTED_TIME)) {
                 time = it.getLong(ScheduleFragment.ARG_SELECTED_TIME)
             }
-        }
-
-        for (i in 1..5) {
-            lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
         }
 
         speedDialView.inflate(R.menu.menu_schedule)
@@ -69,7 +64,7 @@ class ScheduleDetailActivity : BaseActivity(), SpeedDialView.OnActionSelectedLis
         setData()
 
         recycler_work_items.layoutManager = LinearLayoutManager(this)
-        recycler_work_items.adapter = ScheduledWorkItemAdapter(this, sameDay,lumperImages)
+        recycler_work_items.adapter = ScheduledWorkItemAdapter(this, sameDay)
 
         sheetBehavior = BottomSheetBehavior.from(bottom_sheet)
         sheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED

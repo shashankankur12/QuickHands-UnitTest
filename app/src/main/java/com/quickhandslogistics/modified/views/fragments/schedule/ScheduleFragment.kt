@@ -21,7 +21,6 @@ import java.util.*
 class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClickListener {
 
     private lateinit var scheduleAdapter: ScheduleAdapter
-    private var lumperImages: ArrayList<ImageData> = ArrayList()
 
     private var isScheduled: Boolean = true
     private var selectedTime: Long = 0
@@ -44,14 +43,11 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        for (i in 1..5) {
-            lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
-        }
 
         recyclerViewSchedule.apply {
             layoutManager = LinearLayoutManager(fragmentActivity!!)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            scheduleAdapter = ScheduleAdapter(this@ScheduleFragment,lumperImages)
+            scheduleAdapter = ScheduleAdapter(this@ScheduleFragment)
             adapter = scheduleAdapter
             scheduleLayoutAnimation()
         }

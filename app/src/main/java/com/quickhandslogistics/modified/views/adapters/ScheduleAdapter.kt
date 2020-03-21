@@ -13,7 +13,7 @@ import com.quickhandslogistics.modified.data.schedule.ScheduleData
 import com.quickhandslogistics.modified.views.controls.OverlapDecoration
 import kotlinx.android.synthetic.main.layout_item_schedule.view.*
 
-class ScheduleAdapter(var adapterItemClickListener: ScheduleContract.View.OnAdapterItemClickListener, var lumperImages: ArrayList<ImageData>) :
+class ScheduleAdapter(var adapterItemClickListener: ScheduleContract.View.OnAdapterItemClickListener) :
     RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
 
     private var scheduledData: ArrayList<ScheduleData> = ArrayList()
@@ -66,6 +66,11 @@ class ScheduleAdapter(var adapterItemClickListener: ScheduleContract.View.OnAdap
         private fun setLumperImagesRecycler() {
             recyclerviewImages.apply {
                 layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+                val lumperImages = java.util.ArrayList<ImageData>()
+
+                for (i in 1..5) {
+                    lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
+                }
                 scheduleLumperImageAdapter = SchduleLumperImagesAdapter(lumperImages,context)
                 addItemDecoration(OverlapDecoration())
                 adapter = scheduleLumperImageAdapter

@@ -34,25 +34,7 @@
             android:background="@drawable/text_circle"
             android:padding="@dimen/_3sdp"
             android:text="+1"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:visibility="gone" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/textArrow"
-        android:layout_width="@dimen/_22sdp"
-        android:layout_height="@dimen/_22sdp"
-        android:layout_gravity="end"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_8sdp"
-        android:layout_weight=".5"
-        android:background="@drawable/text_circle"
-        android:drawableTop="@drawable/ic_arrow_right"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 </LinearLayout>
 

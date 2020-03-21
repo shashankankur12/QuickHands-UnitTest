@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.item_lumper_layout.view.constraint_root
 import kotlinx.android.synthetic.main.layout_scheduled_work_item.view.*
 import java.util.ArrayList
 
-class ScheduledWorkItemAdapter(var activity: Activity, private val sameDay: Boolean,var lumperImages: ArrayList<ImageData>) :
+class ScheduledWorkItemAdapter(var activity: Activity, private val sameDay: Boolean) :
     Adapter<ScheduledWorkItemAdapter.WorkItemViewHolder>() {
 
     var faker = Faker()
@@ -61,6 +61,10 @@ class ScheduledWorkItemAdapter(var activity: Activity, private val sameDay: Bool
 
         holder.recyclerViewLumperImage.apply {
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            val lumperImages = ArrayList<ImageData>()
+             for (i in 1..5) {
+             lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
+         }
             schduleImageAdapter = SchduleLumperImagesAdapter(lumperImages, activity)
             addItemDecoration(OverlapDecoration())
             adapter = schduleImageAdapter
