@@ -68,7 +68,7 @@ class ScheduleAdapter(var adapterItemClickListener: ScheduleContract.View.OnAdap
                 layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
                 val lumperImages = java.util.ArrayList<ImageData>()
 
-                for (i in 1..5) {
+                for (i in 1..7) {
                     lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
                 }
                 scheduleLumperImageAdapter = SchduleLumperImagesAdapter(lumperImages,context)

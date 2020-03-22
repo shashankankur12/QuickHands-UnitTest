@@ -45,19 +45,6 @@
         android:textSize="@dimen/_10ssp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewCreatedDate" />
-    <TextView
-        android:id="@+id/textArrow"
-        android:layout_width="@dimen/_22sdp"
-        android:layout_height="@dimen/_22sdp"
-        android:layout_gravity="end"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_8sdp"
-        android:layout_weight=".5"
-        android:background="@drawable/text_circle"
-        android:drawableTop="@drawable/ic_arrow_right"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/textViewScheduleType"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCreatedDate" />
 
     <TextView
         android:id="@+id/textViewWorkItemsCount"
@@ -72,6 +59,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />
+    <TextView
+        android:id="@+id/textArrow"
+        android:layout_width="@dimen/_22sdp"
+        android:layout_height="@dimen/_22sdp"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_8sdp"
+        android:layout_marginRight="@dimen/_8sdp"
+        android:background="@drawable/text_circle"
+        android:drawableEnd="@drawable/ic_arrow_right"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewLumpersImagesList"
