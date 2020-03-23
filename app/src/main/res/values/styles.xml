@@ -84,6 +84,12 @@
 
     </style>
 
+    <style name="navTextViewSmallStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/poppins_medium</item>
+        <item name="android:textSize">@dimen/_10ssp</item>
+
+    </style>
+
     <style name="TextInputLabel" parent="Widget.Design.TextInputLayout">
         <item name="android:textSize">@dimen/_10ssp</item>
         <item name="android:fontFamily">@font/poppinsregular</item>
