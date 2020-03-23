@@ -112,7 +112,7 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:text="Shift Time"
+            android:text="@string/shift_time"
             android:textColor="@color/detailHeader"
             android:textSize="@dimen/_10ssp" />
 
@@ -137,7 +137,7 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:text="Lunch Time"
+            android:text="@string/lunch_time"
             android:textColor="@color/detailHeader"
             android:textSize="@dimen/_10ssp" />
 

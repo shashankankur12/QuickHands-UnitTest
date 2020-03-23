@@ -10,27 +10,31 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.contracts.schedule.MarkAttendanceContract
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_recyclerview_mark_attendance.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
-class MarkAttendanceAdapter(val context: Activity) :
+class MarkAttendanceAdapter(
+    val context: Activity,
+    var onAdapterClick: MarkAttendanceContract.View.OnAdapterItemClickListener
+) :
     Adapter<MarkAttendanceAdapter.WorkItemHolder>() {
-    var showStatus: ArrayList<String> = ArrayList()
-    var lumpers: ArrayList<String> = ArrayList()
+
+    private var searchEnabled = false
+    private var searchTerm = ""
+    var lumperItems: ArrayList<Attendance> = ArrayList()
+    private var filteredLumperItems: ArrayList<Attendance> = ArrayList()
 
     init {
-        showStatus.add("SHOW")
-        showStatus.add("NO SHOW")
-        showStatus.add("SHOW")
-        showStatus.add("NO SHOW")
-
-        lumpers.add("Gene Hand")
-        lumpers.add("Frida Moore")
-        lumpers.add("Virgil Ernser")
-        lumpers.add("Philip Von")
+        lumperItems.add(Attendance("Gene Hand", true))
+        lumperItems.add(Attendance("Frida Moore", false))
+        lumperItems.add(Attendance("Virgil Ernser", true))
+        lumperItems.add(Attendance("Philip Von", false))
     }
 
     var faker = Faker()
@@ -47,16 +51,21 @@ class MarkAttendanceAdapter(val context: Activity) :
     }
 
     override fun getItemCount(): Int {
-        return 4
+        return if (searchEnabled) filteredLumperItems.size else lumperItems.size
+    }
+
+    private fun getItem(position: Int): Attendance {
+        return if (searchEnabled) filteredLumperItems[position] else lumperItems[position]
     }
 
     override fun onBindViewHolder(holder: WorkItemHolder, position: Int) {
-        holder.textViewLumperName.text = lumpers[position]
+        val lumper = getItem(position)
+        holder.textViewLumperName.text = lumper.name
 
         Picasso.get().load(faker.avatar.image()).error(R.drawable.ic_basic_info_placeholder)
             .into(holder.circleImageViewProfile)
 
-        if (showStatus[position] == "SHOW") {
+        if (lumper.status) {
             holder.viewAttendanceStatus.setBackgroundResource(R.drawable.online_dot)
             holder.switchAttendance.isChecked = true
             holder.textViewAddTime.visibility = View.VISIBLE
@@ -71,8 +80,12 @@ class MarkAttendanceAdapter(val context: Activity) :
         }
 
         holder.switchAttendance.setOnClickListener {
-            showStatus[position] = if (holder.switchAttendance.isChecked) "SHOW" else "NO SHOW"
+            getItem(position).status = holder.switchAttendance.isChecked
             notifyDataSetChanged()
+        }
+
+        holder.textViewAddTime.setOnClickListener {
+            onAdapterClick.onAddTimeClick()
         }
     }
 
@@ -87,4 +100,33 @@ class MarkAttendanceAdapter(val context: Activity) :
         var textViewShiftTime: TextView = view.textViewShiftTime
         var textViewLunchTime: TextView = view.textViewLunchTime
     }
+
+    fun setSearchEnabled(enabled: Boolean, searchTerm: String = "") {
+        this.searchEnabled = enabled
+        if (!searchEnabled) {
+            this.searchTerm = ""
+            filteredLumperItems.clear()
+            notifyDataSetChanged()
+            return
+        }
+        this.searchTerm = searchTerm.toLowerCase(Locale.getDefault())
+        filter()
+    }
+
+    private fun filter() {
+        filteredLumperItems.clear()
+        if (searchTerm.isEmpty()) {
+            filteredLumperItems.addAll(lumperItems)
+        } else {
+            for (data in lumperItems) {
+                val term = data.name
+                if (term.toLowerCase(Locale.getDefault()).contains(searchTerm)) {
+                    filteredLumperItems.add(data)
+                }
+            }
+        }
+        notifyDataSetChanged()
+    }
 }
+
+class Attendance(var name: String, var status: Boolean)
