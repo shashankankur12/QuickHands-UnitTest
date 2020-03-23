@@ -8,8 +8,11 @@ import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleDetailContract
+import com.quickhandslogistics.modified.data.schedule.ImageData
 import com.quickhandslogistics.modified.views.BaseActivity
+import com.quickhandslogistics.modified.views.adapters.ScheduleLumperImagesAdapter
 import com.quickhandslogistics.modified.views.adapters.ScheduledWorkItemAdapter
+import com.quickhandslogistics.modified.views.controls.OverlapDecoration
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleFragment
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.view.activities.BuildingOperationsActivity
@@ -57,6 +60,18 @@ class ScheduleDetailActivity : BaseActivity(), SpeedDialView.OnActionSelectedLis
             )
         }
         speedDialView.setOnActionSelectedListener(this)
+
+        recyclerViewLumpersImagesList.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            val lumperImages = ArrayList<ImageData>()
+
+            for (i in 1..7) {
+                lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
+            }
+            addItemDecoration(OverlapDecoration())
+            val scheduleLumperImageAdapter = ScheduleLumperImagesAdapter(lumperImages, context)
+            adapter = scheduleLumperImageAdapter
+        }
 
         recycler_work_items.apply {
             val linearLayoutManager = LinearLayoutManager(activity)

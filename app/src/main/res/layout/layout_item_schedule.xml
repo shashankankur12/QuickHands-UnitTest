@@ -35,7 +35,7 @@
 
     <TextView
         android:id="@+id/textViewScheduleType"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_4sdp"
         android:drawableStart="@drawable/ic_schedule_type"
@@ -43,7 +43,6 @@
         android:text="Live Loads"
         android:textColor="@color/scheduleDetail"
         android:textSize="@dimen/_10ssp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewCreatedDate" />
 
@@ -60,5 +59,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageViewArrow"
+        android:layout_width="@dimen/_22sdp"
+        android:layout_height="@dimen/_22sdp"
+        android:src="@drawable/ic_arrow_right"
+        app:civ_border_color="@color/circleBackground"
+        app:civ_border_width="@dimen/_1sdp"
+        app:civ_circle_background_color="@color/circleBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewLumpersImagesList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewWorkItemsCount" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

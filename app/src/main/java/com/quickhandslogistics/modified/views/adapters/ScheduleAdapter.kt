@@ -4,17 +4,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
+import com.quickhandslogistics.modified.data.schedule.ImageData
 import com.quickhandslogistics.modified.data.schedule.ScheduleData
+import com.quickhandslogistics.modified.views.controls.OverlapDecoration
 import kotlinx.android.synthetic.main.layout_item_schedule.view.*
-import java.util.*
 
 class ScheduleAdapter(var adapterItemClickListener: ScheduleContract.View.OnAdapterItemClickListener) :
     RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
 
     private var scheduledData: ArrayList<ScheduleData> = ArrayList()
+    private lateinit var scheduleLumperImageAdapter: ScheduleLumperImagesAdapter
+
     override fun onCreateViewHolder(
         viewGroup: ViewGroup,
         i: Int
@@ -26,6 +30,7 @@ class ScheduleAdapter(var adapterItemClickListener: ScheduleContract.View.OnAdap
     }
 
     override fun onBindViewHolder(scheduleViewHolder: ScheduleViewHolder, position: Int) {
+
         val item = getItem(position)
         scheduleViewHolder.bind(item)
     }
@@ -51,10 +56,25 @@ class ScheduleAdapter(var adapterItemClickListener: ScheduleContract.View.OnAdap
         var textViewCreatedDate: TextView = itemView.textViewCreatedDate
         var textViewScheduleType: TextView = itemView.textViewScheduleType
         var textViewWorkItemsCount: TextView = itemView.textViewWorkItemsCount
-
+        var recyclerviewImages :RecyclerView = itemView.recyclerViewLumpersImagesList
 
         fun bind(item: ScheduleData) {
             itemView.setOnClickListener(this)
+            setLumperImagesRecycler()
+        }
+
+        private fun setLumperImagesRecycler() {
+            recyclerviewImages.apply {
+                layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+                val lumperImages = java.util.ArrayList<ImageData>()
+
+                for (i in 1..7) {
+                    lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
+                }
+                addItemDecoration(OverlapDecoration())
+                scheduleLumperImageAdapter = ScheduleLumperImagesAdapter(lumperImages,context)
+                adapter = scheduleLumperImageAdapter
+            }
         }
 
         override fun onClick(view: View?) {
