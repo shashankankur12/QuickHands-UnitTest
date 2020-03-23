@@ -8,29 +8,33 @@ import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRespon
 import com.quickhandslogistics.modified.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
 
-class ForgotPasswordModel: ForgotPasswordContract.Model{
+class ForgotPasswordModel : ForgotPasswordContract.Model {
 
     override fun resetPasswordUsingEmpId(
         employeeLoginId: String,
         onFinishedListener: ForgotPasswordContract.Model.OnFinishedListener
     ) {
         val forgotPasswordRequest = ForgotPasswordRequest(employeeLoginId)
-        DataManager.doPasswordReset(forgotPasswordRequest, object : ResponseListener<ForgotPasswordResponse> {
-            override fun onSuccess(response: ForgotPasswordResponse) {
-                if (response.success) {
-                    onFinishedListener.onPasswordResetSuccess(response)
-                } else {
-                    onFinishedListener.onFailure(response.message)
+        DataManager.doPasswordReset(
+            forgotPasswordRequest,
+            object : ResponseListener<ForgotPasswordResponse> {
+                override fun onSuccess(response: ForgotPasswordResponse) {
+                    if (response.success) {
+                        onFinishedListener.onPasswordResetSuccess(response)
+                    } else {
+                        onFinishedListener.onFailure(response.message)
+                    }
                 }
-            }
 
-            override fun onError(error: Any) {
-                if (error is Throwable) {
-                    Log.e(LoginModel::class.simpleName, error.localizedMessage!!)
+                override fun onError(error: Any) {
+                    if (error is Throwable) {
+                        Log.e(LoginModel::class.simpleName, error.localizedMessage!!)
+                        onFinishedListener.onFailure()
+                    } else if (error is String) {
+                        onFinishedListener.onFailure(error)
+                    }
                 }
-                onFinishedListener.onFailure()
-            }
-        })
+            })
     }
 
     override fun validatePasswordResetDetails(

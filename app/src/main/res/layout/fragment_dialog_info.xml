@@ -20,7 +20,6 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:gravity="center"
         android:padding="@dimen/_5sdp"
-        android:text="@string/string_logout_dialog"
         android:textColor="@color/textBlack"
         android:textSize="@dimen/_14ssp"
         android:textStyle="bold" />
@@ -41,18 +40,6 @@
             android:text="@string/string_okay"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/_14ssp" />
-
-        <Button
-            android:id="@+id/buttonNegative"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_7sdp"
-            android:layout_weight="1"
-            android:background="@drawable/round_button_negative"
-            android:text="@string/string_cancel"
-            android:textAllCaps="false"
-            android:textColor="@color/textBlack"
             android:textSize="@dimen/_14ssp" />
     </LinearLayout>
 </LinearLayout>

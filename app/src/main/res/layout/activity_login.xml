@@ -71,33 +71,40 @@
                 android:id="@+id/editTextEmployeeId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:background="@drawable/edittext_background"
                 android:drawableStart="@drawable/ic_employee_id_deselect"
                 android:drawablePadding="@dimen/_10ssp"
-                android:hint="@string/enter_employee_id"
                 android:inputType="textPersonName|textCapCharacters"
                 android:paddingStart="@dimen/_14ssp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="@string/enter_employee_id"
                 android:paddingTop="@dimen/_10ssp"
                 android:paddingEnd="@dimen/_14ssp"
                 android:paddingBottom="@dimen/_10ssp"
                 android:textSize="@dimen/_12ssp" />
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:passwordToggleEnabled="true"
+                app:hintEnabled="false"
+                android:layout_marginTop="@dimen/_10sdp">
+
             <EditText
                 android:id="@+id/editTextPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:background="@drawable/edittext_background"
                 android:drawableStart="@drawable/ic_password_deselect"
                 android:drawablePadding="@dimen/_10ssp"
-                android:hint="@string/enter_password"
                 android:inputType="textPassword"
+                android:hint="@string/enter_password"
                 android:paddingStart="@dimen/_14ssp"
                 android:paddingTop="@dimen/_10ssp"
                 android:paddingEnd="@dimen/_14ssp"
                 android:paddingBottom="@dimen/_10ssp"
                 android:textSize="@dimen/_12ssp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/textViewForgotPassword"

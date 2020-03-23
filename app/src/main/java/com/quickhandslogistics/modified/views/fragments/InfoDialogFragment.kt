@@ -16,14 +16,12 @@ class InfoDialogFragment(private val onClickListener: InfoDialogContract.View.On
 
     private var message: String = ""
     private var positiveButtonText: String = ""
-    private var negativeButtonText: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             message = it.getString(ARG_MESSAGE, "")
             positiveButtonText = it.getString(ARG_POSITIVE_BUTTON_TEXT, "")
-            negativeButtonText = it.getString(ARG_NEGATIVE_BUTTON_TEXT, "")
         }
     }
 
@@ -53,31 +51,24 @@ class InfoDialogFragment(private val onClickListener: InfoDialogContract.View.On
         if (positiveButtonText.isNotEmpty()) {
             buttonPositive.text = positiveButtonText
         }
-        if (negativeButtonText.isNotEmpty()) {
-            buttonNegative.text = negativeButtonText
-        }
 
         buttonPositive.setOnClickListener(this)
-        buttonNegative.setOnClickListener(this)
     }
 
     companion object {
         private const val ARG_MESSAGE = "ARG_MESSAGE"
         private const val ARG_POSITIVE_BUTTON_TEXT = "ARG_POSITIVE_BUTTON_TEXT"
-        private const val ARG_NEGATIVE_BUTTON_TEXT = "ARG_NEGATIVE_BUTTON_TEXT"
 
         @JvmStatic
         fun newInstance(
             message: String,
             positiveButtonText: String = "",
-            negativeButtonText: String = "",
             onClickListener: InfoDialogContract.View.OnClickListener
         ) =
             InfoDialogFragment(onClickListener).apply {
                 arguments = Bundle().apply {
                     putString(ARG_MESSAGE, message)
                     putString(ARG_POSITIVE_BUTTON_TEXT, positiveButtonText)
-                    putString(ARG_NEGATIVE_BUTTON_TEXT, negativeButtonText)
                 }
             }
     }
@@ -87,10 +78,6 @@ class InfoDialogFragment(private val onClickListener: InfoDialogContract.View.On
             when (view.id) {
                 buttonPositive.id -> {
                     onClickListener.onPositiveButtonClick()
-                    dismiss()
-                }
-                buttonNegative.id -> {
-                    onClickListener.onNegativeButtonClick()
                     dismiss()
                 }
             }

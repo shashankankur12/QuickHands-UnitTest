@@ -17,7 +17,7 @@ class ScheduleAdapter(var adapterItemClickListener: ScheduleContract.View.OnAdap
     RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
 
     private var scheduledData: ArrayList<ScheduleData> = ArrayList()
-    private lateinit var scheduleLumperImageAdapter: SchduleLumperImagesAdapter
+    private lateinit var scheduleLumperImageAdapter: ScheduleLumperImagesAdapter
 
     override fun onCreateViewHolder(
         viewGroup: ViewGroup,
@@ -71,10 +71,9 @@ class ScheduleAdapter(var adapterItemClickListener: ScheduleContract.View.OnAdap
                 for (i in 1..7) {
                     lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
                 }
-                scheduleLumperImageAdapter = SchduleLumperImagesAdapter(lumperImages,context)
                 addItemDecoration(OverlapDecoration())
+                scheduleLumperImageAdapter = ScheduleLumperImagesAdapter(lumperImages,context)
                 adapter = scheduleLumperImageAdapter
-                scheduleLayoutAnimation()
             }
         }
 

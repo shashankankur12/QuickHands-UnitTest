@@ -3,8 +3,8 @@ package com.quickhandslogistics.modified.presenters
 import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.contracts.LoginContract
+import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.models.LoginModel
 import com.quickhandslogistics.utils.SharedPref
 
@@ -57,7 +57,7 @@ class LoginPresenter(
     override fun onFailure(message: String) {
         loginView?.hideProgress()
         if (TextUtils.isEmpty(message)) {
-            loginView?.showAPIErrorMessage(resources.getString(R.string.invalid_email_password))
+            loginView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
         } else {
             loginView?.showAPIErrorMessage(message)
         }

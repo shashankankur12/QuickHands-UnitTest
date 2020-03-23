@@ -14,14 +14,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.contracts.InfoDialogContract
+import com.quickhandslogistics.modified.contracts.InfoDialogWarningContract
 import com.quickhandslogistics.modified.contracts.lumpers.LumpersContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.presenters.lumpers.LumpersPresenter
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.activities.LumperDetailActivity
 import com.quickhandslogistics.modified.views.adapters.LumpersAdapter
-import com.quickhandslogistics.modified.views.fragments.InfoDialogFragment
+import com.quickhandslogistics.modified.views.fragments.InfoWarningDialogFragment
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
@@ -86,6 +86,8 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     }
 
     override fun showAPIErrorMessage(message: String) {
+        recyclerViewLumpers.visibility = View.GONE
+        textViewEmptyData.visibility = View.VISIBLE
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }
 
@@ -140,9 +142,9 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     }
 
     override fun onPhoneViewClick(lumperName: String, phone: String) {
-        val dialog = InfoDialogFragment.newInstance(
+        val dialog = InfoWarningDialogFragment.newInstance(
             String.format(getString(R.string.call_lumper_dialog_message), lumperName),
-            onClickListener = object : InfoDialogContract.View.OnClickListener {
+            onClickListener = object : InfoDialogWarningContract.View.OnClickListener {
                 override fun onPositiveButtonClick() {
                     startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))
                 }
@@ -150,7 +152,7 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
                 override fun onNegativeButtonClick() {
                 }
             })
-        dialog.show(childFragmentManager, InfoDialogFragment::class.simpleName)
+        dialog.show(childFragmentManager, InfoWarningDialogFragment::class.simpleName)
     }
 
     override fun onRefresh() {

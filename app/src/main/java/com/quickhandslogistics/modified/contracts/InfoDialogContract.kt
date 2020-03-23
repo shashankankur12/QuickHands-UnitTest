@@ -4,7 +4,6 @@ class InfoDialogContract {
     interface View {
         interface OnClickListener {
             fun onPositiveButtonClick()
-            fun onNegativeButtonClick()
         }
     }
 }

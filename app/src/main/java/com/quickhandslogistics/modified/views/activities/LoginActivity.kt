@@ -48,7 +48,6 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
             }
         }
     }
-
     override fun loadEmployeeId(employeeId: String) {
         editTextEmployeeId.setText(employeeId)
         editTextEmployeeId.setSelection(employeeId.length)
@@ -71,7 +70,6 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
             resources.getString(R.string.text_password_err_msg)
         )
     }
-
     override fun showInvalidPasswordError() {
         editTextPassword.requestFocus()
         SnackBarFactory.createSnackBar(
@@ -80,7 +78,6 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
             resources.getString(R.string.text_password_err_length)
         )
     }
-
     override fun showProgress(message: String) {
         progressDialog =
             CustomProgressBar.getInstance(activity).showProgressDialog(message)
@@ -102,7 +99,6 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
             flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK)
         )
     }
-
     override fun onDestroy() {
         super.onDestroy()
         loginPresenter.onDestroy()

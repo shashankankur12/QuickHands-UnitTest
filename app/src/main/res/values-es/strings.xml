@@ -6,7 +6,6 @@
     <string name="string_login">Registrarse</string>
     <string name="string_forgot_password"><u>Olvidé mi contraseña</u></string>
     <string name="string_forgot_password_heading">Olvidé mi contraseña</string>
-    <string name="string_reset_password_text">Ingrese su correo electrónico registrado para restablecer la contraseña</string>
     <string name="string_next">Siguiente</string>
     <string name="string_old_password">Contraseña anterior</string>
     <string name="string_new_password">Nueva contraseña</string>
@@ -109,9 +108,8 @@
     <string name="no_internet">¡Sin conexión a Internet!</string>
     <string name="string_building">Edificios</string>
     <string name="string_comment">Comentario</string>
-    <string name="text_employee_valid_email_error_msg">Por favor ingrese una dirección de correo electrónico válida</string>
     <string name="string_request_message">Póngase en contacto con su administrador para solicitar una contraseña olvidada.</string>
-    <string name="invalid_email_password">Por favor ingrese un correo electrónico / contraseña válida</string>
+    <string name="invalid_emp_password">Por favor ingrese una identificación / contraseña de empleado válida</string>
     <string name="string_reset_password">Restablecer la contraseña</string>
     <string name="forgotPasswordInCaption">Solo necesitamos su ID de empleado registrado para restablecer su contraseña.</string>
     <string name="invalid_emp_id">Por favor ingrese ID de empleado válida</string>
@@ -136,7 +134,6 @@
     <string name="signInCaption">Inicie sesión ingresando los detalles a continuación.</string>
     <string name="enter_employee_id">Ingrese su identificación de empleado</string>
     <string name="enter_password">Introducir la contraseña</string>
-    <string name="emailAddress">Dirección de correo electrónico</string>
     <string name="search_by_name">Buscar por nombre...</string>
     <string name="my_profile">Mi perfil</string>
     <string name="personal_detail">Detalle personal</string>
@@ -161,4 +158,7 @@
     <string name="string_okay">Bueno</string>
     <string name="string_cancel">Cancelar</string>
     <string name="call_lumper_dialog_message">¿Quieres llamar a %s?</string>
+    <string name="start_time_container">**Start Time - %s**</string>
+    <string name="something_went_wrong">Algo salió mal. Por favor, inténtalo de nuevo después de algún tiempo.</string>
+    <string name="add_time">**Add Time**</string>
 </resources>

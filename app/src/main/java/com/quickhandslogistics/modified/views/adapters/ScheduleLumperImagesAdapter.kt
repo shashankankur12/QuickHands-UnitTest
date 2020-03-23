@@ -13,14 +13,13 @@ import com.quickhandslogistics.modified.views.activities.LumperDetailActivity
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.schdule_lumper_image_list.view.*
 
-
-class SchduleLumperImagesAdapter(var lumperImages: ArrayList<ImageData>, val context: Context) :
-    RecyclerView.Adapter<SchduleLumperImagesAdapter.ScheduleImageViewHolder>() {
+class ScheduleLumperImagesAdapter(var lumperImages: ArrayList<ImageData>, val context: Context) :
+    RecyclerView.Adapter<ScheduleLumperImagesAdapter.ScheduleImageViewHolder>() {
 
     override fun onCreateViewHolder(
         viewGroup: ViewGroup,
         viewType: Int
-    ): SchduleLumperImagesAdapter.ScheduleImageViewHolder {
+    ): ScheduleLumperImagesAdapter.ScheduleImageViewHolder {
         val view =
             LayoutInflater.from(viewGroup.context)
                 .inflate(R.layout.schdule_lumper_image_list, viewGroup, false)
@@ -28,9 +27,9 @@ class SchduleLumperImagesAdapter(var lumperImages: ArrayList<ImageData>, val con
     }
 
     override fun getItemCount(): Int {
-        if(lumperImages.size>5){
+        if (lumperImages.size > 5) {
             return 5
-        }else{
+        } else {
             return lumperImages.size
         }
     }
@@ -42,12 +41,11 @@ class SchduleLumperImagesAdapter(var lumperImages: ArrayList<ImageData>, val con
     }
 
     override fun onBindViewHolder(scheduleImageViewHolder: ScheduleImageViewHolder, position: Int) {
-        if(position  > 3) {
+        if (position > 3) {
             scheduleImageViewHolder.circleImageView.visibility = View.GONE
             scheduleImageViewHolder.textNLumpers.visibility = View.VISIBLE
-            scheduleImageViewHolder.textNLumpers.text = "+${lumperImages.size-4}"
-        }
-        else {
+            scheduleImageViewHolder.textNLumpers.text = "+${lumperImages.size - 4}"
+        } else {
             scheduleImageViewHolder.circleImageView.setImageResource(lumperImages[position].image)
             scheduleImageViewHolder.circleImageView.visibility = View.VISIBLE
             scheduleImageViewHolder.textNLumpers.visibility = View.GONE
@@ -58,4 +56,4 @@ class SchduleLumperImagesAdapter(var lumperImages: ArrayList<ImageData>, val con
             context.startActivity(intent)
         })
     }
-    }
+}

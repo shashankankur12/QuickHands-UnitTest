@@ -1,40 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/linear_user_connections"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
-    android:clickable="true"
-    android:paddingTop="@dimen/_10sdp"
-    android:paddingBottom="@dimen/_8sdp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    android:layout_width="@dimen/_20sdp"
+    android:layout_height="@dimen/_20sdp">
 
-    <LinearLayout
-        android:id="@+id/view_connections_holder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circle_view_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_basic_info_placeholder"
+        android:visibility="gone"
+        app:civ_border_color="@android:color/white"
+        app:civ_border_width="@dimen/_1sdp" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/circle_view_1"
-            android:layout_width="@dimen/_22sdp"
-            android:layout_height="@dimen/_22sdp"
-            android:src="@drawable/ic_basic_info_placeholder"
-            app:civ_border_color="@android:color/white"
-            app:civ_border_width="@dimen/_1sdp" />
-
-        <TextView
-            android:id="@+id/textN"
-            android:layout_width="@dimen/_22sdp"
-            android:layout_height="@dimen/_22sdp"
-            android:background="@drawable/text_circle"
-            android:padding="@dimen/_3sdp"
-            android:textAlignment="center"
-            style="@style/textSizeSmallSemiBold"
-            android:textColor="@color/colorText"
-            android:visibility="gone" />
-    </LinearLayout>
-</LinearLayout>
+    <TextView
+        android:id="@+id/textN"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/text_circle"
+        android:gravity="center"
+        android:padding="@dimen/_3sdp"
+        android:textColor="@color/colorText"
+        android:textSize="@dimen/_10ssp"
+        android:visibility="visible" />
+</RelativeLayout>
 
