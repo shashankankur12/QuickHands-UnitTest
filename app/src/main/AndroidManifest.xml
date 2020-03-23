@@ -62,10 +62,7 @@
             android:name=".view.activities.LumperJobHistoryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.legacy.AssignLumpersActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".modified.views.activities.ScheduleDetailActivity"
+            android:name=".modified.views.activities.schedule.ScheduleDetailActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activities.UnScheduleDetailActivity"
@@ -105,6 +102,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".modified.views.activities.ChooseLumperActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".modified.views.activities.schedule.MarkAttendanceActivity"
             android:screenOrientation="portrait" />
 
         <provider

@@ -9,7 +9,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.modified.data.schedule.ScheduleData
 import com.quickhandslogistics.modified.views.BaseFragment
-import com.quickhandslogistics.modified.views.activities.ScheduleDetailActivity
+import com.quickhandslogistics.modified.views.activities.schedule.ScheduleDetailActivity
 import com.quickhandslogistics.modified.views.adapters.ScheduleAdapter
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.view.activities.UnScheduleDetailActivity

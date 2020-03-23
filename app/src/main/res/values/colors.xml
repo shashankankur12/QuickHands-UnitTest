@@ -33,4 +33,5 @@
     <color name="scheduleDetail">#345173</color>
     <color name="startTimeBackground">#ecf0f6</color>
     <color name="fabBackgroundOverlay">#1a000000</color>
+    <color name="online">#53d769</color>
 </resources>

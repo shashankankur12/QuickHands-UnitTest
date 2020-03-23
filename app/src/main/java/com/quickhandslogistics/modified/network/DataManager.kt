@@ -41,7 +41,7 @@ object DataManager : AppConstant {
     private fun getDataManager(): Retrofit? {
         if (retrofitStandard == null) {
             retrofitStandard = Retrofit.Builder()
-                .baseUrl(AppConfiguration.MOCK_URL)
+                .baseUrl(AppConfiguration.API_BASE_URL)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
@@ -50,25 +50,8 @@ object DataManager : AppConstant {
         return retrofitStandard
     }
 
-    private fun getMockDataManager(): Retrofit? {
-        if (retrofit == null) {
-            retrofit = Retrofit.Builder()
-                .baseUrl(AppConfiguration.MOCK_URL)
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        }
-        return retrofit
-    }
-
-    fun getService(): IApiInterface {
+    private fun getService(): IApiInterface {
         return getDataManager()!!.create(IApiInterface::class.java)
-    }
-
-    fun getMockService(): IApiInterface {
-        return getMockDataManager()!!.create(
-            IApiInterface::class.java
-        )
     }
 
     fun doLogin(loginRequest: LoginRequest, listener: ResponseListener<LoginResponse>) {

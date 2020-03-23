@@ -1,12 +1,9 @@
-package com.quickhandslogistics.modified.views.activities
+package com.quickhandslogistics.modified.views.activities.schedule
 
 import android.os.Bundle
-import android.view.View
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView
 import com.quickhandslogistics.R
@@ -17,16 +14,12 @@ import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleFragmen
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.view.activities.BuildingOperationsActivity
 import com.quickhandslogistics.view.activities.WorkItemLumpersActivity
-import com.quickhandslogistics.view.adapter.LumperAttendanceAdapter
-import kotlinx.android.synthetic.main.activity_schedule_detail.*
-import kotlinx.android.synthetic.main.bottom_sheet_lumpers_attendance.*
-import kotlinx.android.synthetic.main.container_schedule_detail.*
+import kotlinx.android.synthetic.main.content_schedule_detail.*
 
 class ScheduleDetailActivity : BaseActivity(), SpeedDialView.OnActionSelectedListener,
-    ScheduleDetailContract.View.OnAdapterItemClickListener, View.OnClickListener {
+    ScheduleDetailContract.View.OnAdapterItemClickListener {
 
     private var isCurrentDate: Boolean = false
-    private var sheetBehavior: BottomSheetBehavior<ConstraintLayout>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,12 +58,6 @@ class ScheduleDetailActivity : BaseActivity(), SpeedDialView.OnActionSelectedLis
         }
         speedDialView.setOnActionSelectedListener(this)
 
-        sheetBehavior = BottomSheetBehavior.from(bottom_sheet)
-        sheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
-
-        imageViewClose.setOnClickListener(this)
-        button_submit.setOnClickListener(this)
-
         recycler_work_items.apply {
             val linearLayoutManager = LinearLayoutManager(activity)
             layoutManager = linearLayoutManager
@@ -79,31 +66,11 @@ class ScheduleDetailActivity : BaseActivity(), SpeedDialView.OnActionSelectedLis
             addItemDecoration(dividerItemDecoration)
             adapter = ScheduledWorkItemAdapter(activity, this@ScheduleDetailActivity, isCurrentDate)
         }
-
-        recycler_lumpers.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = LumperAttendanceAdapter(activity)
-        }
     }
 
     /*
     * Native Views Listeners
     */
-    override fun onClick(view: View?) {
-        view?.let {
-            when (view.id) {
-                imageViewClose.id -> {
-                    sheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED;
-                    bottomSheetBackground.visibility = View.GONE
-                }
-                button_submit.id -> {
-                    sheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED;
-                    bottomSheetBackground.visibility = View.GONE
-                }
-            }
-        }
-    }
-
     override fun onActionSelected(actionItem: SpeedDialActionItem?): Boolean {
         actionItem?.let {
             return when (actionItem.id) {
@@ -114,13 +81,7 @@ class ScheduleDetailActivity : BaseActivity(), SpeedDialView.OnActionSelectedLis
                 }
                 R.id.actionMarkAttendance -> {
                     speedDialView.close(true)
-                    if (sheetBehavior?.state != BottomSheetBehavior.STATE_EXPANDED) {
-                        sheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED;
-                        bottomSheetBackground.visibility = View.VISIBLE
-                    } else {
-                        sheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED;
-                        bottomSheetBackground.visibility = View.GONE
-                    }
+                    startIntent(MarkAttendanceActivity::class.java)
                     true
                 }
                 else -> false
