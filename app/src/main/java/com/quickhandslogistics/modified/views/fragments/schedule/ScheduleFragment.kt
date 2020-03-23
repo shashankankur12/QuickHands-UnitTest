@@ -11,16 +11,20 @@ import com.quickhandslogistics.modified.data.schedule.ImageData
 import com.quickhandslogistics.modified.data.schedule.ScheduleData
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.activities.ScheduleDetailActivity
+import com.quickhandslogistics.modified.views.adapters.SchduleLumperImagesAdapter
 import com.quickhandslogistics.modified.views.adapters.ScheduleAdapter
+import com.quickhandslogistics.modified.views.controls.OverlapDecoration
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.view.activities.UnScheduleDetailActivity
 import kotlinx.android.synthetic.main.fragment_schedule.*
+import kotlinx.android.synthetic.main.layout_scheduled_work_item.*
 import java.util.*
 
 
 class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClickListener {
 
     private lateinit var scheduleAdapter: ScheduleAdapter
+    private lateinit var scheduleLumperImageAdapter: SchduleLumperImagesAdapter
 
     private var isScheduled: Boolean = true
     private var selectedTime: Long = 0
@@ -51,6 +55,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
             adapter = scheduleAdapter
             scheduleLayoutAnimation()
         }
+
     }
 
     fun updateList(

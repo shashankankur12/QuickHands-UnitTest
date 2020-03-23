@@ -9,6 +9,7 @@
     <color name="colorLightGrey">#808080</color>
     <color name="colorHint">#8b8b8e</color>
     <color name="colorGrey">#d3d3d3</color>
+    <color name="colorTextGrey">#345173</color>
     <color name="nav_color">#f5f9ff</color>
 
     <color name="colorBlue">#00274F</color>
@@ -18,6 +19,7 @@
     <color name="colorRed">#F08080</color>
     <color name="colorGreen">#90EE90</color>
     <color name="colorLightGreen">#CCFFCC</color>
+    <color name="colorText">#fefefe</color>
 
     <color name="appBackground">#f5f9ff</color>
     <color name="buttonRed">#e30913</color>
@@ -31,4 +33,5 @@
     <color name="scheduleItemBackground">#f0f6ff</color>
     <color name="buildingTitle">#012652</color>
     <color name="scheduleDetail">#345173</color>
+    <color name="circleBackground">#ECF0F6</color>
 </resources>

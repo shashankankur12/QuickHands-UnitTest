@@ -31,8 +31,10 @@
             android:layout_height="@dimen/_22sdp"
             android:background="@drawable/text_circle"
             android:padding="@dimen/_3sdp"
-            android:text="+1"
-            android:visibility="visible" />
+            android:textAlignment="center"
+            style="@style/textSizeSmallSemiBold"
+            android:textColor="@color/colorText"
+            android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>
 

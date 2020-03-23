@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class OverlapDecoration extends RecyclerView.ItemDecoration {
 
-  private final static int vertOverlap = -15;
+  private final static int vertOverlap = -12;
 
   @Override
   public void getItemOffsets (Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
