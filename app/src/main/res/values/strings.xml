@@ -5,7 +5,6 @@
     <string name="string_login">Sign In</string>
     <string name="string_forgot_password"><u>Forgot Password?</u></string>
     <string name="string_forgot_password_heading">Forgot Password</string>
-    <string name="string_reset_password_text">Please enter your registered email to reset password</string>
     <string name="string_next">Next</string>
     <string name="string_old_password">Old Password</string>
     <string name="string_new_password">New Password</string>
@@ -29,7 +28,6 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="text_employee_error_msg">Employee Id cannot be empty</string>
-    <string name="text_employee_valid_email_error_msg">Please enter valid email address</string>
     <string name="text_password_err_msg">Please enter password</string>
     <string name="text_password_err_length">Password should contain atleast 8 characters</string>
 
@@ -109,7 +107,7 @@
     <string name="string_lumper_sheet_status">lumper_sheet_status</string>
     <string name="string_building">Buildings</string>
     <string name="no_internet">No internet connection!</string>
-    <string name="invalid_email_password">Please enter valid email/password</string>
+    <string name="invalid_emp_password">Please enter valid Employee Id/ Password</string>
     <string name="invalid_emp_id">Please enter valid employee Id</string>
 
     <string name="schedule_detail">Schedule Detail</string>
@@ -132,7 +130,6 @@
     <string name="enter_password">Enter Password</string>
     <string name="string_reset_password">Reset Password</string>
     <string name="forgotPasswordInCaption">We just need your registered employee Id  to reset your password.</string>
-    <string name="emailAddress">Email Address</string>
     <string name="search_by_name">Search by name...</string>
     <string name="my_profile">My Profile</string>
     <string name="personal_detail">Personal Detail</string>
@@ -162,4 +159,6 @@
     <string name="string_cancel">Cancel</string>
     <string name="call_lumper_dialog_message">Do you want to call %s?</string>
     <string name="start_time_container">Start Time - %s</string>
+    <string name="something_went_wrong">Something went wrong, Please try again after sometime!!!</string>
+    <string name="add_time">Add Time</string>
 </resources>

@@ -15,10 +15,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.quickhandslogistics.R;
-import com.quickhandslogistics.modified.contracts.InfoDialogContract;
+import com.quickhandslogistics.modified.contracts.InfoDialogWarningContract;
 import com.quickhandslogistics.modified.views.BaseActivity;
 import com.quickhandslogistics.modified.views.activities.LoginActivity;
-import com.quickhandslogistics.modified.views.fragments.InfoDialogFragment;
+import com.quickhandslogistics.modified.views.fragments.InfoWarningDialogFragment;
 
 import java.util.ArrayList;
 
@@ -185,8 +185,8 @@ public class NavDrawer {
             super.onClick(v);
 
             if (text.equals(activity.getString(R.string.string_logout))) {
-                InfoDialogFragment dialog = InfoDialogFragment.newInstance(activity.getString(R.string.string_logout_dialog),
-                        "", "", new InfoDialogContract.View.OnClickListener() {
+                InfoWarningDialogFragment dialog = InfoWarningDialogFragment.newInstance(activity.getString(R.string.string_logout_dialog),
+                        "", "", new InfoDialogWarningContract.View.OnClickListener() {
                             @Override
                             public void onPositiveButtonClick() {
                                 clearDataAndRestart(activity);
@@ -196,7 +196,7 @@ public class NavDrawer {
                             public void onNegativeButtonClick() {
                             }
                         });
-                dialog.show(activity.getSupportFragmentManager(), InfoDialogFragment.class.getSimpleName());
+                dialog.show(activity.getSupportFragmentManager(), InfoWarningDialogFragment.class.getSimpleName());
             } else {
                 toolbar.setTitle(text);
                 navDrawer.setSelectedItem(this);

@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.View
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.ForgotPasswordContract
+import com.quickhandslogistics.modified.contracts.InfoDialogContract
 import com.quickhandslogistics.modified.presenters.ForgotPasswordPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
+import com.quickhandslogistics.modified.views.fragments.InfoDialogFragment
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
@@ -34,7 +36,6 @@ class ForgotPasswordActivity : BaseActivity(), ForgotPasswordContract.View, View
                     Utils.hideSoftKeyboard(activity)
 
                     val employeePasswordResetId = editTextEmpId.text.toString().trim()
-
                     forgotPasswordPresenter.validatePasswordResetDetails(employeePasswordResetId)
                 }
             }
@@ -61,12 +62,20 @@ class ForgotPasswordActivity : BaseActivity(), ForgotPasswordContract.View, View
 
     override fun showAPIErrorMessage(message: String) {
         editTextEmpId.requestFocus()
-        SnackBarFactory.createSnackBar(activity, mainConstraintPasswordLayout, message)
+        SnackBarFactory.createSnackBar(
+            activity,
+            mainConstraintPasswordLayout,
+            message
+        )
     }
 
     override fun showAPISuccessMessage(message: String) {
-        editTextEmpId.requestFocus()
-        SnackBarFactory.createSnackBar(activity, mainConstraintPasswordLayout, message)
+        val dialog = InfoDialogFragment.newInstance(message,
+            onClickListener = object : InfoDialogContract.View.OnClickListener {
+                override fun onPositiveButtonClick() {
+                }
+            })
+        dialog.show(supportFragmentManager, InfoDialogFragment::class.simpleName)
     }
 
     override fun onDestroy() {

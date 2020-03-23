@@ -1,5 +1,7 @@
 package com.quickhandslogistics.modified.network
 
+import com.google.gson.Gson
+import com.quickhandslogistics.modified.data.ErrorResponse
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRequest
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordResponse
 import com.quickhandslogistics.modified.data.login.LoginRequest
@@ -13,6 +15,7 @@ import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,7 +41,7 @@ object DataManager : AppConstant {
     private fun getDataManager(): Retrofit? {
         if (retrofitStandard == null) {
             retrofitStandard = Retrofit.Builder()
-                .baseUrl(AppConfiguration.MOCK_URL)
+                .baseUrl(AppConfiguration.API_BASE_URL)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
@@ -47,66 +50,53 @@ object DataManager : AppConstant {
         return retrofitStandard
     }
 
-    private fun getMockDataManager(): Retrofit? {
-        if (retrofit == null) {
-            retrofit = Retrofit.Builder()
-                .baseUrl(AppConfiguration.MOCK_URL)
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        }
-        return retrofit
-    }
-
-    fun getService(): IApiInterface {
+    private fun getService(): IApiInterface {
         return getDataManager()!!.create(IApiInterface::class.java)
     }
 
-    fun getMockService(): IApiInterface {
-        return getMockDataManager()!!.create(
-            IApiInterface::class.java)
+    fun doLogin(loginRequest: LoginRequest, listener: ResponseListener<LoginResponse>) {
+        val call = getService().doLogin(loginRequest)
+        call.enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(
+                call: Call<LoginResponse>,
+                response: Response<LoginResponse>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
     }
 
-     fun doLogin(loginRequest: LoginRequest, listener: ResponseListener<LoginResponse>) {
-           val call = getService().doLogin(loginRequest)
-               call.enqueue(object : Callback<LoginResponse> {
-                   override fun onResponse(
-                       call: Call<LoginResponse>,
-                       response: Response<LoginResponse>
-                   ) {
-                       if (!response.isSuccessful) {
-                           response.errorBody()?.let { listener.onError(it) }
-                           return
-                       }
-
-                       if (response.body()?.success != null && response.body()?.success == true)
-                           listener.onSuccess(response.body()!!)
-                       else
-                           listener.onError(response.body()!!.message)
-                   }
-
-                   override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                       listener.onError(t)
-                   }
-               })
-           }
-
-    fun doPasswordReset(forgotPasswordRequest: ForgotPasswordRequest, listener: ResponseListener<ForgotPasswordResponse>) {
+    fun doPasswordReset(
+        forgotPasswordRequest: ForgotPasswordRequest,
+        listener: ResponseListener<ForgotPasswordResponse>
+    ) {
         val call = getService().doResetPassword(forgotPasswordRequest)
         call.enqueue(object : Callback<ForgotPasswordResponse> {
             override fun onResponse(
                 call: Call<ForgotPasswordResponse>,
                 response: Response<ForgotPasswordResponse>
             ) {
+                var errorMessage = ""
                 if (!response.isSuccessful) {
-                    response.errorBody()?.let { listener.onError(it) }
-                    return
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
                 }
-
-                if (response.body()?.success != null && response.body()?.success == true)
-                    listener.onSuccess(response.body()!!)
-                else
-                    listener.onError(response.body()!!.message)
             }
 
             override fun onFailure(call: Call<ForgotPasswordResponse>, t: Throwable) {
@@ -116,18 +106,23 @@ object DataManager : AppConstant {
     }
 
     fun getAllLumpersData(listener: ResponseListener<AllLumpersResponse>) {
-        val call = getService().getAllLumpersData("Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN))
+        val call = getService().getAllLumpersData(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN)
+        )
         call.enqueue(object : Callback<AllLumpersResponse> {
-            override fun onResponse(call: Call<AllLumpersResponse>, response: Response<AllLumpersResponse>) {
+            override fun onResponse(
+                call: Call<AllLumpersResponse>,
+                response: Response<AllLumpersResponse>
+            ) {
+                var errorMessage = ""
                 if (!response.isSuccessful) {
-                    response.errorBody()?.let { listener.onError(it) }
-                    return
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
                 }
-
-                if (response.body()?.success != null && response.body()?.success == true)
-                    listener.onSuccess(response.body()!!)
-                else
-                    listener.onError(response.body()!!.message)
             }
 
             override fun onFailure(call: Call<AllLumpersResponse>, t: Throwable) {
@@ -135,5 +130,17 @@ object DataManager : AppConstant {
             }
         })
     }
-       }
+
+    private fun getErrorMessage(errorBody: ResponseBody?): String {
+        var errorMessage = ""
+        errorBody?.let {
+            val errorResponse: ErrorResponse? =
+                Gson().fromJson(String(it.bytes()), ErrorResponse::class.java)
+            errorResponse?.let {
+                errorMessage = errorResponse.message!!
+            }
+        }
+        return errorMessage
+    }
+}
 
