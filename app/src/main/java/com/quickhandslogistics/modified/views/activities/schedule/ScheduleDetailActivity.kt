@@ -15,7 +15,6 @@ import com.quickhandslogistics.modified.views.adapters.ScheduledWorkItemAdapter
 import com.quickhandslogistics.modified.views.controls.OverlapDecoration
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleFragment
 import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.view.activities.BuildingOperationsActivity
 import com.quickhandslogistics.view.activities.WorkItemLumpersActivity
 import kotlinx.android.synthetic.main.content_schedule_detail.*
 
@@ -91,7 +90,9 @@ class ScheduleDetailActivity : BaseActivity(), SpeedDialView.OnActionSelectedLis
             return when (actionItem.id) {
                 R.id.actionBuildingOperations -> {
                     speedDialView.close(true)
-                    startIntent(BuildingOperationsActivity::class.java)
+                    val bundle = Bundle()
+                    bundle.putBoolean(BuildingOperationsActivity.ARG_ALLOW_UPDATE, isCurrentDate)
+                    startIntent(BuildingOperationsActivity::class.java, bundle = bundle)
                     true
                 }
                 R.id.actionMarkAttendance -> {
