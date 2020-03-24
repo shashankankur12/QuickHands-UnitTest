@@ -7,16 +7,24 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.data.schedule.ImageData
 import com.squareup.picasso.Picasso
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.layout_add_lumpers.view.*
+
 
 class AddLumperAdapter(val context: Activity) :
     Adapter<AddLumperAdapter.WorkItemHolder>() {
 
     var addedLumpersList: ArrayList<String> = ArrayList()
     var lumpers: ArrayList<String> = ArrayList()
+
+    init {
+        lumpers.add("Gene Hand")
+        lumpers.add("Frida Moore")
+        lumpers.add("Virgil Ernser")
+        lumpers.add("Philip Von")
+    }
+
     var faker = Faker()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemHolder {
         val view: View =
@@ -29,10 +37,6 @@ class AddLumperAdapter(val context: Activity) :
     }
 
     override fun onBindViewHolder(holder: WorkItemHolder, position: Int) {
-
-        for (i in 1..7) {
-            lumpers.add(faker.name.firstName()+ faker.name.lastName())
-        }
         holder.lumperText?.text = lumpers[position]
 
         Picasso.get().load(R.drawable.ic_basic_info_placeholder).error(R.drawable.ic_basic_info_placeholder)
@@ -53,7 +57,6 @@ class AddLumperAdapter(val context: Activity) :
             }
             notifyDataSetChanged()
         }
-
     }
 
     fun getSelectedLumper(): ArrayList<String> {

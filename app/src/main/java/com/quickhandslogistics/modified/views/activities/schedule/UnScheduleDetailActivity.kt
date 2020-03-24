@@ -19,6 +19,9 @@ import kotlin.collections.ArrayList
 
 class UnScheduleDetailActivity : BaseActivity() {
 
+    private lateinit var scheduleLumperImageAdapter: ScheduleLumperImagesAdapter
+    private lateinit var unScheduleLumperImageAdapter: UnScheduledWorkItemAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_unschedule_detail)
@@ -47,7 +50,7 @@ class UnScheduleDetailActivity : BaseActivity() {
                 lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
             }
             addItemDecoration(OverlapDecoration())
-            val scheduleLumperImageAdapter = ScheduleLumperImagesAdapter(lumperImages, context)
+            scheduleLumperImageAdapter = ScheduleLumperImagesAdapter(lumperImages, context)
             adapter = scheduleLumperImageAdapter
         }
 
@@ -57,7 +60,8 @@ class UnScheduleDetailActivity : BaseActivity() {
             val dividerItemDecoration =
                 DividerItemDecoration(activity, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            adapter = UnScheduledWorkItemAdapter(this@UnScheduleDetailActivity, sameDay, lumpersCountList)
+            unScheduleLumperImageAdapter = UnScheduledWorkItemAdapter(activity, sameDay, lumpersCountList)
+            adapter = unScheduleLumperImageAdapter
         }
     }
 
@@ -71,7 +75,6 @@ class UnScheduleDetailActivity : BaseActivity() {
         lumpersCountList.add(0)
         lumpersCountList.add(0)
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -92,7 +95,7 @@ class UnScheduleDetailActivity : BaseActivity() {
 
             lumpersCountList[position] = count
 
-            adapter.updateCount(lumpersCountList)
+            unScheduleLumperImageAdapter.updateCount(lumpersCountList)
         }
     }
 
