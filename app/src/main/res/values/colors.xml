@@ -23,7 +23,6 @@
 
     <color name="appBackground">#f5f9ff</color>
     <color name="buttonRed">#e30913</color>
-    <color name="buttonShadowRed">#45e30913</color>
     <color name="imageBorder">#dfebff</color>
     <color name="detailHeader">#656565</color>
     <color name="searchBackground">#DCE0E6</color>
