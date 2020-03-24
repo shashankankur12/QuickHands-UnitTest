@@ -53,7 +53,7 @@ class MarkAttendanceAdapter(val context: Activity) :
     override fun onBindViewHolder(holder: WorkItemHolder, position: Int) {
         holder.textViewLumperName.text = lumpers[position]
 
-        Picasso.get().load(faker.avatar.image()).error(R.drawable.ic_basic_info_placeholder)
+        Picasso.get().load(R.drawable.ic_basic_info_placeholder).error(R.drawable.ic_basic_info_placeholder)
             .into(holder.circleImageViewProfile)
 
         if (showStatus[position] == "SHOW") {

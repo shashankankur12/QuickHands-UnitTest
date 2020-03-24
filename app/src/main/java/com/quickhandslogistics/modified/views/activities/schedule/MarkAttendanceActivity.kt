@@ -12,11 +12,9 @@ import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.adapters.MarkAttendanceAdapter
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleFragment
 import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.view.activities.WorkItemLumpersActivity
 import kotlinx.android.synthetic.main.content_mark_attendance.*
 
-class MarkAttendanceActivity : BaseActivity(), View.OnClickListener, TextWatcher,
-    ScheduleDetailContract.View.OnAdapterItemClickListener {
+class MarkAttendanceActivity : BaseActivity(), View.OnClickListener, TextWatcher {
 
     private var isCurrentDate: Boolean = false
 
@@ -71,11 +69,6 @@ class MarkAttendanceActivity : BaseActivity(), View.OnClickListener, TextWatcher
     /*
     * Adapter Item Click Listeners
     */
-    override fun onWorkItemClick(sameDay: Boolean) {
-        val bundle = Bundle()
-        bundle.putBoolean(WorkItemLumpersActivity.ARG_CAN_REPLACE, sameDay)
-        startIntent(WorkItemLumpersActivity::class.java, bundle = bundle)
-    }
 
     override fun afterTextChanged(s: Editable?) {
 
