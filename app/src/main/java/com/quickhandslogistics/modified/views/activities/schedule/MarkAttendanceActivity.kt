@@ -61,6 +61,7 @@ class MarkAttendanceActivity : BaseActivity(), View.OnClickListener, TextWatcher
 
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
+        buttonSave.setOnClickListener(this)
 
         textViewShiftTime.setOnClickListener(this)
         textViewLunchTime.setOnClickListener(this)
@@ -86,6 +87,7 @@ class MarkAttendanceActivity : BaseActivity(), View.OnClickListener, TextWatcher
                     editTextSearch.setText("")
                     Utils.hideSoftKeyboard(activity)
                 }
+                buttonSave.id -> onBackPressed()
             }
         }
     }
@@ -104,7 +106,7 @@ class MarkAttendanceActivity : BaseActivity(), View.OnClickListener, TextWatcher
             imageViewCancel.visibility = if (text.isNotEmpty()) View.VISIBLE else View.GONE
         }
     }
-    
+
     /*
     * Adapter Item Click Listeners
     */
