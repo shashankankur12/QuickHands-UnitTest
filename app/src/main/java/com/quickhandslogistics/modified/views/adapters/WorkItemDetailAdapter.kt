@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
@@ -45,17 +46,21 @@ class WorkItemDetailAdapter(
         }
 
         if (position == replacedPosition) {
+            holder.linearLayoutLumperTime.visibility = View.GONE
             holder.buttonReplace.visibility = View.GONE
             holder.textViewReplaced.visibility = View.VISIBLE
         } else {
             holder.textViewReplaced.visibility = View.GONE
             if (canReplace) {
                 if (position == 1 || position == 3) {
+                    holder.linearLayoutLumperTime.visibility = View.GONE
                     holder.buttonReplace.visibility = View.VISIBLE
                 } else {
+                    holder.linearLayoutLumperTime.visibility = View.VISIBLE
                     holder.buttonReplace.visibility = View.GONE
                 }
             } else {
+                holder.linearLayoutLumperTime.visibility = View.VISIBLE
                 holder.buttonReplace.visibility = View.GONE
             }
         }
@@ -76,5 +81,6 @@ class WorkItemDetailAdapter(
         var circleImageViewProfile: CircleImageView = view.circleImageViewProfile
         var buttonReplace: Button = view.buttonReplace
         var textViewReplaced: TextView = view.textViewReplaced
+        var linearLayoutLumperTime: LinearLayout = view.linearLayoutLumperTime
     }
 }
