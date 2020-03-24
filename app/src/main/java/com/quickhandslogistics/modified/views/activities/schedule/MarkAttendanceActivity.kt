@@ -12,19 +12,16 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.mcsoft.timerangepickerdialog.RangeTimePickerDialog
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.MarkAttendanceContract
-import com.quickhandslogistics.modified.contracts.schedule.ScheduleDetailContract
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.adapters.MarkAttendanceAdapter
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleFragment
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.Utils
-import com.quickhandslogistics.view.activities.WorkItemLumpersActivity
 import kotlinx.android.synthetic.main.activity_mark_attendance.*
 import kotlinx.android.synthetic.main.bottom_sheet_add_time.*
 import kotlinx.android.synthetic.main.content_mark_attendance.*
 
 class MarkAttendanceActivity : BaseActivity(), View.OnClickListener, TextWatcher,
-    ScheduleDetailContract.View.OnAdapterItemClickListener,
     MarkAttendanceContract.View.OnAdapterItemClickListener,
     RangeTimePickerDialog.ISelectedTime {
 
@@ -93,15 +90,6 @@ class MarkAttendanceActivity : BaseActivity(), View.OnClickListener, TextWatcher
         }
     }
 
-    /*
-    * Adapter Item Click Listeners
-    */
-    override fun onWorkItemClick(sameDay: Boolean) {
-        val bundle = Bundle()
-        bundle.putBoolean(WorkItemLumpersActivity.ARG_CAN_REPLACE, sameDay)
-        startIntent(WorkItemLumpersActivity::class.java, bundle = bundle)
-    }
-
     override fun afterTextChanged(s: Editable?) {
 
     }
@@ -116,7 +104,10 @@ class MarkAttendanceActivity : BaseActivity(), View.OnClickListener, TextWatcher
             imageViewCancel.visibility = if (text.isNotEmpty()) View.VISIBLE else View.GONE
         }
     }
-
+    
+    /*
+    * Adapter Item Click Listeners
+    */
     override fun onItemClick() {
 
     }

@@ -2,8 +2,9 @@
     android:color="@color/colorWhite">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/colorAccent" />
-            <corners android:radius="10dp" />
+            <solid android:color="@color/buttonRed" />
+
+            <corners android:radius="20dp" />
         </shape>
     </item>
 </ripple>

@@ -62,7 +62,7 @@ class MarkAttendanceAdapter(
         val lumper = getItem(position)
         holder.textViewLumperName.text = lumper.name
 
-        Picasso.get().load(faker.avatar.image()).error(R.drawable.ic_basic_info_placeholder)
+        Picasso.get().load(R.drawable.ic_basic_info_placeholder).error(R.drawable.ic_basic_info_placeholder)
             .into(holder.circleImageViewProfile)
 
         if (lumper.status) {
