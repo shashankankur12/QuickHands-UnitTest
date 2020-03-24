@@ -1,49 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/constraint_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_5sdp"
-    android:elevation="@dimen/_5sdp"
-    app:cardCornerRadius="@dimen/_5sdp">
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/_10ssp"
+    android:paddingBottom="@dimen/_10ssp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint_root"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:orientation="vertical"
-        android:padding="@dimen/_10sdp">
-
-        <ImageView
-            android:id="@+id/image_lumper_logo"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:src="@drawable/ic_basic_info_placeholder"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageViewProfile"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:contentDescription="@string/nav_header_desc"
+        android:src="@drawable/ic_basic_info_placeholder"
+        app:civ_border_color="@color/imageBorder"
+        app:civ_border_width="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/text_lumper"
-            style="@style/textSizeNormalRegFont"
+            android:id="@+id/textViewLumperName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
-            android:text="dfjksdbf sdsfnds b asjdb"
-            android:textColor="@color/colorBlack"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:text="John Snow"
+            android:textColor="@color/textBlack"
+            android:textSize="@dimen/_14ssp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/imageViewAdd"
-            app:layout_constraintStart_toEndOf="@+id/image_lumper_logo"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toStartOf="@id/viewAttendanceStatus"
+            app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+            app:layout_constraintTop_toTopOf="parent"  />
 
-        <ImageView
-            android:id="@+id/imageViewAdd"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/textViewEmployeeId"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_check_box_outline"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:text="(Emp ID: 1001)"
+            android:textColor="@color/textBlack"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintEnd_toStartOf="@id/viewAttendanceStatus"
+            app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+            app:layout_constraintTop_toBottomOf="@+id/textViewLumperName"  />
+
+    <TextView
+        android:id="@+id/textViewShiftHours"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="Shift Hours: 9:00am to 6:00pm"
+        android:textColor="@color/detailHeader"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintEnd_toStartOf="@id/viewAttendanceStatus"
+        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEmployeeId"  />
+
+    <ImageView
+        android:id="@+id/viewAttendanceStatus"
+        android:layout_width="@dimen/_22sdp"
+        android:layout_height="@dimen/_22sdp"
+        android:src="@drawable/ic_add_lumer_tick"
+        app:layout_constraintTop_toTopOf="@+id/textViewEmployeeId"
+        app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>

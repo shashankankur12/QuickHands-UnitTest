@@ -5,14 +5,17 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.data.schedule.ImageData
+import com.quickhandslogistics.modified.views.adapters.ScheduleLumperImagesAdapter
+import com.quickhandslogistics.modified.views.controls.OverlapDecoration
 import com.quickhandslogistics.view.activities.AddWorkItemLumpersActivity
 import com.quickhandslogistics.view.activities.WorkItemLumpersActivity
 import com.quickhandslogistics.view.activities.WorkItemLumpersActivity.Companion.ARG_CAN_REPLACE
 import io.bloco.faker.Faker
-import kotlinx.android.synthetic.main.item_lumper_layout.view.constraint_root
 import kotlinx.android.synthetic.main.layout_unscheduled_work_item.view.*
 
 class UnScheduledWorkItemAdapter(
@@ -23,6 +26,7 @@ class UnScheduledWorkItemAdapter(
     Adapter<UnScheduledWorkItemAdapter.WorkItemViewHolder>() {
 
     var faker = Faker()
+    private lateinit var scheduleLumperImageAdapter: ScheduleLumperImagesAdapter
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemViewHolder {
         val view: View =
             LayoutInflater.from(parent.context)
@@ -50,6 +54,8 @@ class UnScheduledWorkItemAdapter(
 
         if (sameDay) {
             holder.button_add_lumpers.visibility = View.VISIBLE
+            holder.circleImageArrow.visibility = View.GONE
+            holder.recyclerviewImages.visibility = View.GONE
             holder.button_add_lumpers.setOnClickListener {
                 val intent = Intent(activity, AddWorkItemLumpersActivity::class.java)
                 intent.putExtra("position", position)
@@ -61,7 +67,9 @@ class UnScheduledWorkItemAdapter(
             }
         } else {
             holder.button_add_lumpers.visibility = View.GONE
-            holder.constraintRoot.setOnClickListener {
+            holder.circleImageArrow.visibility = View.VISIBLE
+            holder.recyclerviewImages.visibility = View.VISIBLE
+            holder.itemView.setOnClickListener {
                 val intent = Intent(activity, WorkItemLumpersActivity::class.java)
                 intent.putExtra(ARG_CAN_REPLACE, false)
                 activity.startActivity(intent)
@@ -73,18 +81,34 @@ class UnScheduledWorkItemAdapter(
         }
 
         if (lumpersCountList[position] > 0) {
-            holder.text_lumpers_count.visibility = View.VISIBLE
-            holder.text_lumpers_count.text = "Lumpers: ${lumpersCountList[position]}"
 
             holder.button_add_lumpers.visibility = View.GONE
+            holder.circleImageArrow.visibility = View.VISIBLE
+            holder.recyclerviewImages.visibility = View.VISIBLE
         } else {
-            holder.text_lumpers_count.visibility = View.GONE
 
             if(sameDay){
                 holder.button_add_lumpers.visibility = View.VISIBLE
+                holder.circleImageArrow.visibility = View.GONE
+                holder.recyclerviewImages.visibility = View.GONE
+
             } else{
                 holder.button_add_lumpers.visibility = View.GONE
+                holder.circleImageArrow.visibility = View.VISIBLE
+                holder.recyclerviewImages.visibility = View.VISIBLE
             }
+        }
+
+        holder.recyclerviewImages.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
+            val lumperImages = ArrayList<ImageData>()
+
+            for (i in 1..7) {
+                lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
+            }
+            addItemDecoration(OverlapDecoration())
+            scheduleLumperImageAdapter = ScheduleLumperImagesAdapter(lumperImages,context)
+            adapter = scheduleLumperImageAdapter
         }
     }
 
@@ -94,10 +118,10 @@ class UnScheduledWorkItemAdapter(
     }
 
     class WorkItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var lumperText = view.text_lumper
-        var text_startDate = view.text_startDate
-        var text_lumpers_count = view.text_lumpers_count
-        var button_add_lumpers = view.button_add_lumpers
-        var constraintRoot = view.constraint_root
+        var lumperText = view.textViewContainerName
+        var text_startDate = view.textViewStartTime
+        var circleImageArrow = view.circleImageViewArrow
+        var button_add_lumpers = view.textViewAddTime
+        var recyclerviewImages = view.recyclerViewLumpersImagesList
     }
 }
