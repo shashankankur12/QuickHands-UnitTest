@@ -110,7 +110,7 @@ class ScheduleDetailActivity : BaseActivity(), SpeedDialView.OnActionSelectedLis
     */
     override fun onWorkItemClick(sameDay: Boolean) {
         val bundle = Bundle()
-        bundle.putBoolean(WorkItemDetailActivity.ARG_CAN_REPLACE, sameDay)
+        bundle.putBoolean(WorkItemDetailActivity.ARG_ALLOW_UPDATE, sameDay)
         startIntent(WorkItemDetailActivity::class.java, bundle = bundle)
     }
 }
