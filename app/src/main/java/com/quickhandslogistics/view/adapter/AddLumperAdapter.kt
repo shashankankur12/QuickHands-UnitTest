@@ -7,24 +7,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.data.schedule.ImageData
 import com.squareup.picasso.Picasso
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.layout_add_lumpers.view.*
-
 
 class AddLumperAdapter(val context: Activity) :
     Adapter<AddLumperAdapter.WorkItemHolder>() {
 
     var addedLumpersList: ArrayList<String> = ArrayList()
     var lumpers: ArrayList<String> = ArrayList()
-
-    init {
-        lumpers.add("Gene Hand")
-        lumpers.add("Frida Moore")
-        lumpers.add("Virgil Ernser")
-        lumpers.add("Philip Von")
-    }
-
     var faker = Faker()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemHolder {
         val view: View =
@@ -37,18 +29,22 @@ class AddLumperAdapter(val context: Activity) :
     }
 
     override fun onBindViewHolder(holder: WorkItemHolder, position: Int) {
+
+        for (i in 1..7) {
+            lumpers.add(faker.name.firstName()+ faker.name.lastName())
+        }
         holder.lumperText?.text = lumpers[position]
 
-        Picasso.get().load(faker.avatar.image()).error(R.drawable.ic_basic_info_placeholder)
+        Picasso.get().load(R.drawable.ic_basic_info_placeholder).error(R.drawable.ic_basic_info_placeholder)
             .into(holder.profilePic)
 
         if (addedLumpersList.contains(lumpers[position])) {
-            holder.imageViewAdd.setImageResource(R.drawable.ic_check_box)
+            holder.imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick)
         } else {
-            holder.imageViewAdd.setImageResource(R.drawable.ic_check_box_outline)
+            holder.imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick_blank)
         }
 
-        holder.constraintRoot.setOnClickListener {
+        holder.itemView.setOnClickListener {
             val lumper = lumpers[position]
             if (addedLumpersList.contains(lumper)) {
                 addedLumpersList.remove(lumper)
@@ -57,6 +53,7 @@ class AddLumperAdapter(val context: Activity) :
             }
             notifyDataSetChanged()
         }
+
     }
 
     fun getSelectedLumper(): ArrayList<String> {
@@ -64,9 +61,8 @@ class AddLumperAdapter(val context: Activity) :
     }
 
     class WorkItemHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var lumperText = view.text_lumper
-        var profilePic = view.image_lumper_logo
-        var imageViewAdd = view.imageViewAdd
-        var constraintRoot = view.constraint_root
+        var lumperText = view.textViewLumperName
+        var profilePic = view.circleImageViewProfile
+        var imageViewAdd = view.viewAttendanceStatus
     }
 }

@@ -1,30 +1,28 @@
-package com.quickhandslogistics.view.activities
+package com.quickhandslogistics.modified.views.activities.schedule
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.Html
 import android.view.MenuItem
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.data.schedule.ImageData
+import com.quickhandslogistics.modified.views.BaseActivity
+import com.quickhandslogistics.modified.views.adapters.ScheduleLumperImagesAdapter
+import com.quickhandslogistics.modified.views.controls.OverlapDecoration
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleFragment
 import com.quickhandslogistics.view.adapter.UnScheduledWorkItemAdapter
-import kotlinx.android.synthetic.main.activity_unschedule_detail.*
 import kotlinx.android.synthetic.main.container_unschedule_detail.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class UnScheduleDetailActivity : AppCompatActivity() {
+class UnScheduleDetailActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_unschedule_detail)
-        toolbar.title = ""
-        setSupportActionBar(toolbar)
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setupToolbar()
 
         var time: Long = 0
         intent.extras?.let {
@@ -32,26 +30,35 @@ class UnScheduleDetailActivity : AppCompatActivity() {
                 time = it.getLong(ScheduleFragment.ARG_SELECTED_TIME)
             }
         }
+
         val cal1 = Calendar.getInstance()
         val cal2 = Calendar.getInstance()
         cal1.timeInMillis = time
         val sameDay =
             cal1[Calendar.DAY_OF_YEAR] == cal2[Calendar.DAY_OF_YEAR] && cal1[Calendar.YEAR] == cal2[Calendar.YEAR]
 
-        fab_save.visibility = View.GONE
-
-        fab_save.setOnClickListener {
-            finish()
-            overridePendingTransition(R.anim.anim_prev_slide_in, R.anim.anim_prev_slide_out)
-        }
-
-        setData()
-
         createDummyAddedLumpersList()
 
-        recycler_work_items.layoutManager = LinearLayoutManager(this)
-        adapter = UnScheduledWorkItemAdapter(this, sameDay, lumpersCountList)
-        recycler_work_items.adapter = adapter
+        recyclerViewLumpersImagesList.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            val lumperImages = ArrayList<ImageData>()
+
+            for (i in 1..7) {
+                lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
+            }
+            addItemDecoration(OverlapDecoration())
+            val scheduleLumperImageAdapter = ScheduleLumperImagesAdapter(lumperImages, context)
+            adapter = scheduleLumperImageAdapter
+        }
+
+        recycler_work_items.apply {
+            val linearLayoutManager = LinearLayoutManager(activity)
+            layoutManager = linearLayoutManager
+            val dividerItemDecoration =
+                DividerItemDecoration(activity, linearLayoutManager.orientation)
+            addItemDecoration(dividerItemDecoration)
+            adapter = UnScheduledWorkItemAdapter(this@UnScheduleDetailActivity, sameDay, lumpersCountList)
+        }
     }
 
     private lateinit var adapter: UnScheduledWorkItemAdapter
@@ -65,11 +72,6 @@ class UnScheduleDetailActivity : AppCompatActivity() {
         lumpersCountList.add(0)
     }
 
-    private fun setData() {
-        text_location.text = Html.fromHtml("<b>Building : One97 Communications Private Limited</b>")
-        text_lumper_count.text = Html.fromHtml("<b>Door : </b>03")
-        text_date.text = Html.fromHtml("<b>Work Items : </b>05")
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -93,4 +95,5 @@ class UnScheduleDetailActivity : AppCompatActivity() {
             adapter.updateCount(lumpersCountList)
         }
     }
+
 }

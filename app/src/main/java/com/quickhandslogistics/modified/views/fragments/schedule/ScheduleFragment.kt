@@ -13,7 +13,7 @@ import com.quickhandslogistics.modified.views.activities.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.views.adapters.ScheduleLumperImagesAdapter
 import com.quickhandslogistics.modified.views.adapters.ScheduleAdapter
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
-import com.quickhandslogistics.view.activities.UnScheduleDetailActivity
+import com.quickhandslogistics.modified.views.activities.schedule.UnScheduleDetailActivity
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.util.*
 
