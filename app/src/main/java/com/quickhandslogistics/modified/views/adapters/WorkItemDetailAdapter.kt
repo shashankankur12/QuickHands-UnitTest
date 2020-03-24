@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.layout_work_item_detail_lumper.view.*
 
 class WorkItemDetailAdapter(
     private val onAdapterClick: WorkItemDetailContract.View.OnAdapterItemClickListener,
-    private val canReplace: Boolean
+    private val allowUpdate: Boolean
 ) :
     Adapter<WorkItemDetailAdapter.WorkItemHolder>() {
 
@@ -51,7 +51,7 @@ class WorkItemDetailAdapter(
             holder.textViewReplaced.visibility = View.VISIBLE
         } else {
             holder.textViewReplaced.visibility = View.GONE
-            if (canReplace) {
+            if (allowUpdate) {
                 if (position == 1 || position == 3) {
                     holder.linearLayoutLumperTime.visibility = View.GONE
                     holder.buttonReplace.visibility = View.VISIBLE
@@ -60,8 +60,12 @@ class WorkItemDetailAdapter(
                     holder.buttonReplace.visibility = View.GONE
                 }
             } else {
-                holder.linearLayoutLumperTime.visibility = View.VISIBLE
                 holder.buttonReplace.visibility = View.GONE
+                if (position == 1 || position == 3) {
+                    holder.linearLayoutLumperTime.visibility = View.GONE
+                } else {
+                    holder.linearLayoutLumperTime.visibility = View.VISIBLE
+                }
             }
         }
 

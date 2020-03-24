@@ -17,7 +17,7 @@ class WorkItemDetailActivity : BaseActivity(),
     private var workItemDetailAdapter: WorkItemDetailAdapter? = null
 
     companion object {
-        const val ARG_CAN_REPLACE = "ARG_CAN_REPLACE"
+        const val ARG_ALLOW_UPDATE = "ARG_ALLOW_UPDATE"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,8 +26,8 @@ class WorkItemDetailActivity : BaseActivity(),
         setupToolbar()
 
         intent.extras?.let { it ->
-            if (it.containsKey(ARG_CAN_REPLACE)) {
-                val canReplace = it.getBoolean(ARG_CAN_REPLACE, true)
+            if (it.containsKey(ARG_ALLOW_UPDATE)) {
+                val allowUpdate = it.getBoolean(ARG_ALLOW_UPDATE, true)
 
                 recyclerViewLumpers.apply {
                     val linearLayoutManager = LinearLayoutManager(this@WorkItemDetailActivity)
@@ -36,7 +36,7 @@ class WorkItemDetailActivity : BaseActivity(),
                         DividerItemDecoration(activity, linearLayoutManager.orientation)
                     addItemDecoration(dividerItemDecoration)
                     workItemDetailAdapter =
-                        WorkItemDetailAdapter(this@WorkItemDetailActivity, canReplace)
+                        WorkItemDetailAdapter(this@WorkItemDetailActivity, allowUpdate)
                     adapter = workItemDetailAdapter
                 }
             }
