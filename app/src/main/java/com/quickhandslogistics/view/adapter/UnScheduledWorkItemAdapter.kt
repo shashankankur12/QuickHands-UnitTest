@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.view.activities.AddWorkItemLumpersActivity
-import com.quickhandslogistics.view.activities.WorkItemLumpersActivity
-import com.quickhandslogistics.view.activities.WorkItemLumpersActivity.Companion.ARG_CAN_REPLACE
+import com.quickhandslogistics.modified.views.activities.schedule.WorkItemDetailActivity
+import com.quickhandslogistics.modified.views.activities.schedule.WorkItemDetailActivity.Companion.ARG_CAN_REPLACE
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.item_lumper_layout.view.constraint_root
 import kotlinx.android.synthetic.main.layout_unscheduled_work_item.view.*
@@ -62,7 +62,7 @@ class UnScheduledWorkItemAdapter(
         } else {
             holder.button_add_lumpers.visibility = View.GONE
             holder.constraintRoot.setOnClickListener {
-                val intent = Intent(activity, WorkItemLumpersActivity::class.java)
+                val intent = Intent(activity, WorkItemDetailActivity::class.java)
                 intent.putExtra(ARG_CAN_REPLACE, false)
                 activity.startActivity(intent)
                 activity.overridePendingTransition(

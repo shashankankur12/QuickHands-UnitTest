@@ -161,4 +161,6 @@
     <string name="start_time_container">Start Time - %s</string>
     <string name="something_went_wrong">Something went wrong, Please try again after sometime!!!</string>
     <string name="add_time">Add Time</string>
+    <string name="shift_time">Shift Time</string>
+    <string name="lunch_time">Lunch Time</string>
 </resources>

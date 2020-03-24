@@ -68,7 +68,7 @@
             android:name=".view.activities.UnScheduleDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.WorkItemLumpersActivity"
+            android:name=".modified.views.activities.schedule.WorkItemDetailActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activities.AddWorkItemLumpersActivity"

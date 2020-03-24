@@ -15,7 +15,6 @@ import com.quickhandslogistics.modified.views.adapters.ScheduledWorkItemAdapter
 import com.quickhandslogistics.modified.views.controls.OverlapDecoration
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleFragment
 import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.view.activities.WorkItemLumpersActivity
 import kotlinx.android.synthetic.main.content_schedule_detail.*
 
 class ScheduleDetailActivity : BaseActivity(), SpeedDialView.OnActionSelectedListener,
@@ -111,7 +110,7 @@ class ScheduleDetailActivity : BaseActivity(), SpeedDialView.OnActionSelectedLis
     */
     override fun onWorkItemClick(sameDay: Boolean) {
         val bundle = Bundle()
-        bundle.putBoolean(WorkItemLumpersActivity.ARG_CAN_REPLACE, sameDay)
-        startIntent(WorkItemLumpersActivity::class.java, bundle = bundle)
+        bundle.putBoolean(WorkItemDetailActivity.ARG_CAN_REPLACE, sameDay)
+        startIntent(WorkItemDetailActivity::class.java, bundle = bundle)
     }
 }
