@@ -56,7 +56,14 @@ class ScheduleAdapter(var adapterItemClickListener: ScheduleContract.View.OnAdap
         var textViewCreatedDate: TextView = itemView.textViewCreatedDate
         var textViewScheduleType: TextView = itemView.textViewScheduleType
         var textViewWorkItemsCount: TextView = itemView.textViewWorkItemsCount
-        var recyclerviewImages :RecyclerView = itemView.recyclerViewLumpersImagesList
+        var recyclerviewImages: RecyclerView = itemView.recyclerViewLumpersImagesList
+
+        init {
+            recyclerviewImages.apply {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                addItemDecoration(OverlapDecoration())
+            }
+        }
 
         fun bind(item: ScheduleData) {
             itemView.setOnClickListener(this)
@@ -65,14 +72,12 @@ class ScheduleAdapter(var adapterItemClickListener: ScheduleContract.View.OnAdap
 
         private fun setLumperImagesRecycler() {
             recyclerviewImages.apply {
-                layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
                 val lumperImages = java.util.ArrayList<ImageData>()
 
                 for (i in 1..7) {
                     lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
                 }
-                addItemDecoration(OverlapDecoration())
-                scheduleLumperImageAdapter = ScheduleLumperImagesAdapter(lumperImages,context)
+                scheduleLumperImageAdapter = ScheduleLumperImagesAdapter(lumperImages, context)
                 adapter = scheduleLumperImageAdapter
             }
         }

@@ -10,11 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.data.schedule.ImageData
+import com.quickhandslogistics.modified.views.activities.schedule.WorkItemDetailActivity
 import com.quickhandslogistics.modified.views.adapters.ScheduleLumperImagesAdapter
 import com.quickhandslogistics.modified.views.controls.OverlapDecoration
 import com.quickhandslogistics.view.activities.AddWorkItemLumpersActivity
-import com.quickhandslogistics.view.activities.WorkItemLumpersActivity
-import com.quickhandslogistics.view.activities.WorkItemLumpersActivity.Companion.ARG_CAN_REPLACE
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.layout_unscheduled_work_item.view.*
 
@@ -70,8 +69,8 @@ class UnScheduledWorkItemAdapter(
             holder.circleImageArrow.visibility = View.VISIBLE
             holder.recyclerviewImages.visibility = View.VISIBLE
             holder.itemView.setOnClickListener {
-                val intent = Intent(activity, WorkItemLumpersActivity::class.java)
-                intent.putExtra(ARG_CAN_REPLACE, false)
+                val intent = Intent(activity, WorkItemDetailActivity::class.java)
+                intent.putExtra(WorkItemDetailActivity.ARG_ALLOW_UPDATE, false)
                 activity.startActivity(intent)
                 activity.overridePendingTransition(
                     R.anim.anim_next_slide_in,
@@ -87,12 +86,12 @@ class UnScheduledWorkItemAdapter(
             holder.recyclerviewImages.visibility = View.VISIBLE
         } else {
 
-            if(sameDay){
+            if (sameDay) {
                 holder.button_add_lumpers.visibility = View.VISIBLE
                 holder.circleImageArrow.visibility = View.GONE
                 holder.recyclerviewImages.visibility = View.GONE
 
-            } else{
+            } else {
                 holder.button_add_lumpers.visibility = View.GONE
                 holder.circleImageArrow.visibility = View.VISIBLE
                 holder.recyclerviewImages.visibility = View.VISIBLE
@@ -100,14 +99,14 @@ class UnScheduledWorkItemAdapter(
         }
 
         holder.recyclerviewImages.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             val lumperImages = ArrayList<ImageData>()
 
             for (i in 1..7) {
                 lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
             }
             addItemDecoration(OverlapDecoration())
-            scheduleLumperImageAdapter = ScheduleLumperImagesAdapter(lumperImages,context)
+            scheduleLumperImageAdapter = ScheduleLumperImagesAdapter(lumperImages, context)
             adapter = scheduleLumperImageAdapter
         }
     }

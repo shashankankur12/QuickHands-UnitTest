@@ -10,8 +10,8 @@ import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.modified.data.schedule.ScheduleData
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.activities.schedule.ScheduleDetailActivity
-import com.quickhandslogistics.modified.views.adapters.ScheduleLumperImagesAdapter
 import com.quickhandslogistics.modified.views.adapters.ScheduleAdapter
+import com.quickhandslogistics.modified.views.adapters.ScheduleLumperImagesAdapter
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.modified.views.activities.schedule.UnScheduleDetailActivity
 import kotlinx.android.synthetic.main.fragment_schedule.*
@@ -50,9 +50,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
             addItemDecoration(SpaceDividerItemDecorator(15))
             scheduleAdapter = ScheduleAdapter(this@ScheduleFragment)
             adapter = scheduleAdapter
-            scheduleLayoutAnimation()
         }
-
     }
 
     fun updateList(

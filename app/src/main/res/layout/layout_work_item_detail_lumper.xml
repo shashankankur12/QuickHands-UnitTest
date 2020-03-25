@@ -13,7 +13,7 @@
         android:layout_width="@dimen/_35sdp"
         android:layout_height="@dimen/_35sdp"
         android:contentDescription="@string/nav_header_desc"
-        android:src="@drawable/dummy"
+        android:src="@drawable/ic_basic_info_placeholder"
         app:civ_border_color="@color/imageBorder"
         app:civ_border_width="1dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,12 +33,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
         android:text="John Snow"
         android:textColor="@color/textBlack"
         android:textSize="@dimen/_14ssp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/switchAttendance"
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,56 +51,15 @@
         android:text="(Emp ID: 1001)"
         android:textColor="@color/textBlack"
         android:textSize="@dimen/_10ssp"
-        app:layout_constraintEnd_toStartOf="@id/switchAttendance"
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
-
-    <Switch
-        android:id="@+id/switchAttendance"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_30ssp"
-        android:checked="true"
-        android:theme="@style/ToggleSwitchTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textViewLumperName" />
-
-    <TextView
-        android:id="@+id/textViewAddTime"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_add_time_plus"
-        android:drawablePadding="@dimen/_5sdp"
-        android:padding="@dimen/_5sdp"
-        android:text="@string/add_time"
-        android:textColor="@color/buttonRed"
-        android:textSize="@dimen/_12ssp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewNoTimeLoggedIn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_4sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:text="No time logged in yet"
-        android:textColor="@color/detailHeader"
-        android:textSize="@dimen/_10ssp"
-        android:textStyle="italic"
-        android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@+id/textViewAddTime"
-        app:layout_constraintStart_toEndOf="@id/circleImageViewProfile"
-        app:layout_constraintTop_toBottomOf="@id/textViewEmployeeId" />
 
     <LinearLayout
         android:id="@+id/linearLayoutLumperTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toStartOf="@+id/textViewAddTime"
         app:layout_constraintStart_toEndOf="@id/circleImageViewProfile"
         app:layout_constraintTop_toBottomOf="@id/textViewEmployeeId">
@@ -112,9 +70,12 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:text="@string/shift_time"
+            android:text="Shift Time"
             android:textColor="@color/detailHeader"
-            android:textSize="@dimen/_10ssp" />
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintEnd_toStartOf="@id/switchAttendance"
+            app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+            app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
 
         <TextView
             android:id="@+id/textViewShiftTime"
@@ -137,7 +98,7 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:text="@string/lunch_time"
+            android:text="Lunch Time"
             android:textColor="@color/detailHeader"
             android:textSize="@dimen/_10ssp" />
 
@@ -155,5 +116,37 @@
             android:textColor="@color/textBlack"
             android:textSize="@dimen/_10ssp"
             android:textStyle="bold" />
+
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/buttonReplace"
+            style="@style/textSizeNormalRegFont"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_30ssp"
+            android:background="@drawable/round_button_red"
+            android:text="@string/replace"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textViewReplaced"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/replacementRequested"
+            android:textColor="@color/buttonRed"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

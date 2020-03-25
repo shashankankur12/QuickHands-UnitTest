@@ -6,40 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/appBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_mark_attendance">
-
-    <EditText
-        android:id="@+id/editTextSearch"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_12sdp"
-        android:layout_marginEnd="@dimen/_12sdp"
-        android:layout_marginBottom="@dimen/_12sdp"
-        android:background="@drawable/edit_search_bg"
-        android:drawableStart="@drawable/ic_search"
-        android:drawablePadding="@dimen/_4sdp"
-        android:hint="@string/search_by_name"
-        android:imeOptions="actionDone"
-        android:inputType="textPersonName"
-        android:paddingStart="@dimen/_5sdp"
-        android:paddingTop="@dimen/_8sdp"
-        android:paddingEnd="@dimen/_30sdp"
-        android:paddingBottom="@dimen/_8sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageViewCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/_17sdp"
-        android:src="@drawable/ic_cancel"
-        android:tint="@color/colorLightGrey"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextSearch"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editTextSearch" />
+    tools:showIn="@layout/activity_building_operations">
 
     <View
         android:layout_width="match_parent"
@@ -56,32 +23,35 @@
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_20sdp"
         android:background="@drawable/top_left_round_background"
-        android:paddingStart="@dimen/_15ssp"
+        android:paddingStart="@dimen/_10ssp"
         android:paddingTop="@dimen/_10ssp"
-        android:paddingEnd="@dimen/_15ssp"
+        android:paddingEnd="@dimen/_10ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextSearch">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/_10ssp">
+            android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewLumpers"
+                android:id="@+id/recyclerViewBuildingOperations"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/_10ssp"
                 android:layout_weight="1" />
 
             <Button
-                android:id="@+id/buttonSave"
+                android:id="@+id/buttonSubmit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_10ssp"
                 android:background="@drawable/round_button_red_new"
-                android:text="@string/string_save"
+                android:text="@string/string_submit"
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_12ssp" />
@@ -96,4 +66,5 @@
             android:textSize="@dimen/_12ssp"
             android:visibility="gone" />
     </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
