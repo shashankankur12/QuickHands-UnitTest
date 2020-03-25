@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
@@ -39,6 +40,11 @@ class UnScheduleDetailActivity : BaseActivity() {
         cal1.timeInMillis = time
         val sameDay =
             cal1[Calendar.DAY_OF_YEAR] == cal2[Calendar.DAY_OF_YEAR] && cal1[Calendar.YEAR] == cal2[Calendar.YEAR]
+
+        if(sameDay)
+            buttonSchduleNow.visibility = View.VISIBLE
+        else
+            buttonSchduleNow.visibility = View.GONE
 
         createDummyAddedLumpersList()
 
