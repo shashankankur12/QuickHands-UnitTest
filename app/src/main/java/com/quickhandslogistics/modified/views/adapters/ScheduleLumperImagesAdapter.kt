@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.data.schedule.ImageData
-import com.quickhandslogistics.modified.views.activities.LumperDetailActivity
+import com.quickhandslogistics.modified.views.activities.LumpersActivity
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.schdule_lumper_image_list.view.*
 
@@ -52,7 +52,7 @@ class ScheduleLumperImagesAdapter(var lumperImages: ArrayList<ImageData>, val co
         }
 
         scheduleImageViewHolder.circleImageView.setOnClickListener(View.OnClickListener {
-            val intent = Intent(context, LumperDetailActivity::class.java)
+            val intent = Intent(context, LumpersActivity::class.java)
             context.startActivity(intent)
         })
     }
