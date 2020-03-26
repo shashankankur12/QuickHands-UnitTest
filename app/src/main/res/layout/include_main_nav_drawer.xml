@@ -54,6 +54,13 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingBottom="16dp" />
+
+                <TextView
+                    android:id="@+id/textViewVersionName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/_10ssp" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </RelativeLayout>

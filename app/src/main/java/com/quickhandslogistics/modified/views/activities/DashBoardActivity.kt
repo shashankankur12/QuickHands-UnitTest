@@ -2,6 +2,7 @@ package com.quickhandslogistics.modified.views.activities
 
 import android.os.Bundle
 import android.view.View
+import com.quickhandslogistics.BuildConfig
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.DashBoardContract
 import com.quickhandslogistics.modified.presenters.DashBoardPresenter
@@ -48,6 +49,9 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         textViewLeadName.text = fullName
         textViewEmail.text = email
         textViewEmployeeId.text = String.format("Emp ID: %s", employeeId)
+
+        // Show the current version name
+        textViewVersionName.text = String.format("V %s", BuildConfig.VERSION_NAME)
     }
 }
 
