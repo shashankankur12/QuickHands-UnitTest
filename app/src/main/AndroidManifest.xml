@@ -18,6 +18,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".modified.views.activities.ContainerDetailActivity"></activity>
         <activity android:name=".modified.views.activities.LumperDetailActivity" />
         <activity android:name=".modified.views.BaseActivity" />
         <activity

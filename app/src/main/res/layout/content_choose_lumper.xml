@@ -47,13 +47,13 @@
             app:layout_constraintTop_toTopOf="@+id/editTextSearch" />
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@drawable/shadow_effect"
-            android:translationY="-15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/shadow_effect"
+        android:translationY="-15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
 
         <RelativeLayout
             android:id="@+id/relativeLayout"

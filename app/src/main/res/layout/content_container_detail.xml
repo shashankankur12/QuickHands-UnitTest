@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/_15ssp"
+    android:paddingTop="@dimen/_5ssp"
+    android:paddingEnd="@dimen/_15ssp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/header"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/textViewContainerno"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Container No."
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:textColor="@color/detailHeader"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewContainerId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="3254689"
+        android:textStyle="bold"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_80sdp"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintLeft_toRightOf="@+id/textViewContainerno"
+        android:textColor="@color/textBlack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewContainerItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Container Item"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:textColor="@color/detailHeader"
+        app:layout_constraintTop_toBottomOf="@+id/textViewContainerno"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewContainerItemid"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="7 Doors"
+        android:textStyle="bold"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_80sdp"
+        android:textSize="@dimen/_14ssp"
+        android:textColor="@color/textBlack"
+        app:layout_constraintTop_toBottomOf="@+id/textViewContainerno"
+        app:layout_constraintLeft_toRightOf="@+id/textViewContainerItem"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewContainerwght"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/weight"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:textColor="@color/detailHeader"
+        app:layout_constraintTop_toBottomOf="@+id/textViewContainerItem"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewContainerItemwghtValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="300 kg"
+        android:textStyle="bold"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_80sdp"
+        android:textSize="@dimen/_14ssp"
+        android:textColor="@color/textBlack"
+        app:layout_constraintTop_toBottomOf="@+id/textViewContainerItem"
+        app:layout_constraintLeft_toRightOf="@+id/textViewContainerwght"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewItemPoLots"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/item_po_lots"
+        android:textColor="@color/detailHeader"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewContainerwght"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewContainerItemPoLotsId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="5"
+        app:layout_constraintLeft_toRightOf="@+id/textViewItemPoLots"
+        android:textStyle="bold"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_80sdp"
+        android:textSize="@dimen/_14ssp"
+        android:textColor="@color/textBlack"
+        app:layout_constraintTop_toBottomOf="@+id/textViewContainerwght"
+
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewMix"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/mix"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:textColor="@color/detailHeader"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewItemPoLots"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewContainerMixId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="Fe, Cu"
+        android:textStyle="bold"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_80sdp"
+        android:textSize="@dimen/_14ssp"
+        android:textColor="@color/textBlack"
+        app:layout_constraintTop_toBottomOf="@+id/textViewItemPoLots"
+        app:layout_constraintLeft_toRightOf="@+id/textViewMix"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewRush"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/rush"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:textColor="@color/detailHeader"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMix"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewRushId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="Rush"
+        android:textStyle="bold"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_80sdp"
+        android:textSize="@dimen/_14ssp"
+        android:textColor="@color/textBlack"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMix"
+        app:layout_constraintLeft_toRightOf="@+id/textViewRush"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewLunchTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/lunch_time"
+        android:textColor="@color/detailHeader"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRush"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewLunchTimeId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="1:00pm - 1:45pm"
+        android:textStyle="bold"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_80sdp"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintLeft_toRightOf="@+id/textViewLunchTime"
+        android:textColor="@color/textBlack"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRush"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewNotes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/notes"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:textColor="@color/detailHeader"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLunchTime" />
+
+    <TextView
+        android:id="@+id/textViewNotesId"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_50sdp"
+        android:maxLines="5"
+        android:text="Lorem ipsum dolor sit , ectetur adipiscing slit, do eiusmod tempor."
+        android:textColor="@color/textBlack"
+        android:textSize="@dimen/_14ssp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/textViewNotes"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLunchTime" />
+</androidx.constraintlayout.widget.ConstraintLayout>
