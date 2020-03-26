@@ -10,14 +10,15 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleDetailContract
 import com.quickhandslogistics.modified.data.schedule.ImageData
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.modified.views.adapters.ScheduleLumperImagesAdapter
+import com.quickhandslogistics.modified.views.activities.LumpersActivity
+import com.quickhandslogistics.modified.views.adapters.LumperImagesAdapter
 import com.quickhandslogistics.modified.views.adapters.ScheduledWorkItemAdapter
 import com.quickhandslogistics.modified.views.controls.OverlapDecoration
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleFragment
 import com.quickhandslogistics.utils.DateUtils
 import kotlinx.android.synthetic.main.content_schedule_detail.*
 
-class ScheduleDetailActivity : BaseActivity(), SpeedDialView.OnActionSelectedListener,
+class ScheduleDetailActivity : BaseActivity(), SpeedDialView.OnActionSelectedListener, LumperImagesAdapter.OnAdapterItemClickListener,
     ScheduleDetailContract.View.OnAdapterItemClickListener {
 
     private var isCurrentDate: Boolean = false
@@ -67,7 +68,7 @@ class ScheduleDetailActivity : BaseActivity(), SpeedDialView.OnActionSelectedLis
                 lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
             }
             addItemDecoration(OverlapDecoration())
-            val scheduleLumperImageAdapter = ScheduleLumperImagesAdapter(lumperImages, context)
+            val scheduleLumperImageAdapter = LumperImagesAdapter(lumperImages, this@ScheduleDetailActivity)
             adapter = scheduleLumperImageAdapter
         }
 
@@ -112,5 +113,13 @@ class ScheduleDetailActivity : BaseActivity(), SpeedDialView.OnActionSelectedLis
         val bundle = Bundle()
         bundle.putBoolean(WorkItemDetailActivity.ARG_ALLOW_UPDATE, sameDay)
         startIntent(WorkItemDetailActivity::class.java, bundle = bundle)
+    }
+
+    override fun onImageItemClick() {
+        startIntent(LumpersActivity::class.java)
+    }
+
+    override fun onItemClick() {
+        startIntent(LumpersActivity::class.java)
     }
 }

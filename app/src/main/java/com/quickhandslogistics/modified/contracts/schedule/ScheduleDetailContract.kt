@@ -4,6 +4,8 @@ class ScheduleDetailContract {
     interface View {
         interface OnAdapterItemClickListener {
             fun onWorkItemClick(sameDay: Boolean)
+            fun onImageItemClick()
+
         }
     }
 }

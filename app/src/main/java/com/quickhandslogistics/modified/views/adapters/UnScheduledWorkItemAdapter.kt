@@ -1,4 +1,4 @@
-package com.quickhandslogistics.view.adapter
+package com.quickhandslogistics.modified.views.adapters
 
 import android.app.Activity
 import android.content.Intent
@@ -7,38 +7,57 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.data.schedule.ImageData
+import com.quickhandslogistics.modified.models.lumpers.LumperListModel
 import com.quickhandslogistics.modified.views.activities.schedule.WorkItemDetailActivity
-import com.quickhandslogistics.modified.views.adapters.ScheduleLumperImagesAdapter
 import com.quickhandslogistics.modified.views.controls.OverlapDecoration
 import com.quickhandslogistics.view.activities.AddWorkItemLumpersActivity
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.layout_unscheduled_work_item.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class UnScheduledWorkItemAdapter(
+    private var adapterItemClickListener: OnAdapterItemClickListener,
     private val activity: Activity,
     private val sameDay: Boolean,
     private var lumpersCountList: ArrayList<Int>
-) :
-    Adapter<UnScheduledWorkItemAdapter.WorkItemViewHolder>() {
+) :  RecyclerView.Adapter<UnScheduledWorkItemAdapter.WorkItemViewHolder>() {
 
     var faker = Faker()
-    private lateinit var scheduleLumperImageAdapter: ScheduleLumperImagesAdapter
+    var lumpersList: ArrayList<LumperListModel> = ArrayList()
+    private lateinit var  scheduleLumperImageAdapter: LumperImagesAdapter
+
+    init {
+        lumpersList.add(LumperListModel("Gene ","Hand", "99896945685"))
+        lumpersList.add(LumperListModel("Frida", "Moore","3845798347593"))
+        lumpersList.add(LumperListModel("Virgil", "Ernser","3745638476584"))
+        lumpersList.add(LumperListModel("Philip", "Von","56348563485684"))
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemViewHolder {
         val view: View =
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.layout_unscheduled_work_item, parent, false)
-        return WorkItemViewHolder(view)
+        return WorkItemViewHolder(
+            view
+        )
     }
 
     override fun getItemCount(): Int {
-        return 5
+        return lumpersList.size
+    }
+
+    fun getItem(position: Int): LumperListModel {
+        return lumpersList[position]
     }
 
     override fun onBindViewHolder(holder: WorkItemViewHolder, position: Int) {
-        holder.lumperText?.text = "#${faker.company?.name()}"
+
+        holder.bind(getItem(position))
+
+        //holder.lumperText?.text = "#${faker.company?.name()}"
         if (position == 0) {
             holder.text_startDate.text = "Start Time: 08:00 AM"
         } else if (position == 1) {
@@ -98,7 +117,7 @@ class UnScheduledWorkItemAdapter(
             }
         }
 
-        holder.recyclerviewImages.apply {
+       /* holder.recyclerviewImages.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             val lumperImages = ArrayList<ImageData>()
 
@@ -106,9 +125,13 @@ class UnScheduledWorkItemAdapter(
                 lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
             }
             addItemDecoration(OverlapDecoration())
-            scheduleLumperImageAdapter = ScheduleLumperImagesAdapter(lumperImages, context)
+            scheduleLumperImageAdapter = ScheduleLumperImagesAdapter(lumperImages, this@UnScheduledWorkItemAdapter)
             adapter = scheduleLumperImageAdapter
-        }
+        }*/
+
+        holder.recyclerviewImages.setOnClickListener(View.OnClickListener {
+            adapterItemClickListener.onItemClick()
+        })
     }
 
     fun updateCount(lumpersCountList: ArrayList<Int>) {
@@ -116,11 +139,43 @@ class UnScheduledWorkItemAdapter(
         notifyDataSetChanged()
     }
 
-    class WorkItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+   inner class WorkItemViewHolder(view: View) : RecyclerView.ViewHolder(view), LumperImagesAdapter.OnAdapterItemClickListener {
         var lumperText = view.textViewContainerName
         var text_startDate = view.textViewStartTime
         var circleImageArrow = view.circleImageViewArrow
         var button_add_lumpers = view.textViewAddTime
         var recyclerviewImages = view.recyclerViewLumpersImagesList
+
+        fun bind(lumperModelData: LumperListModel) {
+            lumperText?.text = String.format(
+                "%s %s",
+                lumperModelData.name.toUpperCase(Locale.getDefault()),
+                lumperModelData.lastName.toUpperCase(Locale.getDefault()))
+
+            setLumperImagesRecycler()
+        }
+
+        private fun setLumperImagesRecycler() {
+           recyclerviewImages.apply {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                val lumperImages = ArrayList<ImageData>()
+
+                for (i in 1..7) {
+                    lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
+                }
+                addItemDecoration(OverlapDecoration())
+               scheduleLumperImageAdapter = LumperImagesAdapter(lumperImages, this@WorkItemViewHolder)
+                adapter = scheduleLumperImageAdapter
+            }
+        }
+
+        override fun onItemClick() {
+            adapterItemClickListener.onItemClick()
+        }
     }
+
+    interface OnAdapterItemClickListener {
+        fun onItemClick()
+    }
+
 }

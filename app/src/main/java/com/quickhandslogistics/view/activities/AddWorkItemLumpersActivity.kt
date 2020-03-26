@@ -53,7 +53,7 @@ class AddWorkItemLumpersActivity : BaseActivity(),View.OnClickListener, TextWatc
                         intent.putExtra("position", position)
                         intent.putExtra("count", addedLumpers.size)
                         setResult(Activity.RESULT_OK, intent)
-                        finish()
+                        onBackPressed()
                     }
                 }
 

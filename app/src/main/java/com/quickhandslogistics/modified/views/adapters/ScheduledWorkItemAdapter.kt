@@ -22,7 +22,7 @@ class ScheduledWorkItemAdapter(
 ) :
     Adapter<ScheduledWorkItemAdapter.WorkItemViewHolder>() {
 
-    private lateinit var scheduleImageAdapter: ScheduleLumperImagesAdapter
+    private lateinit var scheduleImageAdapter: LumperImagesAdapter
     var faker = Faker()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemViewHolder {
         val view: View = LayoutInflater.from(parent.context)
@@ -40,7 +40,7 @@ class ScheduledWorkItemAdapter(
         holder.bind()
     }
 
-    inner class WorkItemViewHolder(view: View) : RecyclerView.ViewHolder(view),
+    inner class WorkItemViewHolder(view: View) : RecyclerView.ViewHolder(view),LumperImagesAdapter.OnAdapterItemClickListener,
         View.OnClickListener {
         var textViewContainerName: TextView = view.textViewContainerName
         var textViewStartTime: TextView = view.textViewStartTime
@@ -59,7 +59,7 @@ class ScheduledWorkItemAdapter(
                 for (i in 1..5) {
                     lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
                 }
-                scheduleImageAdapter = ScheduleLumperImagesAdapter(lumperImages, context)
+                scheduleImageAdapter = LumperImagesAdapter(lumperImages, this@WorkItemViewHolder)
                 addItemDecoration(OverlapDecoration())
                 adapter = scheduleImageAdapter
             }
@@ -69,8 +69,17 @@ class ScheduledWorkItemAdapter(
             view?.let {
                 when (view.id) {
                     itemView.id -> adapterItemClickListener.onWorkItemClick(sameDay)
+
+                    recyclerViewLumpersImagesList.id -> {
+                        adapterItemClickListener.onImageItemClick()
+                    }
                 }
+
             }
+        }
+
+        override fun onItemClick() {
+            adapterItemClickListener.onImageItemClick()
         }
     }
 }

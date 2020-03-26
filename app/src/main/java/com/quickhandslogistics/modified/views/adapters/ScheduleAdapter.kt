@@ -17,7 +17,7 @@ class ScheduleAdapter(var adapterItemClickListener: ScheduleContract.View.OnAdap
     RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
 
     private var scheduledData: ArrayList<ScheduleData> = ArrayList()
-    private lateinit var scheduleLumperImageAdapter: ScheduleLumperImagesAdapter
+    private lateinit var scheduleLumperImageAdapter: LumperImagesAdapter
 
     override fun onCreateViewHolder(
         viewGroup: ViewGroup,
@@ -50,7 +50,7 @@ class ScheduleAdapter(var adapterItemClickListener: ScheduleContract.View.OnAdap
     }
 
     inner class ScheduleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
-        View.OnClickListener {
+        View.OnClickListener, LumperImagesAdapter.OnAdapterItemClickListener {
 
         var textViewBuildingName: TextView = itemView.textViewBuildingName
         var textViewCreatedDate: TextView = itemView.textViewCreatedDate
@@ -77,7 +77,7 @@ class ScheduleAdapter(var adapterItemClickListener: ScheduleContract.View.OnAdap
                 for (i in 1..7) {
                     lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
                 }
-                scheduleLumperImageAdapter = ScheduleLumperImagesAdapter(lumperImages, context)
+                scheduleLumperImageAdapter = LumperImagesAdapter(lumperImages,this@ScheduleViewHolder)
                 adapter = scheduleLumperImageAdapter
             }
         }
@@ -88,8 +88,16 @@ class ScheduleAdapter(var adapterItemClickListener: ScheduleContract.View.OnAdap
                     itemView.id -> {
                         adapterItemClickListener.onItemClick()
                     }
+                    recyclerviewImages.id -> {
+                        adapterItemClickListener.onImageItemClick()
+                    }
                 }
             }
         }
+
+        override fun onItemClick() {
+            adapterItemClickListener.onImageItemClick()
+        }
     }
+
 }
