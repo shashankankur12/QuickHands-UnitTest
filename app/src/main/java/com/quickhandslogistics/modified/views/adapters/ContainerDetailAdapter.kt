@@ -1,6 +1,7 @@
 package com.quickhandslogistics.modified.views.adapters
 
 import android.app.Activity
+import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,16 +11,20 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.data.ContainerModel.ContainerDetailModel
 import kotlinx.android.synthetic.main.content_container_detail.view.*
 
+
 class ContainerDetailAdapter(val context: Activity) :
     RecyclerView.Adapter<ContainerDetailAdapter.ContainerItemHolder>()  {
 
     var containerDetailModel: ArrayList<ContainerDetailModel> = ArrayList()
 
     init {
-        containerDetailModel.add(ContainerDetailModel("3254689 ","7 Doors", "300 Kg","5","Fe,Cu",  "Rush","1:00am - 1:45pm","Lorem ipsum dolor sit , ectetur adipiscing slit, do eiusmod tempor." ))
-        containerDetailModel.add(ContainerDetailModel("32324289 ","3 Doors", "500 Kg","6","Zn,Cu",  "Rush","2:00am - 2:45pm","Lorem ipsum dolor sit , ectetur adipiscing slit, do eiusmod tempor." ))
-        containerDetailModel.add(ContainerDetailModel("53354689 ","2 Doors", "370 Kg","7","Au,Ni",  "Rush","5:00am - 5:45pm","Lorem ipsum dolor sit , ectetur adipiscing slit, do eiusmod tempor." ))
-        containerDetailModel.add(ContainerDetailModel("905394 ","6 Doors", "160 Kg","8","He,Cu",  "Rush","4:00am - 4:45pm","Lorem ipsum dolor sit , ectetur adipiscing slit, do eiusmod tempor." ))
+        containerDetailModel.add(ContainerDetailModel("Container No ","3254689"))
+        containerDetailModel.add(ContainerDetailModel("Container Item ","7 Doors"))
+        containerDetailModel.add(ContainerDetailModel("Weight ","370 Kg"))
+        containerDetailModel.add(ContainerDetailModel("Item PO Lots ","5"))
+        containerDetailModel.add(ContainerDetailModel("Mix ","Fe, Cu"))
+        containerDetailModel.add(ContainerDetailModel("Rush ","5:00am - 5:45am"))
+        containerDetailModel.add(ContainerDetailModel("Notes ","Lorem ipsum "))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContainerItemHolder {
@@ -36,33 +41,19 @@ class ContainerDetailAdapter(val context: Activity) :
         return containerDetailModel[position]
     }
 
-    override fun onBindViewHolder(
-        holder: ContainerDetailAdapter.ContainerItemHolder,
-        position: Int
-    ) {
-        holder.bind(getItem(position))
+    override fun onBindViewHolder(holder: ContainerItemHolder,
+        position: Int) { holder.bind(getItem(position))
 
     }
 
     class ContainerItemHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var textViewContainerNumber: TextView = view.textViewContainerId
-        var textViewContainerItem: TextView = view.textViewContainerItemid
-        var textViewWeight: TextView = view.textViewContainerItemwghtValue
-        var textViewItemPoLots: TextView = view.textViewContainerItemPoLotsId
-        var textViewMix: TextView = view.textViewContainerMixId
-        var textViewLunch: TextView = view.textViewLunchTimeId
-        var textViewRush: TextView = view.textViewRushId
-        var textViewNotes: TextView = view.textViewNotesId
+        var textViewContainerNumberKey: TextView = view.textViewContainerno
+        var textViewContainerNumberValue: TextView = view.textViewContainerId
 
         fun bind(containerData : ContainerDetailModel){
-            textViewContainerNumber.text = containerData.ContainerNo
-            textViewContainerItem.text = containerData.ContainerItem
-           textViewWeight.text = containerData.Weight
-           textViewItemPoLots.text = containerData.ItemPoLots
-            textViewMix.text = containerData.Mix
-            textViewLunch.text = containerData.LunchTime
-            textViewRush.text = containerData.Rush
-            textViewNotes.text = containerData.Notes
+
+            textViewContainerNumberKey.text = containerData.key
+            textViewContainerNumberValue.text = containerData.value
         }
     }
 

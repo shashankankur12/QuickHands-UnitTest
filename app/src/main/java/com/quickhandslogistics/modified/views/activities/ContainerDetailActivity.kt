@@ -19,9 +19,9 @@ class ContainerDetailActivity : BaseActivity(){
         recyclerViewLumperDetail.apply {
             val linearLayoutManager = LinearLayoutManager(activity)
             layoutManager = linearLayoutManager
-            val dividerItemDecoration =
-                DividerItemDecoration(activity, linearLayoutManager.orientation)
-            addItemDecoration(dividerItemDecoration)
+            //val dividerItemDecoration =
+               // DividerItemDecoration(activity, linearLayoutManager.orientation)
+           // addItemDecoration(dividerItemDecoration)
             containerDetailAdapter =
                 ContainerDetailAdapter(activity)
             adapter = containerDetailAdapter

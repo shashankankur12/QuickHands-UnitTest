@@ -18,7 +18,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".modified.views.activities.ContainerDetailActivity"></activity>
+        <activity android:name=".modified.views.activities.SplashActivity"></activity>
         <activity android:name=".modified.views.activities.LumperDetailActivity" />
         <activity android:name=".modified.views.BaseActivity" />
         <activity
@@ -91,7 +91,7 @@
             android:name=".modified.views.activities.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".modified.views.activities.SplashActivity">
+        <activity android:name=".modified.views.activities.ContainerDetailActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
