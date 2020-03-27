@@ -24,7 +24,7 @@ class ContainerDetailAdapter(val context: Activity) :
         containerDetailModel.add(ContainerDetailModel("Item PO Lots ","5"))
         containerDetailModel.add(ContainerDetailModel("Mix ","Fe, Cu"))
         containerDetailModel.add(ContainerDetailModel("Rush ","5:00am - 5:45am"))
-        containerDetailModel.add(ContainerDetailModel("Notes ","Lorem ipsum "))
+        containerDetailModel.add(ContainerDetailModel("Notes ","Lorem ipsum dolor sit , ectetur adipiscing slit, do eiusmod tempor."))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContainerItemHolder {
