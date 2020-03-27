@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.views.BaseFragment
+import com.quickhandslogistics.modified.views.activities.LumperJobHistoryActivity
 import com.quickhandslogistics.view.activities.CustomerActivity
 import com.quickhandslogistics.view.activities.LumperListActivity
 import kotlinx.android.synthetic.main.fragment_reports.*
@@ -41,7 +42,7 @@ class ReportFragment : BaseFragment(), View.OnClickListener {
                     startIntent(LumperListActivity::class.java, bundle = bundle)
                 }
                 textViewLumperJobHistory.id -> {
-                    startIntent(CustomerActivity::class.java, isFinish = false)
+                    startIntent(LumperJobHistoryActivity::class.java, isFinish = false)
                 }
             }
         }

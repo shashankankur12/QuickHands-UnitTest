@@ -16,7 +16,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class LumperJobHistoryActivity : AppCompatActivity() {
+class OldLumperJobHistoryActivity : AppCompatActivity() {
 
     val lumperJobList: ArrayList<String> = ArrayList()
     var faker = Faker()
@@ -46,7 +46,7 @@ class LumperJobHistoryActivity : AppCompatActivity() {
 
         linear_root.setOnClickListener(View.OnClickListener {
             val datePickerDialog = DatePickerDialog(
-                this@LumperJobHistoryActivity,
+                this@OldLumperJobHistoryActivity,
                 OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     text_filter_by_date.setText(dayOfMonth.toString() + "/" + (monthOfYear + 1) + "/" + year)
                 }, year, month, dayOfMonth

@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
-import com.quickhandslogistics.view.activities.LumperJobHistoryActivity
+import com.quickhandslogistics.view.activities.OldLumperJobHistoryActivity
 
 class CustomerBuildingsAdapter(val context: Context) : RecyclerView.Adapter<CustomerBuildingsAdapter.BuildingsHolder>() {
 
@@ -31,7 +31,7 @@ class CustomerBuildingsAdapter(val context: Context) : RecyclerView.Adapter<Cust
         }
 
         holder.constraintRoots.setOnClickListener {
-            context.startActivity(Intent(context, LumperJobHistoryActivity::class.java))
+            context.startActivity(Intent(context, OldLumperJobHistoryActivity::class.java))
         }
     }
 

@@ -22,6 +22,7 @@ class ChooseLumperContract {
         interface OnAdapterItemClickListener {
             fun onClickLumperDetail(employeeData: EmployeeData)
             fun onSelectLumper(employeeData: EmployeeData)
+            fun onPhoneViewClick(lumperName: String, phone: String)
         }
     }
 
