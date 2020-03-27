@@ -89,14 +89,14 @@ class ScheduleAdapter(var adapterItemClickListener: ScheduleContract.View.OnAdap
                         adapterItemClickListener.onItemClick()
                     }
                     recyclerviewImages.id -> {
-                        adapterItemClickListener.onImageItemClick()
+                        adapterItemClickListener.onLumperImagesClick()
                     }
                 }
             }
         }
 
-        override fun onItemClick() {
-            adapterItemClickListener.onImageItemClick()
+        override fun onLumperItemClick() {
+            adapterItemClickListener.onLumperImagesClick()
         }
     }
 

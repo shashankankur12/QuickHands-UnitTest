@@ -10,7 +10,10 @@ import com.quickhandslogistics.modified.data.schedule.ImageData
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.schdule_lumper_image_list.view.*
 
-class LumperImagesAdapter(var lumperImages: ArrayList<ImageData>, var adapterItemClickListener: OnAdapterItemClickListener) :
+class LumperImagesAdapter(
+    var lumperImages: ArrayList<ImageData>,
+    var adapterItemClickListener: OnAdapterItemClickListener
+) :
     RecyclerView.Adapter<LumperImagesAdapter.ScheduleImageViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -49,13 +52,12 @@ class LumperImagesAdapter(var lumperImages: ArrayList<ImageData>, var adapterIte
         }
 
         scheduleImageViewHolder.circleImageView.setOnClickListener {
-            adapterItemClickListener.onItemClick()
+            adapterItemClickListener.onLumperItemClick()
         }
 
     }
 
     interface OnAdapterItemClickListener {
-        fun onItemClick()
+        fun onLumperItemClick()
     }
-
 }

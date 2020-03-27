@@ -14,26 +14,25 @@ import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.adapters.LumperListAdapter
 import com.quickhandslogistics.modified.views.fragments.InfoWarningDialogFragment
 import com.quickhandslogistics.utils.Utils
-import kotlinx.android.synthetic.main.activity_lumpers.*
+import kotlinx.android.synthetic.main.content_choose_lumper.*
 
-class LumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
-    LumperListAdapter.OnAdapterItemClickListener{
+class DisplayLumpersListActivity : BaseActivity(), View.OnClickListener, TextWatcher,
+    LumperListAdapter.OnAdapterItemClickListener {
 
     private lateinit var lumperListAdapter: LumperListAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_lumpers)
-
+        setContentView(R.layout.activity_display_lumpers_list)
         setupToolbar(title = getString(R.string.string_lumper))
 
-        recyclerViewLumpersSheet.apply {
+        recyclerViewLumpers.apply {
             val linearLayoutManager = LinearLayoutManager(activity)
             layoutManager = linearLayoutManager
             val dividerItemDecoration =
                 DividerItemDecoration(activity, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
             lumperListAdapter =
-            LumperListAdapter(this@LumpersActivity)
+                LumperListAdapter(this@DisplayLumpersListActivity)
             adapter = lumperListAdapter
         }
 
@@ -71,7 +70,6 @@ class LumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
     }
 
     override fun onPhoneViewClick(lumperName: String, phone: String) {
-
         val dialog = InfoWarningDialogFragment.newInstance(
             String.format(getString(R.string.call_lumper_dialog_message), lumperName),
             onClickListener = object : InfoDialogWarningContract.View.OnClickListener {
@@ -84,5 +82,4 @@ class LumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
             })
         dialog.show(supportFragmentManager, InfoWarningDialogFragment::class.simpleName)
     }
-
 }

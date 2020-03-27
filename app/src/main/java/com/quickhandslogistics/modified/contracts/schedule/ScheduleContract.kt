@@ -4,7 +4,7 @@ class ScheduleContract {
     interface View {
         interface OnAdapterItemClickListener {
             fun onItemClick()
-            fun onImageItemClick()
+            fun onLumperImagesClick()
         }
     }
 }

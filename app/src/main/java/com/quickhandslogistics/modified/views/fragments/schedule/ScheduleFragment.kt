@@ -9,7 +9,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.modified.data.schedule.ScheduleData
 import com.quickhandslogistics.modified.views.BaseFragment
-import com.quickhandslogistics.modified.views.activities.LumpersActivity
+import com.quickhandslogistics.modified.views.activities.DisplayLumpersListActivity
 import com.quickhandslogistics.modified.views.activities.schedule.ScheduleDetailActivity
 import com.quickhandslogistics.modified.views.activities.schedule.UnScheduleDetailActivity
 import com.quickhandslogistics.modified.views.adapters.ScheduleAdapter
@@ -83,8 +83,8 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
         }
     }
 
-    override fun onImageItemClick() {
-        startIntent(LumpersActivity::class.java)
+    override fun onLumperImagesClick() {
+        startIntent(DisplayLumpersListActivity::class.java)
     }
 
 }

@@ -169,7 +169,7 @@ class UnScheduledWorkItemAdapter(
             }
         }
 
-        override fun onItemClick() {
+        override fun onLumperItemClick() {
             adapterItemClickListener.onItemClick()
         }
     }

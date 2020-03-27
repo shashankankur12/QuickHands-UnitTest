@@ -10,16 +10,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.data.schedule.ImageData
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.modified.views.activities.LumpersActivity
+import com.quickhandslogistics.modified.views.activities.DisplayLumpersListActivity
 import com.quickhandslogistics.modified.views.adapters.LumperImagesAdapter
+import com.quickhandslogistics.modified.views.adapters.UnScheduledWorkItemAdapter
 import com.quickhandslogistics.modified.views.controls.OverlapDecoration
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleFragment
-import com.quickhandslogistics.modified.views.adapters.UnScheduledWorkItemAdapter
 import com.quickhandslogistics.utils.DateUtils
 import kotlinx.android.synthetic.main.container_unschedule_detail.*
-import java.util.*
-import kotlin.collections.ArrayList
-class UnScheduleDetailActivity : BaseActivity(), LumperImagesAdapter.OnAdapterItemClickListener , UnScheduledWorkItemAdapter.OnAdapterItemClickListener {
+
+class UnScheduleDetailActivity : BaseActivity(), LumperImagesAdapter.OnAdapterItemClickListener,
+    UnScheduledWorkItemAdapter.OnAdapterItemClickListener {
 
     private lateinit var scheduleLumperImageAdapter: LumperImagesAdapter
     private lateinit var unScheduleLumperImageAdapter: UnScheduledWorkItemAdapter
@@ -30,14 +30,14 @@ class UnScheduleDetailActivity : BaseActivity(), LumperImagesAdapter.OnAdapterIt
         setContentView(R.layout.activity_unschedule_detail)
         setupToolbar()
 
-            intent.extras?.let {
-                if (it.containsKey(ScheduleFragment.ARG_SELECTED_TIME)) {
-                    val selectedTime = it.getLong(ScheduleFragment.ARG_SELECTED_TIME)
-                    isCurrentDate = DateUtils.isCurrentDate(selectedTime)
-                }
+        intent.extras?.let {
+            if (it.containsKey(ScheduleFragment.ARG_SELECTED_TIME)) {
+                val selectedTime = it.getLong(ScheduleFragment.ARG_SELECTED_TIME)
+                isCurrentDate = DateUtils.isCurrentDate(selectedTime)
+            }
         }
 
-        if(isCurrentDate)
+        if (isCurrentDate)
             buttonSchduleNow.visibility = View.VISIBLE
         else
             buttonSchduleNow.visibility = View.GONE
@@ -52,7 +52,8 @@ class UnScheduleDetailActivity : BaseActivity(), LumperImagesAdapter.OnAdapterIt
                 lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
             }
             addItemDecoration(OverlapDecoration())
-            scheduleLumperImageAdapter = LumperImagesAdapter(lumperImages, this@UnScheduleDetailActivity)
+            scheduleLumperImageAdapter =
+                LumperImagesAdapter(lumperImages, this@UnScheduleDetailActivity)
             adapter = scheduleLumperImageAdapter
         }
 
@@ -107,8 +108,10 @@ class UnScheduleDetailActivity : BaseActivity(), LumperImagesAdapter.OnAdapterIt
         }
     }
 
-    override fun onItemClick() {
-     startIntent(LumpersActivity::class.java)
+    override fun onLumperItemClick() {
+        startIntent(DisplayLumpersListActivity::class.java)
     }
 
+    override fun onItemClick() {
+    }
 }

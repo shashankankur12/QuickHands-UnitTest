@@ -71,15 +71,15 @@ class ScheduledWorkItemAdapter(
                     itemView.id -> adapterItemClickListener.onWorkItemClick(sameDay)
 
                     recyclerViewLumpersImagesList.id -> {
-                        adapterItemClickListener.onImageItemClick()
+                        adapterItemClickListener.onLumperImagesClick()
                     }
                 }
 
             }
         }
 
-        override fun onItemClick() {
-            adapterItemClickListener.onImageItemClick()
+        override fun onLumperItemClick() {
+            adapterItemClickListener.onLumperImagesClick()
         }
     }
 }
