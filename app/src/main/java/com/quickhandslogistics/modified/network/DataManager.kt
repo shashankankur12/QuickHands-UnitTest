@@ -7,6 +7,7 @@ import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRespon
 import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.data.profile.ProfileResponse
 import com.quickhandslogistics.network.AppConfiguration
 import com.quickhandslogistics.network.IApiInterface
 import com.quickhandslogistics.network.NetworkConnectionInterceptor
@@ -126,6 +127,32 @@ object DataManager : AppConstant {
             }
 
             override fun onFailure(call: Call<AllLumpersResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun getLeadProfile(listener: ResponseListener<ProfileResponse>) {
+        val call = getService().getLeadProfile(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN)
+        )
+        call.enqueue(object : Callback<ProfileResponse> {
+            override fun onResponse(
+                call: Call<ProfileResponse>,
+                response: Response<ProfileResponse>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ProfileResponse>, t: Throwable) {
                 listener.onError(t)
             }
         })

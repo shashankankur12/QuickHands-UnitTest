@@ -1,17 +1,31 @@
 package com.quickhandslogistics.modified.models
 
+import android.util.Log
 import com.quickhandslogistics.modified.contracts.LeadProfileContract
-import com.quickhandslogistics.modified.data.login.UserData
-import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_LEAD_PROFILE
-import com.quickhandslogistics.utils.SharedPref
+import com.quickhandslogistics.modified.data.profile.ProfileResponse
+import com.quickhandslogistics.modified.network.DataManager
+import com.quickhandslogistics.network.ResponseListener
 
-class LeadProfileModel(private val sharedPref: SharedPref) : LeadProfileContract.Model {
+class LeadProfileModel : LeadProfileContract.Model {
 
     override fun fetchLeadProfileData(onFinishedListener: LeadProfileContract.Model.OnFinishedListener) {
-        val leadProfile =
-            sharedPref.getClassObject(PREFERENCE_LEAD_PROFILE, UserData::class.java) as UserData?
-        leadProfile?.let {
-            onFinishedListener.onLoadLeadProfile(leadProfile)
-        }
+        DataManager.getLeadProfile(object : ResponseListener<ProfileResponse> {
+            override fun onSuccess(response: ProfileResponse) {
+                if (response.success) {
+                    onFinishedListener.onSuccess(response)
+                } else {
+                    onFinishedListener.onFailure(response.message)
+                }
+            }
+
+            override fun onError(error: Any) {
+                if (error is Throwable) {
+                    Log.e(LoginModel::class.simpleName, error.localizedMessage!!)
+                    onFinishedListener.onFailure()
+                } else if (error is String) {
+                    onFinishedListener.onFailure(error)
+                }
+            }
+        })
     }
 }

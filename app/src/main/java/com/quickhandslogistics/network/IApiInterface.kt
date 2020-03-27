@@ -5,6 +5,7 @@ import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRespon
 import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.data.profile.ProfileResponse
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -14,6 +15,9 @@ interface IApiInterface {
 
     @GET("employees/lead/lumpers")
     fun getAllLumpersData(@Header("Authorization") auth: String): Call<AllLumpersResponse>
+
+    @GET("employees/me")
+    fun getLeadProfile(@Header("Authorization") auth: String): Call<ProfileResponse>
 
     @POST("emails/forgot-password/lead")
     fun doResetPassword(@Body forgotPasswordRequest: ForgotPasswordRequest): Call<ForgotPasswordResponse>
