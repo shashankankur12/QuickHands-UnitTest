@@ -1,10 +1,10 @@
-package com.quickhandslogistics.modified.data.profile
+package com.quickhandslogistics.modified.data.Dashboard
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-open class LeadProfileData: Serializable{
+open class DashboardLeadProfileData: Serializable{
     @SerializedName("id")
     @Expose
     var id: String? = null

@@ -1,25 +1,23 @@
 package com.quickhandslogistics.modified.contracts
 
+import com.quickhandslogistics.modified.data.Dashboard.DashBoardProfileResponse
+import com.quickhandslogistics.modified.data.Dashboard.DashboardLeadProfileData
+
 class DashBoardContract {
+
     interface Model {
+        fun processEmployeeData(dashboardData: DashboardLeadProfileData, onFinishedListener: OnFinishedListener)
+
         fun fetchLeadProfileData(onFinishedListener: OnFinishedListener)
         interface OnFinishedListener {
-            fun onLoadLeadProfile(
-                fullName: String,
-                email: String,
-                employeeId: String,
-                profileImageUrl: String
-            )
+            fun onFailure(message: String = "")
+            fun onSuccess(dashBoardProfileResponse: DashBoardProfileResponse)
         }
     }
 
     interface View {
-        fun loadLeadProfile(
-            fullName: String,
-            email: String,
-            employeeId: String,
-            profileImageUrl: String
-        )
+        fun showAPIErrorMessage(message: String)
+        fun showLumpersData(employeeDataListDashboard: DashboardLeadProfileData)
     }
 
     interface Presenter {

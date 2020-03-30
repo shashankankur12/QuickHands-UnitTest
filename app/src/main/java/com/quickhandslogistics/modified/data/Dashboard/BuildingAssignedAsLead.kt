@@ -1,4 +1,4 @@
-package com.quickhandslogistics.modified.data.profile
+package com.quickhandslogistics.modified.data.Dashboard
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
