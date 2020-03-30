@@ -1,31 +1,17 @@
 package com.quickhandslogistics.modified.models
 
-import android.util.Log
 import com.quickhandslogistics.modified.contracts.LeadProfileContract
-import com.quickhandslogistics.modified.data.profile.ProfileResponse
-import com.quickhandslogistics.modified.network.DataManager
-import com.quickhandslogistics.network.ResponseListener
+import com.quickhandslogistics.modified.data.Dashboard.DashBoardData
+import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_LEAD_PROFILE
+import com.quickhandslogistics.utils.SharedPref
 
-class LeadProfileModel : LeadProfileContract.Model {
+class LeadProfileModel(private val sharedPref: SharedPref) : LeadProfileContract.Model {
 
     override fun fetchLeadProfileData(onFinishedListener: LeadProfileContract.Model.OnFinishedListener) {
-        DataManager.getLeadProfile(object : ResponseListener<ProfileResponse> {
-            override fun onSuccess(response: ProfileResponse) {
-                if (response.success) {
-                    onFinishedListener.onSuccess(response)
-                } else {
-                    onFinishedListener.onFailure(response.message)
-                }
-            }
-
-            override fun onError(error: Any) {
-                if (error is Throwable) {
-                    Log.e(LoginModel::class.simpleName, error.localizedMessage!!)
-                    onFinishedListener.onFailure()
-                } else if (error is String) {
-                    onFinishedListener.onFailure(error)
-                }
-            }
-        })
+        val leadProfile =
+            sharedPref.getClassObject(PREFERENCE_LEAD_PROFILE, DashBoardData::class.java) as DashBoardData?
+        leadProfile?.let {
+            onFinishedListener.onLoadLeadProfile(leadProfile)
+        }
     }
 }

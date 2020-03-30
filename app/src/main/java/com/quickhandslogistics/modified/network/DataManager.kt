@@ -7,7 +7,7 @@ import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRespon
 import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
-import com.quickhandslogistics.modified.data.profile.ProfileResponse
+import com.quickhandslogistics.modified.data.Dashboard.DashBoardProfileResponse
 import com.quickhandslogistics.network.AppConfiguration
 import com.quickhandslogistics.network.IApiInterface
 import com.quickhandslogistics.network.NetworkConnectionInterceptor
@@ -132,14 +132,14 @@ object DataManager : AppConstant {
         })
     }
 
-    fun getLeadProfile(listener: ResponseListener<ProfileResponse>) {
+    fun getLeadProfile(listener: ResponseListener<DashBoardProfileResponse>) {
         val call = getService().getLeadProfile(
             "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN)
         )
-        call.enqueue(object : Callback<ProfileResponse> {
+        call.enqueue(object : Callback<DashBoardProfileResponse> {
             override fun onResponse(
-                call: Call<ProfileResponse>,
-                response: Response<ProfileResponse>
+                call: Call<DashBoardProfileResponse>,
+                response: Response<DashBoardProfileResponse>
             ) {
                 var errorMessage = ""
                 if (!response.isSuccessful) {
@@ -152,7 +152,7 @@ object DataManager : AppConstant {
                 }
             }
 
-            override fun onFailure(call: Call<ProfileResponse>, t: Throwable) {
+            override fun onFailure(call: Call<DashBoardProfileResponse>, t: Throwable) {
                 listener.onError(t)
             }
         })

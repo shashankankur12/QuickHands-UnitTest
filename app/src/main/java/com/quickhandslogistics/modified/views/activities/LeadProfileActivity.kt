@@ -2,21 +2,20 @@ package com.quickhandslogistics.modified.views.activities
 
 import android.os.Bundle
 import android.telephony.PhoneNumberUtils
+import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.LeadProfileContract
-import com.quickhandslogistics.modified.data.login.UserData
-import com.quickhandslogistics.modified.data.profile.LeadProfileData
+import com.quickhandslogistics.modified.data.Dashboard.DashBoardData
+import com.quickhandslogistics.modified.data.Dashboard.DashboardLeadProfileData
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.presenters.LeadProfilePresenter
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.ValueUtils
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_lead_profile.*
 import kotlinx.android.synthetic.main.content_lead_profile.*
-import kotlinx.android.synthetic.main.fragment_lumpers.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 class LeadProfileActivity : BaseActivity(), LeadProfileContract.View {
 
@@ -36,39 +35,35 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View {
         leadProfilePresenter.onDestroy()
     }
 
-    override fun showAPIErrorMessage(message: String) {
-        SnackBarFactory.createSnackBar(activity, mainRoot, message)
-    }
-
-    override fun showLumpersData(profileData: LeadProfileData) {
-        if (!StringUtils.isNullOrEmpty(profileData.profileImageUrl))
-            Picasso.get().load(profileData.profileImageUrl).placeholder(R.drawable.dummy)
+    override fun loadLeadProfile(employeeData: DashboardLeadProfileData) {
+        if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl))
+            Picasso.get().load(employeeData.profileImageUrl).placeholder(R.drawable.dummy)
                 .error(R.drawable.dummy)
                 .into(circleImageViewProfile)
 
         textViewLumperName.text = String.format(
             "%s %s",
-            ValueUtils.getDefaultOrValue(profileData.firstName),
-            ValueUtils.getDefaultOrValue(profileData.lastName)
+            ValueUtils.getDefaultOrValue(employeeData.firstName),
+            ValueUtils.getDefaultOrValue(employeeData.lastName)
         )
 
         textViewEmployeeId.text =
-            if (!StringUtils.isNullOrEmpty(profileData.employeeId)) profileData.employeeId else "-"
+            if (!StringUtils.isNullOrEmpty(employeeData.employeeId)) employeeData.employeeId else "-"
         textViewRole.text =
-            if (!StringUtils.isNullOrEmpty(profileData.role)) profileData.role!!.toUpperCase(
+            if (!StringUtils.isNullOrEmpty(employeeData.role)) employeeData.role!!.toUpperCase(
                 Locale.getDefault()
             ) else "-"
         textViewEmailAddress.text =
-            if (!StringUtils.isNullOrEmpty(profileData.email)) profileData.email else "-"
+            if (!StringUtils.isNullOrEmpty(employeeData.email)) employeeData.email else "-"
         textViewPhoneNumber.text =
-            if (!StringUtils.isNullOrEmpty(profileData.phone)) PhoneNumberUtils.formatNumber(
-                profileData.phone,
+            if (!StringUtils.isNullOrEmpty(employeeData.phone)) PhoneNumberUtils.formatNumber(
+                employeeData.phone,
                 "US"
             ) else "-"
         textViewShiftHours.text =
-            if (!StringUtils.isNullOrEmpty(profileData.shiftHours)) profileData.shiftHours else "-"
+            if (!StringUtils.isNullOrEmpty(employeeData.shiftHours)) employeeData.shiftHours else "-"
 
         textViewBuildingName.text =
-            if (!StringUtils.isNullOrEmpty(profileData.buildingAssignedAsLead?.buildingName))  profileData.buildingAssignedAsLead?.buildingName?.capitalize() else "-"
+            if (!StringUtils.isNullOrEmpty(employeeData.buildingAssignedAsLead?.buildingName)) employeeData.buildingAssignedAsLead?.buildingName?.capitalize() else "-"
     }
 }
