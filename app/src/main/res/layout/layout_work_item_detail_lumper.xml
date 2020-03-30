@@ -128,13 +128,13 @@
 
         <Button
             android:id="@+id/buttonReplace"
-            style="@style/textSizeNormalRegFont"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_30ssp"
-            android:background="@drawable/round_button_red"
+            android:background="@drawable/round_button_red_new"
             android:text="@string/replace"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_12ssp"
             android:visibility="visible" />
 
         <TextView

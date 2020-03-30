@@ -1,78 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_5sdp"
-    android:elevation="@dimen/_5sdp"
-    app:cardCornerRadius="@dimen/_5sdp">
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/textViewDate"
+        style="@style/textSizeSmallRegFont"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_8sdp"
+        android:text="sdnkjcbsd bsdhvbhs"
+        android:textColor="@color/textBlack"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint_root"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:orientation="vertical">
+        android:background="@drawable/schedule_item_background"
+        android:padding="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDate">
 
         <TextView
-            android:id="@+id/text_lumper"
-            style="@style/textSizeNormalRegFont"
-            android:layout_width="0dp"
+            android:id="@+id/textViewStartTime"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:singleLine="true"
-            android:text="sdfsdfnjd"
-            android:textColor="@color/colorBlack"
+            android:text="@string/start_time_container"
+            android:textColor="@color/buildingTitle"
+            android:textSize="@dimen/_16ssp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/button_add_lumpers"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/text_startDate"
-            style="@style/textSizeSmallRegFont"
-            android:layout_width="0dp"
+            android:id="@+id/textViewScheduleType"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:singleLine="true"
-            android:text="Start Time: 02: 00 PM"
-            android:textColor="@color/colorBlack"
-            android:textStyle="bold"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginBottom="@dimen/_4sdp"
+            android:drawableStart="@drawable/ic_schedule_type"
+            android:drawablePadding="@dimen/_5sdp"
+            android:text="Live Loads"
+            android:textColor="@color/scheduleDetail"
+            android:textSize="@dimen/_10ssp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_lumper" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
 
         <TextView
-            android:id="@+id/text_lumpers_count"
-            style="@style/textSizeSmallRegFont"
+            android:id="@+id/textViewAddLumpers"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:singleLine="true"
-            android:text="Lumpers: 4"
-            android:textColor="@color/colorBlack"
+            android:drawableStart="@drawable/ic_add_time_plus"
+            android:drawablePadding="@dimen/_4sdp"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/add_lumpers"
+            android:textColor="@color/buttonRed"
+            android:textSize="@dimen/_12ssp"
             android:textStyle="bold"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_startDate" />
-
-        <Button
-            android:id="@+id/button_add_lumpers"
-            style="@style/textSizeSmallRegFont"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_30ssp"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:background="@drawable/round_button_red"
-            android:paddingStart="@dimen/_5sdp"
-            android:paddingEnd="@dimen/_5sdp"
-            android:text="@string/add_lumpers"
-            android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/textViewScheduleType"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/textViewScheduleType" />
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circleImageViewArrow"
+            android:layout_width="@dimen/_22sdp"
+            android:layout_height="@dimen/_22sdp"
+            android:src="@drawable/ic_arrow_right"
+            app:civ_border_color="@color/circleBackground"
+            app:civ_border_width="@dimen/_1sdp"
+            app:civ_circle_background_color="@color/circleBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewLumpersImagesList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewScheduleType" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

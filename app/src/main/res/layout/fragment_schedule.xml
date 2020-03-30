@@ -7,14 +7,54 @@
     android:background="@color/colorWhite"
     tools:context=".modified.views.fragments.schedule.ScheduleFragment">
 
+    <com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
+        android:id="@+id/singleRowCalendarSchedule"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:deselection="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:longPress="false"
+        app:multiSelection="false" />
+
+    <TextView
+        android:id="@+id/textViewDate"
+        style="@style/textSizeSmallRegFont"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:text="sdnkjcbsd bsdhvbhs"
+        android:textColor="@color/textBlack"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/singleRowCalendarSchedule" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewSchedule"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layoutAnimation="@anim/falldown_animation"
+        app:layout_constraintBottom_toTopOf="@id/buttonMarkAttendance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDate" />
+
+    <Button
+        android:id="@+id/buttonMarkAttendance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/round_button_red_new"
+        android:text="@string/mark_attendance"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/_14ssp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewSchedule" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
