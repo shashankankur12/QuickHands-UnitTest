@@ -63,16 +63,13 @@
             android:name=".view.activities.LumperJobHistoryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".modified.views.activities.schedule.ScheduleDetailActivity"
+            android:name=".modified.views.activities.schedule.ScheduledWorkItemDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".modified.views.activities.schedule.UnScheduleDetailActivity"
+            android:name=".modified.views.activities.schedule.UnscheduledWorkItemDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".modified.views.activities.schedule.WorkItemDetailActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activities.AddWorkItemLumpersActivity"
+            android:name=".modified.views.activities.schedule.AddWorkItemLumpersActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".modified.views.activities.schedule.BuildingOperationsActivity"

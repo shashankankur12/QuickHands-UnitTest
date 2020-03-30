@@ -1,10 +1,9 @@
 package com.quickhandslogistics.modified.contracts.schedule
 
-class ScheduleDetailContract {
+class AddWorkItemLumpersContract {
     interface View {
         interface OnAdapterItemClickListener {
-            fun onWorkItemClick(sameDay: Boolean)
-            fun onLumperImagesClick()
+            fun onSelectLumper(totalSelectedCount: Int)
         }
     }
 }

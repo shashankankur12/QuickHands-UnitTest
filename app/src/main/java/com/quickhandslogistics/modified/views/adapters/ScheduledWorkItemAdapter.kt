@@ -9,76 +9,78 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.contracts.schedule.ScheduleDetailContract
+import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.modified.data.schedule.ImageData
+import com.quickhandslogistics.modified.data.schedule.ScheduleData
 import com.quickhandslogistics.modified.views.controls.OverlapDecoration
-import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.layout_scheduled_work_item.view.*
 
 class ScheduledWorkItemAdapter(
     private val context: Context,
-    private var adapterItemClickListener: ScheduleDetailContract.View.OnAdapterItemClickListener,
-    private val sameDay: Boolean
+    private var adapterItemClickListener: ScheduleContract.View.OnAdapterItemClickListener
 ) :
     Adapter<ScheduledWorkItemAdapter.WorkItemViewHolder>() {
 
-    private lateinit var scheduleImageAdapter: LumperImagesAdapter
-    var faker = Faker()
+    private var scheduledData: ArrayList<ScheduleData> = ArrayList()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemViewHolder {
         val view: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.layout_scheduled_work_item, parent, false)
-        return WorkItemViewHolder(
-            view
-        )
+        return WorkItemViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        return 5
+        return scheduledData.size
     }
 
     override fun onBindViewHolder(holder: WorkItemViewHolder, position: Int) {
         holder.bind()
     }
 
-    inner class WorkItemViewHolder(view: View) : RecyclerView.ViewHolder(view),LumperImagesAdapter.OnAdapterItemClickListener,
-        View.OnClickListener {
-        var textViewContainerName: TextView = view.textViewContainerName
+    fun updateList(scheduledData: ArrayList<ScheduleData>) {
+        this.scheduledData.clear()
+        this.scheduledData = scheduledData
+        notifyDataSetChanged()
+    }
+
+    inner class WorkItemViewHolder(view: View) : RecyclerView.ViewHolder(view),
+        View.OnClickListener, OnItemClickListener {
+
         var textViewStartTime: TextView = view.textViewStartTime
+        var textViewScheduleType: TextView = view.textViewScheduleType
         var recyclerViewLumpersImagesList: RecyclerView = view.recyclerViewLumpersImagesList
 
+        init {
+            recyclerViewLumpersImagesList.apply {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                addItemDecoration(OverlapDecoration())
+            }
+        }
+
         fun bind() {
-            textViewContainerName.text = "#${faker.company?.name()}"
             textViewStartTime.text =
                 String.format(context.getString(R.string.start_time_container), "08:00 AM")
 
-            itemView.setOnClickListener(this)
-
             recyclerViewLumpersImagesList.apply {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 val lumperImages = ArrayList<ImageData>()
                 for (i in 1..5) {
                     lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
                 }
-                scheduleImageAdapter = LumperImagesAdapter(lumperImages, this@WorkItemViewHolder)
-                addItemDecoration(OverlapDecoration())
-                adapter = scheduleImageAdapter
+                adapter = LumperImagesAdapter(lumperImages, this@WorkItemViewHolder)
             }
+
+            itemView.setOnClickListener(this)
         }
 
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
-                    itemView.id -> adapterItemClickListener.onWorkItemClick(sameDay)
-
-                    recyclerViewLumpersImagesList.id -> {
-                        adapterItemClickListener.onLumperImagesClick()
-                    }
+                    itemView.id -> adapterItemClickListener.onWorkItemClick()
                 }
-
             }
         }
 
-        override fun onLumperItemClick() {
+        override fun onLumperImageItemClick() {
             adapterItemClickListener.onLumperImagesClick()
         }
     }

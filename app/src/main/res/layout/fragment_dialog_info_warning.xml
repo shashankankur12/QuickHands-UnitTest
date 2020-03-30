@@ -52,7 +52,7 @@
             android:background="@drawable/round_button_negative"
             android:text="@string/string_cancel"
             android:textAllCaps="false"
-            android:textColor="@color/textBlack"
+            android:textColor="@color/buttonRed"
             android:textSize="@dimen/_14ssp" />
     </LinearLayout>
 </LinearLayout>

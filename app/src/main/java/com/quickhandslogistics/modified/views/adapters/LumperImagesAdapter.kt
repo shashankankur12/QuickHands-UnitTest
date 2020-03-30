@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.schdule_lumper_image_list.view.*
 
 class LumperImagesAdapter(
     var lumperImages: ArrayList<ImageData>,
-    var adapterItemClickListener: OnAdapterItemClickListener
+    var onItemClickListener: OnItemClickListener
 ) :
     RecyclerView.Adapter<LumperImagesAdapter.ScheduleImageViewHolder>() {
 
@@ -20,24 +20,17 @@ class LumperImagesAdapter(
         viewGroup: ViewGroup,
         viewType: Int
     ): LumperImagesAdapter.ScheduleImageViewHolder {
-        val view =
-            LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.schdule_lumper_image_list, viewGroup, false)
+        val view = LayoutInflater.from(viewGroup.context)
+            .inflate(R.layout.schdule_lumper_image_list, viewGroup, false)
         return ScheduleImageViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        if (lumperImages.size > 5) {
-            return 5
+        return if (lumperImages.size > 5) {
+            5
         } else {
-            return lumperImages.size
+            lumperImages.size
         }
-    }
-
-    inner class ScheduleImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var circleImageView: CircleImageView = itemView.circle_view_1
-        var textNLumpers: TextView = itemView.textN
-
     }
 
     override fun onBindViewHolder(scheduleImageViewHolder: ScheduleImageViewHolder, position: Int) {
@@ -51,13 +44,27 @@ class LumperImagesAdapter(
             scheduleImageViewHolder.textNLumpers.visibility = View.GONE
         }
 
-        scheduleImageViewHolder.circleImageView.setOnClickListener {
-            adapterItemClickListener.onLumperItemClick()
+    }
+
+    inner class ScheduleImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+        View.OnClickListener {
+        var circleImageView: CircleImageView = itemView.circle_view_1
+        var textNLumpers: TextView = itemView.textN
+
+        init {
+            itemView.setOnClickListener(this)
         }
 
+        override fun onClick(view: View?) {
+            view?.let {
+                when (view.id) {
+                    itemView.id -> onItemClickListener.onLumperImageItemClick()
+                }
+            }
+        }
     }
+}
 
-    interface OnAdapterItemClickListener {
-        fun onLumperItemClick()
-    }
+interface OnItemClickListener {
+    fun onLumperImageItemClick()
 }

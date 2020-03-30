@@ -3,36 +3,27 @@ package com.quickhandslogistics.modified.contracts.schedule
 import com.quickhandslogistics.modified.data.schedule.ScheduleData
 import java.util.*
 
-class ScheduleContract {
+class UnScheduleContract {
     interface Model {
-        fun fetchSchedules(
-            selectedDate: Date,
+        fun fetchUnScheduleWork(
             onFinishedListener: OnFinishedListener
         )
 
         interface OnFinishedListener {
             fun onFailure(message: String = "")
-            fun onSuccess(
-                selectedDate: Date,
-                scheduleDataList: ArrayList<ScheduleData>
-            )
+            fun onSuccess(unScheduledData: ArrayList<ScheduleData>)
         }
     }
-
     interface View {
-        fun showDateString(dateString: String)
-        fun showScheduleData(
-            selectedDate: Date,
-            scheduleDataList: ArrayList<ScheduleData>
-        )
-
+        fun showUnScheduleData(unScheduledData: ArrayList<ScheduleData>)
         interface OnAdapterItemClickListener {
+            fun onAddLumperItemClick()
             fun onWorkItemClick()
             fun onLumperImagesClick()
         }
     }
 
     interface Presenter {
-        fun showSchedulesByDate(date: Date)
+        fun showUnScheduleWork()
     }
 }

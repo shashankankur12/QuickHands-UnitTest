@@ -163,4 +163,8 @@
     <string name="add_time">Add Time</string>
     <string name="shift_time">Shift Time</string>
     <string name="lunch_time">Lunch Time</string>
+    <string name="add_building_operations">Add Building Operations</string>
+    <string name="string_add">Add</string>
+    <string name="string_update">Update</string>
+    <string name="update_lumpers">Update Lumpers</string>
 </resources>

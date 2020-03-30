@@ -1,12 +1,12 @@
 package com.quickhandslogistics.view.adapter
 
-import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.contracts.schedule.AddWorkItemLumpersContract
 import com.quickhandslogistics.modified.data.lumperSheet.LumperModel
 import com.squareup.picasso.Picasso
 import io.bloco.faker.Faker
@@ -14,7 +14,9 @@ import kotlinx.android.synthetic.main.layout_add_lumpers.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AddLumperAdapter(val context: Activity) :
+class AddLumperAdapter(
+    private val onAdapterClick: AddWorkItemLumpersContract.View.OnAdapterItemClickListener
+) :
     Adapter<AddLumperAdapter.WorkItemHolder>() {
     var addedLumpersList: ArrayList<LumperModel> = ArrayList()
     var lumpers: ArrayList<LumperModel> = ArrayList()
@@ -23,8 +25,8 @@ class AddLumperAdapter(val context: Activity) :
     private var searchTerm = ""
 
     init {
-        lumpers.add(LumperModel("Gene ","Hand","ffr"))
-        lumpers.add(LumperModel("Frida", "Moore",""))
+        lumpers.add(LumperModel("Gene ", "Hand", "ffr"))
+        lumpers.add(LumperModel("Frida", "Moore", ""))
         lumpers.add(LumperModel("Virgil", "Ernser", ""))
         lumpers.add(LumperModel("Philip", "Von", ""))
     }
@@ -32,7 +34,7 @@ class AddLumperAdapter(val context: Activity) :
     var faker = Faker()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemHolder {
         val view: View =
-            LayoutInflater.from(context).inflate(R.layout.layout_add_lumpers, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.layout_add_lumpers, parent, false)
         return WorkItemHolder(view)
     }
 
@@ -61,6 +63,7 @@ class AddLumperAdapter(val context: Activity) :
             } else {
                 addedLumpersList.add(lumper)
             }
+            onAdapterClick.onSelectLumper(addedLumpersList.size)
             notifyDataSetChanged()
         }
 
@@ -93,7 +96,7 @@ class AddLumperAdapter(val context: Activity) :
                 .into(imageProfile)
 
         }
-        }
+    }
 
     fun setSearchEnabled(enabled: Boolean, searchTerm: String = "") {
         this.searchEnabled = enabled
@@ -122,4 +125,4 @@ class AddLumperAdapter(val context: Activity) :
         }
         notifyDataSetChanged()
     }
-    }
+}
