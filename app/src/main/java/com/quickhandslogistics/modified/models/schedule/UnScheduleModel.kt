@@ -1,46 +1,46 @@
 package com.quickhandslogistics.modified.models.schedule
 
+import android.util.Log
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleContract
-import com.quickhandslogistics.modified.data.schedule.ScheduleData
+import com.quickhandslogistics.modified.data.schedule.ScheduleAPIResponse
+import com.quickhandslogistics.modified.models.LoginModel
+import com.quickhandslogistics.modified.network.DataManager
+import com.quickhandslogistics.network.ResponseListener
 import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.SharedPref
 import java.util.*
-import kotlin.collections.ArrayList
 
-class UnScheduleModel : UnScheduleContract.Model {
+class UnScheduleModel(private val sharedPref: SharedPref) : UnScheduleContract.Model {
 
-    override fun fetchUnScheduleWork(
+    override fun fetchUnSchedulesByDate(
+        selectedDate: Date,
         onFinishedListener: UnScheduleContract.Model.OnFinishedListener
     ) {
-        val unScheduledData = ArrayList<ScheduleData>()
+        val dateString =
+            DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
+        val buildingId = sharedPref.getString("")
 
-        val cal = Calendar.getInstance()
-        unScheduledData.add(
-            ScheduleData("", "", "", DateUtils.getDateString(DateUtils.PATTERN_NORMAL, cal.time))
-        )
-        unScheduledData.add(
-            ScheduleData("", "", "", DateUtils.getDateString(DateUtils.PATTERN_NORMAL, cal.time))
-        )
-        cal.add(Calendar.DAY_OF_YEAR, -1)
-        unScheduledData.add(
-            ScheduleData("", "", "", DateUtils.getDateString(DateUtils.PATTERN_NORMAL, cal.time))
-        )
-        unScheduledData.add(
-            ScheduleData("", "", "", DateUtils.getDateString(DateUtils.PATTERN_NORMAL, cal.time))
-        )
-        unScheduledData.add(
-            ScheduleData("", "", "", DateUtils.getDateString(DateUtils.PATTERN_NORMAL, cal.time))
-        )
-        unScheduledData.add(
-            ScheduleData("", "", "", DateUtils.getDateString(DateUtils.PATTERN_NORMAL, cal.time))
-        )
-        cal.add(Calendar.DAY_OF_YEAR, -1)
-        unScheduledData.add(
-            ScheduleData("", "", "", DateUtils.getDateString(DateUtils.PATTERN_NORMAL, cal.time))
-        )
-        unScheduledData.add(
-            ScheduleData("", "", "", DateUtils.getDateString(DateUtils.PATTERN_NORMAL, cal.time))
-        )
+        DataManager.getSchedulesList(
+            dateString,
+            "ec591484-af69-48a5-aa53-e343686770a5",
+            false,
+            object : ResponseListener<ScheduleAPIResponse> {
+                override fun onSuccess(response: ScheduleAPIResponse) {
+                    if (response.success) {
+                        onFinishedListener.onSuccess(selectedDate, response)
+                    } else {
+                        onFinishedListener.onFailure(response.message)
+                    }
+                }
 
-        onFinishedListener.onSuccess(unScheduledData)
+                override fun onError(error: Any) {
+                    if (error is Throwable) {
+                        Log.e(LoginModel::class.simpleName, error.localizedMessage!!)
+                        onFinishedListener.onFailure()
+                    } else if (error is String) {
+                        onFinishedListener.onFailure(error)
+                    }
+                }
+            })
     }
 }

@@ -1,5 +1,6 @@
 package com.quickhandslogistics.modified.views.fragments.schedule
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,7 +15,8 @@ import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
 import com.michalsvec.singlerowcalendar.utils.DateUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
-import com.quickhandslogistics.modified.data.schedule.ScheduleData
+import com.quickhandslogistics.modified.contracts.schedule.ScheduleMainContract
+import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.presenters.schedule.SchedulePresenter
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.activities.DisplayLumpersListActivity
@@ -31,15 +33,25 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
 
     private lateinit var schedulePresenter: SchedulePresenter
     private lateinit var scheduledWorkItemAdapter: ScheduledWorkItemAdapter
+    private var onScheduleFragmentInteractionListener: ScheduleMainContract.View.OnScheduleFragmentInteractionListener? =
+        null
 
     private var selectedTime: Long = 0
     private var isCurrentDate: Boolean = true
 
     private lateinit var availableDates: List<Date>
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (parentFragment is ScheduleMainContract.View.OnScheduleFragmentInteractionListener) {
+            onScheduleFragmentInteractionListener =
+                parentFragment as ScheduleMainContract.View.OnScheduleFragmentInteractionListener
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        schedulePresenter = SchedulePresenter(this)
+        schedulePresenter = SchedulePresenter(this, resources, sharedPref)
 
         // Setup DatePicker Dates
         selectedTime = Date().time
@@ -61,7 +73,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
             layoutManager = LinearLayoutManager(fragmentActivity!!)
             addItemDecoration(SpaceDividerItemDecorator(15))
             scheduledWorkItemAdapter =
-                ScheduledWorkItemAdapter(fragmentActivity!!, this@ScheduleFragment)
+                ScheduledWorkItemAdapter(resources, this@ScheduleFragment)
             adapter = scheduledWorkItemAdapter
         }
 
@@ -108,7 +120,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
         val myCalendarChangesObserver = object : CalendarChangesObserver {
             override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
                 if (isSelected) {
-                    schedulePresenter.showSchedulesByDate(date)
+                    schedulePresenter.getScheduledWorkItemsByDate(date)
                 }
                 super.whenSelectionChanged(isSelected, position, date)
             }
@@ -178,12 +190,37 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
         textViewDate.text = dateString
     }
 
-    override fun showScheduleData(selectedDate: Date, scheduleDataList: ArrayList<ScheduleData>) {
+    override fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<WorkItemDetail>) {
         selectedTime = selectedDate.time
         isCurrentDate = com.quickhandslogistics.utils.DateUtils.isCurrentDate(selectedTime)
-        scheduledWorkItemAdapter.updateList(scheduleDataList)
+        scheduledWorkItemAdapter.updateList(workItemsList)
 
         buttonMarkAttendance.visibility = if (isCurrentDate) View.VISIBLE else View.GONE
+        textViewEmptyData.visibility = View.GONE
+        recyclerViewSchedule.visibility = View.VISIBLE
+        textViewDate.visibility = View.VISIBLE
+    }
+
+    override fun hideProgressDialog() {
+        onScheduleFragmentInteractionListener?.hideProgressDialog()
+    }
+
+    override fun showProgressDialog(message: String) {
+        onScheduleFragmentInteractionListener?.showProgressDialog(message)
+    }
+
+    override fun showAPIErrorMessage(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun fetchUnsScheduledWorkItems() {
+        onScheduleFragmentInteractionListener?.fetchUnsScheduledWorkItems()
+    }
+
+    override fun showEmptyData() {
+        textViewEmptyData.visibility = View.VISIBLE
+        recyclerViewSchedule.visibility = View.GONE
+        textViewDate.visibility = View.GONE
     }
 
     companion object {

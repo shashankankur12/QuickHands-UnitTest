@@ -1,13 +1,15 @@
 package com.quickhandslogistics.modified.views.fragments.schedule
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.contracts.schedule.ScheduleMainContract
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleContract
-import com.quickhandslogistics.modified.data.schedule.ScheduleData
+import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.presenters.schedule.UnSchedulePresenter
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.activities.DisplayLumpersListActivity
@@ -23,10 +25,21 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
 
     private lateinit var unSchedulePresenter: UnSchedulePresenter
     private lateinit var unScheduledWorkItemAdapter: UnScheduledWorkItemAdapter
+    private var onScheduleFragmentInteractionListener: ScheduleMainContract.View.OnScheduleFragmentInteractionListener? =
+        null
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (parentFragment is ScheduleMainContract.View.OnScheduleFragmentInteractionListener) {
+            onScheduleFragmentInteractionListener =
+                parentFragment as ScheduleMainContract.View.OnScheduleFragmentInteractionListener
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        unSchedulePresenter = UnSchedulePresenter(this)
+        unSchedulePresenter = UnSchedulePresenter(this, sharedPref)
     }
 
     override fun onCreateView(
@@ -44,11 +57,9 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
             layoutManager = LinearLayoutManager(fragmentActivity!!)
             addItemDecoration(SpaceDividerItemDecorator(15))
             unScheduledWorkItemAdapter =
-                UnScheduledWorkItemAdapter(fragmentActivity!!, this@UnScheduleFragment)
+                UnScheduledWorkItemAdapter(resources, this@UnScheduleFragment)
             adapter = unScheduledWorkItemAdapter
         }
-
-        unSchedulePresenter.showUnScheduleWork()
     }
 
     /*
@@ -78,13 +89,24 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
     /*
     * Presenter Listeners
     */
-    override fun showUnScheduleData(unScheduledData: ArrayList<ScheduleData>) {
+    override fun showUnScheduleData(
+        selectedDate: Date,
+        workItemsList: ArrayList<WorkItemDetail>
+    ) {
         val lumpersCountList = ArrayList<Int>()
-        for (i in 0..unScheduledData.size) {
+        for (i in 0..workItemsList.size) {
             lumpersCountList.add(i)
         }
 
-        unScheduledWorkItemAdapter.updateList(unScheduledData, lumpersCountList)
+        unScheduledWorkItemAdapter.updateList(workItemsList, lumpersCountList)
+    }
+
+    override fun hideProgressDialog() {
+        onScheduleFragmentInteractionListener?.hideProgressDialog()
+    }
+
+    fun fetchUnsScheduledWorkItems() {
+        unSchedulePresenter.getUnScheduledWorkItems(Date())
     }
 
     companion object {

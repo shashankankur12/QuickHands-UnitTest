@@ -41,4 +41,8 @@ class ScheduleMainPagerAdapter(
     override fun saveState(): Parcelable? {
         return null
     }
+
+    fun fetchUnsScheduledWorkItems() {
+        unScheduleFragment.fetchUnsScheduledWorkItems()
+    }
 }

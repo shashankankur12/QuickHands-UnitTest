@@ -7,6 +7,7 @@ import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRespon
 import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.data.schedule.ScheduleAPIResponse
 import com.quickhandslogistics.network.AppConfiguration
 import com.quickhandslogistics.network.IApiInterface
 import com.quickhandslogistics.network.NetworkConnectionInterceptor
@@ -126,6 +127,40 @@ object DataManager : AppConstant {
             }
 
             override fun onFailure(call: Call<AllLumpersResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun getSchedulesList(
+        date: String,
+        buildingId: String,
+        scheduled: Boolean,
+        listener: ResponseListener<ScheduleAPIResponse>
+    ) {
+        val call = getService().getSchedulesList(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
+            date,
+            buildingId,
+            scheduled
+        )
+        call.enqueue(object : Callback<ScheduleAPIResponse> {
+            override fun onResponse(
+                call: Call<ScheduleAPIResponse>,
+                response: Response<ScheduleAPIResponse>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ScheduleAPIResponse>, t: Throwable) {
                 listener.onError(t)
             }
         })
