@@ -15,11 +15,11 @@ import de.hdodenhof.circleimageview.CircleImageView
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.layout_work_item_detail_lumper.view.*
 
-class WorkItemDetailAdapter(
+class ScheduledWorkItemDetailAdapter(
     private val onAdapterClick: WorkItemDetailContract.View.OnAdapterItemClickListener,
     private val allowUpdate: Boolean
 ) :
-    Adapter<WorkItemDetailAdapter.WorkItemHolder>() {
+    Adapter<ScheduledWorkItemDetailAdapter.WorkItemHolder>() {
 
     var replacedPosition: Int = -1
 

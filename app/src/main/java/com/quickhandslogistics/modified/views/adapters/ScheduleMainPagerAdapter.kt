@@ -6,24 +6,20 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.data.schedule.ScheduleMainResponse
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleFragment
-import java.util.*
+import com.quickhandslogistics.modified.views.fragments.schedule.UnScheduleFragment
 
 class ScheduleMainPagerAdapter(
     childFragmentManager: FragmentManager,
-    private val resources: Resources,
-    time: Long
+    private val resources: Resources
 ) :
     FragmentStatePagerAdapter(
         childFragmentManager,
         BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
     ) {
 
-    private var scheduleFragment =
-        ScheduleFragment.newInstance(isScheduled = true, selectedTime = time)
-    private var unScheduleFragment =
-        ScheduleFragment.newInstance(isScheduled = false, selectedTime = time)
+    private var scheduleFragment = ScheduleFragment.newInstance()
+    private var unScheduleFragment = UnScheduleFragment.newInstance()
 
     private val tabTitles = arrayOf(
         R.string.scheduled_work,
@@ -46,11 +42,7 @@ class ScheduleMainPagerAdapter(
         return null
     }
 
-    fun updateScheduleList(
-        selectedDate: Date,
-        scheduleMainResponse: ScheduleMainResponse
-    ) {
-        scheduleFragment.updateList(selectedDate, scheduleMainResponse.scheduledData)
-        unScheduleFragment.updateList(selectedDate, scheduleMainResponse.unScheduledData)
+    fun fetchUnsScheduledWorkItems() {
+        unScheduleFragment.fetchUnsScheduledWorkItems()
     }
 }

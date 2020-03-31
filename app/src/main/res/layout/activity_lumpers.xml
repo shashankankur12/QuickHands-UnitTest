@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorPrimary"
-    tools:context=".modified.views.activities.schedule.AddWorkItemLumpersActivity">
+    android:background="@color/appBackground"
+    tools:context=".modified.views.activities.DisplayLumpersListActivity">
 
     <include
         android:id="@+id/header"
@@ -30,7 +30,7 @@
         android:paddingBottom="@dimen/_8sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header" />
+        app:layout_constraintTop_toBottomOf="@id/header" />
 
     <ImageView
         android:id="@+id/imageViewCancel"
@@ -53,13 +53,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_20sdp"
         android:background="@drawable/top_left_round_background"
-        android:orientation="vertical"
         android:paddingStart="@dimen/_20ssp"
         android:paddingTop="@dimen/_10ssp"
         android:paddingEnd="@dimen/_20ssp"
@@ -68,40 +67,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextSearch">
 
-        <RelativeLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewLumpersSheet"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:layout_weight="1">
+            android:layout_height="match_parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_lumpers"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <TextView
-                android:id="@+id/textViewEmptyData"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/string_no_record_found"
-                android:textSize="@dimen/_12ssp"
-                android:visibility="gone" />
-        </RelativeLayout>
-
-        <Button
-            android:id="@+id/buttonAdd"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/textViewEmptyData"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:background="@drawable/round_button_disabled"
-            android:enabled="false"
-            android:text="@string/string_add"
-            android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
+            android:layout_centerInParent="true"
+            android:text="@string/string_no_record_found"
             android:textSize="@dimen/_12ssp"
-            android:textStyle="bold" />
-    </LinearLayout>
+            android:visibility="gone" />
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

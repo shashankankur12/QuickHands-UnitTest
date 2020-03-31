@@ -7,46 +7,6 @@
     android:background="@color/appBackground"
     tools:context=".modified.views.fragments.schedule.ScheduleMainFragment">
 
-    <TextView
-        android:id="@+id/textViewDate"
-        style="@style/textSizeSmallRegFont"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_13sdp"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:text="sdnkjcbsd bsdhvbhs"
-        android:textColor="@color/textBlack"
-        android:textSize="@dimen/_12ssp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="@dimen/_13sdp"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_13sdp"
-        android:background="@color/greyDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDate" />
-
-    <com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
-        android:id="@+id/main_single_row_calendar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_13sdp"
-        android:layout_marginEnd="@dimen/_13sdp"
-        app:deselection="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider"
-        app:longPress="false"
-        app:multiSelection="false" />
-
     <View
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -70,7 +30,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/main_single_row_calendar">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayoutSchedule"
@@ -83,11 +43,17 @@
             app:tabTextAppearance="@style/TabTextAppearance"
             app:tabTextColor="@color/detailHeader" />
 
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/greyDivider" />
+
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPagerSchedule"
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/_10ssp"
             android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:layout_weight="1"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </LinearLayout>

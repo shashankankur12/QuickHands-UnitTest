@@ -27,19 +27,11 @@ class MarkAttendanceActivity : BaseActivity(), View.OnClickListener, TextWatcher
 
     private lateinit var markAttendanceAdapter: MarkAttendanceAdapter
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
-    private var isCurrentDate: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mark_attendance)
         setupToolbar(getString(R.string.mark_attendance))
-
-        intent.extras?.let {
-            if (it.containsKey(ScheduleFragment.ARG_SELECTED_TIME)) {
-                val selectedTime = it.getLong(ScheduleFragment.ARG_SELECTED_TIME)
-                isCurrentDate = DateUtils.isCurrentDate(selectedTime)
-            }
-        }
 
         initializeUI()
     }
