@@ -1,17 +1,17 @@
 package com.quickhandslogistics.modified.contracts
 
-import com.quickhandslogistics.modified.data.Dashboard.DashboardLeadProfileData
+import com.quickhandslogistics.modified.data.dashboard.LeadProfileData
 
 class LeadProfileContract {
     interface Model {
         fun fetchLeadProfileData(onFinishedListener: OnFinishedListener)
         interface OnFinishedListener {
-            fun onLoadLeadProfile(employeeData: DashboardLeadProfileData)
+            fun onLoadLeadProfile(employeeData: LeadProfileData)
         }
     }
 
     interface View {
-        fun loadLeadProfile(employeeData: DashboardLeadProfileData)
+        fun loadLeadProfile(employeeData: LeadProfileData)
     }
 
     interface Presenter {

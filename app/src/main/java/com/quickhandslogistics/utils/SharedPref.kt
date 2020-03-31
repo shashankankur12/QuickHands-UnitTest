@@ -26,10 +26,6 @@ class SharedPref private constructor(context: Context) : AppConstant {
 
             return instance!!
         }
-
-        fun getInstance(preferenceLeadProfile: String) {
-
-        }
     }
 
     fun getBoolean(key: String): Boolean {

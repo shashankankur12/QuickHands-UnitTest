@@ -2,15 +2,11 @@ package com.quickhandslogistics.modified.views.activities
 
 import android.os.Bundle
 import android.telephony.PhoneNumberUtils
-import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.LeadProfileContract
-import com.quickhandslogistics.modified.data.Dashboard.DashBoardData
-import com.quickhandslogistics.modified.data.Dashboard.DashboardLeadProfileData
-import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.modified.data.dashboard.LeadProfileData
 import com.quickhandslogistics.modified.presenters.LeadProfilePresenter
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.ValueUtils
 import com.squareup.picasso.Picasso
@@ -35,7 +31,7 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View {
         leadProfilePresenter.onDestroy()
     }
 
-    override fun loadLeadProfile(employeeData: DashboardLeadProfileData) {
+    override fun loadLeadProfile(employeeData: LeadProfileData) {
         if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl))
             Picasso.get().load(employeeData.profileImageUrl).placeholder(R.drawable.dummy)
                 .error(R.drawable.dummy)
@@ -64,6 +60,6 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View {
             if (!StringUtils.isNullOrEmpty(employeeData.shiftHours)) employeeData.shiftHours else "-"
 
         textViewBuildingName.text =
-            if (!StringUtils.isNullOrEmpty(employeeData.buildingAssignedAsLead?.buildingName)) employeeData.buildingAssignedAsLead?.buildingName?.capitalize() else "-"
+            if (!StringUtils.isNullOrEmpty(employeeData.buildingDetailData?.buildingName)) employeeData.buildingDetailData?.buildingName else "-"
     }
 }

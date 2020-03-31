@@ -1,10 +1,8 @@
 package com.quickhandslogistics.modified.presenters
 
 import com.quickhandslogistics.modified.contracts.LeadProfileContract
-import com.quickhandslogistics.modified.data.Dashboard.DashboardLeadProfileData
-import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.modified.data.dashboard.LeadProfileData
 import com.quickhandslogistics.modified.models.LeadProfileModel
-import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 
 class LeadProfilePresenter internal constructor(
@@ -23,7 +21,7 @@ class LeadProfilePresenter internal constructor(
         leadProfileModel.fetchLeadProfileData(this)
     }
 
-    override fun onLoadLeadProfile(employeeData: DashboardLeadProfileData) {
+    override fun onLoadLeadProfile(employeeData: LeadProfileData) {
         leadProfileView?.loadLeadProfile(employeeData)
     }
 }

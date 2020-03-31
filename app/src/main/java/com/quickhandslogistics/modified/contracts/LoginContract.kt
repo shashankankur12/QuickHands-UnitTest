@@ -1,6 +1,8 @@
 package com.quickhandslogistics.modified.contracts
 
-import com.quickhandslogistics.modified.data.login.UserData
+import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
+import com.quickhandslogistics.modified.data.dashboard.LeadProfileData
+import com.quickhandslogistics.modified.data.login.LoginUserData
 import com.quickhandslogistics.modified.data.login.LoginResponse
 
 class LoginContract {
@@ -12,12 +14,15 @@ class LoginContract {
             onFinishedListener: OnFinishedListener
         )
 
-        fun processLoginData(userData: UserData, onFinishedListener: OnFinishedListener)
+        fun processLoginData(loginUserData: LoginUserData)
         fun validateLoginDetails(
             employeeLoginId: String,
             password: String,
             onFinishedListener: OnFinishedListener
         )
+
+        fun fetchLeadProfileInfo(onFinishedListener: OnFinishedListener)
+        fun processLeadProfileData(leadProfileData: LeadProfileData, onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener {
             fun emptyEmployeeId()
@@ -28,6 +33,7 @@ class LoginContract {
             fun onLoginSuccess(loginResponse: LoginResponse)
             fun processCredentials(employeeLoginId: String, password: String)
             fun showNextScreen()
+            fun onLeadProfileSuccess(leadProfileAPIResponse: LeadProfileAPIResponse)
         }
     }
 

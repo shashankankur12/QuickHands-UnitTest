@@ -1,7 +1,7 @@
 package com.quickhandslogistics.modified.network
 
 import com.google.gson.Gson
-import com.quickhandslogistics.modified.data.Dashboard.DashBoardProfileResponse
+import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
 import com.quickhandslogistics.modified.data.ErrorResponse
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRequest
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordResponse
@@ -132,14 +132,14 @@ object DataManager : AppConstant {
         })
     }
 
-    fun getLeadProfile(listener: ResponseListener<DashBoardProfileResponse>) {
+    fun getLeadProfile(listener: ResponseListener<LeadProfileAPIResponse>) {
         val call = getService().getLeadProfile(
             "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN)
         )
-        call.enqueue(object : Callback<DashBoardProfileResponse> {
+        call.enqueue(object : Callback<LeadProfileAPIResponse> {
             override fun onResponse(
-                call: Call<DashBoardProfileResponse>,
-                response: Response<DashBoardProfileResponse>
+                call: Call<LeadProfileAPIResponse>,
+                response: Response<LeadProfileAPIResponse>
             ) {
                 var errorMessage = ""
                 if (!response.isSuccessful) {
@@ -152,7 +152,7 @@ object DataManager : AppConstant {
                 }
             }
 
-            override fun onFailure(call: Call<DashBoardProfileResponse>, t: Throwable) {
+            override fun onFailure(call: Call<LeadProfileAPIResponse>, t: Throwable) {
                 listener.onError(t)
             }
         })

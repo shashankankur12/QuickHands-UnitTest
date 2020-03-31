@@ -1,12 +1,14 @@
 package com.quickhandslogistics.modified.presenters
 
+import android.content.res.Resources
 import com.quickhandslogistics.modified.contracts.DashBoardContract
-import com.quickhandslogistics.modified.data.Dashboard.DashBoardProfileResponse
+import com.quickhandslogistics.modified.data.dashboard.LeadProfileData
 import com.quickhandslogistics.modified.models.DashBoardModel
 import com.quickhandslogistics.utils.SharedPref
 
 class DashBoardPresenter internal constructor(
     private var dashBoardView: DashBoardContract.View?,
+    private var resources: Resources,
     sharedPref: SharedPref
 ) :
     DashBoardContract.Presenter, DashBoardContract.Model.OnFinishedListener {
@@ -18,15 +20,9 @@ class DashBoardPresenter internal constructor(
 
     override fun loadLeadProfileData() {
         dashBoardModel.fetchLeadProfileData(this)
-
     }
 
-    override fun onFailure(message: String) {
-        dashBoardView?.showAPIErrorMessage(message)
-    }
-
-    override fun onSuccess(dashBoardProfileResponse: DashBoardProfileResponse) {
-        dashBoardView?.showLumpersData(dashBoardProfileResponse.data)
-        dashBoardModel.processEmployeeData(dashBoardProfileResponse.data , this)
+    override fun onLoadLeadProfile(leadProfileData: LeadProfileData) {
+        dashBoardView?.showLeadProfile(leadProfileData)
     }
 }

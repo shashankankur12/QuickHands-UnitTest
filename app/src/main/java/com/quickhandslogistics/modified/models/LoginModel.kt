@@ -3,14 +3,16 @@ package com.quickhandslogistics.modified.models
 import android.text.TextUtils
 import android.util.Log
 import com.quickhandslogistics.modified.contracts.LoginContract
+import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
+import com.quickhandslogistics.modified.data.dashboard.LeadProfileData
 import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
-import com.quickhandslogistics.modified.data.login.UserData
+import com.quickhandslogistics.modified.data.login.LoginUserData
 import com.quickhandslogistics.modified.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_AUTH_TOKEN
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_EMPLOYEE_ID
-import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_LEAD_PROFILE
 import com.quickhandslogistics.utils.SharedPref
 import com.quickhandslogistics.utils.StringUtils
 
@@ -70,13 +72,41 @@ class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
         })
     }
 
-    override fun processLoginData(
-        userData: UserData,
+    override fun processLoginData(loginUserData: LoginUserData) {
+        sharedPref.setString(PREFERENCE_AUTH_TOKEN, loginUserData.token)
+        sharedPref.setString(PREFERENCE_EMPLOYEE_ID, loginUserData.employeeId)
+    }
+
+    override fun fetchLeadProfileInfo(onFinishedListener: LoginContract.Model.OnFinishedListener) {
+        DataManager.getLeadProfile(object : ResponseListener<LeadProfileAPIResponse> {
+            override fun onSuccess(response: LeadProfileAPIResponse) {
+                if (response.success) {
+                    onFinishedListener.onLeadProfileSuccess(response)
+                } else {
+                    onFinishedListener.onFailure(response.message)
+                }
+            }
+
+            override fun onError(error: Any) {
+                if (error is Throwable) {
+                    Log.e(LoginModel::class.simpleName, error.localizedMessage!!)
+                    onFinishedListener.onFailure()
+                } else if (error is String) {
+                    onFinishedListener.onFailure(error)
+                }
+            }
+        })
+    }
+
+    override fun processLeadProfileData(
+        leadProfileData: LeadProfileData,
         onFinishedListener: LoginContract.Model.OnFinishedListener
     ) {
-        sharedPref.setClassObject(PREFERENCE_LEAD_PROFILE, userData)
-        sharedPref.setString(PREFERENCE_AUTH_TOKEN, userData.token)
-        sharedPref.setString(PREFERENCE_EMPLOYEE_ID, userData.employeeId)
+        sharedPref.setClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, leadProfileData)
+        sharedPref.setString(
+            AppConstant.PREFERENCE_BUILDING_ID,
+            leadProfileData.buildingDetailData?.id
+        )
         onFinishedListener.showNextScreen()
     }
 }
