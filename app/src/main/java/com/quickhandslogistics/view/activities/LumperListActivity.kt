@@ -10,8 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.Utils
-import com.quickhandslogistics.view.LumperModel
-import com.quickhandslogistics.view.adapter.LumperAdapter
+import com.quickhandslogistics.modified.data.lumperSheet.LumperModel
 import com.quickhandslogistics.view.adapter.LumperDummyAdapter
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.fragment_lumper.*
@@ -22,6 +21,11 @@ class LumperListActivity : AppCompatActivity() {
     val arrayList: ArrayList<String> = ArrayList()
     var lumperJobDetail: String = ""
     lateinit var lumperAdapter: LumperDummyAdapter
+
+    companion object {
+        const val ARG_LUMPER_LIST_SHEET = "ARG_LUMPER_LIST_SHEET"
+        const val ARG_STRING_LUMPER = "ARG_STRING_LUMPER"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +56,12 @@ class LumperListActivity : AppCompatActivity() {
 
         val faker = Faker()
         for (i in 1..20) {
-            lumperList.add(LumperModel(faker.name.firstName(), faker.name.lastName()))
+            lumperList.add(
+                LumperModel(
+                    faker.name.firstName(),
+                    faker.name.lastName(),""
+                )
+            )
         }
 
         lumperAdapter = LumperDummyAdapter(lumperList, this@LumperListActivity, lumperJobDetail)

@@ -10,7 +10,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.Utils
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.activity_complete_lumper_job_history_details.*
-import kotlinx.android.synthetic.main.fragment_lumper_sheet2.*
+import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
 import kotlinx.android.synthetic.main.layout_header.*
 
 class CompleteLumperJobHistoryDetails : AppCompatActivity() {

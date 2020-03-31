@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    tools:context=".view.activities.LumperJobHistoryActivity">
+    tools:context=".view.activities.OldLumperJobHistoryActivity">
 
     <include
         android:id="@+id/header"
@@ -28,7 +28,7 @@
         android:src="@android:drawable/ic_input_add"
         android:tint="@color/colorWhite"
         android:visibility="visible"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/buttonRed"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 

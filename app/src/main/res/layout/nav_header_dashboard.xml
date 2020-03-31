@@ -1,80 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/side_nav_bar"
-    android:id="@+id/relative_root"
-    android:padding="@dimen/_5sdp"
+    android:background="@color/appBackground"
+    android:padding="@dimen/_15sdp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:contentDescription="@string/nav_header_desc"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_splash_logo" />
-
-    <TextView
-        android:id="@+id/text_lead_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Lead Name"
-        android:gravity="start"
-        android:textColor="@color/colorBlack"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageViewProfile"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginStart="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintStart_toEndOf="@+id/image_profile_logo"
-        android:fontFamily="@font/poppinssemibold" />
-
-    <ImageView
-        android:id="@+id/image_profile_logo"
-        android:layout_width="@dimen/_25sdp"
-        android:layout_height="@dimen/_25sdp"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:gravity="start"
         android:contentDescription="@string/nav_header_desc"
+        android:src="@drawable/dummy"
+        app:civ_border_color="@color/imageBorder"
+        app:civ_border_width="1dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:srcCompat="@drawable/ic_basic_info_placeholder" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/text_email_id"
-        android:layout_width="wrap_content"
+        android:id="@+id/textViewLeadName"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:fontFamily="@font/poppins_medium"
-        android:text="abc@quickhands.com"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:textColor="@color/colorLightGrey"
-        app:layout_constraintStart_toEndOf="@+id/image_profile_logo"
-        app:layout_constraintTop_toBottomOf="@+id/text_lead_name" />
-
-    <TextView
-        android:id="@+id/text_employee_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorBlack"
-        android:fontFamily="@font/poppins_medium"
-        android:layout_marginStart="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image_profile_logo"
-        app:layout_constraintTop_toBottomOf="@+id/text_email_id"
-        android:text="Emp ID: 1001" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
         android:layout_marginTop="@dimen/_10sdp"
+        android:drawableEnd="@drawable/ic_arrow_right"
+        android:text="Lead Name"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/_13ssp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_employee_id"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/circleImageViewProfile" />
 
+    <TextView
+        android:id="@+id/textViewEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:text="abc@quickhands.com"
+        android:textColor="@color/colorLightGrey"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLeadName" />
+
+    <TextView
+        android:id="@+id/textViewEmployeeId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:text="Emp ID: 1001"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEmail" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
