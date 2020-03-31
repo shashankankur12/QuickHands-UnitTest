@@ -28,20 +28,18 @@ class CustomerJobDetailAdapter (val items: ArrayList<String>, val context: Conte
 
     override fun onBindViewHolder(holder: CustomerjobViewHolder, position: Int) {
         holder?.lumperContainerNumber?.text = faker.number.hexadecimal(8).toUpperCase()
-        holder?.lumperDoor.text = faker.number.digit()
-        holder?.lumperWeight.text = faker.number.digit()
+        //holder?.lumperDoor.text = faker.number.digit()
+        //holder?.lumperWeight.text = faker.number.digit()
 
-        holder.constraintRoot.setOnClickListener {
+        holder.itemView.setOnClickListener {
             context.startActivity(Intent(context, CompleteCustomerJobHistory::class.java))
         }
     }
 
     class CustomerjobViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var lumperContainerNumber = view.input_container_number
-        var lumperDoor = view.text_door
-        var lumperWeight = view.text_job_weight_kg
-        var constraintRoot = view.constraint_root_item
-        var lumperStartTime = view.text_start
-        var lumperEndTime = view.text_end_time
+        var lumperDoor = view.textViewDoor
+        var lumperWeight = view.textViewWeight
+        var lumperTime =  view.textViewTime
     }
 }

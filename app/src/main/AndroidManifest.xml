@@ -18,6 +18,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".modified.views.activities.LumperJobHistoryActivity" />
+        <activity android:name=".modified.views.activities.ContainerDetailActivity" />
         <activity android:name=".modified.views.activities.DisplayLumpersListActivity" />
         <activity android:name=".modified.views.activities.LumperDetailActivity" />
         <activity android:name=".modified.views.BaseActivity" />
@@ -60,7 +62,7 @@
             android:name=".modified.views.activities.LeadProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.LumperJobHistoryActivity"
+            android:name=".view.activities.OldLumperJobHistoryActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".modified.views.activities.schedule.ScheduledWorkItemDetailActivity"
