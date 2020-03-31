@@ -1,23 +1,27 @@
 package com.quickhandslogistics.view.activities
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
-import com.quickhandslogistics.utils.Utils
+import com.quickhandslogistics.modified.contracts.InfoDialogWarningContract
+import com.quickhandslogistics.modified.views.BaseActivity
+import com.quickhandslogistics.modified.views.activities.ContainerDetailActivity
+import com.quickhandslogistics.modified.views.activities.LumperDetailActivity
+import com.quickhandslogistics.modified.views.fragments.InfoWarningDialogFragment
 import com.quickhandslogistics.view.adapter.lumperJobDetailAdapter
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.activity_lumper_sheet_detail.*
-import kotlinx.android.synthetic.main.layout_header.*
 
-class LumperSheetDetailActivity : AppCompatActivity() {
+class LumperSheetDetailActivity : BaseActivity(), View.OnClickListener, lumperJobDetailAdapter.OnAdapterItemClickListener {
 
     var lumperJobDetail: String = ""
     val lumperSheetList: ArrayList<String> = ArrayList()
     var faker = Faker()
+    private lateinit var lumpersAdapter: lumperJobDetailAdapter
 
     companion object {
         const val ARG_LUMPER_SHEET_DATA = "ARG_LUMPER_SHEET_DATA"
@@ -27,34 +31,27 @@ class LumperSheetDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lumper_sheet_detail)
 
-        text_title?.text = faker.name.firstName() + " " + faker.name.lastName()
+        setupToolbar()
 
         lumperSheetData()
-
-        image_back.setOnClickListener {
-            Utils.finishActivity(this)
-        }
 
         if (intent.hasExtra(getString(R.string.string_lumper_sheet_status))) {
             lumperJobDetail = intent.getStringExtra(getString(R.string.string_lumper_sheet_status))
 
-            fab_add_lumper.visibility = if (lumperJobDetail.equals(getString(R.string.complete))) View.GONE else View.VISIBLE
-
         }
 
-        fab_add_lumper.setOnClickListener {
-            val intent =
-                Intent(this@LumperSheetDetailActivity, CompleteLumperJobHistoryDetails::class.java)
-            intent.putExtra(
-                this@LumperSheetDetailActivity.getString(R.string.string_lumper_sheet),
-                this@LumperSheetDetailActivity.getString(R.string.string_lumper_sheet)
-            )
-            this@LumperSheetDetailActivity.startActivity(intent)
+        recycler_lumper_sheet_history.apply {
+            val linearLayoutManager = LinearLayoutManager(activity!!)
+            layoutManager = linearLayoutManager
+            val dividerItemDecoration =
+                DividerItemDecoration(activity!!, linearLayoutManager.orientation)
+            addItemDecoration(dividerItemDecoration)
+            lumpersAdapter = lumperJobDetailAdapter(lumperSheetList, this@LumperSheetDetailActivity)
+            adapter = lumpersAdapter
         }
 
-        recycler_lumper_sheet_history.layoutManager = LinearLayoutManager(this)
-        recycler_lumper_sheet_history.adapter =
-            this?.let { lumperJobDetailAdapter(lumperSheetList, it) }
+        imageViewCall.setOnClickListener(this)
+        lumperDetail.setOnClickListener(this)
     }
 
     fun lumperSheetData() {
@@ -67,5 +64,37 @@ class LumperSheetDetailActivity : AppCompatActivity() {
         lumperSheetList.add("Griffin")
         lumperSheetList.add("Fletcher")
         lumperSheetList.add("Leroy")
+    }
+
+     fun onPhoneViewClick(lumperName: String, phone: String) {
+        val dialog = InfoWarningDialogFragment.newInstance(
+            String.format(getString(R.string.call_lumper_dialog_message), lumperName),
+            onClickListener = object : InfoDialogWarningContract.View.OnClickListener {
+                override fun onPositiveButtonClick() {
+                    startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))
+                }
+
+                override fun onNegativeButtonClick() {
+                }
+            })
+        dialog.show(supportFragmentManager, InfoWarningDialogFragment::class.simpleName)
+    }
+
+    override fun onClick(view: View?) {
+        view?.let {
+            when (view.id) {
+                imageViewCall.id -> {
+                    onPhoneViewClick("John Snow ", "34565839284")
+                }
+
+                lumperDetail.id -> {
+                    startIntent(LumperDetailActivity::class.java)
+                }
+            }
+        }
+    }
+
+    override fun onItemClick() {
+        startIntent(ContainerDetailActivity::class.java)
     }
 }
