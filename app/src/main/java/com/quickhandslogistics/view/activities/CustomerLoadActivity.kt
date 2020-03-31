@@ -26,7 +26,7 @@ class CustomerLoadActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_load)
 
-        setupToolbar(faker.company.name())
+        text_title?.text = faker?.company?.name()
 
         lumperSheetData()
 
