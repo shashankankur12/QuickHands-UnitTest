@@ -211,7 +211,7 @@ public class NavDrawer {
 
         private void showFragment(BaseActivity activity) {
             FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frameLayoutMain, targetFragment);
+            fragmentTransaction.replace(R.id.frameLayoutMain, targetFragment, targetFragment.getClass().getSimpleName());
             fragmentTransaction.commit();
         }
     }

@@ -30,7 +30,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
             android:gravity="center"
-            android:text="Connor Davidson"
             android:textColor="@color/textBlack"
             android:textSize="@dimen/_14ssp"
             android:textStyle="bold"
@@ -78,8 +77,7 @@
                     style="@style/detailTextValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:text="079" />
+                    android:layout_marginTop="@dimen/_2sdp" />
             </LinearLayout>
 
             <LinearLayout
@@ -102,8 +100,7 @@
                     style="@style/detailTextValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:text="Lumper" />
+                    android:layout_marginTop="@dimen/_2sdp" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.Barrier
@@ -134,8 +131,7 @@
                     style="@style/detailTextValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:text="connordavidson321@gmail.com" />
+                    android:layout_marginTop="@dimen/_2sdp" />
             </LinearLayout>
 
             <LinearLayout
@@ -159,8 +155,7 @@
                     style="@style/detailTextValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:text="+91 - 9876543210" />
+                    android:layout_marginTop="@dimen/_2sdp" />
             </LinearLayout>
 
             <LinearLayout
@@ -184,9 +179,33 @@
                     style="@style/detailTextValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:text="9:00am to 6:00pm" />
+                    android:layout_marginTop="@dimen/_2sdp" />
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutBuildingName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15ssp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutShiftHours">
+
+                <TextView
+                    style="@style/detailTextHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/building_name" />
+
+                <TextView
+                    android:id="@+id/textViewBuildingName"
+                    style="@style/detailTextValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp" />
+            </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

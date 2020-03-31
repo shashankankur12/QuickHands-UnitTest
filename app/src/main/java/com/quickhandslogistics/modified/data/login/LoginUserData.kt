@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import java.io.Serializable
 
-class UserData : EmployeeData(), Serializable {
+class LoginUserData : EmployeeData(), Serializable {
     @SerializedName("token")
     @Expose
     var token: String? = null

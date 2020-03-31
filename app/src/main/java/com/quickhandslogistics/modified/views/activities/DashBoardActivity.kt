@@ -5,13 +5,18 @@ import android.view.View
 import com.quickhandslogistics.BuildConfig
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.DashBoardContract
+import com.quickhandslogistics.modified.data.dashboard.LeadProfileData
 import com.quickhandslogistics.modified.presenters.DashBoardPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
+import com.quickhandslogistics.utils.StringUtils
+import com.quickhandslogistics.utils.ValueUtils
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.include_main_nav_drawer.*
 import kotlinx.android.synthetic.main.nav_header_dashboard.*
 
 class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContract.View {
+
+    private lateinit var dashBoardPresenter: DashBoardPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +26,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
 
         headerLayout.setOnClickListener(this)
 
-        val dashBoardPresenter = DashBoardPresenter(this, sharedPref)
+        dashBoardPresenter = DashBoardPresenter(this, resources, sharedPref)
         dashBoardPresenter.loadLeadProfileData()
     }
 
@@ -36,24 +41,24 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         }
     }
 
-    override fun loadLeadProfile(
-        fullName: String,
-        email: String,
-        employeeId: String,
-        profileImageUrl: String
-    ) {
-        if (profileImageUrl.isNotEmpty())
-            Picasso.get().load(profileImageUrl).placeholder(R.drawable.dummy)
+    override fun showLeadProfile(leadProfileData: LeadProfileData) {
+        if (!StringUtils.isNullOrEmpty(leadProfileData.profileImageUrl))
+            Picasso.get().load(leadProfileData.profileImageUrl).placeholder(R.drawable.dummy)
                 .error(R.drawable.dummy)
                 .into(circleImageViewProfile)
-        textViewLeadName.text = fullName
-        textViewEmail.text = email
-        textViewEmployeeId.text = String.format("Emp ID: %s", employeeId)
 
-        // Show the current version name
+        textViewLeadName.text = String.format(
+            "%s %s",
+            ValueUtils.getDefaultOrValue(leadProfileData.firstName),
+            ValueUtils.getDefaultOrValue(leadProfileData.lastName)
+        )
+
+        textViewEmail.text =
+            if (!StringUtils.isNullOrEmpty(leadProfileData.email)) leadProfileData.email else "-"
+
+        textViewEmployeeId.text =
+            if (!StringUtils.isNullOrEmpty(leadProfileData.employeeId)) leadProfileData.employeeId else "-"
+
         textViewVersionName.text = String.format("V %s", BuildConfig.VERSION_NAME)
     }
 }
-
-
-

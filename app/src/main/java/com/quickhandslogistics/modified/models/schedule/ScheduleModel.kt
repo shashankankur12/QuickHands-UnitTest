@@ -6,6 +6,7 @@ import com.quickhandslogistics.modified.data.schedule.ScheduleAPIResponse
 import com.quickhandslogistics.modified.models.LoginModel
 import com.quickhandslogistics.modified.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*
@@ -18,11 +19,11 @@ class ScheduleModel(private val sharedPref: SharedPref) : ScheduleContract.Model
     ) {
         val dateString =
             DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
-        val buildingId = sharedPref.getString("")
+        val buildingId = sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID)
 
         DataManager.getSchedulesList(
             dateString,
-            "ec591484-af69-48a5-aa53-e343686770a5",
+            buildingId,
             true,
             object : ResponseListener<ScheduleAPIResponse> {
                 override fun onSuccess(response: ScheduleAPIResponse) {

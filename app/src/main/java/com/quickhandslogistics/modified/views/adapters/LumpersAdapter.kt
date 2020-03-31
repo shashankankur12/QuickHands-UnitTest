@@ -1,5 +1,6 @@
 package com.quickhandslogistics.modified.views.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,12 +8,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.lumpers.LumpersContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.ValueUtils
-import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_lumper_layout.view.*
 import java.util.*
@@ -29,9 +30,7 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View =
             LayoutInflater.from(parent.context).inflate(R.layout.item_lumper_layout, parent, false)
-        return ViewHolder(
-            view
-        )
+        return ViewHolder(view, parent.context)
     }
 
     override fun getItemCount(): Int {
@@ -52,7 +51,8 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+    inner class ViewHolder(view: View, private val context: Context) :
+        RecyclerView.ViewHolder(view), View.OnClickListener {
 
         var textViewLumperName: TextView = view.textViewLumperName
         var textViewEmployeeId: TextView = view.textViewEmployeeId
@@ -61,10 +61,13 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
         var imageViewCall: ImageView = view.imageViewCall
 
         fun bind(employeeData: EmployeeData) {
-            if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl))
-                Picasso.get().load(employeeData.profileImageUrl).placeholder(R.drawable.dummy)
-                    .error(R.drawable.dummy)
+            if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl)) {
+                Glide.with(context).load(employeeData.profileImageUrl)
+                    .placeholder(R.drawable.dummy).error(R.drawable.dummy)
                     .into(circleImageViewProfile)
+            } else {
+                Glide.with(context).clear(circleImageViewProfile);
+            }
 
             textViewLumperName.text = String.format(
                 "%s %s",
