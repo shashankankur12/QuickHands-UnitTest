@@ -4,35 +4,31 @@ import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
-import com.quickhandslogistics.utils.Utils
+import com.quickhandslogistics.modified.views.BaseActivity
+import com.quickhandslogistics.modified.views.activities.ContainerDetailActivity
 import com.quickhandslogistics.view.adapter.lumperJobDetailAdapter
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.activity_lumper_job_history.*
-import kotlinx.android.synthetic.main.layout_header.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class OldLumperJobHistoryActivity : AppCompatActivity() {
+class OldLumperJobHistoryActivity :BaseActivity(), lumperJobDetailAdapter.OnAdapterItemClickListener {
 
     val lumperJobList: ArrayList<String> = ArrayList()
     var faker = Faker()
+    private lateinit var lumpersAdapter: lumperJobDetailAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lumper_job_history)
 
-        text_title?.text = faker.name.firstName()+" "+faker.name.lastName()
+        setupToolbar( faker.name.firstName()+" "+faker.name.lastName())
 
         lumperData()
-
-        image_back.setOnClickListener {
-            Utils.finishActivity(this)
-        }
-
         val locale = resources.configuration.locale
         Locale.setDefault(locale)
 
@@ -41,8 +37,19 @@ class OldLumperJobHistoryActivity : AppCompatActivity() {
         val month = calendar.get(Calendar.MONTH)
         val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
 
-        recycler_lumper_job_history.layoutManager = LinearLayoutManager(this)
-        recycler_lumper_job_history.adapter = this?.let { lumperJobDetailAdapter(lumperJobList, it) }
+        recycler_lumper_job_history.apply {
+            val linearLayoutManager = LinearLayoutManager(activity!!)
+            layoutManager = linearLayoutManager
+            val dividerItemDecoration =
+                DividerItemDecoration(activity!!, linearLayoutManager.orientation)
+            addItemDecoration(dividerItemDecoration)
+            lumpersAdapter = lumperJobDetailAdapter(lumperJobList, this@OldLumperJobHistoryActivity)
+            adapter = lumpersAdapter
+        }
+
+
+       /* recycler_lumper_job_history.layoutManager = LinearLayoutManager(this)
+        recycler_lumper_job_history.adapter = this?.let { lumperJobDetailAdapter(lumperJobList, this@OldLumperJobHistoryActivity) }*/
 
         linear_root.setOnClickListener(View.OnClickListener {
             val datePickerDialog = DatePickerDialog(
@@ -65,5 +72,9 @@ class OldLumperJobHistoryActivity : AppCompatActivity() {
         lumperJobList.add("Griffin")
         lumperJobList.add("Fletcher")
         lumperJobList.add("Leroy")
+    }
+
+    override fun onItemClick() {
+        startIntent(ContainerDetailActivity::class.java)
     }
 }

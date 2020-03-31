@@ -70,7 +70,7 @@
     <string name="string_event_details">Event Details</string>
     <string name="string_send_for_approval">Send for Approval</string>
     <string name="name">Customer Name</string>
-    <string name="container_number">Container Number</string>
+    <string name="container_number">Container Number:</string>
     <string name="Date">Date</string>
     <string name="Door">Door</string>
     <string name="container">Container</string>
