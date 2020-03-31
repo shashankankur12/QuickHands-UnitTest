@@ -18,9 +18,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".modified.views.activities.LumperJobHistoryActivity"></activity>
-        <activity android:name=".modified.views.activities.LumperJobHistory" />
+        <activity android:name=".modified.views.activities.LumperJobHistoryActivity" />
         <activity android:name=".modified.views.activities.ContainerDetailActivity" />
+        <activity android:name=".modified.views.activities.DisplayLumpersListActivity" />
         <activity android:name=".modified.views.activities.LumperDetailActivity" />
         <activity android:name=".modified.views.BaseActivity" />
         <activity
@@ -65,16 +65,13 @@
             android:name=".view.activities.OldLumperJobHistoryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".modified.views.activities.schedule.ScheduleDetailActivity"
+            android:name=".modified.views.activities.schedule.ScheduledWorkItemDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.UnScheduleDetailActivity"
+            android:name=".modified.views.activities.schedule.UnscheduledWorkItemDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".modified.views.activities.schedule.WorkItemDetailActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activities.AddWorkItemLumpersActivity"
+            android:name=".modified.views.activities.schedule.AddWorkItemLumpersActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".modified.views.activities.schedule.BuildingOperationsActivity"

@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.LoginContract
+import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
 import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.models.LoginModel
 import com.quickhandslogistics.utils.SharedPref
@@ -50,8 +51,8 @@ class LoginPresenter(
     }
 
     override fun onLoginSuccess(loginResponse: LoginResponse) {
-        loginView?.hideProgress()
-        loginModel.processLoginData(loginResponse.data, this)
+        loginModel.processLoginData(loginResponse.data)
+        loginModel.fetchLeadProfileInfo(this)
     }
 
     override fun onFailure(message: String) {
@@ -65,5 +66,12 @@ class LoginPresenter(
 
     override fun showNextScreen() {
         loginView?.showNextScreen()
+    }
+
+    override fun onLeadProfileSuccess(leadProfileAPIResponse: LeadProfileAPIResponse) {
+        loginView?.hideProgress()
+        leadProfileAPIResponse.data?.let {
+            loginModel.processLeadProfileData(it, this)
+        }
     }
 }

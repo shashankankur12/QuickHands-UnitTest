@@ -7,14 +7,65 @@
     android:background="@color/colorWhite"
     tools:context=".modified.views.fragments.schedule.ScheduleFragment">
 
+    <com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
+        android:id="@+id/singleRowCalendarSchedule"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:deselection="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:longPress="false"
+        app:multiSelection="false" />
+
+    <TextView
+        android:id="@+id/textViewDate"
+        style="@style/textSizeSmallRegFont"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:textColor="@color/textBlack"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/singleRowCalendarSchedule" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewSchedule"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layoutAnimation="@anim/falldown_animation"
+        app:layout_constraintBottom_toTopOf="@id/buttonMarkAttendance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDate" />
+
+    <TextView
+        android:id="@+id/textViewEmptyData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/string_no_record_found"
+        android:textSize="@dimen/_12ssp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonMarkAttendance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/round_button_red_new"
+        android:text="@string/mark_attendance"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/_14ssp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
