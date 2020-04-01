@@ -21,8 +21,9 @@ import com.quickhandslogistics.modified.presenters.schedule.SchedulePresenter
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.activities.DisplayLumpersListActivity
 import com.quickhandslogistics.modified.views.activities.schedule.MarkAttendanceActivity
+import com.quickhandslogistics.modified.views.activities.schedule.ScheduleDetailActivity
 import com.quickhandslogistics.modified.views.activities.schedule.ScheduledWorkItemDetailActivity
-import com.quickhandslogistics.modified.views.adapters.ScheduledWorkItemAdapter
+import com.quickhandslogistics.modified.views.adapters.schedule.ScheduleAdapter
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
 import kotlinx.android.synthetic.main.calendar_item.view.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
@@ -32,7 +33,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
     ScheduleContract.View, View.OnClickListener {
 
     private lateinit var schedulePresenter: SchedulePresenter
-    private lateinit var scheduledWorkItemAdapter: ScheduledWorkItemAdapter
+    private lateinit var scheduleAdapter: ScheduleAdapter
     private var onScheduleFragmentInteractionListener: ScheduleMainContract.View.OnScheduleFragmentInteractionListener? =
         null
 
@@ -72,9 +73,8 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
         recyclerViewSchedule.apply {
             layoutManager = LinearLayoutManager(fragmentActivity!!)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            scheduledWorkItemAdapter =
-                ScheduledWorkItemAdapter(resources, this@ScheduleFragment)
-            adapter = scheduledWorkItemAdapter
+            scheduleAdapter = ScheduleAdapter(resources, this@ScheduleFragment)
+            adapter = scheduleAdapter
         }
 
         initializeCalendar()
@@ -119,9 +119,9 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
 
         val myCalendarChangesObserver = object : CalendarChangesObserver {
             override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
-                if (isSelected) {
-                    schedulePresenter.getScheduledWorkItemsByDate(date)
-                }
+//                if (isSelected) {
+//                    schedulePresenter.getScheduledWorkItemsByDate(date)
+//                }
                 super.whenSelectionChanged(isSelected, position, date)
             }
         }
@@ -173,10 +173,10 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
     /*
     * Adapter Item Click Listeners
     */
-    override fun onWorkItemClick() {
+    override fun onScheduleItemClick() {
         val bundle = Bundle()
-        bundle.putBoolean(ScheduledWorkItemDetailActivity.ARG_ALLOW_UPDATE, isCurrentDate)
-        startIntent(ScheduledWorkItemDetailActivity::class.java, bundle = bundle)
+        bundle.putBoolean(ScheduleMainFragment.ARG_ALLOW_UPDATE, isCurrentDate)
+        startIntent(ScheduleDetailActivity::class.java, bundle = bundle)
     }
 
     override fun onLumperImagesClick() {
@@ -193,7 +193,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
     override fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<WorkItemDetail>) {
         selectedTime = selectedDate.time
         isCurrentDate = com.quickhandslogistics.utils.DateUtils.isCurrentDate(selectedTime)
-        scheduledWorkItemAdapter.updateList(workItemsList)
+        //scheduleAdapter.updateList(workItemsList)
 
         buttonMarkAttendance.visibility = if (isCurrentDate) View.VISIBLE else View.GONE
         textViewEmptyData.visibility = View.GONE

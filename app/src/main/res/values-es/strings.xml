@@ -170,4 +170,7 @@
     <string name="no_of_drops">No. of Drops: %s</string>
     <string name="string_live_loads">Live Loads</string>
     <string name="string_drops">Drops</string>
+    <string name="string_out_bonds">Out Bonds</string>
+    <string name="string_schedule_now">Schedule Now</string>
+    <string name="string_ask_to_replace_new_lumper">Are you sure you want to add this lumper?</string>
 </resources>

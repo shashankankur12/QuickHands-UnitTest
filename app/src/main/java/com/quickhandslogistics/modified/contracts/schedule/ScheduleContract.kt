@@ -34,12 +34,8 @@ class ScheduleContract {
         fun showEmptyData()
 
         interface OnAdapterItemClickListener {
-            fun onWorkItemClick()
+            fun onScheduleItemClick()
             fun onLumperImagesClick()
-        }
-
-        interface OnScheduleFragmentInteractionListener {
-            fun onAPICallFinished()
         }
     }
 

@@ -20,19 +20,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textViewScheduleType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_4sdp"
-        android:drawableStart="@drawable/ic_schedule_type"
-        android:drawablePadding="@dimen/_5sdp"
-        android:text="Live Loads"
-        android:textColor="@color/scheduleDetail"
-        android:textSize="@dimen/_10ssp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
-
-    <TextView
         android:id="@+id/textViewDropItems"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,7 +31,7 @@
         android:textColor="@color/scheduleDetail"
         android:textSize="@dimen/_10ssp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circleImageViewArrow"

@@ -55,7 +55,6 @@ class ChooseLumperAdapter(var adapterItemClickListener: ChooseLumperContract.Vie
         var textViewEmployeeId: TextView = view.textViewEmployeeId
         var circleImageViewProfile: CircleImageView = view.circleImageViewProfile
         var textViewShiftHours: TextView = view.textViewShiftHours
-        var buttonSelect: Button = view.buttonSelect
 
         fun bind(employeeData: EmployeeData) {
             if (employeeData.firstName != null && employeeData.lastName != null) {
@@ -76,7 +75,6 @@ class ChooseLumperAdapter(var adapterItemClickListener: ChooseLumperContract.Vie
                 textViewShiftHours.text = "Shift Hours: -"
             }
 
-            buttonSelect.setOnClickListener(this)
             itemView.setOnClickListener(this)
         }
 
@@ -84,10 +82,6 @@ class ChooseLumperAdapter(var adapterItemClickListener: ChooseLumperContract.Vie
             view?.let {
                 when (view.id) {
                     itemView.id -> {
-                        val lumperData = getItem(adapterPosition)
-                        adapterItemClickListener.onClickLumperDetail(lumperData)
-                    }
-                    buttonSelect.id -> {
                         val lumperData = getItem(adapterPosition)
                         adapterItemClickListener.onSelectLumper(lumperData)
                     }

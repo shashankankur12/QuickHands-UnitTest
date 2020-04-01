@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleMainContract
 import com.quickhandslogistics.modified.views.BaseFragment
-import com.quickhandslogistics.modified.views.adapters.ScheduleMainPagerAdapter
+import com.quickhandslogistics.modified.views.adapters.schedule.ScheduleMainPagerAdapter
 import com.quickhandslogistics.utils.CustomProgressBar
 import kotlinx.android.synthetic.main.fragment_schedule_main.*
 
@@ -17,6 +17,10 @@ class ScheduleMainFragment : BaseFragment(),
 
     private lateinit var adapter: ScheduleMainPagerAdapter
     private var progressDialog: Dialog? = null
+
+    companion object {
+        const val ARG_ALLOW_UPDATE = "ARG_ALLOW_UPDATE"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,7 +33,11 @@ class ScheduleMainFragment : BaseFragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ScheduleMainPagerAdapter(childFragmentManager, resources)
+        adapter =
+            ScheduleMainPagerAdapter(
+                childFragmentManager,
+                resources
+            )
         viewPagerSchedule.adapter = adapter
         tabLayoutSchedule.setupWithViewPager(viewPagerSchedule)
     }

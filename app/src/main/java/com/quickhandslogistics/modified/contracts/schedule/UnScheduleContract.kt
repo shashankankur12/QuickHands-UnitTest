@@ -24,8 +24,7 @@ class UnScheduleContract {
         fun hideProgressDialog()
 
         interface OnAdapterItemClickListener {
-            fun onAddLumperItemClick()
-            fun onWorkItemClick()
+            fun onUnScheduleItemClick()
             fun onLumperImagesClick()
         }
     }

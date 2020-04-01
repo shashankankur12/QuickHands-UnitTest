@@ -8,8 +8,10 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.InfoDialogWarningContract
 import com.quickhandslogistics.modified.contracts.schedule.WorkItemDetailContract
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.modified.views.adapters.ScheduledWorkItemDetailAdapter
+import com.quickhandslogistics.modified.views.activities.ChooseLumperActivity
+import com.quickhandslogistics.modified.views.adapters.schedule.ScheduledWorkItemDetailAdapter
 import com.quickhandslogistics.modified.views.fragments.InfoWarningDialogFragment
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_ALLOW_UPDATE
 import kotlinx.android.synthetic.main.activity_scheduled_work_item_detail.*
 
 class ScheduledWorkItemDetailActivity : BaseActivity(),
@@ -17,10 +19,6 @@ class ScheduledWorkItemDetailActivity : BaseActivity(),
 
     private var allowUpdate: Boolean = true
     private var scheduledWorkItemDetailAdapter: ScheduledWorkItemDetailAdapter? = null
-
-    companion object {
-        const val ARG_ALLOW_UPDATE = "ARG_ALLOW_UPDATE"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +43,12 @@ class ScheduledWorkItemDetailActivity : BaseActivity(),
                         )
                     adapter = scheduledWorkItemDetailAdapter
                 }
+
+                if (allowUpdate) {
+                    buttonAddBuildingOperations.text = getString(R.string.add_building_operations)
+                } else {
+                    buttonAddBuildingOperations.text = getString(R.string.building_operations)
+                }
             }
         }
 
@@ -52,19 +56,19 @@ class ScheduledWorkItemDetailActivity : BaseActivity(),
     }
 
     override fun onReplaceItemClick(position: Int) {
-        val dialog = InfoWarningDialogFragment.newInstance(
-            getString(R.string.string_ask_new_lumper),
-            positiveButtonText = getString(R.string.string_yes),
-            negativeButtonText = getString(R.string.string_no),
-            onClickListener = object : InfoDialogWarningContract.View.OnClickListener {
-                override fun onPositiveButtonClick() {
-                    scheduledWorkItemDetailAdapter?.updateReplacePosition(position)
-                }
-
-                override fun onNegativeButtonClick() {
-                }
-            })
-        dialog.show(supportFragmentManager, InfoWarningDialogFragment::class.simpleName)
+        startIntent(ChooseLumperActivity::class.java)
+//        val dialog = InfoWarningDialogFragment.newInstance(
+//            getString(R.string.string_ask_new_lumper),
+//            positiveButtonText = getString(R.string.string_yes),
+//            negativeButtonText = getString(R.string.string_no),
+//            onClickListener = object : InfoDialogWarningContract.View.OnClickListener {
+//                override fun onPositiveButtonClick() {
+//                }
+//
+//                override fun onNegativeButtonClick() {
+//                }
+//            })
+//        dialog.show(supportFragmentManager, InfoWarningDialogFragment::class.simpleName)
     }
 
     override fun onClick(view: View?) {

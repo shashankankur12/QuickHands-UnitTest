@@ -97,7 +97,7 @@
             android:layout_marginBottom="@dimen/_10sdp"
             android:background="@drawable/round_button_disabled"
             android:enabled="false"
-            android:text="@string/string_add"
+            android:text="@string/string_submit"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/_12ssp"

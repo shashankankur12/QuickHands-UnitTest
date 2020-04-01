@@ -37,10 +37,8 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
 
                 if (isAddLumper) {
                     setupToolbar(getString(R.string.add_lumpers))
-                    buttonAdd.text = getString(R.string.string_add)
                 } else {
                     setupToolbar(getString(R.string.update_lumpers))
-                    buttonAdd.text = getString(R.string.string_update)
                 }
             }
         }

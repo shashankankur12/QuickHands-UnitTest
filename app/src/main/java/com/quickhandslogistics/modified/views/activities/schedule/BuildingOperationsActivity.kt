@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.modified.views.adapters.BuildingOperationsAdapter
+import com.quickhandslogistics.modified.views.adapters.schedule.BuildingOperationsAdapter
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
 import kotlinx.android.synthetic.main.content_building_operations.*
 
@@ -34,7 +34,10 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener {
         recyclerViewBuildingOperations.apply {
             layoutManager = GridLayoutManager(activity, 2)
             addItemDecoration(SpaceDividerItemDecorator(20, 20))
-            adapter = BuildingOperationsAdapter(allowUpdate)
+            adapter =
+                BuildingOperationsAdapter(
+                    allowUpdate
+                )
         }
     }
 

@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.modified.views.adapters.UnScheduledWorkItemDetailAdapter
+import com.quickhandslogistics.modified.views.adapters.schedule.UnScheduledWorkItemDetailAdapter
 import kotlinx.android.synthetic.main.activity_unscheduled_work_item_detail.*
 
 class UnscheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener {
@@ -22,11 +22,11 @@ class UnscheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener {
             val dividerItemDecoration =
                 DividerItemDecoration(activity, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            adapter = UnScheduledWorkItemDetailAdapter()
+            adapter =
+                UnScheduledWorkItemDetailAdapter()
         }
 
         buttonUpdate.setOnClickListener(this)
-        buttonSchedule.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
@@ -36,9 +36,6 @@ class UnscheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener {
                     val bundle = Bundle()
                     bundle.putBoolean(AddWorkItemLumpersActivity.ARG_IS_ADD_LUMPER, false)
                     startIntent(AddWorkItemLumpersActivity::class.java, bundle = bundle)
-                }
-                buttonSchedule.id -> {
-                    onBackPressed()
                 }
             }
         }

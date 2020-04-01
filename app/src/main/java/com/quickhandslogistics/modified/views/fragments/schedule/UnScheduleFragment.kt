@@ -14,8 +14,9 @@ import com.quickhandslogistics.modified.presenters.schedule.UnSchedulePresenter
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.activities.DisplayLumpersListActivity
 import com.quickhandslogistics.modified.views.activities.schedule.AddWorkItemLumpersActivity
+import com.quickhandslogistics.modified.views.activities.schedule.UnScheduleDetailActivity
 import com.quickhandslogistics.modified.views.activities.schedule.UnscheduledWorkItemDetailActivity
-import com.quickhandslogistics.modified.views.adapters.UnScheduledWorkItemAdapter
+import com.quickhandslogistics.modified.views.adapters.schedule.UnScheduleAdapter
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
 import kotlinx.android.synthetic.main.fragment_unschedule.*
 import java.util.*
@@ -24,10 +25,9 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
     UnScheduleContract.View {
 
     private lateinit var unSchedulePresenter: UnSchedulePresenter
-    private lateinit var unScheduledWorkItemAdapter: UnScheduledWorkItemAdapter
+    private lateinit var unScheduleAdapter: UnScheduleAdapter
     private var onScheduleFragmentInteractionListener: ScheduleMainContract.View.OnScheduleFragmentInteractionListener? =
         null
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -56,30 +56,17 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
         recyclerViewSchedule.apply {
             layoutManager = LinearLayoutManager(fragmentActivity!!)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            unScheduledWorkItemAdapter =
-                UnScheduledWorkItemAdapter(resources, this@UnScheduleFragment)
-            adapter = unScheduledWorkItemAdapter
+            unScheduleAdapter =
+                UnScheduleAdapter(resources, this@UnScheduleFragment)
+            adapter = unScheduleAdapter
         }
     }
 
     /*
     * Adapter Item Click Listeners
     */
-    override fun onAddLumperItemClick() {
-        val bundle = Bundle()
-        bundle.putBoolean(AddWorkItemLumpersActivity.ARG_IS_ADD_LUMPER, true)
-        startIntent(AddWorkItemLumpersActivity::class.java, bundle = bundle)
-/*        val intent = Intent(activity, AddWorkItemLumpersActivity::class.java)
-        intent.putExtra("position", position)
-        activity.startActivityForResult(intent, 101)
-        activity.overridePendingTransition(
-            R.anim.anim_next_slide_in,
-            R.anim.anim_next_slide_out
-        )*/
-    }
-
-    override fun onWorkItemClick() {
-        startIntent(UnscheduledWorkItemDetailActivity::class.java)
+    override fun onUnScheduleItemClick() {
+        startIntent(UnScheduleDetailActivity::class.java)
     }
 
     override fun onLumperImagesClick() {
@@ -98,7 +85,7 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
             lumpersCountList.add(i)
         }
 
-        unScheduledWorkItemAdapter.updateList(workItemsList, lumpersCountList)
+        //unScheduleAdapter.updateList(workItemsList, lumpersCountList)
     }
 
     override fun hideProgressDialog() {

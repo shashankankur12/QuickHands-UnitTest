@@ -58,6 +58,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewScheduledDate" />
 
+    <TextView
+        android:id="@+id/textViewWorkItemsCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15ssp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginEnd="@dimen/_1ssp"
+        android:drawableStart="@drawable/ic_schedule_work_items"
+        android:drawablePadding="@dimen/_5sdp"
+        android:text="@string/no_of_drops"
+        android:textColor="@color/scheduleDetail"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -78,7 +94,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewScheduleType">
+        app:layout_constraintTop_toBottomOf="@id/textViewWorkItemsCount">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewLumpers"
@@ -87,36 +103,15 @@
             android:layout_marginBottom="@dimen/_10sdp"
             android:layout_weight="1" />
 
-        <LinearLayout
+        <Button
+            android:id="@+id/buttonUpdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/buttonUpdate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_weight="1"
-                android:background="@drawable/round_button_negative"
-                android:text="@string/string_update"
-                android:textAllCaps="false"
-                android:textColor="@color/buttonRed"
-                android:textSize="@dimen/_14ssp"
-                android:visibility="visible" />
-
-            <Button
-                android:id="@+id/buttonSchedule"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/round_button_red_new"
-                android:text="@string/string_schedule"
-                android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/_14ssp"
-                android:visibility="visible" />
-        </LinearLayout>
+            android:background="@drawable/round_button_red_new"
+            android:text="@string/string_update"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_14ssp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

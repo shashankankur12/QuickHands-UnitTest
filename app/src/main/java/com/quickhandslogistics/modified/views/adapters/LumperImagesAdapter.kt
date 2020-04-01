@@ -6,13 +6,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.contracts.LumperImagesContract
 import com.quickhandslogistics.modified.data.schedule.ImageData
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.schdule_lumper_image_list.view.*
 
 class LumperImagesAdapter(
     var lumperImages: ArrayList<ImageData>,
-    var onItemClickListener: OnItemClickListener
+    var onItemClickListener: LumperImagesContract.OnItemClickListener
 ) :
     RecyclerView.Adapter<LumperImagesAdapter.ScheduleImageViewHolder>() {
 
@@ -63,8 +64,4 @@ class LumperImagesAdapter(
             }
         }
     }
-}
-
-interface OnItemClickListener {
-    fun onLumperImageItemClick()
 }

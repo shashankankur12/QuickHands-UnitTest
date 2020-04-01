@@ -9,10 +9,12 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.ChooseLumperContract
+import com.quickhandslogistics.modified.contracts.InfoDialogWarningContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.presenters.ChooseLumperPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.adapters.ChooseLumperAdapter
+import com.quickhandslogistics.modified.views.fragments.InfoWarningDialogFragment
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
@@ -115,10 +117,22 @@ class ChooseLumperActivity : BaseActivity(), ChooseLumperContract.View, TextWatc
     }
 
     override fun onSelectLumper(employeeData: EmployeeData) {
-        onBackPressed()
+        val dialog = InfoWarningDialogFragment.newInstance(
+            getString(R.string.string_ask_to_replace_new_lumper),
+            positiveButtonText = getString(R.string.string_yes),
+            negativeButtonText = getString(R.string.string_no),
+            onClickListener = object : InfoDialogWarningContract.View.OnClickListener {
+                override fun onPositiveButtonClick() {
+                    onBackPressed()
+                }
+
+                override fun onNegativeButtonClick() {
+                }
+            })
+        dialog.show(supportFragmentManager, InfoWarningDialogFragment::class.simpleName)
     }
 
     override fun onPhoneViewClick(lumperName: String, phone: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 }

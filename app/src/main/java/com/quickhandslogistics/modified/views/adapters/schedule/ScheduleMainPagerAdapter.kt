@@ -1,4 +1,4 @@
-package com.quickhandslogistics.modified.views.adapters
+package com.quickhandslogistics.modified.views.adapters.schedule
 
 import android.content.res.Resources
 import android.os.Parcelable
