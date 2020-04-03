@@ -36,7 +36,7 @@ class ScheduleModel(private val sharedPref: SharedPref) : ScheduleContract.Model
 
                 override fun onError(error: Any) {
                     if (error is Throwable) {
-                        Log.e(LoginModel::class.simpleName, error.localizedMessage!!)
+                        Log.e(ScheduleModel::class.simpleName, error.localizedMessage!!)
                         onFinishedListener.onFailure()
                     } else if (error is String) {
                         onFinishedListener.onFailure(error)

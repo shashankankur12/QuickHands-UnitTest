@@ -1,35 +1,31 @@
 package com.quickhandslogistics.modified.contracts.schedule
 
 import com.quickhandslogistics.modified.data.schedule.ScheduleAPIResponse
-import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
+import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import java.util.*
 
 class UnScheduleContract {
     interface Model {
-        fun fetchUnSchedulesByDate(selectedDate: Date, onFinishedListener: OnFinishedListener)
+        fun fetchUnSchedulesByDate(onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener {
             fun onFailure(message: String = "")
-            fun onSuccess(
-                selectedDate: Date,
-                unScheduleAPIResponse: ScheduleAPIResponse
-            )
+            fun onSuccess(unScheduleAPIResponse: ScheduleAPIResponse)
         }
     }
+
     interface View {
-        fun showUnScheduleData(
-            selectedDate: Date,
-            workItemsList: ArrayList<WorkItemDetail>
-        )
+        fun showUnScheduleData(workItemsList: ArrayList<ScheduleDetail>)
         fun hideProgressDialog()
+        fun showProgressDialog(message: String)
 
         interface OnAdapterItemClickListener {
-            fun onUnScheduleItemClick()
+            fun onUnScheduleItemClick(scheduleDetail: ScheduleDetail)
             fun onLumperImagesClick()
         }
     }
 
     interface Presenter {
-        fun getUnScheduledWorkItems(date: Date)
+        fun getUnScheduledWorkItems(showProgressDialog: Boolean)
     }
 }

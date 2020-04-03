@@ -173,4 +173,6 @@
     <string name="string_out_bonds">Out Bonds</string>
     <string name="string_schedule_now">Schedule Now</string>
     <string name="string_ask_to_replace_new_lumper">Are you sure you want to add this lumper?</string>
+    <string name="work_items_count">Work Items: %s</string>
+    <string name="sequence">"Sequence: %s"</string>
 </resources>

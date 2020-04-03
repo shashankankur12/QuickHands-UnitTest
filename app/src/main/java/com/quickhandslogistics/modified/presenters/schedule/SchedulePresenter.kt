@@ -4,7 +4,7 @@ import android.content.res.Resources
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.modified.data.schedule.ScheduleAPIResponse
-import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
+import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.models.schedule.ScheduleModel
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SharedPref
@@ -32,11 +32,8 @@ class SchedulePresenter(
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
         scheduleView?.showDateString(dateString)
 
-        val workItemsList = ArrayList<WorkItemDetail>()
-        scheduleAPIResponse.data?.workItems?.liveTypeWorkItem?.let {
-            workItemsList.addAll(it)
-        }
-        scheduleAPIResponse.data?.workItems?.dropTypeWorkItem?.let {
+        val workItemsList = ArrayList<ScheduleDetail>()
+        scheduleAPIResponse.data?.scheduleDetailsList?.let {
             workItemsList.addAll(it)
         }
 

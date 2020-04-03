@@ -1,9 +1,8 @@
 package com.quickhandslogistics.modified.models.lumpers
 
 import android.util.Log
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.contracts.lumpers.LumpersContract
-import com.quickhandslogistics.modified.models.LoginModel
+import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
 
@@ -21,7 +20,7 @@ class LumpersModel : LumpersContract.Model {
 
             override fun onError(error: Any) {
                 if (error is Throwable) {
-                    Log.e(LoginModel::class.simpleName, error.localizedMessage!!)
+                    Log.e(LumpersModel::class.simpleName, error.localizedMessage!!)
                     onFinishedListener.onFailure()
                 } else if (error is String) {
                     onFinishedListener.onFailure(error)

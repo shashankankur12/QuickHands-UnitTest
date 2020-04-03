@@ -127,6 +127,11 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
         }
     }
 
+    override fun onRefresh() {
+        swipeRefreshLayoutLumpers.isRefreshing = false
+        lumpersPresenter.fetchLumpersList()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         lumpersPresenter.onDestroy()
@@ -153,10 +158,5 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
                 }
             })
         dialog.show(childFragmentManager, InfoWarningDialogFragment::class.simpleName)
-    }
-
-    override fun onRefresh() {
-        swipeRefreshLayoutLumpers.isRefreshing = false
-        lumpersPresenter.fetchLumpersList()
     }
 }

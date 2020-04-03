@@ -11,7 +11,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.LumperImagesContract
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.modified.data.schedule.ImageData
-import com.quickhandslogistics.modified.data.schedule.ScheduleData
+import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.views.adapters.LumperImagesAdapter
 import com.quickhandslogistics.modified.views.controls.OverlapDecoration
 import kotlinx.android.synthetic.main.layout_item_schedule.view.*
@@ -22,7 +22,7 @@ class ScheduleAdapter(
 ) :
     RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
 
-    private var scheduledData: ArrayList<ScheduleData> = ArrayList()
+    private var workItemsList: ArrayList<ScheduleDetail> = ArrayList()
 
     override fun onCreateViewHolder(
         viewGroup: ViewGroup,
@@ -35,21 +35,21 @@ class ScheduleAdapter(
     }
 
     override fun onBindViewHolder(scheduleViewHolder: ScheduleViewHolder, position: Int) {
-//        val item = getItem(position)
-        scheduleViewHolder.bind()
+        val item = getItem(position)
+        scheduleViewHolder.bind(item)
     }
 
     override fun getItemCount(): Int {
-        return 5
+        return workItemsList.size
     }
 
-    fun getItem(position: Int): ScheduleData {
-        return scheduledData[position]
+    fun getItem(position: Int): ScheduleDetail {
+        return workItemsList[position]
     }
 
-    fun updateList(scheduledData: ArrayList<ScheduleData>) {
-        this.scheduledData.clear()
-        this.scheduledData = scheduledData
+    fun updateList(scheduledData: ArrayList<ScheduleDetail>) {
+        this.workItemsList.clear()
+        this.workItemsList = scheduledData
         notifyDataSetChanged()
     }
 
@@ -68,7 +68,14 @@ class ScheduleAdapter(
             }
         }
 
-        fun bind() {
+        fun bind(scheduleDetail: ScheduleDetail) {
+            textViewBuildingName.text = scheduleDetail.buildingName
+            textViewWorkItemsCount.text = String.format(
+                resources.getString(R.string.work_items_count),
+                scheduleDetail.totalNumberOfWorkItems
+            )
+            //textViewScheduleType.text = workItem.scheduleTypes?.
+
             recyclerViewLumpersImagesList.apply {
                 val lumperImages = ArrayList<ImageData>()
                 for (i in 1..5) {

@@ -20,6 +20,7 @@ class ScheduleMainFragment : BaseFragment(),
 
     companion object {
         const val ARG_ALLOW_UPDATE = "ARG_ALLOW_UPDATE"
+        const val ARG_SCHEDULE_DETAIL = "ARG_SCHEDULE_DETAIL"
     }
 
     override fun onCreateView(

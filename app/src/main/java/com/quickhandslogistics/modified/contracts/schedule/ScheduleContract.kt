@@ -1,7 +1,7 @@
 package com.quickhandslogistics.modified.contracts.schedule
 
 import com.quickhandslogistics.modified.data.schedule.ScheduleAPIResponse
-import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
+import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import java.util.*
 
 class ScheduleContract {
@@ -24,7 +24,7 @@ class ScheduleContract {
         fun showDateString(dateString: String)
         fun showScheduleData(
             selectedDate: Date,
-            workItemsList: ArrayList<WorkItemDetail>
+            workItemsList: ArrayList<ScheduleDetail>
         )
 
         fun hideProgressDialog()

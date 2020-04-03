@@ -19,11 +19,10 @@ import kotlinx.android.synthetic.main.layout_unscheduled_work_item.view.*
 
 class UnScheduledWorkItemAdapter(
     private val resources: Resources,
+    private val workItemType: String,
+    private val workItemsList: ArrayList<WorkItemDetail>,
     private var adapterItemClickListener: UnScheduleDetailContract.View.OnAdapterItemClickListener
 ) : RecyclerView.Adapter<UnScheduledWorkItemAdapter.WorkItemViewHolder>() {
-
-    private var lumpersCountList: ArrayList<Int> = ArrayList()
-    private var workItemsList: ArrayList<WorkItemDetail> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemViewHolder {
         val view: View = LayoutInflater.from(parent.context)
@@ -32,31 +31,21 @@ class UnScheduledWorkItemAdapter(
     }
 
     override fun getItemCount(): Int {
-        return 4
+        return workItemsList.size
+    }
+
+    fun getItem(position: Int): WorkItemDetail {
+        return workItemsList[position]
     }
 
     override fun onBindViewHolder(holder: WorkItemViewHolder, position: Int) {
-        holder.bind(/*getItem(position), lumpersCountList[position]*/)
-    }
-
-    fun updateList(
-        workItemsList: ArrayList<WorkItemDetail>,
-        lumpersCountList: ArrayList<Int>
-    ) {
-        this.workItemsList.clear()
-        this.workItemsList = workItemsList
-
-        this.lumpersCountList.clear()
-        this.lumpersCountList = lumpersCountList
-        notifyDataSetChanged()
+        holder.bind(getItem(position))
     }
 
     inner class WorkItemViewHolder(view: View) : RecyclerView.ViewHolder(view),
         View.OnClickListener, LumperImagesContract.OnItemClickListener {
 
         private val textViewStartTime: TextView = view.textViewStartTime
-
-        //     private val textViewScheduleType: TextView = view.textViewScheduleType
         private val textViewDropItems: TextView = view.textViewDropItems
         private val circleImageArrow: CircleImageView = view.circleImageViewArrow
         private val textViewAddLumpers: TextView = view.textViewAddLumpers
@@ -69,26 +58,26 @@ class UnScheduledWorkItemAdapter(
             }
         }
 
-        fun bind(/*workItemDetail: WorkItemDetail, lumperCount: Int*/) {
-//            textViewStartTime.text = String.format(
-//                resources.getString(R.string.start_time_container),
-//                workItemDetail.startTime
-//            )
-//
-//            when (workItemDetail.workItemType) {
-//                "drop" -> {
-//                    textViewDropItems.text = String.format(
-//                        resources.getString(R.string.no_of_drops),
-//                        workItemDetail.numberOfDrops
-//                    )
-//                    textViewDropItems.visibility = View.VISIBLE
-//                    textViewScheduleType.text = resources.getString(R.string.string_drops)
-//                }
-//                "load" -> {
-//                    textViewDropItems.visibility = View.GONE
-//                    textViewScheduleType.text = resources.getString(R.string.string_live_loads)
-//                }
-//            }
+        fun bind(workItemDetail: WorkItemDetail) {
+            textViewStartTime.text = String.format(
+                resources.getString(R.string.start_time_container),
+                workItemDetail.startTime
+            )
+
+            when (workItemType) {
+                resources.getString(R.string.string_drops) -> {
+                    textViewDropItems.text = String.format(
+                        resources.getString(R.string.no_of_drops),
+                        workItemDetail.numberOfDrops
+                    )
+                }
+                else -> {
+                    textViewDropItems.text = String.format(
+                        resources.getString(R.string.sequence),
+                        workItemDetail.sequence
+                    )
+                }
+            }
 
             if (adapterPosition > 0) {
                 textViewAddLumpers.visibility = View.GONE
@@ -118,9 +107,10 @@ class UnScheduledWorkItemAdapter(
 
         override fun onClick(view: View?) {
             view?.let {
+                val workItem = getItem(adapterPosition)
                 when (view.id) {
-                    itemView.id -> adapterItemClickListener.onWorkItemClick()
-                    textViewAddLumpers.id -> adapterItemClickListener.onAddLumpersItemClick()
+                    itemView.id -> adapterItemClickListener.onWorkItemClick(workItem, workItemType)
+                    textViewAddLumpers.id -> adapterItemClickListener.onAddLumpersItemClick(workItem)
                 }
             }
         }

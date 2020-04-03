@@ -16,13 +16,12 @@ import com.michalsvec.singlerowcalendar.utils.DateUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleMainContract
-import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
+import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.presenters.schedule.SchedulePresenter
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.activities.DisplayLumpersListActivity
 import com.quickhandslogistics.modified.views.activities.schedule.MarkAttendanceActivity
 import com.quickhandslogistics.modified.views.activities.schedule.ScheduleDetailActivity
-import com.quickhandslogistics.modified.views.activities.schedule.ScheduledWorkItemDetailActivity
 import com.quickhandslogistics.modified.views.adapters.schedule.ScheduleAdapter
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
 import kotlinx.android.synthetic.main.calendar_item.view.*
@@ -79,7 +78,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
 
         initializeCalendar()
 
-        singleRowCalendarSchedule.select(availableDates.size - 1)
+      //  singleRowCalendarSchedule.select(availableDates.size - 1)
         buttonMarkAttendance.setOnClickListener(this)
     }
 
@@ -119,9 +118,9 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
 
         val myCalendarChangesObserver = object : CalendarChangesObserver {
             override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
-//                if (isSelected) {
-//                    schedulePresenter.getScheduledWorkItemsByDate(date)
-//                }
+                if (isSelected) {
+                    schedulePresenter.getScheduledWorkItemsByDate(date)
+                }
                 super.whenSelectionChanged(isSelected, position, date)
             }
         }
@@ -190,10 +189,10 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
         textViewDate.text = dateString
     }
 
-    override fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<WorkItemDetail>) {
+    override fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<ScheduleDetail>) {
         selectedTime = selectedDate.time
         isCurrentDate = com.quickhandslogistics.utils.DateUtils.isCurrentDate(selectedTime)
-        //scheduleAdapter.updateList(workItemsList)
+        scheduleAdapter.updateList(workItemsList)
 
         buttonMarkAttendance.visibility = if (isCurrentDate) View.VISIBLE else View.GONE
         textViewEmptyData.visibility = View.GONE
@@ -210,7 +209,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
     }
 
     override fun showAPIErrorMessage(message: String) {
-        TODO("Not yet implemented")
+
     }
 
     override fun fetchUnsScheduledWorkItems() {

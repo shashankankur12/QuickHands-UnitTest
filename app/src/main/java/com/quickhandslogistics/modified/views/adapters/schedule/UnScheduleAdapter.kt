@@ -11,9 +11,10 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.LumperImagesContract
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleContract
 import com.quickhandslogistics.modified.data.schedule.ImageData
-import com.quickhandslogistics.modified.data.schedule.ScheduleData
+import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.views.adapters.LumperImagesAdapter
 import com.quickhandslogistics.modified.views.controls.OverlapDecoration
+import com.quickhandslogistics.utils.DateUtils
 import kotlinx.android.synthetic.main.layout_item_unschedule.view.*
 
 class UnScheduleAdapter(
@@ -22,7 +23,7 @@ class UnScheduleAdapter(
 ) :
     RecyclerView.Adapter<UnScheduleAdapter.UnScheduleViewHolder>() {
 
-    private var scheduledData: ArrayList<ScheduleData> = ArrayList()
+    private var workItemsList: ArrayList<ScheduleDetail> = ArrayList()
 
     override fun onCreateViewHolder(
         viewGroup: ViewGroup,
@@ -35,31 +36,35 @@ class UnScheduleAdapter(
     }
 
     override fun onBindViewHolder(unScheduleViewHolder: UnScheduleViewHolder, position: Int) {
-//        val item = getItem(position)
-        unScheduleViewHolder.bind()
+        val item = getItem(position)
+        unScheduleViewHolder.bind(item)
     }
 
     override fun getItemCount(): Int {
-        return 5
+        return workItemsList.size
     }
 
-    fun getItem(position: Int): ScheduleData {
-        return scheduledData[position]
+    fun getItem(position: Int): ScheduleDetail {
+        return workItemsList[position]
     }
 
-    fun updateList(scheduledData: ArrayList<ScheduleData>) {
-        this.scheduledData.clear()
-        this.scheduledData = scheduledData
+    fun updateList(
+        workItemsList: ArrayList<ScheduleDetail>,
+        lumpersCountList: ArrayList<Int>
+    ) {
+        this.workItemsList.clear()
+        this.workItemsList = workItemsList
         notifyDataSetChanged()
     }
 
     inner class UnScheduleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener, LumperImagesContract.OnItemClickListener {
 
-        var textViewBuildingName: TextView = itemView.textViewBuildingName
-        var textViewScheduleType: TextView = itemView.textViewScheduleType
-        var textViewWorkItemsCount: TextView = itemView.textViewWorkItemsCount
-        var recyclerViewLumpersImagesList: RecyclerView = itemView.recyclerViewLumpersImagesList
+        private val textViewDate: TextView = itemView.textViewDate
+        private val textViewBuildingName: TextView = itemView.textViewBuildingName
+        private val textViewScheduleType: TextView = itemView.textViewScheduleType
+        private val textViewWorkItemsCount: TextView = itemView.textViewWorkItemsCount
+        private val recyclerViewLumpersImagesList: RecyclerView = itemView.recyclerViewLumpersImagesList
 
         init {
             recyclerViewLumpersImagesList.apply {
@@ -68,19 +73,27 @@ class UnScheduleAdapter(
             }
         }
 
-        fun bind() {
-//            if (adapterPosition == 0 || getItem(adapterPosition - 1).startDate != workItemDetail.startDate) {
-//                workItemDetail.startDate?.let {
-//                    textViewDate.text = DateUtils.changeDateString(
-//                        DateUtils.PATTERN_API_REQUEST_PARAMETER,
-//                        DateUtils.PATTERN_NORMAL,
-//                        it
-//                    )
-//                }
-//                textViewDate.visibility = View.VISIBLE
-//            } else {
-//                textViewDate.visibility = View.GONE
-//            }
+        fun bind(scheduleDetail: ScheduleDetail) {
+            textViewBuildingName.text = scheduleDetail.buildingName
+            textViewScheduleType.text = scheduleDetail.scheduleTypeNames
+            textViewWorkItemsCount.text = String.format(
+                resources.getString(R.string.work_items_count),
+                scheduleDetail.totalNumberOfWorkItems
+            )
+
+            if (adapterPosition == 0 || getItem(adapterPosition - 1).startDate != scheduleDetail.startDate) {
+                scheduleDetail.startDate?.let {
+                    textViewDate.text = DateUtils.changeDateString(
+                        DateUtils.PATTERN_API_REQUEST_PARAMETER,
+                        DateUtils.PATTERN_NORMAL,
+                        it
+                    )
+                }
+                textViewDate.visibility = View.VISIBLE
+            } else {
+                textViewDate.visibility = View.GONE
+            }
+
             recyclerViewLumpersImagesList.apply {
                 val lumperImages = ArrayList<ImageData>()
                 for (i in 1..5) {
@@ -95,7 +108,7 @@ class UnScheduleAdapter(
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
-                    itemView.id -> adapterItemClickListener.onUnScheduleItemClick()
+                    itemView.id -> adapterItemClickListener.onUnScheduleItemClick(getItem(adapterPosition))
                 }
             }
         }

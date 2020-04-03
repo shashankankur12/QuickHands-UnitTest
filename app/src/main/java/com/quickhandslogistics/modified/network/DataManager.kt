@@ -1,13 +1,16 @@
 package com.quickhandslogistics.modified.network
 
 import com.google.gson.Gson
-import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
+import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.ErrorResponse
+import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRequest
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordResponse
 import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.data.schedule.AssignLumpersRequest
+import com.quickhandslogistics.modified.data.schedule.ChangeWorkItemScheduleStatusRequest
 import com.quickhandslogistics.modified.data.schedule.ScheduleAPIResponse
 import com.quickhandslogistics.network.AppConfiguration
 import com.quickhandslogistics.network.IApiInterface
@@ -187,6 +190,67 @@ object DataManager : AppConstant {
             }
 
             override fun onFailure(call: Call<ScheduleAPIResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun assignLumpers(
+        workItemId: String, assignLumpersRequest: AssignLumpersRequest,
+        listener: ResponseListener<ResponseBody>
+    ) {
+        val call = getService().assignLumpers(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
+            workItemId, assignLumpersRequest
+        )
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun changeWorkItemScheduleStatus(
+        buildingId: String, workItemId: String,
+        request: ChangeWorkItemScheduleStatusRequest,
+        listener: ResponseListener<BaseResponse>
+    ) {
+        val call = getService().changeWorkItemScheduleStatus(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
+            buildingId, workItemId, request
+        )
+        call.enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(
+                call: Call<BaseResponse>,
+                response: Response<BaseResponse>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
                 listener.onError(t)
             }
         })
