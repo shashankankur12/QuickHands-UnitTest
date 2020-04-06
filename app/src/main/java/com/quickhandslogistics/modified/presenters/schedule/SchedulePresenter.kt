@@ -3,7 +3,7 @@ package com.quickhandslogistics.modified.presenters.schedule
 import android.content.res.Resources
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
-import com.quickhandslogistics.modified.data.schedule.ScheduleAPIResponse
+import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.models.schedule.ScheduleModel
 import com.quickhandslogistics.utils.DateUtils
@@ -28,13 +28,44 @@ class SchedulePresenter(
 
     }
 
-    override fun onSuccess(selectedDate: Date, scheduleAPIResponse: ScheduleAPIResponse) {
+    override fun onSuccess(selectedDate: Date, scheduleListAPIResponse: ScheduleListAPIResponse) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
         scheduleView?.showDateString(dateString)
 
         val workItemsList = ArrayList<ScheduleDetail>()
-        scheduleAPIResponse.data?.scheduleDetailsList?.let {
+        scheduleListAPIResponse.data?.scheduleDetailsList?.let {
             workItemsList.addAll(it)
+        }
+
+        val iterate = workItemsList.listIterator()
+        while (iterate.hasNext()) {
+            val oldValue = iterate.next()
+            var scheduleTypeNames = ""
+            oldValue.scheduleTypes?.liveLoads?.let {
+                if (it.isNotEmpty()) {
+                    scheduleTypeNames = resources.getString(R.string.string_live_loads)
+                }
+            }
+
+            oldValue.scheduleTypes?.drops?.let {
+                if (it.isNotEmpty()) {
+                    if (scheduleTypeNames.isNotEmpty()) {
+                        scheduleTypeNames += ", "
+                    }
+                    scheduleTypeNames += resources.getString(R.string.string_drops)
+                }
+            }
+
+            oldValue.scheduleTypes?.outbounds?.let {
+                if (it.isNotEmpty()) {
+                    if (scheduleTypeNames.isNotEmpty()) {
+                        scheduleTypeNames += ", "
+                    }
+                    scheduleTypeNames += resources.getString(R.string.string_out_bonds)
+                }
+            }
+            oldValue.scheduleTypeNames = scheduleTypeNames
+            iterate.set(oldValue)
         }
 
         if (workItemsList.size > 0) {

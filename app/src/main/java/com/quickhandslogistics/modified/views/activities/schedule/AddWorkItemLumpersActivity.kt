@@ -2,7 +2,6 @@ package com.quickhandslogistics.modified.views.activities.schedule
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,6 +14,8 @@ import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.presenters.schedule.AddWorkItemLumpersPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.adapters.schedule.AddWorkItemLumperAdapter
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
@@ -36,8 +37,6 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
 
     companion object {
         const val ARG_IS_ADD_LUMPER = "ARG_IS_ADD_LUMPER"
-        const val ARG_WORK_ITEM_ID = "ARG_WORK_ITEM_ID"
-        const val ARG_WORK_ITEM_TYPE = "ARG_WORK_ITEM_TYPE"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,10 +87,7 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
                         addWorkItemLumpersPresenter.initiateAssigningLumpers(
                             addedLumpers, workItemId, workItemType
                         )
-                        val intent = Intent()
-                        intent.putExtra("position", position)
-                        intent.putExtra("count", addedLumpers.size)
-                        setResult(Activity.RESULT_OK, intent)
+                        setResult(RESULT_OK)
                         onBackPressed()
                     }
                 }

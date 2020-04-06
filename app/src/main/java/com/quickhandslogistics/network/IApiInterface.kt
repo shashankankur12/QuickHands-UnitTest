@@ -7,9 +7,7 @@ import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRespon
 import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
-import com.quickhandslogistics.modified.data.schedule.AssignLumpersRequest
-import com.quickhandslogistics.modified.data.schedule.ChangeWorkItemScheduleStatusRequest
-import com.quickhandslogistics.modified.data.schedule.ScheduleAPIResponse
+import com.quickhandslogistics.modified.data.schedule.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -34,7 +32,19 @@ interface IApiInterface {
         @Query("date") date: String,
         @Query("buildingId") buildingId: String,
         @Query("scheduled") scheduled: Boolean
-    ): Call<ScheduleAPIResponse>
+    ): Call<ScheduleListAPIResponse>
+
+    @GET("schedule/identity/{scheduleIdentityId}")
+    fun getScheduleDetail(
+        @Header("Authorization") auth: String,
+        @Path("scheduleIdentityId") scheduleIdentityId: String
+    ): Call<ScheduleDetailAPIResponse>
+
+    @GET("schedule/{workItemId}")
+    fun getWorkItemDetail(
+        @Header("Authorization") auth: String,
+        @Path("workItemId") workItemId: String
+    ): Call<WorkItemDetailAPIResponse>
 
     @PUT("schedule/lumper/{workItemId}")
     fun assignLumpers(

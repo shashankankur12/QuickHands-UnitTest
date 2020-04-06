@@ -18,7 +18,7 @@ class LumperWorkDetailFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            employeeData = it.getSerializable(ARG_LUMPER_DATA) as EmployeeData?
+            employeeData = it.getParcelable(ARG_LUMPER_DATA) as EmployeeData?
         }
     }
 
@@ -70,7 +70,7 @@ class LumperWorkDetailFragment : BaseFragment() {
         fun newInstance(employeeData: EmployeeData) =
             LumperWorkDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(ARG_LUMPER_DATA, employeeData)
+                    putParcelable(ARG_LUMPER_DATA, employeeData)
                 }
             }
     }

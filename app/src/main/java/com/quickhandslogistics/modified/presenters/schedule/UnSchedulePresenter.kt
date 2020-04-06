@@ -3,7 +3,7 @@ package com.quickhandslogistics.modified.presenters.schedule
 import android.content.res.Resources
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleContract
-import com.quickhandslogistics.modified.data.schedule.ScheduleAPIResponse
+import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.models.schedule.UnScheduleModel
 import com.quickhandslogistics.utils.DateUtils
@@ -31,10 +31,10 @@ class UnSchedulePresenter(
     }
 
     override fun onSuccess(
-        unScheduleAPIResponse: ScheduleAPIResponse
+        unScheduleListAPIResponse: ScheduleListAPIResponse
     ) {
         val workItemsList = ArrayList<ScheduleDetail>()
-        unScheduleAPIResponse.data?.scheduleDetailsList?.let {
+        unScheduleListAPIResponse.data?.scheduleDetailsList?.let {
             workItemsList.addAll(it)
         }
 
@@ -43,13 +43,13 @@ class UnSchedulePresenter(
             val oldValue = iterate.next()
             var scheduleTypeNames = ""
             oldValue.scheduleTypes?.liveLoads?.let {
-                if (it.size > 0) {
+                if (it.isNotEmpty()) {
                     scheduleTypeNames = resources.getString(R.string.string_live_loads)
                 }
             }
 
             oldValue.scheduleTypes?.drops?.let {
-                if (it.size > 0) {
+                if (it.isNotEmpty()) {
                     if (scheduleTypeNames.isNotEmpty()) {
                         scheduleTypeNames += ", "
                     }
@@ -58,7 +58,7 @@ class UnSchedulePresenter(
             }
 
             oldValue.scheduleTypes?.outbounds?.let {
-                if (it.size > 0) {
+                if (it.isNotEmpty()) {
                     if (scheduleTypeNames.isNotEmpty()) {
                         scheduleTypeNames += ", "
                     }

@@ -78,7 +78,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
 
         initializeCalendar()
 
-      //  singleRowCalendarSchedule.select(availableDates.size - 1)
+        singleRowCalendarSchedule.select(availableDates.size - 1)
         buttonMarkAttendance.setOnClickListener(this)
     }
 
@@ -172,9 +172,10 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
     /*
     * Adapter Item Click Listeners
     */
-    override fun onScheduleItemClick() {
+    override fun onScheduleItemClick(scheduleDetail: ScheduleDetail) {
         val bundle = Bundle()
         bundle.putBoolean(ScheduleMainFragment.ARG_ALLOW_UPDATE, isCurrentDate)
+        bundle.putParcelable(ScheduleMainFragment.ARG_SCHEDULE_DETAIL, scheduleDetail)
         startIntent(ScheduleDetailActivity::class.java, bundle = bundle)
     }
 

@@ -11,14 +11,16 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.LumperImagesContract
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleDetailContract
-import com.quickhandslogistics.modified.data.schedule.ImageData
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.views.adapters.LumperImagesAdapter
 import com.quickhandslogistics.modified.views.controls.OverlapDecoration
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.layout_scheduled_work_item.view.*
 
 class ScheduledWorkItemAdapter(
     private val resources: Resources,
+    private val workItemType: String,
     private var adapterItemClickListener: ScheduleDetailContract.View.OnAdapterItemClickListener
 ) :
     Adapter<ScheduledWorkItemAdapter.WorkItemViewHolder>() {
@@ -32,16 +34,20 @@ class ScheduledWorkItemAdapter(
     }
 
     override fun getItemCount(): Int {
-        return 4
+        return workItemsList.size
+    }
+
+    fun getItem(position: Int): WorkItemDetail {
+        return workItemsList[position]
     }
 
     override fun onBindViewHolder(holder: WorkItemViewHolder, position: Int) {
-        holder.bind(/*workItemsList[position]*/)
+        holder.bind(getItem(position))
     }
 
-    fun updateList(workItemsList: ArrayList<WorkItemDetail>) {
+    fun updateData(workItemsList: List<WorkItemDetail>) {
         this.workItemsList.clear()
-        this.workItemsList = workItemsList
+        this.workItemsList.addAll(workItemsList)
         notifyDataSetChanged()
     }
 
@@ -49,9 +55,8 @@ class ScheduledWorkItemAdapter(
         View.OnClickListener, LumperImagesContract.OnItemClickListener {
 
         private val textViewStartTime: TextView = view.textViewStartTime
-
-        //        private val textViewScheduleType: TextView = view.textViewScheduleType
-//        private val textViewDropItems: TextView = view.textViewDropItems
+        private val textViewDropItems: TextView = view.textViewDropItems
+        private val circleImageArrow: CircleImageView = view.circleImageViewArrow
         private val recyclerViewLumpersImagesList: RecyclerView = view.recyclerViewLumpersImagesList
 
         init {
@@ -62,33 +67,31 @@ class ScheduledWorkItemAdapter(
             }
         }
 
-        fun bind(/*workItemDetail: WorkItemDetail*/) {
-//            textViewStartTime.text = String.format(
-//                resources.getString(R.string.start_time_container),
-//                workItemDetail.startTime
-//            )
-//
-//            when (workItemDetail.workItemType) {
-//                "drop" -> {
-//                    textViewDropItems.text = String.format(
-//                        resources.getString(R.string.no_of_drops),
-//                        workItemDetail.numberOfDrops
-//                    )
-//                    textViewDropItems.visibility = View.VISIBLE
-//                    textViewScheduleType.text = resources.getString(R.string.string_drops)
-//                }
-//                "load" -> {
-//                    textViewDropItems.visibility = View.GONE
-//                    textViewScheduleType.text = resources.getString(R.string.string_live_loads)
-//                }
-//            }
+        fun bind(workItemDetail: WorkItemDetail) {
+            textViewStartTime.text = String.format(
+                resources.getString(R.string.start_time_container),
+                workItemDetail.startTime
+            )
 
-            recyclerViewLumpersImagesList.apply {
-                val lumperImages = ArrayList<ImageData>()
-                for (i in 1..5) {
-                    lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
+            when (workItemDetail.workItemType) {
+                "drop" -> {
+                    textViewDropItems.text = String.format(
+                        resources.getString(R.string.no_of_drops),
+                        workItemDetail.numberOfDrops
+                    )
                 }
-                adapter = LumperImagesAdapter(lumperImages, this@WorkItemViewHolder)
+                else -> {
+                    textViewDropItems.text = String.format(
+                        resources.getString(R.string.sequence),
+                        workItemDetail.sequence
+                    )
+                }
+            }
+            recyclerViewLumpersImagesList.apply {
+                adapter = LumperImagesAdapter(
+                    workItemDetail.assignedLumpersList!! as ArrayList<EmployeeData>,
+                    this@WorkItemViewHolder
+                )
             }
 
             itemView.setOnClickListener(this)
@@ -97,13 +100,13 @@ class ScheduledWorkItemAdapter(
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
-                    itemView.id -> adapterItemClickListener.onWorkItemClick()
+                    itemView.id -> adapterItemClickListener.onWorkItemClick(getItem(adapterPosition), workItemType)
                 }
             }
         }
 
-        override fun onLumperImageItemClick() {
-            adapterItemClickListener.onLumperImagesClick()
+        override fun onLumperImageItemClick(lumpersList: ArrayList<EmployeeData>) {
+            adapterItemClickListener.onLumperImagesClick(lumpersList)
         }
     }
 }

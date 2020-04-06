@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.InfoDialogWarningContract
+import com.quickhandslogistics.modified.contracts.lumpers.LumpersContract
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.adapters.LumperListAdapter
 import com.quickhandslogistics.modified.views.fragments.InfoWarningDialogFragment
@@ -17,27 +19,36 @@ import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.content_choose_lumper.*
 
 class DisplayLumpersListActivity : BaseActivity(), View.OnClickListener, TextWatcher,
-    LumperListAdapter.OnAdapterItemClickListener {
+    LumpersContract.View.OnAdapterItemClickListener {
 
     private lateinit var lumperListAdapter: LumperListAdapter
+
+    companion object {
+        const val ARG_LUMPERS_LIST = "ARG_LUMPERS_LIST"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_display_lumpers_list)
         setupToolbar(title = getString(R.string.string_lumper))
 
-        recyclerViewLumpers.apply {
-            val linearLayoutManager = LinearLayoutManager(activity)
-            layoutManager = linearLayoutManager
-            val dividerItemDecoration =
-                DividerItemDecoration(activity, linearLayoutManager.orientation)
-            addItemDecoration(dividerItemDecoration)
-            lumperListAdapter =
-                LumperListAdapter(this@DisplayLumpersListActivity)
-            adapter = lumperListAdapter
-        }
+        intent.extras?.let {
+            val lumpersList = it.getParcelableArrayList<EmployeeData>(ARG_LUMPERS_LIST)
 
-        editTextSearch.addTextChangedListener(this)
-        imageViewCancel.setOnClickListener(this)
+            recyclerViewLumpers.apply {
+                val linearLayoutManager = LinearLayoutManager(activity)
+                layoutManager = linearLayoutManager
+                val dividerItemDecoration =
+                    DividerItemDecoration(activity, linearLayoutManager.orientation)
+                addItemDecoration(dividerItemDecoration)
+                lumperListAdapter =
+                    LumperListAdapter(lumpersList!!, this@DisplayLumpersListActivity)
+                adapter = lumperListAdapter
+            }
+
+            editTextSearch.addTextChangedListener(this)
+            imageViewCancel.setOnClickListener(this)
+        }
     }
 
     override fun onClick(view: View?) {
@@ -48,7 +59,6 @@ class DisplayLumpersListActivity : BaseActivity(), View.OnClickListener, TextWat
                     Utils.hideSoftKeyboard(activity)
                 }
             }
-
         }
     }
 
@@ -65,8 +75,10 @@ class DisplayLumpersListActivity : BaseActivity(), View.OnClickListener, TextWat
         }
     }
 
-    override fun onItemClick() {
-        startIntent(LumperDetailActivity::class.java)
+    override fun onItemClick(employeeData: EmployeeData) {
+        val bundle = Bundle()
+        bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
+        startIntent(LumperDetailActivity::class.java, bundle = bundle)
     }
 
     override fun onPhoneViewClick(lumperName: String, phone: String) {

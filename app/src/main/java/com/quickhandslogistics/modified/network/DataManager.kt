@@ -9,9 +9,7 @@ import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRespon
 import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
-import com.quickhandslogistics.modified.data.schedule.AssignLumpersRequest
-import com.quickhandslogistics.modified.data.schedule.ChangeWorkItemScheduleStatusRequest
-import com.quickhandslogistics.modified.data.schedule.ScheduleAPIResponse
+import com.quickhandslogistics.modified.data.schedule.*
 import com.quickhandslogistics.network.AppConfiguration
 import com.quickhandslogistics.network.IApiInterface
 import com.quickhandslogistics.network.NetworkConnectionInterceptor
@@ -165,7 +163,7 @@ object DataManager : AppConstant {
         date: String,
         buildingId: String,
         scheduled: Boolean,
-        listener: ResponseListener<ScheduleAPIResponse>
+        listener: ResponseListener<ScheduleListAPIResponse>
     ) {
         val call = getService().getSchedulesList(
             "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
@@ -173,10 +171,10 @@ object DataManager : AppConstant {
             buildingId,
             scheduled
         )
-        call.enqueue(object : Callback<ScheduleAPIResponse> {
+        call.enqueue(object : Callback<ScheduleListAPIResponse> {
             override fun onResponse(
-                call: Call<ScheduleAPIResponse>,
-                response: Response<ScheduleAPIResponse>
+                call: Call<ScheduleListAPIResponse>,
+                response: Response<ScheduleListAPIResponse>
             ) {
                 var errorMessage = ""
                 if (!response.isSuccessful) {
@@ -189,7 +187,67 @@ object DataManager : AppConstant {
                 }
             }
 
-            override fun onFailure(call: Call<ScheduleAPIResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ScheduleListAPIResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun getScheduleDetail(
+        scheduleIdentityId: String,
+        listener: ResponseListener<ScheduleDetailAPIResponse>
+    ) {
+        val call = getService().getScheduleDetail(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
+            scheduleIdentityId
+        )
+        call.enqueue(object : Callback<ScheduleDetailAPIResponse> {
+            override fun onResponse(
+                call: Call<ScheduleDetailAPIResponse>,
+                response: Response<ScheduleDetailAPIResponse>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ScheduleDetailAPIResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun getWorkItemDetail(
+        workItemId: String,
+        listener: ResponseListener<WorkItemDetailAPIResponse>
+    ) {
+        val call = getService().getWorkItemDetail(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
+            workItemId
+        )
+        call.enqueue(object : Callback<WorkItemDetailAPIResponse> {
+            override fun onResponse(
+                call: Call<WorkItemDetailAPIResponse>,
+                response: Response<WorkItemDetailAPIResponse>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<WorkItemDetailAPIResponse>, t: Throwable) {
                 listener.onError(t)
             }
         })

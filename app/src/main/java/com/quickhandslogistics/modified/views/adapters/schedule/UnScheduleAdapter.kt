@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.LumperImagesContract
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleContract
-import com.quickhandslogistics.modified.data.schedule.ImageData
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.views.adapters.LumperImagesAdapter
 import com.quickhandslogistics.modified.views.controls.OverlapDecoration
@@ -95,11 +95,7 @@ class UnScheduleAdapter(
             }
 
             recyclerViewLumpersImagesList.apply {
-                val lumperImages = ArrayList<ImageData>()
-                for (i in 1..5) {
-                    lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
-                }
-                adapter = LumperImagesAdapter(lumperImages, this@UnScheduleViewHolder)
+                adapter = LumperImagesAdapter(ArrayList(), this@UnScheduleViewHolder)
             }
 
             itemView.setOnClickListener(this)
@@ -113,7 +109,7 @@ class UnScheduleAdapter(
             }
         }
 
-        override fun onLumperImageItemClick() {
+        override fun onLumperImageItemClick(lumpersList: ArrayList<EmployeeData>) {
             adapterItemClickListener.onLumperImagesClick()
         }
     }

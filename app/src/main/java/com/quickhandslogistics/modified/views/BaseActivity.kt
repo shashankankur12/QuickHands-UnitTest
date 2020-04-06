@@ -50,7 +50,8 @@ open class BaseActivity : AppCompatActivity() {
         className: Class<*>,
         bundle: Bundle? = null,
         isFinish: Boolean = false,
-        flags: Array<Int>? = null
+        flags: Array<Int>? = null,
+        requestCode: Int? = null
     ) {
         val intent = Intent(this, className)
         flags?.let {
@@ -61,7 +62,12 @@ open class BaseActivity : AppCompatActivity() {
         bundle?.let {
             intent.putExtras(bundle)
         }
-        startActivity(intent)
+
+        requestCode?.also {
+            startActivityForResult(intent, requestCode)
+        } ?: run {
+            startActivity(intent)
+        }
         if (isFinish) finish()
         overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out)
     }

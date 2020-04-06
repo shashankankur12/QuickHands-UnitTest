@@ -6,7 +6,7 @@
     android:layout_height="@dimen/_20sdp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circle_view_1"
+        android:id="@+id/circleImageViewProfile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/ic_basic_info_placeholder"
@@ -15,7 +15,7 @@
         app:civ_border_width="@dimen/_1sdp" />
 
     <TextView
-        android:id="@+id/textN"
+        android:id="@+id/textViewNumber"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/text_circle"

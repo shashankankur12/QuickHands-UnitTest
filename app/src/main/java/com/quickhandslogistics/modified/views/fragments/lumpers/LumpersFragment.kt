@@ -142,7 +142,7 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     */
     override fun onItemClick(employeeData: EmployeeData) {
         val bundle = Bundle()
-        bundle.putSerializable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
+        bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
         startIntent(LumperDetailActivity::class.java, bundle = bundle)
     }
 

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.LumperImagesContract
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleDetailContract
-import com.quickhandslogistics.modified.data.schedule.ImageData
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.views.adapters.LumperImagesAdapter
 import com.quickhandslogistics.modified.views.controls.OverlapDecoration
@@ -20,9 +20,10 @@ import kotlinx.android.synthetic.main.layout_unscheduled_work_item.view.*
 class UnScheduledWorkItemAdapter(
     private val resources: Resources,
     private val workItemType: String,
-    private val workItemsList: ArrayList<WorkItemDetail>,
     private var adapterItemClickListener: UnScheduleDetailContract.View.OnAdapterItemClickListener
 ) : RecyclerView.Adapter<UnScheduledWorkItemAdapter.WorkItemViewHolder>() {
+
+    private val workItemsList: ArrayList<WorkItemDetail> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemViewHolder {
         val view: View = LayoutInflater.from(parent.context)
@@ -40,6 +41,12 @@ class UnScheduledWorkItemAdapter(
 
     override fun onBindViewHolder(holder: WorkItemViewHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+
+    fun updateData(workItemsList: List<WorkItemDetail>) {
+        this.workItemsList.clear()
+        this.workItemsList.addAll(workItemsList)
+        notifyDataSetChanged()
     }
 
     inner class WorkItemViewHolder(view: View) : RecyclerView.ViewHolder(view),
@@ -79,21 +86,16 @@ class UnScheduledWorkItemAdapter(
                 }
             }
 
-            if (adapterPosition > 0) {
+            if (workItemDetail.assignedLumpersList?.size!! > 0) {
                 textViewAddLumpers.visibility = View.GONE
                 circleImageArrow.visibility = View.VISIBLE
                 recyclerViewLumpersImagesList.visibility = View.VISIBLE
 
                 recyclerViewLumpersImagesList.apply {
-                    val lumperImages = ArrayList<ImageData>()
-                    for (i in 0..adapterPosition) {
-                        lumperImages.add(ImageData(R.drawable.ic_basic_info_placeholder))
-                    }
-                    adapter =
-                        LumperImagesAdapter(
-                            lumperImages,
-                            this@WorkItemViewHolder
-                        )
+                    adapter = LumperImagesAdapter(
+                        workItemDetail.assignedLumpersList!! as ArrayList<EmployeeData>,
+                        this@WorkItemViewHolder
+                    )
                 }
                 itemView.setOnClickListener(this)
             } else {
@@ -115,8 +117,8 @@ class UnScheduledWorkItemAdapter(
             }
         }
 
-        override fun onLumperImageItemClick() {
-            adapterItemClickListener.onLumperImagesClick()
+        override fun onLumperImageItemClick(lumpersList: ArrayList<EmployeeData>) {
+            adapterItemClickListener.onLumperImagesClick(lumpersList)
         }
     }
 }

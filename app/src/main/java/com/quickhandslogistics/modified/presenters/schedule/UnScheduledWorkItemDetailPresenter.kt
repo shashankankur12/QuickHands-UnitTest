@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduledWorkItemDetailContract
+import com.quickhandslogistics.modified.data.schedule.WorkItemDetailAPIResponse
 import com.quickhandslogistics.modified.models.schedule.UnScheduledWorkItemDetailModel
 import com.quickhandslogistics.utils.SharedPref
 
@@ -18,6 +19,11 @@ class UnScheduledWorkItemDetailPresenter(
 
     override fun onDestroy() {
         unScheduledWorkItemDetailView = null
+    }
+
+    override fun fetchWorkItemDetail(workItemId: String) {
+        unScheduledWorkItemDetailView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        unScheduledWorkItemDetailModel.fetchWorkItemDetail(workItemId, this)
     }
 
     override fun changeWorkItemStatus(workItemId: String, workItemType: String) {
@@ -37,5 +43,12 @@ class UnScheduledWorkItemDetailPresenter(
     override fun onSuccessChangeStatus() {
         unScheduledWorkItemDetailView?.hideProgressDialog()
         unScheduledWorkItemDetailView?.workItemStatusChanged()
+    }
+
+    override fun onSuccess(response: WorkItemDetailAPIResponse) {
+        unScheduledWorkItemDetailView?.hideProgressDialog()
+        response.data?.workItemDetail?.let { workItemDetail ->
+            unScheduledWorkItemDetailView?.showWorkItemDetail(workItemDetail)
+        }
     }
 }

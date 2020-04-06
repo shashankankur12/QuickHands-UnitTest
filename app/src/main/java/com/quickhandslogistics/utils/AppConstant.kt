@@ -12,5 +12,7 @@ interface AppConstant {
         const val PREFERENCE_BUILDING_ID = "pref_building_id"
 
         val EDIT_DIALOG = "edit_dialog"
+
+        const val REQUEST_CODE_CHANGED = 101
     }
 }

@@ -81,7 +81,7 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
     */
     override fun onUnScheduleItemClick(scheduleDetail: ScheduleDetail) {
         val bundle = Bundle()
-        bundle.putSerializable(ARG_SCHEDULE_DETAIL, scheduleDetail)
+        bundle.putParcelable(ARG_SCHEDULE_DETAIL, scheduleDetail)
         startIntent(UnScheduleDetailActivity::class.java, bundle = bundle)
     }
 
