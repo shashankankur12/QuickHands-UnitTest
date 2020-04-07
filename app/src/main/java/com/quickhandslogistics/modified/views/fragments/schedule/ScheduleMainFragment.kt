@@ -20,9 +20,12 @@ class ScheduleMainFragment : BaseFragment(),
 
     companion object {
         const val ARG_ALLOW_UPDATE = "ARG_ALLOW_UPDATE"
+        const val ARG_BUILDING_PARAMETERS = "ARG_BUILDING_PARAMETERS"
+        const val ARG_IS_SCHEDULED_STATUS_CHANGED = "ARG_IS_SCHEDULED_STATUS_CHANGED"
         const val ARG_SCHEDULE_DETAIL = "ARG_SCHEDULE_DETAIL"
         const val ARG_WORK_ITEM_ID = "ARG_WORK_ITEM_ID"
         const val ARG_WORK_ITEM_TYPE = "ARG_WORK_ITEM_TYPE"
+        const val ARG_WORK_ITEM_TYPE_DISPLAY_NAME = "ARG_WORK_ITEM_TYPE_DISPLAY_NAME"
     }
 
     override fun onCreateView(
@@ -54,11 +57,11 @@ class ScheduleMainFragment : BaseFragment(),
             CustomProgressBar.getInstance(fragmentActivity!!).showProgressDialog(message)
     }
 
-    override fun onScheduleAPICallFinished() {
-        TODO("Not yet implemented")
+    override fun fetchUnScheduledWorkItems() {
+        adapter.fetchUnScheduledWorkItems()
     }
 
-    override fun fetchUnsScheduledWorkItems() {
-        adapter.fetchUnsScheduledWorkItems()
+    override fun updateAllSchedules() {
+        adapter.fetchScheduledWorkItems()
     }
 }

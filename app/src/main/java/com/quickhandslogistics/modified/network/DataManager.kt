@@ -195,11 +195,12 @@ object DataManager : AppConstant {
 
     fun getScheduleDetail(
         scheduleIdentityId: String,
+        scheduled: Boolean,
         listener: ResponseListener<ScheduleDetailAPIResponse>
     ) {
         val call = getService().getScheduleDetail(
             "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            scheduleIdentityId
+            scheduleIdentityId, scheduled
         )
         call.enqueue(object : Callback<ScheduleDetailAPIResponse> {
             override fun onResponse(
@@ -255,16 +256,16 @@ object DataManager : AppConstant {
 
     fun assignLumpers(
         workItemId: String, assignLumpersRequest: AssignLumpersRequest,
-        listener: ResponseListener<ResponseBody>
+        listener: ResponseListener<BaseResponse>
     ) {
         val call = getService().assignLumpers(
             "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
             workItemId, assignLumpersRequest
         )
-        call.enqueue(object : Callback<ResponseBody> {
+        call.enqueue(object : Callback<BaseResponse> {
             override fun onResponse(
-                call: Call<ResponseBody>,
-                response: Response<ResponseBody>
+                call: Call<BaseResponse>,
+                response: Response<BaseResponse>
             ) {
                 var errorMessage = ""
                 if (!response.isSuccessful) {
@@ -277,7 +278,7 @@ object DataManager : AppConstant {
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
                 listener.onError(t)
             }
         })

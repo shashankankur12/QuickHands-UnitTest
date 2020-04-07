@@ -3,9 +3,11 @@ package com.quickhandslogistics.modified.presenters.schedule
 import android.content.res.Resources
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleContract
-import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
+import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.modified.models.schedule.UnScheduleModel
+import com.quickhandslogistics.modified.views.controls.ScheduleUtils.getAllAssignedLumpersList
+import com.quickhandslogistics.modified.views.controls.ScheduleUtils.getScheduleTypeName
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*
@@ -41,32 +43,26 @@ class UnSchedulePresenter(
         val iterate = workItemsList.listIterator()
         while (iterate.hasNext()) {
             val oldValue = iterate.next()
-            var scheduleTypeNames = ""
-            oldValue.scheduleTypes?.liveLoads?.let {
-                if (it.isNotEmpty()) {
-                    scheduleTypeNames = resources.getString(R.string.string_live_loads)
-                }
+            oldValue.scheduleTypes?.let { scheduleTypes ->
+                var scheduleTypeNames = ""
+                scheduleTypeNames = getScheduleTypeName(
+                    scheduleTypes.liveLoads, scheduleTypeNames,
+                    resources.getString(R.string.string_live_loads)
+                )
+                scheduleTypeNames = getScheduleTypeName(
+                    scheduleTypes.drops, scheduleTypeNames,
+                    resources.getString(R.string.string_drops)
+                )
+                scheduleTypeNames = getScheduleTypeName(
+                    scheduleTypes.outbounds, scheduleTypeNames,
+                    resources.getString(R.string.string_out_bonds)
+                )
+                oldValue.scheduleTypeNames = scheduleTypeNames
+                oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.liveLoads))
+                oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.drops))
+                oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.outbounds))
+                iterate.set(oldValue)
             }
-
-            oldValue.scheduleTypes?.drops?.let {
-                if (it.isNotEmpty()) {
-                    if (scheduleTypeNames.isNotEmpty()) {
-                        scheduleTypeNames += ", "
-                    }
-                    scheduleTypeNames += resources.getString(R.string.string_drops)
-                }
-            }
-
-            oldValue.scheduleTypes?.outbounds?.let {
-                if (it.isNotEmpty()) {
-                    if (scheduleTypeNames.isNotEmpty()) {
-                        scheduleTypeNames += ", "
-                    }
-                    scheduleTypeNames += resources.getString(R.string.string_out_bonds)
-                }
-            }
-            oldValue.scheduleTypeNames = scheduleTypeNames
-            iterate.set(oldValue)
         }
 
         workItemsList.sortWith(Comparator { workItem1, workItem2 ->

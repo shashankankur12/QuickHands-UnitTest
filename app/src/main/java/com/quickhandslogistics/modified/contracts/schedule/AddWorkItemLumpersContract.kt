@@ -1,5 +1,6 @@
 package com.quickhandslogistics.modified.contracts.schedule
 
+import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 
@@ -9,7 +10,7 @@ class AddWorkItemLumpersContract {
         fun assignLumpersList(
             workItemId: String,
             workItemType: String,
-            employeeDataList: ArrayList<EmployeeData>,
+            selectedLumperIdsList: ArrayList<String>,
             onFinishedListener: OnFinishedListener
         )
 
@@ -25,6 +26,7 @@ class AddWorkItemLumpersContract {
         fun showProgressDialog(message: String)
         fun showAPIErrorMessage(message: String)
         fun showLumpersData(employeeDataList: ArrayList<EmployeeData>)
+        fun lumperAssignmentFinished()
 
         interface OnAdapterItemClickListener {
             fun onSelectLumper(totalSelectedCount: Int)
@@ -35,7 +37,7 @@ class AddWorkItemLumpersContract {
         fun fetchLumpersList()
         fun onDestroy()
         fun initiateAssigningLumpers(
-            employeeDataList: ArrayList<EmployeeData>,
+            selectedLumperIdsList: ArrayList<String>,
             workItemId: String,
             workItemType: String
         )

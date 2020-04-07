@@ -1,8 +1,10 @@
 package com.quickhandslogistics.modified.contracts.schedule
 
-import com.quickhandslogistics.modified.data.schedule.ScheduleAPIResponse
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ScheduleContract {
     interface Model {
@@ -15,7 +17,7 @@ class ScheduleContract {
             fun onFailure(message: String = "")
             fun onSuccess(
                 selectedDate: Date,
-                scheduleAPIResponse: ScheduleAPIResponse
+                scheduleListAPIResponse: ScheduleListAPIResponse
             )
         }
     }
@@ -34,8 +36,8 @@ class ScheduleContract {
         fun showEmptyData()
 
         interface OnAdapterItemClickListener {
-            fun onScheduleItemClick()
-            fun onLumperImagesClick()
+            fun onScheduleItemClick(scheduleDetail: ScheduleDetail)
+            fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>)
         }
     }
 

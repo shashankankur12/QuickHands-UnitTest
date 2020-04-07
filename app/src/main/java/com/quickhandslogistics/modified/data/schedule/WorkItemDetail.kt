@@ -1,10 +1,14 @@
 package com.quickhandslogistics.modified.data.schedule
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.quickhandslogistics.modified.data.dashboard.BuildingDetailData
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import java.io.Serializable
 
-class WorkItemDetail : Serializable {
+class WorkItemDetail() : Parcelable {
     @SerializedName("id")
     @Expose
     var id: String? = null
@@ -68,4 +72,66 @@ class WorkItemDetail : Serializable {
     @SerializedName("numberOfDrops")
     @Expose
     var numberOfDrops: Int? = null
+
+    @SerializedName("buildingThisWorkItemAssignedTo")
+    @Expose
+    var buildingDetailData: BuildingDetailData? = null
+
+    @SerializedName("lumperThisWorkItemAssignedTo")
+    @Expose
+    var assignedLumpersList: ArrayList<EmployeeData>? = null
+
+    constructor(parcel: Parcel) : this() {
+        id = parcel.readString()
+        workItemType = parcel.readString()
+        sequence = parcel.readValue(Int::class.java.classLoader) as? Int
+        createdBy = parcel.readString()
+        startTime = parcel.readString()
+        scheduleIdentity = parcel.readString()
+        startDate = parcel.readString()
+        endDate = parcel.readString()
+        isScheduledByLead = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        scheduleForWeek = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        scheduleForMonth = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        isCompleted = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        createdAt = parcel.readString()
+        updatedAt = parcel.readString()
+        numberOfDrops = parcel.readValue(Int::class.java.classLoader) as? Int
+        buildingDetailData = parcel.readParcelable(BuildingDetailData::class.java.classLoader)
+        assignedLumpersList = parcel.createTypedArrayList(EmployeeData)
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(id)
+        parcel.writeString(workItemType)
+        parcel.writeValue(sequence)
+        parcel.writeString(createdBy)
+        parcel.writeString(startTime)
+        parcel.writeString(scheduleIdentity)
+        parcel.writeString(startDate)
+        parcel.writeString(endDate)
+        parcel.writeValue(isScheduledByLead)
+        parcel.writeValue(scheduleForWeek)
+        parcel.writeValue(scheduleForMonth)
+        parcel.writeValue(isCompleted)
+        parcel.writeString(createdAt)
+        parcel.writeString(updatedAt)
+        parcel.writeValue(numberOfDrops)
+        parcel.writeParcelable(buildingDetailData, flags)
+        parcel.writeTypedList(assignedLumpersList)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<WorkItemDetail> {
+        override fun createFromParcel(parcel: Parcel): WorkItemDetail {
+            return WorkItemDetail(parcel)
+        }
+
+        override fun newArray(size: Int): Array<WorkItemDetail?> {
+            return arrayOfNulls(size)
+        }
+    }
 }

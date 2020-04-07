@@ -15,23 +15,23 @@ import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.ValueUtils
 import de.hdodenhof.circleimageview.CircleImageView
-import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.layout_add_lumpers.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 class AddWorkItemLumperAdapter(
+    private var assignedLumpersList: ArrayList<EmployeeData>,
     private val onAdapterClick: AddWorkItemLumpersContract.View.OnAdapterItemClickListener
 ) : Adapter<AddWorkItemLumperAdapter.WorkItemHolder>() {
 
-    var addedLumpersList: ArrayList<EmployeeData> = ArrayList()
-    var employeeDataList: ArrayList<EmployeeData> = ArrayList()
-    var filteredEmployeeDataList: ArrayList<EmployeeData> = ArrayList()
+    private var employeeDataList: ArrayList<EmployeeData> = ArrayList()
+    private var filteredEmployeeDataList: ArrayList<EmployeeData> = ArrayList()
+
+    private var selectedLumperIdsList: ArrayList<String> = ArrayList()
 
     private var searchEnabled = false
     private var searchTerm = ""
 
-    var faker = Faker()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemHolder {
         val view: View =
             LayoutInflater.from(parent.context).inflate(R.layout.layout_add_lumpers, parent, false)
@@ -50,14 +50,31 @@ class AddWorkItemLumperAdapter(
         holder.bind(getItem(position))
     }
 
-    fun getSelectedLumper(): ArrayList<EmployeeData> {
-        return addedLumpersList
+    fun getSelectedLumper(): ArrayList<String> {
+        return selectedLumperIdsList
     }
 
     fun updateLumpersData(employeeDataList: ArrayList<EmployeeData>) {
         setSearchEnabled(false)
         this.employeeDataList.clear()
         this.employeeDataList.addAll(employeeDataList)
+
+        val extraEmployeesList = ArrayList<EmployeeData>()
+        for (assignedLumper in assignedLumpersList) {
+            var isAddedInSelectedIdsList = false
+            for (employee in employeeDataList) {
+                if (assignedLumper.id == employee.id) {
+                    selectedLumperIdsList.add(employee.id!!)
+                    isAddedInSelectedIdsList = true
+                    break
+                }
+            }
+            if (!isAddedInSelectedIdsList) {
+                selectedLumperIdsList.add(assignedLumper.id!!)
+                extraEmployeesList.add(assignedLumper)
+            }
+        }
+        this.employeeDataList.addAll(extraEmployeesList)
         notifyDataSetChanged()
     }
 
@@ -100,7 +117,7 @@ class AddWorkItemLumperAdapter(
                     String.format("(Shift Hours: %s)", employeeData.shiftHours)
             }
 
-            if (addedLumpersList.contains(employeeData)) {
+            if (selectedLumperIdsList.contains(employeeData.id!!)) {
                 imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick)
             } else {
                 imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick_blank)
@@ -114,12 +131,12 @@ class AddWorkItemLumperAdapter(
                 when (view.id) {
                     itemView.id -> {
                         val employeeData = getItem(adapterPosition)
-                        if (addedLumpersList.contains(employeeData)) {
-                            addedLumpersList.remove(employeeData)
+                        if (selectedLumperIdsList.contains(employeeData.id!!)) {
+                            selectedLumperIdsList.remove(employeeData.id!!)
                         } else {
-                            addedLumpersList.add(employeeData)
+                            selectedLumperIdsList.add(employeeData.id!!)
                         }
-                        onAdapterClick.onSelectLumper(addedLumpersList.size)
+                        onAdapterClick.onSelectLumper(selectedLumperIdsList.size)
                         notifyDataSetChanged()
                     }
                 }

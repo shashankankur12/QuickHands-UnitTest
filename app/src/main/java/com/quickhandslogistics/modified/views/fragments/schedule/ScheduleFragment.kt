@@ -16,6 +16,7 @@ import com.michalsvec.singlerowcalendar.utils.DateUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleMainContract
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.presenters.schedule.SchedulePresenter
 import com.quickhandslogistics.modified.views.BaseFragment
@@ -179,8 +180,10 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
         startIntent(ScheduleDetailActivity::class.java, bundle = bundle)
     }
 
-    override fun onLumperImagesClick() {
-        startIntent(DisplayLumpersListActivity::class.java)
+    override fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>) {
+        val bundle = Bundle()
+        bundle.putParcelableArrayList(DisplayLumpersListActivity.ARG_LUMPERS_LIST, lumpersList)
+        startIntent(DisplayLumpersListActivity::class.java, bundle = bundle)
     }
 
     /*
@@ -214,13 +217,19 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
     }
 
     override fun fetchUnsScheduledWorkItems() {
-        onScheduleFragmentInteractionListener?.fetchUnsScheduledWorkItems()
+        onScheduleFragmentInteractionListener?.fetchUnScheduledWorkItems()
     }
 
     override fun showEmptyData() {
         textViewEmptyData.visibility = View.VISIBLE
         recyclerViewSchedule.visibility = View.GONE
         textViewDate.visibility = View.GONE
+    }
+
+    fun fetchScheduledWorkItems() {
+        if (singleRowCalendarSchedule.getSelectedDates().isNotEmpty()) {
+            schedulePresenter.getScheduledWorkItemsByDate(singleRowCalendarSchedule.getSelectedDates()[0])
+        }
     }
 
     companion object {

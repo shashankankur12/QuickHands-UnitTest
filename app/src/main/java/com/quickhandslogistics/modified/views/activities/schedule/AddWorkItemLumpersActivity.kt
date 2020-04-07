@@ -1,6 +1,5 @@
 package com.quickhandslogistics.modified.views.activities.schedule
 
-import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
 import android.text.Editable
@@ -24,11 +23,9 @@ import kotlinx.android.synthetic.main.activity_add_work_item_lumpers.*
 class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
     AddWorkItemLumpersContract.View, AddWorkItemLumpersContract.View.OnAdapterItemClickListener {
 
-    private var position: Int = 0
-    private var addedLumpers: ArrayList<EmployeeData> = ArrayList()
-
     private var workItemId = ""
     private var workItemType = ""
+    private var assignedLumpersList: ArrayList<EmployeeData> = ArrayList()
 
     private lateinit var addWorkItemLumpersPresenter: AddWorkItemLumpersPresenter
     private lateinit var addWorkItemLumperAdapter: AddWorkItemLumperAdapter
@@ -37,6 +34,7 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
 
     companion object {
         const val ARG_IS_ADD_LUMPER = "ARG_IS_ADD_LUMPER"
+        const val ARG_ASSIGNED_LUMPERS_LIST = "ARG_ASSIGNED_LUMPERS_LIST"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +43,11 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
 
         intent.extras?.let { it ->
             val isAddLumper = it.getBoolean(ARG_IS_ADD_LUMPER, true)
+            if (it.containsKey(ARG_ASSIGNED_LUMPERS_LIST)) {
+                assignedLumpersList =
+                    it.getParcelableArrayList<EmployeeData>(ARG_ASSIGNED_LUMPERS_LIST) as ArrayList<EmployeeData>
+            }
+
             workItemId = it.getString(ARG_WORK_ITEM_ID, "")
             workItemType = it.getString(ARG_WORK_ITEM_TYPE, "")
 
@@ -55,8 +58,6 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
             }
         }
 
-        position = intent.getIntExtra("position", 0)
-
         recyclerViewLumpers.apply {
             val linearLayoutManager = LinearLayoutManager(activity)
             layoutManager = linearLayoutManager
@@ -65,6 +66,7 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
             addItemDecoration(dividerItemDecoration)
             addWorkItemLumperAdapter =
                 AddWorkItemLumperAdapter(
+                    assignedLumpersList,
                     this@AddWorkItemLumpersActivity
                 )
             adapter = addWorkItemLumperAdapter
@@ -82,13 +84,11 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
         view?.let {
             when (view.id) {
                 buttonAdd.id -> {
-                    addedLumpers = addWorkItemLumperAdapter.getSelectedLumper()
-                    if (addedLumpers.size > 0) {
+                    val selectedLumperIdsList = addWorkItemLumperAdapter.getSelectedLumper()
+                    if (selectedLumperIdsList.size > 0) {
                         addWorkItemLumpersPresenter.initiateAssigningLumpers(
-                            addedLumpers, workItemId, workItemType
+                            selectedLumperIdsList, workItemId, workItemType
                         )
-                        setResult(RESULT_OK)
-                        onBackPressed()
                     }
                 }
 
@@ -146,5 +146,10 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
             recyclerViewLumpers.visibility = View.GONE
             textViewEmptyData.visibility = View.VISIBLE
         }
+    }
+
+    override fun lumperAssignmentFinished() {
+        setResult(RESULT_OK)
+        onBackPressed()
     }
 }

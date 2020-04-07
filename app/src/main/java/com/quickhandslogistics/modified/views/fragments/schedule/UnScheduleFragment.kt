@@ -1,6 +1,8 @@
 package com.quickhandslogistics.modified.views.fragments.schedule
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleMainContract
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleContract
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.presenters.schedule.UnSchedulePresenter
 import com.quickhandslogistics.modified.views.BaseFragment
@@ -18,9 +21,10 @@ import com.quickhandslogistics.modified.views.activities.DisplayLumpersListActiv
 import com.quickhandslogistics.modified.views.activities.schedule.UnScheduleDetailActivity
 import com.quickhandslogistics.modified.views.adapters.schedule.UnScheduleAdapter
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_IS_SCHEDULED_STATUS_CHANGED
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_DETAIL
+import com.quickhandslogistics.utils.AppConstant
 import kotlinx.android.synthetic.main.fragment_unschedule.*
-import java.util.*
 
 class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItemClickListener,
     UnScheduleContract.View, SwipeRefreshLayout.OnRefreshListener {
@@ -76,29 +80,46 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
         unSchedulePresenter.getUnScheduledWorkItems(showProgressDialog = true)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
+            data?.also {
+                val isScheduleStatusChanged =
+                    data.getBooleanExtra(ARG_IS_SCHEDULED_STATUS_CHANGED, false)
+                if(isScheduleStatusChanged){
+                    onScheduleFragmentInteractionListener?.updateAllSchedules()
+                }
+            } ?: run {
+                unSchedulePresenter.getUnScheduledWorkItems(showProgressDialog = true)
+            }
+
+        }
+    }
+
     /*
     * Adapter Item Click Listeners
     */
     override fun onUnScheduleItemClick(scheduleDetail: ScheduleDetail) {
         val bundle = Bundle()
         bundle.putParcelable(ARG_SCHEDULE_DETAIL, scheduleDetail)
-        startIntent(UnScheduleDetailActivity::class.java, bundle = bundle)
+        startIntent(
+            UnScheduleDetailActivity::class.java,
+            bundle = bundle,
+            requestCode = AppConstant.REQUEST_CODE_CHANGED
+        )
     }
 
-    override fun onLumperImagesClick() {
-        startIntent(DisplayLumpersListActivity::class.java)
+    override fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>) {
+        val bundle = Bundle()
+        bundle.putParcelableArrayList(DisplayLumpersListActivity.ARG_LUMPERS_LIST, lumpersList)
+        startIntent(DisplayLumpersListActivity::class.java, bundle = bundle)
     }
 
     /*
     * Presenter Listeners
     */
     override fun showUnScheduleData(workItemsList: ArrayList<ScheduleDetail>) {
-        val lumpersCountList = ArrayList<Int>()
-        for (i in 0..workItemsList.size) {
-            lumpersCountList.add(i)
-        }
-
-        unScheduleAdapter.updateList(workItemsList, lumpersCountList)
+        unScheduleAdapter.updateList(workItemsList)
     }
 
     override fun hideProgressDialog() {
@@ -109,7 +130,7 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
         onScheduleFragmentInteractionListener?.showProgressDialog(message)
     }
 
-    fun fetchUnsScheduledWorkItems() {
+    fun fetchUnScheduledWorkItems() {
         unSchedulePresenter.getUnScheduledWorkItems(showProgressDialog = false)
     }
 

@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.layout_unscheduled_work_item.view.*
 
 class UnScheduledWorkItemAdapter(
     private val resources: Resources,
-    private val workItemType: String,
+    private val workItemTypeDisplayName: String,
     private var adapterItemClickListener: UnScheduleDetailContract.View.OnAdapterItemClickListener
 ) : RecyclerView.Adapter<UnScheduledWorkItemAdapter.WorkItemViewHolder>() {
 
@@ -71,7 +71,7 @@ class UnScheduledWorkItemAdapter(
                 workItemDetail.startTime
             )
 
-            when (workItemType) {
+            when (workItemTypeDisplayName) {
                 resources.getString(R.string.string_drops) -> {
                     textViewDropItems.text = String.format(
                         resources.getString(R.string.no_of_drops),
@@ -111,7 +111,7 @@ class UnScheduledWorkItemAdapter(
             view?.let {
                 val workItem = getItem(adapterPosition)
                 when (view.id) {
-                    itemView.id -> adapterItemClickListener.onWorkItemClick(workItem, workItemType)
+                    itemView.id -> adapterItemClickListener.onWorkItemClick(workItem, workItemTypeDisplayName)
                     textViewAddLumpers.id -> adapterItemClickListener.onAddLumpersItemClick(workItem)
                 }
             }

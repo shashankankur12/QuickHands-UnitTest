@@ -49,8 +49,7 @@ class UnScheduleAdapter(
     }
 
     fun updateList(
-        workItemsList: ArrayList<ScheduleDetail>,
-        lumpersCountList: ArrayList<Int>
+        workItemsList: ArrayList<ScheduleDetail>
     ) {
         this.workItemsList.clear()
         this.workItemsList = workItemsList
@@ -64,7 +63,8 @@ class UnScheduleAdapter(
         private val textViewBuildingName: TextView = itemView.textViewBuildingName
         private val textViewScheduleType: TextView = itemView.textViewScheduleType
         private val textViewWorkItemsCount: TextView = itemView.textViewWorkItemsCount
-        private val recyclerViewLumpersImagesList: RecyclerView = itemView.recyclerViewLumpersImagesList
+        private val recyclerViewLumpersImagesList: RecyclerView =
+            itemView.recyclerViewLumpersImagesList
 
         init {
             recyclerViewLumpersImagesList.apply {
@@ -95,7 +95,10 @@ class UnScheduleAdapter(
             }
 
             recyclerViewLumpersImagesList.apply {
-                adapter = LumperImagesAdapter(ArrayList(), this@UnScheduleViewHolder)
+                adapter = LumperImagesAdapter(
+                    scheduleDetail.allAssignedLumpers,
+                    this@UnScheduleViewHolder
+                )
             }
 
             itemView.setOnClickListener(this)
@@ -104,13 +107,17 @@ class UnScheduleAdapter(
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
-                    itemView.id -> adapterItemClickListener.onUnScheduleItemClick(getItem(adapterPosition))
+                    itemView.id -> adapterItemClickListener.onUnScheduleItemClick(
+                        getItem(
+                            adapterPosition
+                        )
+                    )
                 }
             }
         }
 
         override fun onLumperImageItemClick(lumpersList: ArrayList<EmployeeData>) {
-            adapterItemClickListener.onLumperImagesClick()
+            adapterItemClickListener.onLumperImagesClick(lumpersList)
         }
     }
 }

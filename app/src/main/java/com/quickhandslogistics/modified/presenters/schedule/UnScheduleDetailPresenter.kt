@@ -6,6 +6,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleDetailContract
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetailAPIResponse
 import com.quickhandslogistics.modified.models.schedule.UnScheduleDetailModel
+import com.quickhandslogistics.modified.views.controls.ScheduleUtils.getScheduleTypeName
 
 class UnScheduleDetailPresenter(
     private var unScheduleDetailView: UnScheduleDetailContract.View?,
@@ -32,6 +33,23 @@ class UnScheduleDetailPresenter(
     override fun onSuccess(scheduleDetailAPIResponse: ScheduleDetailAPIResponse) {
         unScheduleDetailView?.hideProgressDialog()
         scheduleDetailAPIResponse.data?.schedules?.let { scheduleDetail ->
+            var scheduleTypeNames = ""
+            scheduleTypeNames = getScheduleTypeName(
+                scheduleDetail.scheduleTypes?.liveLoads,
+                scheduleTypeNames,
+                resources.getString(R.string.string_live_loads)
+            )
+            scheduleTypeNames = getScheduleTypeName(
+                scheduleDetail.scheduleTypes?.drops,
+                scheduleTypeNames,
+                resources.getString(R.string.string_drops)
+            )
+            scheduleTypeNames = getScheduleTypeName(
+                scheduleDetail.scheduleTypes?.outbounds,
+                scheduleTypeNames,
+                resources.getString(R.string.string_out_bonds)
+            )
+            scheduleDetail.scheduleTypeNames = scheduleTypeNames
             unScheduleDetailView?.showScheduleData(scheduleDetail)
         }
     }

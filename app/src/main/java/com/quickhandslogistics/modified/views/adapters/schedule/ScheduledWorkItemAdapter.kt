@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.layout_scheduled_work_item.view.*
 
 class ScheduledWorkItemAdapter(
     private val resources: Resources,
-    private val workItemType: String,
+    private val workItemTypeDisplayName: String,
     private var adapterItemClickListener: ScheduleDetailContract.View.OnAdapterItemClickListener
 ) :
     Adapter<ScheduledWorkItemAdapter.WorkItemViewHolder>() {
@@ -100,7 +100,7 @@ class ScheduledWorkItemAdapter(
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
-                    itemView.id -> adapterItemClickListener.onWorkItemClick(getItem(adapterPosition), workItemType)
+                    itemView.id -> adapterItemClickListener.onWorkItemClick(getItem(adapterPosition), workItemTypeDisplayName)
                 }
             }
         }

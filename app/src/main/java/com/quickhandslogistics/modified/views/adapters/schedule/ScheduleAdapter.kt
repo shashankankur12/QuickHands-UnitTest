@@ -70,14 +70,14 @@ class ScheduleAdapter(
 
         fun bind(scheduleDetail: ScheduleDetail) {
             textViewBuildingName.text = scheduleDetail.buildingName
+            textViewScheduleType.text = scheduleDetail.scheduleTypeNames
             textViewWorkItemsCount.text = String.format(
                 resources.getString(R.string.work_items_count),
                 scheduleDetail.totalNumberOfWorkItems
             )
-            //textViewScheduleType.text = workItem.scheduleTypes?.
 
             recyclerViewLumpersImagesList.apply {
-                adapter = LumperImagesAdapter(ArrayList(), this@ScheduleViewHolder)
+                adapter = LumperImagesAdapter(scheduleDetail.allAssignedLumpers, this@ScheduleViewHolder)
             }
 
             itemView.setOnClickListener(this)
@@ -92,7 +92,7 @@ class ScheduleAdapter(
         }
 
         override fun onLumperImageItemClick(lumpersList: ArrayList<EmployeeData>) {
-            adapterItemClickListener.onLumperImagesClick()
+            adapterItemClickListener.onLumperImagesClick(lumpersList)
         }
     }
 }

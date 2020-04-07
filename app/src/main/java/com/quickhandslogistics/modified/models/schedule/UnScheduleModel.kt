@@ -2,7 +2,7 @@ package com.quickhandslogistics.modified.models.schedule
 
 import android.util.Log
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleContract
-import com.quickhandslogistics.modified.data.schedule.ScheduleAPIResponse
+import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.modified.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
 import com.quickhandslogistics.utils.AppConstant
@@ -23,8 +23,8 @@ class UnScheduleModel(private val sharedPref: SharedPref) : UnScheduleContract.M
             dateString,
             buildingId,
             false,
-            object : ResponseListener<ScheduleAPIResponse> {
-                override fun onSuccess(response: ScheduleAPIResponse) {
+            object : ResponseListener<ScheduleListAPIResponse> {
+                override fun onSuccess(response: ScheduleListAPIResponse) {
                     if (response.success) {
                         onFinishedListener.onSuccess(response)
                     } else {

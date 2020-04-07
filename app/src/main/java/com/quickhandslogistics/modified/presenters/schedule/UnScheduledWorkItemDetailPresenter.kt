@@ -34,7 +34,7 @@ class UnScheduledWorkItemDetailPresenter(
     override fun onFailure(message: String) {
         unScheduledWorkItemDetailView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            unScheduledWorkItemDetailView?.showAPIErrorMessage(resources.getString(R.string.internal_server_error))
+            unScheduledWorkItemDetailView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
         } else {
             unScheduledWorkItemDetailView?.showAPIErrorMessage(message)
         }

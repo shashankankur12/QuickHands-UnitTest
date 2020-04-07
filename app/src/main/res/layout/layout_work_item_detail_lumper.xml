@@ -23,7 +23,7 @@
         android:id="@+id/viewAttendanceStatus"
         android:layout_width="@dimen/_8sdp"
         android:layout_height="@dimen/_8sdp"
-        android:background="@drawable/online_dot"
+        android:background="@drawable/offline_dot"
         android:translationX="-2dp"
         app:layout_constraintBottom_toBottomOf="@+id/circleImageViewProfile"
         app:layout_constraintEnd_toEndOf="@+id/circleImageViewProfile" />
@@ -59,7 +59,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/textViewAddTime"
         app:layout_constraintStart_toEndOf="@id/circleImageViewProfile"
         app:layout_constraintTop_toBottomOf="@id/textViewEmployeeId">
@@ -135,7 +135,7 @@
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/_12ssp"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/textViewReplaced"

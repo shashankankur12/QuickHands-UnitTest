@@ -7,15 +7,15 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.adapters.schedule.BuildingOperationsAdapter
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_ALLOW_UPDATE
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_BUILDING_PARAMETERS
 import kotlinx.android.synthetic.main.content_building_operations.*
+import java.util.*
 
 class BuildingOperationsActivity : BaseActivity(), View.OnClickListener {
 
     private var allowUpdate: Boolean = true
-
-    companion object {
-        const val ARG_ALLOW_UPDATE = "ARG_ALLOW_UPDATE"
-    }
+    private var parameters: ArrayList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,9 +23,8 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener {
         setupToolbar(getString(R.string.building_operations))
 
         intent.extras?.let { it ->
-            if (it.containsKey(ARG_ALLOW_UPDATE)) {
-                allowUpdate = it.getBoolean(ARG_ALLOW_UPDATE, true)
-            }
+            allowUpdate = it.getBoolean(ARG_ALLOW_UPDATE, true)
+            parameters = it.getStringArrayList(ARG_BUILDING_PARAMETERS) as ArrayList<String>
         }
 
         buttonSubmit.visibility = if (allowUpdate) View.VISIBLE else View.GONE
@@ -34,10 +33,7 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener {
         recyclerViewBuildingOperations.apply {
             layoutManager = GridLayoutManager(activity, 2)
             addItemDecoration(SpaceDividerItemDecorator(20, 20))
-            adapter =
-                BuildingOperationsAdapter(
-                    allowUpdate
-                )
+            adapter = BuildingOperationsAdapter(allowUpdate, parameters)
         }
     }
 

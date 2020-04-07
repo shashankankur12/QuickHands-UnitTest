@@ -1,5 +1,6 @@
 package com.quickhandslogistics.modified.views.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.quickhandslogistics.BuildConfig
@@ -39,6 +40,10 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
                 }
             }
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun showLeadProfile(leadProfileData: LeadProfileData) {

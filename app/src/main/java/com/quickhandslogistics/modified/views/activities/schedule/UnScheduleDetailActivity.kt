@@ -10,7 +10,6 @@ import com.quickhandslogistics.modified.contracts.LumperImagesContract
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleDetailContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
-import com.quickhandslogistics.modified.data.schedule.Schedules
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.presenters.schedule.UnScheduleDetailPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
@@ -21,8 +20,10 @@ import com.quickhandslogistics.modified.views.adapters.schedule.UnScheduledWorkI
 import com.quickhandslogistics.modified.views.controls.OverlapDecoration
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_IS_SCHEDULED_STATUS_CHANGED
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.DateUtils
@@ -119,52 +120,86 @@ class UnScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClic
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == RESULT_OK) {
             unScheduleDetailPresenter.getScheduleDetail(scheduleDetail?.scheduleIdentity!!)
+
+            data?.also {
+                val isScheduleStatusChanged =
+                    data.getBooleanExtra(ARG_IS_SCHEDULED_STATUS_CHANGED, false)
+                val intent = Intent()
+                intent.putExtra(ARG_IS_SCHEDULED_STATUS_CHANGED, isScheduleStatusChanged)
+                setResult(RESULT_OK, intent)
+            } ?: run {
+                setResult(RESULT_OK)
+            }
         }
     }
 
     /*
     * Presenter Listeners
     */
-    override fun showScheduleData(scheduleDetail: Schedules) {
+    override fun showScheduleData(scheduleDetail: ScheduleDetail) {
+        this.scheduleDetail = scheduleDetail
+        textViewBuildingName.text = scheduleDetail.buildingName
+        scheduleDetail.startDate?.let {
+            textViewScheduleDate.text =
+                DateUtils.changeDateString(PATTERN_API_REQUEST_PARAMETER, PATTERN_NORMAL, it)
+        }
+        textViewScheduleType.text = scheduleDetail.scheduleTypeNames
+        textViewWorkItemsCount.text = String.format(
+            getString(R.string.work_items_count),
+            scheduleDetail.totalNumberOfWorkItems
+        )
+
         val allLumpersList = ArrayList<EmployeeData>()
 
-        if (scheduleDetail.live?.size!! > 0) {
-            liveLoadsAdapter.updateData(scheduleDetail.live!!)
-            layoutLiveLoadScheduleType.visibility = View.VISIBLE
-            recyclerViewLiveLoad.visibility = View.VISIBLE
+        scheduleDetail.scheduleTypes?.let { scheduleTypes ->
 
-            for (workItem in scheduleDetail.live!!) {
-                allLumpersList.addAll(workItem.assignedLumpersList!!)
+            // Show LiveLoads work Items Listing
+            if (!scheduleTypes.liveLoads.isNullOrEmpty()) {
+                scheduleTypes.liveLoads!!.sortWith(Comparator { workItem1, workItem2 ->
+                    workItem1.sequence!!.compareTo(workItem2.sequence!!)
+                })
+                liveLoadsAdapter.updateData(scheduleTypes.liveLoads!!)
+                layoutLiveLoadScheduleType.visibility = View.VISIBLE
+                recyclerViewLiveLoad.visibility = View.VISIBLE
+
+                for (workItem in scheduleTypes.liveLoads!!) {
+                    allLumpersList.addAll(workItem.assignedLumpersList!!)
+                }
+            } else {
+                layoutLiveLoadScheduleType.visibility = View.GONE
+                recyclerViewLiveLoad.visibility = View.GONE
             }
-        } else {
-            layoutLiveLoadScheduleType.visibility = View.GONE
-            recyclerViewLiveLoad.visibility = View.GONE
-        }
 
-        if (scheduleDetail.drop?.size!! > 0) {
-            dropsAdapter.updateData(scheduleDetail.drop!!)
-            layoutDropsScheduleType.visibility = View.VISIBLE
-            recyclerViewDrops.visibility = View.VISIBLE
+            // Show Drops work Items Listing
+            if (!scheduleTypes.drops.isNullOrEmpty()) {
+                dropsAdapter.updateData(scheduleTypes.drops!!)
+                layoutDropsScheduleType.visibility = View.VISIBLE
+                recyclerViewDrops.visibility = View.VISIBLE
 
-            for (workItem in scheduleDetail.drop!!) {
-                allLumpersList.addAll(workItem.assignedLumpersList!!)
+                for (workItem in scheduleTypes.drops!!) {
+                    allLumpersList.addAll(workItem.assignedLumpersList!!)
+                }
+            } else {
+                layoutDropsScheduleType.visibility = View.GONE
+                recyclerViewDrops.visibility = View.GONE
             }
-        } else {
-            layoutDropsScheduleType.visibility = View.GONE
-            recyclerViewDrops.visibility = View.GONE
-        }
 
-        if (scheduleDetail.outbounds?.size!! > 0) {
-            outBondsAdapter.updateData(scheduleDetail.outbounds!!)
-            layoutOutBondsScheduleType.visibility = View.VISIBLE
-            recyclerViewOutBonds.visibility = View.VISIBLE
+            // Show Out Bonds work Items Listing
+            if (!scheduleTypes.outbounds.isNullOrEmpty()) {
+                scheduleTypes.outbounds!!.sortWith(Comparator { workItem1, workItem2 ->
+                    workItem1.sequence!!.compareTo(workItem2.sequence!!)
+                })
+                outBondsAdapter.updateData(scheduleTypes.outbounds!!)
+                layoutOutBondsScheduleType.visibility = View.VISIBLE
+                recyclerViewOutBonds.visibility = View.VISIBLE
 
-            for (workItem in scheduleDetail.outbounds!!) {
-                allLumpersList.addAll(workItem.assignedLumpersList!!)
+                for (workItem in scheduleTypes.outbounds!!) {
+                    allLumpersList.addAll(workItem.assignedLumpersList!!)
+                }
+            } else {
+                layoutOutBondsScheduleType.visibility = View.GONE
+                recyclerViewOutBonds.visibility = View.GONE
             }
-        } else {
-            layoutOutBondsScheduleType.visibility = View.GONE
-            recyclerViewOutBonds.visibility = View.GONE
         }
 
         if (allLumpersList.size > 0) {
@@ -197,10 +232,11 @@ class UnScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClic
         startIntent(DisplayLumpersListActivity::class.java, bundle = bundle)
     }
 
-    override fun onWorkItemClick(workItemDetail: WorkItemDetail, workItemType: String) {
+    override fun onWorkItemClick(workItemDetail: WorkItemDetail, workItemTypeDisplayName: String) {
         val bundle = Bundle()
-        bundle.putString(ARG_WORK_ITEM_ID, workItemDetail.id!!)
-        bundle.putString(ARG_WORK_ITEM_TYPE, workItemType)
+        bundle.putString(ARG_WORK_ITEM_ID, workItemDetail.id)
+        bundle.putString(ARG_WORK_ITEM_TYPE, workItemDetail.workItemType)
+        bundle.putString(ARG_WORK_ITEM_TYPE_DISPLAY_NAME, workItemTypeDisplayName)
         startIntent(
             UnScheduledWorkItemDetailActivity::class.java,
             bundle = bundle,

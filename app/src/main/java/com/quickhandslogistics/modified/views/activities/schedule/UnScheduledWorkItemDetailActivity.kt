@@ -12,8 +12,10 @@ import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.presenters.schedule.UnScheduledWorkItemDetailPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.adapters.schedule.UnScheduledWorkItemDetailAdapter
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.DateUtils
@@ -27,6 +29,8 @@ class UnScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener,
 
     private var workItemId: String = ""
     private var workItemType: String = ""
+    private var workItemTypeDisplayName: String = ""
+    private var workItemDetail: WorkItemDetail? = null
 
     private lateinit var lumpersAdapter: UnScheduledWorkItemDetailAdapter
     private lateinit var unScheduledWorkItemDetailPresenter: UnScheduledWorkItemDetailPresenter
@@ -41,6 +45,7 @@ class UnScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener,
         intent.extras?.let {
             workItemId = it.getString(ARG_WORK_ITEM_ID, "")
             workItemType = it.getString(ARG_WORK_ITEM_TYPE, "")
+            workItemTypeDisplayName = it.getString(ARG_WORK_ITEM_TYPE_DISPLAY_NAME, "")
         }
 
         initializeUI()
@@ -69,17 +74,28 @@ class UnScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener,
         view?.let {
             when (view.id) {
                 buttonUpdate.id -> {
-                    val bundle = Bundle()
-                    bundle.putBoolean(AddWorkItemLumpersActivity.ARG_IS_ADD_LUMPER, false)
-                    startIntent(
-                        AddWorkItemLumpersActivity::class.java,
-                        bundle = bundle,
-                        requestCode = AppConstant.REQUEST_CODE_CHANGED
+                    if (!workItemDetail?.assignedLumpersList.isNullOrEmpty()) {
+                        val bundle = Bundle()
+                        bundle.putBoolean(AddWorkItemLumpersActivity.ARG_IS_ADD_LUMPER, false)
+                        bundle.putString(ARG_WORK_ITEM_ID, workItemDetail?.id)
+                        bundle.putString(ARG_WORK_ITEM_TYPE, workItemDetail?.workItemType)
+                        bundle.putParcelableArrayList(
+                            AddWorkItemLumpersActivity.ARG_ASSIGNED_LUMPERS_LIST,
+                            workItemDetail?.assignedLumpersList
+                        )
+                        startIntent(
+                            AddWorkItemLumpersActivity::class.java,
+                            bundle = bundle,
+                            requestCode = AppConstant.REQUEST_CODE_CHANGED
+                        )
+                    }
+                }
+                buttonScheduleNow.id -> {
+                    unScheduledWorkItemDetailPresenter.changeWorkItemStatus(
+                        workItemId,
+                        workItemType
                     )
                 }
-                buttonScheduleNow.id -> unScheduledWorkItemDetailPresenter.changeWorkItemStatus(
-                    workItemId, workItemType
-                )
             }
         }
     }
@@ -106,10 +122,14 @@ class UnScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener,
     }
 
     override fun workItemStatusChanged() {
+        val intent = Intent()
+        intent.putExtra(ScheduleMainFragment.ARG_IS_SCHEDULED_STATUS_CHANGED, true)
+        setResult(RESULT_OK, intent)
         onBackPressed()
     }
 
     override fun showWorkItemDetail(workItemDetail: WorkItemDetail) {
+        this.workItemDetail = workItemDetail;
         textViewStartTime.text = String.format(
             getString(R.string.start_time_container),
             workItemDetail.startTime
@@ -118,9 +138,9 @@ class UnScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener,
             textViewScheduledDate.text =
                 DateUtils.changeDateString(PATTERN_API_REQUEST_PARAMETER, PATTERN_NORMAL, it)
         }
-        textViewScheduleType.text = workItemType
+        textViewScheduleType.text = workItemTypeDisplayName
 
-        when (workItemType) {
+        when (workItemTypeDisplayName) {
             getString(R.string.string_drops) -> {
                 textViewWorkItemsCount.text = String.format(
                     getString(R.string.no_of_drops),
@@ -135,8 +155,8 @@ class UnScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener,
             }
         }
 
-        workItemDetail.assignedLumpersList?.let {
-            lumpersAdapter.updateData(it)
+        workItemDetail.assignedLumpersList?.let { assignedLumpersList ->
+            lumpersAdapter.updateData(assignedLumpersList)
         }
     }
 }

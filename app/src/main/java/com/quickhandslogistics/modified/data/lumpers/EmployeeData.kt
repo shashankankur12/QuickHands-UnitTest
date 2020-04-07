@@ -1,10 +1,12 @@
 package com.quickhandslogistics.modified.data.lumpers
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-open class EmployeeData : Serializable {
+open class EmployeeData() : Parcelable {
     @SerializedName("id")
     @Expose
     var id: String? = null
@@ -92,4 +94,69 @@ open class EmployeeData : Serializable {
     @SerializedName("fullTime")
     @Expose
     var fullTime: Boolean? = null
+
+    constructor(parcel: Parcel) : this() {
+        id = parcel.readString()
+        email = parcel.readString()
+        firstName = parcel.readString()
+        lastName = parcel.readString()
+        phone = parcel.readString()
+        isActive = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        profileImageUrl = parcel.readString()
+        isEmailVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        isPhoneVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        role = parcel.readString()
+        employeeId = parcel.readString()
+        shift = parcel.readString()
+        shiftHours = parcel.readString()
+        workSchedule = parcel.readString()
+        title = parcel.readString()
+        primaryBuilding = parcel.readString()
+        abilityToTravelBetweenBuildings =
+            parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        milesRadiusFromPrimaryBuilding = parcel.readString()
+        hiringDate = parcel.readString()
+        jobDescription = parcel.readString()
+        lastDayWorked = parcel.readString()
+        fullTime = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(id)
+        parcel.writeString(email)
+        parcel.writeString(firstName)
+        parcel.writeString(lastName)
+        parcel.writeString(phone)
+        parcel.writeValue(isActive)
+        parcel.writeString(profileImageUrl)
+        parcel.writeValue(isEmailVerified)
+        parcel.writeValue(isPhoneVerified)
+        parcel.writeString(role)
+        parcel.writeString(employeeId)
+        parcel.writeString(shift)
+        parcel.writeString(shiftHours)
+        parcel.writeString(workSchedule)
+        parcel.writeString(title)
+        parcel.writeString(primaryBuilding)
+        parcel.writeValue(abilityToTravelBetweenBuildings)
+        parcel.writeString(milesRadiusFromPrimaryBuilding)
+        parcel.writeString(hiringDate)
+        parcel.writeString(jobDescription)
+        parcel.writeString(lastDayWorked)
+        parcel.writeValue(fullTime)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<EmployeeData> {
+        override fun createFromParcel(parcel: Parcel): EmployeeData {
+            return EmployeeData(parcel)
+        }
+
+        override fun newArray(size: Int): Array<EmployeeData?> {
+            return arrayOfNulls(size)
+        }
+    }
 }

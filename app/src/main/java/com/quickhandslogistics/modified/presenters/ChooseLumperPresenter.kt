@@ -26,7 +26,7 @@ class ChooseLumperPresenter(
     override fun onFailure(message: String) {
         chooseLumperView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            chooseLumperView?.showAPIErrorMessage(resources.getString(R.string.internal_server_error))
+            chooseLumperView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
         } else {
             chooseLumperView?.showAPIErrorMessage(message)
         }
