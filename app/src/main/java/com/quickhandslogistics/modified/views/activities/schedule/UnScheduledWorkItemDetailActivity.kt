@@ -40,7 +40,7 @@ class UnScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_unscheduled_work_item_detail)
-        setupToolbar()
+        setupToolbar(getString(R.string.unscheduled_work_details))
 
         intent.extras?.let {
             workItemId = it.getString(ARG_WORK_ITEM_ID, "")

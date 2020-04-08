@@ -46,7 +46,7 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_schedule_detail)
-        setupToolbar()
+        setupToolbar(getString(R.string.scheduled_work))
 
         scheduleDetailPresenter = ScheduleDetailPresenter(this, resources)
 

@@ -48,7 +48,7 @@ class UnScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClic
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_unschedule_detail)
-        setupToolbar()
+        setupToolbar(getString(R.string.unscheduled_work))
 
         unScheduleDetailPresenter = UnScheduleDetailPresenter(this, resources)
 
@@ -114,6 +114,15 @@ class UnScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClic
                 LumperImagesAdapter(ArrayList(), this@UnScheduleDetailActivity)
             adapter = allLumpersImagesAdapter
         }
+    }
+
+    private fun clearAllData() {
+        textViewBuildingName.visibility = View.INVISIBLE
+        textViewScheduleDate.visibility = View.INVISIBLE
+        textViewScheduleType.visibility = View.INVISIBLE
+        textViewWorkItemsCount.visibility = View.INVISIBLE
+        recyclerViewLumpersImagesList.visibility = View.GONE
+        layoutAllWorkItems.visibility = View.GONE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -220,7 +229,12 @@ class UnScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClic
     }
 
     override fun showAPIErrorMessage(message: String) {
-        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
+        clearAllData()
+        SnackBarFactory.createSnackBar(activity,
+            mainConstraintLayout, message, getString(R.string.goBack),
+            View.OnClickListener {
+                onBackPressed()
+            })
     }
 
     /*

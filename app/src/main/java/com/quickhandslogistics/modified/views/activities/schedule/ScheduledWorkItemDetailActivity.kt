@@ -42,7 +42,7 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), ScheduledWorkItemDetailC
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scheduled_work_item_detail)
-        setupToolbar()
+        setupToolbar(getString(R.string.scheduled_work_details))
 
         intent.extras?.let { it ->
             allowUpdate = it.getBoolean(ARG_ALLOW_UPDATE, true)

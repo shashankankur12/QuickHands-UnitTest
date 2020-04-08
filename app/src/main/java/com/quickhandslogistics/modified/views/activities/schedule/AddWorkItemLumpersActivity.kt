@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.AddWorkItemLumpersContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
@@ -71,6 +72,18 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
                 )
             adapter = addWorkItemLumperAdapter
         }
+
+        addWorkItemLumperAdapter.registerAdapterDataObserver(object :
+            RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                textViewEmptyData.visibility =
+                    if (addWorkItemLumperAdapter.itemCount == 0) View.VISIBLE else View.GONE
+            }
+        })
+
+        // Enable Submit button if Lead is Updating Lumpers
+        onSelectLumper(assignedLumpersList.size)
 
         addWorkItemLumpersPresenter = AddWorkItemLumpersPresenter(this, resources, sharedPref)
         addWorkItemLumpersPresenter.fetchLumpersList()

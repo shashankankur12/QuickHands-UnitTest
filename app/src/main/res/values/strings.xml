@@ -175,4 +175,7 @@
     <string name="string_ask_to_replace_new_lumper">Are you sure you want to add this lumper?</string>
     <string name="work_items_count">Work Items: %s</string>
     <string name="sequence">"Sequence: %s"</string>
+    <string name="goBack">Go Back</string>
+    <string name="scheduled_work_details">Scheduled Work Details</string>
+    <string name="unscheduled_work_details">UnScheduled Work Details</string>
 </resources>

@@ -14,5 +14,8 @@ interface AppConstant {
         val EDIT_DIALOG = "edit_dialog"
 
         const val REQUEST_CODE_CHANGED = 101
+
+        const val ADAPTER_VIEW_TYPE_DATA = 0
+        const val ADAPTER_VIEW_TYPE_EMPTY = 1
     }
 }

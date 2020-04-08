@@ -77,7 +77,11 @@ class UnSchedulePresenter(
             dateLong1.compareTo(dateLong2)
         })
 
-        unScheduleView?.showUnScheduleData(workItemsList)
+        if (workItemsList.size > 0) {
+            unScheduleView?.showUnScheduleData(workItemsList)
+        } else {
+            unScheduleView?.showEmptyData()
+        }
         unScheduleView?.hideProgressDialog()
     }
 }

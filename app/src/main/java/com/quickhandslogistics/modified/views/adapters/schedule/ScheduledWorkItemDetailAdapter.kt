@@ -17,6 +17,8 @@ import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.ValueUtils
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.layout_work_item_detail_lumper.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ScheduledWorkItemDetailAdapter(
     private val onAdapterClick: WorkItemDetailContract.View.OnAdapterItemClickListener,
@@ -53,6 +55,7 @@ class ScheduledWorkItemDetailAdapter(
         RecyclerView.ViewHolder(view), View.OnClickListener {
 
         private val textViewLumperName: TextView = view.textViewLumperName
+        private val textViewEmployeeId: TextView = view.textViewEmployeeId
         private val viewAttendanceStatus: View = view.viewAttendanceStatus
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
         private val buttonReplace: Button = view.buttonReplace
@@ -74,9 +77,16 @@ class ScheduledWorkItemDetailAdapter(
 
             textViewLumperName.text = String.format(
                 "%s %s",
-                ValueUtils.getDefaultOrValue(employeeData.firstName),
-                ValueUtils.getDefaultOrValue(employeeData.lastName)
+                ValueUtils.getDefaultOrValue(employeeData.firstName).capitalize(),
+                ValueUtils.getDefaultOrValue(employeeData.lastName).capitalize()
             )
+
+            if (StringUtils.isNullOrEmpty(employeeData.employeeId)) {
+                textViewEmployeeId.visibility = View.GONE
+            } else {
+                textViewEmployeeId.visibility = View.VISIBLE
+                textViewEmployeeId.text = String.format("(Emp ID: %s)", employeeData.employeeId)
+            }
 
 //            if (adapterPosition == replacedPosition) {
 //                linearLayoutLumperTime.visibility = View.GONE

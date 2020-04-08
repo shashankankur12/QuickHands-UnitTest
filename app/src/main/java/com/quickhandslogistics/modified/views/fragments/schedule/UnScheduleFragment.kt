@@ -120,6 +120,9 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
     */
     override fun showUnScheduleData(workItemsList: ArrayList<ScheduleDetail>) {
         unScheduleAdapter.updateList(workItemsList)
+
+        textViewEmptyData.visibility = View.GONE
+        recyclerViewSchedule.visibility = View.VISIBLE
     }
 
     override fun hideProgressDialog() {
@@ -128,6 +131,11 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
 
     override fun showProgressDialog(message: String) {
         onScheduleFragmentInteractionListener?.showProgressDialog(message)
+    }
+
+    override fun showEmptyData() {
+        textViewEmptyData.visibility = View.VISIBLE
+        recyclerViewSchedule.visibility = View.GONE
     }
 
     fun fetchUnScheduledWorkItems() {
