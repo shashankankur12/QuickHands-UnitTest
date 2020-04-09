@@ -17,8 +17,6 @@ import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.ValueUtils
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.layout_work_item_detail_lumper.view.*
-import java.util.*
-import kotlin.collections.ArrayList
 
 class ScheduledWorkItemDetailAdapter(
     private val onAdapterClick: WorkItemDetailContract.View.OnAdapterItemClickListener,
@@ -86,6 +84,18 @@ class ScheduledWorkItemDetailAdapter(
             } else {
                 textViewEmployeeId.visibility = View.VISIBLE
                 textViewEmployeeId.text = String.format("(Emp ID: %s)", employeeData.employeeId)
+            }
+
+            if (adapterPosition == 0) {
+                linearLayoutLumperTime.visibility = View.GONE
+                buttonReplace.visibility = View.VISIBLE
+                textViewReplaced.visibility = View.GONE
+                viewAttendanceStatus.setBackgroundResource(R.drawable.offline_dot)
+            } else {
+                linearLayoutLumperTime.visibility = View.VISIBLE
+                buttonReplace.visibility = View.GONE
+                textViewReplaced.visibility = View.GONE
+                viewAttendanceStatus.setBackgroundResource(R.drawable.online_dot)
             }
 
 //            if (adapterPosition == replacedPosition) {

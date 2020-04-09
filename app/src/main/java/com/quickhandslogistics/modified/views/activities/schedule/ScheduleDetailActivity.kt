@@ -85,7 +85,7 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(15))
             outBondsAdapter = ScheduledWorkItemAdapter(
-                resources, getString(R.string.string_out_bonds),
+                resources, getString(R.string.string_out_bounds),
                 adapterItemClickListener = this@ScheduleDetailActivity
             )
             adapter = outBondsAdapter
@@ -115,7 +115,7 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
             scheduleDetail.totalNumberOfWorkItems
         )
 
-        val allLumpersList = ArrayList<EmployeeData>()
+        var allLumpersList = ArrayList<EmployeeData>()
 
         scheduleDetail.scheduleTypes?.let { scheduleTypes ->
             // Show Live Loads work Items Listing
@@ -168,6 +168,7 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
         }
 
         if (allLumpersList.size > 0) {
+            allLumpersList = allLumpersList.distinctBy { it.id } as ArrayList<EmployeeData>
             allLumpersImagesAdapter.updateData(allLumpersList)
             recyclerViewLumpersImagesList.visibility = View.VISIBLE
         } else {

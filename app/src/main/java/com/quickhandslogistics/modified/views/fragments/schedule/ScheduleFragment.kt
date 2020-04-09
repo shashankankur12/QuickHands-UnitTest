@@ -25,6 +25,7 @@ import com.quickhandslogistics.modified.views.activities.schedule.MarkAttendance
 import com.quickhandslogistics.modified.views.activities.schedule.ScheduleDetailActivity
 import com.quickhandslogistics.modified.views.adapters.schedule.ScheduleAdapter
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
+import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.calendar_item.view.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.util.*
@@ -213,7 +214,10 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
     }
 
     override fun showAPIErrorMessage(message: String) {
-
+        buttonMarkAttendance.visibility = View.GONE
+        recyclerViewSchedule.visibility = View.GONE
+        textViewEmptyData.visibility = View.VISIBLE
+        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
     override fun fetchUnsScheduledWorkItems() {
@@ -222,6 +226,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
 
     override fun showEmptyData() {
         textViewEmptyData.visibility = View.VISIBLE
+        buttonMarkAttendance.visibility = View.GONE
         recyclerViewSchedule.visibility = View.GONE
         textViewDate.visibility = View.GONE
     }

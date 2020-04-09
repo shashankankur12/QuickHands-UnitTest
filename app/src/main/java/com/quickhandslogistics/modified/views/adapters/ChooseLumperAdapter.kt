@@ -1,15 +1,18 @@
 package com.quickhandslogistics.modified.views.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.ChooseLumperContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.utils.StringUtils
+import com.quickhandslogistics.utils.ValueUtils
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_choose_lumper.view.*
 import java.util.*
@@ -26,9 +29,7 @@ class ChooseLumperAdapter(var adapterItemClickListener: ChooseLumperContract.Vie
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View =
             LayoutInflater.from(parent.context).inflate(R.layout.item_choose_lumper, parent, false)
-        return ViewHolder(
-            view
-        )
+        return ViewHolder(view, parent.context)
     }
 
     override fun getItemCount(): Int {
@@ -49,7 +50,8 @@ class ChooseLumperAdapter(var adapterItemClickListener: ChooseLumperContract.Vie
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+    inner class ViewHolder(view: View, private val context: Context) :
+        RecyclerView.ViewHolder(view), View.OnClickListener {
 
         var textViewLumperName: TextView = view.textViewLumperName
         var textViewEmployeeId: TextView = view.textViewEmployeeId
@@ -57,22 +59,33 @@ class ChooseLumperAdapter(var adapterItemClickListener: ChooseLumperContract.Vie
         var textViewShiftHours: TextView = view.textViewShiftHours
 
         fun bind(employeeData: EmployeeData) {
-            if (employeeData.firstName != null && employeeData.lastName != null) {
-                textViewLumperName.text =
-                    String.format("%s %s", employeeData.firstName, employeeData.lastName)
+            if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl)) {
+                Glide.with(context).load(employeeData.profileImageUrl)
+                    .placeholder(R.drawable.dummy).error(R.drawable.dummy)
+                    .into(circleImageViewProfile)
+            } else {
+                Glide.with(context).clear(circleImageViewProfile);
             }
 
-            employeeData.employeeId?.also {
+            textViewLumperName.text = String.format(
+                "%s %s",
+                ValueUtils.getDefaultOrValue(employeeData.firstName).capitalize(),
+                ValueUtils.getDefaultOrValue(employeeData.lastName).capitalize()
+            )
+
+            if (StringUtils.isNullOrEmpty(employeeData.employeeId)) {
+                textViewEmployeeId.visibility = View.GONE
+            } else {
+                textViewEmployeeId.visibility = View.VISIBLE
                 textViewEmployeeId.text = String.format("(Emp ID: %s)", employeeData.employeeId)
-            } ?: run {
-                textViewEmployeeId.text = "(Emp ID: -)"
             }
 
-            employeeData.shiftHours?.also {
+            if (StringUtils.isNullOrEmpty(employeeData.shiftHours)) {
+                textViewShiftHours.visibility = View.GONE
+            } else {
+                textViewShiftHours.visibility = View.VISIBLE
                 textViewShiftHours.text =
                     String.format("(Shift Hours: %s)", employeeData.shiftHours)
-            } ?: run {
-                textViewShiftHours.text = "Shift Hours: -"
             }
 
             itemView.setOnClickListener(this)

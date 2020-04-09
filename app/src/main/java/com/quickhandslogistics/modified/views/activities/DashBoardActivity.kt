@@ -42,10 +42,6 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
     override fun showLeadProfile(leadProfileData: LeadProfileData) {
         if (!StringUtils.isNullOrEmpty(leadProfileData.profileImageUrl))
             Picasso.get().load(leadProfileData.profileImageUrl).placeholder(R.drawable.dummy)

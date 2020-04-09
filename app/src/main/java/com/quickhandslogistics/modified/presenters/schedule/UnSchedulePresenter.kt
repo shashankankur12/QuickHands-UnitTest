@@ -1,8 +1,10 @@
 package com.quickhandslogistics.modified.presenters.schedule
 
 import android.content.res.Resources
+import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleContract
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.modified.models.schedule.UnScheduleModel
@@ -11,6 +13,7 @@ import com.quickhandslogistics.modified.views.controls.ScheduleUtils.getSchedule
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*
+import kotlin.collections.ArrayList
 
 class UnSchedulePresenter(
     private var unScheduleView: UnScheduleContract.View?,
@@ -29,7 +32,12 @@ class UnSchedulePresenter(
     }
 
     override fun onFailure(message: String) {
-
+        unScheduleView?.hideProgressDialog()
+        if (TextUtils.isEmpty(message)) {
+            unScheduleView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+        } else {
+            unScheduleView?.showAPIErrorMessage(message)
+        }
     }
 
     override fun onSuccess(
@@ -55,12 +63,14 @@ class UnSchedulePresenter(
                 )
                 scheduleTypeNames = getScheduleTypeName(
                     scheduleTypes.outbounds, scheduleTypeNames,
-                    resources.getString(R.string.string_out_bonds)
+                    resources.getString(R.string.string_out_bounds)
                 )
                 oldValue.scheduleTypeNames = scheduleTypeNames
                 oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.liveLoads))
                 oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.drops))
                 oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.outbounds))
+                oldValue.allAssignedLumpers =
+                    oldValue.allAssignedLumpers.distinctBy { it.id } as ArrayList<EmployeeData>
                 iterate.set(oldValue)
             }
         }

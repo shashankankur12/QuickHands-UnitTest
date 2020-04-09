@@ -89,7 +89,7 @@ class ScheduleTypes() : Parcelable {
     @Expose
     var liveLoads: ArrayList<WorkItemDetail>? = null
 
-    @SerializedName("drops")
+    @SerializedName("drop")
     @Expose
     var drops: ArrayList<WorkItemDetail>? = null
 

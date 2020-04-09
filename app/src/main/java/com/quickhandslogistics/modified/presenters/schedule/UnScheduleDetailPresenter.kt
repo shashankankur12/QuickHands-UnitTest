@@ -47,7 +47,7 @@ class UnScheduleDetailPresenter(
             scheduleTypeNames = getScheduleTypeName(
                 scheduleDetail.scheduleTypes?.outbounds,
                 scheduleTypeNames,
-                resources.getString(R.string.string_out_bonds)
+                resources.getString(R.string.string_out_bounds)
             )
             scheduleDetail.scheduleTypeNames = scheduleTypeNames
             unScheduleDetailView?.showScheduleData(scheduleDetail)

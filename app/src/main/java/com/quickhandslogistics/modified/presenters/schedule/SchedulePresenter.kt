@@ -1,12 +1,13 @@
 package com.quickhandslogistics.modified.presenters.schedule
 
 import android.content.res.Resources
+import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
-import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
+import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.modified.models.schedule.ScheduleModel
-import com.quickhandslogistics.modified.views.controls.ScheduleUtils
 import com.quickhandslogistics.modified.views.controls.ScheduleUtils.getAllAssignedLumpersList
 import com.quickhandslogistics.modified.views.controls.ScheduleUtils.getScheduleTypeName
 import com.quickhandslogistics.utils.DateUtils
@@ -28,7 +29,12 @@ class SchedulePresenter(
     }
 
     override fun onFailure(message: String) {
-
+        scheduleView?.hideProgressDialog()
+        if (TextUtils.isEmpty(message)) {
+            scheduleView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+        } else {
+            scheduleView?.showAPIErrorMessage(message)
+        }
     }
 
     override fun onSuccess(selectedDate: Date, scheduleListAPIResponse: ScheduleListAPIResponse) {
@@ -55,12 +61,14 @@ class SchedulePresenter(
                 )
                 scheduleTypeNames = getScheduleTypeName(
                     scheduleTypes.outbounds, scheduleTypeNames,
-                    resources.getString(R.string.string_out_bonds)
+                    resources.getString(R.string.string_out_bounds)
                 )
                 oldValue.scheduleTypeNames = scheduleTypeNames
                 oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.liveLoads))
                 oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.drops))
                 oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.outbounds))
+                oldValue.allAssignedLumpers =
+                    oldValue.allAssignedLumpers.distinctBy { it.id } as ArrayList<EmployeeData>
                 iterate.set(oldValue)
             }
         }

@@ -6,7 +6,6 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleDetailContract
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetailAPIResponse
 import com.quickhandslogistics.modified.models.schedule.ScheduleDetailModel
-import com.quickhandslogistics.modified.views.controls.ScheduleUtils
 import com.quickhandslogistics.modified.views.controls.ScheduleUtils.getScheduleTypeName
 
 class ScheduleDetailPresenter(
@@ -48,7 +47,7 @@ class ScheduleDetailPresenter(
             scheduleTypeNames = getScheduleTypeName(
                 scheduleDetail.scheduleTypes?.outbounds,
                 scheduleTypeNames,
-                resources.getString(R.string.string_out_bonds)
+                resources.getString(R.string.string_out_bounds)
             )
             scheduleDetail.scheduleTypeNames = scheduleTypeNames
             scheduleDetailView?.showScheduleData(scheduleDetail)

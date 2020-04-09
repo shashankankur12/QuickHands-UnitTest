@@ -73,16 +73,22 @@ class ScheduledWorkItemAdapter(
                 workItemDetail.startTime
             )
 
-            when (workItemDetail.workItemType) {
-                "drop" -> {
+            when (workItemTypeDisplayName) {
+                resources.getString(R.string.string_drops) -> {
                     textViewDropItems.text = String.format(
                         resources.getString(R.string.no_of_drops),
                         workItemDetail.numberOfDrops
                     )
                 }
+                resources.getString(R.string.string_live_loads) -> {
+                    textViewDropItems.text = String.format(
+                        resources.getString(R.string.live_load_sequence),
+                        workItemDetail.sequence
+                    )
+                }
                 else -> {
                     textViewDropItems.text = String.format(
-                        resources.getString(R.string.sequence),
+                        resources.getString(R.string.outbound_sequence),
                         workItemDetail.sequence
                     )
                 }

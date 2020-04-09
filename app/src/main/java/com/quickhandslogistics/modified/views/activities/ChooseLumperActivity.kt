@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.ChooseLumperContract
 import com.quickhandslogistics.modified.contracts.InfoDialogWarningContract
@@ -42,6 +43,15 @@ class ChooseLumperActivity : BaseActivity(), ChooseLumperContract.View, TextWatc
             chooseLumperAdapter = ChooseLumperAdapter(this@ChooseLumperActivity)
             adapter = chooseLumperAdapter
         }
+
+        chooseLumperAdapter.registerAdapterDataObserver(object :
+            RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                textViewEmptyData.visibility =
+                    if (chooseLumperAdapter.itemCount == 0) View.VISIBLE else View.GONE
+            }
+        })
 
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)

@@ -147,9 +147,15 @@ class UnScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener,
                     workItemDetail.numberOfDrops
                 )
             }
+            getString(R.string.string_live_loads) -> {
+                textViewWorkItemsCount.text = String.format(
+                    resources.getString(R.string.live_load_sequence),
+                    workItemDetail.sequence
+                )
+            }
             else -> {
                 textViewWorkItemsCount.text = String.format(
-                    getString(R.string.sequence),
+                    resources.getString(R.string.outbound_sequence),
                     workItemDetail.sequence
                 )
             }

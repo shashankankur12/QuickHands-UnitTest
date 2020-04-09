@@ -1,6 +1,7 @@
 package com.quickhandslogistics.modified.network
 
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.ErrorResponse
 import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
@@ -318,10 +319,13 @@ object DataManager : AppConstant {
     private fun getErrorMessage(errorBody: ResponseBody?): String {
         var errorMessage = ""
         errorBody?.let {
-            val errorResponse: ErrorResponse? =
-                Gson().fromJson(String(it.bytes()), ErrorResponse::class.java)
-            errorResponse?.let {
-                errorMessage = errorResponse.message!!
+            val errorBodyString = String(it.bytes())
+            errorMessage = try {
+                val errorResponse: ErrorResponse =
+                    Gson().fromJson(errorBodyString, ErrorResponse::class.java)
+                errorResponse.message!!
+            } catch (e: JsonSyntaxException) {
+                errorBodyString
             }
         }
         return errorMessage

@@ -24,6 +24,7 @@ import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_IS_SCHEDULED_STATUS_CHANGED
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_DETAIL
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.fragment_unschedule.*
 
 class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItemClickListener,
@@ -86,7 +87,7 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
             data?.also {
                 val isScheduleStatusChanged =
                     data.getBooleanExtra(ARG_IS_SCHEDULED_STATUS_CHANGED, false)
-                if(isScheduleStatusChanged){
+                if (isScheduleStatusChanged) {
                     onScheduleFragmentInteractionListener?.updateAllSchedules()
                 }
             } ?: run {
@@ -136,6 +137,12 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
     override fun showEmptyData() {
         textViewEmptyData.visibility = View.VISIBLE
         recyclerViewSchedule.visibility = View.GONE
+    }
+
+    override fun showAPIErrorMessage(message: String) {
+        recyclerViewSchedule.visibility = View.GONE
+        textViewEmptyData.visibility = View.VISIBLE
+        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
     fun fetchUnScheduledWorkItems() {
