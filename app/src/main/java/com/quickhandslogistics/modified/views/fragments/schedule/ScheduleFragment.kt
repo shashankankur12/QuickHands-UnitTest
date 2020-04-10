@@ -25,6 +25,8 @@ import com.quickhandslogistics.modified.views.activities.schedule.MarkAttendance
 import com.quickhandslogistics.modified.views.activities.schedule.ScheduleDetailActivity
 import com.quickhandslogistics.modified.views.adapters.schedule.ScheduleAdapter
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_ALLOW_UPDATE
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_IDENTITY
 import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.calendar_item.view.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
@@ -150,10 +152,13 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
         val currentDate = calendar[Calendar.DATE]
         calendar.add(Calendar.WEEK_OF_YEAR, -2)
 
-        list.add(calendar.time)
         while (currentDate != calendar[Calendar.DATE]) {
             calendar.add(Calendar.DATE, 1)
-            list.add(calendar.time)
+            if (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY &&
+                calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY
+            ) {
+                list.add(calendar.time)
+            }
         }
         return list
     }
@@ -176,8 +181,8 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
     */
     override fun onScheduleItemClick(scheduleDetail: ScheduleDetail) {
         val bundle = Bundle()
-        bundle.putBoolean(ScheduleMainFragment.ARG_ALLOW_UPDATE, isCurrentDate)
-        bundle.putParcelable(ScheduleMainFragment.ARG_SCHEDULE_DETAIL, scheduleDetail)
+        bundle.putBoolean(ARG_ALLOW_UPDATE, isCurrentDate)
+        bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleDetail.scheduleIdentity)
         startIntent(ScheduleDetailActivity::class.java, bundle = bundle)
     }
 

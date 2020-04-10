@@ -2,9 +2,12 @@ package com.quickhandslogistics.modified.views.activities.schedule
 
 import android.app.Dialog
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.contracts.InfoDialogContract
 import com.quickhandslogistics.modified.contracts.LumperImagesContract
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleDetailContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
@@ -18,7 +21,10 @@ import com.quickhandslogistics.modified.views.adapters.LumperImagesAdapter
 import com.quickhandslogistics.modified.views.adapters.schedule.ScheduledWorkItemAdapter
 import com.quickhandslogistics.modified.views.controls.OverlapDecoration
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
+import com.quickhandslogistics.modified.views.fragments.InfoDialogFragment
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_ALLOW_UPDATE
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_IDENTITY
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
@@ -39,6 +45,7 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
     private lateinit var scheduleDetailPresenter: ScheduleDetailPresenter
 
     private var allowUpdate: Boolean = false
+    private var scheduleIdentity = ""
     private var scheduleDetail: ScheduleDetail? = null
 
     private var progressDialog: Dialog? = null
@@ -50,13 +57,12 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
 
         scheduleDetailPresenter = ScheduleDetailPresenter(this, resources)
 
-        intent.extras?.let {
-            allowUpdate = it.getBoolean(ScheduleMainFragment.ARG_ALLOW_UPDATE)
-            scheduleDetail =
-                it.getParcelable(ScheduleMainFragment.ARG_SCHEDULE_DETAIL) as ScheduleDetail?
+        intent.extras?.let { bundle ->
+            allowUpdate = bundle.getBoolean(ARG_ALLOW_UPDATE)
+            scheduleIdentity = bundle.getString(ARG_SCHEDULE_IDENTITY, "")
 
             initializeUI()
-            scheduleDetailPresenter.getScheduleDetail(scheduleDetail?.scheduleIdentity!!)
+            scheduleDetailPresenter.getScheduleDetail(scheduleIdentity)
         }
     }
 
@@ -100,10 +106,42 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.let {
+            val menuItem = menu.findItem(R.id.actionNotes)
+            menuItem.isVisible = !scheduleDetail?.startDate.isNullOrEmpty()
+        }
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.actionNotes -> {
+                val dialog =
+                    InfoDialogFragment.newInstance("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+                        showInfoIcon = false,
+                        onClickListener = object : InfoDialogContract.View.OnClickListener {
+                            override fun onPositiveButtonClick() {
+                            }
+                        })
+                dialog.show(supportFragmentManager, InfoDialogFragment::class.simpleName)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     /*
     * Presenter Listeners
     */
     override fun showScheduleData(scheduleDetail: ScheduleDetail) {
+        this.scheduleDetail = scheduleDetail
+        //invalidateOptionsMenu()
+
         textViewBuildingName.text = scheduleDetail.buildingName
         scheduleDetail.startDate?.let {
             textViewScheduleDate.text =

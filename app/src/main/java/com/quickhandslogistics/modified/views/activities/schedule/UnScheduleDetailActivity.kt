@@ -3,9 +3,12 @@ package com.quickhandslogistics.modified.views.activities.schedule
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.contracts.InfoDialogContract
 import com.quickhandslogistics.modified.contracts.LumperImagesContract
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleDetailContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
@@ -19,8 +22,9 @@ import com.quickhandslogistics.modified.views.adapters.LumperImagesAdapter
 import com.quickhandslogistics.modified.views.adapters.schedule.UnScheduledWorkItemAdapter
 import com.quickhandslogistics.modified.views.controls.OverlapDecoration
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
-import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment
+import com.quickhandslogistics.modified.views.fragments.InfoDialogFragment
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_IS_SCHEDULED_STATUS_CHANGED
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_IDENTITY
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
@@ -41,6 +45,7 @@ class UnScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClic
     private lateinit var outBondsAdapter: UnScheduledWorkItemAdapter
     private lateinit var unScheduleDetailPresenter: UnScheduleDetailPresenter
 
+    private var scheduleIdentity = ""
     private var scheduleDetail: ScheduleDetail? = null
 
     private var progressDialog: Dialog? = null
@@ -52,14 +57,11 @@ class UnScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClic
 
         unScheduleDetailPresenter = UnScheduleDetailPresenter(this, resources)
 
-        intent.extras?.let {
-            if (it.containsKey(ScheduleMainFragment.ARG_SCHEDULE_DETAIL)) {
-                scheduleDetail =
-                    it.getParcelable(ScheduleMainFragment.ARG_SCHEDULE_DETAIL) as ScheduleDetail?
+        intent.extras?.let { bundle ->
+            scheduleIdentity = bundle.getString(ARG_SCHEDULE_IDENTITY, "")
 
-                initializeUI()
-                unScheduleDetailPresenter.getScheduleDetail(scheduleDetail?.scheduleIdentity!!)
-            }
+            initializeUI()
+            unScheduleDetailPresenter.getScheduleDetail(scheduleIdentity)
         }
     }
 
@@ -94,19 +96,6 @@ class UnScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClic
             adapter = outBondsAdapter
         }
 
-        scheduleDetail?.let { scheduleDetail ->
-            textViewBuildingName.text = scheduleDetail.buildingName
-            scheduleDetail.startDate?.let {
-                textViewScheduleDate.text =
-                    DateUtils.changeDateString(PATTERN_API_REQUEST_PARAMETER, PATTERN_NORMAL, it)
-            }
-            textViewScheduleType.text = scheduleDetail.scheduleTypeNames
-            textViewWorkItemsCount.text = String.format(
-                getString(R.string.work_items_count),
-                scheduleDetail.totalNumberOfWorkItems
-            )
-        }
-
         recyclerViewLumpersImagesList.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             addItemDecoration(OverlapDecoration())
@@ -128,7 +117,7 @@ class UnScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClic
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == RESULT_OK) {
-            unScheduleDetailPresenter.getScheduleDetail(scheduleDetail?.scheduleIdentity!!)
+            unScheduleDetailPresenter.getScheduleDetail(scheduleIdentity)
 
             data?.also {
                 val isScheduleStatusChanged =
@@ -142,11 +131,42 @@ class UnScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClic
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.let {
+            val menuItem = menu.findItem(R.id.actionNotes)
+            menuItem.isVisible = !scheduleDetail?.startDate.isNullOrEmpty()
+        }
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.actionNotes -> {
+                val dialog =
+                    InfoDialogFragment.newInstance("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+                        showInfoIcon = false,
+                        onClickListener = object : InfoDialogContract.View.OnClickListener {
+                            override fun onPositiveButtonClick() {
+                            }
+                        })
+                dialog.show(supportFragmentManager, InfoDialogFragment::class.simpleName)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     /*
     * Presenter Listeners
     */
     override fun showScheduleData(scheduleDetail: ScheduleDetail) {
         this.scheduleDetail = scheduleDetail
+        //invalidateOptionsMenu()
+
         textViewBuildingName.text = scheduleDetail.buildingName
         scheduleDetail.startDate?.let {
             textViewScheduleDate.text =

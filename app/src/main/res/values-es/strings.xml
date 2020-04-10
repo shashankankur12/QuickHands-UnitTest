@@ -177,7 +177,7 @@
     <string name="sequence">"Sequence: %s"</string>
     <string name="goBack">Go Back</string>
     <string name="scheduled_work_details">Scheduled Work Details</string>
-    <string name="unscheduled_work_details">UnScheduled Work Details</string>
+    <string name="unscheduled_work_details">Un-Scheduled Work Details</string>
     <string name="live_load_sequence">Live Load: %s</string>
     <string name="outbound_sequence">OutBound: %s</string>
 </resources>
