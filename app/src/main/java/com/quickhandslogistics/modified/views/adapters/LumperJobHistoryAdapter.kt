@@ -68,8 +68,8 @@ Adapter<LumperJobHistoryAdapter.ViewHolder>() {
 
             textViewLumperName.text = String.format(
                 "%s %s",
-                ValueUtils.getDefaultOrValue(employeeData.firstName),
-                ValueUtils.getDefaultOrValue(employeeData.lastName)
+                ValueUtils.getDefaultOrValue(employeeData.firstName).capitalize(),
+                ValueUtils.getDefaultOrValue(employeeData.lastName).capitalize()
             )
 
             if (StringUtils.isNullOrEmpty(employeeData.employeeId)) {

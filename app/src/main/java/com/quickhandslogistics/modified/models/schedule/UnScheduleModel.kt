@@ -2,8 +2,7 @@ package com.quickhandslogistics.modified.models.schedule
 
 import android.util.Log
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleContract
-import com.quickhandslogistics.modified.data.schedule.ScheduleAPIResponse
-import com.quickhandslogistics.modified.models.LoginModel
+import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.modified.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
 import com.quickhandslogistics.utils.AppConstant
@@ -14,21 +13,20 @@ import java.util.*
 class UnScheduleModel(private val sharedPref: SharedPref) : UnScheduleContract.Model {
 
     override fun fetchUnSchedulesByDate(
-        selectedDate: Date,
         onFinishedListener: UnScheduleContract.Model.OnFinishedListener
     ) {
         val dateString =
-            DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
+            DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, Date())
         val buildingId = sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID)
 
         DataManager.getSchedulesList(
             dateString,
             buildingId,
             false,
-            object : ResponseListener<ScheduleAPIResponse> {
-                override fun onSuccess(response: ScheduleAPIResponse) {
+            object : ResponseListener<ScheduleListAPIResponse> {
+                override fun onSuccess(response: ScheduleListAPIResponse) {
                     if (response.success) {
-                        onFinishedListener.onSuccess(selectedDate, response)
+                        onFinishedListener.onSuccess(response)
                     } else {
                         onFinishedListener.onFailure(response.message)
                     }
@@ -36,7 +34,7 @@ class UnScheduleModel(private val sharedPref: SharedPref) : UnScheduleContract.M
 
                 override fun onError(error: Any) {
                     if (error is Throwable) {
-                        Log.e(LoginModel::class.simpleName, error.localizedMessage!!)
+                        Log.e(UnScheduleModel::class.simpleName, error.localizedMessage!!)
                         onFinishedListener.onFailure()
                     } else if (error is String) {
                         onFinishedListener.onFailure(error)

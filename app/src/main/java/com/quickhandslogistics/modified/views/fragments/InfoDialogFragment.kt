@@ -16,12 +16,14 @@ class InfoDialogFragment(private val onClickListener: InfoDialogContract.View.On
 
     private var message: String = ""
     private var positiveButtonText: String = ""
+    private var showInfoIcon: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             message = it.getString(ARG_MESSAGE, "")
             positiveButtonText = it.getString(ARG_POSITIVE_BUTTON_TEXT, "")
+            showInfoIcon = it.getBoolean(ARG_SHOW_INFO_ICON)
         }
     }
 
@@ -47,6 +49,8 @@ class InfoDialogFragment(private val onClickListener: InfoDialogContract.View.On
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        imageViewInfo.visibility = if (showInfoIcon) View.VISIBLE else View.GONE
+
         textViewMessage.text = message
         if (positiveButtonText.isNotEmpty()) {
             buttonPositive.text = positiveButtonText
@@ -58,17 +62,20 @@ class InfoDialogFragment(private val onClickListener: InfoDialogContract.View.On
     companion object {
         private const val ARG_MESSAGE = "ARG_MESSAGE"
         private const val ARG_POSITIVE_BUTTON_TEXT = "ARG_POSITIVE_BUTTON_TEXT"
+        private const val ARG_SHOW_INFO_ICON = "ARG_SHOW_INFO_ICON"
 
         @JvmStatic
         fun newInstance(
             message: String,
             positiveButtonText: String = "",
+            showInfoIcon: Boolean = true,
             onClickListener: InfoDialogContract.View.OnClickListener
         ) =
             InfoDialogFragment(onClickListener).apply {
                 arguments = Bundle().apply {
                     putString(ARG_MESSAGE, message)
                     putString(ARG_POSITIVE_BUTTON_TEXT, positiveButtonText)
+                    putBoolean(ARG_SHOW_INFO_ICON, showInfoIcon)
                 }
             }
     }

@@ -206,7 +206,7 @@ public class NavDrawer {
 
         private void clearDataAndRestart(BaseActivity activity) {
             activity.sharedPref.performLogout();
-            activity.startIntent(LoginActivity.class, null, true, new Integer[]{Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK});
+            activity.startIntent(LoginActivity.class, null, true, new Integer[]{Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK}, null);
         }
 
         private void showFragment(BaseActivity activity) {

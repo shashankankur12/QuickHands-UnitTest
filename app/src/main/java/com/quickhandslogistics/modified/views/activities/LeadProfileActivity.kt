@@ -39,8 +39,8 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View {
 
         textViewLumperName.text = String.format(
             "%s %s",
-            ValueUtils.getDefaultOrValue(employeeData.firstName),
-            ValueUtils.getDefaultOrValue(employeeData.lastName)
+            ValueUtils.getDefaultOrValue(employeeData.firstName).capitalize(),
+            ValueUtils.getDefaultOrValue(employeeData.lastName).capitalize()
         )
 
         textViewEmployeeId.text =

@@ -28,7 +28,8 @@ open class BaseFragment : Fragment() {
         className: Class<*>,
         bundle: Bundle? = null,
         isFinish: Boolean = false,
-        flags: Array<Int>? = null
+        flags: Array<Int>? = null,
+        requestCode: Int? = null
     ) {
         val intent = Intent(fragmentActivity, className)
         flags?.let {
@@ -39,10 +40,17 @@ open class BaseFragment : Fragment() {
         bundle?.let {
             intent.putExtras(bundle)
         }
-        fragmentActivity?.let {
-            it.startActivity(intent)
-            if (isFinish) it.finish()
-            it.overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out)
+        fragmentActivity?.let { fragmentActivity ->
+            requestCode?.also {
+                startActivityForResult(intent, requestCode)
+            } ?: run {
+                startActivity(intent)
+            }
+            if (isFinish) fragmentActivity.finish()
+            fragmentActivity.overridePendingTransition(
+                R.anim.anim_next_slide_in,
+                R.anim.anim_next_slide_out
+            )
         }
     }
 }

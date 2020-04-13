@@ -16,14 +16,18 @@ import com.michalsvec.singlerowcalendar.utils.DateUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleMainContract
-import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.presenters.schedule.SchedulePresenter
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.activities.DisplayLumpersListActivity
 import com.quickhandslogistics.modified.views.activities.schedule.MarkAttendanceActivity
-import com.quickhandslogistics.modified.views.activities.schedule.ScheduledWorkItemDetailActivity
-import com.quickhandslogistics.modified.views.adapters.ScheduledWorkItemAdapter
+import com.quickhandslogistics.modified.views.activities.schedule.ScheduleDetailActivity
+import com.quickhandslogistics.modified.views.adapters.schedule.ScheduleAdapter
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_ALLOW_UPDATE
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_IDENTITY
+import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.calendar_item.view.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.util.*
@@ -32,7 +36,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
     ScheduleContract.View, View.OnClickListener {
 
     private lateinit var schedulePresenter: SchedulePresenter
-    private lateinit var scheduledWorkItemAdapter: ScheduledWorkItemAdapter
+    private lateinit var scheduleAdapter: ScheduleAdapter
     private var onScheduleFragmentInteractionListener: ScheduleMainContract.View.OnScheduleFragmentInteractionListener? =
         null
 
@@ -72,9 +76,8 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
         recyclerViewSchedule.apply {
             layoutManager = LinearLayoutManager(fragmentActivity!!)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            scheduledWorkItemAdapter =
-                ScheduledWorkItemAdapter(resources, this@ScheduleFragment)
-            adapter = scheduledWorkItemAdapter
+            scheduleAdapter = ScheduleAdapter(resources, this@ScheduleFragment)
+            adapter = scheduleAdapter
         }
 
         initializeCalendar()
@@ -149,10 +152,13 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
         val currentDate = calendar[Calendar.DATE]
         calendar.add(Calendar.WEEK_OF_YEAR, -2)
 
-        list.add(calendar.time)
         while (currentDate != calendar[Calendar.DATE]) {
             calendar.add(Calendar.DATE, 1)
-            list.add(calendar.time)
+            if (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY &&
+                calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY
+            ) {
+                list.add(calendar.time)
+            }
         }
         return list
     }
@@ -173,14 +179,17 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
     /*
     * Adapter Item Click Listeners
     */
-    override fun onWorkItemClick() {
+    override fun onScheduleItemClick(scheduleDetail: ScheduleDetail) {
         val bundle = Bundle()
-        bundle.putBoolean(ScheduledWorkItemDetailActivity.ARG_ALLOW_UPDATE, isCurrentDate)
-        startIntent(ScheduledWorkItemDetailActivity::class.java, bundle = bundle)
+        bundle.putBoolean(ARG_ALLOW_UPDATE, isCurrentDate)
+        bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleDetail.scheduleIdentity)
+        startIntent(ScheduleDetailActivity::class.java, bundle = bundle)
     }
 
-    override fun onLumperImagesClick() {
-        startIntent(DisplayLumpersListActivity::class.java)
+    override fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>) {
+        val bundle = Bundle()
+        bundle.putParcelableArrayList(DisplayLumpersListActivity.ARG_LUMPERS_LIST, lumpersList)
+        startIntent(DisplayLumpersListActivity::class.java, bundle = bundle)
     }
 
     /*
@@ -190,10 +199,10 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
         textViewDate.text = dateString
     }
 
-    override fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<WorkItemDetail>) {
+    override fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<ScheduleDetail>) {
         selectedTime = selectedDate.time
         isCurrentDate = com.quickhandslogistics.utils.DateUtils.isCurrentDate(selectedTime)
-        scheduledWorkItemAdapter.updateList(workItemsList)
+        scheduleAdapter.updateList(workItemsList)
 
         buttonMarkAttendance.visibility = if (isCurrentDate) View.VISIBLE else View.GONE
         textViewEmptyData.visibility = View.GONE
@@ -210,17 +219,27 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
     }
 
     override fun showAPIErrorMessage(message: String) {
-        TODO("Not yet implemented")
+        buttonMarkAttendance.visibility = View.GONE
+        recyclerViewSchedule.visibility = View.GONE
+        textViewEmptyData.visibility = View.VISIBLE
+        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
     override fun fetchUnsScheduledWorkItems() {
-        onScheduleFragmentInteractionListener?.fetchUnsScheduledWorkItems()
+        onScheduleFragmentInteractionListener?.fetchUnScheduledWorkItems()
     }
 
     override fun showEmptyData() {
         textViewEmptyData.visibility = View.VISIBLE
+        buttonMarkAttendance.visibility = View.GONE
         recyclerViewSchedule.visibility = View.GONE
         textViewDate.visibility = View.GONE
+    }
+
+    fun fetchScheduledWorkItems() {
+        if (singleRowCalendarSchedule.getSelectedDates().isNotEmpty()) {
+            schedulePresenter.getScheduledWorkItemsByDate(singleRowCalendarSchedule.getSelectedDates()[0])
+        }
     }
 
     companion object {

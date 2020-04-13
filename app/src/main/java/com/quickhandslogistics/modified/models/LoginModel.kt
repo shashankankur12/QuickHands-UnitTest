@@ -51,7 +51,10 @@ class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
         password: String,
         onFinishedListener: LoginContract.Model.OnFinishedListener
     ) {
-        val loginRequest = LoginRequest(employeeLoginId, password)
+        val loginRequest = LoginRequest(
+            employeeLoginId, password,
+            sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN)
+        )
         DataManager.doLogin(loginRequest, object : ResponseListener<LoginResponse> {
             override fun onSuccess(response: LoginResponse) {
                 if (response.success) {

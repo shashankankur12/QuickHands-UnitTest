@@ -30,7 +30,7 @@ class LumperDetailActivity : BaseActivity() {
     private fun displayLumperDetails() {
         intent.extras?.let { it ->
             if (it.containsKey(ARG_LUMPER_DATA)) {
-                employeeData = it.getSerializable(ARG_LUMPER_DATA) as EmployeeData
+                employeeData = it.getParcelable(ARG_LUMPER_DATA) as EmployeeData?
                 employeeData?.let { lumperData ->
 
                     if (!StringUtils.isNullOrEmpty(lumperData.profileImageUrl))

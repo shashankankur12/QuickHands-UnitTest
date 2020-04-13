@@ -13,9 +13,7 @@ import com.mcsoft.timerangepickerdialog.RangeTimePickerDialog
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.MarkAttendanceContract
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.modified.views.adapters.MarkAttendanceAdapter
-import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleFragment
-import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.modified.views.adapters.schedule.MarkAttendanceAdapter
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.activity_mark_attendance.*
 import kotlinx.android.synthetic.main.bottom_sheet_add_time.*
@@ -44,7 +42,11 @@ class MarkAttendanceActivity : BaseActivity(), View.OnClickListener, TextWatcher
             val dividerItemDecoration =
                 DividerItemDecoration(activity, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            markAttendanceAdapter = MarkAttendanceAdapter(activity, this@MarkAttendanceActivity)
+            markAttendanceAdapter =
+                MarkAttendanceAdapter(
+                    activity,
+                    this@MarkAttendanceActivity
+                )
             adapter = markAttendanceAdapter
         }
 

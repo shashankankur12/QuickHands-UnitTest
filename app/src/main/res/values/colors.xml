@@ -30,6 +30,7 @@
     <color name="viewItemBackground">#11000000</color>
     <color name="textBlack">#090909</color>
     <color name="greyDivider">#d9d9d9</color>
+    <color name="darkGreyDivider">#c7c7c7</color>
     <color name="scheduleItemBackground">#f0f6ff</color>
     <color name="buildingTitle">#012652</color>
     <color name="scheduleDetail">#345173</color>

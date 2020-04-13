@@ -13,7 +13,11 @@ class DateUtils {
             return dateFormat.format(date)
         }
 
-        fun changeDateString(patternFrom: String, patternTo: String, dateString: String = ""): String {
+        fun changeDateString(
+            patternFrom: String,
+            patternTo: String,
+            dateString: String = ""
+        ): String {
             val dateFormatFrom = SimpleDateFormat(patternFrom)
             val dateFormatTo = SimpleDateFormat(patternTo)
             val date = dateFormatFrom.parse(dateString)
@@ -21,6 +25,17 @@ class DateUtils {
                 return dateFormatTo.format(date)
             }
             return dateString
+        }
+
+        fun getMillisecondsFromDateString(pattern: String, dateString: String?): Long {
+            val dateFormatFrom = SimpleDateFormat(pattern)
+            dateString?.let {
+                val date = dateFormatFrom.parse(dateString)
+                date?.let {
+                    return date.time
+                }
+            }
+            return 0
         }
 
         fun isCurrentDate(selectedTime: Long): Boolean {

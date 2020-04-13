@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.InfoDialogWarningContract
@@ -59,6 +60,14 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
             adapter = lumpersAdapter
         }
 
+        lumpersAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                textViewEmptyData.visibility =
+                    if (lumpersAdapter.itemCount == 0) View.VISIBLE else View.GONE
+            }
+        })
+
         swipeRefreshLayoutLumpers.setColorSchemeColors(
             ContextCompat.getColor(
                 fragmentActivity!!,
@@ -88,7 +97,7 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     override fun showAPIErrorMessage(message: String) {
         recyclerViewLumpers.visibility = View.GONE
         textViewEmptyData.visibility = View.VISIBLE
-        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
+        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
@@ -127,6 +136,11 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
         }
     }
 
+    override fun onRefresh() {
+        swipeRefreshLayoutLumpers.isRefreshing = false
+        lumpersPresenter.fetchLumpersList()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         lumpersPresenter.onDestroy()
@@ -137,7 +151,7 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     */
     override fun onItemClick(employeeData: EmployeeData) {
         val bundle = Bundle()
-        bundle.putSerializable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
+        bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
         startIntent(LumperDetailActivity::class.java, bundle = bundle)
     }
 
@@ -153,10 +167,5 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
                 }
             })
         dialog.show(childFragmentManager, InfoWarningDialogFragment::class.simpleName)
-    }
-
-    override fun onRefresh() {
-        swipeRefreshLayoutLumpers.isRefreshing = false
-        lumpersPresenter.fetchLumpersList()
     }
 }

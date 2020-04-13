@@ -7,12 +7,15 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.ChooseLumperContract
+import com.quickhandslogistics.modified.contracts.InfoDialogWarningContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.presenters.ChooseLumperPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.adapters.ChooseLumperAdapter
+import com.quickhandslogistics.modified.views.fragments.InfoWarningDialogFragment
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
@@ -40,6 +43,15 @@ class ChooseLumperActivity : BaseActivity(), ChooseLumperContract.View, TextWatc
             chooseLumperAdapter = ChooseLumperAdapter(this@ChooseLumperActivity)
             adapter = chooseLumperAdapter
         }
+
+        chooseLumperAdapter.registerAdapterDataObserver(object :
+            RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                textViewEmptyData.visibility =
+                    if (chooseLumperAdapter.itemCount == 0) View.VISIBLE else View.GONE
+            }
+        })
 
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
@@ -110,15 +122,27 @@ class ChooseLumperActivity : BaseActivity(), ChooseLumperContract.View, TextWatc
     */
     override fun onClickLumperDetail(employeeData: EmployeeData) {
         val bundle = Bundle()
-        bundle.putSerializable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
+        bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
         startIntent(LumperDetailActivity::class.java, bundle = bundle)
     }
 
     override fun onSelectLumper(employeeData: EmployeeData) {
-        onBackPressed()
+        val dialog = InfoWarningDialogFragment.newInstance(
+            getString(R.string.string_ask_to_replace_new_lumper),
+            positiveButtonText = getString(R.string.string_yes),
+            negativeButtonText = getString(R.string.string_no),
+            onClickListener = object : InfoDialogWarningContract.View.OnClickListener {
+                override fun onPositiveButtonClick() {
+                    onBackPressed()
+                }
+
+                override fun onNegativeButtonClick() {
+                }
+            })
+        dialog.show(supportFragmentManager, InfoWarningDialogFragment::class.simpleName)
     }
 
     override fun onPhoneViewClick(lumperName: String, phone: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 }

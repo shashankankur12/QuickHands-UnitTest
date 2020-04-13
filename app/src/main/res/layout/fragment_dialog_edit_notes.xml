@@ -30,5 +30,5 @@
         android:text="@string/string_save"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/_12ssp" />
+        android:textSize="@dimen/_14ssp" />
 </LinearLayout>

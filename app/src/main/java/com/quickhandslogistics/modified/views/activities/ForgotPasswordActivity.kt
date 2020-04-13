@@ -73,6 +73,7 @@ class ForgotPasswordActivity : BaseActivity(), ForgotPasswordContract.View, View
         val dialog = InfoDialogFragment.newInstance(message,
             onClickListener = object : InfoDialogContract.View.OnClickListener {
                 override fun onPositiveButtonClick() {
+                    onBackPressed()
                 }
             })
         dialog.show(supportFragmentManager, InfoDialogFragment::class.simpleName)

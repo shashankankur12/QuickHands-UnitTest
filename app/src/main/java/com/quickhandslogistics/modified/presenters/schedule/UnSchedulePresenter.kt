@@ -1,42 +1,97 @@
 package com.quickhandslogistics.modified.presenters.schedule
 
+import android.content.res.Resources
+import android.text.TextUtils
+import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleContract
-import com.quickhandslogistics.modified.data.schedule.ScheduleAPIResponse
-import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
+import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.modified.models.schedule.UnScheduleModel
+import com.quickhandslogistics.modified.views.controls.ScheduleUtils.getAllAssignedLumpersList
+import com.quickhandslogistics.modified.views.controls.ScheduleUtils.getScheduleTypeName
+import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*
+import kotlin.collections.ArrayList
 
 class UnSchedulePresenter(
     private var unScheduleView: UnScheduleContract.View?,
+    private val resources: Resources,
     sharedPref: SharedPref
 ) :
     UnScheduleContract.Presenter, UnScheduleContract.Model.OnFinishedListener {
 
     private val unScheduleModel: UnScheduleModel = UnScheduleModel(sharedPref)
 
-    override fun getUnScheduledWorkItems(date: Date) {
-        unScheduleModel.fetchUnSchedulesByDate(date, this)
+    override fun getUnScheduledWorkItems(showProgressDialog: Boolean) {
+        if (showProgressDialog) {
+            unScheduleView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        }
+        unScheduleModel.fetchUnSchedulesByDate(this)
     }
 
     override fun onFailure(message: String) {
-
+        unScheduleView?.hideProgressDialog()
+        if (TextUtils.isEmpty(message)) {
+            unScheduleView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+        } else {
+            unScheduleView?.showAPIErrorMessage(message)
+        }
     }
 
     override fun onSuccess(
-        selectedDate: Date,
-        unScheduleAPIResponse: ScheduleAPIResponse
+        unScheduleListAPIResponse: ScheduleListAPIResponse
     ) {
-        //unScheduleView.showUnScheduleData(unScheduledData)
+        val workItemsList = ArrayList<ScheduleDetail>()
+        unScheduleListAPIResponse.data?.scheduleDetailsList?.let {
+            workItemsList.addAll(it)
+        }
 
-        val workItemsList = ArrayList<WorkItemDetail>()
-        unScheduleAPIResponse.data?.workItems?.liveTypeWorkItem?.let {
-            workItemsList.addAll(it)
+        val iterate = workItemsList.listIterator()
+        while (iterate.hasNext()) {
+            val oldValue = iterate.next()
+            oldValue.scheduleTypes?.let { scheduleTypes ->
+                var scheduleTypeNames = ""
+                scheduleTypeNames = getScheduleTypeName(
+                    scheduleTypes.liveLoads, scheduleTypeNames,
+                    resources.getString(R.string.string_live_loads)
+                )
+                scheduleTypeNames = getScheduleTypeName(
+                    scheduleTypes.drops, scheduleTypeNames,
+                    resources.getString(R.string.string_drops)
+                )
+                scheduleTypeNames = getScheduleTypeName(
+                    scheduleTypes.outbounds, scheduleTypeNames,
+                    resources.getString(R.string.string_out_bounds)
+                )
+                oldValue.scheduleTypeNames = scheduleTypeNames
+                oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.liveLoads))
+                oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.drops))
+                oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.outbounds))
+                oldValue.allAssignedLumpers =
+                    oldValue.allAssignedLumpers.distinctBy { it.id } as ArrayList<EmployeeData>
+                iterate.set(oldValue)
+            }
         }
-        unScheduleAPIResponse.data?.workItems?.dropTypeWorkItem?.let {
-            workItemsList.addAll(it)
+
+        workItemsList.sortWith(Comparator { workItem1, workItem2 ->
+            val dateLong1 = DateUtils.getMillisecondsFromDateString(
+                DateUtils.PATTERN_API_REQUEST_PARAMETER,
+                workItem1?.startDate
+            )
+            val dateLong2 = DateUtils.getMillisecondsFromDateString(
+                DateUtils.PATTERN_API_REQUEST_PARAMETER,
+                workItem2?.startDate
+            )
+            dateLong1.compareTo(dateLong2)
+        })
+
+        if (workItemsList.size > 0) {
+            unScheduleView?.showUnScheduleData(workItemsList)
+        } else {
+            unScheduleView?.showEmptyData()
         }
-        unScheduleView?.showUnScheduleData(selectedDate, workItemsList)
         unScheduleView?.hideProgressDialog()
     }
 }

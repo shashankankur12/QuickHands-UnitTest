@@ -122,6 +122,7 @@
 
     <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
+        <item name="textSize">@dimen/_13ssp</item>
         <item name="android:textSize">@dimen/_13ssp</item>
     </style>
 

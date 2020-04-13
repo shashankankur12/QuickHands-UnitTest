@@ -1,4 +1,4 @@
-package com.quickhandslogistics.modified.views.adapters
+package com.quickhandslogistics.modified.views.adapters.schedule
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import kotlinx.android.synthetic.main.item_building_operation.view.*
+import java.util.*
 
-class BuildingOperationsAdapter(private val allowUpdate: Boolean) :
+class BuildingOperationsAdapter(
+    private val allowUpdate: Boolean,
+    private val parameters: ArrayList<String>
+) :
     Adapter<BuildingOperationsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -20,7 +24,7 @@ class BuildingOperationsAdapter(private val allowUpdate: Boolean) :
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return parameters.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -33,6 +37,8 @@ class BuildingOperationsAdapter(private val allowUpdate: Boolean) :
 
         fun bind() {
             editTextValue.isEnabled = allowUpdate
+
+            textViewHeader.text = parameters[adapterPosition]
         }
     }
 }

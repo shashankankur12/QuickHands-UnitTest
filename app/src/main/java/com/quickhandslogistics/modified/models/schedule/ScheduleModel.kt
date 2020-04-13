@@ -2,8 +2,7 @@ package com.quickhandslogistics.modified.models.schedule
 
 import android.util.Log
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
-import com.quickhandslogistics.modified.data.schedule.ScheduleAPIResponse
-import com.quickhandslogistics.modified.models.LoginModel
+import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.modified.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
 import com.quickhandslogistics.utils.AppConstant
@@ -25,8 +24,8 @@ class ScheduleModel(private val sharedPref: SharedPref) : ScheduleContract.Model
             dateString,
             buildingId,
             true,
-            object : ResponseListener<ScheduleAPIResponse> {
-                override fun onSuccess(response: ScheduleAPIResponse) {
+            object : ResponseListener<ScheduleListAPIResponse> {
+                override fun onSuccess(response: ScheduleListAPIResponse) {
                     if (response.success) {
                         onFinishedListener.onSuccess(selectedDate, response)
                     } else {
@@ -36,7 +35,7 @@ class ScheduleModel(private val sharedPref: SharedPref) : ScheduleContract.Model
 
                 override fun onError(error: Any) {
                     if (error is Throwable) {
-                        Log.e(LoginModel::class.simpleName, error.localizedMessage!!)
+                        Log.e(ScheduleModel::class.simpleName, error.localizedMessage!!)
                         onFinishedListener.onFailure()
                     } else if (error is String) {
                         onFinishedListener.onFailure(error)

@@ -1,10 +1,12 @@
 package com.quickhandslogistics.modified.data.dashboard
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-class BuildingDetailData : Serializable {
+class BuildingDetailData() : Parcelable {
     @SerializedName("id")
     @Expose
     var id: String? = null
@@ -37,9 +39,9 @@ class BuildingDetailData : Serializable {
     @Expose
     var phone: String? = null
 
-//    @SerializedName("parameters")
-//    @Expose
-//    var parameters: String? = null
+    @SerializedName("parameters")
+    @Expose
+    var parameters: ArrayList<String>? = null
 
     @SerializedName("addedBy")
     @Expose
@@ -60,4 +62,52 @@ class BuildingDetailData : Serializable {
     @SerializedName("updated_at")
     @Expose
     var updatedAt: String? = null
+
+    constructor(parcel: Parcel) : this() {
+        id = parcel.readString()
+        buildingName = parcel.readString()
+        buildingCity = parcel.readString()
+        buildingState = parcel.readString()
+        buildingZipcode = parcel.readString()
+        buildingAddress = parcel.readString()
+        buildingNumber = parcel.readString()
+        phone = parcel.readString()
+        parameters = parcel.createStringArrayList()
+        addedBy = parcel.readString()
+        isBuildingVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        isActive = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        createdAt = parcel.readString()
+        updatedAt = parcel.readString()
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(id)
+        parcel.writeString(buildingName)
+        parcel.writeString(buildingCity)
+        parcel.writeString(buildingState)
+        parcel.writeString(buildingZipcode)
+        parcel.writeString(buildingAddress)
+        parcel.writeString(buildingNumber)
+        parcel.writeString(phone)
+        parcel.writeStringList(parameters)
+        parcel.writeString(addedBy)
+        parcel.writeValue(isBuildingVerified)
+        parcel.writeValue(isActive)
+        parcel.writeString(createdAt)
+        parcel.writeString(updatedAt)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<BuildingDetailData> {
+        override fun createFromParcel(parcel: Parcel): BuildingDetailData {
+            return BuildingDetailData(parcel)
+        }
+
+        override fun newArray(size: Int): Array<BuildingDetailData?> {
+            return arrayOfNulls(size)
+        }
+    }
 }

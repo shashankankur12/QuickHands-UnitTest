@@ -1,36 +1,34 @@
 package com.quickhandslogistics.modified.contracts.schedule
 
-import com.quickhandslogistics.modified.data.schedule.ScheduleAPIResponse
-import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
-import java.util.*
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
+import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
+import kotlin.collections.ArrayList
 
 class UnScheduleContract {
     interface Model {
-        fun fetchUnSchedulesByDate(selectedDate: Date, onFinishedListener: OnFinishedListener)
+        fun fetchUnSchedulesByDate(onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener {
             fun onFailure(message: String = "")
-            fun onSuccess(
-                selectedDate: Date,
-                unScheduleAPIResponse: ScheduleAPIResponse
-            )
+            fun onSuccess(unScheduleListAPIResponse: ScheduleListAPIResponse)
         }
     }
+
     interface View {
-        fun showUnScheduleData(
-            selectedDate: Date,
-            workItemsList: ArrayList<WorkItemDetail>
-        )
+        fun showUnScheduleData(workItemsList: ArrayList<ScheduleDetail>)
         fun hideProgressDialog()
+        fun showProgressDialog(message: String)
+        fun showEmptyData()
+        fun showAPIErrorMessage(string: String)
 
         interface OnAdapterItemClickListener {
-            fun onAddLumperItemClick()
-            fun onWorkItemClick()
-            fun onLumperImagesClick()
+            fun onUnScheduleItemClick(scheduleDetail: ScheduleDetail)
+            fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>)
         }
     }
 
     interface Presenter {
-        fun getUnScheduledWorkItems(date: Date)
+        fun getUnScheduledWorkItems(showProgressDialog: Boolean)
     }
 }

@@ -1,4 +1,4 @@
-package com.quickhandslogistics.modified.views.adapters
+package com.quickhandslogistics.modified.views.adapters.schedule
 
 import android.app.Activity
 import android.view.LayoutInflater
@@ -31,10 +31,30 @@ class MarkAttendanceAdapter(
     private var filteredLumperItems: ArrayList<Attendance> = ArrayList()
 
     init {
-        lumperItems.add(Attendance("Gene Hand", true))
-        lumperItems.add(Attendance("Frida Moore", false))
-        lumperItems.add(Attendance("Virgil Ernser", true))
-        lumperItems.add(Attendance("Philip Von", false))
+        lumperItems.add(
+            Attendance(
+                "Gene Hand",
+                true
+            )
+        )
+        lumperItems.add(
+            Attendance(
+                "Frida Moore",
+                false
+            )
+        )
+        lumperItems.add(
+            Attendance(
+                "Virgil Ernser",
+                true
+            )
+        )
+        lumperItems.add(
+            Attendance(
+                "Philip Von",
+                false
+            )
+        )
     }
 
     var faker = Faker()

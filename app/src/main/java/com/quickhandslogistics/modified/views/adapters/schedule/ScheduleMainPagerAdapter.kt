@@ -1,4 +1,4 @@
-package com.quickhandslogistics.modified.views.adapters
+package com.quickhandslogistics.modified.views.adapters.schedule
 
 import android.content.res.Resources
 import android.os.Parcelable
@@ -42,7 +42,11 @@ class ScheduleMainPagerAdapter(
         return null
     }
 
-    fun fetchUnsScheduledWorkItems() {
-        unScheduleFragment.fetchUnsScheduledWorkItems()
+    fun fetchUnScheduledWorkItems() {
+        unScheduleFragment.fetchUnScheduledWorkItems()
+    }
+
+    fun fetchScheduledWorkItems() {
+        scheduleFragment.fetchScheduledWorkItems()
     }
 }

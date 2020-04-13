@@ -20,20 +20,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textViewCreatedDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:drawableStart="@drawable/ic_schedule_calendar"
-        android:drawablePadding="@dimen/_5sdp"
-        android:text="Thursday March 5, 2020"
-        android:textColor="@color/scheduleDetail"
-        android:textSize="@dimen/_10ssp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewBuildingName" />
-
-    <TextView
         android:id="@+id/textViewScheduleType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,9 +28,9 @@
         android:drawablePadding="@dimen/_5sdp"
         android:text="Live Loads"
         android:textColor="@color/scheduleDetail"
-        android:textSize="@dimen/_10ssp"
+        android:textSize="@dimen/_12ssp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCreatedDate" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewBuildingName" />
 
     <TextView
         android:id="@+id/textViewWorkItemsCount"
