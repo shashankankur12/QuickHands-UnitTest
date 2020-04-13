@@ -16,21 +16,3 @@ class ScheduleDetailAPIResponse : BaseResponse() {
         var schedules: ScheduleDetail? = null
     }
 }
-
-//class Schedules {
-//    @SerializedName("scheduleIdentity")
-//    @Expose
-//    var scheduleIdentity: String? = null
-//
-//    @SerializedName("live")
-//    @Expose
-//    var live: List<WorkItemDetail>? = null
-//
-//    @SerializedName("drop")
-//    @Expose
-//    var drop: List<WorkItemDetail>? = null
-//
-//    @SerializedName("outbounds")
-//    @Expose
-//    var outbounds: List<WorkItemDetail>? = null
-//}

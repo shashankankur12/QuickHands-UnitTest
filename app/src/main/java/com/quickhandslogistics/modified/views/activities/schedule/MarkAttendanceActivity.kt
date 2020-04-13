@@ -42,11 +42,7 @@ class MarkAttendanceActivity : BaseActivity(), View.OnClickListener, TextWatcher
             val dividerItemDecoration =
                 DividerItemDecoration(activity, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            markAttendanceAdapter =
-                MarkAttendanceAdapter(
-                    activity,
-                    this@MarkAttendanceActivity
-                )
+            markAttendanceAdapter = MarkAttendanceAdapter(this@MarkAttendanceActivity)
             adapter = markAttendanceAdapter
         }
 
@@ -57,8 +53,10 @@ class MarkAttendanceActivity : BaseActivity(), View.OnClickListener, TextWatcher
         imageViewCancel.setOnClickListener(this)
         buttonSave.setOnClickListener(this)
 
-        textViewShiftTime.setOnClickListener(this)
-        textViewLunchTime.setOnClickListener(this)
+        buttonClockIn.setOnClickListener(this)
+        buttonClockOut.setOnClickListener(this)
+        buttonLunchIn.setOnClickListener(this)
+        buttonLunchOut.setOnClickListener(this)
         bottomSheetBackground.setOnClickListener(this)
     }
 
@@ -69,14 +67,10 @@ class MarkAttendanceActivity : BaseActivity(), View.OnClickListener, TextWatcher
         view?.let {
             when (view.id) {
                 bottomSheetBackground.id -> closeBottomSheet()
-                textViewShiftTime.id -> {
-                    closeBottomSheet()
-                    showTimePicker()
-                }
-                textViewLunchTime.id -> {
-                    closeBottomSheet()
-                    showTimePicker()
-                }
+                buttonClockIn.id -> closeBottomSheet()
+                buttonClockOut.id -> closeBottomSheet()
+                buttonLunchIn.id -> closeBottomSheet()
+                buttonLunchOut.id -> closeBottomSheet()
                 imageViewCancel.id -> {
                     editTextSearch.setText("")
                     Utils.hideSoftKeyboard(activity)

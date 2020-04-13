@@ -36,6 +36,10 @@ class ScheduleDetail() : Parcelable {
     @Expose
     var scheduleTypes: ScheduleTypes? = null
 
+    @SerializedName("scheduleNote")
+    @Expose
+    var scheduleNote: String? = null
+
     @SerializedName("parameters")
     @Expose
     var parameters: List<String>? = null
@@ -52,6 +56,7 @@ class ScheduleDetail() : Parcelable {
         buildingName = parcel.readString()
         startDate = parcel.readString()
         scheduleTypes = parcel.readParcelable(ScheduleTypes::class.java.classLoader)
+        scheduleNote = parcel.readString()
         parameters = parcel.createStringArrayList()
         totalNumberOfWorkItems = parcel.readValue(Int::class.java.classLoader) as? Int
         scheduleTypeNames = parcel.readString()!!
@@ -63,6 +68,7 @@ class ScheduleDetail() : Parcelable {
         parcel.writeString(buildingName)
         parcel.writeString(startDate)
         parcel.writeParcelable(scheduleTypes, flags)
+        parcel.writeString(scheduleNote)
         parcel.writeStringList(parameters)
         parcel.writeValue(totalNumberOfWorkItems)
         parcel.writeString(scheduleTypeNames)

@@ -20,8 +20,7 @@ import kotlin.collections.ArrayList
 
 
 class MarkAttendanceAdapter(
-    val context: Activity,
-    var onAdapterClick: MarkAttendanceContract.View.OnAdapterItemClickListener
+    private var onAdapterClick: MarkAttendanceContract.View.OnAdapterItemClickListener
 ) :
     Adapter<MarkAttendanceAdapter.WorkItemHolder>() {
 
@@ -63,7 +62,7 @@ class MarkAttendanceAdapter(
         viewType: Int
     ): WorkItemHolder {
         val view: View =
-            LayoutInflater.from(context)
+            LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_recyclerview_mark_attendance, parent, false)
         return WorkItemHolder(
             view
@@ -82,7 +81,8 @@ class MarkAttendanceAdapter(
         val lumper = getItem(position)
         holder.textViewLumperName.text = lumper.name
 
-        Picasso.get().load(R.drawable.ic_basic_info_placeholder).error(R.drawable.ic_basic_info_placeholder)
+        Picasso.get().load(R.drawable.ic_basic_info_placeholder)
+            .error(R.drawable.ic_basic_info_placeholder)
             .into(holder.circleImageViewProfile)
 
         if (lumper.status) {
@@ -147,6 +147,6 @@ class MarkAttendanceAdapter(
         }
         notifyDataSetChanged()
     }
-}
 
-class Attendance(var name: String, var status: Boolean)
+    inner class Attendance(var name: String, var status: Boolean)
+}
