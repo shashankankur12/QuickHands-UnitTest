@@ -4,6 +4,8 @@ import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.ErrorResponse
+import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
+import com.quickhandslogistics.modified.data.attendance.GetAttendanceAPIResponse
 import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRequest
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordResponse
@@ -163,14 +165,13 @@ object DataManager : AppConstant {
     fun getSchedulesList(
         date: String,
         buildingId: String,
-        scheduled: Boolean,
         listener: ResponseListener<ScheduleListAPIResponse>
     ) {
         val call = getService().getSchedulesList(
             "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
             date,
             buildingId,
-            scheduled
+            true
         )
         call.enqueue(object : Callback<ScheduleListAPIResponse> {
             override fun onResponse(
@@ -189,6 +190,36 @@ object DataManager : AppConstant {
             }
 
             override fun onFailure(call: Call<ScheduleListAPIResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun getUnSchedulesList(
+        buildingId: String,
+        listener: ResponseListener<UnScheduleListAPIResponse>
+    ) {
+        val call = getService().getUnSchedulesList(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
+            buildingId
+        )
+        call.enqueue(object : Callback<UnScheduleListAPIResponse> {
+            override fun onResponse(
+                call: Call<UnScheduleListAPIResponse>,
+                response: Response<UnScheduleListAPIResponse>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<UnScheduleListAPIResponse>, t: Throwable) {
                 listener.onError(t)
             }
         })
@@ -293,6 +324,62 @@ object DataManager : AppConstant {
         val call = getService().changeWorkItemScheduleStatus(
             "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
             buildingId, workItemId, request
+        )
+        call.enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(
+                call: Call<BaseResponse>,
+                response: Response<BaseResponse>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun getLumpersAttendanceList(listener: ResponseListener<GetAttendanceAPIResponse>) {
+        val call = getService().getAttendanceList(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN)
+        )
+        call.enqueue(object : Callback<GetAttendanceAPIResponse> {
+            override fun onResponse(
+                call: Call<GetAttendanceAPIResponse>,
+                response: Response<GetAttendanceAPIResponse>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetAttendanceAPIResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun saveLumpersAttendanceList(
+        attendanceDetailList: List<AttendanceDetail>,
+        listener: ResponseListener<BaseResponse>
+    ) {
+        val call = getService().saveAttendanceDetails(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
+            attendanceDetailList
         )
         call.enqueue(object : Callback<BaseResponse> {
             override fun onResponse(

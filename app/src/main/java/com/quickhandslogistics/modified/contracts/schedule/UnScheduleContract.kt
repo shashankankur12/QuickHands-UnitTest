@@ -1,9 +1,8 @@
 package com.quickhandslogistics.modified.contracts.schedule
 
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
-import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
-import kotlin.collections.ArrayList
+import com.quickhandslogistics.modified.data.schedule.UnScheduleListAPIResponse
 
 class UnScheduleContract {
     interface Model {
@@ -11,7 +10,7 @@ class UnScheduleContract {
 
         interface OnFinishedListener {
             fun onFailure(message: String = "")
-            fun onSuccess(unScheduleListAPIResponse: ScheduleListAPIResponse)
+            fun onSuccess(unScheduleListAPIResponse: UnScheduleListAPIResponse)
         }
     }
 

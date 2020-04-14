@@ -21,7 +21,7 @@ import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.presenters.schedule.SchedulePresenter
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.activities.DisplayLumpersListActivity
-import com.quickhandslogistics.modified.views.activities.schedule.MarkAttendanceActivity
+import com.quickhandslogistics.modified.views.activities.MarkAttendanceActivity
 import com.quickhandslogistics.modified.views.activities.schedule.ScheduleDetailActivity
 import com.quickhandslogistics.modified.views.adapters.schedule.ScheduleAdapter
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator

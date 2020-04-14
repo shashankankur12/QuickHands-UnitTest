@@ -6,7 +6,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
-import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
+import com.quickhandslogistics.modified.data.schedule.UnScheduleListAPIResponse
 import com.quickhandslogistics.modified.models.schedule.UnScheduleModel
 import com.quickhandslogistics.modified.views.controls.ScheduleUtils.getAllAssignedLumpersList
 import com.quickhandslogistics.modified.views.controls.ScheduleUtils.getScheduleTypeName
@@ -40,11 +40,9 @@ class UnSchedulePresenter(
         }
     }
 
-    override fun onSuccess(
-        unScheduleListAPIResponse: ScheduleListAPIResponse
-    ) {
+    override fun onSuccess(unScheduleListAPIResponse: UnScheduleListAPIResponse) {
         val workItemsList = ArrayList<ScheduleDetail>()
-        unScheduleListAPIResponse.data?.scheduleDetailsList?.let {
+        unScheduleListAPIResponse.data?.unScheduleDetailsList?.let {
             workItemsList.addAll(it)
         }
 

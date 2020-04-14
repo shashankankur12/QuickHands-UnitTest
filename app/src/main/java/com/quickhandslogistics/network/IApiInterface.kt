@@ -1,6 +1,8 @@
 package com.quickhandslogistics.network
 
 import com.quickhandslogistics.modified.data.BaseResponse
+import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
+import com.quickhandslogistics.modified.data.attendance.GetAttendanceAPIResponse
 import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRequest
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordResponse
@@ -8,7 +10,6 @@ import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.data.schedule.*
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -33,6 +34,12 @@ interface IApiInterface {
         @Query("buildingId") buildingId: String,
         @Query("scheduled") scheduled: Boolean
     ): Call<ScheduleListAPIResponse>
+
+    @GET("schedule/unscheduled")
+    fun getUnSchedulesList(
+        @Header("Authorization") auth: String,
+        @Query("buildingId") buildingId: String
+    ): Call<UnScheduleListAPIResponse>
 
     @GET("schedule/identity/{scheduleIdentityId}")
     fun getScheduleDetail(
@@ -60,6 +67,19 @@ interface IApiInterface {
         @Path("buildingId") buildingId: String,
         @Path("workItemId") workItemId: String,
         @Body request: ChangeWorkItemScheduleStatusRequest
+    ): Call<BaseResponse>
+    /////////////////////////////////////////////////////////////
+
+    // Attendance /////////////////////////////////////////////////
+    @GET("employees/lead/attendance")
+    fun getAttendanceList(
+        @Header("Authorization") auth: String
+    ): Call<GetAttendanceAPIResponse>
+
+    @POST("employees/lead/attendance")
+    fun saveAttendanceDetails(
+        @Header("Authorization") auth: String,
+        @Body request: List<AttendanceDetail>
     ): Call<BaseResponse>
     /////////////////////////////////////////////////////////////
 }

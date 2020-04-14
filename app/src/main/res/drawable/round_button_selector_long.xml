@@ -1,0 +1,4 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/round_button_red_long" android:state_enabled="true" />
+    <item android:drawable="@drawable/round_button_disabled_long" android:state_enabled="false" />
+</selector>

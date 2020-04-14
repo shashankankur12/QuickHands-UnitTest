@@ -4,14 +4,14 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.quickhandslogistics.modified.data.BaseResponse
 
-class ScheduleListAPIResponse : BaseResponse() {
+class UnScheduleListAPIResponse : BaseResponse() {
     @SerializedName("data")
     @Expose
     var data: Data? = null
 
     inner class Data {
-        @SerializedName("records")
+        @SerializedName("workItems")
         @Expose
-        var scheduleDetailsList: ArrayList<ScheduleDetail>? = null
+        var unScheduleDetailsList: ArrayList<ScheduleDetail>? = null
     }
 }

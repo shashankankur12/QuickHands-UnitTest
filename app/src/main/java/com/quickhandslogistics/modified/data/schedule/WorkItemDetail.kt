@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import java.io.Serializable
@@ -81,6 +82,10 @@ class WorkItemDetail() : Parcelable {
     @Expose
     var assignedLumpersList: ArrayList<EmployeeData>? = null
 
+    @SerializedName("lumperAttendance")
+    @Expose
+    var attendanceDetail: AttendanceDetail? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         workItemType = parcel.readString()
@@ -99,6 +104,7 @@ class WorkItemDetail() : Parcelable {
         numberOfDrops = parcel.readValue(Int::class.java.classLoader) as? Int
         buildingDetailData = parcel.readParcelable(BuildingDetailData::class.java.classLoader)
         assignedLumpersList = parcel.createTypedArrayList(EmployeeData)
+        attendanceDetail = parcel.readParcelable(AttendanceDetail::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -119,6 +125,7 @@ class WorkItemDetail() : Parcelable {
         parcel.writeValue(numberOfDrops)
         parcel.writeParcelable(buildingDetailData, flags)
         parcel.writeTypedList(assignedLumpersList)
+        parcel.writeParcelable(attendanceDetail, flags)
     }
 
     override fun describeContents(): Int {
