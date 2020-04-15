@@ -10,8 +10,18 @@ class UnScheduleListAPIResponse : BaseResponse() {
     var data: Data? = null
 
     inner class Data {
-        @SerializedName("workItems")
+        @SerializedName("records")
         @Expose
-        var unScheduleDetailsList: ArrayList<ScheduleDetail>? = null
+        var records: Records? = null
+    }
+
+    class Records {
+        @SerializedName("tod")
+        @Expose
+        var todayScheduleList: ArrayList<ScheduleDetail>? = null
+
+        @SerializedName("tom")
+        @Expose
+        var tomorrowScheduleList: ArrayList<ScheduleDetail>? = null
     }
 }

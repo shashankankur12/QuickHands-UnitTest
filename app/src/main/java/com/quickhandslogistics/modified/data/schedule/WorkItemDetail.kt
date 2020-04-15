@@ -7,7 +7,6 @@ import com.google.gson.annotations.SerializedName
 import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
-import java.io.Serializable
 
 class WorkItemDetail() : Parcelable {
     @SerializedName("id")
@@ -34,13 +33,13 @@ class WorkItemDetail() : Parcelable {
     @Expose
     var scheduleIdentity: String? = null
 
-    @SerializedName("startDate")
+    @SerializedName("scheduledFrom")
     @Expose
-    var startDate: String? = null
+    var scheduledFrom: String? = null
 
-    @SerializedName("endDate")
+    @SerializedName("endDateForThisWorkItem")
     @Expose
-    var endDate: String? = null
+    var endDateForThisWorkItem: String? = null
 
     @SerializedName("isScheduledByLead")
     @Expose
@@ -93,8 +92,8 @@ class WorkItemDetail() : Parcelable {
         createdBy = parcel.readString()
         startTime = parcel.readString()
         scheduleIdentity = parcel.readString()
-        startDate = parcel.readString()
-        endDate = parcel.readString()
+        scheduledFrom = parcel.readString()
+        endDateForThisWorkItem = parcel.readString()
         isScheduledByLead = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         scheduleForWeek = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         scheduleForMonth = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
@@ -114,8 +113,8 @@ class WorkItemDetail() : Parcelable {
         parcel.writeString(createdBy)
         parcel.writeString(startTime)
         parcel.writeString(scheduleIdentity)
-        parcel.writeString(startDate)
-        parcel.writeString(endDate)
+        parcel.writeString(scheduledFrom)
+        parcel.writeString(endDateForThisWorkItem)
         parcel.writeValue(isScheduledByLead)
         parcel.writeValue(scheduleForWeek)
         parcel.writeValue(scheduleForMonth)

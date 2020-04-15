@@ -18,7 +18,10 @@ import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.modified.presenters.MarkAttendancePresenter
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.adapters.schedule.MarkAttendanceAdapter
-import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.CustomProgressBar
+import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.activity_mark_attendance.*
 import kotlinx.android.synthetic.main.bottom_sheet_add_time.*
 import kotlinx.android.synthetic.main.content_mark_attendance.*
@@ -123,6 +126,7 @@ class MarkAttendanceActivity : BaseActivity(), View.OnClickListener, TextWatcher
                     Utils.hideSoftKeyboard(activity)
                 }
                 buttonSave.id -> {
+                    imageViewCancel.performClick()
                     val updatedData = markAttendanceAdapter.getUpdatedData()
                     markAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct())
                 }
@@ -157,57 +161,46 @@ class MarkAttendanceActivity : BaseActivity(), View.OnClickListener, TextWatcher
             // Show Clock-In Time
             val clockInTime = DateUtils.convertDateStringToTime(
                 DateUtils.PATTERN_API_RESPONSE,
-                ValueUtils.getDefaultOrValue(lumperAttendanceData.attendanceDetail?.morningPunchIn)
+                lumperAttendanceData.attendanceDetail?.morningPunchIn
             )
-            if (clockInTime.isNotEmpty()) {
-                buttonClockIn.text = clockInTime
-                buttonClockIn.isEnabled = false
-            } else {
-                buttonClockIn.text = getString(R.string.clock_in)
-                buttonClockIn.isEnabled = true
-            }
+            buttonClockIn.text =
+                if (clockInTime.isNotEmpty()) clockInTime else getString(R.string.clock_in)
+            buttonClockIn.isEnabled = clockInTime.isEmpty()
+
 
             // Show Clock-Out Time
             val clockOutTime = DateUtils.convertDateStringToTime(
                 DateUtils.PATTERN_API_RESPONSE,
-                ValueUtils.getDefaultOrValue(lumperAttendanceData.attendanceDetail?.eveningPunchOut)
+                lumperAttendanceData.attendanceDetail?.eveningPunchOut
             )
-            if (clockOutTime.isNotEmpty()) {
-                buttonClockOut.text = clockOutTime
-                buttonClockOut.isEnabled = false
-            } else {
-                buttonClockOut.text = getString(R.string.clock_out)
-                buttonClockOut.isEnabled = true
-            }
+            buttonClockOut.text =
+                if (clockOutTime.isNotEmpty()) clockOutTime else getString(R.string.clock_out)
+            buttonClockOut.isEnabled = clockOutTime.isEmpty()
 
             // Show Lunch-In Time
             val lunchInTime = DateUtils.convertDateStringToTime(
                 DateUtils.PATTERN_API_RESPONSE,
-                ValueUtils.getDefaultOrValue(lumperAttendanceData.attendanceDetail?.lunchPunchIn)
+                lumperAttendanceData.attendanceDetail?.lunchPunchIn
             )
-            if (lunchInTime.isNotEmpty()) {
-                buttonLunchIn.text = lunchInTime
-                buttonLunchIn.isEnabled = false
-            } else {
-                buttonLunchIn.text = getString(R.string.out_to_lunch)
-                buttonLunchIn.isEnabled = true
-            }
+            buttonLunchIn.text =
+                if (lunchInTime.isNotEmpty()) lunchInTime else getString(R.string.out_to_lunch)
+            buttonLunchIn.isEnabled = lunchInTime.isEmpty()
 
             // Show Lunch-Out Time
             val lunchOutTime = DateUtils.convertDateStringToTime(
                 DateUtils.PATTERN_API_RESPONSE,
-                ValueUtils.getDefaultOrValue(lumperAttendanceData.attendanceDetail?.lunchPunchOut)
+                lumperAttendanceData.attendanceDetail?.lunchPunchOut
             )
-            if (lunchOutTime.isNotEmpty()) {
-                buttonLunchOut.text = lunchOutTime
-                buttonLunchOut.isEnabled = false
-            } else {
-                buttonLunchOut.text = getString(R.string.back_to_work)
-                buttonLunchOut.isEnabled = true
-            }
+            buttonLunchOut.text =
+                if (lunchOutTime.isNotEmpty()) lunchOutTime else getString(R.string.back_to_work)
+            buttonLunchOut.isEnabled = lunchOutTime.isEmpty()
         } else {
             closeBottomSheet()
         }
+    }
+
+    override fun onAddNotes(updatedDataSize: Int) {
+        buttonSave.isEnabled = updatedDataSize > 0
     }
 
     private fun closeBottomSheet() {

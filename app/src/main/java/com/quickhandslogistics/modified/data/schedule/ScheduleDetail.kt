@@ -15,9 +15,9 @@ class ScheduleDetail() : Parcelable {
     @Expose
     var buildingName: String? = null
 
-    @SerializedName("startDate")
+    @SerializedName("scheduledFrom")
     @Expose
-    var startDate: String? = null
+    var scheduledFrom: String? = null
 
     @SerializedName("scheduleTypes")
     @Expose
@@ -41,7 +41,7 @@ class ScheduleDetail() : Parcelable {
     constructor(parcel: Parcel) : this() {
         scheduleIdentity = parcel.readString()
         buildingName = parcel.readString()
-        startDate = parcel.readString()
+        scheduledFrom = parcel.readString()
         scheduleTypes = parcel.readParcelable(ScheduleTypes::class.java.classLoader)
         scheduleNote = parcel.readString()
         parameters = parcel.createStringArrayList()
@@ -53,7 +53,7 @@ class ScheduleDetail() : Parcelable {
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(scheduleIdentity)
         parcel.writeString(buildingName)
-        parcel.writeString(startDate)
+        parcel.writeString(scheduledFrom)
         parcel.writeParcelable(scheduleTypes, flags)
         parcel.writeString(scheduleNote)
         parcel.writeStringList(parameters)

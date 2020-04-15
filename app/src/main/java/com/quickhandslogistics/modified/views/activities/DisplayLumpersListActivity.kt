@@ -15,6 +15,7 @@ import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.adapters.LumperListAdapter
 import com.quickhandslogistics.modified.views.fragments.InfoWarningDialogFragment
+import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.content_choose_lumper.*
 
@@ -35,19 +36,32 @@ class DisplayLumpersListActivity : BaseActivity(), View.OnClickListener, TextWat
         intent.extras?.let {
             val lumpersList = it.getParcelableArrayList<EmployeeData>(ARG_LUMPERS_LIST)
 
-            recyclerViewLumpers.apply {
-                val linearLayoutManager = LinearLayoutManager(activity)
-                layoutManager = linearLayoutManager
-                val dividerItemDecoration =
-                    DividerItemDecoration(activity, linearLayoutManager.orientation)
-                addItemDecoration(dividerItemDecoration)
-                lumperListAdapter =
-                    LumperListAdapter(lumpersList!!, this@DisplayLumpersListActivity)
-                adapter = lumperListAdapter
-            }
+            lumpersList?.let {
+                lumpersList.sortWith(Comparator { lumper1, lumper2 ->
+                    if (!StringUtils.isNullOrEmpty(lumper1.firstName)
+                        && !StringUtils.isNullOrEmpty(lumper2.firstName)
+                    ) {
+                        lumper1.firstName?.toLowerCase()!!
+                            .compareTo(lumper2.firstName?.toLowerCase()!!)
+                    } else {
+                        0
+                    }
+                })
 
-            editTextSearch.addTextChangedListener(this)
-            imageViewCancel.setOnClickListener(this)
+                recyclerViewLumpers.apply {
+                    val linearLayoutManager = LinearLayoutManager(activity)
+                    layoutManager = linearLayoutManager
+                    val dividerItemDecoration =
+                        DividerItemDecoration(activity, linearLayoutManager.orientation)
+                    addItemDecoration(dividerItemDecoration)
+                    lumperListAdapter =
+                        LumperListAdapter(lumpersList, this@DisplayLumpersListActivity)
+                    adapter = lumperListAdapter
+                }
+
+                editTextSearch.addTextChangedListener(this)
+                imageViewCancel.setOnClickListener(this)
+            }
         }
     }
 

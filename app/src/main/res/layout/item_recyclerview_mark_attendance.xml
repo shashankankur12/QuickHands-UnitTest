@@ -56,11 +56,10 @@
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switchAttendance"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_30ssp"
-        android:checked="true"
         android:theme="@style/ToggleSwitchTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textViewLumperName" />

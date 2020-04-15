@@ -231,7 +231,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
 
     override fun showEmptyData() {
         textViewEmptyData.visibility = View.VISIBLE
-        buttonMarkAttendance.visibility = View.GONE
+        buttonMarkAttendance.visibility = View.VISIBLE
         recyclerViewSchedule.visibility = View.GONE
         textViewDate.visibility = View.GONE
     }

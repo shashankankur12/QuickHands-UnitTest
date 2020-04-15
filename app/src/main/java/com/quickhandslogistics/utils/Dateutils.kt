@@ -60,19 +60,21 @@ class DateUtils {
 
         fun convertDateStringToTime(
             patternDate: String,
-            dateString: String = ""
+            dateString: String? = ""
         ): String {
+            val dateStringValue = ValueUtils.getDefaultOrValue(dateString)
+
             val dateFormatFrom = SimpleDateFormat(patternDate)
             dateFormatFrom.timeZone = TimeZone.getTimeZone("UTC")
             val dateFormatTo = SimpleDateFormat(PATTERN_TIME)
             try {
-                val date = dateFormatFrom.parse(dateString)
+                val date = dateFormatFrom.parse(dateStringValue)
                 date?.let {
                     return dateFormatTo.format(date)
                 }
             } catch (e: ParseException) {
             }
-            return dateString
+            return dateStringValue
         }
 
     }

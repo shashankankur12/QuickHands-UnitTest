@@ -3,7 +3,6 @@ package com.quickhandslogistics.modified.contracts
 import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.attendance.GetAttendanceAPIResponse
 import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
-import com.quickhandslogistics.modified.presenters.MarkAttendancePresenter
 
 class MarkAttendanceContract {
     interface Model {
@@ -32,6 +31,7 @@ class MarkAttendanceContract {
                 lumperAttendanceData: LumperAttendanceData,
                 itemPosition: Int
             )
+            fun onAddNotes(updatedDataSize: Int)
         }
     }
 

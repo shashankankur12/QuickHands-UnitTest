@@ -7,6 +7,7 @@ import com.quickhandslogistics.modified.contracts.MarkAttendanceContract
 import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.attendance.GetAttendanceAPIResponse
 import com.quickhandslogistics.modified.models.MarkAttendanceModel
+import com.quickhandslogistics.utils.StringUtils
 
 class MarkAttendancePresenter(
     private var markAttendanceView: MarkAttendanceContract.View?,
@@ -41,6 +42,17 @@ class MarkAttendancePresenter(
     override fun onSuccessGetList(attendanceAPIResponse: GetAttendanceAPIResponse) {
         markAttendanceView?.hideProgressDialog()
         attendanceAPIResponse.data?.let { data ->
+
+            // Sort the list by Lumper's first name
+            data.sortWith(Comparator { attendanceData1, attendanceData2 ->
+                if (!StringUtils.isNullOrEmpty(attendanceData1.firstName)
+                    && !StringUtils.isNullOrEmpty(attendanceData2.firstName)
+                ) {
+                    attendanceData1.firstName?.toLowerCase()!!.compareTo(attendanceData2.firstName?.toLowerCase()!!)
+                } else {
+                    0
+                }
+            })
             markAttendanceView?.showLumpersAttendance(data)
         }
     }

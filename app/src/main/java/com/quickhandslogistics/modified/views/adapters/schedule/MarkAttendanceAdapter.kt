@@ -6,7 +6,10 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.bumptech.glide.Glide
@@ -15,7 +18,9 @@ import com.quickhandslogistics.modified.contracts.MarkAttendanceContract
 import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.StringUtils
+import com.quickhandslogistics.utils.ValueUtils
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_recyclerview_mark_attendance.view.*
@@ -52,13 +57,12 @@ class MarkAttendanceAdapter(
     }
 
     inner class WorkItemHolder(view: View, private val context: Context) :
-        RecyclerView.ViewHolder(view), View.OnClickListener,
-        CompoundButton.OnCheckedChangeListener, TextWatcher {
+        RecyclerView.ViewHolder(view), View.OnClickListener, TextWatcher {
 
         private val textViewLumperName: TextView = view.textViewLumperName
         private val viewAttendanceStatus: View = view.viewAttendanceStatus
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
-        private val switchAttendance: Switch = view.switchAttendance
+        private val switchAttendance: SwitchCompat = view.switchAttendance
         private val textViewEmployeeId: TextView = view.textViewEmployeeId
         private val textViewAddTime: TextView = view.textViewAddTime
         private val textViewNoTimeLoggedIn: TextView = view.textViewNoTimeLoggedIn
@@ -92,28 +96,28 @@ class MarkAttendanceAdapter(
             lumperAttendance.attendanceDetail?.let { attendanceDetail ->
                 val isPresent = getDefaultOrValue(attendanceDetail.isPresent)
                 if (isPresent) {
+                    val morningPunchIn = DateUtils.convertDateStringToTime(
+                        PATTERN_API_RESPONSE, attendanceDetail.morningPunchIn
+                    )
+                    val eveningPunchOut = DateUtils.convertDateStringToTime(
+                        PATTERN_API_RESPONSE, attendanceDetail.eveningPunchOut
+                    )
                     textViewShiftTime.text = String.format(
                         "%s - %s",
-                        DateUtils.convertDateStringToTime(
-                            DateUtils.PATTERN_API_RESPONSE,
-                            getDefaultOrValue(attendanceDetail.morningPunchIn)
-                        ),
-                        DateUtils.convertDateStringToTime(
-                            DateUtils.PATTERN_API_RESPONSE,
-                            getDefaultOrValue(attendanceDetail.eveningPunchOut)
-                        )
+                        if (morningPunchIn.isNotEmpty()) morningPunchIn else "NA",
+                        if (eveningPunchOut.isNotEmpty()) eveningPunchOut else "NA"
                     )
 
+                    val lunchPunchIn = DateUtils.convertDateStringToTime(
+                        PATTERN_API_RESPONSE, attendanceDetail.lunchPunchIn
+                    )
+                    val lunchPunchOut = DateUtils.convertDateStringToTime(
+                        PATTERN_API_RESPONSE, attendanceDetail.lunchPunchOut
+                    )
                     textViewLunchTime.text = String.format(
                         "%s - %s",
-                        DateUtils.convertDateStringToTime(
-                            DateUtils.PATTERN_API_RESPONSE,
-                            getDefaultOrValue(attendanceDetail.lunchPunchIn)
-                        ),
-                        DateUtils.convertDateStringToTime(
-                            DateUtils.PATTERN_API_RESPONSE,
-                            getDefaultOrValue(attendanceDetail.lunchPunchOut)
-                        )
+                        if (lunchPunchIn.isNotEmpty()) lunchPunchIn else "NA",
+                        if (lunchPunchOut.isNotEmpty()) lunchPunchOut else "NA"
                     )
                 }
                 editTextNotes.setText(attendanceDetail.attendanceNote)
@@ -126,12 +130,12 @@ class MarkAttendanceAdapter(
         private fun updateTimeUI(isPresent: Boolean) {
             viewAttendanceStatus.setBackgroundResource(if (isPresent) R.drawable.online_dot else R.drawable.offline_dot)
             switchAttendance.isChecked = isPresent
-            switchAttendance.isClickable = !isPresent
+            switchAttendance.isEnabled = !isPresent
             textViewAddTime.visibility = if (isPresent) View.VISIBLE else View.GONE
             linearLayoutLumperTime.visibility = if (isPresent) View.VISIBLE else View.GONE
             textViewNoTimeLoggedIn.visibility = if (isPresent) View.GONE else View.VISIBLE
 
-            switchAttendance.setOnCheckedChangeListener(this)
+            switchAttendance.setOnClickListener(this)
             editTextNotes.addTextChangedListener(this)
         }
 
@@ -141,33 +145,31 @@ class MarkAttendanceAdapter(
                     textViewAddTime.id -> {
                         onAdapterClick.onAddTimeClick(getItem(adapterPosition), adapterPosition)
                     }
+                    switchAttendance.id -> {
+                        val item = getItem(adapterPosition)
+                        // Update in API Request Object
+                        initiateUpdateRecord(item.id)
+
+                        //Update in Local List Object to show changes on UI
+                        getItem(adapterPosition).attendanceDetail?.isPresent = true
+
+                        notifyDataSetChanged()
+                    }
                 }
             }
         }
 
-        override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-            if (isChecked) {
-                val item = getItem(adapterPosition)
+        override fun afterTextChanged(text: Editable?) {
+            val item = getItem(adapterPosition)
+            if (getDefaultOrValue(item.attendanceDetail?.attendanceNote) != text.toString()) {
                 // Update in API Request Object
-                initiateUpdateRecord(item.id)
+                initiateUpdateRecord(item.id, setIsPresent = false)
+                updateData[item.id]?.attendanceNote = text.toString()
 
                 //Update in Local List Object to show changes on UI
-                val attendanceDetail = AttendanceDetail()
-                attendanceDetail.isPresent = true
-                getItem(adapterPosition).attendanceDetail = attendanceDetail
-
-                notifyDataSetChanged()
+                getItem(adapterPosition).attendanceDetail?.attendanceNote = text.toString()
+                onAdapterClick.onAddNotes(updateData.size)
             }
-        }
-
-        override fun afterTextChanged(text: Editable?) {
-//            val item = getItem(adapterPosition)
-//            // Update in API Request Object
-//            initiateUpdateRecord(item.id)
-//            updateData[item.id]?.attendanceNote = text.toString()
-//
-//            //Update in Local List Object to show changes on UI
-//            getItem(adapterPosition).attendanceDetail?.attendanceNote = text.toString()
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -207,15 +209,18 @@ class MarkAttendanceAdapter(
     fun updateList(lumperAttendanceList: ArrayList<LumperAttendanceData>) {
         this.updateData.clear()
         this.lumperAttendanceList.clear()
+        this.lumperAttendanceFilteredList.clear()
         this.lumperAttendanceList.addAll(lumperAttendanceList)
         notifyDataSetChanged()
     }
 
-    private fun initiateUpdateRecord(lumperId: String?) {
+    private fun initiateUpdateRecord(lumperId: String?, setIsPresent: Boolean = true) {
         if (!StringUtils.isNullOrEmpty(lumperId) && !updateData.containsKey(lumperId)) {
             updateData[lumperId!!] = AttendanceDetail()
             updateData[lumperId]?.lumperId = lumperId
-            updateData[lumperId]?.isPresent = true
+            if (setIsPresent) {
+                updateData[lumperId]?.isPresent = true
+            }
         }
     }
 
@@ -228,7 +233,7 @@ class MarkAttendanceAdapter(
 
         //Update in Local List Object to show changes on UI
         getItem(itemPosition).attendanceDetail?.morningPunchIn =
-            DateUtils.getUTCDateString(DateUtils.PATTERN_API_RESPONSE, Date(currentTime))
+            DateUtils.getUTCDateString(PATTERN_API_RESPONSE, Date(currentTime))
         notifyDataSetChanged()
     }
 
@@ -241,7 +246,7 @@ class MarkAttendanceAdapter(
 
         //Update in Local List Object to show changes on UI
         getItem(itemPosition).attendanceDetail?.eveningPunchOut =
-            DateUtils.getUTCDateString(DateUtils.PATTERN_API_RESPONSE, Date(currentTime))
+            DateUtils.getUTCDateString(PATTERN_API_RESPONSE, Date(currentTime))
         notifyDataSetChanged()
     }
 
@@ -254,7 +259,7 @@ class MarkAttendanceAdapter(
 
         //Update in Local List Object to show changes on UI
         getItem(itemPosition).attendanceDetail?.lunchPunchIn =
-            DateUtils.getUTCDateString(DateUtils.PATTERN_API_RESPONSE, Date(currentTime))
+            DateUtils.getUTCDateString(PATTERN_API_RESPONSE, Date(currentTime))
         notifyDataSetChanged()
     }
 
@@ -267,7 +272,7 @@ class MarkAttendanceAdapter(
 
         //Update in Local List Object to show changes on UI
         getItem(itemPosition).attendanceDetail?.lunchPunchOut =
-            DateUtils.getUTCDateString(DateUtils.PATTERN_API_RESPONSE, Date(currentTime))
+            DateUtils.getUTCDateString(PATTERN_API_RESPONSE, Date(currentTime))
         notifyDataSetChanged()
     }
 

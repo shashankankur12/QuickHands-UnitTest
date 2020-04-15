@@ -2,6 +2,7 @@ package com.quickhandslogistics.modified.models
 
 import android.text.TextUtils
 import android.util.Log
+import com.google.firebase.iid.FirebaseInstanceId
 import com.quickhandslogistics.modified.contracts.LoginContract
 import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
 import com.quickhandslogistics.modified.data.dashboard.LeadProfileData
@@ -46,9 +47,26 @@ class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
         }
     }
 
+    override fun fetchRegistrationToken(
+        employeeLoginId: String, password: String,
+        onFinishedListener: LoginContract.Model.OnFinishedListener
+    ) {
+        if (sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN).isEmpty()) {
+            FirebaseInstanceId.getInstance().instanceId
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val token = task.result?.token
+                        sharedPref.setString(AppConstant.PREFERENCE_REGISTRATION_TOKEN, token)
+                        onFinishedListener.onRegistrationTakenSaved(employeeLoginId, password)
+                    }
+                }
+        } else {
+            onFinishedListener.onRegistrationTakenSaved(employeeLoginId, password)
+        }
+    }
+
     override fun loginUsingEmployeeDetails(
-        employeeLoginId: String,
-        password: String,
+        employeeLoginId: String, password: String,
         onFinishedListener: LoginContract.Model.OnFinishedListener
     ) {
         val loginRequest = LoginRequest(

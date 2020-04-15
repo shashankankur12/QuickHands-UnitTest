@@ -8,6 +8,7 @@ import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.models.schedule.AddWorkItemLumpersModel
 import com.quickhandslogistics.utils.SharedPref
+import com.quickhandslogistics.utils.StringUtils
 
 class AddWorkItemLumpersPresenter(
     private var addWorkItemLumpersView: AddWorkItemLumpersContract.View?,
@@ -46,6 +47,14 @@ class AddWorkItemLumpersPresenter(
 
     override fun onSuccessFetchLumpers(allLumpersResponse: AllLumpersResponse) {
         addWorkItemLumpersView?.hideProgressDialog()
+        allLumpersResponse.data.sortWith(Comparator { lumper1, lumper2 ->
+            if (!StringUtils.isNullOrEmpty(lumper1.firstName) && !StringUtils.isNullOrEmpty(lumper2.firstName)
+            ) {
+                lumper1.firstName?.toLowerCase()!!.compareTo(lumper2.firstName?.toLowerCase()!!)
+            } else {
+                0
+            }
+        })
         addWorkItemLumpersView?.showLumpersData(allLumpersResponse.data)
     }
 
