@@ -6,7 +6,8 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 class AttendanceDetail() : Parcelable {
-    
+
+    @Expose
     var lumperId: String? = null
 
     @SerializedName("morningPunchIn")
@@ -32,6 +33,21 @@ class AttendanceDetail() : Parcelable {
     @SerializedName("attendanceNote")
     @Expose
     var attendanceNote: String? = null
+
+    @Transient
+    var isPresentChanged = false
+
+    @Transient
+    var isMorningPunchInChanged = false
+
+    @Transient
+    var isEveningPunchOutChanged = false
+
+    @Transient
+    var isLunchPunchInChanged = false
+
+    @Transient
+    var isLunchPunchOutChanged = false
 
     constructor(parcel: Parcel) : this() {
         lumperId = parcel.readString()

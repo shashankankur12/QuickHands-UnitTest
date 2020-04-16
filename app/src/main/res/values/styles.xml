@@ -130,7 +130,7 @@
         <item name="android:textSize">@dimen/_16ssp</item>
     </style>
 
-    <style name="ToggleSwitchTheme">
-        <item name="colorSwitchThumbNormal">@color/switch_thumb_selector</item>
+    <style name="ToggleSwitchTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorAccent">@color/online</item>
     </style>
 </resources>

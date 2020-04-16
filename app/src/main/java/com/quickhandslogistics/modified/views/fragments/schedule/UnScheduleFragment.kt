@@ -69,7 +69,7 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
         }
 
         swipeRefreshLayoutUnSchedule.setColorSchemeColors(
-            ContextCompat.getColor(fragmentActivity!!, R.color.colorAccent)
+            ContextCompat.getColor(fragmentActivity!!, R.color.buttonRed)
         )
         swipeRefreshLayoutUnSchedule.setOnRefreshListener(this)
     }

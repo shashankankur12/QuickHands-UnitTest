@@ -6,10 +6,10 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.widget.SwitchCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.bumptech.glide.Glide
@@ -20,7 +20,6 @@ import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.StringUtils
-import com.quickhandslogistics.utils.ValueUtils
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_recyclerview_mark_attendance.view.*
@@ -62,7 +61,7 @@ class MarkAttendanceAdapter(
         private val textViewLumperName: TextView = view.textViewLumperName
         private val viewAttendanceStatus: View = view.viewAttendanceStatus
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
-        private val switchAttendance: SwitchCompat = view.switchAttendance
+        private val checkBoxAttendance: CheckBox = view.checkBoxAttendance
         private val textViewEmployeeId: TextView = view.textViewEmployeeId
         private val textViewAddTime: TextView = view.textViewAddTime
         private val textViewNoTimeLoggedIn: TextView = view.textViewNoTimeLoggedIn
@@ -121,21 +120,21 @@ class MarkAttendanceAdapter(
                     )
                 }
                 editTextNotes.setText(attendanceDetail.attendanceNote)
-                updateTimeUI(isPresent)
+                updateTimeUI(isPresent, lumperAttendance.id!!)
             }
 
             textViewAddTime.setOnClickListener(this)
         }
 
-        private fun updateTimeUI(isPresent: Boolean) {
+        private fun updateTimeUI(isPresent: Boolean, lumperId: String) {
             viewAttendanceStatus.setBackgroundResource(if (isPresent) R.drawable.online_dot else R.drawable.offline_dot)
-            switchAttendance.isChecked = isPresent
-            switchAttendance.isEnabled = !isPresent
+            checkBoxAttendance.isChecked = isPresent
+            checkBoxAttendance.isEnabled = checkIfEditable(isPresent, "isPresent", lumperId)
             textViewAddTime.visibility = if (isPresent) View.VISIBLE else View.GONE
             linearLayoutLumperTime.visibility = if (isPresent) View.VISIBLE else View.GONE
             textViewNoTimeLoggedIn.visibility = if (isPresent) View.GONE else View.VISIBLE
 
-            switchAttendance.setOnClickListener(this)
+            checkBoxAttendance.setOnClickListener(this)
             editTextNotes.addTextChangedListener(this)
         }
 
@@ -145,13 +144,15 @@ class MarkAttendanceAdapter(
                     textViewAddTime.id -> {
                         onAdapterClick.onAddTimeClick(getItem(adapterPosition), adapterPosition)
                     }
-                    switchAttendance.id -> {
+                    checkBoxAttendance.id -> {
+                        val isChecked = checkBoxAttendance.isChecked
+
                         val item = getItem(adapterPosition)
                         // Update in API Request Object
-                        initiateUpdateRecord(item.id)
+                        changeIsPresentRecord(item.id, isPresent = isChecked)
 
                         //Update in Local List Object to show changes on UI
-                        getItem(adapterPosition).attendanceDetail?.isPresent = true
+                        getItem(adapterPosition).attendanceDetail?.isPresent = isChecked
 
                         notifyDataSetChanged()
                     }
@@ -163,7 +164,7 @@ class MarkAttendanceAdapter(
             val item = getItem(adapterPosition)
             if (getDefaultOrValue(item.attendanceDetail?.attendanceNote) != text.toString()) {
                 // Update in API Request Object
-                initiateUpdateRecord(item.id, setIsPresent = false)
+                changeNotesRecord(item.id)
                 updateData[item.id]?.attendanceNote = text.toString()
 
                 //Update in Local List Object to show changes on UI
@@ -214,13 +215,27 @@ class MarkAttendanceAdapter(
         notifyDataSetChanged()
     }
 
-    private fun initiateUpdateRecord(lumperId: String?, setIsPresent: Boolean = true) {
+    private fun changeIsPresentRecord(lumperId: String?, isPresent: Boolean) {
         if (!StringUtils.isNullOrEmpty(lumperId) && !updateData.containsKey(lumperId)) {
             updateData[lumperId!!] = AttendanceDetail()
             updateData[lumperId]?.lumperId = lumperId
-            if (setIsPresent) {
-                updateData[lumperId]?.isPresent = true
-            }
+        }
+        updateData[lumperId]?.isPresent = isPresent
+        updateData[lumperId]?.isPresentChanged = true
+    }
+
+    private fun changeNotesRecord(lumperId: String?) {
+        if (!StringUtils.isNullOrEmpty(lumperId) && !updateData.containsKey(lumperId)) {
+            updateData[lumperId!!] = AttendanceDetail()
+            updateData[lumperId]?.lumperId = lumperId
+        }
+    }
+
+    private fun initiateUpdateRecord(lumperId: String?, isPresent: Boolean = true) {
+        if (!StringUtils.isNullOrEmpty(lumperId) && !updateData.containsKey(lumperId)) {
+            updateData[lumperId!!] = AttendanceDetail()
+            updateData[lumperId]?.lumperId = lumperId
+            updateData[lumperId]?.isPresent = isPresent
         }
     }
 
@@ -230,6 +245,7 @@ class MarkAttendanceAdapter(
         // Update in API Request Object
         initiateUpdateRecord(item.id)
         updateData[item.id]?.morningPunchIn = "${currentTime / 1000L}"
+        updateData[item.id]?.isMorningPunchInChanged = true
 
         //Update in Local List Object to show changes on UI
         getItem(itemPosition).attendanceDetail?.morningPunchIn =
@@ -243,6 +259,7 @@ class MarkAttendanceAdapter(
         // Update in API Request Object
         initiateUpdateRecord(item.id)
         updateData[item.id]?.eveningPunchOut = "${currentTime / 1000L}"
+        updateData[item.id]?.isEveningPunchOutChanged = true
 
         //Update in Local List Object to show changes on UI
         getItem(itemPosition).attendanceDetail?.eveningPunchOut =
@@ -256,6 +273,7 @@ class MarkAttendanceAdapter(
         // Update in API Request Object
         initiateUpdateRecord(item.id)
         updateData[item.id]?.lunchPunchIn = "${currentTime / 1000L}"
+        updateData[item.id]?.isLunchPunchInChanged = true
 
         //Update in Local List Object to show changes on UI
         getItem(itemPosition).attendanceDetail?.lunchPunchIn =
@@ -269,6 +287,7 @@ class MarkAttendanceAdapter(
         // Update in API Request Object
         initiateUpdateRecord(item.id)
         updateData[item.id]?.lunchPunchOut = "${currentTime / 1000L}"
+        updateData[item.id]?.isLunchPunchOutChanged = true
 
         //Update in Local List Object to show changes on UI
         getItem(itemPosition).attendanceDetail?.lunchPunchOut =
@@ -278,5 +297,28 @@ class MarkAttendanceAdapter(
 
     fun getUpdatedData(): HashMap<String, AttendanceDetail> {
         return updateData
+    }
+
+    fun checkIfEditable(hasValue: Boolean, variableName: String, lumperId: String): Boolean {
+        return if (updateData.containsKey(lumperId)) {
+            val isChanged = when (variableName) {
+                "isPresent" -> updateData[lumperId]?.isPresentChanged!!
+                "isMorningPunchIn" -> updateData[lumperId]?.isMorningPunchInChanged!!
+                "isEveningPunchOut" -> updateData[lumperId]?.isEveningPunchOutChanged!!
+                "isLunchPunchIn" -> updateData[lumperId]?.isLunchPunchInChanged!!
+                "isLunchPunchOut" -> updateData[lumperId]?.isLunchPunchOutChanged!!
+                else -> false
+            }
+            if (isChanged) {
+                // This field is edited for this lumper.
+                isChanged
+            } else {
+                // Something is edited for this lumper but not this field.
+                !hasValue
+            }
+        } else {
+            // Nothing is edited for this lumper yet.
+            !hasValue
+        }
     }
 }

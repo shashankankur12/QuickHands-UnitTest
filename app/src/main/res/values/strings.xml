@@ -185,4 +185,5 @@
     <string name="clock_out">Clock Out</string>
     <string name="out_to_lunch">Out to Lunch</string>
     <string name="back_to_work">Back to Work</string>
+    <string name="string_ask_to_save_attendance_details">Are you sure you want to save the attendance details?</string>
 </resources>

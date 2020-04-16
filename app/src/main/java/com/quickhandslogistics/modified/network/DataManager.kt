@@ -30,10 +30,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object DataManager : AppConstant {
-    private var retrofit: Retrofit? = null
     private var retrofitStandard: Retrofit? = null
     private val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-    private val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
 
     private val okHttpClient = OkHttpClient.Builder()
         .connectTimeout(2, TimeUnit.MINUTES)

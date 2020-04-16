@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.contracts.InfoDialogWarningContract
 import com.quickhandslogistics.modified.contracts.MarkAttendanceContract
 import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.modified.presenters.MarkAttendancePresenter
@@ -72,6 +73,9 @@ class MarkAttendanceFragment : BaseFragment(), View.OnClickListener, TextWatcher
                 super.onChanged()
                 val updatedData = markAttendanceAdapter.getUpdatedData()
                 buttonSave.isEnabled = updatedData.size > 0
+
+                textViewEmptyData.visibility =
+                    if (markAttendanceAdapter.itemCount == 0) View.VISIBLE else View.GONE
             }
         })
 
@@ -138,9 +142,21 @@ class MarkAttendanceFragment : BaseFragment(), View.OnClickListener, TextWatcher
                     Utils.hideSoftKeyboard(fragmentActivity!!)
                 }
                 buttonSave.id -> {
-                    imageViewCancel.performClick()
-                    val updatedData = markAttendanceAdapter.getUpdatedData()
-                    markAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct())
+                    val dialog = InfoWarningDialogFragment.newInstance(
+                        getString(R.string.string_ask_to_save_attendance_details),
+                        positiveButtonText = getString(R.string.string_yes),
+                        negativeButtonText = getString(R.string.string_no),
+                        onClickListener = object : InfoDialogWarningContract.View.OnClickListener {
+                            override fun onPositiveButtonClick() {
+                                imageViewCancel.performClick()
+                                val updatedData = markAttendanceAdapter.getUpdatedData()
+                                markAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct())
+                            }
+
+                            override fun onNegativeButtonClick() {
+                            }
+                        })
+                    dialog.show(childFragmentManager, InfoWarningDialogFragment::class.simpleName)
                 }
             }
         }
@@ -185,6 +201,13 @@ class MarkAttendanceFragment : BaseFragment(), View.OnClickListener, TextWatcher
 
     override fun showLumpersAttendance(lumperAttendanceList: ArrayList<LumperAttendanceData>) {
         markAttendanceAdapter.updateList(lumperAttendanceList)
+        if (lumperAttendanceList.size > 0) {
+            textViewEmptyData.visibility = View.GONE
+            recyclerViewLumpers.visibility = View.VISIBLE
+        } else {
+            recyclerViewLumpers.visibility = View.GONE
+            textViewEmptyData.visibility = View.VISIBLE
+        }
     }
 
     override fun showDataSavedMessage() {
@@ -207,8 +230,9 @@ class MarkAttendanceFragment : BaseFragment(), View.OnClickListener, TextWatcher
             )
             buttonClockIn.text =
                 if (clockInTime.isNotEmpty()) clockInTime else getString(R.string.clock_in)
-            buttonClockIn.isEnabled = clockInTime.isEmpty()
-
+            buttonClockIn.isEnabled = markAttendanceAdapter.checkIfEditable(
+                clockInTime.isNotEmpty(), "isMorningPunchIn", lumperAttendanceData.id!!
+            )
 
             // Show Clock-Out Time
             val clockOutTime = DateUtils.convertDateStringToTime(
@@ -217,7 +241,9 @@ class MarkAttendanceFragment : BaseFragment(), View.OnClickListener, TextWatcher
             )
             buttonClockOut.text =
                 if (clockOutTime.isNotEmpty()) clockOutTime else getString(R.string.clock_out)
-            buttonClockOut.isEnabled = clockOutTime.isEmpty()
+            buttonClockOut.isEnabled = markAttendanceAdapter.checkIfEditable(
+                clockOutTime.isNotEmpty(), "isEveningPunchOut", lumperAttendanceData.id!!
+            )
 
             // Show Lunch-In Time
             val lunchInTime = DateUtils.convertDateStringToTime(
@@ -226,7 +252,9 @@ class MarkAttendanceFragment : BaseFragment(), View.OnClickListener, TextWatcher
             )
             buttonLunchIn.text =
                 if (lunchInTime.isNotEmpty()) lunchInTime else getString(R.string.out_to_lunch)
-            buttonLunchIn.isEnabled = lunchInTime.isEmpty()
+            buttonLunchIn.isEnabled = markAttendanceAdapter.checkIfEditable(
+                lunchInTime.isNotEmpty(), "isLunchPunchIn", lumperAttendanceData.id!!
+            )
 
             // Show Lunch-Out Time
             val lunchOutTime = DateUtils.convertDateStringToTime(
@@ -235,7 +263,9 @@ class MarkAttendanceFragment : BaseFragment(), View.OnClickListener, TextWatcher
             )
             buttonLunchOut.text =
                 if (lunchOutTime.isNotEmpty()) lunchOutTime else getString(R.string.back_to_work)
-            buttonLunchOut.isEnabled = lunchOutTime.isEmpty()
+            buttonLunchOut.isEnabled = markAttendanceAdapter.checkIfEditable(
+                lunchOutTime.isNotEmpty(), "isLunchPunchOut", lumperAttendanceData.id!!
+            )
         } else {
             closeBottomSheet()
         }
