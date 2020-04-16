@@ -19,7 +19,7 @@ class UnScheduleContract {
         fun hideProgressDialog()
         fun showProgressDialog(message: String)
         fun showEmptyData()
-        fun showAPIErrorMessage(string: String)
+        fun showAPIErrorMessage(message: String)
 
         interface OnAdapterItemClickListener {
             fun onUnScheduleItemClick(scheduleDetail: ScheduleDetail)
