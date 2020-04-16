@@ -21,7 +21,6 @@ import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.presenters.schedule.SchedulePresenter
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.activities.DisplayLumpersListActivity
-import com.quickhandslogistics.modified.views.activities.MarkAttendanceActivity
 import com.quickhandslogistics.modified.views.activities.schedule.ScheduleDetailActivity
 import com.quickhandslogistics.modified.views.adapters.schedule.ScheduleAdapter
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
@@ -32,8 +31,8 @@ import kotlinx.android.synthetic.main.calendar_item.view.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.util.*
 
-class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClickListener,
-    ScheduleContract.View, View.OnClickListener {
+class ScheduleFragment : BaseFragment(), ScheduleContract.View,
+    ScheduleContract.View.OnAdapterItemClickListener {
 
     private lateinit var schedulePresenter: SchedulePresenter
     private lateinit var scheduleAdapter: ScheduleAdapter
@@ -83,7 +82,6 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
         initializeCalendar()
 
         singleRowCalendarSchedule.select(availableDates.size - 1)
-        buttonMarkAttendance.setOnClickListener(this)
     }
 
     private fun initializeCalendar() {
@@ -164,19 +162,6 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
     }
 
     /*
-    * Native Views Listeners
-    */
-    override fun onClick(view: View?) {
-        view?.let {
-            when (view.id) {
-                buttonMarkAttendance.id -> {
-                    startIntent(MarkAttendanceActivity::class.java)
-                }
-            }
-        }
-    }
-
-    /*
     * Adapter Item Click Listeners
     */
     override fun onScheduleItemClick(scheduleDetail: ScheduleDetail) {
@@ -204,7 +189,6 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
         isCurrentDate = com.quickhandslogistics.utils.DateUtils.isCurrentDate(selectedTime)
         scheduleAdapter.updateList(workItemsList)
 
-        buttonMarkAttendance.visibility = if (isCurrentDate) View.VISIBLE else View.GONE
         textViewEmptyData.visibility = View.GONE
         recyclerViewSchedule.visibility = View.VISIBLE
         textViewDate.visibility = View.VISIBLE
@@ -219,7 +203,6 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
     }
 
     override fun showAPIErrorMessage(message: String) {
-        buttonMarkAttendance.visibility = View.GONE
         recyclerViewSchedule.visibility = View.GONE
         textViewEmptyData.visibility = View.VISIBLE
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
@@ -231,7 +214,6 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View.OnAdapterItemClic
 
     override fun showEmptyData() {
         textViewEmptyData.visibility = View.VISIBLE
-        buttonMarkAttendance.visibility = View.VISIBLE
         recyclerViewSchedule.visibility = View.GONE
         textViewDate.visibility = View.GONE
     }
