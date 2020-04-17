@@ -22,6 +22,7 @@ import com.quickhandslogistics.modified.views.activities.schedule.UnScheduleDeta
 import com.quickhandslogistics.modified.views.adapters.schedule.UnScheduleAdapter
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_IS_SCHEDULED_STATUS_CHANGED
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_DETAIL
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_IDENTITY
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SnackBarFactory
@@ -68,7 +69,7 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
         }
 
         swipeRefreshLayoutUnSchedule.setColorSchemeColors(
-            ContextCompat.getColor(fragmentActivity!!, R.color.colorAccent)
+            ContextCompat.getColor(fragmentActivity!!, R.color.buttonRed)
         )
         swipeRefreshLayoutUnSchedule.setOnRefreshListener(this)
     }
@@ -102,7 +103,8 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
     */
     override fun onUnScheduleItemClick(scheduleDetail: ScheduleDetail) {
         val bundle = Bundle()
-        bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleDetail.scheduleIdentity)
+//        bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleDetail.scheduleIdentity)
+        bundle.putParcelable(ARG_SCHEDULE_DETAIL, scheduleDetail)
         startIntent(
             UnScheduleDetailActivity::class.java,
             bundle = bundle,

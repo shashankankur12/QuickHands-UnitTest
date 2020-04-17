@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="timeInMills" type="id" />
-    <item name="actionBuildingOperations" type="id" />
-    <item name="actionMarkAttendance" type="id" />
+    <item name="attendancePosition" type="id" />
 </resources>

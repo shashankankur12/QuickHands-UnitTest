@@ -28,6 +28,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/_5sdp"
         android:src="@drawable/blue_circle"
-        android:tint="@color/colorAccent"
+        android:tint="@color/buttonRed"
         android:visibility="gone" />
 </LinearLayout>

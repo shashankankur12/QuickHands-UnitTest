@@ -12,6 +12,7 @@ import com.franmontiel.localechanger.utils.ActivityRecreationHelper
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.views.controls.NavDrawer
+import com.quickhandslogistics.modified.views.fragments.MarkAttendanceFragment
 import com.quickhandslogistics.modified.views.fragments.SettingsFragment
 import com.quickhandslogistics.modified.views.fragments.lumperSheet.LumperSheetFragment
 import com.quickhandslogistics.modified.views.fragments.lumpers.LumpersFragment
@@ -94,6 +95,15 @@ open class BaseActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
         )
         navDrawer?.let {
+            it.addItem(
+                NavDrawer.ActivityNavDrawerItem(
+                    MarkAttendanceFragment(),
+                    getString(R.string.mark_attendance),
+                    R.drawable.ic_sidemenu_schedule,
+                    R.id.include_main_nav_drawer_topItems,
+                    false
+                )
+            )
             it.addItem(
                 NavDrawer.ActivityNavDrawerItem(
                     ScheduleMainFragment(),

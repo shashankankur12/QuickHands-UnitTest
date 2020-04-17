@@ -21,6 +21,7 @@ class LoginContract {
             onFinishedListener: OnFinishedListener
         )
 
+        fun fetchRegistrationToken(employeeLoginId: String, password: String, onFinishedListener: OnFinishedListener)
         fun fetchLeadProfileInfo(onFinishedListener: OnFinishedListener)
         fun processLeadProfileData(leadProfileData: LeadProfileData, onFinishedListener: OnFinishedListener)
 
@@ -32,6 +33,7 @@ class LoginContract {
             fun onLoadEmployeeId(employeeId: String)
             fun onLoginSuccess(loginResponse: LoginResponse)
             fun processCredentials(employeeLoginId: String, password: String)
+            fun onRegistrationTakenSaved(employeeLoginId: String, password: String)
             fun showNextScreen()
             fun onLeadProfileSuccess(leadProfileAPIResponse: LeadProfileAPIResponse)
         }

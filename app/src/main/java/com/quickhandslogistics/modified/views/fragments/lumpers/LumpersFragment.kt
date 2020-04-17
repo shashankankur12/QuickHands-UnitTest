@@ -71,7 +71,7 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
         swipeRefreshLayoutLumpers.setColorSchemeColors(
             ContextCompat.getColor(
                 fragmentActivity!!,
-                R.color.colorAccent
+                R.color.buttonRed
             )
         )
 

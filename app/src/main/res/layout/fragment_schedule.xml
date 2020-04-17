@@ -36,8 +36,7 @@
         android:id="@+id/recyclerViewSchedule"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/_10sdp"
-        app:layout_constraintBottom_toTopOf="@id/buttonMarkAttendance"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewDate" />
@@ -54,20 +53,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/buttonMarkAttendance"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:background="@drawable/round_button_red_new"
-        android:text="@string/mark_attendance"
-        android:textAllCaps="false"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/_14ssp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

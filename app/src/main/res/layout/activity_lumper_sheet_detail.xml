@@ -50,7 +50,7 @@
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
             android:contentDescription="@string/nav_header_desc"
-            android:src="@drawable/ic_basic_info_placeholder"
+            android:src="@drawable/dummy"
             app:civ_border_color="@color/imageBorder"
             app:civ_border_width="1dp"
             android:layout_marginStart="@dimen/_12sdp"

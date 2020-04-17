@@ -9,7 +9,7 @@
         android:id="@+id/circleImageViewProfile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_basic_info_placeholder"
+        android:src="@drawable/dummy"
         android:visibility="gone"
         app:civ_border_color="@android:color/white"
         app:civ_border_width="@dimen/_1sdp" />

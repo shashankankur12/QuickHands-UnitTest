@@ -6,6 +6,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.lumpers.LumpersContract
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.models.lumpers.LumpersModel
+import com.quickhandslogistics.utils.StringUtils
 
 class LumpersPresenter(
     private var lumpersView: LumpersContract.View?,
@@ -34,6 +35,14 @@ class LumpersPresenter(
 
     override fun onSuccess(allLumpersResponse: AllLumpersResponse) {
         lumpersView?.hideProgressDialog()
+        allLumpersResponse.data.sortWith(Comparator { lumper1, lumper2 ->
+            if (!StringUtils.isNullOrEmpty(lumper1.firstName) && !StringUtils.isNullOrEmpty(lumper2.firstName)
+            ) {
+                lumper1.firstName?.toLowerCase()!!.compareTo(lumper2.firstName?.toLowerCase()!!)
+            } else {
+                0
+            }
+        })
         lumpersView?.showLumpersData(allLumpersResponse.data)
     }
 }

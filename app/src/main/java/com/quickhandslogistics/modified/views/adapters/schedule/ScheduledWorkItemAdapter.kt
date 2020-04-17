@@ -57,6 +57,7 @@ class ScheduledWorkItemAdapter(
         private val textViewStartTime: TextView = view.textViewStartTime
         private val textViewDropItems: TextView = view.textViewDropItems
         private val circleImageArrow: CircleImageView = view.circleImageViewArrow
+        private val textViewAddLumpers: TextView = view.textViewAddLumpers
         private val recyclerViewLumpersImagesList: RecyclerView = view.recyclerViewLumpersImagesList
 
         init {
@@ -93,11 +94,25 @@ class ScheduledWorkItemAdapter(
                     )
                 }
             }
-            recyclerViewLumpersImagesList.apply {
-                adapter = LumperImagesAdapter(
-                    workItemDetail.assignedLumpersList!! as ArrayList<EmployeeData>,
-                    this@WorkItemViewHolder
-                )
+
+            if (workItemDetail.assignedLumpersList?.size!! > 0) {
+                textViewAddLumpers.visibility = View.GONE
+                circleImageArrow.visibility = View.VISIBLE
+                recyclerViewLumpersImagesList.visibility = View.VISIBLE
+
+                recyclerViewLumpersImagesList.apply {
+                    adapter = LumperImagesAdapter(
+                        workItemDetail.assignedLumpersList!! as ArrayList<EmployeeData>,
+                        this@WorkItemViewHolder
+                    )
+                }
+                itemView.setOnClickListener(this)
+            } else {
+                textViewAddLumpers.visibility = View.VISIBLE
+                circleImageArrow.visibility = View.GONE
+                recyclerViewLumpersImagesList.visibility = View.GONE
+
+                textViewAddLumpers.setOnClickListener(this)
             }
 
             itemView.setOnClickListener(this)
@@ -106,7 +121,10 @@ class ScheduledWorkItemAdapter(
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
-                    itemView.id -> adapterItemClickListener.onWorkItemClick(getItem(adapterPosition), workItemTypeDisplayName)
+                    itemView.id -> adapterItemClickListener.onWorkItemClick(
+                        getItem(adapterPosition),
+                        workItemTypeDisplayName
+                    )
                 }
             }
         }

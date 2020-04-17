@@ -21,6 +21,8 @@ interface AppConstant {
         //Notification Types
         const val NOTIFICATION_TYPE_SCHEDULE_CREATE = "ScheduleCreate"
 
+        const val NOTES_NOT_AVAILABLE = "Not available"
+
         const val EDIT_DIALOG = "edit_dialog"
 
         const val REQUEST_CODE_CHANGED = 101

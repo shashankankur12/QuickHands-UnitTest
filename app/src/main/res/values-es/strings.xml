@@ -180,4 +180,10 @@
     <string name="unscheduled_work_details">Un-Scheduled Work Details</string>
     <string name="live_load_sequence">Live Load: %s</string>
     <string name="outbound_sequence">OutBound: %s</string>
+    <string name="add_notes">Add Notes</string>
+    <string name="clock_in">Clock In</string>
+    <string name="clock_out">Clock Out</string>
+    <string name="out_to_lunch">Out to Lunch</string>
+    <string name="back_to_work">Back to Work</string>
+    <string name="string_ask_to_save_attendance_details">Are you sure you want to save the attendance details?</string>
 </resources>

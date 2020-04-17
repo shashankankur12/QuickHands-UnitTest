@@ -4,9 +4,9 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
-import java.io.Serializable
 
 class WorkItemDetail() : Parcelable {
     @SerializedName("id")
@@ -33,13 +33,13 @@ class WorkItemDetail() : Parcelable {
     @Expose
     var scheduleIdentity: String? = null
 
-    @SerializedName("startDate")
+    @SerializedName("scheduledFrom")
     @Expose
-    var startDate: String? = null
+    var scheduledFrom: String? = null
 
-    @SerializedName("endDate")
+    @SerializedName("endDateForThisWorkItem")
     @Expose
-    var endDate: String? = null
+    var endDateForThisWorkItem: String? = null
 
     @SerializedName("isScheduledByLead")
     @Expose
@@ -81,6 +81,10 @@ class WorkItemDetail() : Parcelable {
     @Expose
     var assignedLumpersList: ArrayList<EmployeeData>? = null
 
+    @SerializedName("lumperAttendance")
+    @Expose
+    var attendanceDetail: AttendanceDetail? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         workItemType = parcel.readString()
@@ -88,8 +92,8 @@ class WorkItemDetail() : Parcelable {
         createdBy = parcel.readString()
         startTime = parcel.readString()
         scheduleIdentity = parcel.readString()
-        startDate = parcel.readString()
-        endDate = parcel.readString()
+        scheduledFrom = parcel.readString()
+        endDateForThisWorkItem = parcel.readString()
         isScheduledByLead = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         scheduleForWeek = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         scheduleForMonth = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
@@ -99,6 +103,7 @@ class WorkItemDetail() : Parcelable {
         numberOfDrops = parcel.readValue(Int::class.java.classLoader) as? Int
         buildingDetailData = parcel.readParcelable(BuildingDetailData::class.java.classLoader)
         assignedLumpersList = parcel.createTypedArrayList(EmployeeData)
+        attendanceDetail = parcel.readParcelable(AttendanceDetail::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -108,8 +113,8 @@ class WorkItemDetail() : Parcelable {
         parcel.writeString(createdBy)
         parcel.writeString(startTime)
         parcel.writeString(scheduleIdentity)
-        parcel.writeString(startDate)
-        parcel.writeString(endDate)
+        parcel.writeString(scheduledFrom)
+        parcel.writeString(endDateForThisWorkItem)
         parcel.writeValue(isScheduledByLead)
         parcel.writeValue(scheduleForWeek)
         parcel.writeValue(scheduleForMonth)
@@ -119,6 +124,7 @@ class WorkItemDetail() : Parcelable {
         parcel.writeValue(numberOfDrops)
         parcel.writeParcelable(buildingDetailData, flags)
         parcel.writeTypedList(assignedLumpersList)
+        parcel.writeParcelable(attendanceDetail, flags)
     }
 
     override fun describeContents(): Int {

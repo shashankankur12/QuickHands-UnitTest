@@ -23,45 +23,51 @@
             android:layout_marginTop="-15dp"
             android:background="@drawable/shadow_effect" />
 
-        <androidx.core.widget.NestedScrollView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/headerLayout"
             android:background="@drawable/top_left_round_background">
 
-            <LinearLayout
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp">
 
                 <LinearLayout
-                    android:id="@+id/include_main_nav_drawer_topItems"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" />
+                    android:orientation="vertical">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/_10ssp"
-                    android:layout_marginBottom="@dimen/_10ssp"
-                    android:background="#30000000" />
+                    <LinearLayout
+                        android:id="@+id/include_main_nav_drawer_topItems"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
 
-                <LinearLayout
-                    android:id="@+id/include_main_nav_drawer_bottomItems"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingBottom="16dp" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/_10ssp"
+                        android:layout_marginBottom="@dimen/_10ssp"
+                        android:background="#30000000" />
 
-                <TextView
-                    android:id="@+id/textViewVersionName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/_10ssp" />
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+                    <LinearLayout
+                        android:id="@+id/include_main_nav_drawer_bottomItems"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="16dp" />
+
+                    <TextView
+                        android:id="@+id/textViewVersionName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/_10ssp"
+                        android:layout_marginBottom="@dimen/_10ssp" />
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </RelativeLayout>
     </RelativeLayout>
 </com.google.android.material.navigation.NavigationView>

@@ -47,6 +47,10 @@ class LoginPresenter(
 
     override fun processCredentials(employeeLoginId: String, password: String) {
         loginView?.showProgress(resources.getString(R.string.logging_in))
+        loginModel.fetchRegistrationToken(employeeLoginId, password, this)
+    }
+
+    override fun onRegistrationTakenSaved(employeeLoginId: String, password: String) {
         loginModel.loginUsingEmployeeDetails(employeeLoginId, password, this)
     }
 

@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import com.quickhandslogistics.application.MyApplication
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_EMPLOYEE_ID
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_NAME
+import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_REGISTRATION_TOKEN
 
 class SharedPref private constructor(context: Context) : AppConstant {
 
@@ -66,7 +67,9 @@ class SharedPref private constructor(context: Context) : AppConstant {
     fun performLogout() {
         // Save the previous employeeId on Logout
         val employeeId = getString(PREFERENCE_EMPLOYEE_ID)
+        val token = getString(PREFERENCE_REGISTRATION_TOKEN)
         editor.clear().apply()
         setString(PREFERENCE_EMPLOYEE_ID, employeeId)
+        setString(PREFERENCE_REGISTRATION_TOKEN, token)
     }
 }

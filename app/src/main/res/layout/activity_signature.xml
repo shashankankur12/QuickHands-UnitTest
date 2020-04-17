@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/textSizeNormalRegFont"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/buttonRed"
             android:text="CLEAR"
             android:layout_margin="@dimen/_5sdp"
             android:layout_marginLeft="@dimen/_20sdp"

@@ -6,7 +6,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
-import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
+import com.quickhandslogistics.modified.data.schedule.UnScheduleListAPIResponse
 import com.quickhandslogistics.modified.models.schedule.UnScheduleModel
 import com.quickhandslogistics.modified.views.controls.ScheduleUtils.getAllAssignedLumpersList
 import com.quickhandslogistics.modified.views.controls.ScheduleUtils.getScheduleTypeName
@@ -40,11 +40,12 @@ class UnSchedulePresenter(
         }
     }
 
-    override fun onSuccess(
-        unScheduleListAPIResponse: ScheduleListAPIResponse
-    ) {
+    override fun onSuccess(unScheduleListAPIResponse: UnScheduleListAPIResponse) {
         val workItemsList = ArrayList<ScheduleDetail>()
-        unScheduleListAPIResponse.data?.scheduleDetailsList?.let {
+        unScheduleListAPIResponse.data?.records?.todayScheduleList?.let {
+            workItemsList.addAll(it)
+        }
+        unScheduleListAPIResponse.data?.records?.tomorrowScheduleList?.let {
             workItemsList.addAll(it)
         }
 
@@ -78,11 +79,11 @@ class UnSchedulePresenter(
         workItemsList.sortWith(Comparator { workItem1, workItem2 ->
             val dateLong1 = DateUtils.getMillisecondsFromDateString(
                 DateUtils.PATTERN_API_REQUEST_PARAMETER,
-                workItem1?.startDate
+                workItem1?.scheduledFrom
             )
             val dateLong2 = DateUtils.getMillisecondsFromDateString(
                 DateUtils.PATTERN_API_REQUEST_PARAMETER,
-                workItem2?.startDate
+                workItem2?.scheduledFrom
             )
             dateLong1.compareTo(dateLong2)
         })

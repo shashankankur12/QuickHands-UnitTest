@@ -134,7 +134,7 @@ class UnScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener,
             getString(R.string.start_time_container),
             workItemDetail.startTime
         )
-        workItemDetail.startDate?.let {
+        workItemDetail.scheduledFrom?.let {
             textViewScheduledDate.text =
                 DateUtils.changeDateString(PATTERN_API_REQUEST_PARAMETER, PATTERN_NORMAL, it)
         }

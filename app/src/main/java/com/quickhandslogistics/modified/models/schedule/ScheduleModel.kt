@@ -23,7 +23,6 @@ class ScheduleModel(private val sharedPref: SharedPref) : ScheduleContract.Model
         DataManager.getSchedulesList(
             dateString,
             buildingId,
-            true,
             object : ResponseListener<ScheduleListAPIResponse> {
                 override fun onSuccess(response: ScheduleListAPIResponse) {
                     if (response.success) {

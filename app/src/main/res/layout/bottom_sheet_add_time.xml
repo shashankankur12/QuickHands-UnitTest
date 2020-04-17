@@ -7,61 +7,171 @@
     android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:elevation="50dp"
-    android:padding="@dimen/_10ssp"
     app:behavior_hideable="false"
     app:behavior_peekHeight="0dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     tools:showIn="@layout/activity_mark_attendance">
 
-    <TextView
-        android:id="@+id/textViewAddTime"
+    <LinearLayout
+        android:id="@+id/layoutCurrentTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/add_time"
-        android:textColor="@color/detailHeader"
-        android:textSize="@dimen/_12ssp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageViewClose"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_cancel"
-        android:visibility="gone"
+        android:layout_marginTop="@dimen/_10ssp"
+        android:background="@drawable/lumperbackground"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/_20ssp"
+        android:paddingTop="@dimen/_10ssp"
+        android:paddingEnd="@dimen/_20ssp"
+        android:paddingBottom="@dimen/_10ssp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Current Time: "
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_16ssp"
+            android:textStyle="bold" />
+
+        <TextClock
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_14ssp" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textViewShiftTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:gravity="center_horizontal"
         android:padding="@dimen/_10ssp"
         android:text="@string/shift_time"
         android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_14ssp"
+        android:textSize="@dimen/_16ssp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAddTime" />
+        app:layout_constraintTop_toBottomOf="@id/layoutCurrentTime" />
+
+    <LinearLayout
+        android:id="@+id/layoutShiftTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewShiftTime">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/buttonClockIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_button_selector_long"
+            android:padding="@dimen/_10ssp"
+            android:text="@string/clock_in"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_14ssp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="- to -"
+            android:textColor="@color/textBlack"
+            android:textSize="@dimen/_12ssp" />
+
+        <Button
+            android:id="@+id/buttonClockOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_button_selector_long"
+            android:padding="@dimen/_10ssp"
+            android:text="@string/clock_out"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_14ssp" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textViewLunchTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/_10sdp"
         android:padding="@dimen/_10ssp"
         android:text="@string/lunch_time"
         android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_14ssp"
+        android:textSize="@dimen/_16ssp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewShiftTime" />
+        app:layout_constraintTop_toBottomOf="@+id/layoutShiftTime" />
 
+    <LinearLayout
+        android:id="@+id/layoutLunchTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewLunchTime">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/buttonLunchIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_button_selector_long"
+            android:padding="@dimen/_10ssp"
+            android:text="@string/out_to_lunch"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_14ssp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="- to -"
+            android:textColor="@color/textBlack"
+            android:textSize="@dimen/_12ssp" />
+
+        <Button
+            android:id="@+id/buttonLunchOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_button_selector_long"
+            android:padding="@dimen/_10ssp"
+            android:text="@string/back_to_work"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_14ssp" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
