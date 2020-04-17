@@ -3,6 +3,7 @@ package com.quickhandslogistics.network
 import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.attendance.GetAttendanceAPIResponse
+import com.quickhandslogistics.modified.data.buildingOperations.BuildingOperationAPIResponse
 import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRequest
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordResponse
@@ -57,6 +58,21 @@ interface IApiInterface {
         @Header("Authorization") auth: String,
         @Path("workItemId") workItemId: String,
         @Body request: AssignLumpersRequest
+    ): Call<BaseResponse>
+    /////////////////////////////////////////////////////////////
+
+    // Building Operations /////////////////////////////////////////////////
+    @GET("schedule/{workItemId}/operations")
+    fun getBuildingOperationsDetail(
+        @Header("Authorization") auth: String,
+        @Path("workItemId") workItemId: String
+    ): Call<BuildingOperationAPIResponse>
+
+    @POST("schedule/{workItemId}/operations")
+    fun saveBuildingOperationsDetail(
+        @Header("Authorization") auth: String,
+        @Path("workItemId") workItemId: String,
+        @Body request: HashMap<String, String>
     ): Call<BaseResponse>
     /////////////////////////////////////////////////////////////
 

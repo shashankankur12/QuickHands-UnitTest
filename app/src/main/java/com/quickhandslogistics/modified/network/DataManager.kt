@@ -6,6 +6,7 @@ import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.ErrorResponse
 import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.attendance.GetAttendanceAPIResponse
+import com.quickhandslogistics.modified.data.buildingOperations.BuildingOperationAPIResponse
 import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRequest
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordResponse
@@ -343,6 +344,67 @@ object DataManager : AppConstant {
         val call = getService().saveAttendanceDetails(
             "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
             attendanceDetailList
+        )
+        call.enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(
+                call: Call<BaseResponse>,
+                response: Response<BaseResponse>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun getBuildingOperationsDetail(
+        workItemId: String,
+        listener: ResponseListener<BuildingOperationAPIResponse>
+    ) {
+        val call = getService().getBuildingOperationsDetail(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
+            workItemId
+        )
+        call.enqueue(object : Callback<BuildingOperationAPIResponse> {
+            override fun onResponse(
+                call: Call<BuildingOperationAPIResponse>,
+                response: Response<BuildingOperationAPIResponse>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<BuildingOperationAPIResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun saveBuildingOperationsDetail(
+        workItemId: String,
+        request: HashMap<String, String>,
+        listener: ResponseListener<BaseResponse>
+    ) {
+        val call = getService().saveBuildingOperationsDetail(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
+            workItemId, request
         )
         call.enqueue(object : Callback<BaseResponse> {
             override fun onResponse(

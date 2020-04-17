@@ -94,14 +94,13 @@
             android:id="@+id/buttonAdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/_10sdp"
             android:background="@drawable/round_button_disabled"
             android:enabled="false"
             android:text="@string/string_submit"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="@dimen/_14ssp"
             android:textStyle="bold" />
     </LinearLayout>
 

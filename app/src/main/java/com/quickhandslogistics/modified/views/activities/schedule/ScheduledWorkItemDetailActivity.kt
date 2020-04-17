@@ -12,6 +12,7 @@ import com.quickhandslogistics.modified.contracts.schedule.ScheduledWorkItemDeta
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.presenters.schedule.ScheduledWorkItemDetailPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
+import com.quickhandslogistics.modified.views.activities.buildingOperations.BuildingOperationsActivity
 import com.quickhandslogistics.modified.views.adapters.schedule.ScheduledWorkItemDetailAdapter
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_ALLOW_UPDATE
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_BUILDING_PARAMETERS
@@ -84,8 +85,10 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener,
 
         if (allowUpdate) {
             buttonAddBuildingOperations.text = getString(R.string.add_building_operations)
+            buttonUpdateLumpers.visibility = View.VISIBLE
         } else {
             buttonAddBuildingOperations.text = getString(R.string.building_operations)
+            buttonUpdateLumpers.visibility = View.GONE
         }
     }
 
@@ -116,6 +119,7 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener,
                     if (!workItemDetail?.buildingDetailData?.parameters.isNullOrEmpty()) {
                         val bundle = Bundle()
                         bundle.putBoolean(ARG_ALLOW_UPDATE, allowUpdate)
+                        bundle.putString(ARG_WORK_ITEM_ID, workItemDetail?.id)
                         bundle.putStringArrayList(
                             ARG_BUILDING_PARAMETERS,
                             workItemDetail?.buildingDetailData?.parameters

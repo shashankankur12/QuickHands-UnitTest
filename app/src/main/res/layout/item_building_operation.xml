@@ -2,21 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:background="@drawable/schedule_item_background"
+    android:orientation="vertical"
+    android:padding="@dimen/_10sdp">
 
     <TextView
         android:id="@+id/textViewHeader"
-        style="@style/detailTextHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/role" />
+        android:text="@string/role"
+        android:textColor="@color/buildingTitle"
+        android:textSize="@dimen/_14ssp"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/editTextValue"
-        style="@style/detailTextValue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_2sdp"
+        android:backgroundTint="@color/buildingTitle"
         android:inputType="textPersonName"
-        android:textStyle="normal" />
+        android:textColor="@color/scheduleDetail"
+        android:textCursorDrawable="@color/buildingTitle"
+        android:textSize="@dimen/_14ssp" />
 </LinearLayout>

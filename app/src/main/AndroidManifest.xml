@@ -73,7 +73,7 @@
             android:name=".modified.views.activities.schedule.AddWorkItemLumpersActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".modified.views.activities.schedule.BuildingOperationsActivity"
+            android:name=".modified.views.activities.buildingOperations.BuildingOperationsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activities.ProfileActivity"
