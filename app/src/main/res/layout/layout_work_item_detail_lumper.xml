@@ -25,6 +25,7 @@
         android:layout_height="@dimen/_8sdp"
         android:background="@drawable/offline_dot"
         android:translationX="-2dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/circleImageViewProfile"
         app:layout_constraintEnd_toEndOf="@+id/circleImageViewProfile" />
 
@@ -113,37 +114,5 @@
             android:textColor="@color/textBlack"
             android:textSize="@dimen/_10ssp"
             android:textStyle="bold" />
-
     </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <Button
-            android:id="@+id/buttonReplace"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_30ssp"
-            android:background="@drawable/round_button_red_new"
-            android:text="@string/replace"
-            android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/_12ssp"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/textViewReplaced"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/replacementRequested"
-            android:textColor="@color/buttonRed"
-            android:textSize="@dimen/_12ssp"
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,5 @@
 package com.quickhandslogistics.modified.views.activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.quickhandslogistics.BuildConfig

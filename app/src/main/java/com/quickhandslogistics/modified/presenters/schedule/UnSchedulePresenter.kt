@@ -42,10 +42,19 @@ class UnSchedulePresenter(
 
     override fun onSuccess(unScheduleListAPIResponse: UnScheduleListAPIResponse) {
         val workItemsList = ArrayList<ScheduleDetail>()
-        unScheduleListAPIResponse.data?.records?.todayScheduleList?.let {
+        unScheduleListAPIResponse.data?.records?.day1ScheduleList?.let {
             workItemsList.addAll(it)
         }
-        unScheduleListAPIResponse.data?.records?.tomorrowScheduleList?.let {
+        unScheduleListAPIResponse.data?.records?.day2ScheduleList?.let {
+            workItemsList.addAll(it)
+        }
+        unScheduleListAPIResponse.data?.records?.day3ScheduleList?.let {
+            workItemsList.addAll(it)
+        }
+        unScheduleListAPIResponse.data?.records?.day4ScheduleList?.let {
+            workItemsList.addAll(it)
+        }
+        unScheduleListAPIResponse.data?.records?.day5ScheduleList?.let {
             workItemsList.addAll(it)
         }
 
@@ -79,11 +88,11 @@ class UnSchedulePresenter(
         workItemsList.sortWith(Comparator { workItem1, workItem2 ->
             val dateLong1 = DateUtils.getMillisecondsFromDateString(
                 DateUtils.PATTERN_API_REQUEST_PARAMETER,
-                workItem1?.scheduledFrom
+                workItem1?.endDateForCurrentWorkItem
             )
             val dateLong2 = DateUtils.getMillisecondsFromDateString(
                 DateUtils.PATTERN_API_REQUEST_PARAMETER,
-                workItem2?.scheduledFrom
+                workItem2?.endDateForCurrentWorkItem
             )
             dateLong1.compareTo(dateLong2)
         })

@@ -94,7 +94,6 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
             } ?: run {
                 unSchedulePresenter.getUnScheduledWorkItems(showProgressDialog = true)
             }
-
         }
     }
 
@@ -106,8 +105,7 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
 //        bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleDetail.scheduleIdentity)
         bundle.putParcelable(ARG_SCHEDULE_DETAIL, scheduleDetail)
         startIntent(
-            UnScheduleDetailActivity::class.java,
-            bundle = bundle,
+            UnScheduleDetailActivity::class.java, bundle = bundle,
             requestCode = AppConstant.REQUEST_CODE_CHANGED
         )
     }

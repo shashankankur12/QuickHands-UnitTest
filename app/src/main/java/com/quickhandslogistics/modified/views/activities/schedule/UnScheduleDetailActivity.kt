@@ -165,7 +165,7 @@ class UnScheduleDetailActivity : BaseActivity(), /*LumperImagesContract.OnItemCl
         invalidateOptionsMenu()
 
         textViewBuildingName.text = scheduleDetail.buildingName
-        scheduleDetail.scheduledFrom?.let {
+        scheduleDetail.endDateForCurrentWorkItem?.let {
             textViewScheduleDate.text =
                 DateUtils.changeDateString(PATTERN_API_REQUEST_PARAMETER, PATTERN_NORMAL, it)
         }

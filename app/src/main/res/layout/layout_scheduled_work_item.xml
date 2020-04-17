@@ -32,24 +32,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
 
-    <TextView
-        android:id="@+id/textViewAddLumpers"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:drawableStart="@drawable/ic_add_time_plus"
-        android:drawablePadding="@dimen/_4sdp"
-        android:padding="@dimen/_5sdp"
-        android:text="@string/add_lumpers"
-        android:textColor="@color/buttonRed"
-        android:textSize="@dimen/_12ssp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/textViewDropItems"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/textViewDropItems" />
-
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circleImageViewArrow"
         android:layout_width="@dimen/_22sdp"
