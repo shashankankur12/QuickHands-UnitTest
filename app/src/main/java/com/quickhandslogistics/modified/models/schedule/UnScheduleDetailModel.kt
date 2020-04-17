@@ -13,7 +13,7 @@ class UnScheduleDetailModel : UnScheduleDetailContract.Model {
         onFinishedListener: UnScheduleDetailContract.Model.OnFinishedListener
     ) {
         DataManager.getScheduleDetail(
-            scheduleIdentityId, false,
+            scheduleIdentityId,
             object : ResponseListener<ScheduleDetailAPIResponse> {
                 override fun onSuccess(response: ScheduleDetailAPIResponse) {
                     if (response.success) {

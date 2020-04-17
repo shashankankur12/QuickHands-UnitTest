@@ -31,8 +31,7 @@ interface IApiInterface {
     fun getSchedulesList(
         @Header("Authorization") auth: String,
         @Query("date") date: String,
-        @Query("buildingId") buildingId: String,
-        @Query("scheduled") scheduled: Boolean
+        @Query("buildingId") buildingId: String
     ): Call<ScheduleListAPIResponse>
 
     @GET("schedule/unscheduled")
@@ -44,8 +43,7 @@ interface IApiInterface {
     @GET("schedule/identity/{scheduleIdentityId}")
     fun getScheduleDetail(
         @Header("Authorization") auth: String,
-        @Path("scheduleIdentityId") scheduleIdentityId: String,
-        @Query("scheduled") scheduled: Boolean
+        @Path("scheduleIdentityId") scheduleIdentityId: String
     ): Call<ScheduleDetailAPIResponse>
 
     @GET("schedule/{workItemId}")
@@ -59,14 +57,6 @@ interface IApiInterface {
         @Header("Authorization") auth: String,
         @Path("workItemId") workItemId: String,
         @Body request: AssignLumpersRequest
-    ): Call<BaseResponse>
-
-    @PUT("schedule/{buildingId}/{workItemId}")
-    fun changeWorkItemScheduleStatus(
-        @Header("Authorization") auth: String,
-        @Path("buildingId") buildingId: String,
-        @Path("workItemId") workItemId: String,
-        @Body request: ChangeWorkItemScheduleStatusRequest
     ): Call<BaseResponse>
     /////////////////////////////////////////////////////////////
 

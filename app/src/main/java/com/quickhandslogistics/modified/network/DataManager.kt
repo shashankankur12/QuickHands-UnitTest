@@ -161,15 +161,12 @@ object DataManager : AppConstant {
     }
 
     fun getSchedulesList(
-        date: String,
-        buildingId: String,
+        date: String, buildingId: String,
         listener: ResponseListener<ScheduleListAPIResponse>
     ) {
         val call = getService().getSchedulesList(
             "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            date,
-            buildingId,
-            true
+            date, buildingId
         )
         call.enqueue(object : Callback<ScheduleListAPIResponse> {
             override fun onResponse(
@@ -225,12 +222,11 @@ object DataManager : AppConstant {
 
     fun getScheduleDetail(
         scheduleIdentityId: String,
-        scheduled: Boolean,
         listener: ResponseListener<ScheduleDetailAPIResponse>
     ) {
         val call = getService().getScheduleDetail(
             "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            scheduleIdentityId, scheduled
+            scheduleIdentityId
         )
         call.enqueue(object : Callback<ScheduleDetailAPIResponse> {
             override fun onResponse(
@@ -291,37 +287,6 @@ object DataManager : AppConstant {
         val call = getService().assignLumpers(
             "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
             workItemId, assignLumpersRequest
-        )
-        call.enqueue(object : Callback<BaseResponse> {
-            override fun onResponse(
-                call: Call<BaseResponse>,
-                response: Response<BaseResponse>
-            ) {
-                var errorMessage = ""
-                if (!response.isSuccessful) {
-                    errorMessage = getErrorMessage(response.errorBody())
-                    listener.onError(errorMessage)
-                } else {
-                    response.body()?.let { it ->
-                        listener.onSuccess(it)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-                listener.onError(t)
-            }
-        })
-    }
-
-    fun changeWorkItemScheduleStatus(
-        buildingId: String, workItemId: String,
-        request: ChangeWorkItemScheduleStatusRequest,
-        listener: ResponseListener<BaseResponse>
-    ) {
-        val call = getService().changeWorkItemScheduleStatus(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            buildingId, workItemId, request
         )
         call.enqueue(object : Callback<BaseResponse> {
             override fun onResponse(
