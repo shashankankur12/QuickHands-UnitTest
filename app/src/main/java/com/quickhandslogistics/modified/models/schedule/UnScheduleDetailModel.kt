@@ -9,15 +9,15 @@ import com.quickhandslogistics.network.ResponseListener
 class UnScheduleDetailModel : UnScheduleDetailContract.Model {
 
     override fun fetchScheduleDetail(
-        scheduleIdentityId: String,
+        scheduleIdentityId: String, scheduleFromDate: String,
         onFinishedListener: UnScheduleDetailContract.Model.OnFinishedListener
     ) {
         DataManager.getScheduleDetail(
-            scheduleIdentityId,
+            scheduleIdentityId, scheduleFromDate,
             object : ResponseListener<ScheduleDetailAPIResponse> {
                 override fun onSuccess(response: ScheduleDetailAPIResponse) {
                     if (response.success) {
-                        onFinishedListener.onSuccess(response)
+                        onFinishedListener.onSuccess(response, scheduleFromDate)
                     } else {
                         onFinishedListener.onFailure(response.message)
                     }

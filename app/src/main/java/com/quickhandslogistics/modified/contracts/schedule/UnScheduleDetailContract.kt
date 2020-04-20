@@ -9,19 +9,21 @@ class UnScheduleDetailContract {
     interface Model {
         fun fetchScheduleDetail(
             scheduleIdentityId: String,
+            scheduleFromDate: String,
             onFinishedListener: OnFinishedListener
         )
 
         interface OnFinishedListener {
             fun onFailure(message: String = "")
             fun onSuccess(
-                scheduleDetailAPIResponse: ScheduleDetailAPIResponse
+                scheduleDetailAPIResponse: ScheduleDetailAPIResponse,
+                scheduleFromDate: String
             )
         }
     }
 
     interface View {
-        fun showScheduleData(scheduleDetail: ScheduleDetail)
+        fun showScheduleData(scheduleDetail: ScheduleDetail, scheduleDate: String?)
 
         fun hideProgressDialog()
         fun showProgressDialog(message: String)
@@ -39,6 +41,6 @@ class UnScheduleDetailContract {
     }
 
     interface Presenter {
-        fun getScheduleDetail(scheduleIdentityId: String)
+        fun getScheduleDetail(scheduleIdentityId: String, scheduleFromDate: String)
     }
 }

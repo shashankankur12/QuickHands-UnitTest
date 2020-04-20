@@ -28,6 +28,7 @@ import com.quickhandslogistics.modified.views.adapters.schedule.ScheduleAdapter
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_ALLOW_UPDATE
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_IDENTITY
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.calendar_item.view.*
@@ -178,6 +179,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View,
         val bundle = Bundle()
         bundle.putBoolean(ARG_ALLOW_UPDATE, isCurrentDate)
         bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleDetail.scheduleIdentity)
+        bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
         startIntent(
             ScheduleDetailActivity::class.java, bundle = bundle,
             requestCode = AppConstant.REQUEST_CODE_CHANGED

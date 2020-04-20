@@ -38,8 +38,9 @@ class SchedulePresenter(
     }
 
     override fun onSuccess(selectedDate: Date, scheduleListAPIResponse: ScheduleListAPIResponse) {
-        val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
-        scheduleView?.showDateString(dateString)
+        val dateStringRequested = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
+        val dateStringNormal = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
+        scheduleView?.showDateString(dateStringNormal)
 
         val workItemsList = ArrayList<ScheduleDetail>()
         scheduleListAPIResponse.data?.scheduleDetailsList?.let {
@@ -63,13 +64,18 @@ class SchedulePresenter(
                     scheduleTypes.outbounds, scheduleTypeNames,
                     resources.getString(R.string.string_out_bounds)
                 )
-                oldValue.scheduleTypeNames = scheduleTypeNames
-                oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.liveLoads))
-                oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.drops))
-                oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.outbounds))
-                oldValue.allAssignedLumpers =
-                    oldValue.allAssignedLumpers.distinctBy { it.id } as ArrayList<EmployeeData>
-                iterate.set(oldValue)
+                if (scheduleTypeNames.isEmpty()) {
+                    // Remove the wrong record returned from API of another date.
+                    iterate.remove()
+                } else {
+                    oldValue.scheduleTypeNames = scheduleTypeNames
+                    oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.liveLoads))
+                    oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.drops))
+                    oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.outbounds))
+                    oldValue.allAssignedLumpers =
+                        oldValue.allAssignedLumpers.distinctBy { it.id } as ArrayList<EmployeeData>
+                    iterate.set(oldValue)
+                }
             }
         }
 

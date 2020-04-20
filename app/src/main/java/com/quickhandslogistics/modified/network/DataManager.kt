@@ -223,11 +223,12 @@ object DataManager : AppConstant {
 
     fun getScheduleDetail(
         scheduleIdentityId: String,
+        date: String,
         listener: ResponseListener<ScheduleDetailAPIResponse>
     ) {
         val call = getService().getScheduleDetail(
             "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            scheduleIdentityId
+            scheduleIdentityId, date
         )
         call.enqueue(object : Callback<ScheduleDetailAPIResponse> {
             override fun onResponse(

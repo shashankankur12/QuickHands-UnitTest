@@ -3,7 +3,6 @@ package com.quickhandslogistics.modified.views.activities.buildingOperations
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.buildingOperations.BuildingOperationsContract
@@ -44,7 +43,6 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener,
         buttonSubmit.setOnClickListener(this)
 
         recyclerViewBuildingOperations.apply {
-//            layoutManager = GridLayoutManager(activity, 2)
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(20, 20))
             buildingOperationsAdapter = BuildingOperationsAdapter(allowUpdate, parameters)

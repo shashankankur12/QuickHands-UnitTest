@@ -25,6 +25,7 @@ import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.modified.views.fragments.InfoDialogFragment
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_ALLOW_UPDATE
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_IDENTITY
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
@@ -36,6 +37,9 @@ import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_REQUEST_PAR
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
 import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.content_schedule_detail.*
+import java.util.*
+import kotlin.Comparator
+import kotlin.collections.ArrayList
 
 class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickListener,
     ScheduleDetailContract.View, ScheduleDetailContract.View.OnAdapterItemClickListener {
@@ -47,6 +51,7 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
     private lateinit var scheduleDetailPresenter: ScheduleDetailPresenter
 
     private var allowUpdate: Boolean = false
+    private var selectedTime: Long = 0
     private var scheduleIdentity = ""
     private var scheduleDetail: ScheduleDetail? = null
 
@@ -62,9 +67,10 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
         intent.extras?.let { bundle ->
             allowUpdate = bundle.getBoolean(ARG_ALLOW_UPDATE)
             scheduleIdentity = bundle.getString(ARG_SCHEDULE_IDENTITY, "")
+            selectedTime = bundle.getLong(ARG_SELECTED_DATE_MILLISECONDS, 0)
 
             initializeUI()
-            scheduleDetailPresenter.getScheduleDetail(scheduleIdentity)
+            scheduleDetailPresenter.getScheduleDetail(scheduleIdentity, Date(selectedTime))
         }
     }
 
@@ -141,7 +147,7 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == RESULT_OK) {
-            scheduleDetailPresenter.getScheduleDetail(scheduleIdentity)
+            scheduleDetailPresenter.getScheduleDetail(scheduleIdentity, Date(selectedTime))
             setResult(RESULT_OK)
         }
     }

@@ -16,6 +16,8 @@ import com.quickhandslogistics.modified.views.adapters.schedule.UnScheduledWorkI
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.modified.views.fragments.InfoDialogFragment
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_DETAIL
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_FROM_DATE
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_IDENTITY
 import com.quickhandslogistics.utils.AppConstant.Companion.NOTES_NOT_AVAILABLE
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.DateUtils
@@ -43,15 +45,24 @@ class UnScheduleDetailActivity : BaseActivity(), UnScheduleDetailContract.View {
 
         unScheduleDetailPresenter = UnScheduleDetailPresenter(this, resources)
 
-        intent.extras?.let { bundle ->
-            //scheduleIdentity = bundle.getString(ARG_SCHEDULE_IDENTITY, "")
-            scheduleDetail = bundle.getParcelable(ARG_SCHEDULE_DETAIL)
+        initializeUI()
 
-            initializeUI()
-            scheduleDetail?.let { scheduleDetail ->
-                showScheduleData(scheduleDetail)
+        intent.extras?.let { bundle ->
+            when {
+                bundle.containsKey(ARG_SCHEDULE_DETAIL) -> {
+                    scheduleDetail = bundle.getParcelable(ARG_SCHEDULE_DETAIL)
+                    scheduleDetail?.let { scheduleDetail ->
+                        showScheduleData(scheduleDetail, scheduleDetail.endDateForCurrentWorkItem)
+                    }
+                }
+                bundle.containsKey(ARG_SCHEDULE_IDENTITY) -> {
+                    val scheduleIdentity = bundle.getString(ARG_SCHEDULE_IDENTITY, "")
+                    val scheduleFromDate = bundle.getString(ARG_SCHEDULE_FROM_DATE, "")
+                    unScheduleDetailPresenter.getScheduleDetail(scheduleIdentity, scheduleFromDate)
+                }
+                else -> {
+                }
             }
-            //unScheduleDetailPresenter.getScheduleDetail(scheduleIdentity)
         }
     }
 
@@ -121,12 +132,12 @@ class UnScheduleDetailActivity : BaseActivity(), UnScheduleDetailContract.View {
     /*
     * Presenter Listeners
     */
-    override fun showScheduleData(scheduleDetail: ScheduleDetail) {
+    override fun showScheduleData(scheduleDetail: ScheduleDetail, scheduleDate: String?) {
         this.scheduleDetail = scheduleDetail
         invalidateOptionsMenu()
 
         textViewBuildingName.text = scheduleDetail.buildingName
-        scheduleDetail.endDateForCurrentWorkItem?.let {
+        scheduleDate?.let {
             textViewScheduleDate.text =
                 DateUtils.changeDateString(PATTERN_API_REQUEST_PARAMETER, PATTERN_NORMAL, it)
         }

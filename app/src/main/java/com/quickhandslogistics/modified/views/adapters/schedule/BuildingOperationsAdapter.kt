@@ -22,7 +22,9 @@ class BuildingOperationsAdapter(
     private var data = HashMap<String, String>()
 
     init {
-        parameters.sort()
+        parameters.sortWith(Comparator { value1: String, value2: String ->
+            value1.toLowerCase().compareTo(value2.toLowerCase())
+        })
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
