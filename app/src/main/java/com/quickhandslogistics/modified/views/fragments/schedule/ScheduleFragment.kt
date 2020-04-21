@@ -92,9 +92,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View,
         val myCalendarViewManager = object : CalendarViewManager {
             override fun bindDataToCalendarView(
                 holder: SingleRowCalendarAdapter.CalendarViewHolder,
-                date: Date,
-                position: Int,
-                isSelected: Boolean
+                date: Date, position: Int, isSelected: Boolean
             ) {
                 holder.itemView.tv_date_calendar_item.text = DateUtils.getDayNumber(date)
                 holder.itemView.tv_day_calendar_item.text = DateUtils.getDay3LettersName(date)
@@ -104,19 +102,14 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View,
                     holder.itemView.tv_date_calendar_item.setBackgroundResource(R.drawable.selected_calendar_item_background)
                 } else {
                     holder.itemView.tv_date_calendar_item.setTextColor(
-                        ContextCompat.getColor(
-                            fragmentActivity!!,
-                            R.color.detailHeader
-                        )
+                        ContextCompat.getColor(fragmentActivity!!, R.color.detailHeader)
                     )
                     holder.itemView.tv_date_calendar_item.setBackgroundColor(Color.TRANSPARENT)
                 }
             }
 
             override fun setCalendarViewResourceId(
-                position: Int,
-                date: Date,
-                isSelected: Boolean
+                position: Int, date: Date, isSelected: Boolean
             ): Int {
                 return R.layout.calendar_item
             }

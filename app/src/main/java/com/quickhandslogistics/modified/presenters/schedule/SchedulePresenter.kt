@@ -38,9 +38,8 @@ class SchedulePresenter(
     }
 
     override fun onSuccess(selectedDate: Date, scheduleListAPIResponse: ScheduleListAPIResponse) {
-        val dateStringRequested = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
-        val dateStringNormal = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
-        scheduleView?.showDateString(dateStringNormal)
+        val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
+        scheduleView?.showDateString(dateString)
 
         val workItemsList = ArrayList<ScheduleDetail>()
         scheduleListAPIResponse.data?.scheduleDetailsList?.let {

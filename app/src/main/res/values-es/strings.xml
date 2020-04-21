@@ -186,4 +186,6 @@
     <string name="out_to_lunch">Out to Lunch</string>
     <string name="back_to_work">Back to Work</string>
     <string name="string_ask_to_save_attendance_details">Are you sure you want to save the attendance details?</string>
+    <string name="string_work_items">Work Items</string>
+    <string name="schedule_lumpers_time">Schedule Lumpers Time</string>
 </resources>

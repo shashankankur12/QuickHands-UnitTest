@@ -58,6 +58,14 @@ class DateUtils {
             return selectedCalendar[Calendar.DAY_OF_YEAR] == currentCalendar[Calendar.DAY_OF_YEAR] && selectedCalendar[Calendar.YEAR] == currentCalendar[Calendar.YEAR]
         }
 
+        fun isFutureDate(selectedTime: Long): Boolean {
+            val selectedCalendar = Calendar.getInstance()
+            selectedCalendar.timeInMillis = selectedTime
+            val currentCalendar = Calendar.getInstance()
+
+            return selectedCalendar.after(currentCalendar)
+        }
+
         fun convertDateStringToTime(
             patternDate: String,
             dateString: String? = ""

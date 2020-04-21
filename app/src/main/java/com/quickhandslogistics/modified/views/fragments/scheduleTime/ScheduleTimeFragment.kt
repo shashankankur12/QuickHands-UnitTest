@@ -1,0 +1,237 @@
+package com.quickhandslogistics.modified.views.fragments.scheduleTime
+
+import android.app.Dialog
+import android.graphics.Color
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
+import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
+import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
+import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
+import com.michalsvec.singlerowcalendar.utils.DateUtils
+import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.contracts.scheduleTime.ScheduleTimeContract
+import com.quickhandslogistics.modified.presenters.scheduleTime.ScheduleTimePresenter
+import com.quickhandslogistics.modified.views.BaseFragment
+import com.quickhandslogistics.utils.CustomProgressBar
+import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.Utils
+import kotlinx.android.synthetic.main.calendar_item.view.*
+import kotlinx.android.synthetic.main.fragment_schedule_time.*
+import java.util.*
+
+class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
+    ScheduleTimeContract.View {
+
+    //  private lateinit var lumpersAdapter: LumpersAdapter
+    private lateinit var scheduleTimePresenter: ScheduleTimePresenter
+
+    private var progressDialog: Dialog? = null
+    private var selectedTime: Long = 0
+
+    private var currentDatePosition: Int = 0
+    private var isFutureDate: Boolean = false
+
+    private lateinit var availableDates: List<Date>
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        scheduleTimePresenter = ScheduleTimePresenter(this, resources, sharedPref)
+
+        // Setup DatePicker Dates
+        selectedTime = Date().time
+        availableDates = getAvailableDates()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_schedule_time, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        recyclerViewScheduleTime.apply {
+            val linearLayoutManager = LinearLayoutManager(fragmentActivity!!)
+            layoutManager = linearLayoutManager
+            val dividerItemDecoration =
+                DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
+            addItemDecoration(dividerItemDecoration)
+//            lumpersAdapter = LumpersAdapter(this@ScheduleTimeFragment)
+//            adapter = lumpersAdapter
+        }
+
+//        lumpersAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+//            override fun onChanged() {
+//                super.onChanged()
+//                textViewEmptyData.visibility =
+//                    if (lumpersAdapter.itemCount == 0) View.VISIBLE else View.GONE
+//            }
+//        })
+
+        invalidateScheduleButton()
+
+        editTextSearch.addTextChangedListener(this)
+        imageViewCancel.setOnClickListener(this)
+
+        initializeCalendar()
+
+        singleRowCalendarScheduleTime.select(currentDatePosition)
+    }
+
+    private fun invalidateScheduleButton() {
+        buttonScheduleLumpers.visibility = if (isFutureDate) View.VISIBLE else View.GONE
+    }
+
+    private fun initializeCalendar() {
+        val myCalendarViewManager = object : CalendarViewManager {
+            override fun bindDataToCalendarView(
+                holder: SingleRowCalendarAdapter.CalendarViewHolder,
+                date: Date, position: Int, isSelected: Boolean
+            ) {
+                holder.itemView.tv_date_calendar_item.text = DateUtils.getDayNumber(date)
+                holder.itemView.tv_day_calendar_item.text = DateUtils.getDay3LettersName(date)
+
+                if (isSelected) {
+                    holder.itemView.tv_date_calendar_item.setTextColor(Color.WHITE)
+                    holder.itemView.tv_date_calendar_item.setBackgroundResource(R.drawable.selected_calendar_item_background)
+                } else {
+                    holder.itemView.tv_date_calendar_item.setTextColor(
+                        ContextCompat.getColor(fragmentActivity!!, R.color.detailHeader)
+                    )
+                    holder.itemView.tv_date_calendar_item.setBackgroundColor(Color.TRANSPARENT)
+                }
+            }
+
+            override fun setCalendarViewResourceId(
+                position: Int, date: Date, isSelected: Boolean
+            ): Int {
+                return R.layout.calendar_item
+            }
+        }
+
+        val myCalendarChangesObserver = object : CalendarChangesObserver {
+            override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
+                if (isSelected) {
+                    scheduleTimePresenter.getSchedulesTimeByDate(date)
+                }
+                super.whenSelectionChanged(isSelected, position, date)
+            }
+        }
+
+        val mySelectionManager = object : CalendarSelectionManager {
+            override fun canBeItemSelected(position: Int, date: Date): Boolean {
+                return true
+            }
+        }
+
+        singleRowCalendarScheduleTime.apply {
+            calendarViewManager = myCalendarViewManager
+            calendarChangesObserver = myCalendarChangesObserver
+            calendarSelectionManager = mySelectionManager
+            setDates(availableDates)
+            init()
+            scrollToPosition(availableDates.size - 1)
+        }
+    }
+
+    /*
+    * Presenter Listeners
+    */
+    override fun showDateString(dateString: String) {
+        textViewDate.text = dateString
+    }
+
+    override fun hideProgressDialog() {
+        progressDialog?.dismiss()
+    }
+
+    override fun showProgressDialog(message: String) {
+        progressDialog =
+            CustomProgressBar.getInstance(fragmentActivity!!).showProgressDialog(message)
+    }
+
+    override fun showAPIErrorMessage(message: String) {
+        recyclerViewScheduleTime.visibility = View.GONE
+        textViewEmptyData.visibility = View.VISIBLE
+        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+    }
+
+    override fun showScheduleTimeData(selectedDate: Date) {
+        isFutureDate = com.quickhandslogistics.utils.DateUtils.isFutureDate(selectedDate.time)
+        invalidateScheduleButton()
+
+        /*lumpersAdapter.updateLumpersData(employeeDataList)
+        if (employeeDataList.size > 0) {
+            textViewEmptyData.visibility = View.GONE
+            recyclerViewScheduleTime.visibility = View.VISIBLE
+        } else {
+            recyclerViewScheduleTime.visibility = View.GONE
+            textViewEmptyData.visibility = View.VISIBLE
+        }*/
+    }
+
+    /*
+    * Native Views Listeners
+    */
+    override fun afterTextChanged(p0: Editable?) {}
+
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+    override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        text?.let {
+         //   lumpersAdapter.setSearchEnabled(text.isNotEmpty(), text.toString())
+            imageViewCancel.visibility = if (text.isNotEmpty()) View.VISIBLE else View.GONE
+        }
+    }
+
+    override fun onClick(view: View?) {
+        view?.let {
+            when (view.id) {
+                imageViewCancel.id -> {
+                    editTextSearch.setText("")
+                    Utils.hideSoftKeyboard(fragmentActivity!!)
+                }
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        scheduleTimePresenter.onDestroy()
+    }
+
+    private fun getAvailableDates(): List<Date> {
+        val list: MutableList<Date> = mutableListOf()
+
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_YEAR, 5)
+        val lastDate = calendar[Calendar.DATE]
+        calendar.add(Calendar.DAY_OF_YEAR, -5)
+        val currentDate = calendar[Calendar.DATE]
+        calendar.add(Calendar.WEEK_OF_YEAR, -2)
+
+        while (lastDate != calendar[Calendar.DATE]) {
+            calendar.add(Calendar.DATE, 1)
+            if (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY &&
+                calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY
+            ) {
+                list.add(calendar.time)
+                if (currentDate == calendar[Calendar.DATE]) {
+                    currentDatePosition = list.size - 1
+                }
+            }
+        }
+        return list
+    }
+}

@@ -17,6 +17,7 @@ import com.quickhandslogistics.modified.views.fragments.SettingsFragment
 import com.quickhandslogistics.modified.views.fragments.lumperSheet.LumperSheetFragment
 import com.quickhandslogistics.modified.views.fragments.lumpers.LumpersFragment
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment
+import com.quickhandslogistics.modified.views.fragments.scheduleTime.ScheduleTimeFragment
 import com.quickhandslogistics.utils.SharedPref
 import com.quickhandslogistics.view.fragments.CustomerSheetFragment
 import com.quickhandslogistics.view.fragments.ReportFragment
@@ -106,11 +107,20 @@ open class BaseActivity : AppCompatActivity() {
             )
             it.addItem(
                 NavDrawer.ActivityNavDrawerItem(
-                    ScheduleMainFragment(),
-                    getString(R.string.string_schedule),
+                    ScheduleTimeFragment(),
+                    getString(R.string.schedule_lumpers_time),
                     R.drawable.ic_sidemenu_schedule,
                     R.id.include_main_nav_drawer_topItems,
                     true
+                )
+            )
+            it.addItem(
+                NavDrawer.ActivityNavDrawerItem(
+                    ScheduleMainFragment(),
+                    getString(R.string.string_schedule),
+                    R.drawable.ic_sidemenu_lumper_sheet,
+                    R.id.include_main_nav_drawer_topItems,
+                    false
                 )
             )
             it.addItem(
