@@ -17,11 +17,12 @@ interface AppConstant {
         const val NOTIFICATION_KEY_CONTENT = "NotificationDescription"
         const val NOTIFICATION_KEY_TYPE = "NotificationType"
         const val NOTIFICATION_KEY_SCHEDULE_IDENTITY = "ScheduleIdentity"
+        const val NOTIFICATION_KEY_SCHEDULE_FROM_DATE = "ScheduledFromDate"
 
         //Notification Types
         const val NOTIFICATION_TYPE_SCHEDULE_CREATE = "ScheduleCreate"
 
-        const val NOTES_NOT_AVAILABLE = "Not available"
+        const val NOTES_NOT_AVAILABLE = "NA"
 
         const val EDIT_DIALOG = "edit_dialog"
 

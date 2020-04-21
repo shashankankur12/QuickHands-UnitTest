@@ -15,6 +15,7 @@ import com.google.firebase.messaging.RemoteMessage
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.views.activities.SplashActivity
 import com.quickhandslogistics.modified.views.activities.schedule.UnScheduleDetailActivity
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_FROM_DATE
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_IDENTITY
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
@@ -72,10 +73,15 @@ class NotificationService : FirebaseMessagingService() {
         // Check for different Notification Type and extract relevant data.
         val bundle = Bundle()
         if (notificationType == AppConstant.NOTIFICATION_TYPE_SCHEDULE_CREATE) {
-            if (data.containsKey(AppConstant.NOTIFICATION_KEY_SCHEDULE_IDENTITY)) {
+            if (data.containsKey(AppConstant.NOTIFICATION_KEY_SCHEDULE_IDENTITY)
+                && data.containsKey(AppConstant.NOTIFICATION_KEY_SCHEDULE_FROM_DATE)
+            ) {
                 val scheduleIdentity =
                     data[AppConstant.NOTIFICATION_KEY_SCHEDULE_IDENTITY].toString()
+                val scheduleFromDate =
+                    data[AppConstant.NOTIFICATION_KEY_SCHEDULE_FROM_DATE].toString()
                 bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleIdentity)
+                bundle.putString(ARG_SCHEDULE_FROM_DATE, scheduleFromDate)
                 intent.setClass(applicationContext, UnScheduleDetailActivity::class.java)
             }
             intent.putExtras(bundle)

@@ -5,15 +5,20 @@ import com.quickhandslogistics.modified.contracts.schedule.ScheduleDetailContrac
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetailAPIResponse
 import com.quickhandslogistics.modified.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
+import com.quickhandslogistics.utils.DateUtils
+import java.util.*
 
 class ScheduleDetailModel : ScheduleDetailContract.Model {
 
     override fun fetchScheduleDetail(
         scheduleIdentityId: String,
+        selectedDate: Date,
         onFinishedListener: ScheduleDetailContract.Model.OnFinishedListener
     ) {
+        val dateString =
+            DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
         DataManager.getScheduleDetail(
-            scheduleIdentityId, true,
+            scheduleIdentityId, dateString,
             object : ResponseListener<ScheduleDetailAPIResponse> {
                 override fun onSuccess(response: ScheduleDetailAPIResponse) {
                     if (response.success) {

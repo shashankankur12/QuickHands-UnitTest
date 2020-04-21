@@ -7,14 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.contracts.schedule.UnScheduleDetailContract
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import kotlinx.android.synthetic.main.layout_unscheduled_work_item.view.*
 
 class UnScheduledWorkItemAdapter(
-    private val resources: Resources,
-    private val workItemTypeDisplayName: String/*,
-    private var adapterItemClickListener: UnScheduleDetailContract.View.OnAdapterItemClickListener*/
+    private val resources: Resources, private val workItemTypeDisplayName: String
 ) : RecyclerView.Adapter<UnScheduledWorkItemAdapter.WorkItemViewHolder>() {
 
     private val workItemsList: ArrayList<WorkItemDetail> = ArrayList()
@@ -43,21 +40,10 @@ class UnScheduledWorkItemAdapter(
         notifyDataSetChanged()
     }
 
-    inner class WorkItemViewHolder(view: View) : RecyclerView.ViewHolder(view)
-    /*View.OnClickListener, LumperImagesContract.OnItemClickListener*/ {
+    inner class WorkItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val textViewStartTime: TextView = view.textViewStartTime
         private val textViewDropItems: TextView = view.textViewDropItems
-        //private val circleImageArrow: CircleImageView = view.circleImageViewArrow
-        //private val textViewAddLumpers: TextView = view.textViewAddLumpers
-        //private val recyclerViewLumpersImagesList: RecyclerView = view.recyclerViewLumpersImagesList
-
-/*        init {
-            recyclerViewLumpersImagesList.apply {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                addItemDecoration(OverlapDecoration())
-            }
-        }*/
 
         fun bind(workItemDetail: WorkItemDetail) {
             textViewStartTime.text = String.format(
@@ -85,43 +71,6 @@ class UnScheduledWorkItemAdapter(
                     )
                 }
             }
-
-            /*if (workItemDetail.assignedLumpersList?.size!! > 0) {
-                textViewAddLumpers.visibility = View.GONE
-                circleImageArrow.visibility = View.VISIBLE
-                recyclerViewLumpersImagesList.visibility = View.VISIBLE
-
-                recyclerViewLumpersImagesList.apply {
-                    adapter = LumperImagesAdapter(
-                        workItemDetail.assignedLumpersList!! as ArrayList<EmployeeData>,
-                        this@WorkItemViewHolder
-                    )
-                }
-                itemView.setOnClickListener(this)
-            } else {
-                textViewAddLumpers.visibility = View.VISIBLE
-                circleImageArrow.visibility = View.GONE
-                recyclerViewLumpersImagesList.visibility = View.GONE
-
-                textViewAddLumpers.setOnClickListener(this)
-            }*/
         }
-
-/*
-        override fun onClick(view: View?) {
-            view?.let {
-                val workItem = getItem(adapterPosition)
-                when (view.id) {
-                    itemView.id -> adapterItemClickListener.onWorkItemClick(workItem, workItemTypeDisplayName)
-                    textViewAddLumpers.id -> adapterItemClickListener.onAddLumpersItemClick(workItem)
-                }
-            }
-        }
-
-
-        override fun onLumperImageItemClick(lumpersList: ArrayList<EmployeeData>) {
-            adapterItemClickListener.onLumperImagesClick(lumpersList)
-        }
- */
     }
 }

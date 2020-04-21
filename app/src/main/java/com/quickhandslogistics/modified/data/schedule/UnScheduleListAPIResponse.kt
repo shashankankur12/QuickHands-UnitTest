@@ -16,12 +16,24 @@ class UnScheduleListAPIResponse : BaseResponse() {
     }
 
     class Records {
-        @SerializedName("tod")
+        @SerializedName("day1")
         @Expose
-        var todayScheduleList: ArrayList<ScheduleDetail>? = null
+        var day1ScheduleList: ArrayList<ScheduleDetail>? = null
 
-        @SerializedName("tom")
+        @SerializedName("day2")
         @Expose
-        var tomorrowScheduleList: ArrayList<ScheduleDetail>? = null
+        var day2ScheduleList: ArrayList<ScheduleDetail>? = null
+
+        @SerializedName("day3")
+        @Expose
+        var day3ScheduleList: ArrayList<ScheduleDetail>? = null
+
+        @SerializedName("day4")
+        @Expose
+        var day4ScheduleList: ArrayList<ScheduleDetail>? = null
+
+        @SerializedName("day5")
+        @Expose
+        var day5ScheduleList: ArrayList<ScheduleDetail>? = null
     }
 }

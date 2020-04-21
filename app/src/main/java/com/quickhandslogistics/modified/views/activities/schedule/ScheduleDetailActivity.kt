@@ -1,6 +1,7 @@
 package com.quickhandslogistics.modified.views.activities.schedule
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -22,12 +23,13 @@ import com.quickhandslogistics.modified.views.adapters.schedule.ScheduledWorkIte
 import com.quickhandslogistics.modified.views.controls.OverlapDecoration
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.modified.views.fragments.InfoDialogFragment
-import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_ALLOW_UPDATE
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_IDENTITY
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.AppConstant.Companion.NOTES_NOT_AVAILABLE
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.DateUtils
@@ -35,6 +37,9 @@ import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_REQUEST_PAR
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
 import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.content_schedule_detail.*
+import java.util.*
+import kotlin.Comparator
+import kotlin.collections.ArrayList
 
 class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickListener,
     ScheduleDetailContract.View, ScheduleDetailContract.View.OnAdapterItemClickListener {
@@ -46,6 +51,7 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
     private lateinit var scheduleDetailPresenter: ScheduleDetailPresenter
 
     private var allowUpdate: Boolean = false
+    private var selectedTime: Long = 0
     private var scheduleIdentity = ""
     private var scheduleDetail: ScheduleDetail? = null
 
@@ -61,9 +67,10 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
         intent.extras?.let { bundle ->
             allowUpdate = bundle.getBoolean(ARG_ALLOW_UPDATE)
             scheduleIdentity = bundle.getString(ARG_SCHEDULE_IDENTITY, "")
+            selectedTime = bundle.getLong(ARG_SELECTED_DATE_MILLISECONDS, 0)
 
             initializeUI()
-            scheduleDetailPresenter.getScheduleDetail(scheduleIdentity)
+            scheduleDetailPresenter.getScheduleDetail(scheduleIdentity, Date(selectedTime))
         }
     }
 
@@ -135,6 +142,14 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == RESULT_OK) {
+            scheduleDetailPresenter.getScheduleDetail(scheduleIdentity, Date(selectedTime))
+            setResult(RESULT_OK)
+        }
     }
 
     /*
@@ -249,10 +264,13 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
         workItemTypeDisplayName: String
     ) {
         val bundle = Bundle()
-        bundle.putBoolean(ScheduleMainFragment.ARG_ALLOW_UPDATE, allowUpdate)
+        bundle.putBoolean(ARG_ALLOW_UPDATE, allowUpdate)
         bundle.putString(ARG_WORK_ITEM_ID, workItemDetail.id)
         bundle.putString(ARG_WORK_ITEM_TYPE, workItemDetail.workItemType)
         bundle.putString(ARG_WORK_ITEM_TYPE_DISPLAY_NAME, workItemTypeDisplayName)
-        startIntent(ScheduledWorkItemDetailActivity::class.java, bundle = bundle)
+        startIntent(
+            ScheduledWorkItemDetailActivity::class.java, bundle = bundle,
+            requestCode = AppConstant.REQUEST_CODE_CHANGED
+        )
     }
 }

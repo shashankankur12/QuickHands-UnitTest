@@ -15,7 +15,6 @@ import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.views.adapters.LumperImagesAdapter
 import com.quickhandslogistics.modified.views.controls.OverlapDecoration
-import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.layout_scheduled_work_item.view.*
 
 class ScheduledWorkItemAdapter(
@@ -56,8 +55,6 @@ class ScheduledWorkItemAdapter(
 
         private val textViewStartTime: TextView = view.textViewStartTime
         private val textViewDropItems: TextView = view.textViewDropItems
-        private val circleImageArrow: CircleImageView = view.circleImageViewArrow
-        private val textViewAddLumpers: TextView = view.textViewAddLumpers
         private val recyclerViewLumpersImagesList: RecyclerView = view.recyclerViewLumpersImagesList
 
         init {
@@ -95,24 +92,10 @@ class ScheduledWorkItemAdapter(
                 }
             }
 
-            if (workItemDetail.assignedLumpersList?.size!! > 0) {
-                textViewAddLumpers.visibility = View.GONE
-                circleImageArrow.visibility = View.VISIBLE
-                recyclerViewLumpersImagesList.visibility = View.VISIBLE
-
-                recyclerViewLumpersImagesList.apply {
-                    adapter = LumperImagesAdapter(
-                        workItemDetail.assignedLumpersList!! as ArrayList<EmployeeData>,
-                        this@WorkItemViewHolder
-                    )
-                }
-                itemView.setOnClickListener(this)
-            } else {
-                textViewAddLumpers.visibility = View.VISIBLE
-                circleImageArrow.visibility = View.GONE
-                recyclerViewLumpersImagesList.visibility = View.GONE
-
-                textViewAddLumpers.setOnClickListener(this)
+            recyclerViewLumpersImagesList.apply {
+                adapter = LumperImagesAdapter(
+                    workItemDetail.assignedLumpersList!!, this@WorkItemViewHolder
+                )
             }
 
             itemView.setOnClickListener(this)

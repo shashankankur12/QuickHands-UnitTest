@@ -7,6 +7,7 @@ import com.quickhandslogistics.modified.contracts.schedule.ScheduleDetailContrac
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetailAPIResponse
 import com.quickhandslogistics.modified.models.schedule.ScheduleDetailModel
 import com.quickhandslogistics.modified.views.controls.ScheduleUtils.getScheduleTypeName
+import java.util.*
 
 class ScheduleDetailPresenter(
     private var scheduleDetailView: ScheduleDetailContract.View?,
@@ -16,9 +17,9 @@ class ScheduleDetailPresenter(
 
     private val scheduleDetailModel: ScheduleDetailModel = ScheduleDetailModel()
 
-    override fun getScheduleDetail(scheduleIdentityId: String) {
+    override fun getScheduleDetail(scheduleIdentityId: String,  selectedDate: Date) {
         scheduleDetailView?.showProgressDialog(resources.getString(R.string.api_loading_message))
-        scheduleDetailModel.fetchScheduleDetail(scheduleIdentityId, this)
+        scheduleDetailModel.fetchScheduleDetail(scheduleIdentityId, selectedDate, this)
     }
 
     override fun onFailure(message: String) {

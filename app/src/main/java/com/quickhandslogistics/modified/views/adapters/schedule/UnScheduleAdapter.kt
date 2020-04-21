@@ -81,8 +81,8 @@ class UnScheduleAdapter(
                 scheduleDetail.totalNumberOfWorkItems
             )
 
-            if (adapterPosition == 0 || getItem(adapterPosition - 1).scheduledFrom != scheduleDetail.scheduledFrom) {
-                scheduleDetail.scheduledFrom?.let {
+            if (adapterPosition == 0 || getItem(adapterPosition - 1).endDateForCurrentWorkItem != scheduleDetail.endDateForCurrentWorkItem) {
+                scheduleDetail.endDateForCurrentWorkItem?.let {
                     textViewDate.text = DateUtils.changeDateString(
                         DateUtils.PATTERN_API_REQUEST_PARAMETER,
                         DateUtils.PATTERN_NORMAL,

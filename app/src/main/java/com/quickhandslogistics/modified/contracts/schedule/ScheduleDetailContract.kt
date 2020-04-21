@@ -4,12 +4,14 @@ import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetailAPIResponse
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
+import java.util.*
 
 class ScheduleDetailContract {
 
     interface Model {
         fun fetchScheduleDetail(
             scheduleIdentityId: String,
+            selectedDate: Date,
             onFinishedListener: OnFinishedListener
         )
 
@@ -38,6 +40,6 @@ class ScheduleDetailContract {
     }
 
     interface Presenter {
-        fun getScheduleDetail(scheduleIdentityId: String)
+        fun getScheduleDetail(scheduleIdentityId: String, selectedDate: Date)
     }
 }

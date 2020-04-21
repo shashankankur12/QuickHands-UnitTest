@@ -16,9 +16,9 @@ class UnScheduleDetailPresenter(
 
     private val unScheduleDetailModel: UnScheduleDetailModel = UnScheduleDetailModel()
 
-    override fun getScheduleDetail(scheduleIdentityId: String) {
+    override fun getScheduleDetail(scheduleIdentityId: String, scheduleFromDate: String) {
         unScheduleDetailView?.showProgressDialog(resources.getString(R.string.api_loading_message))
-        unScheduleDetailModel.fetchScheduleDetail(scheduleIdentityId, this)
+        unScheduleDetailModel.fetchScheduleDetail(scheduleIdentityId, scheduleFromDate, this)
     }
 
     override fun onFailure(message: String) {
@@ -30,7 +30,9 @@ class UnScheduleDetailPresenter(
         }
     }
 
-    override fun onSuccess(scheduleDetailAPIResponse: ScheduleDetailAPIResponse) {
+    override fun onSuccess(
+        scheduleDetailAPIResponse: ScheduleDetailAPIResponse, scheduleFromDate: String
+    ) {
         unScheduleDetailView?.hideProgressDialog()
         scheduleDetailAPIResponse.data?.schedules?.let { scheduleDetail ->
             var scheduleTypeNames = ""
@@ -50,7 +52,7 @@ class UnScheduleDetailPresenter(
                 resources.getString(R.string.string_out_bounds)
             )
             scheduleDetail.scheduleTypeNames = scheduleTypeNames
-            unScheduleDetailView?.showScheduleData(scheduleDetail)
+            unScheduleDetailView?.showScheduleData(scheduleDetail, scheduleFromDate)
         }
     }
 }
