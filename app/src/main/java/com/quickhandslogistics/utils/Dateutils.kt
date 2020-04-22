@@ -85,5 +85,9 @@ class DateUtils {
             return dateStringValue
         }
 
+        fun convertMillisecondsToTimeString(milliseconds: Long): String {
+            val dateFormatTo = SimpleDateFormat(PATTERN_TIME)
+            return dateFormatTo.format(Date(milliseconds))
+        }
     }
 }

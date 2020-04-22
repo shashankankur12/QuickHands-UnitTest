@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/_10ssp"
+    android:paddingBottom="@dimen/_10ssp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageViewProfile"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:contentDescription="@string/nav_header_desc"
+        android:src="@drawable/dummy"
+        app:civ_border_color="@color/imageBorder"
+        app:civ_border_width="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewLumperName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="John Snow"
+        android:textColor="@color/textBlack"
+        android:textSize="@dimen/_14ssp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/labelBarrier"
+        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewEmployeeId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="(Emp ID: 1001)"
+        android:textColor="@color/textBlack"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintEnd_toStartOf="@id/labelBarrier"
+        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/labelBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="textViewScheduleTime,textViewAddStartTime" />
+
+    <TextView
+        android:id="@+id/textViewScheduleTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="7:00 AM"
+        android:textColor="@color/textBlack"
+        android:textSize="@dimen/_12ssp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewAddStartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:drawableStart="@drawable/ic_add_time_plus"
+        android:drawablePadding="@dimen/_5sdp"
+        android:padding="@dimen/_5sdp"
+        android:text="@string/add_start_time"
+        android:textColor="@color/buttonRed"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

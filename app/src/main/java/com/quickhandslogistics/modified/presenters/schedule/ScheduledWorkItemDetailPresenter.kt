@@ -6,7 +6,6 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduledWorkItemDetailContract
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetailAPIResponse
 import com.quickhandslogistics.modified.models.schedule.ScheduledWorkItemDetailModel
-import com.quickhandslogistics.utils.StringUtils
 
 class ScheduledWorkItemDetailPresenter(
     private var scheduledWorkItemDetailView: ScheduledWorkItemDetailContract.View?,
@@ -37,15 +36,6 @@ class ScheduledWorkItemDetailPresenter(
     override fun onSuccess(response: WorkItemDetailAPIResponse) {
         scheduledWorkItemDetailView?.hideProgressDialog()
         response.data?.workItemDetail?.let { workItemDetail ->
-            workItemDetail.assignedLumpersList?.sortWith(Comparator { lumper1, lumper2 ->
-                if (!StringUtils.isNullOrEmpty(lumper1.firstName)
-                    && !StringUtils.isNullOrEmpty(lumper2.firstName)
-                ) {
-                    lumper1.firstName?.toLowerCase()!!.compareTo(lumper2.firstName?.toLowerCase()!!)
-                } else {
-                    0
-                }
-            })
             scheduledWorkItemDetailView?.showWorkItemDetail(workItemDetail)
         }
     }

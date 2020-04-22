@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
 import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
 import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
@@ -18,19 +19,25 @@ import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
 import com.michalsvec.singlerowcalendar.utils.DateUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.scheduleTime.ScheduleTimeContract
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.presenters.scheduleTime.ScheduleTimePresenter
 import com.quickhandslogistics.modified.views.BaseFragment
+import com.quickhandslogistics.modified.views.activities.scheduleTime.EditScheduleTimeActivity
+import com.quickhandslogistics.modified.views.adapters.scheduleTime.ScheduleTimeAdapter
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.calendar_item.view.*
 import kotlinx.android.synthetic.main.fragment_schedule_time.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
     ScheduleTimeContract.View {
 
-    //  private lateinit var lumpersAdapter: LumpersAdapter
+    private lateinit var scheduleTimeAdapter: ScheduleTimeAdapter
     private lateinit var scheduleTimePresenter: ScheduleTimePresenter
 
     private var progressDialog: Dialog? = null
@@ -67,22 +74,24 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
             val dividerItemDecoration =
                 DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-//            lumpersAdapter = LumpersAdapter(this@ScheduleTimeFragment)
-//            adapter = lumpersAdapter
+            scheduleTimeAdapter = ScheduleTimeAdapter()
+            adapter = scheduleTimeAdapter
         }
 
-//        lumpersAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-//            override fun onChanged() {
-//                super.onChanged()
-//                textViewEmptyData.visibility =
-//                    if (lumpersAdapter.itemCount == 0) View.VISIBLE else View.GONE
-//            }
-//        })
+        scheduleTimeAdapter.registerAdapterDataObserver(object :
+            RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                textViewEmptyData.visibility =
+                    if (scheduleTimeAdapter.itemCount == 0) View.VISIBLE else View.GONE
+            }
+        })
 
         invalidateScheduleButton()
 
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
+        buttonScheduleLumpers.setOnClickListener(this)
 
         initializeCalendar()
 
@@ -167,18 +176,19 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
-    override fun showScheduleTimeData(selectedDate: Date) {
+    override fun showScheduleTimeData(selectedDate: Date, employeeDataList: ArrayList<EmployeeData>) {
+        selectedTime = selectedDate.time
         isFutureDate = com.quickhandslogistics.utils.DateUtils.isFutureDate(selectedDate.time)
         invalidateScheduleButton()
 
-        /*lumpersAdapter.updateLumpersData(employeeDataList)
+        scheduleTimeAdapter.updateLumpersData(employeeDataList)
         if (employeeDataList.size > 0) {
             textViewEmptyData.visibility = View.GONE
             recyclerViewScheduleTime.visibility = View.VISIBLE
         } else {
             recyclerViewScheduleTime.visibility = View.GONE
             textViewEmptyData.visibility = View.VISIBLE
-        }*/
+        }
     }
 
     /*
@@ -190,7 +200,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
 
     override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
         text?.let {
-         //   lumpersAdapter.setSearchEnabled(text.isNotEmpty(), text.toString())
+            scheduleTimeAdapter.setSearchEnabled(text.isNotEmpty(), text.toString())
             imageViewCancel.visibility = if (text.isNotEmpty()) View.VISIBLE else View.GONE
         }
     }
@@ -201,6 +211,14 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
                 imageViewCancel.id -> {
                     editTextSearch.setText("")
                     Utils.hideSoftKeyboard(fragmentActivity!!)
+                }
+                buttonScheduleLumpers.id -> {
+                    val bundle = Bundle()
+                    bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
+                    startIntent(
+                        EditScheduleTimeActivity::class.java,
+                        bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED
+                    )
                 }
             }
         }

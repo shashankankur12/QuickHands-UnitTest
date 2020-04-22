@@ -24,6 +24,7 @@
         <activity android:name=".modified.views.activities.LumperDetailActivity" />
         <activity android:name=".modified.views.activities.schedule.ScheduleDetailActivity" />
         <activity android:name=".modified.views.activities.schedule.UnScheduleDetailActivity" />
+        <activity android:name=".modified.views.activities.scheduleTime.EditScheduleTimeActivity" />
         <activity android:name=".modified.views.BaseActivity" />
         <activity
             android:name=".view.activities.SignatureActivity"

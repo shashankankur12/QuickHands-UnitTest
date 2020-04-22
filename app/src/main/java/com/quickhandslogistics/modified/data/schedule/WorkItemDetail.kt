@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName
 import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.utils.StringUtils
 
 class WorkItemDetail() : Parcelable {
     @SerializedName("id")
@@ -80,6 +81,18 @@ class WorkItemDetail() : Parcelable {
     @SerializedName("lumperThisWorkItemAssignedTo")
     @Expose
     var assignedLumpersList: ArrayList<EmployeeData>? = null
+        get() = if (!field.isNullOrEmpty()) {
+            field!!.sortWith(Comparator { lumper1, lumper2 ->
+                if (!StringUtils.isNullOrEmpty(lumper1.firstName)
+                    && !StringUtils.isNullOrEmpty(lumper2.firstName)
+                ) {
+                    lumper1.firstName?.toLowerCase()!!.compareTo(lumper2.firstName?.toLowerCase()!!)
+                } else {
+                    0
+                }
+            })
+            field
+        } else ArrayList()
 
     @SerializedName("lumperAttendance")
     @Expose

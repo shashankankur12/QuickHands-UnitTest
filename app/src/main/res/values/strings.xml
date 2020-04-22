@@ -188,4 +188,10 @@
     <string name="string_ask_to_save_attendance_details">Are you sure you want to save the attendance details?</string>
     <string name="string_work_items">Work Items</string>
     <string name="schedule_lumpers_time">Schedule Lumpers Time</string>
+    <string name="add_same_start_time_for_all">Add Same Start Time for All</string>
+    <string name="request_help">Request Help</string>
+    <string name="notes_for_scheduled_lumpers">Notes for Scheduled Lumpers...</string>
+    <string name="notes_for_qhl_dm">Notes for QHL District Manager</string>
+    <string name="no_of_lumpers_needed">No. of Additional Lumpers Needed</string>
+    <string name="add_start_time">Add Start Time</string>
 </resources>

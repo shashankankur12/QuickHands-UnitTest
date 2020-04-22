@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.scheduleTime.ScheduleTimeContract
-import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
+import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.models.scheduleTime.ScheduleTimeModel
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SharedPref
@@ -39,11 +39,8 @@ class ScheduleTimePresenter(
         }
     }
 
-    override fun onSuccess(selectedDate: Date, scheduleListAPIResponse: ScheduleListAPIResponse) {
-//        if (workItemsList.size > 0) {
-//            scheduleTimeView?.showScheduleData(selectedDate, workItemsList)
-//        }
+    override fun onSuccess(selectedDate: Date, allLumpersResponse: AllLumpersResponse) {
         scheduleTimeView?.hideProgressDialog()
-        scheduleTimeView?.showScheduleTimeData(selectedDate)
+        scheduleTimeView?.showScheduleTimeData(selectedDate, allLumpersResponse.data!!)
     }
 }

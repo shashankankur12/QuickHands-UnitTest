@@ -35,14 +35,6 @@ class LumpersPresenter(
 
     override fun onSuccess(allLumpersResponse: AllLumpersResponse) {
         lumpersView?.hideProgressDialog()
-        allLumpersResponse.data.sortWith(Comparator { lumper1, lumper2 ->
-            if (!StringUtils.isNullOrEmpty(lumper1.firstName) && !StringUtils.isNullOrEmpty(lumper2.firstName)
-            ) {
-                lumper1.firstName?.toLowerCase()!!.compareTo(lumper2.firstName?.toLowerCase()!!)
-            } else {
-                0
-            }
-        })
-        lumpersView?.showLumpersData(allLumpersResponse.data)
+        lumpersView?.showLumpersData(allLumpersResponse.data!!)
     }
 }

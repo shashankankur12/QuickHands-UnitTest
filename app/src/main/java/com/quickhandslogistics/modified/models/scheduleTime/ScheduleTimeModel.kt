@@ -3,6 +3,7 @@ package com.quickhandslogistics.modified.models.scheduleTime
 import android.util.Log
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.modified.contracts.scheduleTime.ScheduleTimeContract
+import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.modified.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
@@ -21,11 +22,9 @@ class ScheduleTimeModel(private val sharedPref: SharedPref) : ScheduleTimeContra
             DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
         val buildingId = sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID)
 
-        DataManager.getSchedulesList(
-            dateString,
-            buildingId,
-            object : ResponseListener<ScheduleListAPIResponse> {
-                override fun onSuccess(response: ScheduleListAPIResponse) {
+        DataManager.getAllLumpersData(
+            object : ResponseListener<AllLumpersResponse> {
+                override fun onSuccess(response: AllLumpersResponse) {
                     if (response.success) {
                         onFinishedListener.onSuccess(selectedDate, response)
                     } else {
