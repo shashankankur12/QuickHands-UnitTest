@@ -160,7 +160,7 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener,
         this.workItemDetail = workItemDetail
         textViewStartTime.text = String.format(
             getString(R.string.start_time_container),
-            workItemDetail.startTime
+            DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime)
         )
         workItemDetail.scheduledFrom?.let {
             textViewScheduledDate.text =

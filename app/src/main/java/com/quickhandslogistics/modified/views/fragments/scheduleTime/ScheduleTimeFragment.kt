@@ -1,6 +1,7 @@
 package com.quickhandslogistics.modified.views.fragments.scheduleTime
 
 import android.app.Dialog
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
@@ -18,6 +19,7 @@ import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
 import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
 import com.michalsvec.singlerowcalendar.utils.DateUtils
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.contracts.DashBoardContract
 import com.quickhandslogistics.modified.contracts.scheduleTime.ScheduleTimeContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.presenters.scheduleTime.ScheduleTimePresenter
@@ -32,11 +34,11 @@ import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.calendar_item.view.*
 import kotlinx.android.synthetic.main.fragment_schedule_time.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
     ScheduleTimeContract.View {
 
+    private var listener: DashBoardContract.View.OnFragmentInteractionListener? = null
     private lateinit var scheduleTimeAdapter: ScheduleTimeAdapter
     private lateinit var scheduleTimePresenter: ScheduleTimePresenter
 
@@ -48,6 +50,12 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
 
     private lateinit var availableDates: List<Date>
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is DashBoardContract.View.OnFragmentInteractionListener) {
+            listener = context
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,6 +108,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
 
     private fun invalidateScheduleButton() {
         buttonScheduleLumpers.visibility = if (isFutureDate) View.VISIBLE else View.GONE
+        listener?.invalidateScheduleTimeNotes(if (isFutureDate) "Sample Notes" else "")
     }
 
     private fun initializeCalendar() {
@@ -176,7 +185,10 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
-    override fun showScheduleTimeData(selectedDate: Date, employeeDataList: ArrayList<EmployeeData>) {
+    override fun showScheduleTimeData(
+        selectedDate: Date,
+        employeeDataList: ArrayList<EmployeeData>
+    ) {
         selectedTime = selectedDate.time
         isFutureDate = com.quickhandslogistics.utils.DateUtils.isFutureDate(selectedDate.time)
         invalidateScheduleButton()

@@ -194,4 +194,11 @@
     <string name="notes_for_qhl_dm">Notes for QHL District Manager</string>
     <string name="no_of_lumpers_needed">No. of Additional Lumpers Needed</string>
     <string name="add_start_time">Add Start Time</string>
+    <string name="work_sheet">Work Sheet</string>
+    <string name="ongoing">Ongoing</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="completed">Completed</string>
+    <string name="cancel_all_work_schedules">Cancel All Work Schedules</string>
+    <string name="notes_for_customer">Notes for Customer</string>
+    <string name="notes_for_qhl">Notes for QHL</string>
 </resources>

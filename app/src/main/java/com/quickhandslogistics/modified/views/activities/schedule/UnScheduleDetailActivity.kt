@@ -116,13 +116,12 @@ class UnScheduleDetailActivity : BaseActivity(), UnScheduleDetailContract.View {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionNotes -> {
-                val dialog =
-                    InfoDialogFragment.newInstance(scheduleDetail?.scheduleNote!!,
-                        showInfoIcon = false,
-                        onClickListener = object : InfoDialogContract.View.OnClickListener {
-                            override fun onPositiveButtonClick() {
-                            }
-                        })
+                val dialog = InfoDialogFragment.newInstance(scheduleDetail?.scheduleNote!!,
+                    showInfoIcon = false,
+                    onClickListener = object : InfoDialogContract.View.OnClickListener {
+                        override fun onPositiveButtonClick() {
+                        }
+                    })
                 dialog.show(supportFragmentManager, InfoDialogFragment::class.simpleName)
             }
         }

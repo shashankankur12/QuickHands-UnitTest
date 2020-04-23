@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.quickhandslogistics.R;
+import com.quickhandslogistics.modified.contracts.DashBoardContract;
 import com.quickhandslogistics.modified.contracts.InfoDialogWarningContract;
 import com.quickhandslogistics.modified.views.BaseActivity;
 import com.quickhandslogistics.modified.views.activities.LoginActivity;
@@ -26,6 +27,7 @@ public class NavDrawer {
 
     private final BaseActivity activity;
     private final FragmentTransaction fragmentTransaction;
+    private final DashBoardContract.View.OnFragmentInteractionListener onFragmentInteractionListener;
 
     private final Toolbar toolbar;
     private final DrawerLayout drawerLayout;
@@ -34,10 +36,11 @@ public class NavDrawer {
     private ArrayList<NavDrawerItem> items;
     private NavDrawerItem selectedItem;
 
-    public NavDrawer(BaseActivity activity, Toolbar toolbar, FragmentTransaction fragmentTransaction) {
+    public NavDrawer(BaseActivity activity, Toolbar toolbar, FragmentTransaction fragmentTransaction, DashBoardContract.View.OnFragmentInteractionListener onFragmentInteractionListener) {
         this.activity = activity;
         this.toolbar = toolbar;
         this.fragmentTransaction = fragmentTransaction;
+        this.onFragmentInteractionListener = onFragmentInteractionListener;
 
         items = new ArrayList<>();
 
@@ -78,6 +81,10 @@ public class NavDrawer {
 
         selectedItem = item;
         selectedItem.setSelected(true);
+    }
+
+    private void invalidateOptionMenu(String title) {
+        onFragmentInteractionListener.onNewFragmentReplaced(title);
     }
 
     public void create() {
@@ -174,6 +181,7 @@ public class NavDrawer {
                 toolbar.setTitle(text);
                 this.navDrawer.setSelectedItem(this);
                 showFragment(this.navDrawer.activity);
+                this.navDrawer.invalidateOptionMenu(text);
             }
         }
 
@@ -201,6 +209,7 @@ public class NavDrawer {
                 toolbar.setTitle(text);
                 navDrawer.setSelectedItem(this);
                 showFragment(activity);
+                navDrawer.invalidateOptionMenu(text);
             }
         }
 

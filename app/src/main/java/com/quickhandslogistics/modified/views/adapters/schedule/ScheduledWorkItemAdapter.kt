@@ -15,6 +15,7 @@ import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.views.adapters.LumperImagesAdapter
 import com.quickhandslogistics.modified.views.controls.OverlapDecoration
+import com.quickhandslogistics.utils.DateUtils
 import kotlinx.android.synthetic.main.layout_scheduled_work_item.view.*
 
 class ScheduledWorkItemAdapter(
@@ -68,7 +69,7 @@ class ScheduledWorkItemAdapter(
         fun bind(workItemDetail: WorkItemDetail) {
             textViewStartTime.text = String.format(
                 resources.getString(R.string.start_time_container),
-                workItemDetail.startTime
+                DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime)
             )
 
             when (workItemTypeDisplayName) {

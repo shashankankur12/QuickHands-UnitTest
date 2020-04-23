@@ -7,4 +7,10 @@
         android:title="@string/notes"
         android:visible="false"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/actionCancelAllWork"
+        android:title="@string/cancel_all_work_schedules"
+        android:visible="false"
+        app:showAsAction="never" />
 </menu>

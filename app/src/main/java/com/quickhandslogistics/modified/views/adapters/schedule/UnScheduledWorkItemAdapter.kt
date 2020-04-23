@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
+import com.quickhandslogistics.utils.DateUtils
 import kotlinx.android.synthetic.main.layout_unscheduled_work_item.view.*
 
 class UnScheduledWorkItemAdapter(
@@ -48,7 +49,7 @@ class UnScheduledWorkItemAdapter(
         fun bind(workItemDetail: WorkItemDetail) {
             textViewStartTime.text = String.format(
                 resources.getString(R.string.start_time_container),
-                workItemDetail.startTime
+                DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime)
             )
 
             when (workItemTypeDisplayName) {

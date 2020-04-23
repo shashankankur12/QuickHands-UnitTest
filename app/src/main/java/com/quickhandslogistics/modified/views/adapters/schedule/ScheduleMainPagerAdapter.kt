@@ -10,21 +10,16 @@ import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleFragmen
 import com.quickhandslogistics.modified.views.fragments.schedule.UnScheduleFragment
 
 class ScheduleMainPagerAdapter(
-    childFragmentManager: FragmentManager,
-    private val resources: Resources
+    childFragmentManager: FragmentManager, private val resources: Resources
 ) :
     FragmentStatePagerAdapter(
-        childFragmentManager,
-        BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+        childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
     ) {
 
     private var scheduleFragment = ScheduleFragment.newInstance()
     private var unScheduleFragment = UnScheduleFragment.newInstance()
 
-    private val tabTitles = arrayOf(
-        R.string.scheduled_work,
-        R.string.unscheduled_work
-    )
+    private val tabTitles = arrayOf(R.string.scheduled_work, R.string.unscheduled_work)
 
     override fun getItem(position: Int): Fragment {
         return if (position == 0) scheduleFragment else unScheduleFragment

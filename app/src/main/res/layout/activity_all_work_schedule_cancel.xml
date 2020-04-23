@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
-    tools:context=".modified.views.activities.scheduleTime.EditScheduleTimeActivity">
+    tools:context=".modified.views.activities.workSheet.AllWorkScheduleCancelActivity">
 
     <include
         android:id="@+id/header"
@@ -74,19 +74,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/buttonAddStartTimeAll"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/round_button_selector_long"
-                android:padding="@dimen/_10ssp"
-                android:text="@string/add_same_start_time_for_all"
-                android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/_14ssp" />
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -121,18 +108,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/notes"
+                    android:text="@string/notes_for_customer"
                     android:textColor="@color/buildingTitle"
                     android:textSize="@dimen/_14ssp"
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/editTextNotes"
+                    android:id="@+id/editTextCustomerNotes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_2sdp"
                     android:backgroundTint="@color/buildingTitle"
-                    android:hint="@string/notes_for_scheduled_lumpers"
                     android:inputType="textMultiLine"
                     android:maxLines="3"
                     android:textColor="@color/scheduleDetail"
@@ -151,30 +137,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/request_help"
+                    android:text="@string/notes_for_qhl"
                     android:textColor="@color/buildingTitle"
                     android:textSize="@dimen/_14ssp"
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/editTextLumpersRequired"
+                    android:id="@+id/editTextQHLNotes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_2sdp"
                     android:backgroundTint="@color/buildingTitle"
-                    android:hint="@string/no_of_lumpers_needed"
-                    android:inputType="number"
-                    android:textColor="@color/scheduleDetail"
-                    android:textCursorDrawable="@color/buildingTitle"
-                    android:textSize="@dimen/_12ssp" />
-
-                <EditText
-                    android:id="@+id/editTextDMNotes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:backgroundTint="@color/buildingTitle"
-                    android:hint="@string/notes_for_qhl_dm"
                     android:inputType="textMultiLine"
                     android:maxLines="3"
                     android:textColor="@color/scheduleDetail"

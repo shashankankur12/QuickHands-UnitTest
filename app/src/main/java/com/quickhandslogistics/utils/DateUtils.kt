@@ -89,5 +89,20 @@ class DateUtils {
             val dateFormatTo = SimpleDateFormat(PATTERN_TIME)
             return dateFormatTo.format(Date(milliseconds))
         }
+
+        fun convertMillisecondsToUTCTimeString(milliseconds: String?): String? {
+            return try {
+                val dateFormatFrom = SimpleDateFormat(PATTERN_API_RESPONSE)
+                dateFormatFrom.timeZone = TimeZone.getTimeZone("UTC")
+                val formattedDateString =
+                    dateFormatFrom.format(Date(milliseconds!!.toLong() * 1000L))
+                val formattedDate = dateFormatFrom.parse(formattedDateString)
+
+                val dateFormatTo = SimpleDateFormat(PATTERN_TIME)
+                dateFormatTo.format(formattedDate)
+            } catch (e: Exception) {
+                milliseconds
+            }
+        }
     }
 }
