@@ -18,7 +18,6 @@ import com.quickhandslogistics.modified.contracts.MarkAttendanceContract
 import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import de.hdodenhof.circleimageview.CircleImageView
@@ -96,10 +95,10 @@ class MarkAttendanceAdapter(
                 val isPresent = getDefaultOrValue(attendanceDetail.isPresent)
                 if (isPresent) {
                     val morningPunchIn = DateUtils.convertDateStringToTime(
-                        PATTERN_API_RESPONSE, attendanceDetail.morningPunchIn
+                        DateUtils.PATTERN_API_RESPONSE, attendanceDetail.morningPunchIn
                     )
                     val eveningPunchOut = DateUtils.convertDateStringToTime(
-                        PATTERN_API_RESPONSE, attendanceDetail.eveningPunchOut
+                        DateUtils.PATTERN_API_RESPONSE, attendanceDetail.eveningPunchOut
                     )
                     textViewShiftTime.text = String.format(
                         "%s - %s",
@@ -108,10 +107,10 @@ class MarkAttendanceAdapter(
                     )
 
                     val lunchPunchIn = DateUtils.convertDateStringToTime(
-                        PATTERN_API_RESPONSE, attendanceDetail.lunchPunchIn
+                        DateUtils.PATTERN_API_RESPONSE, attendanceDetail.lunchPunchIn
                     )
                     val lunchPunchOut = DateUtils.convertDateStringToTime(
-                        PATTERN_API_RESPONSE, attendanceDetail.lunchPunchOut
+                        DateUtils.PATTERN_API_RESPONSE, attendanceDetail.lunchPunchOut
                     )
                     textViewLunchTime.text = String.format(
                         "%s - %s",
@@ -249,7 +248,7 @@ class MarkAttendanceAdapter(
 
         //Update in Local List Object to show changes on UI
         getItem(itemPosition).attendanceDetail?.morningPunchIn =
-            DateUtils.getUTCDateString(PATTERN_API_RESPONSE, Date(currentTime))
+            DateUtils.getUTCDateString(DateUtils.PATTERN_API_RESPONSE, Date(currentTime))
         notifyDataSetChanged()
     }
 
@@ -263,7 +262,7 @@ class MarkAttendanceAdapter(
 
         //Update in Local List Object to show changes on UI
         getItem(itemPosition).attendanceDetail?.eveningPunchOut =
-            DateUtils.getUTCDateString(PATTERN_API_RESPONSE, Date(currentTime))
+            DateUtils.getUTCDateString(DateUtils.PATTERN_API_RESPONSE, Date(currentTime))
         notifyDataSetChanged()
     }
 
@@ -277,7 +276,7 @@ class MarkAttendanceAdapter(
 
         //Update in Local List Object to show changes on UI
         getItem(itemPosition).attendanceDetail?.lunchPunchIn =
-            DateUtils.getUTCDateString(PATTERN_API_RESPONSE, Date(currentTime))
+            DateUtils.getUTCDateString(DateUtils.PATTERN_API_RESPONSE, Date(currentTime))
         notifyDataSetChanged()
     }
 
@@ -291,7 +290,7 @@ class MarkAttendanceAdapter(
 
         //Update in Local List Object to show changes on UI
         getItem(itemPosition).attendanceDetail?.lunchPunchOut =
-            DateUtils.getUTCDateString(PATTERN_API_RESPONSE, Date(currentTime))
+            DateUtils.getUTCDateString(DateUtils.PATTERN_API_RESPONSE, Date(currentTime))
         notifyDataSetChanged()
     }
 
