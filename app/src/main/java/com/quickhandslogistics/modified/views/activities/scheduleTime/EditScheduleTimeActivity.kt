@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.scheduleTime.EditScheduleTimeContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.modified.presenters.scheduleTime.EditScheduleTimePresenter
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.adapters.scheduleTime.EditScheduleTimeAdapter
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
@@ -29,17 +31,12 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     EditScheduleTimeContract.View, EditScheduleTimeContract.View.OnAdapterItemClickListener {
 
     private var selectedTime: Long = 0
-    private var assignedLumpersList: ArrayList<EmployeeData> = ArrayList()
+    private var scheduleTimeList: ArrayList<ScheduleTimeDetail> = ArrayList()
 
     private lateinit var editScheduleTimePresenter: EditScheduleTimePresenter
     private lateinit var editScheduleTimeAdapter: EditScheduleTimeAdapter
 
     private var progressDialog: Dialog? = null
-
-    companion object {
-        const val ARG_IS_ADD_LUMPER = "ARG_IS_ADD_LUMPER"
-        const val ARG_ASSIGNED_LUMPERS_LIST = "ARG_ASSIGNED_LUMPERS_LIST"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,14 +45,9 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
 
         intent.extras?.let { bundle ->
             selectedTime = bundle.getLong(ARG_SELECTED_DATE_MILLISECONDS, 0)
+            scheduleTimeList =
+                bundle.getParcelableArrayList<ScheduleTimeDetail>(ARG_SCHEDULED_TIME_LIST) as ArrayList<ScheduleTimeDetail>
         }
-        /*intent.extras?.let { it ->
-            val isAddLumper = it.getBoolean(ARG_IS_ADD_LUMPER, true)
-            if (it.containsKey(ARG_ASSIGNED_LUMPERS_LIST)) {
-                assignedLumpersList =
-                    it.getParcelableArrayList<EmployeeData>(ARG_ASSIGNED_LUMPERS_LIST) as ArrayList<EmployeeData>
-            }
-        }*/
 
         recyclerViewLumpers.apply {
             val linearLayoutManager = LinearLayoutManager(activity)
@@ -63,7 +55,8 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             val dividerItemDecoration =
                 DividerItemDecoration(activity, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            editScheduleTimeAdapter = EditScheduleTimeAdapter(this@EditScheduleTimeActivity)
+            editScheduleTimeAdapter =
+                EditScheduleTimeAdapter(scheduleTimeList, this@EditScheduleTimeActivity)
             adapter = editScheduleTimeAdapter
         }
 
@@ -76,8 +69,6 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             }
         })
 
-        // Enable Submit button if Lead is Updating Lumpers
-        onSelectLumper(assignedLumpersList.size)
 
         editScheduleTimePresenter = EditScheduleTimePresenter(this, resources, sharedPref)
         editScheduleTimePresenter.fetchLumpersList()
@@ -109,12 +100,16 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
                     timePickerDialog.show()
                 }
                 buttonSubmit.id -> {
-                    /* val selectedLumperIdsList = addWorkItemLumperAdapter.getSelectedLumper()
-                     if (selectedLumperIdsList.size > 0) {
-                         addWorkItemLumpersPresenter.initiateAssigningLumpers(
-                             selectedLumperIdsList, workItemId, workItemType
-                         )
-                     }*/
+                    val scheduledLumpersIdsTimeMap = editScheduleTimeAdapter.getSelectedLumpers()
+                    if (scheduledLumpersIdsTimeMap.size > 0) {
+                        val requiredLumperCount = editTextLumpersRequired.text.toString()
+                        editScheduleTimePresenter.initiateScheduleTime(
+                            scheduledLumpersIdsTimeMap,
+                            editTextNotes.text.toString(),
+                            if (requiredLumperCount.isNotEmpty()) requiredLumperCount.toInt() else 0,
+                            editTextDMNotes.text.toString()
+                        )
+                    }
                 }
 
                 imageViewCancel.id -> {
@@ -134,16 +129,6 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             editScheduleTimeAdapter.setSearchEnabled(text.isNotEmpty(), text.toString())
             imageViewCancel.visibility = if (text.isNotEmpty()) View.VISIBLE else View.GONE
         }
-    }
-
-    override fun onSelectLumper(totalSelectedCount: Int) {
-        /*if (totalSelectedCount > 0) {
-            buttonAdd.isEnabled = true
-            buttonAdd.setBackgroundResource(R.drawable.round_button_red_new)
-        } else {
-            buttonAdd.isEnabled = false
-            buttonAdd.setBackgroundResource(R.drawable.round_button_disabled)
-        }*/
     }
 
     override fun onAddStartTimeClick(adapterPosition: Int, timeInMillis: Long) {

@@ -24,15 +24,9 @@ class AllWorkScheduleCancelPresenter(
         allWorkScheduleCancelView = null
     }
 
-    override fun initiateScheduleTime(
-        selectedLumperIdsList: ArrayList<String>,
-        workItemId: String,
-        workItemType: String
-    ) {
+    override fun initiateCancellingWorkSchedules(selectedLumperIdsList: ArrayList<String>) {
         allWorkScheduleCancelView?.showProgressDialog(resources.getString(R.string.api_loading_message))
-        allWorkScheduleCancelModel.assignScheduleTime(
-            workItemId,
-            workItemType,
+        allWorkScheduleCancelModel.cancelAllWorkSchedules(
             selectedLumperIdsList,
             this
         )
@@ -52,8 +46,8 @@ class AllWorkScheduleCancelPresenter(
         allWorkScheduleCancelView?.showLumpersData(allLumpersResponse.data!!)
     }
 
-    override fun onSuccessScheduleTime() {
+    override fun onSuccessCancelWorkSchedules() {
         allWorkScheduleCancelView?.hideProgressDialog()
-        allWorkScheduleCancelView?.scheduleTimeFinished()
+        allWorkScheduleCancelView?.cancellingWorkScheduleFinished()
     }
 }

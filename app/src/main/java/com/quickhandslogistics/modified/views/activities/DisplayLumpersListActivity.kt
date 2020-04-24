@@ -31,7 +31,7 @@ class DisplayLumpersListActivity : BaseActivity(), View.OnClickListener, TextWat
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_display_lumpers_list)
-        setupToolbar(title = getString(R.string.string_lumper))
+        setupToolbar(title = getString(R.string.string_lumpers))
 
         intent.extras?.let {
             val lumpersList = it.getParcelableArrayList<EmployeeData>(ARG_LUMPERS_LIST)

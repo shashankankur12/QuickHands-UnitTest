@@ -133,7 +133,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             )
             it.addItem(
                 NavDrawer.ActivityNavDrawerItem(
-                    LumpersFragment(), getString(R.string.string_lumper),
+                    LumpersFragment(), getString(R.string.string_lumpers),
                     R.drawable.ic_sidemenu_lumpers,
                     R.id.include_main_nav_drawer_topItems, false
                 )

@@ -6,9 +6,7 @@ import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 class AllWorkScheduleCancelContract {
     interface Model {
         fun fetchLumpersList(onFinishedListener: OnFinishedListener)
-        fun assignScheduleTime(
-            workItemId: String,
-            workItemType: String,
+        fun cancelAllWorkSchedules(
             selectedLumperIdsList: ArrayList<String>,
             onFinishedListener: OnFinishedListener
         )
@@ -16,7 +14,7 @@ class AllWorkScheduleCancelContract {
         interface OnFinishedListener {
             fun onFailure(message: String = "")
             fun onSuccessFetchLumpers(allLumpersResponse: AllLumpersResponse)
-            fun onSuccessScheduleTime()
+            fun onSuccessCancelWorkSchedules()
         }
     }
 
@@ -25,7 +23,7 @@ class AllWorkScheduleCancelContract {
         fun showProgressDialog(message: String)
         fun showAPIErrorMessage(message: String)
         fun showLumpersData(employeeDataList: ArrayList<EmployeeData>)
-        fun scheduleTimeFinished()
+        fun cancellingWorkScheduleFinished()
 
         interface OnAdapterItemClickListener {
             fun onSelectLumper(totalSelectedCount: Int)
@@ -35,10 +33,6 @@ class AllWorkScheduleCancelContract {
     interface Presenter {
         fun fetchLumpersList()
         fun onDestroy()
-        fun initiateScheduleTime(
-            selectedLumperIdsList: ArrayList<String>,
-            workItemId: String,
-            workItemType: String
-        )
+        fun initiateCancellingWorkSchedules(selectedLumperIdsList: ArrayList<String>)
     }
 }

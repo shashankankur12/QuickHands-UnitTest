@@ -5,7 +5,6 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.view.activities.CustomerActivity
@@ -35,8 +34,8 @@ class ReportAdapter (val items: ArrayList<String>,val itemimages: ArrayList<Int>
 
                 val intent = Intent(context, LumperListActivity::class.java)
                 intent.putExtra(
-                    context.getString(R.string.string_lumper),
-                    context.getString(R.string.string_lumper)
+                    context.getString(R.string.string_lumpers),
+                    context.getString(R.string.string_lumpers)
                 )
                 context.startActivity(intent)
             } else if (position == 0) {

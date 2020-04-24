@@ -1,9 +1,8 @@
 package com.quickhandslogistics.modified.contracts.scheduleTime
 
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
-import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
+import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeDetail
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ScheduleTimeContract {
     interface Model {
@@ -16,7 +15,7 @@ class ScheduleTimeContract {
             fun onFailure(message: String = "")
             fun onSuccess(
                 selectedDate: Date,
-                allLumpersResponse: AllLumpersResponse
+                getScheduleTimeAPIResponse: GetScheduleTimeAPIResponse
             )
         }
     }
@@ -26,7 +25,9 @@ class ScheduleTimeContract {
         fun hideProgressDialog()
         fun showProgressDialog(message: String)
         fun showAPIErrorMessage(message: String)
-        fun showScheduleTimeData(selectedDate: Date, employeeDataList: ArrayList<EmployeeData>)
+        fun showScheduleTimeData(
+            selectedDate: Date, scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>
+        )
     }
 
     interface Presenter {

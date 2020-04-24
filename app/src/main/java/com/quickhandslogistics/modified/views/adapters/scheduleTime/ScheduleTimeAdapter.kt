@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeDetail
+import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.ValueUtils
 import de.hdodenhof.circleimageview.CircleImageView
@@ -21,8 +22,9 @@ class ScheduleTimeAdapter : Adapter<ScheduleTimeAdapter.ViewHolder>() {
 
     private var searchEnabled = false
     private var searchTerm = ""
-    var items: ArrayList<EmployeeData> = ArrayList()
-    private var filteredItems: ArrayList<EmployeeData> = ArrayList()
+
+    private var items: ArrayList<ScheduleTimeDetail> = ArrayList()
+    private var filteredItems: ArrayList<ScheduleTimeDetail> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context)
@@ -34,7 +36,7 @@ class ScheduleTimeAdapter : Adapter<ScheduleTimeAdapter.ViewHolder>() {
         return if (searchEnabled) filteredItems.size else items.size
     }
 
-    private fun getItem(position: Int): EmployeeData {
+    private fun getItem(position: Int): ScheduleTimeDetail {
         return if (searchEnabled) filteredItems[position] else items[position]
     }
 
@@ -42,9 +44,9 @@ class ScheduleTimeAdapter : Adapter<ScheduleTimeAdapter.ViewHolder>() {
         holder.bind(getItem(position))
     }
 
-    fun updateLumpersData(employeeDataList: java.util.ArrayList<EmployeeData>) {
+    fun updateLumpersData(scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>) {
         items.clear()
-        items.addAll(employeeDataList)
+        items.addAll(scheduleTimeDetailList)
         notifyDataSetChanged()
     }
 
@@ -56,27 +58,35 @@ class ScheduleTimeAdapter : Adapter<ScheduleTimeAdapter.ViewHolder>() {
         var textViewScheduleTime: TextView = view.textViewScheduleTime
         var circleImageViewProfile: CircleImageView = view.circleImageViewProfile
 
-        fun bind(employeeData: EmployeeData) {
-            if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl)) {
-                Glide.with(context).load(employeeData.profileImageUrl)
-                    .placeholder(R.drawable.dummy).error(R.drawable.dummy)
-                    .into(circleImageViewProfile)
-            } else {
-                Glide.with(context).clear(circleImageViewProfile);
+        fun bind(scheduleTimeDetail: ScheduleTimeDetail) {
+            val employeeData = scheduleTimeDetail.lumperInfo
+            employeeData?.let {
+                if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl)) {
+                    Glide.with(context).load(employeeData.profileImageUrl)
+                        .placeholder(R.drawable.dummy).error(R.drawable.dummy)
+                        .into(circleImageViewProfile)
+                } else {
+                    Glide.with(context).clear(circleImageViewProfile)
+                }
+
+                textViewLumperName.text = String.format(
+                    "%s %s",
+                    ValueUtils.getDefaultOrValue(employeeData.firstName).capitalize(),
+                    ValueUtils.getDefaultOrValue(employeeData.lastName).capitalize()
+                )
+
+                if (StringUtils.isNullOrEmpty(employeeData.employeeId)) {
+                    textViewEmployeeId.visibility = View.GONE
+                } else {
+                    textViewEmployeeId.visibility = View.VISIBLE
+                    textViewEmployeeId.text = String.format("(Emp ID: %s)", employeeData.employeeId)
+                }
             }
 
-            textViewLumperName.text = String.format(
-                "%s %s",
-                ValueUtils.getDefaultOrValue(employeeData.firstName).capitalize(),
-                ValueUtils.getDefaultOrValue(employeeData.lastName).capitalize()
+            textViewScheduleTime.text = DateUtils.convertDateStringToTime(
+                DateUtils.PATTERN_API_RESPONSE,
+                scheduleTimeDetail.reportingTimeAndDay
             )
-
-            if (StringUtils.isNullOrEmpty(employeeData.employeeId)) {
-                textViewEmployeeId.visibility = View.GONE
-            } else {
-                textViewEmployeeId.visibility = View.VISIBLE
-                textViewEmployeeId.text = String.format("(Emp ID: %s)", employeeData.employeeId)
-            }
         }
     }
 
@@ -98,7 +108,7 @@ class ScheduleTimeAdapter : Adapter<ScheduleTimeAdapter.ViewHolder>() {
             filteredItems.addAll(items)
         } else {
             for (data in items) {
-                val term = "${data.firstName} ${data.lastName}"
+                val term = "${data.lumperInfo?.firstName} ${data.lumperInfo?.lastName}"
                 if (term.toLowerCase(Locale.getDefault()).contains(searchTerm)) {
                     filteredItems.add(data)
                 }

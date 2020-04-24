@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.LumperImagesContract
-import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
+import com.quickhandslogistics.modified.contracts.WorkSheetItemContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.views.adapters.LumperImagesAdapter
@@ -19,50 +19,50 @@ import kotlinx.android.synthetic.main.layout_item_work_sheet.view.*
 
 class WorkSheetItemAdapter(
     private val workItemType: String, private val resources: Resources,
-    var adapterItemClickListener: ScheduleContract.View.OnAdapterItemClickListener
+    var adapterItemClickListener: WorkSheetItemContract.View.OnAdapterItemClickListener
 ) :
-    RecyclerView.Adapter<WorkSheetItemAdapter.ScheduleViewHolder>() {
+    RecyclerView.Adapter<WorkSheetItemAdapter.ViewHolder>() {
 
     private var workItemsList: ArrayList<ScheduleDetail> = ArrayList()
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ScheduleViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.layout_item_work_sheet, viewGroup, false)
-        return ScheduleViewHolder(view)
+        return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(scheduleViewHolder: ScheduleViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         //  val item = getItem(position)
         // scheduleViewHolder.bind(item)
         when (workItemType) {
             resources.getString(R.string.ongoing) -> {
                 when (position) {
                     0 -> {
-                        scheduleViewHolder.textViewStatus.text = "In Progress"
-                        scheduleViewHolder.textViewStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
-                        scheduleViewHolder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_in_progress)
+                        holder.textViewStatus.text = "In Progress"
+                        holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
+                        holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_in_progress)
                     }
                     1 -> {
-                        scheduleViewHolder.textViewStatus.text = "On Hold"
-                        scheduleViewHolder.textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
-                        scheduleViewHolder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_on_hold)
+                        holder.textViewStatus.text = "On Hold"
+                        holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
+                        holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_on_hold)
                     }
                     else -> {
-                        scheduleViewHolder.textViewStatus.text = "Scheduled"
-                        scheduleViewHolder.textViewStatus.setBackgroundResource(R.drawable.chip_background_scheduled)
-                        scheduleViewHolder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_scheduled)
+                        holder.textViewStatus.text = "Scheduled"
+                        holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_scheduled)
+                        holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_scheduled)
                     }
                 }
             }
             resources.getString(R.string.cancelled) -> {
-                scheduleViewHolder.textViewStatus.text = "Cancelled"
-                scheduleViewHolder.textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
-                scheduleViewHolder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_cancelled)
+                holder.textViewStatus.text = "Cancelled"
+                holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
+                holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_cancelled)
             }
             resources.getString(R.string.completed) -> {
-                scheduleViewHolder.textViewStatus.text = "Completed"
-                scheduleViewHolder.textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
-                scheduleViewHolder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_completed)
+                holder.textViewStatus.text = "Completed"
+                holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
+                holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_completed)
             }
         }
     }
@@ -81,7 +81,7 @@ class WorkSheetItemAdapter(
         notifyDataSetChanged()
     }
 
-    inner class ScheduleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener, LumperImagesContract.OnItemClickListener {
 
         var textViewBuildingName: TextView = itemView.textViewBuildingName
@@ -96,6 +96,8 @@ class WorkSheetItemAdapter(
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 addItemDecoration(OverlapDecoration())
             }
+
+            itemView.setOnClickListener(this)
         }
 
         fun bind(scheduleDetail: ScheduleDetail) {
@@ -108,26 +110,20 @@ class WorkSheetItemAdapter(
 
             recyclerViewLumpersImagesList.apply {
                 adapter =
-                    LumperImagesAdapter(scheduleDetail.allAssignedLumpers, this@ScheduleViewHolder)
+                    LumperImagesAdapter(scheduleDetail.allAssignedLumpers, this@ViewHolder)
             }
-
-            itemView.setOnClickListener(this)
         }
 
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
-                    itemView.id -> adapterItemClickListener.onScheduleItemClick(
-                        getItem(
-                            adapterPosition
-                        )
-                    )
+                    itemView.id -> adapterItemClickListener.onItemClick()
                 }
             }
         }
 
         override fun onLumperImageItemClick(lumpersList: ArrayList<EmployeeData>) {
-            adapterItemClickListener.onLumperImagesClick(lumpersList)
+            //adapterItemClickListener.onLumperImagesClick(lumpersList)
         }
     }
 }

@@ -29,6 +29,7 @@ class ScheduleMainFragment : BaseFragment(),
         const val ARG_WORK_ITEM_ID = "ARG_WORK_ITEM_ID"
         const val ARG_WORK_ITEM_TYPE = "ARG_WORK_ITEM_TYPE"
         const val ARG_WORK_ITEM_TYPE_DISPLAY_NAME = "ARG_WORK_ITEM_TYPE_DISPLAY_NAME"
+        const val ARG_SCHEDULED_TIME_LIST = "ARG_SCHEDULED_TIME_LIST"
     }
 
     override fun onCreateView(

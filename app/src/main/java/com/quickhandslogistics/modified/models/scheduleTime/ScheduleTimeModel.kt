@@ -1,18 +1,14 @@
 package com.quickhandslogistics.modified.models.scheduleTime
 
 import android.util.Log
-import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.modified.contracts.scheduleTime.ScheduleTimeContract
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
-import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
+import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.modified.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
-import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 
-class ScheduleTimeModel(private val sharedPref: SharedPref) : ScheduleTimeContract.Model {
+class ScheduleTimeModel : ScheduleTimeContract.Model {
 
     override fun fetchSchedulesTimeByDate(
         selectedDate: Date,
@@ -20,11 +16,10 @@ class ScheduleTimeModel(private val sharedPref: SharedPref) : ScheduleTimeContra
     ) {
         val dateString =
             DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
-        val buildingId = sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID)
 
-        DataManager.getAllLumpersData(
-            object : ResponseListener<AllLumpersResponse> {
-                override fun onSuccess(response: AllLumpersResponse) {
+        DataManager.getScheduleTimeList(dateString,
+            object : ResponseListener<GetScheduleTimeAPIResponse> {
+                override fun onSuccess(response: GetScheduleTimeAPIResponse) {
                     if (response.success) {
                         onFinishedListener.onSuccess(selectedDate, response)
                     } else {

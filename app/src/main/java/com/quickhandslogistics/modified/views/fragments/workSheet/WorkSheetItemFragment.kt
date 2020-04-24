@@ -6,11 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.contracts.WorkSheetItemContract
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleMainContract
-import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.views.BaseFragment
+import com.quickhandslogistics.modified.views.activities.workSheet.WorkSheetItemDetailActivity
 import com.quickhandslogistics.modified.views.adapters.workSheet.WorkSheetItemAdapter
 import com.quickhandslogistics.modified.views.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.utils.SnackBarFactory
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_work_sheet_item.*
 import java.util.*
 
 class WorkSheetItemFragment : BaseFragment(), ScheduleContract.View,
-    ScheduleContract.View.OnAdapterItemClickListener {
+    WorkSheetItemContract.View.OnAdapterItemClickListener {
 
     private var workItemType: String = ""
 
@@ -55,7 +56,8 @@ class WorkSheetItemFragment : BaseFragment(), ScheduleContract.View,
         recyclerViewWorkSheet.apply {
             layoutManager = LinearLayoutManager(fragmentActivity!!)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            workSheetItemAdapter = WorkSheetItemAdapter(workItemType, resources, this@WorkSheetItemFragment)
+            workSheetItemAdapter =
+                WorkSheetItemAdapter(workItemType, resources, this@WorkSheetItemFragment)
             adapter = workSheetItemAdapter
         }
     }
@@ -63,30 +65,17 @@ class WorkSheetItemFragment : BaseFragment(), ScheduleContract.View,
     /*
     * Adapter Item Click Listeners
     */
-    override fun onScheduleItemClick(scheduleDetail: ScheduleDetail) {
-        /*val bundle = Bundle()
-        bundle.putBoolean(ARG_ALLOW_UPDATE, isCurrentDate)
-        bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleDetail.scheduleIdentity)
-        bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
-        startIntent(
-            ScheduleDetailActivity::class.java, bundle = bundle,
-            requestCode = AppConstant.REQUEST_CODE_CHANGED
-        )*/
-    }
-
-    override fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>) {
-        /*val bundle = Bundle()
-        bundle.putParcelableArrayList(DisplayLumpersListActivity.ARG_LUMPERS_LIST, lumpersList)
-        startIntent(DisplayLumpersListActivity::class.java, bundle = bundle)*/
-    }
-
-    override fun showDateString(dateString: String) {
-
+    override fun onItemClick() {
+        startIntent(WorkSheetItemDetailActivity::class.java)
     }
 
     /*
     * Presenter Listeners
     */
+    override fun showDateString(dateString: String) {
+
+    }
+
     override fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<ScheduleDetail>) {
 //        scheduleAdapter.updateList(workItemsList)
 

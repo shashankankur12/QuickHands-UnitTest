@@ -7,24 +7,24 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.workSheet.AllWorkScheduleCancelContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.presenters.workSheet.AllWorkScheduleCancelPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
+import com.quickhandslogistics.modified.views.adapters.workSheet.AllWorkScheduleCancelAdapter
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.activity_all_work_schedule_cancel.*
 
 class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, TextWatcher,
-    AllWorkScheduleCancelContract.View, AllWorkScheduleCancelContract.View.OnAdapterItemClickListener {
-
-    private var selectedTime: Long = 0
-    private var assignedLumpersList: ArrayList<EmployeeData> = ArrayList()
+    AllWorkScheduleCancelContract.View,
+    AllWorkScheduleCancelContract.View.OnAdapterItemClickListener {
 
     private lateinit var allWorkScheduleCancelPresenter: AllWorkScheduleCancelPresenter
-   // private lateinit var editScheduleTimeAdapter: EditScheduleTimeAdapter
+    private lateinit var allWorkScheduleCancelAdapter: AllWorkScheduleCancelAdapter
 
     private var progressDialog: Dialog? = null
 
@@ -39,21 +39,19 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
             val dividerItemDecoration =
                 DividerItemDecoration(activity, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-           /* editScheduleTimeAdapter = EditScheduleTimeAdapter(this@AllWorkScheduleCancelActivity)
-            adapter = editScheduleTimeAdapter*/
+            allWorkScheduleCancelAdapter =
+                AllWorkScheduleCancelAdapter(this@AllWorkScheduleCancelActivity)
+            adapter = allWorkScheduleCancelAdapter
         }
 
-        /*editScheduleTimeAdapter.registerAdapterDataObserver(object :
+        allWorkScheduleCancelAdapter.registerAdapterDataObserver(object :
             RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
                 textViewEmptyData.visibility =
-                    if (editScheduleTimeAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                    if (allWorkScheduleCancelAdapter.itemCount == 0) View.VISIBLE else View.GONE
             }
-        })*/
-
-        // Enable Submit button if Lead is Updating Lumpers
-        onSelectLumper(assignedLumpersList.size)
+        })
 
         allWorkScheduleCancelPresenter = AllWorkScheduleCancelPresenter(this, resources, sharedPref)
         allWorkScheduleCancelPresenter.fetchLumpersList()
@@ -67,12 +65,13 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
         view?.let {
             when (view.id) {
                 buttonSubmit.id -> {
-                    /* val selectedLumperIdsList = addWorkItemLumperAdapter.getSelectedLumper()
-                     if (selectedLumperIdsList.size > 0) {
-                         addWorkItemLumpersPresenter.initiateAssigningLumpers(
-                             selectedLumperIdsList, workItemId, workItemType
-                         )
-                     }*/
+                    val selectedLumperIdsList = allWorkScheduleCancelAdapter.getSelectedLumper()
+                    if (selectedLumperIdsList.size > 0) {
+                        onBackPressed()
+/*                        allWorkScheduleCancelPresenter.initiateCancellingWorkSchedules(
+                            selectedLumperIdsList
+                        )*/
+                    }
                 }
 
                 imageViewCancel.id -> {
@@ -89,19 +88,13 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
 
     override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
         text?.let {
-         //   editScheduleTimeAdapter.setSearchEnabled(text.isNotEmpty(), text.toString())
+            allWorkScheduleCancelAdapter.setSearchEnabled(text.isNotEmpty(), text.toString())
             imageViewCancel.visibility = if (text.isNotEmpty()) View.VISIBLE else View.GONE
         }
     }
 
     override fun onSelectLumper(totalSelectedCount: Int) {
-        /*if (totalSelectedCount > 0) {
-            buttonAdd.isEnabled = true
-            buttonAdd.setBackgroundResource(R.drawable.round_button_red_new)
-        } else {
-            buttonAdd.isEnabled = false
-            buttonAdd.setBackgroundResource(R.drawable.round_button_disabled)
-        }*/
+        buttonSubmit.isEnabled = totalSelectedCount > 0
     }
 
     /*
@@ -121,17 +114,10 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
     }
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
-       // editScheduleTimeAdapter.updateLumpersData(employeeDataList)
-        if (employeeDataList.size > 0) {
-            textViewEmptyData.visibility = View.GONE
-            recyclerViewLumpers.visibility = View.VISIBLE
-        } else {
-            recyclerViewLumpers.visibility = View.GONE
-            textViewEmptyData.visibility = View.VISIBLE
-        }
+        allWorkScheduleCancelAdapter.updateLumpersData(employeeDataList)
     }
 
-    override fun scheduleTimeFinished() {
+    override fun cancellingWorkScheduleFinished() {
         setResult(RESULT_OK)
         onBackPressed()
     }

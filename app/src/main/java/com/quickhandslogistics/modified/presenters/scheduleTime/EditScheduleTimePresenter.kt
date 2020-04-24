@@ -26,16 +26,12 @@ class EditScheduleTimePresenter(
     }
 
     override fun initiateScheduleTime(
-        selectedLumperIdsList: ArrayList<String>,
-        workItemId: String,
-        workItemType: String
+        scheduledLumpersIdsTimeMap: HashMap<String, Long>,
+        notes: String, requiredLumpersCount: Int, notesDM: String
     ) {
         editScheduleTimeView?.showProgressDialog(resources.getString(R.string.api_loading_message))
         editScheduleTimeModel.assignScheduleTime(
-            workItemId,
-            workItemType,
-            selectedLumperIdsList,
-            this
+            scheduledLumpersIdsTimeMap, notes, requiredLumpersCount, notesDM, this
         )
     }
 

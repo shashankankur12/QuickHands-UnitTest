@@ -14,6 +14,8 @@ import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.data.schedule.*
+import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
+import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeRequest
 import com.quickhandslogistics.network.AppConfiguration
 import com.quickhandslogistics.network.IApiInterface
 import com.quickhandslogistics.network.NetworkConnectionInterceptor
@@ -411,6 +413,60 @@ object DataManager : AppConstant {
             override fun onResponse(
                 call: Call<BaseResponse>,
                 response: Response<BaseResponse>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun getScheduleTimeList(day: String, listener: ResponseListener<GetScheduleTimeAPIResponse>) {
+        val call = getService().getScheduleTimeList(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN), day
+        )
+        call.enqueue(object : Callback<GetScheduleTimeAPIResponse> {
+            override fun onResponse(
+                call: Call<GetScheduleTimeAPIResponse>,
+                response: Response<GetScheduleTimeAPIResponse>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetScheduleTimeAPIResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun saveScheduleTimeDetail(
+        request: ScheduleTimeRequest, listener: ResponseListener<BaseResponse>
+    ) {
+        val call = getService().saveScheduleTimeDetails(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
+            request
+        )
+        call.enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(
+                call: Call<BaseResponse>, response: Response<BaseResponse>
             ) {
                 var errorMessage = ""
                 if (!response.isSuccessful) {

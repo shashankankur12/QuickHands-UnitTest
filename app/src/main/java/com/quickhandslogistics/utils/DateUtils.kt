@@ -104,5 +104,22 @@ class DateUtils {
                 milliseconds
             }
         }
+
+        fun convertUTCDateStringToMilliseconds(
+            patternDate: String, dateString: String? = ""
+        ): Long {
+            val dateStringValue = ValueUtils.getDefaultOrValue(dateString)
+
+            val dateFormatFrom = SimpleDateFormat(patternDate)
+            dateFormatFrom.timeZone = TimeZone.getTimeZone("UTC")
+            try {
+                val date = dateFormatFrom.parse(dateStringValue)
+                date?.let {
+                    return date.time
+                }
+            } catch (e: ParseException) {
+            }
+            return 0
+        }
     }
 }

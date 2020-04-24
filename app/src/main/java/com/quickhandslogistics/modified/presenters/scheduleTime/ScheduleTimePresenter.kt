@@ -4,19 +4,18 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.scheduleTime.ScheduleTimeContract
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.modified.models.scheduleTime.ScheduleTimeModel
 import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 
 class ScheduleTimePresenter(
     private var scheduleTimeView: ScheduleTimeContract.View?,
-    private val resources: Resources, sharedPref: SharedPref
+    private val resources: Resources
 ) :
     ScheduleTimeContract.Presenter, ScheduleTimeContract.Model.OnFinishedListener {
 
-    private val scheduleTimeModel: ScheduleTimeModel = ScheduleTimeModel(sharedPref)
+    private val scheduleTimeModel: ScheduleTimeModel = ScheduleTimeModel()
 
     override fun getSchedulesTimeByDate(date: Date) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, date)
@@ -39,8 +38,8 @@ class ScheduleTimePresenter(
         }
     }
 
-    override fun onSuccess(selectedDate: Date, allLumpersResponse: AllLumpersResponse) {
+    override fun onSuccess(selectedDate: Date, getScheduleTimeAPIResponse: GetScheduleTimeAPIResponse) {
         scheduleTimeView?.hideProgressDialog()
-        scheduleTimeView?.showScheduleTimeData(selectedDate, allLumpersResponse.data!!)
+        scheduleTimeView?.showScheduleTimeData(selectedDate, getScheduleTimeAPIResponse.data!!)
     }
 }

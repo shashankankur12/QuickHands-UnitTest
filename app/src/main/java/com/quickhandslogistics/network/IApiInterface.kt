@@ -11,6 +11,8 @@ import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.data.schedule.*
+import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
+import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeRequest
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -87,6 +89,20 @@ interface IApiInterface {
     fun saveAttendanceDetails(
         @Header("Authorization") auth: String,
         @Body request: List<AttendanceDetail>
+    ): Call<BaseResponse>
+    /////////////////////////////////////////////////////////////
+
+    // Work Sheet /////////////////////////////////////////////////
+    @GET("employees/scheduled/lumpers")
+    fun getScheduleTimeList(
+        @Header("Authorization") auth: String,
+        @Query("day") day: String
+    ): Call<GetScheduleTimeAPIResponse>
+
+    @POST("employees/schedule/lumpers")
+    fun saveScheduleTimeDetails(
+        @Header("Authorization") auth: String,
+        @Body request: ScheduleTimeRequest
     ): Call<BaseResponse>
     /////////////////////////////////////////////////////////////
 }

@@ -12,7 +12,7 @@
     <string name="string_submit">Submit</string>
     <string name="string_enter_otp">Enter OTP</string>
     <string name="string_otp_message">Please enter your OTP and new password</string>
-    <string name="string_lumper"> Lumpers</string>
+    <string name="string_lumpers">Lumpers</string>
     <string name="string_settings">Settings</string>
     <string name="msg_confirm_logout">Are you sure you want to logout?</string>
     <string name="string_customer_sheet"> Customer Sheet</string>
@@ -201,4 +201,6 @@
     <string name="cancel_all_work_schedules">Cancel All Work Schedules</string>
     <string name="notes_for_customer">Notes for Customer</string>
     <string name="notes_for_qhl">Notes for QHL</string>
+    <string name="work_sheet_detail">Work Sheet Detail</string>
+    <string name="notes_for_qhl_and_customer"><![CDATA[Notes for QHL & Customer]]></string>
 </resources>

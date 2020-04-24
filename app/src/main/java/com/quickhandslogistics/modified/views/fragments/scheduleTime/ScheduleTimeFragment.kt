@@ -1,7 +1,9 @@
 package com.quickhandslogistics.modified.views.fragments.scheduleTime
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
@@ -21,11 +23,12 @@ import com.michalsvec.singlerowcalendar.utils.DateUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.DashBoardContract
 import com.quickhandslogistics.modified.contracts.scheduleTime.ScheduleTimeContract
-import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.modified.presenters.scheduleTime.ScheduleTimePresenter
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.activities.scheduleTime.EditScheduleTimeActivity
 import com.quickhandslogistics.modified.views.adapters.scheduleTime.ScheduleTimeAdapter
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.CustomProgressBar
@@ -49,6 +52,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
     private var isFutureDate: Boolean = false
 
     private lateinit var availableDates: List<Date>
+    private var scheduleTimeDetailList: ArrayList<ScheduleTimeDetail> = ArrayList()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -59,7 +63,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        scheduleTimePresenter = ScheduleTimePresenter(this, resources, sharedPref)
+        scheduleTimePresenter = ScheduleTimePresenter(this, resources)
 
         // Setup DatePicker Dates
         selectedTime = Date().time
@@ -163,6 +167,15 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
+            if (singleRowCalendarScheduleTime.getSelectedDates().isNotEmpty()) {
+                scheduleTimePresenter.getSchedulesTimeByDate(singleRowCalendarScheduleTime.getSelectedDates()[0])
+            }
+        }
+    }
+
     /*
     * Presenter Listeners
     */
@@ -186,15 +199,15 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
     }
 
     override fun showScheduleTimeData(
-        selectedDate: Date,
-        employeeDataList: ArrayList<EmployeeData>
+        selectedDate: Date, scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>
     ) {
+        this.scheduleTimeDetailList = scheduleTimeDetailList
         selectedTime = selectedDate.time
         isFutureDate = com.quickhandslogistics.utils.DateUtils.isFutureDate(selectedDate.time)
         invalidateScheduleButton()
 
-        scheduleTimeAdapter.updateLumpersData(employeeDataList)
-        if (employeeDataList.size > 0) {
+        scheduleTimeAdapter.updateLumpersData(scheduleTimeDetailList)
+        if (scheduleTimeDetailList.size > 0) {
             textViewEmptyData.visibility = View.GONE
             recyclerViewScheduleTime.visibility = View.VISIBLE
         } else {
@@ -227,6 +240,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
                 buttonScheduleLumpers.id -> {
                     val bundle = Bundle()
                     bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
+                    bundle.putParcelableArrayList(ARG_SCHEDULED_TIME_LIST, scheduleTimeDetailList)
                     startIntent(
                         EditScheduleTimeActivity::class.java,
                         bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED

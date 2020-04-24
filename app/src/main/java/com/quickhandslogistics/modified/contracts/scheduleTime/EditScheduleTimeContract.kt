@@ -7,9 +7,10 @@ class EditScheduleTimeContract {
     interface Model {
         fun fetchLumpersList(onFinishedListener: OnFinishedListener)
         fun assignScheduleTime(
-            workItemId: String,
-            workItemType: String,
-            selectedLumperIdsList: ArrayList<String>,
+            scheduledLumpersIdsTimeMap: HashMap<String, Long>,
+            notes: String,
+            requiredLumpersCount: Int,
+            notesDM: String,
             onFinishedListener: OnFinishedListener
         )
 
@@ -28,7 +29,6 @@ class EditScheduleTimeContract {
         fun scheduleTimeFinished()
 
         interface OnAdapterItemClickListener {
-            fun onSelectLumper(totalSelectedCount: Int)
             fun onAddStartTimeClick(adapterPosition: Int, timeInMillis: Long)
         }
     }
@@ -37,9 +37,10 @@ class EditScheduleTimeContract {
         fun fetchLumpersList()
         fun onDestroy()
         fun initiateScheduleTime(
-            selectedLumperIdsList: ArrayList<String>,
-            workItemId: String,
-            workItemType: String
+            scheduledLumpersIdsTimeMap: HashMap<String, Long>,
+            notes: String,
+            requiredLumpersCount: Int,
+            notesDM: String
         )
     }
 }

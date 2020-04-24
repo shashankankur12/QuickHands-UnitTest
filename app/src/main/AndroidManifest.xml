@@ -26,6 +26,7 @@
         <activity android:name=".modified.views.activities.schedule.UnScheduleDetailActivity" />
         <activity android:name=".modified.views.activities.scheduleTime.EditScheduleTimeActivity" />
         <activity android:name=".modified.views.activities.workSheet.AllWorkScheduleCancelActivity" />
+        <activity android:name=".modified.views.activities.workSheet.WorkSheetItemDetailActivity" />
         <activity android:name=".modified.views.BaseActivity" />
         <activity
             android:name=".view.activities.SignatureActivity"

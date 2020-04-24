@@ -31,8 +31,8 @@ class LumperListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lumper_list)
 
-        if (intent.hasExtra(getString(R.string.string_lumper)))
-            lumperJobDetail = intent.getStringExtra(getString(R.string.string_lumper))
+        if (intent.hasExtra(getString(R.string.string_lumpers)))
+            lumperJobDetail = intent.getStringExtra(getString(R.string.string_lumpers))
 
         if (intent.hasExtra(getString(R.string.string_lumper_sheet)))
             lumperJobDetail = intent.getStringExtra(getString(R.string.string_lumper_sheet))

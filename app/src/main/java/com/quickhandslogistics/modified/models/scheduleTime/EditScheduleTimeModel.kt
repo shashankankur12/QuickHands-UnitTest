@@ -4,10 +4,10 @@ import android.util.Log
 import com.quickhandslogistics.modified.contracts.scheduleTime.EditScheduleTimeContract
 import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
-import com.quickhandslogistics.modified.data.schedule.AssignLumpersRequest
+import com.quickhandslogistics.modified.data.scheduleTime.LumperScheduleTimeData
+import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeRequest
 import com.quickhandslogistics.modified.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
-import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 
 class EditScheduleTimeModel(private val sharedPref: SharedPref) :
@@ -35,19 +35,18 @@ class EditScheduleTimeModel(private val sharedPref: SharedPref) :
     }
 
     override fun assignScheduleTime(
-        workItemId: String,
-        workItemType: String,
-        selectedLumperIdsList: ArrayList<String>,
+        scheduledLumpersIdsTimeMap: HashMap<String, Long>,
+        notes: String, requiredLumpersCount: Int, notesDM: String,
         onFinishedListener: EditScheduleTimeContract.Model.OnFinishedListener
     ) {
-        val assignLumperRequest = AssignLumpersRequest(
-            sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID),
-            workItemType, selectedLumperIdsList
-        )
-        DataManager.assignLumpers(
-            workItemId,
-            assignLumperRequest,
-            object : ResponseListener<BaseResponse> {
+        val lumpersData: ArrayList<LumperScheduleTimeData> = ArrayList()
+        for (employeeId in scheduledLumpersIdsTimeMap.keys) {
+            val timestamp = scheduledLumpersIdsTimeMap[employeeId]!! / 1000
+            lumpersData.add(LumperScheduleTimeData(timestamp, employeeId))
+        }
+        val request = ScheduleTimeRequest(lumpersData, notes, requiredLumpersCount, notesDM)
+        DataManager.saveScheduleTimeDetail(
+            request, object : ResponseListener<BaseResponse> {
                 override fun onSuccess(response: BaseResponse) {
                     if (response.success) {
                         onFinishedListener.onSuccessScheduleTime()

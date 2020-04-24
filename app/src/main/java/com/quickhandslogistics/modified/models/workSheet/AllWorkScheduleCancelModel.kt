@@ -1,7 +1,6 @@
 package com.quickhandslogistics.modified.models.workSheet
 
 import android.util.Log
-import com.quickhandslogistics.modified.contracts.scheduleTime.EditScheduleTimeContract
 import com.quickhandslogistics.modified.contracts.workSheet.AllWorkScheduleCancelContract
 import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
@@ -35,13 +34,11 @@ class AllWorkScheduleCancelModel(private val sharedPref: SharedPref) :
         })
     }
 
-    override fun assignScheduleTime(
-        workItemId: String,
-        workItemType: String,
+    override fun cancelAllWorkSchedules(
         selectedLumperIdsList: ArrayList<String>,
         onFinishedListener: AllWorkScheduleCancelContract.Model.OnFinishedListener
     ) {
-        val assignLumperRequest = AssignLumpersRequest(
+        /*val assignLumperRequest = AssignLumpersRequest(
             sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID),
             workItemType, selectedLumperIdsList
         )
@@ -51,7 +48,7 @@ class AllWorkScheduleCancelModel(private val sharedPref: SharedPref) :
             object : ResponseListener<BaseResponse> {
                 override fun onSuccess(response: BaseResponse) {
                     if (response.success) {
-                        onFinishedListener.onSuccessScheduleTime()
+                        onFinishedListener.onSuccessCancelWorkSchedules()
                     } else {
                         onFinishedListener.onFailure(response.message)
                     }
@@ -65,6 +62,6 @@ class AllWorkScheduleCancelModel(private val sharedPref: SharedPref) :
                         onFinishedListener.onFailure(error)
                     }
                 }
-            })
+            })*/
     }
 }
