@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/content_mark_attendance" />
+    <include layout="@layout/content_time_clock_attendance" />
 
     <View
         android:id="@+id/bottomSheetBackground"

@@ -14,21 +14,21 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.contracts.MarkAttendanceContract
+import com.quickhandslogistics.modified.contracts.TimeClockAttendanceContract
 import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.item_recyclerview_mark_attendance.view.*
+import kotlinx.android.synthetic.main.item_recyclerview_time_clock_attendance.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class MarkAttendanceAdapter(
-    private var onAdapterClick: MarkAttendanceContract.View.OnAdapterItemClickListener
-) : Adapter<MarkAttendanceAdapter.WorkItemHolder>() {
+class TimeClockAttendanceAdapter(
+    private var onAdapterClick: TimeClockAttendanceContract.View.OnAdapterItemClickListener
+) : Adapter<TimeClockAttendanceAdapter.WorkItemHolder>() {
 
     private var searchEnabled = false
     private var searchTerm = ""
@@ -38,7 +38,7 @@ class MarkAttendanceAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemHolder {
         val view: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_recyclerview_mark_attendance, parent, false)
+            .inflate(R.layout.item_recyclerview_time_clock_attendance, parent, false)
         return WorkItemHolder(view, parent.context)
     }
 

@@ -14,7 +14,7 @@ import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.activities.workSheet.AllWorkScheduleCancelActivity
 import com.quickhandslogistics.modified.views.controls.NavDrawer
 import com.quickhandslogistics.modified.views.fragments.InfoDialogFragment
-import com.quickhandslogistics.modified.views.fragments.MarkAttendanceFragment
+import com.quickhandslogistics.modified.views.fragments.TimeClockAttendanceFragment
 import com.quickhandslogistics.modified.views.fragments.SettingsFragment
 import com.quickhandslogistics.modified.views.fragments.lumperSheet.LumperSheetFragment
 import com.quickhandslogistics.modified.views.fragments.lumpers.LumpersFragment
@@ -126,7 +126,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             )
             it.addItem(
                 NavDrawer.ActivityNavDrawerItem(
-                    MarkAttendanceFragment(), getString(R.string.time_clock_attendance),
+                    TimeClockAttendanceFragment(), getString(R.string.time_clock_attendance),
                     R.drawable.ic_sidemenu_schedule,
                     R.id.include_main_nav_drawer_topItems, false
                 )

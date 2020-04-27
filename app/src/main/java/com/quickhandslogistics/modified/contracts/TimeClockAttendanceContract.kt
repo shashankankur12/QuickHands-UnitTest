@@ -4,7 +4,7 @@ import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.attendance.GetAttendanceAPIResponse
 import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
 
-class MarkAttendanceContract {
+class TimeClockAttendanceContract {
     interface Model {
         fun fetchLumpersAttendanceList(onFinishedListener: OnFinishedListener)
         fun saveLumpersAttendanceList(

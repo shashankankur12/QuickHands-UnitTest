@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/appBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/fragment_mark_attendance">
+    tools:showIn="@layout/fragment_time_clock_attendance">
 
     <TextView
         android:id="@+id/textViewStatus"
