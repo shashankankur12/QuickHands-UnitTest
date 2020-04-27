@@ -2,7 +2,6 @@ package com.quickhandslogistics.modified.views.activities
 
 import android.app.Dialog
 import android.os.Bundle
-import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -11,7 +10,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.mcsoft.timerangepickerdialog.RangeTimePickerDialog
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.MarkAttendanceContract
 import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
@@ -27,8 +25,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_add_time.*
 import kotlinx.android.synthetic.main.content_mark_attendance.*
 
 class MarkAttendanceActivity : BaseActivity(), View.OnClickListener, TextWatcher,
-    MarkAttendanceContract.View, MarkAttendanceContract.View.OnAdapterItemClickListener,
-    RangeTimePickerDialog.ISelectedTime {
+    MarkAttendanceContract.View, MarkAttendanceContract.View.OnAdapterItemClickListener {
 
     private lateinit var markAttendancePresenter: MarkAttendancePresenter
     private lateinit var markAttendanceAdapter: MarkAttendanceAdapter
@@ -206,28 +203,6 @@ class MarkAttendanceActivity : BaseActivity(), View.OnClickListener, TextWatcher
     private fun closeBottomSheet() {
         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetBackground.visibility = View.GONE
-    }
-
-    private fun showTimePicker() {
-        Handler().postDelayed({
-            val dialog = RangeTimePickerDialog()
-            dialog.apply {
-                newInstance()
-                setRadiusDialog(20)
-                setIs24HourView(false)
-                setColorTabSelected(R.color.textBlack)
-                setColorTabUnselected(R.color.detailHeader)
-                setColorBackgroundHeader(R.color.colorPrimary)
-                setColorBackgroundTimePickerHeader(R.color.scheduleDetail)
-                setColorTextButton(R.color.buttonRed)
-            }
-            dialog.setTextBtnPositive(getString(R.string.string_select))
-            dialog.show(fragmentManager, RangeTimePickerDialog::class.java.simpleName)
-        }, 100)
-    }
-
-    override fun onSelectedTime(hourStart: Int, minuteStart: Int, hourEnd: Int, minuteEnd: Int) {
-
     }
 
     /*

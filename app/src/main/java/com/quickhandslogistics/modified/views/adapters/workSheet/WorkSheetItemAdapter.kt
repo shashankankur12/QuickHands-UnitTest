@@ -38,29 +38,29 @@ class WorkSheetItemAdapter(
             resources.getString(R.string.ongoing) -> {
                 when (position) {
                     0 -> {
-                        holder.textViewStatus.text = "In Progress"
+                        holder.textViewStatus.text = resources.getString(R.string.in_progress)
                         holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
                         holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_in_progress)
                     }
                     1 -> {
-                        holder.textViewStatus.text = "On Hold"
+                        holder.textViewStatus.text = resources.getString(R.string.on_hold)
                         holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
                         holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_on_hold)
                     }
                     else -> {
-                        holder.textViewStatus.text = "Scheduled"
+                        holder.textViewStatus.text = resources.getString(R.string.scheduled)
                         holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_scheduled)
                         holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_scheduled)
                     }
                 }
             }
             resources.getString(R.string.cancelled) -> {
-                holder.textViewStatus.text = "Cancelled"
+                holder.textViewStatus.text = resources.getString(R.string.cancelled)
                 holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
                 holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_cancelled)
             }
             resources.getString(R.string.completed) -> {
-                holder.textViewStatus.text = "Completed"
+                holder.textViewStatus.text = resources.getString(R.string.completed)
                 holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
                 holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_completed)
             }

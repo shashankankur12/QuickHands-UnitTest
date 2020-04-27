@@ -101,7 +101,7 @@
     <string name="string_phone">Número de teléfono</string>
     <string name="string_forgot_password_request">Póngase en contacto con su administrador para solicitar una contraseña olvidada.</string>
     <string name="string_ok">Ok</string>
-    <string name="in_progress">En progreso</string>
+    <string name="in_progress">En-progreso</string>
     <string name="complete">Completar</string>
     <string name="All">Todos</string>
     <string name="string_lumper_sheet_status">lumper_sheet_status</string>
@@ -202,4 +202,8 @@
     <string name="notes_for_qhl">Notes for QHL</string>
     <string name="work_sheet_detail">Work Sheet Detail</string>
     <string name="notes_for_qhl_and_customer"><![CDATA[Notes for QHL & Customer]]></string>
+    <string name="string_select_status">Select Status</string>
+    <string name="on_hold">On Hold</string>
+    <string name="scheduled">Scheduled</string>
+    <string name="string_ask_to_change_status">Are you sure you want to change the status?</string>
 </resources>

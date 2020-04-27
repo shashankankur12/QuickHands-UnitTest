@@ -1,115 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorPrimary"
     tools:context=".modified.views.activities.workSheet.WorkSheetItemDetailActivity">
 
-    <include
-        android:id="@+id/header"
-        layout="@layout/layout_toolbar" />
+    <include layout="@layout/layout_toolbar" />
 
-    <TextView
-        android:id="@+id/textViewStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5ssp"
-        android:layout_marginEnd="@dimen/_10ssp"
-        android:background="@drawable/chip_background_in_progress"
-        android:clickable="true"
-        android:drawableEnd="@drawable/ic_edit"
-        android:drawablePadding="@dimen/_5ssp"
-        android:paddingStart="@dimen/_10ssp"
-        android:paddingTop="@dimen/_5ssp"
-        android:paddingEnd="@dimen/_10ssp"
-        android:paddingBottom="@dimen/_5ssp"
-        android:text="In-Progress"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/_10ssp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header" />
-
-    <TextView
-        android:id="@+id/textViewStartTime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_15ssp"
-        android:layout_marginTop="@dimen/_5ssp"
-        android:layout_marginEnd="@dimen/_10ssp"
-        android:text="@string/start_time_container"
-        android:textColor="@color/scheduleDetail"
-        android:textSize="@dimen/_16ssp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header" />
-
-    <TextView
-        android:id="@+id/textViewDropItems"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_15ssp"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_10ssp"
-        android:drawableStart="@drawable/ic_schedule_work_items"
-        android:drawablePadding="@dimen/_5sdp"
-        android:text="@string/no_of_drops"
-        android:textColor="@color/scheduleDetail"
-        android:textSize="@dimen/_10ssp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
+    <include layout="@layout/content_work_sheet_item_detail" />
 
     <View
+        android:id="@+id/bottomSheetBackgroundStatus"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@drawable/shadow_effect"
-        android:translationY="-15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout" />
+        android:layout_height="match_parent"
+        android:background="@color/fabBackgroundOverlay"
+        android:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:background="@drawable/top_left_round_background"
-        android:orientation="vertical"
-        android:paddingStart="@dimen/_20ssp"
-        android:paddingTop="@dimen/_10ssp"
-        android:paddingEnd="@dimen/_20ssp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDropItems">
+    <!-- Adding bottom sheet after main content -->
+    <include layout="@layout/bottom_sheet_select_status" />
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayoutWorkSheetDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabIndicatorColor="@color/buttonRed"
-            app:tabIndicatorFullWidth="false"
-            app:tabMode="scrollable"
-            app:tabSelectedTextColor="@color/textBlack"
-            app:tabTextAppearance="@style/TabTextAppearance"
-            app:tabTextColor="@color/detailHeader" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/greyDivider" />
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewPagerWorkSheetDetail"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_weight="1"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

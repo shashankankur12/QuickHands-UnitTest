@@ -100,7 +100,7 @@
     <string name="string_forgot_password_request">Please Contact your admin for forgot password request.</string>
     <string name="string_ok">OK</string>
     <string name="string_request_message">Please Contact your admin for forgot password request.</string>
-    <string name="in_progress">In Progress</string>
+    <string name="in_progress">In-Progress</string>
     <string name="complete">Complete</string>
     <string name="string_comment">Comment</string>
     <string name="All">All</string>
@@ -202,4 +202,8 @@
     <string name="notes_for_qhl">Notes for QHL</string>
     <string name="work_sheet_detail">Work Sheet Detail</string>
     <string name="notes_for_qhl_and_customer"><![CDATA[Notes for QHL & Customer]]></string>
+    <string name="string_select_status">Select Status</string>
+    <string name="on_hold">On Hold</string>
+    <string name="scheduled">Scheduled</string>
+    <string name="string_ask_to_change_status">Are you sure you want to change the status?</string>
 </resources>
