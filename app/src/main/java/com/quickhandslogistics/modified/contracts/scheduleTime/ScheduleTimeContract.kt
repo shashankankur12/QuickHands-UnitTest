@@ -2,6 +2,7 @@ package com.quickhandslogistics.modified.contracts.scheduleTime
 
 import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeDetail
+import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeNotes
 import java.util.*
 
 class ScheduleTimeContract {
@@ -13,10 +14,7 @@ class ScheduleTimeContract {
 
         interface OnFinishedListener {
             fun onFailure(message: String = "")
-            fun onSuccess(
-                selectedDate: Date,
-                getScheduleTimeAPIResponse: GetScheduleTimeAPIResponse
-            )
+            fun onSuccess(selectedDate: Date, scheduleTimeAPIResponse: GetScheduleTimeAPIResponse)
         }
     }
 
@@ -28,6 +26,7 @@ class ScheduleTimeContract {
         fun showScheduleTimeData(
             selectedDate: Date, scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>
         )
+        fun showNotesData(notes: ScheduleTimeNotes?)
     }
 
     interface Presenter {

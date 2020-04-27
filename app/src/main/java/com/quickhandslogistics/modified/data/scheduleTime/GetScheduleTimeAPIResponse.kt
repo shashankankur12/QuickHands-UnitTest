@@ -8,18 +8,29 @@ import com.quickhandslogistics.utils.StringUtils
 class GetScheduleTimeAPIResponse : BaseResponse() {
     @SerializedName("data")
     @Expose
-    var data: ArrayList<ScheduleTimeDetail>? = null
-        get() = if (!field.isNullOrEmpty()) {
-            field!!.sortWith(Comparator { scheduleTimeDetail1, scheduleTimeDetail2 ->
-                if (!StringUtils.isNullOrEmpty(scheduleTimeDetail1.lumperInfo?.firstName)
-                    && !StringUtils.isNullOrEmpty(scheduleTimeDetail2.lumperInfo?.firstName)
-                ) {
-                    scheduleTimeDetail1.lumperInfo?.firstName?.toLowerCase()!!
-                        .compareTo(scheduleTimeDetail2.lumperInfo?.firstName?.toLowerCase()!!)
-                } else {
-                    0
-                }
-            })
-            field
-        } else ArrayList()
+    var data: Data? = null
+
+    inner class Data {
+
+        @SerializedName("notes")
+        @Expose
+        var notes: ScheduleTimeNotes? = null
+
+        @SerializedName("scheduledLumpers")
+        @Expose
+        var scheduledLumpers: ArrayList<ScheduleTimeDetail>? = null
+            get() = if (!field.isNullOrEmpty()) {
+                field!!.sortWith(Comparator { scheduleTimeDetail1, scheduleTimeDetail2 ->
+                    if (!StringUtils.isNullOrEmpty(scheduleTimeDetail1.lumperInfo?.firstName)
+                        && !StringUtils.isNullOrEmpty(scheduleTimeDetail2.lumperInfo?.firstName)
+                    ) {
+                        scheduleTimeDetail1.lumperInfo?.firstName?.toLowerCase()!!
+                            .compareTo(scheduleTimeDetail2.lumperInfo?.firstName?.toLowerCase()!!)
+                    } else {
+                        0
+                    }
+                })
+                field
+            } else ArrayList()
+    }
 }

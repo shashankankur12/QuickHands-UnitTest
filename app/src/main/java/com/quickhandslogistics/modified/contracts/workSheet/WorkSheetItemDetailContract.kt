@@ -5,5 +5,9 @@ class WorkSheetItemDetailContract {
         interface OnAdapterItemClickListener {
             fun onSelectStatus(status: String)
         }
+
+        interface OnFragmentInteractionListener {
+            fun changeBottomSheetBackgroundVisibility(visibility: Int)
+        }
     }
 }

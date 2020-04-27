@@ -7,8 +7,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.views.fragments.workSheet.WorkSheetItemDetailBOFragment
+import com.quickhandslogistics.modified.views.fragments.workSheet.WorkSheetItemDetailLumpersFragment
 import com.quickhandslogistics.modified.views.fragments.workSheet.WorkSheetItemDetailNotesFragment
-import com.quickhandslogistics.modified.views.fragments.workSheet.WorkSheetItemFragment
 
 class WorkSheetItemDetailPagerAdapter(
     fragmentManager: FragmentManager, private val resources: Resources
@@ -18,14 +18,12 @@ class WorkSheetItemDetailPagerAdapter(
     private val tabTitles =
         arrayOf(R.string.building_operations, R.string.string_lumpers, R.string.notes)
 
-    private var ongoingFragment =
-        WorkSheetItemFragment.newInstance("Ongoing")
-    private var buildingOperationsFragment =
-        WorkSheetItemDetailBOFragment.newInstance()
+    private var buildingOperationsFragment = WorkSheetItemDetailBOFragment.newInstance()
+    private var lumpersFragment = WorkSheetItemDetailLumpersFragment.newInstance()
     private var notesFragment = WorkSheetItemDetailNotesFragment.newInstance()
 
     override fun getItem(position: Int): Fragment {
-        return if (position == 0) buildingOperationsFragment else if (position == 1) ongoingFragment else notesFragment
+        return if (position == 0) buildingOperationsFragment else if (position == 1) lumpersFragment else notesFragment
     }
 
     override fun getPageTitle(position: Int): CharSequence? {

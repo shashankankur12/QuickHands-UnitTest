@@ -206,4 +206,10 @@
     <string name="on_hold">On Hold</string>
     <string name="scheduled">Scheduled</string>
     <string name="string_ask_to_change_status">Are you sure you want to change the status?</string>
+    <string name="cancel_work_item">Cancel Work Item</string>
+    <string name="string_ask_to_cancel_work_item">Are you sure you want to cancel this work item?</string>
+    <string name="waiting_time">Waiting Time</string>
+    <string name="break_time">Break Time</string>
+    <string name="start_and_end_time"><![CDATA[Start & End Time]]></string>
+    <string name="waiting_time_in_min">Waiting Time (in Min.)</string>
 </resources>

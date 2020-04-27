@@ -13,4 +13,10 @@
         android:title="@string/cancel_all_work_schedules"
         android:visible="false"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/actionCancelWorkItem"
+        android:title="@string/cancel_work_item"
+        android:visible="false"
+        app:showAsAction="never" />
 </menu>

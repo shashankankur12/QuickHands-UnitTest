@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".modified.views.fragments.workSheet.WorkSheetItemDetailLumpersFragment">
 
-    <include layout="@layout/content_time_clock_attendance" />
+    <include layout="@layout/content_work_sheet_item_detail_lumpers" />
 
     <View
-        android:id="@+id/bottomSheetBackground"
+        android:id="@+id/bottomSheetBackgroundWorkItemTime"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/fabBackgroundOverlay"
         android:visibility="gone" />
 
     <!-- Adding bottom sheet after main content -->
-    <include layout="@layout/bottom_sheet_add_attendance_time" />
+    <include layout="@layout/bottom_sheet_add_work_item_time" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

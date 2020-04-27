@@ -7,10 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.views.BaseFragment
+import com.quickhandslogistics.modified.views.activities.buildingOperations.BuildingOperationsActivity
 import com.quickhandslogistics.modified.views.adapters.ContainerDetailAdapter
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_ALLOW_UPDATE
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_BUILDING_PARAMETERS
 import kotlinx.android.synthetic.main.fragment_work_sheet_item_detail_bo.*
 
-class WorkSheetItemDetailBOFragment : BaseFragment() {
+class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var containerDetailAdapter: ContainerDetailAdapter
 
@@ -27,6 +30,23 @@ class WorkSheetItemDetailBOFragment : BaseFragment() {
             layoutManager = LinearLayoutManager(fragmentActivity!!)
             containerDetailAdapter = ContainerDetailAdapter()
             adapter = containerDetailAdapter
+        }
+
+        buttonUpdate.setOnClickListener(this)
+    }
+
+    override fun onClick(view: View?) {
+        view?.let {
+            when (view.id) {
+                buttonUpdate.id -> {
+                    val bundle = Bundle()
+                    bundle.putBoolean(ARG_ALLOW_UPDATE, true)
+                    /*bundle.putString(ARG_WORK_ITEM_ID, workItemDetail?.id)
+                    */
+                    bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, ArrayList())
+                    startIntent(BuildingOperationsActivity::class.java, bundle = bundle)
+                }
+            }
         }
     }
 

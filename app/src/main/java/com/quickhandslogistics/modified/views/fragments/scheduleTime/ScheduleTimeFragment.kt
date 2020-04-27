@@ -24,11 +24,13 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.DashBoardContract
 import com.quickhandslogistics.modified.contracts.scheduleTime.ScheduleTimeContract
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeDetail
+import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeNotes
 import com.quickhandslogistics.modified.presenters.scheduleTime.ScheduleTimePresenter
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.activities.scheduleTime.EditScheduleTimeActivity
 import com.quickhandslogistics.modified.views.adapters.scheduleTime.ScheduleTimeAdapter
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULED_TIME_LIST
+import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_TIME_NOTES
 import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.CustomProgressBar
@@ -53,6 +55,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
 
     private lateinit var availableDates: List<Date>
     private var scheduleTimeDetailList: ArrayList<ScheduleTimeDetail> = ArrayList()
+    private var scheduleTimeNotes: ScheduleTimeNotes? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -112,7 +115,6 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
 
     private fun invalidateScheduleButton() {
         buttonScheduleLumpers.visibility = if (isFutureDate) View.VISIBLE else View.GONE
-        listener?.invalidateScheduleTimeNotes(if (isFutureDate) "Sample Notes" else "")
     }
 
     private fun initializeCalendar() {
@@ -216,6 +218,15 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
         }
     }
 
+    override fun showNotesData(notes: ScheduleTimeNotes?) {
+        scheduleTimeNotes = notes
+        scheduleTimeNotes?.also { scheduleTimeNotes ->
+            listener?.invalidateScheduleTimeNotes(if (!scheduleTimeNotes.notesForLead.isNullOrEmpty()) scheduleTimeNotes.notesForLead!! else "")
+        } ?: run {
+            listener?.invalidateScheduleTimeNotes("")
+        }
+    }
+
     /*
     * Native Views Listeners
     */
@@ -241,6 +252,9 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
                     val bundle = Bundle()
                     bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
                     bundle.putParcelableArrayList(ARG_SCHEDULED_TIME_LIST, scheduleTimeDetailList)
+                    scheduleTimeNotes?.let {
+                        bundle.putParcelable(ARG_SCHEDULE_TIME_NOTES, scheduleTimeNotes)
+                    }
                     startIntent(
                         EditScheduleTimeActivity::class.java,
                         bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED

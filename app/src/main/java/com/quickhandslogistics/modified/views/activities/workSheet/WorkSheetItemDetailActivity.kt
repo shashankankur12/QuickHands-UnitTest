@@ -1,6 +1,8 @@
 package com.quickhandslogistics.modified.views.activities.workSheet
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -18,7 +20,8 @@ import kotlinx.android.synthetic.main.bottom_sheet_select_status.*
 import kotlinx.android.synthetic.main.content_work_sheet_item_detail.*
 
 class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
-    WorkSheetItemDetailContract.View.OnAdapterItemClickListener {
+    WorkSheetItemDetailContract.View.OnAdapterItemClickListener,
+    WorkSheetItemDetailContract.View.OnFragmentInteractionListener {
 
     private lateinit var workItemStatusAdapter: WorkItemStatusAdapter
     private lateinit var adapter: WorkSheetItemDetailPagerAdapter
@@ -72,11 +75,47 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
             resources.getString(R.string.completed) ->
                 textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
         }
+
+        invalidateOptionsMenu()
     }
 
     private fun closeBottomSheet() {
         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetBackgroundStatus.visibility = View.GONE
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.let {
+            val menuItem = menu.findItem(R.id.actionCancelWorkItem)
+            menuItem.isVisible = true
+        }
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.actionCancelWorkItem -> {
+                val dialog = InfoWarningDialogFragment.newInstance(
+                    getString(R.string.string_ask_to_cancel_work_item),
+                    positiveButtonText = getString(R.string.string_yes),
+                    negativeButtonText = getString(R.string.string_no),
+                    onClickListener = object : InfoDialogWarningContract.View.OnClickListener {
+                        override fun onPositiveButtonClick() {
+                            onBackPressed()
+                        }
+
+                        override fun onNegativeButtonClick() {
+                        }
+                    })
+                dialog.show(supportFragmentManager, InfoWarningDialogFragment::class.simpleName)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onClick(view: View?) {
@@ -113,5 +152,9 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
                 }
             })
         dialog.show(supportFragmentManager, InfoWarningDialogFragment::class.simpleName)
+    }
+
+    override fun changeBottomSheetBackgroundVisibility(visibility: Int) {
+        bottomSheetBackgroundStatus.visibility = visibility
     }
 }

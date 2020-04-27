@@ -38,8 +38,17 @@ class ScheduleTimePresenter(
         }
     }
 
-    override fun onSuccess(selectedDate: Date, getScheduleTimeAPIResponse: GetScheduleTimeAPIResponse) {
+    override fun onSuccess(
+        selectedDate: Date, scheduleTimeAPIResponse: GetScheduleTimeAPIResponse
+    ) {
         scheduleTimeView?.hideProgressDialog()
-        scheduleTimeView?.showScheduleTimeData(selectedDate, getScheduleTimeAPIResponse.data!!)
+
+        scheduleTimeAPIResponse.data?.scheduledLumpers?.let {
+            scheduleTimeView?.showScheduleTimeData(
+                selectedDate, scheduleTimeAPIResponse.data?.scheduledLumpers!!
+            )
+        }
+
+        scheduleTimeView?.showNotesData(scheduleTimeAPIResponse.data?.notes)
     }
 }
