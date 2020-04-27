@@ -126,7 +126,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             )
             it.addItem(
                 NavDrawer.ActivityNavDrawerItem(
-                    MarkAttendanceFragment(), getString(R.string.mark_attendance),
+                    MarkAttendanceFragment(), getString(R.string.time_clock_attendance),
                     R.drawable.ic_sidemenu_schedule,
                     R.id.include_main_nav_drawer_topItems, false
                 )

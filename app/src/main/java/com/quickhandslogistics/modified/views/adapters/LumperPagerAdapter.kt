@@ -12,13 +12,10 @@ import com.quickhandslogistics.modified.views.fragments.lumpers.LumperPersonalDe
 import com.quickhandslogistics.modified.views.fragments.lumpers.LumperWorkDetailFragment
 
 class LumperPagerAdapter(
-    fragmentManager: FragmentManager,
-    private val resources: Resources,
-    employeeData: EmployeeData
+    fragmentManager: FragmentManager, private val resources: Resources, employeeData: EmployeeData
 ) :
     FragmentStatePagerAdapter(
-        fragmentManager,
-        BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+        fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
     ) {
 
     private var lumperPersonalDetailFragment =
@@ -29,9 +26,9 @@ class LumperPagerAdapter(
         LumperJobDetailFragment.newInstance(employeeData)
 
     private val tabTitles = arrayOf(
-        R.string.personal_detail,
-        R.string.work_detail,
-        R.string.job_detail
+        R.string.contact_info,
+        R.string.shift_details,
+        R.string.string_lumper_details
     )
 
     override fun getItem(position: Int): Fragment {

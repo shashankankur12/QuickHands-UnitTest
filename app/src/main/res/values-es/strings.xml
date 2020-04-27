@@ -17,7 +17,7 @@
     <string name="string_settings">Configuraciones</string>
     <string name="msg_confirm_logout">Estás seguro de que quieres cerrar sesión?</string>
     <string name="string_customer_sheet">Hoja del cliente</string>
-    <string name="string_lumper_sheet">Hoja de lumper</string>
+    <string name="string_lumper_sheet">**L-Sheet**</string>
     <string name="string_schedule">Horario</string>
     <string name="string_dashboard">Tablero de instrumentos</string>
     <string name="string_reports">Informes</string>
@@ -120,7 +120,7 @@
     <string name="schedule_detail">Detalle de horario</string>
     <string name="scheduled_work">Trabajo programado</string>
     <string name="unscheduled_work">Trabajo no programado</string>
-    <string name="mark_attendance">Mark asistencia</string>
+    <string name="time_clock_attendance">**Time Clock Attendance**</string>
     <string name="replace">Reemplazar</string>
     <string name="string_ask_new_lumper">¿Quieres solicitar el reemplazo de lumper?</string>
     <string name="add_lumpers">Agregar lumpers</string>
@@ -136,9 +136,8 @@
     <string name="enter_password">Introducir la contraseña</string>
     <string name="search_by_name">Buscar por nombre...</string>
     <string name="my_profile">Mi perfil</string>
-    <string name="personal_detail">Detalle personal</string>
-    <string name="work_detail">Detalle de trabajo</string>
-    <string name="job_detail">Detalles del trabajo</string>
+    <string name="contact_info">**Contact Info**</string>
+    <string name="shift_details">**Shift Details**</string>
     <string name="string_shift">Cambio</string>
     <string name="string_availability">Disponibilidad</string>
     <string name="string_ability_to_travel">Posibilidad de viajar entre edificios.</string>

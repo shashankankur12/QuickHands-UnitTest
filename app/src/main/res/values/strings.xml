@@ -16,7 +16,7 @@
     <string name="string_settings">Settings</string>
     <string name="msg_confirm_logout">Are you sure you want to logout?</string>
     <string name="string_customer_sheet"> Customer Sheet</string>
-    <string name="string_lumper_sheet"> Lumper Sheet</string>
+    <string name="string_lumper_sheet">L-Sheet</string>
     <string name="string_schedule">Schedule</string>
     <string name="string_dashboard">Dashboard</string>
     <string name="string_reports">Reports</string>
@@ -113,7 +113,7 @@
     <string name="schedule_detail">Schedule Detail</string>
     <string name="scheduled_work">Scheduled Work</string>
     <string name="unscheduled_work">Un-Scheduled Work</string>
-    <string name="mark_attendance">Mark Attendance</string>
+    <string name="time_clock_attendance">Time Clock Attendance</string>
     <string name="replace">Replace</string>
     <string name="string_ask_new_lumper">Do you want to request for lumper replacement?</string>
     <string name="add_lumpers">Add Lumpers</string>
@@ -132,9 +132,8 @@
     <string name="forgotPasswordInCaption">We just need your registered employee Id  to reset your password.</string>
     <string name="search_by_name">Search by name...</string>
     <string name="my_profile">My Profile</string>
-    <string name="personal_detail">Personal Detail</string>
-    <string name="work_detail">Work Detail</string>
-    <string name="job_detail">Job Detail</string>
+    <string name="contact_info">Contact Info</string>
+    <string name="shift_details">Shift Details</string>
     <string name="string_shift">Shift</string>
     <string name="string_availability">Availability</string>
     <string name="string_ability_to_travel">Ability to travel between buildings</string>

@@ -39,7 +39,7 @@ class MarkAttendanceActivity : BaseActivity(), View.OnClickListener, TextWatcher
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mark_attendance)
-        setupToolbar(getString(R.string.mark_attendance))
+        setupToolbar(getString(R.string.time_clock_attendance))
 
         initializeUI()
 
