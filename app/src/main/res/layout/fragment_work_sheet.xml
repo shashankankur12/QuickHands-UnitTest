@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textViewScheduleDate"
+        android:id="@+id/textViewWorkItemsDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15ssp"
@@ -47,12 +47,12 @@
         android:layout_marginEnd="@dimen/_10ssp"
         android:drawableStart="@drawable/ic_schedule_type"
         android:drawablePadding="@dimen/_5sdp"
-        android:text="Total Containers: 17"
+        android:text="@string/total_containers_s"
         android:textColor="@color/scheduleDetail"
         android:textSize="@dimen/_12ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleDate" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemsDate" />
 
     <TextView
         android:id="@+id/textViewLiveLoadsCount"
@@ -66,7 +66,7 @@
         android:paddingTop="@dimen/_5ssp"
         android:paddingEnd="@dimen/_10ssp"
         android:paddingBottom="@dimen/_5ssp"
-        android:text="Live Loads: 4"
+        android:text="@string/live_loads_s"
         android:textColor="@android:color/white"
         android:textSize="@dimen/_12ssp"
         android:textStyle="bold"
@@ -85,7 +85,7 @@
         android:paddingTop="@dimen/_5ssp"
         android:paddingEnd="@dimen/_10ssp"
         android:paddingBottom="@dimen/_5ssp"
-        android:text="Drops: 7"
+        android:text="@string/drops_s"
         android:textColor="@android:color/white"
         android:textSize="@dimen/_12ssp"
         android:textStyle="bold"
@@ -104,7 +104,7 @@
         android:paddingTop="@dimen/_5ssp"
         android:paddingEnd="@dimen/_10ssp"
         android:paddingBottom="@dimen/_5ssp"
-        android:text="Out Bounds: 6"
+        android:text="@string/out_bounds_s"
         android:textColor="@android:color/white"
         android:textSize="@dimen/_12ssp"
         android:textStyle="bold"

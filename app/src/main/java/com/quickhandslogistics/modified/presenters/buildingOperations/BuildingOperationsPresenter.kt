@@ -6,7 +6,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.buildingOperations.BuildingOperationsContract
 import com.quickhandslogistics.modified.data.buildingOperations.BuildingOperationAPIResponse
 import com.quickhandslogistics.modified.models.buildingOperations.BuildingOperationsModel
-import java.util.HashMap
+import java.util.*
 
 class BuildingOperationsPresenter(
     private var buildingOperationsView: BuildingOperationsContract.View?,

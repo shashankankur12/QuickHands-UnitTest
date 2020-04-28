@@ -22,6 +22,7 @@
         <activity android:name=".modified.views.scheduleTime.EditScheduleTimeActivity" />
         <activity android:name=".modified.views.workSheet.AllWorkScheduleCancelActivity" />
         <activity android:name=".modified.views.workSheet.WorkSheetItemDetailActivity" />
+        <activity android:name=".modified.views.workSheet.AddLumperTimeWorkSheetItemActivity" />
         <activity android:name=".modified.views.BaseActivity" />
         <activity
             android:name=".view.activities.SignatureActivity"

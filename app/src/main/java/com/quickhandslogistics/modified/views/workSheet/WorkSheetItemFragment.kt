@@ -13,6 +13,7 @@ import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.adapters.workSheet.WorkSheetItemAdapter
 import com.quickhandslogistics.modified.controls.SpaceDividerItemDecorator
+import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.fragment_work_sheet_item.*
 import java.util.*
@@ -105,8 +106,8 @@ class WorkSheetItemFragment : BaseFragment(), ScheduleContract.View,
         recyclerViewWorkSheet.visibility = View.GONE
     }
 
-    fun fetchScheduledWorkItems() {
-
+    fun updateWorkItemsList(onGoingWorkItems: ArrayList<WorkItemDetail>) {
+        workSheetItemAdapter.updateList(onGoingWorkItems)
     }
 
     companion object {

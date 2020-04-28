@@ -43,7 +43,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewBuildingName"
+            android:id="@+id/textViewStartTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="false"
@@ -56,7 +56,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewScheduleType"
+            android:id="@+id/textViewWorkItemType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
@@ -66,10 +66,10 @@
             android:textColor="@color/scheduleDetail"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewBuildingName" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
 
         <TextView
-            android:id="@+id/textViewWorkItemsCount"
+            android:id="@+id/textViewNoOfDrops"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
@@ -80,7 +80,7 @@
             android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemType" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circleImageViewArrow"
@@ -100,7 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewWorkItemsCount" />
+            app:layout_constraintTop_toBottomOf="@id/textViewNoOfDrops" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

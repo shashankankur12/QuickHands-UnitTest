@@ -16,6 +16,7 @@ import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.data.schedule.*
 import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeRequest
+import com.quickhandslogistics.modified.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 import okhttp3.OkHttpClient
@@ -521,6 +522,39 @@ object DataManager : AppConstant {
             }
 
             override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun getWorkSheetList(
+        buildingId: String, day: String,
+        listener: ResponseListener<WorkSheetListAPIResponse>
+    ) {
+        val call = getService().getWorkSheetList(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
+            buildingId, day
+        )
+        call.enqueue(object : Callback<WorkSheetListAPIResponse> {
+            override fun onResponse(
+                call: Call<WorkSheetListAPIResponse>,
+                response: Response<WorkSheetListAPIResponse>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage =
+                        getErrorMessage(
+                            response.errorBody()
+                        )
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<WorkSheetListAPIResponse>, t: Throwable) {
                 listener.onError(t)
             }
         })

@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.adapters.workSheet.WorkItemStatusAdapter
+import com.quickhandslogistics.modified.adapters.workSheet.WorkSheetItemDetailPagerAdapter
 import com.quickhandslogistics.modified.contracts.common.InfoDialogWarningContract
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.modified.adapters.workSheet.WorkItemStatusAdapter
-import com.quickhandslogistics.modified.adapters.workSheet.WorkSheetItemDetailPagerAdapter
 import com.quickhandslogistics.modified.views.common.InfoWarningDialogFragment
 import kotlinx.android.synthetic.main.activity_work_sheet_item_detail.*
 import kotlinx.android.synthetic.main.bottom_sheet_select_status.*
@@ -152,9 +152,5 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
                 }
             })
         dialog.show(supportFragmentManager, InfoWarningDialogFragment::class.simpleName)
-    }
-
-    override fun changeBottomSheetBackgroundVisibility(visibility: Int) {
-        bottomSheetBackgroundStatus.visibility = visibility
     }
 }

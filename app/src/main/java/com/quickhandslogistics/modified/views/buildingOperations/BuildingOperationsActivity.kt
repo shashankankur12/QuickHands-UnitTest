@@ -2,14 +2,16 @@ package com.quickhandslogistics.modified.views.buildingOperations
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.adapters.buildingOperations.BuildingOperationsAdapter
 import com.quickhandslogistics.modified.contracts.buildingOperations.BuildingOperationsContract
+import com.quickhandslogistics.modified.controls.SpaceDividerItemDecorator
+import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.presenters.buildingOperations.BuildingOperationsPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.modified.adapters.buildingOperations.BuildingOperationsAdapter
-import com.quickhandslogistics.modified.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_ALLOW_UPDATE
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_BUILDING_PARAMETERS
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID

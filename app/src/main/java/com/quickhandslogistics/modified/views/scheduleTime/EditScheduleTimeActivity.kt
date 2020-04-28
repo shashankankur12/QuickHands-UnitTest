@@ -11,19 +11,20 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.adapters.scheduleTime.EditScheduleTimeAdapter
 import com.quickhandslogistics.modified.contracts.scheduleTime.EditScheduleTimeContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeNotes
 import com.quickhandslogistics.modified.presenters.scheduleTime.EditScheduleTimePresenter
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.modified.adapters.scheduleTime.EditScheduleTimeAdapter
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULED_TIME_NOTES
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
+import com.quickhandslogistics.utils.ValueUtils
 import kotlinx.android.synthetic.main.activity_edit_schedule_time.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -58,7 +59,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
 
         scheduleTimeNotes?.let { notes ->
             editTextNotes.setText(notes.notesForLead)
-            editTextLumpersRequired.setText("${notes.requestedLumperCount}")
+            editTextLumpersRequired.setText("${ValueUtils.getDefaultOrValue(notes.requestedLumperCount)}")
             editTextDMNotes.setText(notes.notesForDM)
         }
 
@@ -117,10 +118,9 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
                     if (scheduledLumpersIdsTimeMap.size > 0) {
                         val requiredLumperCount = editTextLumpersRequired.text.toString()
                         editScheduleTimePresenter.initiateScheduleTime(
-                            scheduledLumpersIdsTimeMap,
-                            editTextNotes.text.toString(),
+                            scheduledLumpersIdsTimeMap, editTextNotes.text.toString(),
                             if (requiredLumperCount.isNotEmpty()) requiredLumperCount.toInt() else 0,
-                            editTextDMNotes.text.toString()
+                            editTextDMNotes.text.toString(), Date(selectedTime)
                         )
                     }
                 }

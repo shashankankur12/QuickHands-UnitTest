@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.adapters.schedule.ScheduledWorkItemDetailAdapter
 import com.quickhandslogistics.modified.contracts.schedule.ScheduledWorkItemDetailContract
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.presenters.schedule.ScheduledWorkItemDetailPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.buildingOperations.BuildingOperationsActivity
-import com.quickhandslogistics.modified.adapters.schedule.ScheduledWorkItemDetailAdapter
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_ALLOW_UPDATE
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_BUILDING_PARAMETERS
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
@@ -177,13 +177,13 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener,
             }
             getString(R.string.string_live_loads) -> {
                 textViewWorkItemsCount.text = String.format(
-                    resources.getString(R.string.live_load_sequence),
+                    getString(R.string.live_load_sequence),
                     workItemDetail.sequence
                 )
             }
             else -> {
                 textViewWorkItemsCount.text = String.format(
-                    resources.getString(R.string.outbound_sequence),
+                    getString(R.string.outbound_sequence),
                     workItemDetail.sequence
                 )
             }

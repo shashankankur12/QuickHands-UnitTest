@@ -20,13 +20,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/buttonSave"
+        android:id="@+id/buttonAddLumpers"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginBottom="@dimen/_10sdp"
         android:background="@drawable/round_button_selector"
-        android:text="@string/string_save"
+        android:text="@string/add_lumpers"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="@dimen/_14ssp"

@@ -8,7 +8,10 @@ import com.quickhandslogistics.modified.data.scheduleTime.LumperScheduleTimeData
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeRequest
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
+import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SharedPref
+import java.util.*
+import kotlin.collections.ArrayList
 
 class EditScheduleTimeModel(private val sharedPref: SharedPref) :
     EditScheduleTimeContract.Model {
@@ -36,15 +39,18 @@ class EditScheduleTimeModel(private val sharedPref: SharedPref) :
 
     override fun assignScheduleTime(
         scheduledLumpersIdsTimeMap: HashMap<String, Long>,
-        notes: String, requiredLumpersCount: Int, notesDM: String,
+        notes: String, requiredLumpersCount: Int, notesDM: String, selectedDate: Date,
         onFinishedListener: EditScheduleTimeContract.Model.OnFinishedListener
     ) {
+        val dateString =
+            DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
         val lumpersData: ArrayList<LumperScheduleTimeData> = ArrayList()
         for (employeeId in scheduledLumpersIdsTimeMap.keys) {
             val timestamp = scheduledLumpersIdsTimeMap[employeeId]!! / 1000
             lumpersData.add(LumperScheduleTimeData(timestamp, employeeId))
         }
-        val request = ScheduleTimeRequest(lumpersData, notes, requiredLumpersCount, notesDM)
+        val request =
+            ScheduleTimeRequest(lumpersData, notes, requiredLumpersCount, notesDM, dateString)
         DataManager.saveScheduleTimeDetail(
             request, object : ResponseListener<BaseResponse> {
                 override fun onSuccess(response: BaseResponse) {

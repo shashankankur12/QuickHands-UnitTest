@@ -5,16 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.adapters.workSheet.WorkItemDetailLumpersAdapter
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemDetailLumpersContract
 import com.quickhandslogistics.modified.views.BaseFragment
-import com.quickhandslogistics.modified.adapters.workSheet.WorkItemDetailLumpersAdapter
-import kotlinx.android.synthetic.main.bottom_sheet_add_work_item_time.*
 import kotlinx.android.synthetic.main.content_work_sheet_item_detail_lumpers.*
 
 class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
@@ -23,8 +20,6 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
     private lateinit var workItemDetailLumpersAdapter: WorkItemDetailLumpersAdapter
     private var onFragmentInteractionListener: WorkSheetItemDetailContract.View.OnFragmentInteractionListener? =
         null
-
-    private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -54,22 +49,13 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
             adapter = workItemDetailLumpersAdapter
         }
 
-        sheetBehavior = BottomSheetBehavior.from(constraintLayoutBottomSheetWorkItem)
-        sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-
-        buttonSave.setOnClickListener(this)
-    }
-
-    private fun closeBottomSheet() {
-        sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        onFragmentInteractionListener?.changeBottomSheetBackgroundVisibility(View.GONE)
-        //bottomSheetBackgroundWorkItemTime.visibility = View.GONE
+        buttonAddLumpers.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
-                buttonSave.id -> {
+                buttonAddLumpers.id -> {
 
                 }
             }
@@ -77,13 +63,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
     }
 
     override fun onAddTimeClick(itemPosition: Int) {
-        if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-            sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            onFragmentInteractionListener?.changeBottomSheetBackgroundVisibility(View.VISIBLE)
-            //bottomSheetBackgroundWorkItemTime.visibility = View.VISIBLE
-        } else {
-            closeBottomSheet()
-        }
+        startIntent(AddLumperTimeWorkSheetItemActivity::class.java)
     }
 
     override fun onAddNotes(updatedDataSize: Int) {
@@ -92,7 +72,6 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
 
     companion object {
         @JvmStatic
-        fun newInstance() =
-            WorkSheetItemDetailLumpersFragment()
+        fun newInstance() = WorkSheetItemDetailLumpersFragment()
     }
 }

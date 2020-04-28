@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.views.workSheet.WorkSheetItemFragment
+import java.util.*
 
 class WorkSheetPagerAdapter(
     childFragmentManager: FragmentManager, private val resources: Resources
@@ -40,11 +42,11 @@ class WorkSheetPagerAdapter(
         return null
     }
 
-    /* fun fetchUnScheduledWorkItems() {
-         unScheduleFragment.fetchUnScheduledWorkItems()
-     }
-
-     fun fetchScheduledWorkItems() {
-         scheduleFragment.fetchScheduledWorkItems()
-     }*/
+    fun updateWorkItemsList(
+        onGoingWorkItems: ArrayList<WorkItemDetail>,
+        cancelledWorkItems: List<WorkItemDetail>,
+        completedWorkItems: List<WorkItemDetail>
+    ) {
+        ongoingFragment.updateWorkItemsList(onGoingWorkItems)
+    }
 }

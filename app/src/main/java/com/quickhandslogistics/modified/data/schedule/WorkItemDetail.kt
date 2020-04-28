@@ -42,6 +42,10 @@ class WorkItemDetail() : Parcelable {
     @Expose
     var endDateForThisWorkItem: String? = null
 
+    @SerializedName("status")
+    @Expose
+    var status: String? = null
+
     @SerializedName("isScheduledByLead")
     @Expose
     var isScheduledByLead: Boolean? = null
@@ -98,6 +102,10 @@ class WorkItemDetail() : Parcelable {
     @Expose
     var attendanceDetail: AttendanceDetail? = null
 
+    @SerializedName("buildingOps")
+    @Expose
+    var buildingOps: HashMap<String, String>? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         workItemType = parcel.readString()
@@ -107,6 +115,7 @@ class WorkItemDetail() : Parcelable {
         scheduleIdentity = parcel.readString()
         scheduledFrom = parcel.readString()
         endDateForThisWorkItem = parcel.readString()
+        status = parcel.readString()
         isScheduledByLead = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         scheduleForWeek = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         scheduleForMonth = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
@@ -117,6 +126,15 @@ class WorkItemDetail() : Parcelable {
         buildingDetailData = parcel.readParcelable(BuildingDetailData::class.java.classLoader)
         assignedLumpersList = parcel.createTypedArrayList(EmployeeData)
         attendanceDetail = parcel.readParcelable(AttendanceDetail::class.java.classLoader)
+        buildingOps = HashMap()
+        readFromParcel(parcel)
+    }
+
+    private fun readFromParcel(parcel: Parcel) {
+        val count = parcel.readInt()
+        for (i in 0 until count) {
+            buildingOps?.put(parcel.readString()!!, parcel.readString()!!)
+        }
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -128,6 +146,7 @@ class WorkItemDetail() : Parcelable {
         parcel.writeString(scheduleIdentity)
         parcel.writeString(scheduledFrom)
         parcel.writeString(endDateForThisWorkItem)
+        parcel.writeString(status)
         parcel.writeValue(isScheduledByLead)
         parcel.writeValue(scheduleForWeek)
         parcel.writeValue(scheduleForMonth)
@@ -138,6 +157,13 @@ class WorkItemDetail() : Parcelable {
         parcel.writeParcelable(buildingDetailData, flags)
         parcel.writeTypedList(assignedLumpersList)
         parcel.writeParcelable(attendanceDetail, flags)
+        buildingOps?.let { data ->
+            parcel.writeInt(data.size)
+            for (s in data.keys) {
+                parcel.writeString(s)
+                parcel.writeString(data[s])
+            }
+        }
     }
 
     override fun describeContents(): Int {

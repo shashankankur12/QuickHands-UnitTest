@@ -212,4 +212,8 @@
     <string name="break_time">Break Time</string>
     <string name="start_and_end_time"><![CDATA[Start & End Time]]></string>
     <string name="waiting_time_in_min">Waiting Time (in Min.)</string>
+    <string name="total_containers_s">Total Containers: %s</string>
+    <string name="live_loads_s">Live Loads: %s</string>
+    <string name="drops_s">Drops: %s</string>
+    <string name="out_bounds_s">Out Bounds: %s</string>
 </resources>

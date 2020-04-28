@@ -7,7 +7,6 @@ class WorkSheetItemDetailContract {
         }
 
         interface OnFragmentInteractionListener {
-            fun changeBottomSheetBackgroundVisibility(visibility: Int)
         }
     }
 }

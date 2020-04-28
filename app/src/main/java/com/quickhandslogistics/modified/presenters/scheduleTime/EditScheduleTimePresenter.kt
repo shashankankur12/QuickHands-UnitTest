@@ -7,6 +7,7 @@ import com.quickhandslogistics.modified.contracts.scheduleTime.EditScheduleTimeC
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.models.scheduleTime.EditScheduleTimeModel
 import com.quickhandslogistics.utils.SharedPref
+import java.util.*
 
 class EditScheduleTimePresenter(
     private var editScheduleTimeView: EditScheduleTimeContract.View?,
@@ -27,11 +28,11 @@ class EditScheduleTimePresenter(
 
     override fun initiateScheduleTime(
         scheduledLumpersIdsTimeMap: HashMap<String, Long>,
-        notes: String, requiredLumpersCount: Int, notesDM: String
+        notes: String, requiredLumpersCount: Int, notesDM: String, selectedDate: Date
     ) {
         editScheduleTimeView?.showProgressDialog(resources.getString(R.string.api_loading_message))
         editScheduleTimeModel.assignScheduleTime(
-            scheduledLumpersIdsTimeMap, notes, requiredLumpersCount, notesDM, this
+            scheduledLumpersIdsTimeMap, notes, requiredLumpersCount, notesDM, selectedDate, this
         )
     }
 

@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".modified.views.workSheet.WorkSheetItemDetailLumpersFragment">
+    tools:context=".modified.views.workSheet.AddLumperTimeWorkSheetItemActivity">
 
-    <include layout="@layout/content_work_sheet_item_detail_lumpers" />
+    <include layout="@layout/layout_toolbar" />
+
+    <include layout="@layout/content_add_lumper_time_work_sheet_item" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
