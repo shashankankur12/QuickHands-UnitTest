@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import io.bloco.faker.Faker
-import kotlinx.android.synthetic.main.lumper_job_history_item.view.*
+import kotlinx.android.synthetic.main.item_job_history.view.*
 
 class lumperJobDetailAdapter(val items: ArrayList<String>, private var adapterItemClickListener: OnAdapterItemClickListener  )
     : RecyclerView.Adapter<lumperJobDetailAdapter.JobViewHolder>() {
@@ -15,7 +15,7 @@ class lumperJobDetailAdapter(val items: ArrayList<String>, private var adapterIt
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JobViewHolder {
         val view: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.lumper_job_history_item, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_job_history, parent, false)
         return JobViewHolder(view)
     }
 

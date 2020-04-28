@@ -5,7 +5,7 @@ import com.quickhandslogistics.modified.contracts.schedule.AddWorkItemLumpersCon
 import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.data.schedule.AssignLumpersRequest
-import com.quickhandslogistics.modified.network.DataManager
+import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref

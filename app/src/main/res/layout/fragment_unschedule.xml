@@ -5,9 +5,9 @@
     android:id="@+id/mainConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
+    android:background="@android:color/white"
     android:paddingBottom="@dimen/_10ssp"
-    tools:context=".modified.views.fragments.schedule.UnScheduleFragment">
+    tools:context=".modified.views.schedule.UnScheduleFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayoutUnSchedule"

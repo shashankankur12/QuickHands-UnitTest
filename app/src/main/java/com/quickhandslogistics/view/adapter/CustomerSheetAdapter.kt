@@ -35,8 +35,8 @@ class CustomerSheetAdapter(var items: ArrayList<CustomerModel>, val context: Con
         holder?.lumperStatus.text = statusItems.get(position).status.toUpperCase()
 
         if(TextUtils.equals(statusItems.get(position).status, context.resources.getString(R.string.complete))){
-            holder?.lumperStatus.setBackgroundResource(R.drawable.chip_complete)
-        }else  holder?.lumperStatus.setBackgroundResource(R.drawable.chip_in_progress)
+            holder?.lumperStatus.setBackgroundResource(R.drawable.chip_background_completed)
+        }else  holder?.lumperStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
 
         holder.constraintRoot.setOnClickListener {
 

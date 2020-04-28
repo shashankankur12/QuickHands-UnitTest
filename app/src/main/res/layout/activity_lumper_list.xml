@@ -20,11 +20,9 @@
         android:drawableLeft="@drawable/ic_search"
         android:drawableTint="@color/colorLightGrey"
         android:drawablePadding="@dimen/_2sdp"
-        style="@style/textSizeNormalRegFont"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_10sdp"
         android:imeOptions="actionDone"
-        android:fontFamily="@font/poppinssemibold"
         android:background="@drawable/edit_search_bg"
         android:layout_margin="@dimen/_10sdp"/>
 
@@ -46,7 +44,6 @@
         android:id="@+id/recycler_lumper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layoutAnimation="@anim/recycler_bottom_to_up"
         app:layout_constraintTop_toBottomOf="@+id/edit_search_lumper" />
     <TextView
         android:id="@+id/text_no_record_found"
@@ -54,8 +51,6 @@
         android:layout_height="wrap_content"
         android:text="No Record Found"
         android:visibility="gone"
-        style="@style/textSizeNormalRegFont"
-        android:fontFamily="@font/poppinssemibold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground"
-    tools:context=".modified.views.fragments.workSheet.WorkSheetFragment">
+    tools:context=".modified.views.workSheet.WorkSheetFragment">
 
     <TextView
         android:id="@+id/textViewBuildingName"
@@ -67,7 +67,7 @@
         android:paddingEnd="@dimen/_10ssp"
         android:paddingBottom="@dimen/_5ssp"
         android:text="Live Loads: 4"
-        android:textColor="@color/colorWhite"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/_12ssp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,7 +86,7 @@
         android:paddingEnd="@dimen/_10ssp"
         android:paddingBottom="@dimen/_5ssp"
         android:text="Drops: 7"
-        android:textColor="@color/colorWhite"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/_12ssp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textViewLiveLoadsCount"
@@ -105,7 +105,7 @@
         android:paddingEnd="@dimen/_10ssp"
         android:paddingBottom="@dimen/_5ssp"
         android:text="Out Bounds: 6"
-        android:textColor="@color/colorWhite"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/_12ssp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textViewDropsCount"

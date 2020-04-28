@@ -7,11 +7,11 @@ import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.contracts.InfoDialogWarningContract
+import com.quickhandslogistics.modified.contracts.common.InfoDialogWarningContract
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.modified.views.activities.ContainerDetailActivity
-import com.quickhandslogistics.modified.views.activities.LumperDetailActivity
-import com.quickhandslogistics.modified.views.fragments.InfoWarningDialogFragment
+import com.quickhandslogistics.modified.views.common.ContainerDetailActivity
+import com.quickhandslogistics.modified.views.lumpers.LumperDetailActivity
+import com.quickhandslogistics.modified.views.common.InfoWarningDialogFragment
 import com.quickhandslogistics.view.adapter.lumperJobDetailAdapter
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.activity_lumper_sheet_detail.*

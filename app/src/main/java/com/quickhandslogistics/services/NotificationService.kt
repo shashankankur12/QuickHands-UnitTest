@@ -13,10 +13,10 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.views.activities.SplashActivity
-import com.quickhandslogistics.modified.views.activities.schedule.UnScheduleDetailActivity
-import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_FROM_DATE
-import com.quickhandslogistics.modified.views.fragments.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_IDENTITY
+import com.quickhandslogistics.modified.views.SplashActivity
+import com.quickhandslogistics.modified.views.schedule.UnScheduleDetailActivity
+import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_FROM_DATE
+import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_IDENTITY
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 

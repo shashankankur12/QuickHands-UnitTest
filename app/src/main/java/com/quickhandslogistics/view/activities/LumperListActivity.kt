@@ -13,7 +13,7 @@ import com.quickhandslogistics.utils.Utils
 import com.quickhandslogistics.modified.data.lumperSheet.LumperModel
 import com.quickhandslogistics.view.adapter.LumperDummyAdapter
 import io.bloco.faker.Faker
-import kotlinx.android.synthetic.main.fragment_lumper.*
+import kotlinx.android.synthetic.main.activity_lumper_list.*
 import kotlinx.android.synthetic.main.layout_header.*
 
 class LumperListActivity : AppCompatActivity() {

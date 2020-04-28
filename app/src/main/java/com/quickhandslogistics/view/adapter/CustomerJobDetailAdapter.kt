@@ -8,9 +8,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.view.activities.CompleteCustomerJobHistory
-import com.quickhandslogistics.view.activities.CompleteLumperJobHistoryDetails
 import io.bloco.faker.Faker
-import kotlinx.android.synthetic.main.lumper_job_history_item.view.*
+import kotlinx.android.synthetic.main.item_job_history.view.*
 
 class CustomerJobDetailAdapter (val items: ArrayList<String>, val context: Context) : RecyclerView.Adapter<CustomerJobDetailAdapter.CustomerjobViewHolder>() {
 
@@ -18,7 +17,7 @@ class CustomerJobDetailAdapter (val items: ArrayList<String>, val context: Conte
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomerjobViewHolder {
         val view: View =
-            LayoutInflater.from(context).inflate(R.layout.lumper_job_history_item, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.item_job_history, parent, false)
         return CustomerjobViewHolder(view)
     }
 

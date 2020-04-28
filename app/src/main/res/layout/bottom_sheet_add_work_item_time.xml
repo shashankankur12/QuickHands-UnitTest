@@ -31,14 +31,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Current Time: "
-            android:textColor="@color/colorWhite"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/_16ssp"
             android:textStyle="bold" />
 
         <TextClock
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorWhite"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/_14ssp" />
     </LinearLayout>
 
@@ -59,7 +59,7 @@
             android:layout_weight="1"
             android:padding="@dimen/_10ssp"
             android:text="@string/waiting_time_in_min"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/textBlack"
             android:textSize="@dimen/_16ssp"
             android:textStyle="bold" />
 
@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_10ssp"
         android:text="@string/start_and_end_time"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/textBlack"
         android:textSize="@dimen/_16ssp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -114,7 +114,7 @@
             android:padding="@dimen/_10ssp"
             android:text="@string/start_time"
             android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/_14ssp" />
 
         <TextView
@@ -134,7 +134,7 @@
             android:padding="@dimen/_10ssp"
             android:text="@string/end_time"
             android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/_14ssp" />
 
         <Space
@@ -150,7 +150,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:padding="@dimen/_10ssp"
         android:text="@string/break_time"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/textBlack"
         android:textSize="@dimen/_16ssp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -183,7 +183,7 @@
             android:padding="@dimen/_10ssp"
             android:text="@string/out_to_lunch"
             android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/_14ssp" />
 
         <TextView
@@ -203,7 +203,7 @@
             android:padding="@dimen/_10ssp"
             android:text="@string/back_to_work"
             android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/_14ssp" />
 
         <Space

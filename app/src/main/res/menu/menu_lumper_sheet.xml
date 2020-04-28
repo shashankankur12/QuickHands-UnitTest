@@ -7,6 +7,6 @@
 
     <item
         android:id="@+id/actionEditNote"
-        android:icon="@drawable/ic_note"
+        android:icon="@drawable/ic_notes"
         android:title="@string/edit_notes" />
 </menu>

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
-    tools:context=".modified.views.activities.scheduleTime.EditScheduleTimeActivity">
+    tools:context=".modified.views.scheduleTime.EditScheduleTimeActivity">
 
     <include
         android:id="@+id/header"
@@ -84,7 +84,7 @@
                 android:padding="@dimen/_10ssp"
                 android:text="@string/add_same_start_time_for_all"
                 android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/_14ssp" />
 
             <RelativeLayout
@@ -188,10 +188,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:background="@drawable/round_button_red_new"
+                android:background="@drawable/round_button_red"
                 android:text="@string/string_submit"
                 android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/_14ssp"
                 android:textStyle="bold" />
         </LinearLayout>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".modified.views.fragments.scheduleTime.ScheduleTimeFragment">
+    tools:context=".modified.views.scheduleTime.ScheduleTimeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainConstraintLayout"
@@ -17,7 +17,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
-            android:text="@string/schedule_lumpers_time"
             android:textColor="@color/textBlack"
             android:textSize="@dimen/_12ssp"
             android:textStyle="bold"
@@ -119,7 +118,7 @@
             android:background="@drawable/round_button_selector"
             android:text="@string/schedule_lumpers_time"
             android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/_14ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

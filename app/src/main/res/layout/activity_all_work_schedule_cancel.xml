@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
-    tools:context=".modified.views.activities.workSheet.AllWorkScheduleCancelActivity">
+    tools:context=".modified.views.workSheet.AllWorkScheduleCancelActivity">
 
     <include
         android:id="@+id/header"
@@ -165,7 +165,7 @@
                 android:enabled="false"
                 android:text="@string/string_submit"
                 android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/_14ssp"
                 android:textStyle="bold" />
         </LinearLayout>

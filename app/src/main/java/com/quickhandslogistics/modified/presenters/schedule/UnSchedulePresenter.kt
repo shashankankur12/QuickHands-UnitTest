@@ -8,8 +8,8 @@ import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.data.schedule.UnScheduleListAPIResponse
 import com.quickhandslogistics.modified.models.schedule.UnScheduleModel
-import com.quickhandslogistics.modified.views.controls.ScheduleUtils.getAllAssignedLumpersList
-import com.quickhandslogistics.modified.views.controls.ScheduleUtils.getScheduleTypeName
+import com.quickhandslogistics.modified.controls.ScheduleUtils.getAllAssignedLumpersList
+import com.quickhandslogistics.modified.controls.ScheduleUtils.getScheduleTypeName
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*

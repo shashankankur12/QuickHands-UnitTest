@@ -6,7 +6,7 @@ import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.data.scheduleTime.LumperScheduleTimeData
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeRequest
-import com.quickhandslogistics.modified.network.DataManager
+import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
 import com.quickhandslogistics.utils.SharedPref
 

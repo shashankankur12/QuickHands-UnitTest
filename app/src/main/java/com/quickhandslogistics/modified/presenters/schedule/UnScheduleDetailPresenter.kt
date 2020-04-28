@@ -6,7 +6,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleDetailContract
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetailAPIResponse
 import com.quickhandslogistics.modified.models.schedule.UnScheduleDetailModel
-import com.quickhandslogistics.modified.views.controls.ScheduleUtils.getScheduleTypeName
+import com.quickhandslogistics.modified.controls.ScheduleUtils.getScheduleTypeName
 
 class UnScheduleDetailPresenter(
     private var unScheduleDetailView: UnScheduleDetailContract.View?,

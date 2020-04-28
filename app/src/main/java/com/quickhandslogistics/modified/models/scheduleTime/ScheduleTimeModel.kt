@@ -3,7 +3,7 @@ package com.quickhandslogistics.modified.models.scheduleTime
 import android.util.Log
 import com.quickhandslogistics.modified.contracts.scheduleTime.ScheduleTimeContract
 import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
-import com.quickhandslogistics.modified.network.DataManager
+import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
 import com.quickhandslogistics.utils.DateUtils
 import java.util.*

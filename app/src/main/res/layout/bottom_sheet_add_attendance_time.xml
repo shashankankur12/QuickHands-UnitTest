@@ -31,14 +31,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Current Time: "
-            android:textColor="@color/colorWhite"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/_16ssp"
             android:textStyle="bold" />
 
         <TextClock
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorWhite"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/_14ssp" />
     </LinearLayout>
 
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_10ssp"
         android:text="@string/shift_time"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/textBlack"
         android:textSize="@dimen/_16ssp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -78,7 +78,7 @@
             android:padding="@dimen/_10ssp"
             android:text="@string/clock_in"
             android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/_14ssp" />
 
         <TextView
@@ -98,7 +98,7 @@
             android:padding="@dimen/_10ssp"
             android:text="@string/clock_out"
             android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/_14ssp" />
 
         <Space
@@ -114,7 +114,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:padding="@dimen/_10ssp"
         android:text="@string/lunch_time"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/textBlack"
         android:textSize="@dimen/_16ssp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -146,7 +146,7 @@
             android:padding="@dimen/_10ssp"
             android:text="@string/out_to_lunch"
             android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/_14ssp" />
 
         <TextView
@@ -166,7 +166,7 @@
             android:padding="@dimen/_10ssp"
             android:text="@string/back_to_work"
             android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/_14ssp" />
 
         <Space

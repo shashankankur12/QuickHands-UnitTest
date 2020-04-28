@@ -9,7 +9,7 @@ import com.quickhandslogistics.modified.data.dashboard.LeadProfileData
 import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.data.login.LoginUserData
-import com.quickhandslogistics.modified.network.DataManager
+import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_AUTH_TOKEN

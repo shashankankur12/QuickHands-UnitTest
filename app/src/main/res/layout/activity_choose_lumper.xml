@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".modified.views.activities.ChooseLumperActivity">
+    tools:context=".modified.views.common.ChooseLumperActivity">
 
     <include layout="@layout/layout_toolbar" />
 

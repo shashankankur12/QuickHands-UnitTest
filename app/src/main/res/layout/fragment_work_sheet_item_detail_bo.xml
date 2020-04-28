@@ -5,8 +5,8 @@
     android:id="@+id/mainConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    tools:context=".modified.views.fragments.workSheet.WorkSheetItemDetailBOFragment">
+    android:background="@android:color/white"
+    tools:context=".modified.views.workSheet.WorkSheetItemDetailBOFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewBuildingOperations"
@@ -28,7 +28,7 @@
         android:background="@drawable/round_button_selector"
         android:text="@string/string_update"
         android:textAllCaps="false"
-        android:textColor="@color/colorWhite"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/_14ssp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

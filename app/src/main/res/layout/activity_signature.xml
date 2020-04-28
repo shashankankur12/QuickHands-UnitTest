@@ -33,10 +33,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/round_button_red"
             android:text="@string/string_save"
-            android:textColor="@color/colorWhite"
-            style="@style/textSizeNormalRegFont"
+            android:textColor="@android:color/white"
             android:layout_margin="@dimen/_5sdp"
-            android:fontFamily="@font/poppinssemibold"
             android:layout_weight="1"/>
 
         <Button
@@ -44,13 +42,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            style="@style/textSizeNormalRegFont"
             android:textColor="@color/buttonRed"
             android:text="CLEAR"
             android:layout_margin="@dimen/_5sdp"
             android:layout_marginLeft="@dimen/_20sdp"
-            android:fontFamily="@font/poppinssemibold"
-            android:background="@drawable/round_background_white"/>
+            android:background="@drawable/round_button_negative"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

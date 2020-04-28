@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/actionNotes"
-        android:icon="@drawable/ic_description"
+        android:icon="@drawable/ic_notes"
         android:title="@string/notes"
         android:visible="false"
         app:showAsAction="always" />

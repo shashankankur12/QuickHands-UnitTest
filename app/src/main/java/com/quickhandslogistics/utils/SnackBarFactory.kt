@@ -13,7 +13,7 @@ object SnackBarFactory {
         val snackBar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
         val textView =
             snackBar.view.findViewById<TextView>((com.google.android.material.R.id.snackbar_text))
-        textView.setTextColor(ContextCompat.getColor(context, R.color.colorWhite))
+        textView.setTextColor(ContextCompat.getColor(context, android.R.color.white))
         snackBar.show()
     }
 
@@ -27,7 +27,7 @@ object SnackBarFactory {
         val snackBar = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE)
         val textView =
             snackBar.view.findViewById<TextView>((com.google.android.material.R.id.snackbar_text))
-        textView.setTextColor(ContextCompat.getColor(context, R.color.colorWhite))
+        textView.setTextColor(ContextCompat.getColor(context, android.R.color.white))
         snackBar.setAction(actionString, onClickListener)
         snackBar.show()
     }

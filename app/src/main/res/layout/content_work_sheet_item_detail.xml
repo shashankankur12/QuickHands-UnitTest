@@ -24,7 +24,7 @@
         android:paddingEnd="@dimen/_10ssp"
         android:paddingBottom="@dimen/_5ssp"
         android:text="In-Progress"
-        android:textColor="@color/colorWhite"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/_10ssp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
