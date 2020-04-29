@@ -3,18 +3,20 @@ package com.quickhandslogistics.modified.adapters.attendance
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.SparseBooleanArray
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.util.keyIterator
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.attendance.TimeClockAttendanceContract
+import com.quickhandslogistics.modified.controls.FlipAnimator
 import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.utils.DateUtils
@@ -36,6 +38,11 @@ class TimeClockAttendanceAdapter(
     private var lumperAttendanceFilteredList: ArrayList<LumperAttendanceData> = ArrayList()
     private var updateData: HashMap<String, AttendanceDetail> = HashMap()
 
+    private val selectedItems = SparseBooleanArray()
+    private val animationItemsIndex = SparseBooleanArray()
+    private var reverseAllAnimations = false
+    private var currentSelectedIndex = -1
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemHolder {
         val view: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_time_clock_attendance, parent, false)
@@ -55,7 +62,7 @@ class TimeClockAttendanceAdapter(
     }
 
     inner class WorkItemHolder(view: View, private val context: Context) :
-        RecyclerView.ViewHolder(view), View.OnClickListener, TextWatcher {
+        RecyclerView.ViewHolder(view), View.OnClickListener, TextWatcher, View.OnLongClickListener {
 
         private val textViewLumperName: TextView = view.textViewLumperName
         private val viewAttendanceStatus: View = view.viewAttendanceStatus
@@ -68,6 +75,15 @@ class TimeClockAttendanceAdapter(
         private val textViewShiftTime: TextView = view.textViewShiftTime
         private val textViewLunchTime: TextView = view.textViewLunchTime
         private val editTextNotes: EditText = view.editTextNotes
+        private val relativeLayoutSelected: RelativeLayout = view.relativeLayoutSelected
+        private val layoutCheckBox: RelativeLayout = view.layoutCheckBox
+        private val constraintLayout: ConstraintLayout = view.constraintLayout
+
+        init {
+            itemView.setOnLongClickListener(this)
+            itemView.setOnClickListener(this)
+            layoutCheckBox.setOnClickListener(this)
+        }
 
         fun bind(lumperAttendance: LumperAttendanceData) {
             if (!StringUtils.isNullOrEmpty(lumperAttendance.profileImageUrl)) {
@@ -77,6 +93,9 @@ class TimeClockAttendanceAdapter(
             } else {
                 Glide.with(context).clear(circleImageViewProfile);
             }
+
+            // handle icon animation
+            applyIconAnimation(adapterPosition)
 
             textViewLumperName.text = String.format(
                 "%s %s",
@@ -123,6 +142,14 @@ class TimeClockAttendanceAdapter(
             }
 
             textViewAddTime.setOnClickListener(this)
+
+            val isSelected = selectedItems.get(adapterPosition, false)
+            constraintLayout.isActivated = isSelected
+
+            textViewAddTime.visibility =
+                if (textViewAddTime.visibility == View.VISIBLE && selectedItems.size() == 0) View.VISIBLE else View.GONE
+            editTextNotes.isEnabled = selectedItems.size() == 0
+            layoutCheckBox.visibility = if (isSelected) View.VISIBLE else View.GONE
         }
 
         private fun updateTimeUI(isPresent: Boolean, lumperId: String) {
@@ -137,9 +164,71 @@ class TimeClockAttendanceAdapter(
             editTextNotes.addTextChangedListener(this)
         }
 
+        private fun applyIconAnimation(position: Int) {
+            if (selectedItems[position, false]) {
+                circleImageViewProfile.visibility = View.GONE
+                resetIconYAxis(relativeLayoutSelected)
+                relativeLayoutSelected.visibility = View.VISIBLE
+                relativeLayoutSelected.alpha = 1f
+                if (currentSelectedIndex == position) {
+                    FlipAnimator.flipView(context, relativeLayoutSelected, circleImageViewProfile, true)
+                    resetCurrentIndex()
+                }
+            } else {
+                relativeLayoutSelected.visibility = View.GONE
+                resetIconYAxis(circleImageViewProfile)
+                circleImageViewProfile.visibility = View.VISIBLE
+                circleImageViewProfile.alpha = 1f
+                if (reverseAllAnimations && animationItemsIndex[position, false] || currentSelectedIndex == position
+                ) {
+                    FlipAnimator.flipView(context, relativeLayoutSelected, circleImageViewProfile, false)
+                    resetCurrentIndex()
+                }
+            }
+        }
+
+        override fun onLongClick(view: View?): Boolean {
+            view?.let {
+                return when (view.id) {
+                    itemView.id -> {
+                        val isPresent = getItem(adapterPosition).attendanceDetail?.isPresent
+                        isPresent?.let {
+                            if (isPresent) {
+                                onAdapterClick.onRowLongClicked(adapterPosition)
+                                view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                                return true
+                            }
+                        }
+                        Toast.makeText(
+                            context, "Lumper isn't arrived yet", Toast.LENGTH_SHORT
+                        ).show()
+                        false
+                    }
+                    else -> {
+                        false
+                    }
+                }
+            }
+            return false
+        }
+
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
+                    itemView.id -> {
+                        if (getSelectedItemCount() > 0) {
+                            val isPresent = getItem(adapterPosition).attendanceDetail?.isPresent
+                            isPresent?.let {
+                                if (isPresent) {
+                                    onAdapterClick.onRowClicked(adapterPosition)
+                                } else {
+                                    Toast.makeText(
+                                        context, "Lumper isn't arrived yet", Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                        }
+                    }
                     textViewAddTime.id -> {
                         onAdapterClick.onAddTimeClick(getItem(adapterPosition), adapterPosition)
                     }
@@ -238,7 +327,7 @@ class TimeClockAttendanceAdapter(
         }
     }
 
-    fun updateClockInTime(itemPosition: Int, currentTime: Long) {
+    fun updateClockInTime(itemPosition: Int, currentTime: Long, isNotify: Boolean = true) {
         val item = getItem(itemPosition)
 
         // Update in API Request Object
@@ -249,10 +338,12 @@ class TimeClockAttendanceAdapter(
         //Update in Local List Object to show changes on UI
         getItem(itemPosition).attendanceDetail?.morningPunchIn =
             DateUtils.getUTCDateString(DateUtils.PATTERN_API_RESPONSE, Date(currentTime))
-        notifyDataSetChanged()
+
+        if (isNotify)
+            notifyDataSetChanged()
     }
 
-    fun updateClockOutTime(itemPosition: Int, currentTime: Long) {
+    fun updateClockOutTime(itemPosition: Int, currentTime: Long, isNotify: Boolean = true) {
         val item = getItem(itemPosition)
 
         // Update in API Request Object
@@ -263,10 +354,12 @@ class TimeClockAttendanceAdapter(
         //Update in Local List Object to show changes on UI
         getItem(itemPosition).attendanceDetail?.eveningPunchOut =
             DateUtils.getUTCDateString(DateUtils.PATTERN_API_RESPONSE, Date(currentTime))
-        notifyDataSetChanged()
+
+        if (isNotify)
+            notifyDataSetChanged()
     }
 
-    fun updateLunchInTime(itemPosition: Int, currentTime: Long) {
+    fun updateLunchInTime(itemPosition: Int, currentTime: Long, isNotify: Boolean = true) {
         val item = getItem(itemPosition)
 
         // Update in API Request Object
@@ -277,10 +370,12 @@ class TimeClockAttendanceAdapter(
         //Update in Local List Object to show changes on UI
         getItem(itemPosition).attendanceDetail?.lunchPunchIn =
             DateUtils.getUTCDateString(DateUtils.PATTERN_API_RESPONSE, Date(currentTime))
-        notifyDataSetChanged()
+
+        if (isNotify)
+            notifyDataSetChanged()
     }
 
-    fun updateLunchOutTime(itemPosition: Int, currentTime: Long) {
+    fun updateLunchOutTime(itemPosition: Int, currentTime: Long, isNotify: Boolean = true) {
         val item = getItem(itemPosition)
 
         // Update in API Request Object
@@ -291,7 +386,9 @@ class TimeClockAttendanceAdapter(
         //Update in Local List Object to show changes on UI
         getItem(itemPosition).attendanceDetail?.lunchPunchOut =
             DateUtils.getUTCDateString(DateUtils.PATTERN_API_RESPONSE, Date(currentTime))
-        notifyDataSetChanged()
+
+        if (isNotify)
+            notifyDataSetChanged()
     }
 
     fun getUpdatedData(): HashMap<String, AttendanceDetail> {
@@ -320,4 +417,97 @@ class TimeClockAttendanceAdapter(
             !hasValue
         }
     }
+
+    fun updateClockInTimeForSelectedPositions(currentTime: Long) {
+        val positions = getSelectedItemPositions()
+        for (position in positions) {
+            updateClockInTime(position, currentTime, isNotify = false)
+        }
+
+        selectedItems.clear()
+        resetCurrentIndex()
+        notifyDataSetChanged()
+    }
+
+    fun updateClockOutTimeForSelectedPositions(currentTime: Long) {
+        val positions = getSelectedItemPositions()
+        for (position in positions) {
+            updateClockOutTime(position, currentTime, isNotify = false)
+        }
+
+        selectedItems.clear()
+        resetCurrentIndex()
+        notifyDataSetChanged()
+    }
+
+    fun updateLunchInTimeForSelectedPositions(currentTime: Long) {
+        val positions = getSelectedItemPositions()
+        for (position in positions) {
+            updateLunchInTime(position, currentTime, isNotify = false)
+        }
+
+        selectedItems.clear()
+        resetCurrentIndex()
+        notifyDataSetChanged()
+    }
+
+    fun updateLunchOutTimeForSelectedPositions(currentTime: Long) {
+        val positions = getSelectedItemPositions()
+        for (position in positions) {
+            updateLunchOutTime(position, currentTime, isNotify = false)
+        }
+
+        selectedItems.clear()
+        resetCurrentIndex()
+        notifyDataSetChanged()
+    }
+
+    //////// MultiSelection Functions///////////////
+    fun toggleSelection(position: Int) {
+        currentSelectedIndex = position
+        if (selectedItems.get(position, false)) {
+            selectedItems.delete(position)
+            animationItemsIndex.delete(position)
+        } else {
+            selectedItems.put(position, true)
+            animationItemsIndex.put(position, true)
+        }
+        notifyDataSetChanged()
+    }
+
+    fun getSelectedItemCount(): Int {
+        return selectedItems.size()
+    }
+
+    private fun getSelectedItemPositions(): ArrayList<Int> {
+        val items = ArrayList<Int>(selectedItems.size())
+        for (position in selectedItems.keyIterator()) {
+            items.add(position)
+        }
+        return items
+    }
+
+    fun getSelectedItems(): ArrayList<LumperAttendanceData> {
+        val items = ArrayList<LumperAttendanceData>(selectedItems.size())
+        for (position in selectedItems.keyIterator()) {
+            items.add(getItem(position))
+        }
+        return items;
+    }
+
+    private fun resetIconYAxis(view: View) {
+        if (view.rotationY != 0f) {
+            view.rotationY = 0f
+        }
+    }
+
+    private fun resetCurrentIndex() {
+        currentSelectedIndex = -1
+    }
+
+    fun resetAnimationIndex() {
+        reverseAllAnimations = false;
+        animationItemsIndex.clear();
+    }
+    ////////////////////////////////////////////
 }

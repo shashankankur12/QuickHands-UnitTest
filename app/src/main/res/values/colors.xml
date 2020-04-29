@@ -28,4 +28,7 @@
     <color name="startTimeBackground">#ecf0f6</color>
     <color name="fabBackgroundOverlay">#5C000000</color>
     <color name="online">#53d769</color>
+
+    <color name="row_activated">#e0e0e0</color>
+    <color name="bg_circle_default">#666666</color>
 </resources>

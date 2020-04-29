@@ -87,6 +87,19 @@
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/_14ssp" />
+
+            <Button
+                android:id="@+id/buttonAddTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10ssp"
+                android:layout_marginBottom="@dimen/_10ssp"
+                android:background="@drawable/round_button_selector"
+                android:text="@string/add_time"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/_14ssp"
+                android:visibility="gone" />
         </LinearLayout>
 
         <TextView

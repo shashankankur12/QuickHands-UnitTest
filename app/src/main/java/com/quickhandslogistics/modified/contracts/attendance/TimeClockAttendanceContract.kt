@@ -32,6 +32,8 @@ class TimeClockAttendanceContract {
                 itemPosition: Int
             )
             fun onAddNotes(updatedDataSize: Int)
+            fun onRowLongClicked(itemPosition: Int)
+            fun onRowClicked(itemPosition: Int)
         }
     }
 
