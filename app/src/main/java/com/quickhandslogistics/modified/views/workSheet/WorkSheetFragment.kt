@@ -23,19 +23,6 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View {
     private lateinit var adapter: WorkSheetPagerAdapter
     private var progressDialog: Dialog? = null
 
-    companion object {
-        const val ARG_ALLOW_UPDATE = "ARG_ALLOW_UPDATE"
-        const val ARG_BUILDING_PARAMETERS = "ARG_BUILDING_PARAMETERS"
-        const val ARG_IS_SCHEDULED_STATUS_CHANGED = "ARG_IS_SCHEDULED_STATUS_CHANGED"
-        const val ARG_SELECTED_DATE_MILLISECONDS = "ARG_SELECTED_DATE_MILLISECONDS"
-        const val ARG_SCHEDULE_IDENTITY = "ARG_SCHEDULEN_IDENTITY"
-        const val ARG_SCHEDULE_DETAIL = "ARG_SCHEDULE_DETAIL"
-        const val ARG_SCHEDULE_FROM_DATE = "ARG_SCHEDULE_FROM_DATE"
-        const val ARG_WORK_ITEM_ID = "ARG_WORK_ITEM_ID"
-        const val ARG_WORK_ITEM_TYPE = "ARG_WORK_ITEM_TYPE"
-        const val ARG_WORK_ITEM_TYPE_DISPLAY_NAME = "ARG_WORK_ITEM_TYPE_DISPLAY_NAME"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         workSheetPresenter = WorkSheetPresenter(this, resources, sharedPref)
@@ -73,8 +60,8 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View {
 
     override fun showWorkSheets(
         onGoingWorkItems: ArrayList<WorkItemDetail>,
-        cancelledWorkItems: List<WorkItemDetail>,
-        completedWorkItems: List<WorkItemDetail>
+        cancelledWorkItems: ArrayList<WorkItemDetail>,
+        completedWorkItems: ArrayList<WorkItemDetail>
     ) {
         val allWorkItems = ArrayList<WorkItemDetail>()
         allWorkItems.addAll(onGoingWorkItems)

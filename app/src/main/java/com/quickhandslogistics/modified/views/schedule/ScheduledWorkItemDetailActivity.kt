@@ -31,7 +31,6 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener,
     ScheduledWorkItemDetailContract.View {
 
     private var workItemId: String = ""
-    private var workItemType: String = ""
     private var workItemTypeDisplayName: String = ""
     private var allowUpdate: Boolean = true
     private var workItemDetail: WorkItemDetail? = null
@@ -49,7 +48,6 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener,
         intent.extras?.let { it ->
             allowUpdate = it.getBoolean(ARG_ALLOW_UPDATE, true)
             workItemId = it.getString(ARG_WORK_ITEM_ID, "")
-            workItemType = it.getString(ARG_WORK_ITEM_TYPE, "")
             workItemTypeDisplayName = it.getString(ARG_WORK_ITEM_TYPE_DISPLAY_NAME, "")
         }
 
@@ -84,7 +82,7 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener,
         })
 
         if (allowUpdate) {
-            buttonAddBuildingOperations.text = getString(R.string.add_building_operations)
+            buttonAddBuildingOperations.text = getString(R.string.update_building_operations)
             buttonUpdateLumpers.visibility = View.VISIBLE
         } else {
             buttonAddBuildingOperations.text = getString(R.string.building_operations)

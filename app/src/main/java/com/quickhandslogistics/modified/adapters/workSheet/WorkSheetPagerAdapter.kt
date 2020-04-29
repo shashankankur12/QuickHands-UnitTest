@@ -44,9 +44,11 @@ class WorkSheetPagerAdapter(
 
     fun updateWorkItemsList(
         onGoingWorkItems: ArrayList<WorkItemDetail>,
-        cancelledWorkItems: List<WorkItemDetail>,
-        completedWorkItems: List<WorkItemDetail>
+        cancelledWorkItems: ArrayList<WorkItemDetail>,
+        completedWorkItems: ArrayList<WorkItemDetail>
     ) {
         ongoingFragment.updateWorkItemsList(onGoingWorkItems)
+        cancelledFragment.updateWorkItemsList(cancelledWorkItems)
+        completedFragment.updateWorkItemsList(completedWorkItems)
     }
 }

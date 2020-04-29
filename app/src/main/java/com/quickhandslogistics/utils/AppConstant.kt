@@ -22,6 +22,13 @@ interface AppConstant {
         //Notification Types
         const val NOTIFICATION_TYPE_SCHEDULE_CREATE = "ScheduleCreate"
 
+        // API Enums
+        const val WORK_ITEM_STATUS_ON_HOLD = "ON-HOLD"
+        const val WORK_ITEM_STATUS_IN_PROGRESS = "IN-PROGRESS"
+        const val WORK_ITEM_STATUS_COMPLETED = "COMPLETED"
+        const val WORK_ITEM_STATUS_CANCELLED = "CANCELLED"
+        const val WORK_ITEM_STATUS_SCHEDULED = "SCHEDULED"
+
         const val NOTES_NOT_AVAILABLE = "NA"
 
         const val EDIT_DIALOG = "edit_dialog"

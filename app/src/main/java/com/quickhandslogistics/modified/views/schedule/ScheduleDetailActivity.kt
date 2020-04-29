@@ -268,7 +268,6 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
         val bundle = Bundle()
         bundle.putBoolean(ARG_ALLOW_UPDATE, allowUpdate)
         bundle.putString(ARG_WORK_ITEM_ID, workItemDetail.id)
-        bundle.putString(ARG_WORK_ITEM_TYPE, workItemDetail.workItemType)
         bundle.putString(ARG_WORK_ITEM_TYPE_DISPLAY_NAME, workItemTypeDisplayName)
         startIntent(
             ScheduledWorkItemDetailActivity::class.java, bundle = bundle,

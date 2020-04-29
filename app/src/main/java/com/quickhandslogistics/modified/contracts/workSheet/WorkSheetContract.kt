@@ -26,8 +26,8 @@ class WorkSheetContract {
         fun showAPIErrorMessage(message: String)
         fun showWorkSheets(
             onGoingWorkItems: ArrayList<WorkItemDetail>,
-            cancelledWorkItems: List<WorkItemDetail>,
-            completedWorkItems: List<WorkItemDetail>
+            cancelledWorkItems: ArrayList<WorkItemDetail>,
+            completedWorkItems: ArrayList<WorkItemDetail>
         )
         fun cancellingWorkScheduleFinished()
         fun showHeaderInfo(buildingName: String, date: String)

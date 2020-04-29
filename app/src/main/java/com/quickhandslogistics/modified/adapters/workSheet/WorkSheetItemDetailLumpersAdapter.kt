@@ -8,26 +8,21 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemDetailLumpersContract
 import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
-import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
-import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.utils.StringUtils
+import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_work_item_detail_lumper_time.view.*
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
-class WorkItemDetailLumpersAdapter(
+class WorkSheetItemDetailLumpersAdapter(
     private var onAdapterClick: WorkSheetItemDetailLumpersContract.View.OnAdapterItemClickListener
-) : Adapter<WorkItemDetailLumpersAdapter.WorkItemHolder>() {
+) : Adapter<WorkSheetItemDetailLumpersAdapter.WorkItemHolder>() {
 
-    private var searchEnabled = false
-    private var searchTerm = ""
-    private var lumperAttendanceList: ArrayList<LumperAttendanceData> = ArrayList()
-    private var lumperAttendanceFilteredList: ArrayList<LumperAttendanceData> = ArrayList()
+    private var lumperList: ArrayList<EmployeeData> = ArrayList()
     private var updateData: HashMap<String, AttendanceDetail> = HashMap()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemHolder {
@@ -37,16 +32,15 @@ class WorkItemDetailLumpersAdapter(
     }
 
     override fun getItemCount(): Int {
-        // return if (searchEnabled) lumperAttendanceFilteredList.size else lumperAttendanceList.size
-        return 10
+        return lumperList.size
     }
 
-    private fun getItem(position: Int): LumperAttendanceData {
-        return if (searchEnabled) lumperAttendanceFilteredList[position] else lumperAttendanceList[position]
+    private fun getItem(position: Int): EmployeeData {
+        return lumperList[position]
     }
 
     override fun onBindViewHolder(holder: WorkItemHolder, position: Int) {
-        holder.bind(/*getItem(position)*/)
+        holder.bind(getItem(position))
     }
 
     inner class WorkItemHolder(view: View, private val context: Context) :
@@ -60,69 +54,29 @@ class WorkItemDetailLumpersAdapter(
         private val textViewShiftTime: TextView = view.textViewShiftTime
         private val textViewBreakTime: TextView = view.textViewBreakTime
 
-        fun bind(/*lumperAttendance: LumperAttendanceData*/) {
-
-            textViewLumperName.text = String.format("%s %s", "Sahil", "Garg")
-            textViewEmployeeId.text = String.format("(Emp ID: %s)", "AVG876")
-            textViewAddTime.setOnClickListener(this)
-
-/*
-            if (!StringUtils.isNullOrEmpty(lumperAttendance.profileImageUrl)) {
-                Glide.with(context).load(lumperAttendance.profileImageUrl)
+        fun bind(employeeData: EmployeeData) {
+            if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl)) {
+                Glide.with(context).load(employeeData.profileImageUrl)
                     .placeholder(R.drawable.dummy).error(R.drawable.dummy)
                     .into(circleImageViewProfile)
             } else {
                 Glide.with(context).clear(circleImageViewProfile);
             }
 
-
             textViewLumperName.text = String.format(
                 "%s %s",
-                getDefaultOrValue(lumperAttendance.firstName).capitalize(),
-                getDefaultOrValue(lumperAttendance.lastName).capitalize()
+                getDefaultOrValue(employeeData.firstName).capitalize(),
+                getDefaultOrValue(employeeData.lastName).capitalize()
             )
 
-            if (StringUtils.isNullOrEmpty(lumperAttendance.employeeId)) {
+            if (StringUtils.isNullOrEmpty(employeeData.employeeId)) {
                 textViewEmployeeId.visibility = View.GONE
             } else {
                 textViewEmployeeId.visibility = View.VISIBLE
-                textViewEmployeeId.text = String.format("(Emp ID: %s)", lumperAttendance.employeeId)
+                textViewEmployeeId.text = String.format("(Emp ID: %s)", employeeData.employeeId)
             }
-
-            lumperAttendance.attendanceDetail?.let { attendanceDetail ->
-                val isPresent = getDefaultOrValue(attendanceDetail.isPresent)
-                if (isPresent) {
-                    val morningPunchIn = DateUtils.convertDateStringToTime(
-                        DateUtils.PATTERN_API_RESPONSE, attendanceDetail.morningPunchIn
-                    )
-                    val eveningPunchOut = DateUtils.convertDateStringToTime(
-                        DateUtils.PATTERN_API_RESPONSE, attendanceDetail.eveningPunchOut
-                    )
-                    textViewShiftTime.text = String.format(
-                        "%s - %s",
-                        if (morningPunchIn.isNotEmpty()) morningPunchIn else "NA",
-                        if (eveningPunchOut.isNotEmpty()) eveningPunchOut else "NA"
-                    )
-
-                    val lunchPunchIn = DateUtils.convertDateStringToTime(
-                        DateUtils.PATTERN_API_RESPONSE, attendanceDetail.lunchPunchIn
-                    )
-                    val lunchPunchOut = DateUtils.convertDateStringToTime(
-                        DateUtils.PATTERN_API_RESPONSE, attendanceDetail.lunchPunchOut
-                    )
-                    textViewLunchTime.text = String.format(
-                        "%s - %s",
-                        if (lunchPunchIn.isNotEmpty()) lunchPunchIn else "NA",
-                        if (lunchPunchOut.isNotEmpty()) lunchPunchOut else "NA"
-                    )
-                }
-                editTextNotes.setText(attendanceDetail.attendanceNote)
-                updateTimeUI(isPresent, lumperAttendance.id!!)
-            }
-
             textViewAddTime.setOnClickListener(this)
 
- */
         }
 
         private fun updateTimeUI(isPresent: Boolean, lumperId: String) {
@@ -141,38 +95,12 @@ class WorkItemDetailLumpersAdapter(
         }
     }
 
-    fun setSearchEnabled(enabled: Boolean, searchTerm: String = "") {
-        this.searchEnabled = enabled
-        if (!searchEnabled) {
-            this.searchTerm = ""
-            lumperAttendanceFilteredList.clear()
-            notifyDataSetChanged()
-            return
-        }
-        this.searchTerm = searchTerm.toLowerCase(Locale.getDefault())
-        filter()
-    }
-
-    private fun filter() {
-        lumperAttendanceFilteredList.clear()
-        if (searchTerm.isEmpty()) {
-            lumperAttendanceFilteredList.addAll(lumperAttendanceList)
-        } else {
-            for (data in lumperAttendanceList) {
-                val term = data.firstName!!
-                if (term.toLowerCase(Locale.getDefault()).contains(searchTerm)) {
-                    lumperAttendanceFilteredList.add(data)
-                }
-            }
-        }
-        notifyDataSetChanged()
-    }
-
-    fun updateList(lumperAttendanceList: ArrayList<LumperAttendanceData>) {
+    fun updateList(lumperList: ArrayList<EmployeeData>?) {
         this.updateData.clear()
-        this.lumperAttendanceList.clear()
-        this.lumperAttendanceFilteredList.clear()
-        this.lumperAttendanceList.addAll(lumperAttendanceList)
+        this.lumperList.clear()
+        lumperList?.let {
+            this.lumperList.addAll(lumperList)
+        }
         notifyDataSetChanged()
     }
 
@@ -200,7 +128,7 @@ class WorkItemDetailLumpersAdapter(
         }
     }
 
-    fun updateClockInTime(itemPosition: Int, currentTime: Long) {
+    /*fun updateClockInTime(itemPosition: Int, currentTime: Long) {
         val item = getItem(itemPosition)
 
         // Update in API Request Object
@@ -281,5 +209,5 @@ class WorkItemDetailLumpersAdapter(
             // Nothing is edited for this lumper yet.
             !hasValue
         }
-    }
+    }*/
 }

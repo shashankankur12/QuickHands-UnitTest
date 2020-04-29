@@ -8,16 +8,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.adapters.workSheet.WorkItemDetailLumpersAdapter
+import com.quickhandslogistics.modified.adapters.workSheet.WorkSheetItemDetailLumpersAdapter
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemDetailLumpersContract
+import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.views.BaseFragment
 import kotlinx.android.synthetic.main.content_work_sheet_item_detail_lumpers.*
 
 class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
     WorkSheetItemDetailLumpersContract.View.OnAdapterItemClickListener {
 
-    private lateinit var workItemDetailLumpersAdapter: WorkItemDetailLumpersAdapter
+    private lateinit var workSheetItemDetailLumpersAdapter: WorkSheetItemDetailLumpersAdapter
     private var onFragmentInteractionListener: WorkSheetItemDetailContract.View.OnFragmentInteractionListener? =
         null
 
@@ -44,12 +45,16 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
             val dividerItemDecoration =
                 DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            workItemDetailLumpersAdapter =
-                WorkItemDetailLumpersAdapter(this@WorkSheetItemDetailLumpersFragment)
-            adapter = workItemDetailLumpersAdapter
+            workSheetItemDetailLumpersAdapter =
+                WorkSheetItemDetailLumpersAdapter(this@WorkSheetItemDetailLumpersFragment)
+            adapter = workSheetItemDetailLumpersAdapter
         }
 
         buttonAddLumpers.setOnClickListener(this)
+    }
+
+    fun showLumpersData(workItemDetail: WorkItemDetail) {
+        workSheetItemDetailLumpersAdapter.updateList(workItemDetail.assignedLumpersList)
     }
 
     override fun onClick(view: View?) {

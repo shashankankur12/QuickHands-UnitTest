@@ -2,14 +2,12 @@ package com.quickhandslogistics.modified.views.buildingOperations
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.adapters.buildingOperations.BuildingOperationsAdapter
 import com.quickhandslogistics.modified.contracts.buildingOperations.BuildingOperationsContract
 import com.quickhandslogistics.modified.controls.SpaceDividerItemDecorator
-import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.presenters.buildingOperations.BuildingOperationsPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_ALLOW_UPDATE
@@ -47,11 +45,7 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener,
         recyclerViewBuildingOperations.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(20, 20))
-            buildingOperationsAdapter =
-                BuildingOperationsAdapter(
-                    allowUpdate,
-                    parameters
-                )
+            buildingOperationsAdapter = BuildingOperationsAdapter(allowUpdate, parameters)
             adapter = buildingOperationsAdapter
         }
 
@@ -94,6 +88,7 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener,
     }
 
     override fun buildingOperationsDataSaved() {
+        setResult(RESULT_OK)
         onBackPressed()
     }
 }

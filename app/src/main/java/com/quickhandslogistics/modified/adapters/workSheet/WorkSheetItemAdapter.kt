@@ -33,49 +33,45 @@ class WorkSheetItemAdapter(
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val workItemDetail = getItem(position)
-        holder.bind(workItemDetail)
-
-        when (workItemType) {
-            resources.getString(R.string.ongoing) -> {
-                when (workItemDetail.status) {
-                    resources.getString(R.string.scheduled).toUpperCase() -> {
-                        holder.textViewStatus.text = resources.getString(R.string.scheduled)
-                        holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_scheduled)
-                        holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_scheduled)
-                    }
-                    resources.getString(R.string.on_hold).toUpperCase() -> {
-                        holder.textViewStatus.text = resources.getString(R.string.on_hold)
-                        holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
-                        holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_on_hold)
-                    }
-                    else -> {
-                        holder.textViewStatus.text = resources.getString(R.string.in_progress)
-                        holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
-                        holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_in_progress)
-                    }
-                }
-            }
-            resources.getString(R.string.cancelled) -> {
-                holder.textViewStatus.text = resources.getString(R.string.cancelled)
-                holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
-                holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_cancelled)
-            }
-            resources.getString(R.string.completed) -> {
-                holder.textViewStatus.text = resources.getString(R.string.completed)
-                holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
-                holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_completed)
-            }
-        }
-    }
-
     override fun getItemCount(): Int {
         return workItemsList.size
     }
 
     fun getItem(position: Int): WorkItemDetail {
         return workItemsList[position]
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val workItemDetail = getItem(position)
+        holder.bind(workItemDetail)
+
+        when (workItemDetail.status) {
+            resources.getString(R.string.scheduled).toUpperCase() -> {
+                holder.textViewStatus.text = resources.getString(R.string.scheduled)
+                holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_scheduled)
+                holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_scheduled)
+            }
+            resources.getString(R.string.on_hold).toUpperCase() -> {
+                holder.textViewStatus.text = resources.getString(R.string.on_hold)
+                holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
+                holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_on_hold)
+            }
+            resources.getString(R.string.cancelled).toUpperCase() -> {
+                holder.textViewStatus.text = resources.getString(R.string.cancelled)
+                holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
+                holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_cancelled)
+            }
+            resources.getString(R.string.in_progress).toUpperCase() -> {
+                holder.textViewStatus.text = resources.getString(R.string.in_progress)
+                holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
+                holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_in_progress)
+            }
+            else -> {
+                holder.textViewStatus.text = resources.getString(R.string.completed)
+                holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
+                holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_completed)
+            }
+        }
     }
 
     fun updateList(workItemsList: ArrayList<WorkItemDetail>) {
@@ -144,7 +140,18 @@ class WorkSheetItemAdapter(
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
-                    itemView.id -> adapterItemClickListener.onItemClick()
+                    itemView.id -> {
+                        val workItemDetail = getItem(adapterPosition)
+                        val workItemTypeDisplayName =
+                            ScheduleUtils.getWorkItemTypeDisplayName(
+                                workItemDetail.workItemType,
+                                resources
+                            )
+                        adapterItemClickListener.onItemClick(
+                            workItemDetail.id!!,
+                            workItemTypeDisplayName
+                        )
+                    }
                 }
             }
         }

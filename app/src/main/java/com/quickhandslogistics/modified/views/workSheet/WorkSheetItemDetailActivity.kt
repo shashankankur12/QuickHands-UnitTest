@@ -1,5 +1,6 @@
 package com.quickhandslogistics.modified.views.workSheet
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,36 +10,59 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.adapters.workSheet.WorkItemStatusAdapter
+import com.quickhandslogistics.modified.adapters.workSheet.WorkSheetItemStatusAdapter
 import com.quickhandslogistics.modified.adapters.workSheet.WorkSheetItemDetailPagerAdapter
 import com.quickhandslogistics.modified.contracts.common.InfoDialogWarningContract
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemDetailContract
+import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
+import com.quickhandslogistics.modified.presenters.workSheet.WorkSheetItemDetailPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.common.InfoWarningDialogFragment
+import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
+import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
+import com.quickhandslogistics.utils.CustomProgressBar
+import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.activity_work_sheet_item_detail.*
 import kotlinx.android.synthetic.main.bottom_sheet_select_status.*
 import kotlinx.android.synthetic.main.content_work_sheet_item_detail.*
 
 class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
-    WorkSheetItemDetailContract.View.OnAdapterItemClickListener,
+    WorkSheetItemDetailContract.View, WorkSheetItemDetailContract.View.OnAdapterItemClickListener,
     WorkSheetItemDetailContract.View.OnFragmentInteractionListener {
 
-    private lateinit var workItemStatusAdapter: WorkItemStatusAdapter
-    private lateinit var adapter: WorkSheetItemDetailPagerAdapter
+    private var workItemId: String = ""
+    private var workItemTypeDisplayName: String = ""
+
+    private lateinit var workSheetItemDetailPresenter: WorkSheetItemDetailPresenter
+    private lateinit var workSheetItemStatusAdapter: WorkSheetItemStatusAdapter
+    private lateinit var workSheetItemDetailPagerAdapter: WorkSheetItemDetailPagerAdapter
 
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
+
+    private var progressDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_work_sheet_item_detail)
         setupToolbar(getString(R.string.work_sheet_detail))
 
+
+        intent.extras?.let { it ->
+            workItemId = it.getString(ARG_WORK_ITEM_ID, "")
+            workItemTypeDisplayName = it.getString(ARG_WORK_ITEM_TYPE_DISPLAY_NAME, "")
+        }
+
         initializeUI()
+
+        workSheetItemDetailPresenter = WorkSheetItemDetailPresenter(this, resources)
+        workSheetItemDetailPresenter.fetchWorkItemDetail(workItemId)
     }
 
     private fun initializeUI() {
-        adapter = WorkSheetItemDetailPagerAdapter(supportFragmentManager, resources)
-        viewPagerWorkSheetDetail.adapter = adapter
+        workSheetItemDetailPagerAdapter =
+            WorkSheetItemDetailPagerAdapter(supportFragmentManager, resources)
+        viewPagerWorkSheetDetail.adapter = workSheetItemDetailPagerAdapter
         tabLayoutWorkSheetDetail.setupWithViewPager(viewPagerWorkSheetDetail)
 
         sheetBehavior = BottomSheetBehavior.from(constraintLayoutBottomSheetStatus)
@@ -50,30 +74,38 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
             val dividerItemDecoration =
                 DividerItemDecoration(activity, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            workItemStatusAdapter = WorkItemStatusAdapter(
+            workSheetItemStatusAdapter = WorkSheetItemStatusAdapter(
                 resources, this@WorkSheetItemDetailActivity
             )
-            adapter = workItemStatusAdapter
+            adapter = workSheetItemStatusAdapter
         }
 
         textViewStatus.setOnClickListener(this)
         bottomSheetBackgroundStatus.setOnClickListener(this)
-
-        updateStatusBackground()
     }
 
-    private fun updateStatusBackground() {
-        when (textViewStatus.text.toString()) {
-            resources.getString(R.string.in_progress) ->
-                textViewStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
-            resources.getString(R.string.on_hold) ->
-                textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
-            resources.getString(R.string.scheduled) ->
+    private fun updateStatusBackground(status: String) {
+        when (status) {
+            resources.getString(R.string.scheduled).toUpperCase() -> {
+                textViewStatus.text = resources.getString(R.string.scheduled)
                 textViewStatus.setBackgroundResource(R.drawable.chip_background_scheduled)
-            resources.getString(R.string.cancelled) ->
+            }
+            resources.getString(R.string.on_hold).toUpperCase() -> {
+                textViewStatus.text = resources.getString(R.string.on_hold)
+                textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
+            }
+            resources.getString(R.string.cancelled).toUpperCase() -> {
+                textViewStatus.text = resources.getString(R.string.cancelled)
                 textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
-            resources.getString(R.string.completed) ->
+            }
+            resources.getString(R.string.in_progress).toUpperCase() -> {
+                textViewStatus.text = resources.getString(R.string.in_progress)
+                textViewStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
+            }
+            resources.getString(R.string.completed).toUpperCase() -> {
+                textViewStatus.text = resources.getString(R.string.completed)
                 textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
+            }
         }
 
         invalidateOptionsMenu()
@@ -124,7 +156,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
                 bottomSheetBackgroundStatus.id -> closeBottomSheet()
                 textViewStatus.id -> {
                     if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-                        workItemStatusAdapter.updateInitialStatus(textViewStatus.text.toString())
+                        workSheetItemStatusAdapter.updateInitialStatus(textViewStatus.text.toString())
                         sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                         bottomSheetBackgroundStatus.visibility = View.VISIBLE
                     } else {
@@ -142,15 +174,90 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
             negativeButtonText = getString(R.string.string_no),
             onClickListener = object : InfoDialogWarningContract.View.OnClickListener {
                 override fun onPositiveButtonClick() {
-                    textViewStatus.text = status
-                    updateStatusBackground()
+                    updateStatusBackground(status)
                     closeBottomSheet()
                 }
 
                 override fun onNegativeButtonClick() {
-                    workItemStatusAdapter.updateInitialStatus(textViewStatus.text.toString())
+                    workSheetItemStatusAdapter.updateInitialStatus(textViewStatus.text.toString())
                 }
             })
         dialog.show(supportFragmentManager, InfoWarningDialogFragment::class.simpleName)
+    }
+
+    override fun hideProgressDialog() {
+        progressDialog?.dismiss()
+    }
+
+    override fun showProgressDialog(message: String) {
+        progressDialog =
+            CustomProgressBar.getInstance(activity).showProgressDialog(message)
+    }
+
+    override fun showAPIErrorMessage(message: String) {
+        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
+    }
+
+    override fun showWorkItemDetail(workItemDetail: WorkItemDetail) {
+        textViewStartTime.text = String.format(
+            getString(R.string.start_time_container),
+            DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime)
+        )
+
+        textViewWorkItemType.text = workItemTypeDisplayName
+
+        when (workItemTypeDisplayName) {
+            getString(R.string.string_drops) -> {
+                textViewDropItems.text = String.format(
+                    getString(R.string.no_of_drops),
+                    workItemDetail.numberOfDrops
+                )
+            }
+            getString(R.string.string_live_loads) -> {
+                textViewDropItems.text = String.format(
+                    getString(R.string.live_load_sequence),
+                    workItemDetail.sequence
+                )
+            }
+            else -> {
+                textViewDropItems.text = String.format(
+                    getString(R.string.outbound_sequence),
+                    workItemDetail.sequence
+                )
+            }
+        }
+
+        if (!workItemDetail.status.isNullOrEmpty()) {
+            updateStatusBackground(workItemDetail.status!!)
+        }
+
+        workSheetItemDetailPagerAdapter.showWorkItemData(workItemDetail)
+
+        /* when (workItemDetail.status) {
+             resources.getString(R.string.scheduled).toUpperCase() -> {
+                 textViewStatus.text = resources.getString(R.string.scheduled)
+                 textViewStatus.setBackgroundResource(R.drawable.chip_background_scheduled)
+             }
+             resources.getString(R.string.on_hold).toUpperCase() -> {
+                 textViewStatus.text = resources.getString(R.string.on_hold)
+                 textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
+             }
+             resources.getString(R.string.cancelled).toUpperCase() -> {
+                 textViewStatus.text = resources.getString(R.string.cancelled)
+                 textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
+             }
+             resources.getString(R.string.in_progress).toUpperCase() -> {
+                 textViewStatus.text = resources.getString(R.string.in_progress)
+                 textViewStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
+             }
+             else -> {
+                 textViewStatus.text = resources.getString(R.string.completed)
+                 textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
+             }
+         }*/
+    }
+
+    override fun fetchWorkItemDetail() {
+        workSheetItemDetailPresenter.fetchWorkItemDetail(workItemId)
     }
 }

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.views.workSheet.WorkSheetItemDetailBOFragment
 import com.quickhandslogistics.modified.views.workSheet.WorkSheetItemDetailLumpersFragment
 import com.quickhandslogistics.modified.views.workSheet.WorkSheetItemDetailNotesFragment
@@ -36,5 +37,10 @@ class WorkSheetItemDetailPagerAdapter(
 
     override fun saveState(): Parcelable? {
         return null
+    }
+
+    fun showWorkItemData(workItemDetail: WorkItemDetail) {
+        buildingOperationsFragment.showBuildingOperationsData(workItemDetail)
+        lumpersFragment.showLumpersData(workItemDetail)
     }
 }

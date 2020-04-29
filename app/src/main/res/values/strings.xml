@@ -162,7 +162,7 @@
     <string name="add_time">Add Time</string>
     <string name="shift_time">Shift Time</string>
     <string name="lunch_time">Lunch Time</string>
-    <string name="add_building_operations">Add Building Operations</string>
+    <string name="update_building_operations">Update Building Operations</string>
     <string name="string_add">Add</string>
     <string name="string_update">Update</string>
     <string name="update_lumpers">Update Lumpers</string>
@@ -203,7 +203,7 @@
     <string name="work_sheet_detail">Work Sheet Detail</string>
     <string name="notes_for_qhl_and_customer"><![CDATA[Notes for QHL & Customer]]></string>
     <string name="string_select_status">Select Status</string>
-    <string name="on_hold">On Hold</string>
+    <string name="on_hold">On-Hold</string>
     <string name="scheduled">Scheduled</string>
     <string name="string_ask_to_change_status">Are you sure you want to change the status?</string>
     <string name="cancel_work_item">Cancel Work Item</string>

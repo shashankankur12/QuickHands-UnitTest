@@ -13,23 +13,26 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemDetailContract
+import com.quickhandslogistics.utils.AppConstant
 import kotlinx.android.synthetic.main.item_select_status.view.*
 
-class WorkItemStatusAdapter(
+class WorkSheetItemStatusAdapter(
     private val resources: Resources,
     private val onAdapterClick: WorkSheetItemDetailContract.View.OnAdapterItemClickListener
-) : Adapter<WorkItemStatusAdapter.ViewHolder>() {
+) : Adapter<WorkSheetItemStatusAdapter.ViewHolder>() {
 
-    private var statusList: ArrayList<String> = ArrayList()
+    private var statusList: HashMap<String, String> = HashMap()
     private var initialStatus: String = ""
     private var selectedStatus: String = ""
 
     init {
-        statusList.add(resources.getString(R.string.in_progress))
-        statusList.add(resources.getString(R.string.on_hold))
-        statusList.add(resources.getString(R.string.scheduled))
-        statusList.add(resources.getString(R.string.cancelled))
-        statusList.add(resources.getString(R.string.completed))
+        statusList[resources.getString(R.string.in_progress)] =
+            AppConstant.WORK_ITEM_STATUS_IN_PROGRESS
+        statusList[resources.getString(R.string.on_hold)] = AppConstant.WORK_ITEM_STATUS_ON_HOLD
+        statusList[resources.getString(R.string.scheduled)] = AppConstant.WORK_ITEM_STATUS_SCHEDULED
+        statusList[resources.getString(R.string.cancelled)] = AppConstant.WORK_ITEM_STATUS_CANCELLED
+        statusList[resources.getString(R.string.completed)] = AppConstant.WORK_ITEM_STATUS_COMPLETED
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -42,8 +45,10 @@ class WorkItemStatusAdapter(
         return statusList.size
     }
 
-    private fun getItem(position: Int): String {
-        return statusList[position]
+    private fun getItem(position: Int): Pair<String, String> {
+        val key = ArrayList(statusList.keys)[position]
+        val value = statusList[key]
+        return Pair(key!!, value!!)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -62,10 +67,10 @@ class WorkItemStatusAdapter(
         private val textViewStatus: TextView = view.textViewStatus
         private val imageViewAdd: ImageView = view.imageViewAdd
 
-        fun bind(status: String) {
-            textViewStatus.text = status
+        fun bind(pair: Pair<String, String>) {
+            textViewStatus.text = pair.first
 
-            when (status) {
+            when (pair.first) {
                 resources.getString(R.string.in_progress) -> textViewStatus.setTextColor(
                     ContextCompat.getColor(context, android.R.color.holo_green_light)
                 )
@@ -83,7 +88,7 @@ class WorkItemStatusAdapter(
                 )
             }
 
-            if (selectedStatus == status) {
+            if (selectedStatus == pair.first) {
                 textViewStatus.typeface = Typeface.DEFAULT_BOLD
                 imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick)
             } else {
@@ -98,11 +103,11 @@ class WorkItemStatusAdapter(
             view?.let {
                 when (view.id) {
                     itemView.id -> {
-                        val status = getItem(adapterPosition)
-                        if (selectedStatus != status) {
-                            selectedStatus = status
+                        val pair = getItem(adapterPosition)
+                        if (selectedStatus != pair.first) {
+                            selectedStatus = pair.first
                             notifyDataSetChanged()
-                            onAdapterClick.onSelectStatus(status)
+                            onAdapterClick.onSelectStatus(pair.second)
                         }
                     }
                 }
