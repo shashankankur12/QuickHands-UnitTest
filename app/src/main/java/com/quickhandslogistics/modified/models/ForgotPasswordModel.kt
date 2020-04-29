@@ -5,7 +5,7 @@ import android.util.Log
 import com.quickhandslogistics.modified.contracts.ForgotPasswordContract
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRequest
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordResponse
-import com.quickhandslogistics.modified.network.DataManager
+import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
 
 class ForgotPasswordModel : ForgotPasswordContract.Model {

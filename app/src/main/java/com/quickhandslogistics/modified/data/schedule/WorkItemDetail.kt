@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName
 import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.utils.StringUtils
 
 class WorkItemDetail() : Parcelable {
     @SerializedName("id")
@@ -40,6 +41,10 @@ class WorkItemDetail() : Parcelable {
     @SerializedName("endDateForThisWorkItem")
     @Expose
     var endDateForThisWorkItem: String? = null
+
+    @SerializedName("status")
+    @Expose
+    var status: String? = null
 
     @SerializedName("isScheduledByLead")
     @Expose
@@ -80,10 +85,26 @@ class WorkItemDetail() : Parcelable {
     @SerializedName("lumperThisWorkItemAssignedTo")
     @Expose
     var assignedLumpersList: ArrayList<EmployeeData>? = null
+        get() = if (!field.isNullOrEmpty()) {
+            field!!.sortWith(Comparator { lumper1, lumper2 ->
+                if (!StringUtils.isNullOrEmpty(lumper1.firstName)
+                    && !StringUtils.isNullOrEmpty(lumper2.firstName)
+                ) {
+                    lumper1.firstName?.toLowerCase()!!.compareTo(lumper2.firstName?.toLowerCase()!!)
+                } else {
+                    0
+                }
+            })
+            field
+        } else ArrayList()
 
     @SerializedName("lumperAttendance")
     @Expose
     var attendanceDetail: AttendanceDetail? = null
+
+    @SerializedName("buildingOps")
+    @Expose
+    var buildingOps: HashMap<String, String>? = null
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
@@ -94,6 +115,7 @@ class WorkItemDetail() : Parcelable {
         scheduleIdentity = parcel.readString()
         scheduledFrom = parcel.readString()
         endDateForThisWorkItem = parcel.readString()
+        status = parcel.readString()
         isScheduledByLead = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         scheduleForWeek = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         scheduleForMonth = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
@@ -104,6 +126,19 @@ class WorkItemDetail() : Parcelable {
         buildingDetailData = parcel.readParcelable(BuildingDetailData::class.java.classLoader)
         assignedLumpersList = parcel.createTypedArrayList(EmployeeData)
         attendanceDetail = parcel.readParcelable(AttendanceDetail::class.java.classLoader)
+//        buildingOps = HashMap()
+//        readFromParcel(parcel)
+    }
+
+    private fun readFromParcel(parcel: Parcel) {
+        val count = parcel.readInt()
+        for (i in 0 until count) {
+            val value1 = parcel.readString()
+            val value2 = parcel.readString()
+            if (!value1.isNullOrEmpty() && !value2.isNullOrEmpty()) {
+                buildingOps?.put(value1, value2)
+            }
+        }
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -115,6 +150,7 @@ class WorkItemDetail() : Parcelable {
         parcel.writeString(scheduleIdentity)
         parcel.writeString(scheduledFrom)
         parcel.writeString(endDateForThisWorkItem)
+        parcel.writeString(status)
         parcel.writeValue(isScheduledByLead)
         parcel.writeValue(scheduleForWeek)
         parcel.writeValue(scheduleForMonth)
@@ -125,6 +161,13 @@ class WorkItemDetail() : Parcelable {
         parcel.writeParcelable(buildingDetailData, flags)
         parcel.writeTypedList(assignedLumpersList)
         parcel.writeParcelable(attendanceDetail, flags)
+        /*buildingOps?.let { data ->
+            parcel.writeInt(data.size)
+            for (s in data.keys) {
+                parcel.writeString(s)
+                parcel.writeString(data[s])
+            }
+        }*/
     }
 
     override fun describeContents(): Int {

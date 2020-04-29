@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".modified.views.activities.schedule.UnScheduleDetailActivity">
+    tools:context=".modified.views.schedule.UnScheduleDetailActivity">
 
     <include layout="@layout/layout_toolbar" />
 

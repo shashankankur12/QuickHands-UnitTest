@@ -6,7 +6,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleDetailContract
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetailAPIResponse
 import com.quickhandslogistics.modified.models.schedule.ScheduleDetailModel
-import com.quickhandslogistics.modified.views.controls.ScheduleUtils.getScheduleTypeName
+import com.quickhandslogistics.modified.controls.ScheduleUtils.getScheduleTypeName
 import java.util.*
 
 class ScheduleDetailPresenter(

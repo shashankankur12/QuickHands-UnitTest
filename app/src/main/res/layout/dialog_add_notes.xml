@@ -15,13 +15,11 @@
 
     <TextView
         android:id="@+id/title_add_notes"
-        style="@style/textSizeNormalRegFont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Add a Notes"
-        android:fontFamily="@font/poppinssemibold"/>
+        android:text="Add a Notes"/>
 
     <ImageView
         android:id="@+id/image_close"
@@ -37,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_100sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:background="@drawable/round_corner_edittext_grey"
+        android:background="@drawable/edit_search_bg"
         android:padding="@dimen/_10sdp"
         android:gravity="top"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -45,17 +43,15 @@
 
         <Button
             android:id="@+id/button_save"
-            style="@style/textSizeNormalRegFont"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:background="@drawable/round_button_red"
             android:elevation="@dimen/_5sdp"
-            android:fontFamily="@font/poppinssemibold"
             android:gravity="center"
             android:padding="@dimen/_10sdp"
             android:text="@string/string_save"
-            android:textColor="@color/colorWhite"
+            android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="@+id/edit_notes"
             app:layout_constraintStart_toStartOf="@+id/edit_notes"
             app:layout_constraintTop_toBottomOf="@+id/edit_notes" />

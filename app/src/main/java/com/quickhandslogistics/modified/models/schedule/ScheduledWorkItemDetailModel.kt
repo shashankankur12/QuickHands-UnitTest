@@ -3,7 +3,7 @@ package com.quickhandslogistics.modified.models.schedule
 import android.util.Log
 import com.quickhandslogistics.modified.contracts.schedule.ScheduledWorkItemDetailContract
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetailAPIResponse
-import com.quickhandslogistics.modified.network.DataManager
+import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
 
 class ScheduledWorkItemDetailModel : ScheduledWorkItemDetailContract.Model {

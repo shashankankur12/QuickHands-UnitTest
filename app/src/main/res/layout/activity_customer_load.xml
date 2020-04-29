@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
+    android:background="@android:color/white"
     tools:context=".view.activities.OldLumperJobHistoryActivity">
 
     <include
@@ -15,10 +15,9 @@
         android:id="@+id/recycler_customer_sheet_history"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layoutAnimation="@anim/recycler_anim"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header"
-        tools:listitem="@layout/lumper_job_history_item" />
+        tools:listitem="@layout/item_job_history" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_customer_sheet"
@@ -26,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
         android:src="@android:drawable/ic_input_add"
-        android:tint="@color/colorWhite"
+        android:tint="@android:color/white"
         android:visibility="visible"
         app:backgroundTint="@color/buttonRed"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -3,13 +3,8 @@
     package="com.quickhandslogistics">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".application.MyApplication"
@@ -18,27 +13,24 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".modified.views.activities.LumperJobHistoryActivity" />
-        <activity android:name=".modified.views.activities.ContainerDetailActivity" />
-        <activity android:name=".modified.views.activities.DisplayLumpersListActivity" />
-        <activity android:name=".modified.views.activities.LumperDetailActivity" />
-        <activity android:name=".modified.views.activities.schedule.ScheduleDetailActivity" />
-        <activity android:name=".modified.views.activities.schedule.UnScheduleDetailActivity" />
+        <activity android:name=".modified.views.LumperJobHistoryActivity" />
+        <activity android:name=".modified.views.common.ContainerDetailActivity" />
+        <activity android:name=".modified.views.common.DisplayLumpersListActivity" />
+        <activity android:name=".modified.views.lumpers.LumperDetailActivity" />
+        <activity android:name=".modified.views.schedule.ScheduleDetailActivity" />
+        <activity android:name=".modified.views.schedule.UnScheduleDetailActivity" />
+        <activity android:name=".modified.views.scheduleTime.EditScheduleTimeActivity" />
+        <activity android:name=".modified.views.workSheet.AllWorkScheduleCancelActivity" />
+        <activity android:name=".modified.views.workSheet.WorkSheetItemDetailActivity" />
+        <activity android:name=".modified.views.workSheet.AddLumperTimeWorkSheetItemActivity" />
         <activity android:name=".modified.views.BaseActivity" />
         <activity
             android:name=".view.activities.SignatureActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.CustomerChooseActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
             android:name=".view.activities.CompleteCustomerJobHistory"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".view.activities.CustomerDetailActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".view.activities.CustomerLoadActivity"
             android:screenOrientation="portrait" />
@@ -50,9 +42,6 @@
             android:name=".view.activities.LumperSheetDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.CustomerBuildingsActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".view.activities.LumperListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
@@ -61,35 +50,29 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".modified.views.activities.LeadProfileActivity"
+            android:name=".modified.views.LeadProfileActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activities.OldLumperJobHistoryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".modified.views.activities.schedule.ScheduledWorkItemDetailActivity"
+            android:name="com.quickhandslogistics.modified.views.schedule.ScheduledWorkItemDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".modified.views.activities.schedule.AddWorkItemLumpersActivity"
+            android:name="com.quickhandslogistics.modified.views.schedule.AddWorkItemLumpersActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".modified.views.activities.buildingOperations.BuildingOperationsActivity"
+            android:name="com.quickhandslogistics.modified.views.buildingOperations.BuildingOperationsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.ProfileActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activities.ResetPasswordActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".modified.views.activities.ForgotPasswordActivity"
+            android:name=".modified.views.ForgotPasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".modified.views.activities.LoginActivity"
+            android:name=".modified.views.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".modified.views.activities.SplashActivity">
+        <activity android:name=".modified.views.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -97,25 +80,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".modified.views.activities.DashBoardActivity"
+            android:name=".modified.views.DashBoardActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".modified.views.activities.ChooseLumperActivity"
+            android:name=".modified.views.common.ChooseLumperActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".modified.views.activities.MarkAttendanceActivity"
-            android:screenOrientation="portrait" />
-
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
-
         <service
             android:name=".services.NotificationService"
             android:exported="false">

@@ -4,22 +4,11 @@
     <color name="colorPrimaryDark">#BCD5FB</color>
     <color name="colorAccent">#53d769</color>
 
-    <color name="colorBlack">#000000</color>
-    <color name="colorWhite">#ffffff</color>
     <color name="colorLightGrey">#808080</color>
-    <color name="colorHint">#8b8b8e</color>
     <color name="colorGrey">#d3d3d3</color>
     <color name="colorTextGrey">#345173</color>
-    <color name="nav_color">#f5f9ff</color>
 
-    <color name="colorBlue">#00274F</color>
-    <color name="colorLightGallery">#eff0f1</color>
-    <color name="colorLightBlue">#E9F3FA</color>
-    <color name="colorLightRed">#FFCCCC</color>
-    <color name="colorRed">#F08080</color>
-    <color name="colorGreen">#90EE90</color>
-    <color name="colorLightGreen">#CCFFCC</color>
-    <color name="colorText">#fefefe</color>
+    <color name="textWhite">#fefefe</color>
 
     <color name="appBackground">#f5f9ff</color>
     <color name="buttonRed">#e30913</color>
@@ -39,4 +28,7 @@
     <color name="startTimeBackground">#ecf0f6</color>
     <color name="fabBackgroundOverlay">#5C000000</color>
     <color name="online">#53d769</color>
+
+    <color name="row_activated">#e0e0e0</color>
+    <color name="bg_circle_default">#666666</color>
 </resources>

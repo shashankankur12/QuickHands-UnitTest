@@ -3,8 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/actionNotes"
-        android:icon="@drawable/ic_note"
+        android:icon="@drawable/ic_notes"
         android:title="@string/notes"
         android:visible="false"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/actionCancelAllWork"
+        android:title="@string/cancel_all_work_schedules"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/actionCancelWorkItem"
+        android:title="@string/cancel_work_item"
+        android:visible="false"
+        app:showAsAction="never" />
 </menu>

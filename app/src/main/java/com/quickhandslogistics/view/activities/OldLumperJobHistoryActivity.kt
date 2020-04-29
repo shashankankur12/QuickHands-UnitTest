@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.modified.views.activities.ContainerDetailActivity
+import com.quickhandslogistics.modified.views.common.ContainerDetailActivity
 import com.quickhandslogistics.view.adapter.lumperJobDetailAdapter
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.activity_lumper_job_history.*

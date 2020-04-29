@@ -8,8 +8,8 @@ import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.modified.models.schedule.ScheduleModel
-import com.quickhandslogistics.modified.views.controls.ScheduleUtils.getAllAssignedLumpersList
-import com.quickhandslogistics.modified.views.controls.ScheduleUtils.getScheduleTypeName
+import com.quickhandslogistics.modified.controls.ScheduleUtils.getAllAssignedLumpersList
+import com.quickhandslogistics.modified.controls.ScheduleUtils.getScheduleTypeName
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*
@@ -38,9 +38,8 @@ class SchedulePresenter(
     }
 
     override fun onSuccess(selectedDate: Date, scheduleListAPIResponse: ScheduleListAPIResponse) {
-        val dateStringRequested = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
-        val dateStringNormal = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
-        scheduleView?.showDateString(dateStringNormal)
+        val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
+        scheduleView?.showDateString(dateString)
 
         val workItemsList = ArrayList<ScheduleDetail>()
         scheduleListAPIResponse.data?.scheduleDetailsList?.let {

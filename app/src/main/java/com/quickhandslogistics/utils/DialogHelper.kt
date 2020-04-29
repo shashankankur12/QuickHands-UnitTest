@@ -9,7 +9,6 @@ import android.widget.TextView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.AppConstant.Companion.EDIT_DIALOG
 import kotlinx.android.synthetic.main.dialog_add_notes.*
-import kotlinx.android.synthetic.main.dialog_forgot_password.*
 
 class DialogHelper {
 

@@ -11,6 +11,10 @@ import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.data.schedule.*
+import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
+import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeRequest
+import com.quickhandslogistics.modified.data.workSheet.ChangeStatusRequest
+import com.quickhandslogistics.modified.data.workSheet.WorkSheetListAPIResponse
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -89,4 +93,35 @@ interface IApiInterface {
         @Body request: List<AttendanceDetail>
     ): Call<BaseResponse>
     /////////////////////////////////////////////////////////////
+
+    // Schedule Lumper Time /////////////////////////////////////////////////
+    @GET("employees/scheduled/lumpers")
+    fun getScheduleTimeList(
+        @Header("Authorization") auth: String,
+        @Query("day") day: String
+    ): Call<GetScheduleTimeAPIResponse>
+
+    @POST("employees/schedule/lumpers")
+    fun saveScheduleTimeDetails(
+        @Header("Authorization") auth: String,
+        @Body request: ScheduleTimeRequest
+    ): Call<BaseResponse>
+    /////////////////////////////////////////////////////////////
+
+    // Work Sheet /////////////////////////////////////////////////
+    @GET("buildings/{buildingId}/workitems")
+    fun getWorkSheetList(
+        @Header("Authorization") auth: String,
+        @Path("buildingId") buildingId: String,
+        @Query("day") day: String
+    ): Call<WorkSheetListAPIResponse>
+
+    @PUT("schedule/status/workitem/{workItemId}")
+    fun changeWorkItemStatus(
+        @Header("Authorization") auth: String,
+        @Path("workItemId") workItemId: String,
+        @Body request: ChangeStatusRequest
+    ): Call<BaseResponse>
+    /////////////////////////////////////////////////////////////
+
 }

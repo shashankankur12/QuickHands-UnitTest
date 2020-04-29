@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".modified.views.activities.LoginActivity">
+    tools:context=".modified.views.LoginActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/appBackground"
-        tools:context=".modified.views.activities.LoginActivity">
+        tools:context=".modified.views.LoginActivity">
 
         <LinearLayout
             android:id="@+id/layoutLogo"
@@ -121,10 +121,10 @@
                 android:id="@+id/buttonLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/round_button_red_new"
+                android:background="@drawable/round_button_red"
                 android:text="@string/string_login"
                 android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/_14ssp" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -47,15 +47,7 @@ class AddWorkItemLumpersPresenter(
 
     override fun onSuccessFetchLumpers(allLumpersResponse: AllLumpersResponse) {
         addWorkItemLumpersView?.hideProgressDialog()
-        allLumpersResponse.data.sortWith(Comparator { lumper1, lumper2 ->
-            if (!StringUtils.isNullOrEmpty(lumper1.firstName) && !StringUtils.isNullOrEmpty(lumper2.firstName)
-            ) {
-                lumper1.firstName?.toLowerCase()!!.compareTo(lumper2.firstName?.toLowerCase()!!)
-            } else {
-                0
-            }
-        })
-        addWorkItemLumpersView?.showLumpersData(allLumpersResponse.data)
+        addWorkItemLumpersView?.showLumpersData(allLumpersResponse.data!!)
     }
 
     override fun onSuccessAssignLumpers() {

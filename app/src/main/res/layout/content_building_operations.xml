@@ -51,10 +51,10 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_10ssp"
-                android:background="@drawable/round_button_red_new"
+                android:background="@drawable/round_button_red"
                 android:text="@string/string_submit"
                 android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/_14ssp" />
         </LinearLayout>
 

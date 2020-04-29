@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/appBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".modified.views.activities.schedule.ScheduledWorkItemDetailActivity">
+    tools:context=".modified.views.schedule.ScheduledWorkItemDetailActivity">
 
     <include
         android:id="@+id/header"
@@ -136,10 +136,10 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/round_button_red_new"
-                android:text="@string/add_building_operations"
+                android:background="@drawable/round_button_red"
+                android:text="@string/update_building_operations"
                 android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/_14ssp" />
         </LinearLayout>
     </LinearLayout>

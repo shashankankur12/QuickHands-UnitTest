@@ -4,7 +4,7 @@ import android.util.Log
 import com.quickhandslogistics.modified.contracts.buildingOperations.BuildingOperationsContract
 import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.buildingOperations.BuildingOperationAPIResponse
-import com.quickhandslogistics.modified.network.DataManager
+import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
 
 class BuildingOperationsModel : BuildingOperationsContract.Model {

@@ -47,11 +47,6 @@ class CustomerLoadActivity : BaseActivity() {
             adapter = customerAdapter
         }
 
-        fab_add_customer_sheet.setOnClickListener { view ->
-            val intent = Intent(this, CustomerChooseActivity::class.java)
-            startActivity(intent)
-        }
-
         image_notes.setOnClickListener(View.OnClickListener { view ->
 
             DialogHelper.showNotesDialog(R.style.dialogAnimation, this)

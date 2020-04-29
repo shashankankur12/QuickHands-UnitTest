@@ -13,6 +13,10 @@ class DashBoardContract {
 
     interface View {
         fun showLeadProfile(leadProfileData: LeadProfileData)
+        interface OnFragmentInteractionListener {
+            fun onNewFragmentReplaced(title: String)
+            fun invalidateScheduleTimeNotes(notes: String)
+        }
     }
 
     interface Presenter {

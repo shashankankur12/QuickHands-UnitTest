@@ -31,59 +31,59 @@
         android:paddingEnd="@dimen/_20ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/lumperDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/lumperbackground"
             android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/lumperbackground"
             android:paddingTop="@dimen/_10ssp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:paddingBottom="@dimen/_10ssp"
             app:layout_constraintStart_toStartOf="parent"
-            android:paddingBottom="@dimen/_10ssp">
+            app:layout_constraintTop_toTopOf="parent">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/circleImageViewProfile"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
-            android:contentDescription="@string/nav_header_desc"
-            android:src="@drawable/dummy"
-            app:civ_border_color="@color/imageBorder"
-            app:civ_border_width="1dp"
-            android:layout_marginStart="@dimen/_12sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleImageViewProfile"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:contentDescription="@string/nav_header_desc"
+                android:src="@drawable/dummy"
+                app:civ_border_color="@color/imageBorder"
+                app:civ_border_width="1dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textViewLumperName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:text="John Snow"
-            android:textColor="@color/White"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/imageViewCall"
-            app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/textViewLumperName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:text="John Snow"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/imageViewCall"
+                app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textViewEmployeeId"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:text="(Emp ID: 1001)"
-            android:textColor="@color/detailHeader"
-            android:textSize="@dimen/_10ssp"
-            app:layout_constraintEnd_toStartOf="@id/imageViewCall"
-            app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
-            app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
+            <TextView
+                android:id="@+id/textViewEmployeeId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:text="(Emp ID: 1001)"
+                android:textColor="@color/detailHeader"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintEnd_toStartOf="@id/imageViewCall"
+                app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+                app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
 
             <TextView
                 android:id="@+id/textViewShiftHours"
@@ -99,15 +99,15 @@
                 app:layout_constraintStart_toEndOf="@id/circleImageViewProfile"
                 app:layout_constraintTop_toBottomOf="@id/textViewEmployeeId" />
 
-        <ImageView
-            android:id="@+id/imageViewCall"
-            android:layout_width="26dp"
-            android:layout_height="31dp"
-            android:src="@drawable/ic_call"
-            android:layout_marginEnd="@dimen/_12sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/imageViewCall"
+                android:layout_width="26dp"
+                android:layout_height="31dp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:src="@drawable/ic_call"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -115,11 +115,10 @@
             android:id="@+id/recycler_lumper_sheet_history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layoutAnimation="@anim/recycler_anim"
-            app:layout_constraintBottom_toBottomOf="parent"
-           android:layout_below="@+id/lumperDetail"
+            android:layout_below="@+id/lumperDetail"
             android:layout_marginTop="@dimen/_10sdp"
-            tools:listitem="@layout/lumper_job_history_item" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/item_job_history" />
 
     </RelativeLayout>
 

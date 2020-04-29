@@ -5,8 +5,8 @@
     android:id="@+id/mainConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    tools:context=".modified.views.fragments.schedule.ScheduleFragment">
+    android:background="@android:color/white"
+    tools:context=".modified.views.schedule.ScheduleFragment">
 
     <com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
         android:id="@+id/singleRowCalendarSchedule"
@@ -21,7 +21,6 @@
 
     <TextView
         android:id="@+id/textViewDate"
-        style="@style/textSizeSmallRegFont"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_8sdp"

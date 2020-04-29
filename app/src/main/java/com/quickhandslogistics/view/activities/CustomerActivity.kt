@@ -14,7 +14,6 @@ import com.quickhandslogistics.utils.Utils
 import com.quickhandslogistics.view.adapter.CustomerAdapter
 import io.bloco.faker.Faker
 import kotlinx.android.synthetic.main.activity_customer.*
-import kotlinx.android.synthetic.main.fragment_lumper.*
 import kotlinx.android.synthetic.main.layout_header.*
 
 class CustomerActivity : AppCompatActivity() {
@@ -90,10 +89,5 @@ class CustomerActivity : AppCompatActivity() {
         }
 
         customerAdapter.filterList(filterName)
-        if (filterName.isEmpty()) {
-            text_no_record_found?.visibility = View.VISIBLE
-        } else {
-            text_no_record_found?.visibility = View.GONE
-        }
     }
 }

@@ -17,5 +17,13 @@ object ValueUtils {
         }
         return ret
     }
+
+    fun getDefaultOrValue(value: Int?): Int {
+        var ret = 0
+        value?.let {
+            ret = value
+        }
+        return ret
+    }
 }
 

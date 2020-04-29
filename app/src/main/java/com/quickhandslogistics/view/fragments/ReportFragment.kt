@@ -6,8 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.views.BaseFragment
-import com.quickhandslogistics.modified.views.activities.LumperJobHistoryActivity
-import com.quickhandslogistics.view.activities.CustomerActivity
+import com.quickhandslogistics.modified.views.LumperJobHistoryActivity
 import com.quickhandslogistics.view.activities.LumperListActivity
 import kotlinx.android.synthetic.main.fragment_reports.*
 
@@ -37,7 +36,7 @@ class ReportFragment : BaseFragment(), View.OnClickListener {
                     val bundle = Bundle()
                     bundle.putSerializable(
                         LumperListActivity.ARG_STRING_LUMPER,
-                        R.string.string_lumper
+                        R.string.string_lumpers
                     )
                     startIntent(LumperListActivity::class.java, bundle = bundle)
                 }

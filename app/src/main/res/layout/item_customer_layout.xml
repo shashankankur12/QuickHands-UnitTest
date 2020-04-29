@@ -22,19 +22,16 @@
             android:layout_height="@dimen/_40sdp"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
-            android:src="@drawable/ic_factory"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_lumper"
-            style="@style/textSizeNormalRegFont"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_10sdp"
-            android:fontFamily="@font/poppinssemibold"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/textBlack"
             android:includeFontPadding="false"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="@dimen/_15sdp"
@@ -42,29 +39,25 @@
 
         <TextView
             android:id="@+id/text_last_name"
-            style="@style/textSizeSmallRegFont"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppinsregular"
             android:singleLine="true"
             android:text="Customer ID: 1001"
             android:includeFontPadding="false"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/textBlack"
             app:layout_constraintLeft_toLeftOf="@id/text_lumper"
             app:layout_constraintTop_toBottomOf="@id/text_lumper"/>
 
         <TextView
             android:id="@+id/text_shift_hours"
-            style="@style/textSizeSmallRegFont"
             android:layout_width="0dp"
             android:textStyle="italic"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppinsregular"
             android:text="@string/building_name"
             android:paddingTop="@dimen/_3sdp"
             android:paddingBottom="@dimen/_3sdp"
             android:includeFontPadding="false"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/textBlack"
             app:layout_constraintLeft_toLeftOf="@id/text_lumper"
             app:layout_constraintTop_toBottomOf="@id/text_last_name"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

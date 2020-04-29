@@ -13,7 +13,7 @@ import com.quickhandslogistics.utils.Utils
 import com.quickhandslogistics.modified.data.lumperSheet.LumperModel
 import com.quickhandslogistics.view.adapter.LumperDummyAdapter
 import io.bloco.faker.Faker
-import kotlinx.android.synthetic.main.fragment_lumper.*
+import kotlinx.android.synthetic.main.activity_lumper_list.*
 import kotlinx.android.synthetic.main.layout_header.*
 
 class LumperListActivity : AppCompatActivity() {
@@ -31,8 +31,8 @@ class LumperListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lumper_list)
 
-        if (intent.hasExtra(getString(R.string.string_lumper)))
-            lumperJobDetail = intent.getStringExtra(getString(R.string.string_lumper))
+        if (intent.hasExtra(getString(R.string.string_lumpers)))
+            lumperJobDetail = intent.getStringExtra(getString(R.string.string_lumpers))
 
         if (intent.hasExtra(getString(R.string.string_lumper_sheet)))
             lumperJobDetail = intent.getStringExtra(getString(R.string.string_lumper_sheet))

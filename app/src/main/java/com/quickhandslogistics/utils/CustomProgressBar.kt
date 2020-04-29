@@ -6,10 +6,6 @@ import android.view.Window
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.quickhandslogistics.R
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class CustomProgressBar private constructor(context: Context) {
 
@@ -27,7 +23,7 @@ class CustomProgressBar private constructor(context: Context) {
         }
     }
 
-    public fun showProgressDialog(progressMsg: String): Dialog {
+    fun showProgressDialog(progressMsg: String): Dialog {
 
             val dialog = Dialog(mContext!!)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -42,19 +38,6 @@ class CustomProgressBar private constructor(context: Context) {
             textProgress?.text = progressMsg
 
         return dialog
-    }
-
-    public fun showSimpleProgressBar(): Dialog {
-        val dialog = Dialog(mContext!!)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        val window = dialog.window
-        window?.setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-
-        window!!.setContentView(R.layout.simple_progress_bar)
-
-        dialog.setCancelable(false)
-        dialog.show()
-        return dialog as Dialog
     }
 
     public fun hideDialog(dialog: Dialog) {

@@ -23,6 +23,6 @@
         android:backgroundTint="@color/buildingTitle"
         android:inputType="textPersonName"
         android:textColor="@color/scheduleDetail"
-        android:textCursorDrawable="@color/buildingTitle"
+        android:textCursorDrawable="@drawable/color_cursor"
         android:textSize="@dimen/_14ssp" />
 </LinearLayout>
