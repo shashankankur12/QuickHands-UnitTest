@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.adapters.workSheet.WorkSheetItemStatusAdapter
 import com.quickhandslogistics.modified.adapters.workSheet.WorkSheetItemDetailPagerAdapter
+import com.quickhandslogistics.modified.adapters.workSheet.WorkSheetItemStatusAdapter
 import com.quickhandslogistics.modified.contracts.common.InfoDialogWarningContract
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
@@ -62,6 +62,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
     private fun initializeUI() {
         workSheetItemDetailPagerAdapter =
             WorkSheetItemDetailPagerAdapter(supportFragmentManager, resources)
+        viewPagerWorkSheetDetail.offscreenPageLimit = workSheetItemDetailPagerAdapter.count
         viewPagerWorkSheetDetail.adapter = workSheetItemDetailPagerAdapter
         tabLayoutWorkSheetDetail.setupWithViewPager(viewPagerWorkSheetDetail)
 
@@ -174,8 +175,8 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
             negativeButtonText = getString(R.string.string_no),
             onClickListener = object : InfoDialogWarningContract.View.OnClickListener {
                 override fun onPositiveButtonClick() {
-                    updateStatusBackground(status)
                     closeBottomSheet()
+                    workSheetItemDetailPresenter.changeWorkItemStatus(workItemId, status)
                 }
 
                 override fun onNegativeButtonClick() {
@@ -232,29 +233,6 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
         }
 
         workSheetItemDetailPagerAdapter.showWorkItemData(workItemDetail)
-
-        /* when (workItemDetail.status) {
-             resources.getString(R.string.scheduled).toUpperCase() -> {
-                 textViewStatus.text = resources.getString(R.string.scheduled)
-                 textViewStatus.setBackgroundResource(R.drawable.chip_background_scheduled)
-             }
-             resources.getString(R.string.on_hold).toUpperCase() -> {
-                 textViewStatus.text = resources.getString(R.string.on_hold)
-                 textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
-             }
-             resources.getString(R.string.cancelled).toUpperCase() -> {
-                 textViewStatus.text = resources.getString(R.string.cancelled)
-                 textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
-             }
-             resources.getString(R.string.in_progress).toUpperCase() -> {
-                 textViewStatus.text = resources.getString(R.string.in_progress)
-                 textViewStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
-             }
-             else -> {
-                 textViewStatus.text = resources.getString(R.string.completed)
-                 textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
-             }
-         }*/
     }
 
     override fun fetchWorkItemDetail() {

@@ -126,14 +126,18 @@ class WorkItemDetail() : Parcelable {
         buildingDetailData = parcel.readParcelable(BuildingDetailData::class.java.classLoader)
         assignedLumpersList = parcel.createTypedArrayList(EmployeeData)
         attendanceDetail = parcel.readParcelable(AttendanceDetail::class.java.classLoader)
-        buildingOps = HashMap()
-        readFromParcel(parcel)
+//        buildingOps = HashMap()
+//        readFromParcel(parcel)
     }
 
     private fun readFromParcel(parcel: Parcel) {
         val count = parcel.readInt()
         for (i in 0 until count) {
-            buildingOps?.put(parcel.readString()!!, parcel.readString()!!)
+            val value1 = parcel.readString()
+            val value2 = parcel.readString()
+            if (!value1.isNullOrEmpty() && !value2.isNullOrEmpty()) {
+                buildingOps?.put(value1, value2)
+            }
         }
     }
 
@@ -157,13 +161,13 @@ class WorkItemDetail() : Parcelable {
         parcel.writeParcelable(buildingDetailData, flags)
         parcel.writeTypedList(assignedLumpersList)
         parcel.writeParcelable(attendanceDetail, flags)
-        buildingOps?.let { data ->
+        /*buildingOps?.let { data ->
             parcel.writeInt(data.size)
             for (s in data.keys) {
                 parcel.writeString(s)
                 parcel.writeString(data[s])
             }
-        }
+        }*/
     }
 
     override fun describeContents(): Int {

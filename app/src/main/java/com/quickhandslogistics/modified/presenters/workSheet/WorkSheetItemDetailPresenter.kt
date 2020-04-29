@@ -24,6 +24,11 @@ class WorkSheetItemDetailPresenter(
         workSheetItemDetailModel.fetchWorkItemDetail(workItemId, this)
     }
 
+    override fun changeWorkItemStatus(workItemId: String, status: String) {
+        workSheetItemDetailView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        workSheetItemDetailModel.changeWorkItemStatus(workItemId, status, this)
+    }
+
     override fun onFailure(message: String) {
         workSheetItemDetailView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
@@ -38,5 +43,9 @@ class WorkSheetItemDetailPresenter(
         response.data?.workItemDetail?.let { workItemDetail ->
             workSheetItemDetailView?.showWorkItemDetail(workItemDetail)
         }
+    }
+
+    override fun onSuccessChangeStatus(workItemId: String) {
+        workSheetItemDetailModel.fetchWorkItemDetail(workItemId, this)
     }
 }

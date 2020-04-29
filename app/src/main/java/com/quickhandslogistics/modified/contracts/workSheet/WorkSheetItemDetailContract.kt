@@ -6,10 +6,14 @@ import com.quickhandslogistics.modified.data.schedule.WorkItemDetailAPIResponse
 class WorkSheetItemDetailContract {
     interface Model {
         fun fetchWorkItemDetail(workItemId: String, onFinishedListener: OnFinishedListener)
+        fun changeWorkItemStatus(
+            workItemId: String, status: String, onFinishedListener: OnFinishedListener
+        )
 
         interface OnFinishedListener {
             fun onFailure(message: String = "")
             fun onSuccess(response: WorkItemDetailAPIResponse)
+            fun onSuccessChangeStatus(workItemId: String)
         }
     }
 
@@ -30,6 +34,7 @@ class WorkSheetItemDetailContract {
 
     interface Presenter {
         fun fetchWorkItemDetail(workItemId: String)
+        fun changeWorkItemStatus(workItemId: String, status: String)
         fun onDestroy()
     }
 }
