@@ -29,6 +29,13 @@ class WorkSheetItemDetailPresenter(
         workSheetItemDetailModel.changeWorkItemStatus(workItemId, status, this)
     }
 
+    override fun updateWorkItemNotes(
+        workItemId: String, notesQHLCustomer: String, notesQHL: String
+    ) {
+        workSheetItemDetailView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        workSheetItemDetailModel.updateWorkItemNotes(workItemId, notesQHLCustomer, notesQHL, this)
+    }
+
     override fun onFailure(message: String) {
         workSheetItemDetailView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
@@ -46,6 +53,12 @@ class WorkSheetItemDetailPresenter(
     }
 
     override fun onSuccessChangeStatus(workItemId: String) {
+        workSheetItemDetailView?.statusChangedSuccessfully()
+        workSheetItemDetailModel.fetchWorkItemDetail(workItemId, this)
+    }
+
+    override fun onSuccessUpdateNotes(workItemId: String) {
+        workSheetItemDetailView?.notesSavedSuccessfully()
         workSheetItemDetailModel.fetchWorkItemDetail(workItemId, this)
     }
 }

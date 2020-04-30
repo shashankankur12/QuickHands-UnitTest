@@ -151,7 +151,7 @@ class UnScheduleDetailActivity : BaseActivity(), UnScheduleDetailContract.View {
             // Show LiveLoads work Items Listing
             if (!scheduleTypes.liveLoads.isNullOrEmpty()) {
                 scheduleTypes.liveLoads!!.sortWith(Comparator { workItem1, workItem2 ->
-                    workItem1.sequence!!.compareTo(workItem2.sequence!!)
+                    workItem1.startTime!!.compareTo(workItem2.startTime!!)
                 })
                 liveLoadsAdapter.updateData(scheduleTypes.liveLoads!!)
                 layoutLiveLoadScheduleType.visibility = View.VISIBLE
@@ -174,7 +174,7 @@ class UnScheduleDetailActivity : BaseActivity(), UnScheduleDetailContract.View {
             // Show Out Bonds work Items Listing
             if (!scheduleTypes.outbounds.isNullOrEmpty()) {
                 scheduleTypes.outbounds!!.sortWith(Comparator { workItem1, workItem2 ->
-                    workItem1.sequence!!.compareTo(workItem2.sequence!!)
+                    workItem1.startTime!!.compareTo(workItem2.startTime!!)
                 })
                 outBondsAdapter.updateData(scheduleTypes.outbounds!!)
                 layoutOutBondsScheduleType.visibility = View.VISIBLE

@@ -18,6 +18,9 @@ class WorkSheetPagerAdapter(
     ) {
 
     private val tabTitles = arrayOf(R.string.ongoing, R.string.cancelled, R.string.completed)
+    private var onGoingWorkItemsCount = 0
+    private var cancelledWorkItemsCount = 0
+    private var completedWorkItemsCount = 0
 
     private var ongoingFragment =
         WorkSheetItemFragment.newInstance(resources.getString(tabTitles[0]))
@@ -31,7 +34,9 @@ class WorkSheetPagerAdapter(
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return resources.getString(tabTitles[position])
+        val count =
+            if (position == 0) onGoingWorkItemsCount else if (position == 1) cancelledWorkItemsCount else completedWorkItemsCount
+        return "${resources.getString(tabTitles[position])} ($count)"
     }
 
     override fun getCount(): Int {
@@ -47,8 +52,14 @@ class WorkSheetPagerAdapter(
         cancelledWorkItems: ArrayList<WorkItemDetail>,
         completedWorkItems: ArrayList<WorkItemDetail>
     ) {
+        onGoingWorkItemsCount = onGoingWorkItems.size
+        cancelledWorkItemsCount = cancelledWorkItems.size
+        completedWorkItemsCount = completedWorkItems.size
+
         ongoingFragment.updateWorkItemsList(onGoingWorkItems)
         cancelledFragment.updateWorkItemsList(cancelledWorkItems)
         completedFragment.updateWorkItemsList(completedWorkItems)
+
+        notifyDataSetChanged()
     }
 }

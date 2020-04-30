@@ -35,6 +35,10 @@ class WorkSheetContract {
         interface OnAdapterItemClickListener {
             fun onSelectLumper(totalSelectedCount: Int)
         }
+
+        interface OnFragmentInteractionListener {
+            fun fetchWorkSheetList()
+        }
     }
 
     interface Presenter {

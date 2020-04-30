@@ -1,10 +1,11 @@
 package com.quickhandslogistics.modified.contracts.workSheet
 
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+
 class WorkSheetItemDetailLumpersContract {
     interface View {
         interface OnAdapterItemClickListener {
-            fun onAddTimeClick(itemPosition: Int)
-            fun onAddNotes(updatedDataSize: Int)
+            fun onAddTimeClick(employeeData: EmployeeData)
         }
     }
 }

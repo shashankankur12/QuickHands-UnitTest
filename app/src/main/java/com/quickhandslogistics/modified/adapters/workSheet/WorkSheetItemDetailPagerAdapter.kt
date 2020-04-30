@@ -42,5 +42,11 @@ class WorkSheetItemDetailPagerAdapter(
     fun showWorkItemData(workItemDetail: WorkItemDetail) {
         buildingOperationsFragment.showBuildingOperationsData(workItemDetail)
         lumpersFragment.showLumpersData(workItemDetail)
+        notesFragment.showNotesData(workItemDetail)
+    }
+
+    fun showEmptyData() {
+        buildingOperationsFragment.showEmptyData()
+        lumpersFragment.showEmptyData()
     }
 }

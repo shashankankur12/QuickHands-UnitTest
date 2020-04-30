@@ -216,4 +216,9 @@
     <string name="live_loads_s">Live Loads: %s</string>
     <string name="drops_s">Drops: %s</string>
     <string name="out_bounds_s">Out Bounds: %s</string>
+    <string name="work_time">Work Time</string>
+    <string name="string_start">Start</string>
+    <string name="string_end">End</string>
+    <string name="request_help_error_message"><![CDATA[You have to add both required Lumper Count & DM Notes]]></string>
+    <string name="notes_saved_successfully">Notes Saved Successfully</string>
 </resources>

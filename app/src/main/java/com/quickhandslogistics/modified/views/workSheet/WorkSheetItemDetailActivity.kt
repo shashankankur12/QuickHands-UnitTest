@@ -2,7 +2,6 @@ package com.quickhandslogistics.modified.views.workSheet
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -20,12 +19,14 @@ import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.common.InfoWarningDialogFragment
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.activity_work_sheet_item_detail.*
 import kotlinx.android.synthetic.main.bottom_sheet_select_status.*
 import kotlinx.android.synthetic.main.content_work_sheet_item_detail.*
+
 
 class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
     WorkSheetItemDetailContract.View, WorkSheetItemDetailContract.View.OnAdapterItemClickListener,
@@ -86,48 +87,74 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun updateStatusBackground(status: String) {
+        val statusList: LinkedHashMap<String, String> = LinkedHashMap()
+
         when (status) {
-            resources.getString(R.string.scheduled).toUpperCase() -> {
+            AppConstant.WORK_ITEM_STATUS_SCHEDULED -> {
                 textViewStatus.text = resources.getString(R.string.scheduled)
                 textViewStatus.setBackgroundResource(R.drawable.chip_background_scheduled)
+                textViewStatus.isClickable = true
+                textViewStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit, 0)
+
+                statusList[resources.getString(R.string.scheduled)] =
+                    AppConstant.WORK_ITEM_STATUS_SCHEDULED
+                statusList[resources.getString(R.string.in_progress)] =
+                    AppConstant.WORK_ITEM_STATUS_IN_PROGRESS
+                statusList[resources.getString(R.string.on_hold)] =
+                    AppConstant.WORK_ITEM_STATUS_ON_HOLD
+                statusList[resources.getString(R.string.cancelled)] =
+                    AppConstant.WORK_ITEM_STATUS_CANCELLED
             }
-            resources.getString(R.string.on_hold).toUpperCase() -> {
+            AppConstant.WORK_ITEM_STATUS_ON_HOLD -> {
                 textViewStatus.text = resources.getString(R.string.on_hold)
                 textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
+                textViewStatus.isClickable = true
+                textViewStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit, 0)
+
+                statusList[resources.getString(R.string.in_progress)] =
+                    AppConstant.WORK_ITEM_STATUS_IN_PROGRESS
+                statusList[resources.getString(R.string.on_hold)] =
+                    AppConstant.WORK_ITEM_STATUS_ON_HOLD
+                statusList[resources.getString(R.string.cancelled)] =
+                    AppConstant.WORK_ITEM_STATUS_CANCELLED
+                statusList[resources.getString(R.string.completed)] =
+                    AppConstant.WORK_ITEM_STATUS_COMPLETED
             }
-            resources.getString(R.string.cancelled).toUpperCase() -> {
-                textViewStatus.text = resources.getString(R.string.cancelled)
-                textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
-            }
-            resources.getString(R.string.in_progress).toUpperCase() -> {
+            AppConstant.WORK_ITEM_STATUS_IN_PROGRESS -> {
                 textViewStatus.text = resources.getString(R.string.in_progress)
                 textViewStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
+                textViewStatus.isClickable = true
+                textViewStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit, 0)
+
+                statusList[resources.getString(R.string.in_progress)] =
+                    AppConstant.WORK_ITEM_STATUS_IN_PROGRESS
+                statusList[resources.getString(R.string.on_hold)] =
+                    AppConstant.WORK_ITEM_STATUS_ON_HOLD
+                statusList[resources.getString(R.string.cancelled)] =
+                    AppConstant.WORK_ITEM_STATUS_CANCELLED
+                statusList[resources.getString(R.string.completed)] =
+                    AppConstant.WORK_ITEM_STATUS_COMPLETED
             }
-            resources.getString(R.string.completed).toUpperCase() -> {
+            AppConstant.WORK_ITEM_STATUS_CANCELLED -> {
+                textViewStatus.text = resources.getString(R.string.cancelled)
+                textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
+                textViewStatus.isClickable = false
+                textViewStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+            }
+            AppConstant.WORK_ITEM_STATUS_COMPLETED -> {
                 textViewStatus.text = resources.getString(R.string.completed)
                 textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
+                textViewStatus.isClickable = false
+                textViewStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
             }
         }
 
-        invalidateOptionsMenu()
+        workSheetItemStatusAdapter.updateStatusList(statusList)
     }
 
     private fun closeBottomSheet() {
         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetBackgroundStatus.visibility = View.GONE
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_toolbar, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        menu?.let {
-            val menuItem = menu.findItem(R.id.actionCancelWorkItem)
-            menuItem.isVisible = true
-        }
-        return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -197,6 +224,8 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
 
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
+
+        workSheetItemDetailPagerAdapter.showEmptyData()
     }
 
     override fun showWorkItemDetail(workItemDetail: WorkItemDetail) {
@@ -235,7 +264,23 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
         workSheetItemDetailPagerAdapter.showWorkItemData(workItemDetail)
     }
 
-    override fun fetchWorkItemDetail() {
+    override fun statusChangedSuccessfully() {
+        setResult(RESULT_OK)
+    }
+
+    override fun notesSavedSuccessfully() {
+        SnackBarFactory.createSnackBar(
+            activity, mainConstraintLayout, getString(R.string.notes_saved_successfully)
+        )
+    }
+
+    override fun fetchWorkItemDetail(changeResultCode: Boolean) {
+        if (changeResultCode)
+            setResult(RESULT_OK)
         workSheetItemDetailPresenter.fetchWorkItemDetail(workItemId)
+    }
+
+    override fun updateWorkItemNotes(notesQHLCustomer: String, notesQHL: String) {
+        workSheetItemDetailPresenter.updateWorkItemNotes(workItemId, notesQHLCustomer, notesQHL)
     }
 }

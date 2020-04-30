@@ -9,7 +9,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_work_sheet_item_detail">
 
-    <TextView
+    <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,7 +23,6 @@
         android:paddingTop="@dimen/_5ssp"
         android:paddingEnd="@dimen/_10ssp"
         android:paddingBottom="@dimen/_5ssp"
-        android:text="In-Progress"
         android:textColor="@android:color/white"
         android:textSize="@dimen/_10ssp"
         android:textStyle="bold"
@@ -37,7 +36,6 @@
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginTop="@dimen/_5ssp"
         android:layout_marginEnd="@dimen/_10ssp"
-        android:text="@string/start_time_container"
         android:textColor="@color/scheduleDetail"
         android:textSize="@dimen/_16ssp"
         android:textStyle="bold"
@@ -45,7 +43,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewWorkItemType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,13 +52,12 @@
         android:layout_marginEnd="@dimen/_10ssp"
         android:drawableStart="@drawable/ic_schedule_type"
         android:drawablePadding="@dimen/_5sdp"
-        android:text="Live Loads"
         android:textColor="@color/scheduleDetail"
         android:textSize="@dimen/_12ssp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
 
-    <TextView
+    <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewDropItems"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -69,7 +66,6 @@
         android:layout_marginEnd="@dimen/_10ssp"
         android:drawableStart="@drawable/ic_schedule_work_items"
         android:drawablePadding="@dimen/_5sdp"
-        android:text="@string/no_of_drops"
         android:textColor="@color/scheduleDetail"
         android:textSize="@dimen/_12ssp"
         app:layout_constraintStart_toStartOf="parent"

@@ -59,8 +59,11 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
 
         scheduleTimeNotes?.let { notes ->
             editTextNotes.setText(notes.notesForLead)
-            editTextLumpersRequired.setText("${ValueUtils.getDefaultOrValue(notes.requestedLumperCount)}")
             editTextDMNotes.setText(notes.notesForDM)
+
+            notes.requestedLumperCount?.let {
+                editTextLumpersRequired.setText("${ValueUtils.getDefaultOrValue(notes.requestedLumperCount)}")
+            }
         }
 
         recyclerViewLumpers.apply {
@@ -116,12 +119,24 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
                 buttonSubmit.id -> {
                     val scheduledLumpersIdsTimeMap = editScheduleTimeAdapter.getSelectedLumpers()
                     if (scheduledLumpersIdsTimeMap.size > 0) {
+                        val notes = editTextNotes.text.toString()
                         val requiredLumperCount = editTextLumpersRequired.text.toString()
-                        editScheduleTimePresenter.initiateScheduleTime(
-                            scheduledLumpersIdsTimeMap, editTextNotes.text.toString(),
-                            if (requiredLumperCount.isNotEmpty()) requiredLumperCount.toInt() else 0,
-                            editTextDMNotes.text.toString(), Date(selectedTime)
-                        )
+                        val notesDM = editTextDMNotes.text.toString()
+
+                        if ((requiredLumperCount.isNotEmpty() && notesDM.isEmpty())
+                            || (requiredLumperCount.isEmpty() && notesDM.isNotEmpty())
+                        ) {
+                            SnackBarFactory.createSnackBar(
+                                activity, mainConstraintLayout,
+                                getString(R.string.request_help_error_message)
+                            )
+                        } else {
+                            editScheduleTimePresenter.initiateScheduleTime(
+                                scheduledLumpersIdsTimeMap, notes,
+                                if (requiredLumperCount.isNotEmpty()) requiredLumperCount.toInt() else 0,
+                                notesDM, Date(selectedTime)
+                            )
+                        }
                     }
                 }
 

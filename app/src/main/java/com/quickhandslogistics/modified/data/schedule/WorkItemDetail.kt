@@ -46,6 +46,14 @@ class WorkItemDetail() : Parcelable {
     @Expose
     var status: String? = null
 
+    @SerializedName("notesQHL")
+    @Expose
+    var notesQHL: String? = null
+
+    @SerializedName("notesQHLCustomer")
+    @Expose
+    var notesQHLCustomer: String? = null
+
     @SerializedName("isScheduledByLead")
     @Expose
     var isScheduledByLead: Boolean? = null
@@ -116,6 +124,8 @@ class WorkItemDetail() : Parcelable {
         scheduledFrom = parcel.readString()
         endDateForThisWorkItem = parcel.readString()
         status = parcel.readString()
+        notesQHL = parcel.readString()
+        notesQHLCustomer = parcel.readString()
         isScheduledByLead = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         scheduleForWeek = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         scheduleForMonth = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
@@ -151,6 +161,8 @@ class WorkItemDetail() : Parcelable {
         parcel.writeString(scheduledFrom)
         parcel.writeString(endDateForThisWorkItem)
         parcel.writeString(status)
+        parcel.writeString(notesQHL)
+        parcel.writeString(notesQHLCustomer)
         parcel.writeValue(isScheduledByLead)
         parcel.writeValue(scheduleForWeek)
         parcel.writeValue(scheduleForMonth)
