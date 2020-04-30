@@ -1,13 +1,17 @@
 package com.quickhandslogistics.modified.contracts
 
+import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
 import com.quickhandslogistics.modified.data.dashboard.LeadProfileData
 
 class DashBoardContract {
 
     interface Model {
         fun fetchLeadProfileData(onFinishedListener: OnFinishedListener)
+        fun processLeadProfileData(leadProfileData: LeadProfileData, onFinishedListener: OnFinishedListener)
+
         interface OnFinishedListener {
             fun onLoadLeadProfile(leadProfileData: LeadProfileData)
+            fun onFetchLeadProfileSuccess(response: LeadProfileAPIResponse)
         }
     }
 

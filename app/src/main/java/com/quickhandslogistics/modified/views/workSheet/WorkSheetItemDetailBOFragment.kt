@@ -71,10 +71,23 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
 
     fun showBuildingOperationsData(workItemDetail: WorkItemDetail) {
         this.workItemDetail = workItemDetail
+        workItemDetail.status?.let { status ->
+            if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED || status == AppConstant.WORK_ITEM_STATUS_CANCELLED) {
+                buttonUpdate.visibility = View.GONE
+            } else {
+                buttonUpdate.visibility = View.VISIBLE
+            }
+        }
+
         containerDetailAdapter.updateData(
             workItemDetail.buildingOps,
             workItemDetail.buildingDetailData?.parameters
         )
+    }
+
+    fun showEmptyData() {
+        containerDetailAdapter.updateData(HashMap(), ArrayList())
+        buttonUpdate.visibility = View.GONE
     }
 
     override fun onClick(view: View?) {
@@ -100,7 +113,7 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
-            onFragmentInteractionListener?.fetchWorkItemDetail()
+            onFragmentInteractionListener?.fetchWorkItemDetail(changeResultCode = false)
         }
     }
 

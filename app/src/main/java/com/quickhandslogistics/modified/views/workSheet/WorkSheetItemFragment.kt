@@ -1,5 +1,8 @@
 package com.quickhandslogistics.modified.views.workSheet
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,12 +11,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.adapters.workSheet.WorkSheetItemAdapter
+import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetContract
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemContract
 import com.quickhandslogistics.modified.controls.SpaceDividerItemDecorator
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.views.BaseFragment
+import com.quickhandslogistics.modified.views.common.DisplayLumpersListActivity
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
+import com.quickhandslogistics.utils.AppConstant
 import kotlinx.android.synthetic.main.fragment_work_sheet_item.*
 import java.util.*
 
@@ -23,6 +30,19 @@ class WorkSheetItemFragment : BaseFragment(),
     private var workItemType: String = ""
 
     private lateinit var workSheetItemAdapter: WorkSheetItemAdapter
+
+    private var onFragmentInteractionListener: WorkSheetContract.View.OnFragmentInteractionListener? =
+        null
+
+    private var workItemDetail: WorkItemDetail? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (parentFragment is WorkSheetContract.View.OnFragmentInteractionListener) {
+            onFragmentInteractionListener =
+                parentFragment as WorkSheetContract.View.OnFragmentInteractionListener
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,8 +78,8 @@ class WorkSheetItemFragment : BaseFragment(),
         })
     }
 
-    fun updateWorkItemsList(onGoingWorkItems: ArrayList<WorkItemDetail>) {
-        workSheetItemAdapter.updateList(onGoingWorkItems)
+    fun updateWorkItemsList(workItemsList: ArrayList<WorkItemDetail>) {
+        workSheetItemAdapter.updateList(workItemsList)
     }
 
     /*
@@ -69,7 +89,23 @@ class WorkSheetItemFragment : BaseFragment(),
         val bundle = Bundle()
         bundle.putString(ARG_WORK_ITEM_ID, workItemId)
         bundle.putString(ARG_WORK_ITEM_TYPE_DISPLAY_NAME, workItemTypeDisplayName)
-        startIntent(WorkSheetItemDetailActivity::class.java, bundle = bundle)
+        startIntent(
+            WorkSheetItemDetailActivity::class.java,
+            bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED
+        )
+    }
+
+    override fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>) {
+        val bundle = Bundle()
+        bundle.putParcelableArrayList(DisplayLumpersListActivity.ARG_LUMPERS_LIST, lumpersList)
+        startIntent(DisplayLumpersListActivity::class.java, bundle = bundle)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
+            onFragmentInteractionListener?.fetchWorkSheetList()
+        }
     }
 
     companion object {

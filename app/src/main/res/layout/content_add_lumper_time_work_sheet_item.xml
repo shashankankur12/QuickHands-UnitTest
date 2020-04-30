@@ -110,105 +110,151 @@
                 android:backgroundTint="@color/buildingTitle"
                 android:hint="0"
                 android:inputType="number"
+                android:maxLength="3"
                 android:textColor="@color/scheduleDetail"
-                android:textCursorDrawable="@color/buildingTitle"
+                android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="@dimen/_14ssp" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayoutStartTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/schedule_item_background"
-            android:clickable="true"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:padding="@dimen/_10sdp">
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/start_time"
+                android:text="@string/work_time"
                 android:textColor="@color/buildingTitle"
                 android:textSize="@dimen/_14ssp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/textViewStartTime"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="NA"
-                android:textColor="@color/scheduleDetail"
-                android:textSize="@dimen/_12ssp" />
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewShiftTime">
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/buttonStartTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_button_selector_long"
+                    android:paddingStart="@dimen/_10ssp"
+                    android:paddingEnd="@dimen/_10ssp"
+                    android:text="@string/start_time"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/_14ssp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:text="- to -"
+                    android:textColor="@color/textBlack"
+                    android:textSize="@dimen/_12ssp" />
+
+                <Button
+                    android:id="@+id/buttonEndTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_button_selector_long"
+                    android:paddingStart="@dimen/_10ssp"
+                    android:paddingEnd="@dimen/_10ssp"
+                    android:text="@string/end_time"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/_14ssp" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayoutEndTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/schedule_item_background"
-            android:clickable="true"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:padding="@dimen/_10sdp">
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/end_time"
-                android:textColor="@color/buildingTitle"
-                android:textSize="@dimen/_14ssp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textViewEndTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="NA"
-                android:textColor="@color/scheduleDetail"
-                android:textSize="@dimen/_12ssp" />
-        </LinearLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/schedule_item_background"
-            android:orientation="horizontal"
-            android:padding="@dimen/_10sdp">
-
-            <TextView
-                android:id="@+id/textViewBreakTimeHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/break_time"
                 android:textColor="@color/buildingTitle"
                 android:textSize="@dimen/_14ssp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/imageViewAddBreakTime"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_2sdp"
-                android:src="@drawable/ic_add_circle_outline"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textViewBreakTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:textColor="@color/scheduleDetail"
-                android:textSize="@dimen/_12ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewBreakTimeHeader" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintTop_toBottomOf="@id/textViewShiftTime">
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/buttonBreakInTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_button_selector_long"
+                    android:paddingStart="@dimen/_10ssp"
+                    android:paddingEnd="@dimen/_10ssp"
+                    android:text="@string/string_start"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/_14ssp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:text="- to -"
+                    android:textColor="@color/textBlack"
+                    android:textSize="@dimen/_12ssp" />
+
+                <Button
+                    android:id="@+id/buttonBreakOutTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_button_selector_long"
+                    android:paddingStart="@dimen/_10ssp"
+                    android:paddingEnd="@dimen/_10ssp"
+                    android:text="@string/string_end"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/_14ssp" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+        </LinearLayout>
 
         <Space
             android:layout_width="match_parent"

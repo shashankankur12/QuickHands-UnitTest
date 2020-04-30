@@ -136,7 +136,7 @@
                     android:inputType="textMultiLine"
                     android:maxLines="3"
                     android:textColor="@color/scheduleDetail"
-                    android:textCursorDrawable="@color/buildingTitle"
+                    android:textCursorDrawable="@drawable/color_cursor"
                     android:textSize="@dimen/_12ssp" />
             </LinearLayout>
 
@@ -165,7 +165,7 @@
                     android:hint="@string/no_of_lumpers_needed"
                     android:inputType="number"
                     android:textColor="@color/scheduleDetail"
-                    android:textCursorDrawable="@color/buildingTitle"
+                    android:textCursorDrawable="@drawable/color_cursor"
                     android:textSize="@dimen/_12ssp" />
 
                 <EditText
@@ -178,7 +178,7 @@
                     android:inputType="textMultiLine"
                     android:maxLines="3"
                     android:textColor="@color/scheduleDetail"
-                    android:textCursorDrawable="@color/buildingTitle"
+                    android:textCursorDrawable="@drawable/color_cursor"
                     android:textSize="@dimen/_12ssp" />
             </LinearLayout>
 

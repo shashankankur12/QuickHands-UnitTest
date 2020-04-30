@@ -251,6 +251,8 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+        recyclerViewLumpers.visibility = View.GONE
+        textViewEmptyData.visibility = View.VISIBLE
     }
 
     override fun showLumpersAttendance(lumperAttendanceList: ArrayList<LumperAttendanceData>) {

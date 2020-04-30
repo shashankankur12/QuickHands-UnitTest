@@ -88,7 +88,7 @@ class WorkSheetItemDetailLumpersAdapter(
             view?.let {
                 when (view.id) {
                     textViewAddTime.id -> {
-                        onAdapterClick.onAddTimeClick(adapterPosition)
+                        onAdapterClick.onAddTimeClick(getItem(adapterPosition))
                     }
                 }
             }

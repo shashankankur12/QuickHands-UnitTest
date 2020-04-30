@@ -157,7 +157,7 @@ class WorkSheetItemAdapter(
         }
 
         override fun onLumperImageItemClick(lumpersList: ArrayList<EmployeeData>) {
-            //adapterItemClickListener.onLumperImagesClick(lumpersList)
+            adapterItemClickListener.onLumperImagesClick(lumpersList)
         }
     }
 }

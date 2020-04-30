@@ -2,12 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground"
     tools:context=".modified.views.workSheet.WorkSheetFragment">
 
-    <TextView
+    <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewBuildingName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewWorkItemsDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,7 +37,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewBuildingName" />
 
-    <TextView
+    <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewTotalCount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,59 +52,67 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemsDate" />
 
-    <TextView
-        android:id="@+id/textViewDropsCount"
-        android:layout_width="wrap_content"
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/flexboxLayoutCounts"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15ssp"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_10ssp"
-        android:background="@drawable/chip_background"
-        android:paddingStart="@dimen/_10ssp"
-        android:paddingTop="@dimen/_5ssp"
-        android:paddingEnd="@dimen/_10ssp"
-        android:paddingBottom="@dimen/_5ssp"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/_12ssp"
-        android:textStyle="bold"
+        android:layout_marginEnd="@dimen/_15ssp"
+        app:flexWrap="wrap"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTotalCount" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTotalCount">
 
-    <TextView
-        android:id="@+id/textViewLiveLoadsCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_8ssp"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_10ssp"
-        android:background="@drawable/chip_background"
-        android:paddingStart="@dimen/_10ssp"
-        android:paddingTop="@dimen/_5ssp"
-        android:paddingEnd="@dimen/_10ssp"
-        android:paddingBottom="@dimen/_5ssp"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/_12ssp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/textViewDropsCount"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTotalCount" />
+        <com.quickhandslogistics.modified.controls.CustomTextView
+            android:id="@+id/textViewDropsCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@drawable/chip_background"
+            android:paddingStart="@dimen/_10ssp"
+            android:paddingTop="@dimen/_5ssp"
+            android:paddingEnd="@dimen/_10ssp"
+            android:paddingBottom="@dimen/_5ssp"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTotalCount" />
 
-    <TextView
-        android:id="@+id/textViewOutBoundsCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_8ssp"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_10ssp"
-        android:background="@drawable/chip_background"
-        android:paddingStart="@dimen/_10ssp"
-        android:paddingTop="@dimen/_5ssp"
-        android:paddingEnd="@dimen/_10ssp"
-        android:paddingBottom="@dimen/_5ssp"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/_12ssp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/textViewLiveLoadsCount"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTotalCount" />
+        <com.quickhandslogistics.modified.controls.CustomTextView
+            android:id="@+id/textViewLiveLoadsCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4ssp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_4ssp"
+            android:background="@drawable/chip_background"
+            android:paddingStart="@dimen/_10ssp"
+            android:paddingTop="@dimen/_5ssp"
+            android:paddingEnd="@dimen/_10ssp"
+            android:paddingBottom="@dimen/_5ssp"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textViewDropsCount"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTotalCount" />
+
+        <com.quickhandslogistics.modified.controls.CustomTextView
+            android:id="@+id/textViewOutBoundsCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@drawable/chip_background"
+            android:paddingStart="@dimen/_10ssp"
+            android:paddingTop="@dimen/_5ssp"
+            android:paddingEnd="@dimen/_10ssp"
+            android:paddingBottom="@dimen/_5ssp"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textViewLiveLoadsCount"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTotalCount" />
+    </com.google.android.flexbox.FlexboxLayout>
 
     <View
         android:layout_width="match_parent"
@@ -128,7 +137,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewLiveLoadsCount">
+        app:layout_constraintTop_toBottomOf="@id/flexboxLayoutCounts">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayoutWorkSheet"
@@ -136,7 +145,7 @@
             android:layout_height="wrap_content"
             app:tabIndicatorColor="@color/buttonRed"
             app:tabIndicatorFullWidth="false"
-            app:tabMode="fixed"
+            app:tabMode="scrollable"
             app:tabSelectedTextColor="@color/textBlack"
             app:tabTextAppearance="@style/TabTextAppearance"
             app:tabTextColor="@color/detailHeader" />

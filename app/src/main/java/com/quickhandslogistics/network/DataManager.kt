@@ -17,6 +17,8 @@ import com.quickhandslogistics.modified.data.schedule.*
 import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeRequest
 import com.quickhandslogistics.modified.data.workSheet.ChangeStatusRequest
+import com.quickhandslogistics.modified.data.workSheet.UpdateLumperTimeRequest
+import com.quickhandslogistics.modified.data.workSheet.UpdateNotesRequest
 import com.quickhandslogistics.modified.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
@@ -568,6 +570,71 @@ object DataManager : AppConstant {
         val call = getService().changeWorkItemStatus(
             "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
             workItemId, request
+        )
+        call.enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(
+                call: Call<BaseResponse>,
+                response: Response<BaseResponse>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage =
+                        getErrorMessage(
+                            response.errorBody()
+                        )
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun updateWorkItemNotes(
+        workItemId: String, request: UpdateNotesRequest,
+        listener: ResponseListener<BaseResponse>
+    ) {
+        val call = getService().updateWorkItemNotes(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
+            workItemId, request
+        )
+        call.enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(
+                call: Call<BaseResponse>,
+                response: Response<BaseResponse>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage =
+                        getErrorMessage(
+                            response.errorBody()
+                        )
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun updateLumperTimeInWorkItem(
+        request: UpdateLumperTimeRequest, listener: ResponseListener<BaseResponse>
+    ) {
+        val call = getService().updateLumperTimeInWorkItem(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
+            request
         )
         call.enqueue(object : Callback<BaseResponse> {
             override fun onResponse(

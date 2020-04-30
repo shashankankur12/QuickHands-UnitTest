@@ -13,10 +13,12 @@ import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.presenters.workSheet.WorkSheetPresenter
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.utils.CustomProgressBar
+import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.fragment_work_sheet.*
 import java.util.*
 
-class WorkSheetFragment : BaseFragment(), WorkSheetContract.View {
+class WorkSheetFragment : BaseFragment(), WorkSheetContract.View,
+    WorkSheetContract.View.OnFragmentInteractionListener {
 
     private lateinit var workSheetPresenter: WorkSheetPresenter
 
@@ -55,7 +57,16 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View {
     }
 
     override fun showAPIErrorMessage(message: String) {
+        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
 
+        // Reset Whole Screen Data
+        textViewBuildingName.text = ""
+        textViewWorkItemsDate.text = ""
+        textViewTotalCount.text = ""
+        textViewLiveLoadsCount.text = ""
+        textViewDropsCount.text = ""
+        textViewOutBoundsCount.text = ""
+        adapter.updateWorkItemsList(ArrayList(), ArrayList(), ArrayList())
     }
 
     override fun showWorkSheets(
@@ -86,7 +97,11 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View {
     }
 
     override fun showHeaderInfo(buildingName: String, date: String) {
-        textViewBuildingName.text = buildingName
+        textViewBuildingName.text = buildingName.capitalize()
         textViewWorkItemsDate.text = date
+    }
+
+    override fun fetchWorkSheetList() {
+        workSheetPresenter.fetchWorkSheetList()
     }
 }

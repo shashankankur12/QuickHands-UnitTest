@@ -46,6 +46,24 @@ class WorkSheetPresenter(
     override fun onSuccessFetchWorkSheet(workSheetListAPIResponse: WorkSheetListAPIResponse) {
         workSheetView?.hideProgressDialog()
         workSheetListAPIResponse.data?.let { data ->
+
+            // Sort all the work Items by their Start Time
+            data.inProgress?.sortWith(Comparator { workItem1, workItem2 ->
+                workItem1.startTime!!.compareTo(workItem2.startTime!!)
+            })
+            data.onHold?.sortWith(Comparator { workItem1, workItem2 ->
+                workItem1.startTime!!.compareTo(workItem2.startTime!!)
+            })
+            data.scheduled?.sortWith(Comparator { workItem1, workItem2 ->
+                workItem1.startTime!!.compareTo(workItem2.startTime!!)
+            })
+            data.cancelled?.sortWith(Comparator { workItem1, workItem2 ->
+                workItem1.startTime!!.compareTo(workItem2.startTime!!)
+            })
+            data.completed?.sortWith(Comparator { workItem1, workItem2 ->
+                workItem1.startTime!!.compareTo(workItem2.startTime!!)
+            })
+
             val onGoingWorkItems = ArrayList<WorkItemDetail>()
             onGoingWorkItems.addAll(data.inProgress!!)
             onGoingWorkItems.addAll(data.onHold!!)

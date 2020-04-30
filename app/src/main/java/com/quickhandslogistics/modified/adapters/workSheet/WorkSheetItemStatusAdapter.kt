@@ -21,9 +21,9 @@ class WorkSheetItemStatusAdapter(
     private val onAdapterClick: WorkSheetItemDetailContract.View.OnAdapterItemClickListener
 ) : Adapter<WorkSheetItemStatusAdapter.ViewHolder>() {
 
-    private var statusList: HashMap<String, String> = HashMap()
-    private var initialStatus: String = ""
-    private var selectedStatus: String = ""
+    private var statusList: LinkedHashMap<String, String> = LinkedHashMap()
+    private var initialDisplayStatus: String = ""
+    private var selectedDisplayStatus: String = ""
 
     init {
         statusList[resources.getString(R.string.in_progress)] =
@@ -32,7 +32,6 @@ class WorkSheetItemStatusAdapter(
         statusList[resources.getString(R.string.scheduled)] = AppConstant.WORK_ITEM_STATUS_SCHEDULED
         statusList[resources.getString(R.string.cancelled)] = AppConstant.WORK_ITEM_STATUS_CANCELLED
         statusList[resources.getString(R.string.completed)] = AppConstant.WORK_ITEM_STATUS_COMPLETED
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -56,8 +55,14 @@ class WorkSheetItemStatusAdapter(
     }
 
     fun updateInitialStatus(initialStatus: String) {
-        this.initialStatus = initialStatus
-        selectedStatus = initialStatus
+        this.initialDisplayStatus = initialStatus
+        selectedDisplayStatus = initialStatus
+        notifyDataSetChanged()
+    }
+
+    fun updateStatusList(statusList: LinkedHashMap<String, String>) {
+        this.statusList.clear()
+        this.statusList.putAll(statusList)
         notifyDataSetChanged()
     }
 
@@ -88,7 +93,7 @@ class WorkSheetItemStatusAdapter(
                 )
             }
 
-            if (selectedStatus == pair.first) {
+            if (selectedDisplayStatus == pair.first) {
                 textViewStatus.typeface = Typeface.DEFAULT_BOLD
                 imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick)
             } else {
@@ -104,8 +109,8 @@ class WorkSheetItemStatusAdapter(
                 when (view.id) {
                     itemView.id -> {
                         val pair = getItem(adapterPosition)
-                        if (selectedStatus != pair.first) {
-                            selectedStatus = pair.first
+                        if (selectedDisplayStatus != pair.first) {
+                            selectedDisplayStatus = pair.first
                             notifyDataSetChanged()
                             onAdapterClick.onSelectStatus(pair.second)
                         }

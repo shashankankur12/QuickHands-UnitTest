@@ -46,7 +46,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
 
         headerLayout.setOnClickListener(this)
 
-        dashBoardPresenter = DashBoardPresenter(this, resources, sharedPref)
+        dashBoardPresenter = DashBoardPresenter(this, sharedPref)
         dashBoardPresenter.loadLeadProfileData()
     }
 
@@ -85,6 +85,11 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onDestroy() {
+        dashBoardPresenter.onDestroy()
+        super.onDestroy()
     }
 
     override fun onClick(view: View?) {

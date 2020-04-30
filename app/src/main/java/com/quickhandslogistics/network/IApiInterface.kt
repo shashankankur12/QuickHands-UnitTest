@@ -14,6 +14,8 @@ import com.quickhandslogistics.modified.data.schedule.*
 import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeRequest
 import com.quickhandslogistics.modified.data.workSheet.ChangeStatusRequest
+import com.quickhandslogistics.modified.data.workSheet.UpdateLumperTimeRequest
+import com.quickhandslogistics.modified.data.workSheet.UpdateNotesRequest
 import com.quickhandslogistics.modified.data.workSheet.WorkSheetListAPIResponse
 import retrofit2.Call
 import retrofit2.http.*
@@ -121,6 +123,19 @@ interface IApiInterface {
         @Header("Authorization") auth: String,
         @Path("workItemId") workItemId: String,
         @Body request: ChangeStatusRequest
+    ): Call<BaseResponse>
+
+    @PUT("schedule/update/{workItemId}")
+    fun updateWorkItemNotes(
+        @Header("Authorization") auth: String,
+        @Path("workItemId") workItemId: String,
+        @Body request: UpdateNotesRequest
+    ): Call<BaseResponse>
+
+    @POST("employees/timings")
+    fun updateLumperTimeInWorkItem(
+        @Header("Authorization") auth: String,
+        @Body request: UpdateLumperTimeRequest
     ): Call<BaseResponse>
     /////////////////////////////////////////////////////////////
 
