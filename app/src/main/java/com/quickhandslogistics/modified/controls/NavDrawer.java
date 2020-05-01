@@ -20,6 +20,7 @@ import com.quickhandslogistics.modified.contracts.common.InfoDialogWarningContra
 import com.quickhandslogistics.modified.views.BaseActivity;
 import com.quickhandslogistics.modified.views.LoginActivity;
 import com.quickhandslogistics.modified.views.common.InfoWarningDialogFragment;
+import com.quickhandslogistics.modified.views.workSheet.WorkSheetFragment;
 
 import java.util.ArrayList;
 
@@ -92,6 +93,13 @@ public class NavDrawer {
 
         for (NavDrawerItem item : items) {
             item.inflate(inflater, navDrawerView);
+        }
+    }
+
+    public void updateWorkSheetList() {
+        Fragment fragment = activity.getSupportFragmentManager().findFragmentByTag(WorkSheetFragment.class.getSimpleName());
+        if (fragment != null && fragment.isVisible()) {
+            ((WorkSheetFragment) fragment).fetchWorkSheetList();
         }
     }
 

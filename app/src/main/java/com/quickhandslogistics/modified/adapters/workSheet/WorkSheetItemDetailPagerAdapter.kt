@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
+import com.quickhandslogistics.modified.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.modified.views.workSheet.WorkSheetItemDetailBOFragment
 import com.quickhandslogistics.modified.views.workSheet.WorkSheetItemDetailLumpersFragment
 import com.quickhandslogistics.modified.views.workSheet.WorkSheetItemDetailNotesFragment
@@ -39,9 +40,11 @@ class WorkSheetItemDetailPagerAdapter(
         return null
     }
 
-    fun showWorkItemData(workItemDetail: WorkItemDetail) {
+    fun showWorkItemData(
+        workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?
+    ) {
         buildingOperationsFragment.showBuildingOperationsData(workItemDetail)
-        lumpersFragment.showLumpersData(workItemDetail)
+        lumpersFragment.showLumpersData(workItemDetail, lumpersTimeSchedule)
         notesFragment.showNotesData(workItemDetail)
     }
 

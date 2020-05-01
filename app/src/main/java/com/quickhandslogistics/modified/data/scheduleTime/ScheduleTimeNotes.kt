@@ -14,9 +14,9 @@ class ScheduleTimeNotes() : Parcelable {
     @Expose
     var lumperSchedulingId: String? = null
 
-    @SerializedName("requestedLumperCount")
+    @SerializedName("requestedLumpersCount")
     @Expose
-    var requestedLumperCount: Int? = null
+    var requestedLumpersCount: Int? = null
 
     @SerializedName("day")
     @Expose
@@ -41,7 +41,7 @@ class ScheduleTimeNotes() : Parcelable {
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         lumperSchedulingId = parcel.readString()
-        requestedLumperCount = parcel.readValue(Int::class.java.classLoader) as? Int
+        requestedLumpersCount = parcel.readValue(Int::class.java.classLoader) as? Int
         day = parcel.readString()
         notesForDM = parcel.readString()
         notesForLead = parcel.readString()
@@ -52,7 +52,7 @@ class ScheduleTimeNotes() : Parcelable {
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
         parcel.writeString(lumperSchedulingId)
-        parcel.writeValue(requestedLumperCount)
+        parcel.writeValue(requestedLumpersCount)
         parcel.writeString(day)
         parcel.writeString(notesForDM)
         parcel.writeString(notesForLead)

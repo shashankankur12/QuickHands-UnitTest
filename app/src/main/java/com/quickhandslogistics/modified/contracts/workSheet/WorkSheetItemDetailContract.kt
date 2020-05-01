@@ -2,6 +2,7 @@ package com.quickhandslogistics.modified.contracts.workSheet
 
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetailAPIResponse
+import com.quickhandslogistics.modified.data.workSheet.LumpersTimeSchedule
 
 class WorkSheetItemDetailContract {
     interface Model {
@@ -27,7 +28,10 @@ class WorkSheetItemDetailContract {
         fun hideProgressDialog()
         fun showProgressDialog(message: String)
         fun showAPIErrorMessage(message: String)
-        fun showWorkItemDetail(workItemDetail: WorkItemDetail)
+        fun showWorkItemDetail(
+            workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?
+        )
+
         fun statusChangedSuccessfully()
         fun notesSavedSuccessfully()
 

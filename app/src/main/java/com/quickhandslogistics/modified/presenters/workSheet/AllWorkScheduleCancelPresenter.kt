@@ -11,7 +11,8 @@ import com.quickhandslogistics.utils.SharedPref
 class AllWorkScheduleCancelPresenter(
     private var allWorkScheduleCancelView: AllWorkScheduleCancelContract.View?,
     private val resources: Resources, sharedPref: SharedPref
-) : AllWorkScheduleCancelContract.Presenter, AllWorkScheduleCancelContract.Model.OnFinishedListener {
+) : AllWorkScheduleCancelContract.Presenter,
+    AllWorkScheduleCancelContract.Model.OnFinishedListener {
 
     private val allWorkScheduleCancelModel = AllWorkScheduleCancelModel(sharedPref)
 
@@ -24,11 +25,12 @@ class AllWorkScheduleCancelPresenter(
         allWorkScheduleCancelView = null
     }
 
-    override fun initiateCancellingWorkSchedules(selectedLumperIdsList: ArrayList<String>) {
+    override fun initiateCancellingWorkSchedules(
+        selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String
+    ) {
         allWorkScheduleCancelView?.showProgressDialog(resources.getString(R.string.api_loading_message))
         allWorkScheduleCancelModel.cancelAllWorkSchedules(
-            selectedLumperIdsList,
-            this
+            selectedLumperIdsList, notesQHL, notesCustomer, this
         )
     }
 

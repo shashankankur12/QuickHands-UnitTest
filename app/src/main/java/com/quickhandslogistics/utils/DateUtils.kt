@@ -85,6 +85,24 @@ class DateUtils {
             return dateStringValue
         }
 
+        fun convertUTCDateStringToLocalDateString(
+            pattern: String, dateString: String? = ""
+        ): String {
+            val dateStringValue = ValueUtils.getDefaultOrValue(dateString)
+
+            val dateFormatFrom = SimpleDateFormat(pattern)
+            dateFormatFrom.timeZone = TimeZone.getTimeZone("UTC")
+            val dateFormatTo = SimpleDateFormat(pattern)
+            try {
+                val date = dateFormatFrom.parse(dateStringValue)
+                date?.let {
+                    return dateFormatTo.format(date)
+                }
+            } catch (e: ParseException) {
+            }
+            return dateStringValue
+        }
+
         fun convertMillisecondsToTimeString(milliseconds: Long): String {
             val dateFormatTo = SimpleDateFormat(PATTERN_TIME)
             return dateFormatTo.format(Date(milliseconds))

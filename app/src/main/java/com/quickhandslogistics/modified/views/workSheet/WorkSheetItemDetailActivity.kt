@@ -14,6 +14,7 @@ import com.quickhandslogistics.modified.adapters.workSheet.WorkSheetItemStatusAd
 import com.quickhandslogistics.modified.contracts.common.InfoDialogWarningContract
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
+import com.quickhandslogistics.modified.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.modified.presenters.workSheet.WorkSheetItemDetailPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.common.InfoWarningDialogFragment
@@ -228,7 +229,9 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
         workSheetItemDetailPagerAdapter.showEmptyData()
     }
 
-    override fun showWorkItemDetail(workItemDetail: WorkItemDetail) {
+    override fun showWorkItemDetail(
+        workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?
+    ) {
         textViewStartTime.text = String.format(
             getString(R.string.start_time_container),
             DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime)
@@ -261,7 +264,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
             updateStatusBackground(workItemDetail.status!!)
         }
 
-        workSheetItemDetailPagerAdapter.showWorkItemData(workItemDetail)
+        workSheetItemDetailPagerAdapter.showWorkItemData(workItemDetail, lumpersTimeSchedule)
     }
 
     override fun statusChangedSuccessfully() {

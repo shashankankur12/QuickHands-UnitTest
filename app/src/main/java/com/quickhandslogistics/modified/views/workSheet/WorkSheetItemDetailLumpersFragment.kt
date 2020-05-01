@@ -16,6 +16,7 @@ import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemDetailC
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemDetailLumpersContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
+import com.quickhandslogistics.modified.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.lumpers.LumperDetailActivity
 import com.quickhandslogistics.modified.views.schedule.AddWorkItemLumpersActivity
@@ -73,9 +74,29 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         buttonAddLumpers.setOnClickListener(this)
     }
 
-    fun showLumpersData(workItemDetail: WorkItemDetail) {
+    fun showLumpersData(
+        workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?
+    ) {
         this.workItemDetail = workItemDetail
-        workSheetItemDetailLumpersAdapter.updateList(workItemDetail.assignedLumpersList)
+
+        val timingsData = LinkedHashMap<String, LumpersTimeSchedule>()
+
+        workItemDetail.assignedLumpersList?.let { assignedLumpersList ->
+            if (!lumpersTimeSchedule.isNullOrEmpty()) {
+                for (lumper in assignedLumpersList) {
+                    for (timing in lumpersTimeSchedule) {
+                        if (lumper.id == timing.lumperId) {
+                            timingsData[lumper.id!!] = timing
+                            break
+                        }
+                    }
+                }
+            }
+        }
+
+        workSheetItemDetailLumpersAdapter.updateList(
+            workItemDetail.assignedLumpersList, timingsData, workItemDetail.status
+        )
 
         if (workItemDetail.assignedLumpersList.isNullOrEmpty()) {
             buttonAddLumpers.text = getString(R.string.add_lumpers)
@@ -93,7 +114,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
     }
 
     fun showEmptyData() {
-        workSheetItemDetailLumpersAdapter.updateList(ArrayList())
+        workSheetItemDetailLumpersAdapter.updateList(ArrayList(), LinkedHashMap())
         buttonAddLumpers.visibility = View.GONE
     }
 
@@ -133,10 +154,13 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         }
     }
 
-    override fun onAddTimeClick(employeeData: EmployeeData) {
+    override fun onAddTimeClick(
+        employeeData: EmployeeData, timingData: LumpersTimeSchedule?
+    ) {
         val bundle = Bundle()
         bundle.putString(ARG_WORK_ITEM_ID, workItemDetail?.id)
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
+        bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_TIMING_DATA, timingData)
         startIntent(
             AddLumperTimeWorkSheetItemActivity::class.java,
             bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED

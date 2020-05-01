@@ -7,7 +7,10 @@ class DashBoardContract {
 
     interface Model {
         fun fetchLeadProfileData(onFinishedListener: OnFinishedListener)
-        fun processLeadProfileData(leadProfileData: LeadProfileData, onFinishedListener: OnFinishedListener)
+        fun processLeadProfileData(
+            leadProfileData: LeadProfileData,
+            onFinishedListener: OnFinishedListener
+        )
 
         interface OnFinishedListener {
             fun onLoadLeadProfile(leadProfileData: LeadProfileData)
@@ -20,6 +23,7 @@ class DashBoardContract {
         interface OnFragmentInteractionListener {
             fun onNewFragmentReplaced(title: String)
             fun invalidateScheduleTimeNotes(notes: String)
+            fun invalidateCancelAllSchedulesOption(isShown: Boolean)
         }
     }
 

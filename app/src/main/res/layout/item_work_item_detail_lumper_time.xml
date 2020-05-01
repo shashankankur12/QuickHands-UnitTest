@@ -79,13 +79,13 @@
                     android:textSize="@dimen/_10ssp" />
 
                 <TextView
-                    android:id="@+id/textViewShiftTime"
+                    android:id="@+id/textViewWorkTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_2sdp"
                     android:drawableStart="@drawable/ic_lumper_list_clock"
                     android:drawablePadding="@dimen/_5sdp"
-                    android:text="10:00 pm - 00:00 am"
+                    android:text="NA - NA"
                     android:textColor="@color/textBlack"
                     android:textSize="@dimen/_10ssp"
                     android:textStyle="bold" />
@@ -98,7 +98,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textViewWaitingTimeHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/waiting_time"
@@ -112,7 +111,7 @@
                     android:layout_marginTop="@dimen/_2sdp"
                     android:drawableStart="@drawable/ic_lumper_list_clock"
                     android:drawablePadding="@dimen/_5sdp"
-                    android:text="10 Min"
+                    android:text="NA"
                     android:textColor="@color/textBlack"
                     android:textSize="@dimen/_10ssp"
                     android:textStyle="bold" />
@@ -135,7 +134,7 @@
             android:drawableStart="@drawable/ic_lumper_list_clock"
             android:drawablePadding="@dimen/_5sdp"
             android:lineSpacingExtra="@dimen/_2sdp"
-            android:text="10:00 pm - 00:00 am\n10:00 pm - 00:00 am"
+            android:text="NA - NA"
             android:textColor="@color/textBlack"
             android:textSize="@dimen/_10ssp"
             android:textStyle="bold" />

@@ -7,7 +7,7 @@ class AllWorkScheduleCancelContract {
     interface Model {
         fun fetchLumpersList(onFinishedListener: OnFinishedListener)
         fun cancelAllWorkSchedules(
-            selectedLumperIdsList: ArrayList<String>,
+            selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String,
             onFinishedListener: OnFinishedListener
         )
 
@@ -33,6 +33,8 @@ class AllWorkScheduleCancelContract {
     interface Presenter {
         fun fetchLumpersList()
         fun onDestroy()
-        fun initiateCancellingWorkSchedules(selectedLumperIdsList: ArrayList<String>)
+        fun initiateCancellingWorkSchedules(
+            selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String
+        )
     }
 }
