@@ -24,11 +24,12 @@ class WorkSheetContract {
         fun hideProgressDialog()
         fun showProgressDialog(message: String)
         fun showAPIErrorMessage(message: String)
-        fun showWorkSheets(
+        fun showWorkSheets(data: WorkSheetListAPIResponse.Data)
+        /*fun showWorkSheets(
             onGoingWorkItems: ArrayList<WorkItemDetail>,
             cancelledWorkItems: ArrayList<WorkItemDetail>,
             completedWorkItems: ArrayList<WorkItemDetail>
-        )
+        )*/
         fun cancellingWorkScheduleFinished()
         fun showHeaderInfo(buildingName: String, date: String)
 

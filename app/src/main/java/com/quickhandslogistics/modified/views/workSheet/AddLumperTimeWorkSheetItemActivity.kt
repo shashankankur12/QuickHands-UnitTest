@@ -83,12 +83,15 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             val waitingTime = ValueUtils.getDefaultOrValue(timingDetail.waitingTime)
             if (waitingTime.isNotEmpty() && waitingTime.toInt() != 0) {
                 editTextWaitingTime.setText(waitingTime)
+                editTextWaitingTime.isEnabled = false
             }
 
             selectedStartTime = updateInitialTime(timingDetail.startTime, buttonStartTime)
             selectedEndTime = updateInitialTime(timingDetail.endTime, buttonEndTime)
             selectedBreakInTime = updateInitialTime(timingDetail.breakTimeStart, buttonBreakInTime)
             selectedBreakOutTime = updateInitialTime(timingDetail.breakTimeEnd, buttonBreakOutTime)
+
+            toggleSaveButtonVisibility()
         }
 
         buttonStartTime.setOnClickListener(this)
@@ -96,6 +99,10 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         buttonBreakInTime.setOnClickListener(this)
         buttonBreakOutTime.setOnClickListener(this)
         buttonSave.setOnClickListener(this)
+    }
+
+    private fun toggleSaveButtonVisibility() {
+        buttonSave.isEnabled = editTextWaitingTime.isEnabled || buttonStartTime.isEnabled || buttonEndTime.isEnabled || buttonBreakInTime.isEnabled || buttonBreakOutTime.isEnabled
     }
 
     private fun updateInitialTime(dateStamp: String?, buttonTime: Button): Long {
@@ -107,8 +114,12 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         if (time.isNotEmpty()) {
             buttonTime.text = time
             buttonTime.isEnabled = false
-            milliseconds =
-                DateUtils.getMillisecondsFromDateString(DateUtils.PATTERN_API_RESPONSE, dateStamp)
+            val currentDateString = DateUtils.convertUTCDateStringToLocalDateString(
+                DateUtils.PATTERN_API_RESPONSE, dateStamp
+            )
+            milliseconds = DateUtils.getMillisecondsFromDateString(
+                DateUtils.PATTERN_API_RESPONSE, currentDateString
+            )
         }
 
         return milliseconds

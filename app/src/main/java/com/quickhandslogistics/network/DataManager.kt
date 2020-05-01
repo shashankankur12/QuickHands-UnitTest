@@ -16,10 +16,7 @@ import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.data.schedule.*
 import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeRequest
-import com.quickhandslogistics.modified.data.workSheet.ChangeStatusRequest
-import com.quickhandslogistics.modified.data.workSheet.UpdateLumperTimeRequest
-import com.quickhandslogistics.modified.data.workSheet.UpdateNotesRequest
-import com.quickhandslogistics.modified.data.workSheet.WorkSheetListAPIResponse
+import com.quickhandslogistics.modified.data.workSheet.*
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 import okhttp3.OkHttpClient
@@ -597,8 +594,7 @@ object DataManager : AppConstant {
     }
 
     fun updateWorkItemNotes(
-        workItemId: String, request: UpdateNotesRequest,
-        listener: ResponseListener<BaseResponse>
+        workItemId: String, request: UpdateNotesRequest, listener: ResponseListener<BaseResponse>
     ) {
         val call = getService().updateWorkItemNotes(
             "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
@@ -611,10 +607,7 @@ object DataManager : AppConstant {
             ) {
                 var errorMessage = ""
                 if (!response.isSuccessful) {
-                    errorMessage =
-                        getErrorMessage(
-                            response.errorBody()
-                        )
+                    errorMessage = getErrorMessage(response.errorBody())
                     listener.onError(errorMessage)
                 } else {
                     response.body()?.let { it ->
@@ -638,15 +631,39 @@ object DataManager : AppConstant {
         )
         call.enqueue(object : Callback<BaseResponse> {
             override fun onResponse(
-                call: Call<BaseResponse>,
-                response: Response<BaseResponse>
+                call: Call<BaseResponse>, response: Response<BaseResponse>
             ) {
                 var errorMessage = ""
                 if (!response.isSuccessful) {
-                    errorMessage =
-                        getErrorMessage(
-                            response.errorBody()
-                        )
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun cancelAllSchedules(
+        day: String, request: CancelAllSchedulesRequest, listener: ResponseListener<BaseResponse>
+    ) {
+        val call = getService().cancelAllSchedules(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
+            day, request
+        )
+        call.enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(
+                call: Call<BaseResponse>, response: Response<BaseResponse>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
                     listener.onError(errorMessage)
                 } else {
                     response.body()?.let { it ->

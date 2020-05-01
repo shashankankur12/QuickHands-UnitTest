@@ -64,11 +64,7 @@ class WorkSheetPresenter(
                 workItem1.startTime!!.compareTo(workItem2.startTime!!)
             })
 
-            val onGoingWorkItems = ArrayList<WorkItemDetail>()
-            onGoingWorkItems.addAll(data.inProgress!!)
-            onGoingWorkItems.addAll(data.onHold!!)
-            onGoingWorkItems.addAll(data.scheduled!!)
-            workSheetView?.showWorkSheets(onGoingWorkItems, data.cancelled!!, data.completed!!)
+            workSheetView?.showWorkSheets(data)
         }
     }
 

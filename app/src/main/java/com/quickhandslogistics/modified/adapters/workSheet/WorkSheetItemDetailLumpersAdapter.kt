@@ -12,6 +12,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemDetailLumpersContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.workSheet.LumpersTimeSchedule
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
@@ -22,6 +23,7 @@ class WorkSheetItemDetailLumpersAdapter(
     private var onAdapterClick: WorkSheetItemDetailLumpersContract.View.OnAdapterItemClickListener
 ) : Adapter<WorkSheetItemDetailLumpersAdapter.WorkItemHolder>() {
 
+    private var workItemStatus = ""
     private var lumperList = ArrayList<EmployeeData>()
     private var timingsData = LinkedHashMap<String, LumpersTimeSchedule>()
 
@@ -111,7 +113,17 @@ class WorkSheetItemDetailLumpersAdapter(
                     )
                 }
             }
+
+            changeAddButtonVisibility()
             textViewAddTime.setOnClickListener(this)
+        }
+
+        private fun changeAddButtonVisibility() {
+            if (workItemStatus == AppConstant.WORK_ITEM_STATUS_IN_PROGRESS || workItemStatus == AppConstant.WORK_ITEM_STATUS_ON_HOLD) {
+                textViewAddTime.visibility = View.VISIBLE
+            } else {
+                textViewAddTime.visibility = View.GONE
+            }
         }
 
         override fun onClick(view: View?) {
@@ -129,7 +141,8 @@ class WorkSheetItemDetailLumpersAdapter(
 
     fun updateList(
         lumperList: ArrayList<EmployeeData>?,
-        timingsData: LinkedHashMap<String, LumpersTimeSchedule>
+        timingsData: LinkedHashMap<String, LumpersTimeSchedule>,
+        status: String? = ""
     ) {
         this.timingsData.clear()
         this.lumperList.clear()
@@ -137,6 +150,7 @@ class WorkSheetItemDetailLumpersAdapter(
             this.lumperList.addAll(lumperList)
             this.timingsData.putAll(timingsData)
         }
+        this.workItemStatus = getDefaultOrValue(status)
         notifyDataSetChanged()
     }
 }

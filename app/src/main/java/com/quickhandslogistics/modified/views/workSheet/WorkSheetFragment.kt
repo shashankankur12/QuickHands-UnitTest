@@ -1,15 +1,18 @@
 package com.quickhandslogistics.modified.views.workSheet
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.adapters.workSheet.WorkSheetPagerAdapter
+import com.quickhandslogistics.modified.contracts.DashBoardContract
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetContract
 import com.quickhandslogistics.modified.controls.ScheduleUtils
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
+import com.quickhandslogistics.modified.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.modified.presenters.workSheet.WorkSheetPresenter
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.utils.CustomProgressBar
@@ -20,10 +23,18 @@ import java.util.*
 class WorkSheetFragment : BaseFragment(), WorkSheetContract.View,
     WorkSheetContract.View.OnFragmentInteractionListener {
 
+    private var listener: DashBoardContract.View.OnFragmentInteractionListener? = null
     private lateinit var workSheetPresenter: WorkSheetPresenter
 
     private lateinit var adapter: WorkSheetPagerAdapter
     private var progressDialog: Dialog? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is DashBoardContract.View.OnFragmentInteractionListener) {
+            listener = context
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,17 +78,29 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View,
         textViewDropsCount.text = ""
         textViewOutBoundsCount.text = ""
         adapter.updateWorkItemsList(ArrayList(), ArrayList(), ArrayList())
+        listener?.invalidateCancelAllSchedulesOption(false)
     }
 
-    override fun showWorkSheets(
-        onGoingWorkItems: ArrayList<WorkItemDetail>,
-        cancelledWorkItems: ArrayList<WorkItemDetail>,
-        completedWorkItems: ArrayList<WorkItemDetail>
-    ) {
+    override fun showWorkSheets(data: WorkSheetListAPIResponse.Data) {
+        // Change the visibility of Cancel All Schedule Option
+        if (data.inProgress.isNullOrEmpty() && data.onHold.isNullOrEmpty()
+            && data.cancelled.isNullOrEmpty() && data.completed.isNullOrEmpty()
+            && !data.scheduled.isNullOrEmpty()
+        ) {
+            listener?.invalidateCancelAllSchedulesOption(true)
+        } else {
+            listener?.invalidateCancelAllSchedulesOption(false)
+        }
+
+        val onGoingWorkItems = ArrayList<WorkItemDetail>()
+        onGoingWorkItems.addAll(data.inProgress!!)
+        onGoingWorkItems.addAll(data.onHold!!)
+        onGoingWorkItems.addAll(data.scheduled!!)
+
         val allWorkItems = ArrayList<WorkItemDetail>()
         allWorkItems.addAll(onGoingWorkItems)
-        allWorkItems.addAll(cancelledWorkItems)
-        allWorkItems.addAll(completedWorkItems)
+        allWorkItems.addAll(data.cancelled!!)
+        allWorkItems.addAll(data.completed!!)
         textViewTotalCount.text =
             String.format(getString(R.string.total_containers_s), allWorkItems.size)
 
@@ -90,7 +113,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View,
         textViewOutBoundsCount.text =
             String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
 
-        adapter.updateWorkItemsList(onGoingWorkItems, cancelledWorkItems, completedWorkItems)
+        adapter.updateWorkItemsList(onGoingWorkItems, data.cancelled!!, data.completed!!)
     }
 
     override fun cancellingWorkScheduleFinished() {

@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.adapters.workSheet.AllWorkScheduleCancelAdapter
 import com.quickhandslogistics.modified.contracts.workSheet.AllWorkScheduleCancelContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.presenters.workSheet.AllWorkScheduleCancelPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.modified.adapters.workSheet.AllWorkScheduleCancelAdapter
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
@@ -66,11 +66,12 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
             when (view.id) {
                 buttonSubmit.id -> {
                     val selectedLumperIdsList = allWorkScheduleCancelAdapter.getSelectedLumper()
+                    val notesQHL = editTextQHLNotes.text.toString()
+                    val notesCustomer = editTextCustomerNotes.text.toString()
                     if (selectedLumperIdsList.size > 0) {
-                        onBackPressed()
-/*                        allWorkScheduleCancelPresenter.initiateCancellingWorkSchedules(
-                            selectedLumperIdsList
-                        )*/
+                        allWorkScheduleCancelPresenter.initiateCancellingWorkSchedules(
+                            selectedLumperIdsList, notesQHL, notesCustomer
+                        )
                     }
                 }
 

@@ -95,8 +95,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         }
 
         workSheetItemDetailLumpersAdapter.updateList(
-            workItemDetail.assignedLumpersList,
-            timingsData
+            workItemDetail.assignedLumpersList, timingsData, workItemDetail.status
         )
 
         if (workItemDetail.assignedLumpersList.isNullOrEmpty()) {

@@ -1,5 +1,6 @@
 package com.quickhandslogistics.modified.views
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -20,6 +21,7 @@ import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment
 import com.quickhandslogistics.modified.views.scheduleTime.ScheduleTimeFragment
 import com.quickhandslogistics.modified.views.workSheet.AllWorkScheduleCancelActivity
 import com.quickhandslogistics.modified.views.workSheet.WorkSheetFragment
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.ValueUtils
 import com.quickhandslogistics.view.fragments.CustomerSheetFragment
@@ -33,6 +35,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
 
     private var selectedFragmentTitle: String = ""
     private var scheduleTimeNotes: String = ""
+    private var isCancelAllScheduleVisible: Boolean = false
 
     private lateinit var dashBoardPresenter: DashBoardPresenter
 
@@ -59,7 +62,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         menu?.let {
             when (selectedFragmentTitle) {
                 getString(R.string.work_sheet) -> {
-                    menu.findItem(R.id.actionCancelAllWork).isVisible = true
+                    menu.findItem(R.id.actionCancelAllWork).isVisible = isCancelAllScheduleVisible
                 }
                 getString(R.string.schedule_lumpers_time) -> {
                     menu.findItem(R.id.actionNotes).isVisible = scheduleTimeNotes.isNotEmpty()
@@ -81,7 +84,10 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
                 dialog.show(supportFragmentManager, InfoDialogFragment::class.simpleName)
             }
             R.id.actionCancelAllWork -> {
-                startIntent(AllWorkScheduleCancelActivity::class.java)
+                startIntent(
+                    AllWorkScheduleCancelActivity::class.java,
+                    requestCode = AppConstant.REQUEST_CODE_CHANGED
+                )
             }
         }
         return super.onOptionsItemSelected(item)
@@ -90,6 +96,13 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     override fun onDestroy() {
         dashBoardPresenter.onDestroy()
         super.onDestroy()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == RESULT_OK) {
+            navDrawer?.updateWorkSheetList()
+        }
     }
 
     override fun onClick(view: View?) {
@@ -217,6 +230,11 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
 
     override fun invalidateScheduleTimeNotes(notes: String) {
         this.scheduleTimeNotes = notes
+        invalidateOptionsMenu()
+    }
+
+    override fun invalidateCancelAllSchedulesOption(isShown: Boolean) {
+        this.isCancelAllScheduleVisible = isShown
         invalidateOptionsMenu()
     }
 }

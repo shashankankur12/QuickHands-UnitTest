@@ -13,10 +13,7 @@ import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.data.schedule.*
 import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeRequest
-import com.quickhandslogistics.modified.data.workSheet.ChangeStatusRequest
-import com.quickhandslogistics.modified.data.workSheet.UpdateLumperTimeRequest
-import com.quickhandslogistics.modified.data.workSheet.UpdateNotesRequest
-import com.quickhandslogistics.modified.data.workSheet.WorkSheetListAPIResponse
+import com.quickhandslogistics.modified.data.workSheet.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -136,6 +133,13 @@ interface IApiInterface {
     fun updateLumperTimeInWorkItem(
         @Header("Authorization") auth: String,
         @Body request: UpdateLumperTimeRequest
+    ): Call<BaseResponse>
+
+    @POST("schedule/cancel/all/{day}")
+    fun cancelAllSchedules(
+        @Header("Authorization") auth: String,
+        @Path("day") day: String,
+        @Body request: CancelAllSchedulesRequest
     ): Call<BaseResponse>
     /////////////////////////////////////////////////////////////
 
