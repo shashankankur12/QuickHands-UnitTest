@@ -3,6 +3,7 @@ package com.quickhandslogistics.modified.data.schedule
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.quickhandslogistics.modified.data.BaseResponse
+import com.quickhandslogistics.modified.data.workSheet.LumpersTimeSchedule
 
 class WorkItemDetailAPIResponse : BaseResponse() {
 
@@ -14,5 +15,9 @@ class WorkItemDetailAPIResponse : BaseResponse() {
         @SerializedName("workItem")
         @Expose
         var workItemDetail: WorkItemDetail? = null
+
+        @SerializedName("lumpersTimeSchedule")
+        @Expose
+        var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>? = null
     }
 }

@@ -4,15 +4,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemDetailLumpersContract
-import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.modified.data.workSheet.LumpersTimeSchedule
+import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import de.hdodenhof.circleimageview.CircleImageView
@@ -22,8 +22,8 @@ class WorkSheetItemDetailLumpersAdapter(
     private var onAdapterClick: WorkSheetItemDetailLumpersContract.View.OnAdapterItemClickListener
 ) : Adapter<WorkSheetItemDetailLumpersAdapter.WorkItemHolder>() {
 
-    private var lumperList: ArrayList<EmployeeData> = ArrayList()
-    private var updateData: HashMap<String, AttendanceDetail> = HashMap()
+    private var lumperList = ArrayList<EmployeeData>()
+    private var timingsData = LinkedHashMap<String, LumpersTimeSchedule>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemHolder {
         val view: View = LayoutInflater.from(parent.context)
@@ -50,8 +50,8 @@ class WorkSheetItemDetailLumpersAdapter(
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
         private val textViewEmployeeId: TextView = view.textViewEmployeeId
         private val textViewAddTime: TextView = view.textViewAddTime
-        private val linearLayoutLumperTime: LinearLayout = view.linearLayoutLumperTime
-        private val textViewShiftTime: TextView = view.textViewShiftTime
+        private val textViewWorkTime: TextView = view.textViewWorkTime
+        private val textViewWaitingTime: TextView = view.textViewWaitingTime
         private val textViewBreakTime: TextView = view.textViewBreakTime
 
         fun bind(employeeData: EmployeeData) {
@@ -75,139 +75,68 @@ class WorkSheetItemDetailLumpersAdapter(
                 textViewEmployeeId.visibility = View.VISIBLE
                 textViewEmployeeId.text = String.format("(Emp ID: %s)", employeeData.employeeId)
             }
+
+            if (timingsData.containsKey(employeeData.id)) {
+                val timingDetail = timingsData[employeeData.id]
+                timingDetail?.let { timingDetail ->
+                    val startTime = DateUtils.convertDateStringToTime(
+                        DateUtils.PATTERN_API_RESPONSE, timingDetail.startTime
+                    )
+                    val endTime = DateUtils.convertDateStringToTime(
+                        DateUtils.PATTERN_API_RESPONSE, timingDetail.endTime
+                    )
+                    textViewWorkTime.text = String.format(
+                        "%s - %s",
+                        if (startTime.isNotEmpty()) startTime else "NA",
+                        if (endTime.isNotEmpty()) endTime else "NA"
+                    )
+
+                    val waitingTime = getDefaultOrValue(timingDetail.waitingTime)
+                    if (waitingTime.isNotEmpty() && waitingTime.toInt() != 0) {
+                        textViewWaitingTime.text = String.format("%s Min", waitingTime)
+                    } else {
+                        textViewWaitingTime.text = "NA"
+                    }
+
+                    val breakTimeStart = DateUtils.convertDateStringToTime(
+                        DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeStart
+                    )
+                    val breakTimeEnd = DateUtils.convertDateStringToTime(
+                        DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeEnd
+                    )
+                    textViewBreakTime.text = String.format(
+                        "%s - %s",
+                        if (breakTimeStart.isNotEmpty()) breakTimeStart else "NA",
+                        if (breakTimeEnd.isNotEmpty()) breakTimeEnd else "NA"
+                    )
+                }
+            }
             textViewAddTime.setOnClickListener(this)
-
-        }
-
-        private fun updateTimeUI(isPresent: Boolean, lumperId: String) {
-            textViewAddTime.visibility = if (isPresent) View.VISIBLE else View.GONE
-            linearLayoutLumperTime.visibility = if (isPresent) View.VISIBLE else View.GONE
         }
 
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
                     textViewAddTime.id -> {
-                        onAdapterClick.onAddTimeClick(getItem(adapterPosition))
+                        val employeeData = getItem(adapterPosition)
+                        val timingData = timingsData[employeeData.id]
+                        onAdapterClick.onAddTimeClick(employeeData, timingData)
                     }
                 }
             }
         }
     }
 
-    fun updateList(lumperList: ArrayList<EmployeeData>?) {
-        this.updateData.clear()
+    fun updateList(
+        lumperList: ArrayList<EmployeeData>?,
+        timingsData: LinkedHashMap<String, LumpersTimeSchedule>
+    ) {
+        this.timingsData.clear()
         this.lumperList.clear()
         lumperList?.let {
             this.lumperList.addAll(lumperList)
+            this.timingsData.putAll(timingsData)
         }
         notifyDataSetChanged()
     }
-
-    private fun changeIsPresentRecord(lumperId: String?, isPresent: Boolean) {
-        if (!StringUtils.isNullOrEmpty(lumperId) && !updateData.containsKey(lumperId)) {
-            updateData[lumperId!!] = AttendanceDetail()
-            updateData[lumperId]?.lumperId = lumperId
-        }
-        updateData[lumperId]?.isPresent = isPresent
-        updateData[lumperId]?.isPresentChanged = true
-    }
-
-    private fun changeNotesRecord(lumperId: String?) {
-        if (!StringUtils.isNullOrEmpty(lumperId) && !updateData.containsKey(lumperId)) {
-            updateData[lumperId!!] = AttendanceDetail()
-            updateData[lumperId]?.lumperId = lumperId
-        }
-    }
-
-    private fun initiateUpdateRecord(lumperId: String?, isPresent: Boolean = true) {
-        if (!StringUtils.isNullOrEmpty(lumperId) && !updateData.containsKey(lumperId)) {
-            updateData[lumperId!!] = AttendanceDetail()
-            updateData[lumperId]?.lumperId = lumperId
-            updateData[lumperId]?.isPresent = isPresent
-        }
-    }
-
-    /*fun updateClockInTime(itemPosition: Int, currentTime: Long) {
-        val item = getItem(itemPosition)
-
-        // Update in API Request Object
-        initiateUpdateRecord(item.id)
-        updateData[item.id]?.morningPunchIn = "${currentTime / 1000L}"
-        updateData[item.id]?.isMorningPunchInChanged = true
-
-        //Update in Local List Object to show changes on UI
-        getItem(itemPosition).attendanceDetail?.morningPunchIn =
-            DateUtils.getUTCDateString(DateUtils.PATTERN_API_RESPONSE, Date(currentTime))
-        notifyDataSetChanged()
-    }
-
-    fun updateClockOutTime(itemPosition: Int, currentTime: Long) {
-        val item = getItem(itemPosition)
-
-        // Update in API Request Object
-        initiateUpdateRecord(item.id)
-        updateData[item.id]?.eveningPunchOut = "${currentTime / 1000L}"
-        updateData[item.id]?.isEveningPunchOutChanged = true
-
-        //Update in Local List Object to show changes on UI
-        getItem(itemPosition).attendanceDetail?.eveningPunchOut =
-            DateUtils.getUTCDateString(DateUtils.PATTERN_API_RESPONSE, Date(currentTime))
-        notifyDataSetChanged()
-    }
-
-    fun updateLunchInTime(itemPosition: Int, currentTime: Long) {
-        val item = getItem(itemPosition)
-
-        // Update in API Request Object
-        initiateUpdateRecord(item.id)
-        updateData[item.id]?.lunchPunchIn = "${currentTime / 1000L}"
-        updateData[item.id]?.isLunchPunchInChanged = true
-
-        //Update in Local List Object to show changes on UI
-        getItem(itemPosition).attendanceDetail?.lunchPunchIn =
-            DateUtils.getUTCDateString(DateUtils.PATTERN_API_RESPONSE, Date(currentTime))
-        notifyDataSetChanged()
-    }
-
-    fun updateLunchOutTime(itemPosition: Int, currentTime: Long) {
-        val item = getItem(itemPosition)
-
-        // Update in API Request Object
-        initiateUpdateRecord(item.id)
-        updateData[item.id]?.lunchPunchOut = "${currentTime / 1000L}"
-        updateData[item.id]?.isLunchPunchOutChanged = true
-
-        //Update in Local List Object to show changes on UI
-        getItem(itemPosition).attendanceDetail?.lunchPunchOut =
-            DateUtils.getUTCDateString(DateUtils.PATTERN_API_RESPONSE, Date(currentTime))
-        notifyDataSetChanged()
-    }
-
-    fun getUpdatedData(): HashMap<String, AttendanceDetail> {
-        return updateData
-    }
-
-    fun checkIfEditable(hasValue: Boolean, variableName: String, lumperId: String): Boolean {
-        return if (updateData.containsKey(lumperId)) {
-            val isChanged = when (variableName) {
-                "isPresent" -> updateData[lumperId]?.isPresentChanged!!
-                "isMorningPunchIn" -> updateData[lumperId]?.isMorningPunchInChanged!!
-                "isEveningPunchOut" -> updateData[lumperId]?.isEveningPunchOutChanged!!
-                "isLunchPunchIn" -> updateData[lumperId]?.isLunchPunchInChanged!!
-                "isLunchPunchOut" -> updateData[lumperId]?.isLunchPunchOutChanged!!
-                else -> false
-            }
-            if (isChanged) {
-                // This field is edited for this lumper.
-                isChanged
-            } else {
-                // Something is edited for this lumper but not this field.
-                !hasValue
-            }
-        } else {
-            // Nothing is edited for this lumper yet.
-            !hasValue
-        }
-    }*/
 }
