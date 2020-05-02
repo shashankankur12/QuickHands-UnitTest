@@ -8,12 +8,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.adapters.common.LumperImagesAdapter
 import com.quickhandslogistics.modified.contracts.common.LumperImagesContract
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
+import com.quickhandslogistics.modified.controls.OverlapDecoration
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
-import com.quickhandslogistics.modified.adapters.common.LumperImagesAdapter
-import com.quickhandslogistics.modified.controls.OverlapDecoration
 import kotlinx.android.synthetic.main.item_schedule.view.*
 
 class ScheduleAdapter(
@@ -69,7 +69,8 @@ class ScheduleAdapter(
         }
 
         fun bind(scheduleDetail: ScheduleDetail) {
-            textViewBuildingName.text = scheduleDetail.buildingName
+            if (!scheduleDetail.buildingName.isNullOrEmpty())
+                textViewBuildingName.text = scheduleDetail.buildingName?.capitalize()
             textViewScheduleType.text = scheduleDetail.scheduleTypeNames
             textViewWorkItemsCount.text = String.format(
                 resources.getString(R.string.work_items_count),
@@ -90,7 +91,11 @@ class ScheduleAdapter(
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
-                    itemView.id -> adapterItemClickListener.onScheduleItemClick(getItem(adapterPosition))
+                    itemView.id -> adapterItemClickListener.onScheduleItemClick(
+                        getItem(
+                            adapterPosition
+                        )
+                    )
                 }
             }
         }

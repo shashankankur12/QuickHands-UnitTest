@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.crashlytics.android.Crashlytics
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.adapters.workSheet.WorkSheetPagerAdapter
 import com.quickhandslogistics.modified.contracts.DashBoardContract
@@ -28,9 +29,16 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View,
 
     private lateinit var adapter: WorkSheetPagerAdapter
     private var progressDialog: Dialog? = null
+    private var isAttachCalled = false
+    private var isCreateCalled = false
+    private var isCreateViewCalled = false
+    private var isViewCreatedCalled = false
+    private var isDetachCalled = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        isAttachCalled = true
+        Crashlytics.setBool("isAttachCalled", isAttachCalled)
         if (context is DashBoardContract.View.OnFragmentInteractionListener) {
             listener = context
         }
@@ -38,18 +46,23 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        isCreateCalled = true
+        Crashlytics.setBool("isCreateCalled", isCreateCalled)
         workSheetPresenter = WorkSheetPresenter(this, resources, sharedPref)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
+        isCreateViewCalled = true
+        Crashlytics.setBool("isCreateViewCalled", isCreateViewCalled)
         return inflater.inflate(R.layout.fragment_work_sheet, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        isViewCreatedCalled = true
+        Crashlytics.setBool("isViewCreatedCalled", isViewCreatedCalled)
         adapter = WorkSheetPagerAdapter(childFragmentManager, resources)
         viewPagerWorkSheet.offscreenPageLimit = adapter.count
         viewPagerWorkSheet.adapter = adapter
@@ -126,5 +139,12 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View,
 
     override fun fetchWorkSheetList() {
         workSheetPresenter.fetchWorkSheetList()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        isDetachCalled = true
+        Crashlytics.setBool("isDetachCalled", isDetachCalled)
+        listener = null
     }
 }

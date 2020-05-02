@@ -135,7 +135,8 @@ class UnScheduleDetailActivity : BaseActivity(), UnScheduleDetailContract.View {
         this.scheduleDetail = scheduleDetail
         invalidateOptionsMenu()
 
-        textViewBuildingName.text = scheduleDetail.buildingName
+        if (!scheduleDetail.buildingName.isNullOrEmpty())
+            textViewBuildingName.text = scheduleDetail.buildingName?.capitalize()
         scheduleDate?.let {
             textViewScheduleDate.text =
                 DateUtils.changeDateString(PATTERN_API_REQUEST_PARAMETER, PATTERN_NORMAL, it)
