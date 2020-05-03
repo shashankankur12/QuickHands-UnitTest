@@ -51,14 +51,14 @@ class ScheduleMainFragment : BaseFragment(),
         tabLayoutSchedule.setupWithViewPager(viewPagerSchedule)
     }
 
-    override fun hideProgressDialog() {
+    /*override fun hideProgressDialog() {
         progressDialog?.dismiss()
     }
 
     override fun showProgressDialog(message: String) {
         progressDialog =
             CustomProgressBar.getInstance(fragmentActivity!!).showProgressDialog(message)
-    }
+    }*/
 
     override fun fetchUnScheduledWorkItems() {
         adapter.fetchUnScheduledWorkItems()

@@ -74,7 +74,8 @@ class UnScheduleAdapter(
         }
 
         fun bind(scheduleDetail: ScheduleDetail) {
-            textViewBuildingName.text = scheduleDetail.buildingName
+            if (!scheduleDetail.buildingName.isNullOrEmpty())
+                textViewBuildingName.text = scheduleDetail.buildingName?.capitalize()
             textViewScheduleType.text = scheduleDetail.scheduleTypeNames
             textViewWorkItemsCount.text = String.format(
                 resources.getString(R.string.work_items_count),

@@ -164,6 +164,11 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View,
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        schedulePresenter.onDestroy()
+    }
+
     /*
     * Adapter Item Click Listeners
     */
@@ -201,13 +206,13 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View,
         textViewDate.visibility = View.VISIBLE
     }
 
-    override fun hideProgressDialog() {
+   /* override fun hideProgressDialog() {
         onScheduleFragmentInteractionListener?.hideProgressDialog()
     }
 
     override fun showProgressDialog(message: String) {
         onScheduleFragmentInteractionListener?.showProgressDialog(message)
-    }
+    }*/
 
     override fun showAPIErrorMessage(message: String) {
         recyclerViewSchedule.visibility = View.GONE

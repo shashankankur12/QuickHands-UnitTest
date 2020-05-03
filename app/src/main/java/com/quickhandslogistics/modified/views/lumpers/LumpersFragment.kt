@@ -87,14 +87,14 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     /*
     * Presenter Listeners
     */
-    override fun hideProgressDialog() {
+   /* override fun hideProgressDialog() {
         progressDialog?.dismiss()
     }
 
     override fun showProgressDialog(message: String) {
         progressDialog =
             CustomProgressBar.getInstance(fragmentActivity!!).showProgressDialog(message)
-    }
+    }*/
 
     override fun showAPIErrorMessage(message: String) {
         recyclerViewLumpers.visibility = View.GONE

@@ -1,6 +1,5 @@
 package com.quickhandslogistics.modified.views.workSheet
 
-import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +14,6 @@ import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.modified.presenters.workSheet.WorkSheetPresenter
 import com.quickhandslogistics.modified.views.BaseFragment
-import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.fragment_work_sheet.*
 import java.util.*
@@ -27,18 +25,12 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View,
     private lateinit var workSheetPresenter: WorkSheetPresenter
 
     private lateinit var adapter: WorkSheetPagerAdapter
-    private var progressDialog: Dialog? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is DashBoardContract.View.OnFragmentInteractionListener) {
             listener = context
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        workSheetPresenter = WorkSheetPresenter(this, resources, sharedPref)
     }
 
     override fun onCreateView(
@@ -49,6 +41,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        workSheetPresenter = WorkSheetPresenter(this, resources, sharedPref)
 
         adapter = WorkSheetPagerAdapter(childFragmentManager, resources)
         viewPagerWorkSheet.offscreenPageLimit = adapter.count
@@ -58,14 +51,14 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View,
         workSheetPresenter.fetchWorkSheetList()
     }
 
-    override fun hideProgressDialog() {
-        progressDialog?.dismiss()
-    }
+    /* override fun hideProgressDialog() {
+         progressDialog?.dismiss()
+     }
 
-    override fun showProgressDialog(message: String) {
-        progressDialog =
-            CustomProgressBar.getInstance(fragmentActivity!!).showProgressDialog(message)
-    }
+     override fun showProgressDialog(message: String) {
+         progressDialog =
+             CustomProgressBar.getInstance(fragmentActivity!!).showProgressDialog(message)
+     }*/
 
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
@@ -116,9 +109,6 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View,
         adapter.updateWorkItemsList(onGoingWorkItems, data.cancelled!!, data.completed!!)
     }
 
-    override fun cancellingWorkScheduleFinished() {
-    }
-
     override fun showHeaderInfo(buildingName: String, date: String) {
         textViewBuildingName.text = buildingName.capitalize()
         textViewWorkItemsDate.text = date
@@ -126,5 +116,15 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View,
 
     override fun fetchWorkSheetList() {
         workSheetPresenter.fetchWorkSheetList()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        workSheetPresenter.onDestroy()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
     }
 }

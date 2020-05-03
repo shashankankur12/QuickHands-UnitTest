@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.quickhandslogistics">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -12,17 +13,38 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".modified.views.LumperJobHistoryActivity" />
-        <activity android:name=".modified.views.common.ContainerDetailActivity" />
-        <activity android:name=".modified.views.common.DisplayLumpersListActivity" />
-        <activity android:name=".modified.views.lumpers.LumperDetailActivity" />
-        <activity android:name=".modified.views.schedule.ScheduleDetailActivity" />
-        <activity android:name=".modified.views.schedule.UnScheduleDetailActivity" />
-        <activity android:name=".modified.views.scheduleTime.EditScheduleTimeActivity" />
-        <activity android:name=".modified.views.workSheet.AllWorkScheduleCancelActivity" />
-        <activity android:name=".modified.views.workSheet.WorkSheetItemDetailActivity" />
-        <activity android:name=".modified.views.workSheet.AddLumperTimeWorkSheetItemActivity" />
+        android:theme="@style/AppTheme"
+        tools:ignore="LockedOrientationActivity">
+        <activity
+            android:name=".modified.views.LumperJobHistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".modified.views.common.ContainerDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".modified.views.common.DisplayLumpersListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".modified.views.lumpers.LumperDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".modified.views.schedule.ScheduleDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".modified.views.schedule.UnScheduleDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".modified.views.scheduleTime.EditScheduleTimeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".modified.views.workSheet.AllWorkScheduleCancelActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".modified.views.workSheet.WorkSheetItemDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".modified.views.workSheet.AddLumperTimeWorkSheetItemActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".modified.views.BaseActivity" />
         <activity
             android:name=".view.activities.SignatureActivity"
@@ -85,6 +107,7 @@
         <activity
             android:name=".modified.views.common.ChooseLumperActivity"
             android:screenOrientation="portrait" />
+
         <service
             android:name=".services.NotificationService"
             android:exported="false">

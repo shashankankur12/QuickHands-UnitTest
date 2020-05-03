@@ -184,14 +184,14 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
         textViewDate.text = dateString
     }
 
-    override fun hideProgressDialog() {
+   /* override fun hideProgressDialog() {
         progressDialog?.dismiss()
     }
 
     override fun showProgressDialog(message: String) {
         progressDialog =
             CustomProgressBar.getInstance(fragmentActivity!!).showProgressDialog(message)
-    }
+    }*/
 
     override fun showAPIErrorMessage(message: String) {
         recyclerViewScheduleTime.visibility = View.GONE

@@ -95,6 +95,11 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        unSchedulePresenter.onDestroy()
+    }
+
     /*
     * Adapter Item Click Listeners
     */
@@ -124,13 +129,13 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
         recyclerViewSchedule.visibility = View.VISIBLE
     }
 
-    override fun hideProgressDialog() {
+    /*override fun hideProgressDialog() {
         onScheduleFragmentInteractionListener?.hideProgressDialog()
     }
 
     override fun showProgressDialog(message: String) {
         onScheduleFragmentInteractionListener?.showProgressDialog(message)
-    }
+    }*/
 
     override fun showEmptyData() {
         textViewEmptyData.visibility = View.VISIBLE

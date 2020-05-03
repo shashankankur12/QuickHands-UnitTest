@@ -161,7 +161,8 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
         this.scheduleDetail = scheduleDetail
         invalidateOptionsMenu()
 
-        textViewBuildingName.text = scheduleDetail.buildingName
+        if (!scheduleDetail.buildingName.isNullOrEmpty())
+            textViewBuildingName.text = scheduleDetail.buildingName?.capitalize()
         scheduleDetail.scheduledFrom?.let {
             textViewScheduleDate.text =
                 DateUtils.changeDateString(PATTERN_API_REQUEST_PARAMETER, PATTERN_NORMAL, it)

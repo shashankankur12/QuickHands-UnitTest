@@ -94,8 +94,8 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     }
 
     override fun onDestroy() {
-        dashBoardPresenter.onDestroy()
         super.onDestroy()
+        dashBoardPresenter.onDestroy()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -220,7 +220,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         textViewEmployeeId.text =
             if (!StringUtils.isNullOrEmpty(leadProfileData.employeeId)) leadProfileData.employeeId else "-"
 
-        textViewVersionName.text = String.format("V %s", BuildConfig.VERSION_NAME)
+        textViewVersionName.text = String.format("v%s", BuildConfig.VERSION_NAME)
     }
 
     override fun onNewFragmentReplaced(title: String) {

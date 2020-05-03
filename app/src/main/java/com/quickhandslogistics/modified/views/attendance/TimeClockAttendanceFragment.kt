@@ -240,14 +240,14 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     /*
     * Presenter Listeners
     */
-    override fun hideProgressDialog() {
+    /*override fun hideProgressDialog() {
         progressDialog?.dismiss()
     }
 
     override fun showProgressDialog(message: String) {
         progressDialog =
             CustomProgressBar.getInstance(fragmentActivity!!).showProgressDialog(message)
-    }
+    }*/
 
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
