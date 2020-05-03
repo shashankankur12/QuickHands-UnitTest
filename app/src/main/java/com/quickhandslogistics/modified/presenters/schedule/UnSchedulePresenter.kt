@@ -4,12 +4,12 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleContract
+import com.quickhandslogistics.modified.controls.ScheduleUtils.getAllAssignedLumpersList
+import com.quickhandslogistics.modified.controls.ScheduleUtils.getScheduleTypeName
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.data.schedule.UnScheduleListAPIResponse
 import com.quickhandslogistics.modified.models.schedule.UnScheduleModel
-import com.quickhandslogistics.modified.controls.ScheduleUtils.getAllAssignedLumpersList
-import com.quickhandslogistics.modified.controls.ScheduleUtils.getScheduleTypeName
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*
@@ -29,6 +29,10 @@ class UnSchedulePresenter(
             unScheduleView?.showProgressDialog(resources.getString(R.string.api_loading_message))
         }
         unScheduleModel.fetchUnSchedulesByDate(this)
+    }
+
+    override fun onDestroy() {
+        unScheduleView = null
     }
 
     override fun onFailure(message: String) {

@@ -68,11 +68,6 @@ class WorkSheetPresenter(
         }
     }
 
-    override fun onSuccessCancelWorkSchedules() {
-        workSheetView?.hideProgressDialog()
-        workSheetView?.cancellingWorkScheduleFinished()
-    }
-
     override fun onSuccessGetHeaderInfo(buildingName: String, date: String) {
         workSheetView?.showHeaderInfo(buildingName, date)
     }

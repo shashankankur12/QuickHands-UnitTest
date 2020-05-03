@@ -29,5 +29,6 @@ class UnScheduleContract {
 
     interface Presenter {
         fun getUnScheduledWorkItems(showProgressDialog: Boolean)
+        fun onDestroy()
     }
 }

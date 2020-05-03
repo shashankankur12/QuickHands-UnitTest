@@ -43,5 +43,6 @@ class ScheduleContract {
 
     interface Presenter {
         fun getScheduledWorkItemsByDate(date: Date)
+        fun onDestroy()
     }
 }

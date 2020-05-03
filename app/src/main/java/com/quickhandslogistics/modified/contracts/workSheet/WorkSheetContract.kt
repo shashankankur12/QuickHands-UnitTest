@@ -1,6 +1,6 @@
 package com.quickhandslogistics.modified.contracts.workSheet
 
-import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
+import com.quickhandslogistics.modified.contracts.BaseContract
 import com.quickhandslogistics.modified.data.workSheet.WorkSheetListAPIResponse
 
 class WorkSheetContract {
@@ -15,22 +15,13 @@ class WorkSheetContract {
         interface OnFinishedListener {
             fun onFailure(message: String = "")
             fun onSuccessFetchWorkSheet(workSheetListAPIResponse: WorkSheetListAPIResponse)
-            fun onSuccessCancelWorkSchedules()
             fun onSuccessGetHeaderInfo(buildingName: String, date: String)
         }
     }
 
-    interface View {
-        fun hideProgressDialog()
-        fun showProgressDialog(message: String)
+    interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
         fun showWorkSheets(data: WorkSheetListAPIResponse.Data)
-        /*fun showWorkSheets(
-            onGoingWorkItems: ArrayList<WorkItemDetail>,
-            cancelledWorkItems: ArrayList<WorkItemDetail>,
-            completedWorkItems: ArrayList<WorkItemDetail>
-        )*/
-        fun cancellingWorkScheduleFinished()
         fun showHeaderInfo(buildingName: String, date: String)
 
         interface OnAdapterItemClickListener {
