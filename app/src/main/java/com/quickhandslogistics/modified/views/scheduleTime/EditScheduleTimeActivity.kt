@@ -61,8 +61,9 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             editTextNotes.setText(notes.notesForLead)
             editTextDMNotes.setText(notes.notesForDM)
 
-            notes.requestedLumpersCount?.let {
-                editTextLumpersRequired.setText("${ValueUtils.getDefaultOrValue(notes.requestedLumpersCount)}")
+            val requestedLumpersCount = ValueUtils.getDefaultOrValue(notes.requestedLumpersCount)
+            if (requestedLumpersCount != 0) {
+                editTextLumpersRequired.setText("$requestedLumpersCount")
             }
         }
 
