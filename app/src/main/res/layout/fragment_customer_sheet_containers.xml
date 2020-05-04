@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".modified.views.customerSheet.CustomerSheetContainersFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/flexboxLayoutCounts"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:flexWrap="wrap"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.quickhandslogistics.modified.controls.CustomTextView
+                    android:id="@+id/textViewCompletedCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:background="@drawable/chip_background"
+                    android:paddingStart="@dimen/_10ssp"
+                    android:paddingTop="@dimen/_5ssp"
+                    android:paddingEnd="@dimen/_10ssp"
+                    android:paddingBottom="@dimen/_5ssp"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold" />
+
+                <com.quickhandslogistics.modified.controls.CustomTextView
+                    android:id="@+id/textViewCancelledCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_4ssp"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:layout_marginEnd="@dimen/_4ssp"
+                    android:background="@drawable/chip_background"
+                    android:paddingStart="@dimen/_10ssp"
+                    android:paddingTop="@dimen/_5ssp"
+                    android:paddingEnd="@dimen/_10ssp"
+                    android:paddingBottom="@dimen/_5ssp"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold" />
+
+                <com.quickhandslogistics.modified.controls.CustomTextView
+                    android:id="@+id/textViewUnfinishedCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:background="@drawable/chip_background"
+                    android:paddingStart="@dimen/_10ssp"
+                    android:paddingTop="@dimen/_5ssp"
+                    android:paddingEnd="@dimen/_10ssp"
+                    android:paddingBottom="@dimen/_5ssp"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold" />
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewContainers"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/flexboxLayoutCounts" />
+
+            <TextView
+                android:id="@+id/textViewEmptyData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="@dimen/_200sdp"
+                android:text="@string/string_no_record_found"
+                android:textSize="@dimen/_12ssp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

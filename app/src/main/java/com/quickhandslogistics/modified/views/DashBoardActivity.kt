@@ -24,7 +24,7 @@ import com.quickhandslogistics.modified.views.workSheet.WorkSheetFragment
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.ValueUtils
-import com.quickhandslogistics.view.fragments.CustomerSheetFragment
+import com.quickhandslogistics.modified.views.customerSheet.CustomerSheetFragment
 import com.quickhandslogistics.view.fragments.ReportFragment
 import kotlinx.android.synthetic.main.include_main_nav_drawer.*
 import kotlinx.android.synthetic.main.layout_toolbar.*

@@ -221,4 +221,13 @@
     <string name="string_end">End</string>
     <string name="request_help_error_message"><![CDATA[You have to add both required Lumper Count & DM Notes]]></string>
     <string name="notes_saved_successfully">Notes Saved Successfully</string>
+    <string name="completed_s">Completed: %s</string>
+    <string name="cancelled_s">Cancelled: %s</string>
+    <string name="containers">Containers</string>
+    <string name="string_customer">Customer</string>
+    <string name="string_note">Note</string>
+    <string name="notes_by_customer">Notes by Customer</string>
+    <string name="add_signature">Add Signature</string>
+    <string name="string_clear">Clear</string>
+    <string name="unfinished_s">Unfinished: %s</string>
 </resources>

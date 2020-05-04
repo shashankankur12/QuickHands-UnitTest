@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        tools:context=".modified.views.customerSheet.CustomerSheetCustomerFragment">
+
+        <LinearLayout
+            android:id="@+id/layoutCustomerNotes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/schedule_item_background"
+            android:orientation="vertical"
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notes_by_customer"
+                android:textColor="@color/buildingTitle"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/editTextQHLCustomerNotes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:backgroundTint="@color/buildingTitle"
+                android:inputType="textMultiLine|textCapWords"
+                android:maxLines="3"
+                android:textColor="@color/scheduleDetail"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:textSize="@dimen/_12ssp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutSignature"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@drawable/schedule_item_background"
+            android:orientation="vertical"
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutCustomerNotes">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signature"
+                android:textColor="@color/buildingTitle"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/imageViewSignature"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_80sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/textViewAddSignature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawableStart="@drawable/ic_add_time_plus"
+                android:drawablePadding="@dimen/_5sdp"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/add_signature"
+                android:textColor="@color/buttonRed"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonSubmit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/round_button_selector"
+            android:text="@string/string_submit"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutSignature" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

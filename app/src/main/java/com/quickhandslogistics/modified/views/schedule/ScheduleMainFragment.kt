@@ -21,6 +21,7 @@ class ScheduleMainFragment : BaseFragment(),
     companion object {
         const val ARG_ALLOW_UPDATE = "ARG_ALLOW_UPDATE"
         const val ARG_BUILDING_PARAMETERS = "ARG_BUILDING_PARAMETERS"
+        const val ARG_BUILDING_PARAMETER_VALUES = "ARG_BUILDING_PARAMETER_VALUES"
 
         const val ARG_IS_SCHEDULED_STATUS_CHANGED = "ARG_IS_SCHEDULED_STATUS_CHANGED"
         const val ARG_SELECTED_DATE_MILLISECONDS = "ARG_SELECTED_DATE_MILLISECONDS"
@@ -30,6 +31,7 @@ class ScheduleMainFragment : BaseFragment(),
         const val ARG_SCHEDULE_FROM_DATE = "ARG_SCHEDULE_FROM_DATE"
 
         const val ARG_WORK_ITEM_ID = "ARG_WORK_ITEM_ID"
+        const val ARG_WORK_ITEM_CUSTOMER_NOTE = "ARG_WORK_ITEM_CUSTOMER_NOTE"
         const val ARG_WORK_ITEM_TYPE = "ARG_WORK_ITEM_TYPE"
         const val ARG_WORK_ITEM_TYPE_DISPLAY_NAME = "ARG_WORK_ITEM_TYPE_DISPLAY_NAME"
 

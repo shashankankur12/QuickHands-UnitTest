@@ -1,25 +1,26 @@
-package com.quickhandslogistics.modified.presenters.workSheet
+package com.quickhandslogistics.modified.presenters.customerSheet
 
 import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetContract
-import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
+import com.quickhandslogistics.modified.contracts.customerSheet.CustomerSheetContract
 import com.quickhandslogistics.modified.data.workSheet.WorkSheetListAPIResponse
-import com.quickhandslogistics.modified.models.workSheet.WorkSheetModel
+import com.quickhandslogistics.modified.models.customerSheet.CustomerSheetModel
 import com.quickhandslogistics.utils.SharedPref
+import java.util.*
+import kotlin.Comparator
 
-class WorkSheetPresenter(
-    private var workSheetView: WorkSheetContract.View?,
+class CustomerSheetPresenter(
+    private var workSheetView: CustomerSheetContract.View?,
     private val resources: Resources, sharedPref: SharedPref
-) : WorkSheetContract.Presenter, WorkSheetContract.Model.OnFinishedListener {
+) : CustomerSheetContract.Presenter, CustomerSheetContract.Model.OnFinishedListener {
 
-    private val workSheetModel = WorkSheetModel(sharedPref)
+    private val customerSheetModel = CustomerSheetModel(sharedPref)
 
-    override fun fetchWorkSheetList() {
+    override fun getCustomerSheetByDate(date: Date) {
         workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_message))
-        workSheetModel.fetchHeaderInfo(this)
-        workSheetModel.fetchWorkSheetList(this)
+        customerSheetModel.fetchHeaderInfo(date, this)
+        customerSheetModel.fetchCustomerSheetList(date, this)
     }
 
     override fun onDestroy() {
@@ -35,7 +36,7 @@ class WorkSheetPresenter(
         }
     }
 
-    override fun onSuccessFetchWorkSheet(workSheetListAPIResponse: WorkSheetListAPIResponse) {
+    override fun onSuccessFetchCustomerSheet(workSheetListAPIResponse: WorkSheetListAPIResponse) {
         workSheetView?.hideProgressDialog()
         workSheetListAPIResponse.data?.let { data ->
 
@@ -56,7 +57,7 @@ class WorkSheetPresenter(
                 workItem1.startTime!!.compareTo(workItem2.startTime!!)
             })
 
-            workSheetView?.showWorkSheets(data)
+            workSheetView?.showCustomerSheets(data)
         }
     }
 

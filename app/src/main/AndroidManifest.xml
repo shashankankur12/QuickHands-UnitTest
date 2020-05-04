@@ -19,6 +19,9 @@
             android:name=".modified.views.LumperJobHistoryActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".modified.views.customerSheet.WorkItemBODetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".modified.views.common.ContainerDetailActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -47,8 +50,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".modified.views.BaseActivity" />
         <activity
-            android:name=".view.activities.SignatureActivity"
-            android:screenOrientation="portrait" />
+            android:name=".modified.adapters.common.AddSignatureActivity"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".view.activities.CompleteCustomerJobHistory"
             android:screenOrientation="portrait"

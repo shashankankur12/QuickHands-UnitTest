@@ -1,7 +1,7 @@
-package com.quickhandslogistics.modified.models.workSheet
+package com.quickhandslogistics.modified.models.customerSheet
 
 import android.util.Log
-import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetContract
+import com.quickhandslogistics.modified.contracts.customerSheet.CustomerSheetContract
 import com.quickhandslogistics.modified.data.dashboard.LeadProfileData
 import com.quickhandslogistics.modified.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.network.DataManager
@@ -11,10 +11,12 @@ import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 
-class WorkSheetModel(private val sharedPref: SharedPref) :
-    WorkSheetContract.Model {
+class CustomerSheetModel(private val sharedPref: SharedPref) :
+    CustomerSheetContract.Model {
 
-    override fun fetchHeaderInfo(onFinishedListener: WorkSheetContract.Model.OnFinishedListener) {
+    override fun fetchHeaderInfo(
+        selectedDate: Date, onFinishedListener: CustomerSheetContract.Model.OnFinishedListener
+    ) {
         val leadProfile = sharedPref.getClassObject(
             AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java
         ) as LeadProfileData?
@@ -23,18 +25,21 @@ class WorkSheetModel(private val sharedPref: SharedPref) :
         leadProfile?.buildingDetailData?.buildingName?.let { name ->
             buildingName = name
         }
-        val date = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, Date())
+        val date = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
         onFinishedListener.onSuccessGetHeaderInfo(buildingName, date)
     }
 
-    override fun fetchWorkSheetList(onFinishedListener: WorkSheetContract.Model.OnFinishedListener) {
-        val day = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, Date())
+    override fun fetchCustomerSheetList(
+        selectedDate: Date, onFinishedListener: CustomerSheetContract.Model.OnFinishedListener
+    ) {
+        val dateString =
+            DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
 
         DataManager.getWorkSheetList(
-            day, object : ResponseListener<WorkSheetListAPIResponse> {
+            dateString, object : ResponseListener<WorkSheetListAPIResponse> {
                 override fun onSuccess(response: WorkSheetListAPIResponse) {
                     if (response.success) {
-                        onFinishedListener.onSuccessFetchWorkSheet(response)
+                        onFinishedListener.onSuccessFetchCustomerSheet(response)
                     } else {
                         onFinishedListener.onFailure(response.message)
                     }
@@ -42,7 +47,7 @@ class WorkSheetModel(private val sharedPref: SharedPref) :
 
                 override fun onError(error: Any) {
                     if (error is Throwable) {
-                        Log.e(WorkSheetModel::class.simpleName, error.localizedMessage!!)
+                        Log.e(CustomerSheetModel::class.simpleName, error.localizedMessage!!)
                         onFinishedListener.onFailure()
                     } else if (error is String) {
                         onFinishedListener.onFailure(error)

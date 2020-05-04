@@ -6,6 +6,7 @@ import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.adapters.common.AddSignatureActivity
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.utils.DialogHelper
 import com.quickhandslogistics.utils.Utils
@@ -53,7 +54,7 @@ class CustomerLoadActivity : BaseActivity() {
         })
 
         image_signature.setOnClickListener(View.OnClickListener { view ->
-            val intent = Intent(this, SignatureActivity::class.java)
+            val intent = Intent(this, AddSignatureActivity::class.java)
             startActivity(intent)
         })
     }

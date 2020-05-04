@@ -1,36 +1,35 @@
-package com.quickhandslogistics.modified.contracts.workSheet
+package com.quickhandslogistics.modified.contracts.customerSheet
 
 import com.quickhandslogistics.modified.contracts.BaseContract
 import com.quickhandslogistics.modified.data.workSheet.WorkSheetListAPIResponse
+import java.util.*
 
-class WorkSheetContract {
+class CustomerSheetContract {
     interface Model {
-        fun fetchHeaderInfo(onFinishedListener: OnFinishedListener)
-        fun fetchWorkSheetList(onFinishedListener: OnFinishedListener)
+        fun fetchHeaderInfo(selectedDate: Date, onFinishedListener: OnFinishedListener)
+        fun fetchCustomerSheetList(selectedDate: Date, onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener {
             fun onFailure(message: String = "")
-            fun onSuccessFetchWorkSheet(workSheetListAPIResponse: WorkSheetListAPIResponse)
+            fun onSuccessFetchCustomerSheet(workSheetListAPIResponse: WorkSheetListAPIResponse)
             fun onSuccessGetHeaderInfo(buildingName: String, date: String)
         }
     }
 
     interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
-        fun showWorkSheets(data: WorkSheetListAPIResponse.Data)
+        fun showCustomerSheets(data: WorkSheetListAPIResponse.Data)
         fun showHeaderInfo(buildingName: String, date: String)
 
         interface OnAdapterItemClickListener {
-            fun onSelectLumper(totalSelectedCount: Int)
         }
 
         interface OnFragmentInteractionListener {
-            fun fetchWorkSheetList()
         }
     }
 
     interface Presenter {
-        fun fetchWorkSheetList()
+        fun getCustomerSheetByDate(date: Date)
         fun onDestroy()
     }
 }

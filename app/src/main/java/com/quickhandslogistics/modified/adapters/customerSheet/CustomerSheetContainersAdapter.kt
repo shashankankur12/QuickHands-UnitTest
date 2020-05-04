@@ -1,36 +1,33 @@
-package com.quickhandslogistics.modified.adapters.workSheet
+package com.quickhandslogistics.modified.adapters.customerSheet
 
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.adapters.common.LumperImagesAdapter
-import com.quickhandslogistics.modified.contracts.common.LumperImagesContract
-import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemContract
-import com.quickhandslogistics.modified.controls.OverlapDecoration
+import com.quickhandslogistics.modified.contracts.customerSheet.ContainerDetailItemContract
+import com.quickhandslogistics.modified.contracts.customerSheet.CustomerSheetContainersContract
 import com.quickhandslogistics.modified.controls.ScheduleUtils
-import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.DateUtils
-import kotlinx.android.synthetic.main.item_work_sheet.view.*
+import kotlinx.android.synthetic.main.item_customer_sheet_container.view.*
 
-class WorkSheetItemAdapter(
-    private val workItemType: String, private val resources: Resources,
-    var adapterItemClickListener: WorkSheetItemContract.View.OnAdapterItemClickListener
+class CustomerSheetContainersAdapter(
+    private val resources: Resources,
+    var adapterItemClickListener: CustomerSheetContainersContract.View.OnAdapterItemClickListener
 ) :
-    RecyclerView.Adapter<WorkSheetItemAdapter.ViewHolder>() {
+    RecyclerView.Adapter<CustomerSheetContainersAdapter.ViewHolder>() {
 
     private var workItemsList: ArrayList<WorkItemDetail> = ArrayList()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.item_work_sheet, viewGroup, false)
+            .inflate(R.layout.item_customer_sheet_container, viewGroup, false)
         return ViewHolder(view)
     }
 
@@ -82,60 +79,41 @@ class WorkSheetItemAdapter(
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
-        View.OnClickListener, LumperImagesContract.OnItemClickListener {
+        View.OnClickListener, ContainerDetailItemContract.OnAdapterItemClickListener {
 
-        var textViewStartTime: TextView = itemView.textViewStartTime
         var textViewWorkItemType: TextView = itemView.textViewWorkItemType
-        var textViewNoOfDrops: TextView = itemView.textViewNoOfDrops
+        var textViewNote: TextView = itemView.textViewNote
         var textViewStatus: TextView = itemView.textViewStatus
         var relativeLayoutSide: RelativeLayout = itemView.relativeLayoutSide
-        var recyclerViewLumpersImagesList: RecyclerView = itemView.recyclerViewLumpersImagesList
+        var linearLayoutNotes: LinearLayout = itemView.linearLayoutNotes
+        var recyclerViewBO: RecyclerView = itemView.recyclerViewBO
 
         init {
-            recyclerViewLumpersImagesList.apply {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                addItemDecoration(OverlapDecoration())
+            recyclerViewBO.apply {
+                layoutManager = LinearLayoutManager(context)
             }
 
             itemView.setOnClickListener(this)
         }
 
         fun bind(workItemDetail: WorkItemDetail) {
-            textViewStartTime.text = String.format(
-                resources.getString(R.string.start_time_container),
-                DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime)
-            )
-
             val workItemTypeDisplayName =
                 ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.workItemType, resources)
             textViewWorkItemType.text = workItemTypeDisplayName
 
-            when (workItemTypeDisplayName) {
-                resources.getString(R.string.string_drops) -> {
-                    textViewNoOfDrops.text = String.format(
-                        resources.getString(R.string.no_of_drops),
-                        workItemDetail.numberOfDrops
-                    )
-                }
-                resources.getString(R.string.string_live_loads) -> {
-                    textViewNoOfDrops.text = String.format(
-                        resources.getString(R.string.live_load_sequence),
-                        workItemDetail.sequence
-                    )
-                }
-                else -> {
-                    textViewNoOfDrops.text = String.format(
-                        resources.getString(R.string.outbound_sequence),
-                        workItemDetail.sequence
-                    )
-                }
+            if (!workItemDetail.notesQHLCustomer.isNullOrEmpty() &&
+                workItemDetail.notesQHLCustomer != AppConstant.NOTES_NOT_AVAILABLE
+            ) {
+                linearLayoutNotes.visibility = View.VISIBLE
+                textViewNote.text = workItemDetail.notesQHLCustomer
+            } else {
+                linearLayoutNotes.visibility = View.GONE
             }
 
-            workItemDetail.assignedLumpersList?.let { imagesList ->
-                recyclerViewLumpersImagesList.adapter = LumperImagesAdapter(
-                    imagesList, this@ViewHolder
-                )
-            }
+            recyclerViewBO.adapter = ContainerDetailItemAdapter(
+                workItemDetail.buildingOps,
+                workItemDetail.buildingDetailData?.parameters, this
+            )
         }
 
         override fun onClick(view: View?) {
@@ -143,22 +121,14 @@ class WorkSheetItemAdapter(
                 when (view.id) {
                     itemView.id -> {
                         val workItemDetail = getItem(adapterPosition)
-                        val workItemTypeDisplayName =
-                            ScheduleUtils.getWorkItemTypeDisplayName(
-                                workItemDetail.workItemType,
-                                resources
-                            )
-                        adapterItemClickListener.onItemClick(
-                            workItemDetail.id!!,
-                            workItemTypeDisplayName
-                        )
+                        adapterItemClickListener.onItemClick(workItemDetail)
                     }
                 }
             }
         }
 
-        override fun onLumperImageItemClick(lumpersList: ArrayList<EmployeeData>) {
-            adapterItemClickListener.onLumperImagesClick(lumpersList)
+        override fun onItemClick() {
+            itemView.performClick()
         }
     }
 }
