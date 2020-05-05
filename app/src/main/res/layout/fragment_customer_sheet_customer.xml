@@ -3,13 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:layout_marginStart="@dimen/_10ssp"
+        android:layout_marginEnd="@dimen/_10ssp"
         tools:context=".modified.views.customerSheet.CustomerSheetCustomerFragment">
 
         <LinearLayout
@@ -83,7 +85,7 @@
                 android:drawableStart="@drawable/ic_add_time_plus"
                 android:drawablePadding="@dimen/_5sdp"
                 android:padding="@dimen/_5sdp"
-                android:text="@string/add_signature"
+                android:text="@string/signature"
                 android:textColor="@color/buttonRed"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"

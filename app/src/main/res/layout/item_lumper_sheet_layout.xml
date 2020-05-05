@@ -6,8 +6,8 @@
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
     android:orientation="vertical"
-    android:paddingTop="@dimen/_10ssp"
-    android:paddingBottom="@dimen/_10ssp">
+    android:paddingTop="@dimen/_10sdp"
+    android:paddingBottom="@dimen/_4sdp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circleImageViewProfile"
@@ -30,7 +30,7 @@
         android:textColor="@android:color/black"
         android:textSize="@dimen/_14ssp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/imageViewCall"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,30 +43,45 @@
         android:layout_marginEnd="@dimen/_10sdp"
         android:text="(Emp ID: 1001)"
         android:textColor="@android:color/black"
-        app:layout_constraintEnd_toStartOf="@id/imageViewCall"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
 
     <TextView
-        android:id="@+id/textViewTotalTime"
-        android:layout_width="0dp"
+        android:id="@+id/textViewAddSignature"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_2sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:text="Total Time: 6 Hours"
-        android:textColor="@color/detailHeader"
-        app:layout_constraintEnd_toStartOf="@id/imageViewCall"
-        app:layout_constraintStart_toEndOf="@id/circleImageViewProfile"
-        app:layout_constraintTop_toBottomOf="@id/textViewEmployeeId" />
-
-    <ImageView
-        android:id="@+id/imageViewCall"
-        android:layout_width="@dimen/_25sdp"
-        android:layout_height="@dimen/_25sdp"
-        android:src="@drawable/ic_call"
-        android:visibility="gone"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginEnd="@dimen/_4sdp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:drawableStart="@drawable/ic_add_time_plus"
+        android:drawablePadding="@dimen/_5sdp"
+        android:padding="@dimen/_5sdp"
+        android:text="@string/signature"
+        android:textColor="@color/buttonRed"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/textViewLumperName" />
+
+    <TextView
+        android:id="@+id/textViewSignature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginEnd="@dimen/_4sdp"
+        android:drawableStart="@drawable/ic_done"
+        android:drawablePadding="@dimen/_5sdp"
+        android:padding="@dimen/_5sdp"
+        android:text="@string/signature"
+        android:textColor="@color/online"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewLumperName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

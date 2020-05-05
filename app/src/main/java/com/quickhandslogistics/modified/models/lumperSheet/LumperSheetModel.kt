@@ -1,39 +1,31 @@
 package com.quickhandslogistics.modified.models.lumperSheet
 
+import android.util.Log
 import com.quickhandslogistics.modified.contracts.lumperSheet.LumperSheetContract
-import com.quickhandslogistics.modified.data.lumperSheet.LumperModel
-import com.quickhandslogistics.modified.data.lumperSheet.StatusModel
-import io.bloco.faker.Faker
+import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.network.DataManager
+import com.quickhandslogistics.network.ResponseListener
 
 class LumperSheetModel : LumperSheetContract.Model {
-    val lumperList: ArrayList<LumperModel> = ArrayList()
-    val lumperStatusList: ArrayList<StatusModel> = ArrayList()
-
 
     override fun fetchLumperSheetList(onFinishedListener: LumperSheetContract.Model.OnFinishedListener) {
-        val faker = Faker()
-
-        for (i in 1..20) {
-            if (i % 2 == 0) {
-                lumperList.add(
-                    LumperModel(
-                        faker.name.firstName(),
-                        faker.name.lastName(),
-                        "In Progress"
-                    )
-                )
-            } else {
-                lumperList.add(
-                    LumperModel(
-                        faker.name.firstName(),
-                        faker.name.lastName(),
-                        "Complete"
-                    )
-                )
+        DataManager.getAllLumpersData(object : ResponseListener<AllLumpersResponse> {
+            override fun onSuccess(response: AllLumpersResponse) {
+                if (response.success) {
+                    onFinishedListener.onSuccess(response)
+                } else {
+                    onFinishedListener.onFailure(response.message)
+                }
             }
 
-        }
-
-        onFinishedListener.onSuccess(lumperList)
+            override fun onError(error: Any) {
+                if (error is Throwable) {
+                    Log.e(LumperSheetModel::class.simpleName, error.localizedMessage!!)
+                    onFinishedListener.onFailure()
+                } else if (error is String) {
+                    onFinishedListener.onFailure(error)
+                }
+            }
+        })
     }
 }

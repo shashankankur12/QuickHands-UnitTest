@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import com.bumptech.glide.Glide
 import com.quickhandslogistics.BuildConfig
 import com.quickhandslogistics.R
@@ -42,6 +43,9 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE
+        )
         setContentView(R.layout.activity_dashboard)
         setupToolbar(showBackButton = false)
         setUpNavigationBar()

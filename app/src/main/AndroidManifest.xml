@@ -50,21 +50,18 @@
             android:screenOrientation="portrait" />
         <activity android:name=".modified.views.BaseActivity" />
         <activity
-            android:name=".modified.adapters.common.AddSignatureActivity"
+            android:name=".modified.views.common.AddSignatureActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".view.activities.CompleteCustomerJobHistory"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".view.activities.CustomerLoadActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".view.activities.CustomerActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".view.activities.LumperSheetDetailActivity"
+            android:name=".modified.views.lumperSheet.LumperWorkDetailActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activities.LumperListActivity"
@@ -76,9 +73,6 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".modified.views.LeadProfileActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activities.OldLumperJobHistoryActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.quickhandslogistics.modified.views.schedule.ScheduledWorkItemDetailActivity"

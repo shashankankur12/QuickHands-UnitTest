@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,27 +45,22 @@ class CustomerSheetContainersAdapter(
             AppConstant.WORK_ITEM_STATUS_SCHEDULED -> {
                 holder.textViewStatus.text = resources.getString(R.string.scheduled)
                 holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_scheduled)
-                holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_scheduled)
             }
             AppConstant.WORK_ITEM_STATUS_ON_HOLD -> {
                 holder.textViewStatus.text = resources.getString(R.string.on_hold)
                 holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
-                holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_on_hold)
             }
             AppConstant.WORK_ITEM_STATUS_CANCELLED -> {
                 holder.textViewStatus.text = resources.getString(R.string.cancelled)
                 holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
-                holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_cancelled)
             }
             AppConstant.WORK_ITEM_STATUS_IN_PROGRESS -> {
                 holder.textViewStatus.text = resources.getString(R.string.in_progress)
                 holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
-                holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_in_progress)
             }
             else -> {
                 holder.textViewStatus.text = resources.getString(R.string.completed)
                 holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
-                holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_completed)
             }
         }
     }
@@ -83,7 +77,6 @@ class CustomerSheetContainersAdapter(
         var textViewWorkItemType: TextView = itemView.textViewWorkItemType
         var textViewNote: TextView = itemView.textViewNote
         var textViewStatus: TextView = itemView.textViewStatus
-        var relativeLayoutSide: RelativeLayout = itemView.relativeLayoutSide
         var clickableViewBO: View = itemView.clickableViewBO
         var recyclerViewBO: RecyclerView = itemView.recyclerViewBO
         var linearLayoutNotes: LinearLayout = itemView.linearLayoutNotes

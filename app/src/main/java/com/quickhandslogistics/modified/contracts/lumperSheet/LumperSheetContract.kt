@@ -1,7 +1,12 @@
 package com.quickhandslogistics.modified.contracts.lumperSheet
 
+import com.quickhandslogistics.modified.contracts.BaseContract
 import com.quickhandslogistics.modified.data.lumperSheet.LumperModel
-import com.quickhandslogistics.modified.data.lumperSheet.StatusModel
+import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import java.text.FieldPosition
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class LumperSheetContract {
@@ -10,21 +15,23 @@ class LumperSheetContract {
 
         interface OnFinishedListener {
             fun onFailure(message: String = "")
-            fun onSuccess(lumperList: ArrayList<LumperModel>)
+            fun onSuccess(response: AllLumpersResponse)
         }
     }
 
-    interface View {
-        fun showLumperSheetData(
-            lumperList: ArrayList<LumperModel>
-        )
+    interface View : BaseContract.View {
+        fun showAPIErrorMessage(message: String)
+        fun showDateString(dateString: String)
+        fun showLumperSheetData(employeeDataList: ArrayList<EmployeeData>)
 
         interface OnAdapterItemClickListener {
-            fun onItemClick(lumperData: LumperModel)
+            fun onItemClick(employeeData: EmployeeData)
+            fun onAddSignatureItemClick(position: Int)
         }
     }
 
     interface Presenter {
-        fun fetchLumpersList()
+        fun getLumpersSheetByDate(date: Date)
+        fun onDestroy()
     }
 }

@@ -1,7 +1,8 @@
-package com.quickhandslogistics.modified.adapters.common
+package com.quickhandslogistics.modified.views.common
 
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import com.github.gcacace.signaturepad.views.SignaturePad
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.views.BaseActivity
@@ -11,6 +12,9 @@ class AddSignatureActivity : BaseActivity(), View.OnClickListener, SignaturePad.
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE
+        )
         setContentView(R.layout.activity_add_signature)
         setupToolbar(getString(R.string.add_signature))
 

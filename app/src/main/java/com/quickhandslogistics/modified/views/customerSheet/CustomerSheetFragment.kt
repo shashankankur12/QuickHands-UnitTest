@@ -170,4 +170,9 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View {
         }
         return list
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        customerSheetPresenter.onDestroy()
+    }
 }

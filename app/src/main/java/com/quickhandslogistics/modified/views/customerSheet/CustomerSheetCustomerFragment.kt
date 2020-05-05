@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.adapters.common.AddSignatureActivity
+import com.quickhandslogistics.modified.views.common.AddSignatureActivity
 import com.quickhandslogistics.modified.contracts.customerSheet.CustomerSheetContract
 import com.quickhandslogistics.modified.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_customer_sheet_customer.*

@@ -85,8 +85,6 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:background="@drawable/top_left_round_background"
             android:orientation="vertical"
-            android:paddingStart="@dimen/_15ssp"
-            android:paddingEnd="@dimen/_15ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -96,6 +94,8 @@
                 android:id="@+id/tabLayoutCustomerSheet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10ssp"
+                android:layout_marginEnd="@dimen/_10ssp"
                 app:tabIndicatorColor="@color/buttonRed"
                 app:tabMode="fixed"
                 app:tabSelectedTextColor="@color/textBlack"
@@ -106,6 +106,8 @@
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_10ssp"
+                android:layout_marginEnd="@dimen/_10ssp"
                 android:background="@color/greyDivider" />
 
             <androidx.viewpager.widget.ViewPager
