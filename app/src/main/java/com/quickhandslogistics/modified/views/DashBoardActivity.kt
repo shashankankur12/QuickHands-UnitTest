@@ -5,16 +5,16 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import com.bumptech.glide.Glide
 import com.quickhandslogistics.BuildConfig
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.DashBoardContract
-import com.quickhandslogistics.modified.contracts.common.InfoDialogContract
 import com.quickhandslogistics.modified.controls.NavDrawer
 import com.quickhandslogistics.modified.data.dashboard.LeadProfileData
 import com.quickhandslogistics.modified.presenters.DashBoardPresenter
 import com.quickhandslogistics.modified.views.attendance.TimeClockAttendanceFragment
-import com.quickhandslogistics.modified.views.common.InfoDialogFragment
+import com.quickhandslogistics.modified.views.customerSheet.CustomerSheetFragment
 import com.quickhandslogistics.modified.views.lumperSheet.LumperSheetFragment
 import com.quickhandslogistics.modified.views.lumpers.LumpersFragment
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment
@@ -22,9 +22,9 @@ import com.quickhandslogistics.modified.views.scheduleTime.ScheduleTimeFragment
 import com.quickhandslogistics.modified.views.workSheet.AllWorkScheduleCancelActivity
 import com.quickhandslogistics.modified.views.workSheet.WorkSheetFragment
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.ValueUtils
-import com.quickhandslogistics.view.fragments.CustomerSheetFragment
 import com.quickhandslogistics.view.fragments.ReportFragment
 import kotlinx.android.synthetic.main.include_main_nav_drawer.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
@@ -43,6 +43,9 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE
+        )
         setContentView(R.layout.activity_dashboard)
         setupToolbar(showBackButton = false)
         setUpNavigationBar()
@@ -75,13 +78,15 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionNotes -> {
-                val dialog = InfoDialogFragment.newInstance(scheduleTimeNotes,
+                CustomProgressBar.getInstance()
+                    .showInfoDialog(getString(R.string.string_note), scheduleTimeNotes, activity)
+/*                val dialog = InfoDialogFragment.newInstance(scheduleTimeNotes,
                     showInfoIcon = false,
                     onClickListener = object : InfoDialogContract.View.OnClickListener {
                         override fun onPositiveButtonClick() {
                         }
                     })
-                dialog.show(supportFragmentManager, InfoDialogFragment::class.simpleName)
+                dialog.show(supportFragmentManager, InfoDialogFragment::class.simpleName)*/
             }
             R.id.actionCancelAllWork -> {
                 startIntent(

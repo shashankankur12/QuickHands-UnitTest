@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.StringUtils
-import kotlinx.android.synthetic.main.content_container_detail.view.*
+import kotlinx.android.synthetic.main.item_container_detail.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -18,7 +18,7 @@ class ContainerDetailAdapter : RecyclerView.Adapter<ContainerDetailAdapter.ViewH
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.content_container_detail, parent, false)
+            .inflate(R.layout.item_container_detail, parent, false)
         return ViewHolder(view)
     }
 

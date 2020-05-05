@@ -16,6 +16,7 @@ import com.quickhandslogistics.modified.controls.OverlapDecoration
 import com.quickhandslogistics.modified.controls.ScheduleUtils
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
 import kotlinx.android.synthetic.main.item_work_sheet.view.*
 
@@ -46,22 +47,22 @@ class WorkSheetItemAdapter(
         holder.bind(workItemDetail)
 
         when (workItemDetail.status) {
-            resources.getString(R.string.scheduled).toUpperCase() -> {
+            AppConstant.WORK_ITEM_STATUS_SCHEDULED -> {
                 holder.textViewStatus.text = resources.getString(R.string.scheduled)
                 holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_scheduled)
                 holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_scheduled)
             }
-            resources.getString(R.string.on_hold).toUpperCase() -> {
+            AppConstant.WORK_ITEM_STATUS_ON_HOLD -> {
                 holder.textViewStatus.text = resources.getString(R.string.on_hold)
                 holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
                 holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_on_hold)
             }
-            resources.getString(R.string.cancelled).toUpperCase() -> {
+            AppConstant.WORK_ITEM_STATUS_CANCELLED -> {
                 holder.textViewStatus.text = resources.getString(R.string.cancelled)
                 holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
                 holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_cancelled)
             }
-            resources.getString(R.string.in_progress).toUpperCase() -> {
+            AppConstant.WORK_ITEM_STATUS_IN_PROGRESS -> {
                 holder.textViewStatus.text = resources.getString(R.string.in_progress)
                 holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
                 holder.relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_in_progress)

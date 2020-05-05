@@ -1,6 +1,5 @@
 package com.quickhandslogistics.modified.views
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
@@ -8,14 +7,12 @@ import android.view.View
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.LoginContract
 import com.quickhandslogistics.modified.presenters.LoginPresenter
-import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
 
-    private var progressDialog: Dialog? = null
     private lateinit var loginPresenter: LoginPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,15 +75,6 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
             mainConstraintLayout,
             resources.getString(R.string.text_password_err_length)
         )
-    }
-
-    override fun showProgress(message: String) {
-        progressDialog =
-            CustomProgressBar.getInstance(activity).showProgressDialog(message)
-    }
-
-    override fun hideProgress() {
-        progressDialog?.dismiss()
     }
 
     override fun showAPIErrorMessage(message: String) {

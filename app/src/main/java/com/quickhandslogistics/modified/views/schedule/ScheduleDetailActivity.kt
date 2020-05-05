@@ -1,6 +1,5 @@
 package com.quickhandslogistics.modified.views.schedule
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -8,9 +7,12 @@ import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.contracts.common.InfoDialogContract
+import com.quickhandslogistics.modified.adapters.common.LumperImagesAdapter
+import com.quickhandslogistics.modified.adapters.schedule.ScheduledWorkItemAdapter
 import com.quickhandslogistics.modified.contracts.common.LumperImagesContract
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleDetailContract
+import com.quickhandslogistics.modified.controls.OverlapDecoration
+import com.quickhandslogistics.modified.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
@@ -18,16 +20,10 @@ import com.quickhandslogistics.modified.presenters.schedule.ScheduleDetailPresen
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.common.DisplayLumpersListActivity
 import com.quickhandslogistics.modified.views.common.DisplayLumpersListActivity.Companion.ARG_LUMPERS_LIST
-import com.quickhandslogistics.modified.adapters.common.LumperImagesAdapter
-import com.quickhandslogistics.modified.adapters.schedule.ScheduledWorkItemAdapter
-import com.quickhandslogistics.modified.controls.OverlapDecoration
-import com.quickhandslogistics.modified.controls.SpaceDividerItemDecorator
-import com.quickhandslogistics.modified.views.common.InfoDialogFragment
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_ALLOW_UPDATE
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_IDENTITY
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.AppConstant.Companion.NOTES_NOT_AVAILABLE
@@ -54,8 +50,6 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
     private var selectedTime: Long = 0
     private var scheduleIdentity = ""
     private var scheduleDetail: ScheduleDetail? = null
-
-    private var progressDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -134,13 +128,10 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionNotes -> {
-                val dialog = InfoDialogFragment.newInstance(scheduleDetail?.scheduleNote!!,
-                    showInfoIcon = false,
-                    onClickListener = object : InfoDialogContract.View.OnClickListener {
-                        override fun onPositiveButtonClick() {
-                        }
-                    })
-                dialog.show(supportFragmentManager, InfoDialogFragment::class.simpleName)
+                CustomProgressBar.getInstance()
+                    .showInfoDialog(
+                        getString(R.string.string_note), scheduleDetail?.scheduleNote!!, activity
+                    )
             }
         }
         return super.onOptionsItemSelected(item)
@@ -232,15 +223,6 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
         } else {
             recyclerViewLumpersImagesList.visibility = View.GONE
         }
-    }
-
-    override fun hideProgressDialog() {
-        progressDialog?.dismiss()
-    }
-
-    override fun showProgressDialog(message: String) {
-        progressDialog =
-            CustomProgressBar.getInstance(activity).showProgressDialog(message)
     }
 
     override fun showAPIErrorMessage(message: String) {

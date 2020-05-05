@@ -34,7 +34,6 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     private lateinit var timeClockAttendancePresenter: TimeClockAttendancePresenter
     private lateinit var timeClockAttendanceAdapter: TimeClockAttendanceAdapter
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
-    private var progressDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -240,15 +239,6 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     /*
     * Presenter Listeners
     */
-    /*override fun hideProgressDialog() {
-        progressDialog?.dismiss()
-    }
-
-    override fun showProgressDialog(message: String) {
-        progressDialog =
-            CustomProgressBar.getInstance(fragmentActivity!!).showProgressDialog(message)
-    }*/
-
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
         recyclerViewLumpers.visibility = View.GONE

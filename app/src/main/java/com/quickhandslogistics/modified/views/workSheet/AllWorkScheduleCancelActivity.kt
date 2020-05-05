@@ -1,6 +1,5 @@
 package com.quickhandslogistics.modified.views.workSheet
 
-import android.app.Dialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,7 +13,6 @@ import com.quickhandslogistics.modified.contracts.workSheet.AllWorkScheduleCance
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.presenters.workSheet.AllWorkScheduleCancelPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.activity_all_work_schedule_cancel.*
@@ -25,8 +23,6 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
 
     private lateinit var allWorkScheduleCancelPresenter: AllWorkScheduleCancelPresenter
     private lateinit var allWorkScheduleCancelAdapter: AllWorkScheduleCancelAdapter
-
-    private var progressDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,15 +97,6 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
     /*
     * Presenter Listeners
     */
-    override fun hideProgressDialog() {
-        progressDialog?.dismiss()
-    }
-
-    override fun showProgressDialog(message: String) {
-        progressDialog =
-            CustomProgressBar.getInstance(activity).showProgressDialog(message)
-    }
-
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }

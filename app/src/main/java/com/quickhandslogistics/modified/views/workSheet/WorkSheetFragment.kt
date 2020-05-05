@@ -33,6 +33,11 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View,
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        workSheetPresenter = WorkSheetPresenter(this, resources, sharedPref)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -41,7 +46,6 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        workSheetPresenter = WorkSheetPresenter(this, resources, sharedPref)
 
         adapter = WorkSheetPagerAdapter(childFragmentManager, resources)
         viewPagerWorkSheet.offscreenPageLimit = adapter.count
@@ -50,15 +54,6 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View,
 
         workSheetPresenter.fetchWorkSheetList()
     }
-
-    /* override fun hideProgressDialog() {
-         progressDialog?.dismiss()
-     }
-
-     override fun showProgressDialog(message: String) {
-         progressDialog =
-             CustomProgressBar.getInstance(fragmentActivity!!).showProgressDialog(message)
-     }*/
 
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)

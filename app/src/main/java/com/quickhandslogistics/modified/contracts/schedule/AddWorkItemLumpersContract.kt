@@ -1,6 +1,6 @@
 package com.quickhandslogistics.modified.contracts.schedule
 
-import com.quickhandslogistics.modified.data.BaseResponse
+import com.quickhandslogistics.modified.contracts.BaseContract
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 
@@ -21,9 +21,7 @@ class AddWorkItemLumpersContract {
         }
     }
 
-    interface View {
-        fun hideProgressDialog()
-        fun showProgressDialog(message: String)
+    interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
         fun showLumpersData(employeeDataList: ArrayList<EmployeeData>)
         fun lumperAssignmentFinished()

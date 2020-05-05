@@ -173,12 +173,11 @@ object DataManager : AppConstant {
     }
 
     fun getSchedulesList(
-        date: String, buildingId: String,
-        listener: ResponseListener<ScheduleListAPIResponse>
+        date: String, listener: ResponseListener<ScheduleListAPIResponse>
     ) {
         val call = getService().getSchedulesList(
             "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            date, buildingId
+            date
         )
         call.enqueue(object : Callback<ScheduleListAPIResponse> {
             override fun onResponse(
@@ -205,13 +204,9 @@ object DataManager : AppConstant {
         })
     }
 
-    fun getUnSchedulesList(
-        buildingId: String,
-        listener: ResponseListener<UnScheduleListAPIResponse>
-    ) {
+    fun getUnSchedulesList(listener: ResponseListener<UnScheduleListAPIResponse>) {
         val call = getService().getUnSchedulesList(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            buildingId
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN)
         )
         call.enqueue(object : Callback<UnScheduleListAPIResponse> {
             override fun onResponse(
@@ -528,12 +523,10 @@ object DataManager : AppConstant {
     }
 
     fun getWorkSheetList(
-        buildingId: String, day: String,
-        listener: ResponseListener<WorkSheetListAPIResponse>
+        day: String, listener: ResponseListener<WorkSheetListAPIResponse>
     ) {
         val call = getService().getWorkSheetList(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            buildingId, day
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN), day
         )
         call.enqueue(object : Callback<WorkSheetListAPIResponse> {
             override fun onResponse(

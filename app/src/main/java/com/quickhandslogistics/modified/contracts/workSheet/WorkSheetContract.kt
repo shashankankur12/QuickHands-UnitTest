@@ -7,10 +7,6 @@ class WorkSheetContract {
     interface Model {
         fun fetchHeaderInfo(onFinishedListener: OnFinishedListener)
         fun fetchWorkSheetList(onFinishedListener: OnFinishedListener)
-        fun cancelAllWorkSchedules(
-            selectedLumperIdsList: ArrayList<String>,
-            onFinishedListener: OnFinishedListener
-        )
 
         interface OnFinishedListener {
             fun onFailure(message: String = "")
@@ -36,6 +32,5 @@ class WorkSheetContract {
     interface Presenter {
         fun fetchWorkSheetList()
         fun onDestroy()
-        fun initiateCancellingWorkSchedules(selectedLumperIdsList: ArrayList<String>)
     }
 }

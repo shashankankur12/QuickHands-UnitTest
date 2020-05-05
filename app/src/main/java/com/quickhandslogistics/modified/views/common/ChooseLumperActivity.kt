@@ -1,6 +1,5 @@
 package com.quickhandslogistics.modified.views.common
 
-import android.app.Dialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,14 +8,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.adapters.common.ChooseLumperAdapter
 import com.quickhandslogistics.modified.contracts.common.ChooseLumperContract
 import com.quickhandslogistics.modified.contracts.common.InfoDialogWarningContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.presenters.common.ChooseLumperPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.modified.adapters.common.ChooseLumperAdapter
 import com.quickhandslogistics.modified.views.lumpers.LumperDetailActivity
-import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.content_choose_lumper.*
@@ -26,8 +24,6 @@ class ChooseLumperActivity : BaseActivity(), ChooseLumperContract.View, TextWatc
 
     private lateinit var chooseLumperPresenter: ChooseLumperPresenter
     private lateinit var chooseLumperAdapter: ChooseLumperAdapter
-
-    private var progressDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,15 +66,6 @@ class ChooseLumperActivity : BaseActivity(), ChooseLumperContract.View, TextWatc
     /*
     * Presenter Listeners
     */
-    override fun hideProgressDialog() {
-        progressDialog?.dismiss()
-    }
-
-    override fun showProgressDialog(message: String) {
-        progressDialog =
-            CustomProgressBar.getInstance(activity).showProgressDialog(message)
-    }
-
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }

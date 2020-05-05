@@ -2,8 +2,8 @@ package com.quickhandslogistics.modified.contracts
 
 import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
 import com.quickhandslogistics.modified.data.dashboard.LeadProfileData
-import com.quickhandslogistics.modified.data.login.LoginUserData
 import com.quickhandslogistics.modified.data.login.LoginResponse
+import com.quickhandslogistics.modified.data.login.LoginUserData
 
 class LoginContract {
     interface Model {
@@ -21,9 +21,17 @@ class LoginContract {
             onFinishedListener: OnFinishedListener
         )
 
-        fun fetchRegistrationToken(employeeLoginId: String, password: String, onFinishedListener: OnFinishedListener)
+        fun fetchRegistrationToken(
+            employeeLoginId: String,
+            password: String,
+            onFinishedListener: OnFinishedListener
+        )
+
         fun fetchLeadProfileInfo(onFinishedListener: OnFinishedListener)
-        fun processLeadProfileData(leadProfileData: LeadProfileData, onFinishedListener: OnFinishedListener)
+        fun processLeadProfileData(
+            leadProfileData: LeadProfileData,
+            onFinishedListener: OnFinishedListener
+        )
 
         interface OnFinishedListener {
             fun emptyEmployeeId()
@@ -39,15 +47,13 @@ class LoginContract {
         }
     }
 
-    interface View {
-        fun hideProgress()
+    interface View : BaseContract.View {
         fun loadEmployeeId(employeeId: String)
         fun showAPIErrorMessage(message: String)
         fun showEmptyEmployeeIdError()
         fun showEmptyPasswordError()
         fun showInvalidPasswordError()
         fun showNextScreen()
-        fun showProgress(message: String)
     }
 
     interface Presenter {

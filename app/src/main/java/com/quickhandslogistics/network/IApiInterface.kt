@@ -34,21 +34,19 @@ interface IApiInterface {
     @GET("schedule/lookup/date")
     fun getSchedulesList(
         @Header("Authorization") auth: String,
-        @Query("date") date: String,
-        @Query("buildingId") buildingId: String
+        @Query("date") date: String
     ): Call<ScheduleListAPIResponse>
 
     @GET("schedule/unscheduled")
     fun getUnSchedulesList(
-        @Header("Authorization") auth: String,
-        @Query("buildingId") buildingId: String
+        @Header("Authorization") auth: String
     ): Call<UnScheduleListAPIResponse>
 
     @GET("schedule/identity/{scheduleIdentityId}")
     fun getScheduleDetail(
         @Header("Authorization") auth: String,
         @Path("scheduleIdentityId") scheduleIdentityId: String,
-        @Query("date") date: String
+        @Query("day") day: String
     ): Call<ScheduleDetailAPIResponse>
 
     @GET("schedule/{workItemId}")
@@ -108,10 +106,9 @@ interface IApiInterface {
     /////////////////////////////////////////////////////////////
 
     // Work Sheet /////////////////////////////////////////////////
-    @GET("buildings/{buildingId}/workitems")
+    @GET("buildings/workitems")
     fun getWorkSheetList(
         @Header("Authorization") auth: String,
-        @Path("buildingId") buildingId: String,
         @Query("day") day: String
     ): Call<WorkSheetListAPIResponse>
 

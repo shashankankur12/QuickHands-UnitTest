@@ -1,5 +1,6 @@
 package com.quickhandslogistics.modified.contracts.schedule
 
+import com.quickhandslogistics.modified.contracts.BaseContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetailAPIResponse
@@ -22,11 +23,8 @@ class UnScheduleDetailContract {
         }
     }
 
-    interface View {
+    interface View : BaseContract.View {
         fun showScheduleData(scheduleDetail: ScheduleDetail, scheduleDate: String?)
-
-        fun hideProgressDialog()
-        fun showProgressDialog(message: String)
         fun showAPIErrorMessage(message: String)
 
         interface OnAdapterItemClickListener {

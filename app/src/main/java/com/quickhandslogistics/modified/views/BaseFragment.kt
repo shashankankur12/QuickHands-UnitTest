@@ -6,15 +6,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.contracts.BaseContract
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SharedPref
 
-open class BaseFragment : Fragment() {
+open class BaseFragment : Fragment(), BaseContract.View {
 
     var fragmentActivity: FragmentActivity? = null
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     protected lateinit var sharedPref: SharedPref
-    private var progressDialog: CustomProgressBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +22,6 @@ open class BaseFragment : Fragment() {
         activity?.let { activity ->
             fragmentActivity = activity
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(activity)
-            progressDialog = CustomProgressBar.getInstance(activity)
         }
         sharedPref = SharedPref.getInstance()
     }
@@ -57,11 +56,13 @@ open class BaseFragment : Fragment() {
         }
     }
 
-    fun hideProgressDialog() {
-        progressDialog?.hideProgressDialog()
+    override fun showProgressDialog(message: String) {
+        fragmentActivity?.let { context ->
+            CustomProgressBar.getInstance().show(message = message, activityContext = context)
+        }
     }
 
-    fun showProgressDialog(message: String) {
-        progressDialog?.showProgressDialog(message)
+    override fun hideProgressDialog() {
+        CustomProgressBar.getInstance().hide()
     }
 }

@@ -1,6 +1,5 @@
 package com.quickhandslogistics.modified.views.schedule
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -20,7 +19,6 @@ import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Comp
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
 import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_REQUEST_PARAMETER
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
@@ -37,8 +35,6 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener,
 
     private lateinit var lumpersAdapter: ScheduledWorkItemDetailAdapter
     private lateinit var scheduledWorkItemDetailPresenter: ScheduledWorkItemDetailPresenter
-
-    private var progressDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -139,15 +135,6 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener,
             scheduledWorkItemDetailPresenter.fetchWorkItemDetail(workItemId)
             setResult(RESULT_OK)
         }
-    }
-
-    override fun hideProgressDialog() {
-        progressDialog?.dismiss()
-    }
-
-    override fun showProgressDialog(message: String) {
-        progressDialog =
-            CustomProgressBar.getInstance(activity).showProgressDialog(message)
     }
 
     override fun showAPIErrorMessage(message: String) {

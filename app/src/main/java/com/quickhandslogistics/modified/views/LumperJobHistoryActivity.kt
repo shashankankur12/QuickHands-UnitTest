@@ -1,6 +1,5 @@
 package com.quickhandslogistics.modified.views
 
-import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -10,23 +9,22 @@ import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.adapters.LumperJobHistoryAdapter
 import com.quickhandslogistics.modified.contracts.common.ChooseLumperContract
 import com.quickhandslogistics.modified.contracts.common.InfoDialogWarningContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.presenters.common.ChooseLumperPresenter
-import com.quickhandslogistics.modified.adapters.LumperJobHistoryAdapter
 import com.quickhandslogistics.modified.views.common.InfoWarningDialogFragment
 import com.quickhandslogistics.modified.views.lumpers.LumperDetailActivity
-import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.content_choose_lumper.*
 
-class LumperJobHistoryActivity : BaseActivity() , ChooseLumperContract.View, TextWatcher,
-    View.OnClickListener, ChooseLumperContract.View.OnAdapterItemClickListener{
+class LumperJobHistoryActivity : BaseActivity(), ChooseLumperContract.View, TextWatcher,
+    View.OnClickListener, ChooseLumperContract.View.OnAdapterItemClickListener {
+
     private lateinit var chooseLumperAdapter: LumperJobHistoryAdapter
     private lateinit var chooseLumperPresenter: ChooseLumperPresenter
-    private var progressDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,15 +51,6 @@ class LumperJobHistoryActivity : BaseActivity() , ChooseLumperContract.View, Tex
                 resources
             )
         chooseLumperPresenter.fetchLumpersList()
-    }
-
-    override fun hideProgressDialog() {
-        progressDialog?.dismiss()
-    }
-
-    override fun showProgressDialog(message: String) {
-        progressDialog =
-            CustomProgressBar.getInstance(activity).showProgressDialog(message)
     }
 
     override fun showAPIErrorMessage(message: String) {

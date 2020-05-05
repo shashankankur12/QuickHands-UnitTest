@@ -46,7 +46,6 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
     private lateinit var scheduleTimeAdapter: ScheduleTimeAdapter
     private lateinit var scheduleTimePresenter: ScheduleTimePresenter
 
-    private var progressDialog: Dialog? = null
     private var selectedTime: Long = 0
 
     private var currentDatePosition: Int = 0
@@ -183,15 +182,6 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
     override fun showDateString(dateString: String) {
         textViewDate.text = dateString
     }
-
-   /* override fun hideProgressDialog() {
-        progressDialog?.dismiss()
-    }
-
-    override fun showProgressDialog(message: String) {
-        progressDialog =
-            CustomProgressBar.getInstance(fragmentActivity!!).showProgressDialog(message)
-    }*/
 
     override fun showAPIErrorMessage(message: String) {
         recyclerViewScheduleTime.visibility = View.GONE

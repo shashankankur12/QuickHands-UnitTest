@@ -1,5 +1,6 @@
 package com.quickhandslogistics.modified.contracts.scheduleTime
 
+import com.quickhandslogistics.modified.contracts.BaseContract
 import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeNotes
@@ -18,15 +19,13 @@ class ScheduleTimeContract {
         }
     }
 
-    interface View {
+    interface View : BaseContract.View {
         fun showDateString(dateString: String)
-        fun hideProgressDialog()
-        fun showProgressDialog(message: String)
         fun showAPIErrorMessage(message: String)
+        fun showNotesData(notes: ScheduleTimeNotes?)
         fun showScheduleTimeData(
             selectedDate: Date, scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>
         )
-        fun showNotesData(notes: ScheduleTimeNotes?)
     }
 
     interface Presenter {

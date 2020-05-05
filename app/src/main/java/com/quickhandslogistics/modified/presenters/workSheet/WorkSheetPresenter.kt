@@ -26,14 +26,6 @@ class WorkSheetPresenter(
         workSheetView = null
     }
 
-    override fun initiateCancellingWorkSchedules(selectedLumperIdsList: ArrayList<String>) {
-        workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_message))
-        workSheetModel.cancelAllWorkSchedules(
-            selectedLumperIdsList,
-            this
-        )
-    }
-
     override fun onFailure(message: String) {
         workSheetView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
