@@ -1,4 +1,4 @@
-package com.quickhandslogistics.modified.views.customerSheet
+package com.quickhandslogistics.modified.views.common
 
 import android.os.Bundle
 import android.view.View
@@ -12,11 +12,10 @@ import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Comp
 import com.quickhandslogistics.utils.AppConstant
 import kotlinx.android.synthetic.main.activity_work_item_bo_detail.*
 
-class WorkItemBODetailActivity : BaseActivity() {
+class BuildingOperationsViewActivity : BaseActivity() {
 
     private lateinit var containerDetailAdapter: ContainerDetailAdapter
 
-    private var customerNote: String = ""
     private var parameters: ArrayList<String> = ArrayList()
     private var buildingOps = HashMap<String, String>()
 
@@ -33,7 +32,6 @@ class WorkItemBODetailActivity : BaseActivity() {
             buildingOps?.let {
                 this.buildingOps.putAll(buildingOps)
             }
-            customerNote = it.getString(ARG_WORK_ITEM_CUSTOMER_NOTE, "")
 
             recyclerViewBuildingOperations.apply {
                 layoutManager = LinearLayoutManager(activity)
@@ -41,13 +39,6 @@ class WorkItemBODetailActivity : BaseActivity() {
                 adapter = containerDetailAdapter
             }
             containerDetailAdapter.updateData(this.buildingOps, parameters)
-
-            if (customerNote.isEmpty() || customerNote == AppConstant.NOTES_NOT_AVAILABLE) {
-                linearLayoutNotes.visibility = View.GONE
-            } else {
-                linearLayoutNotes.visibility = View.VISIBLE
-                textViewNote.text = customerNote
-            }
         }
     }
 }

@@ -6,15 +6,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.contracts.customerSheet.ContainerDetailItemContract
 import com.quickhandslogistics.utils.StringUtils
 import kotlinx.android.synthetic.main.item_container_detail_item.view.*
 import java.util.*
 
 class ContainerDetailItemAdapter(
     buildingOps: HashMap<String, String>?,
-    parameters: ArrayList<String>?,
-    private val onAdapterClick: ContainerDetailItemContract.OnAdapterItemClickListener
+    parameters: ArrayList<String>?
 ) : RecyclerView.Adapter<ContainerDetailItemAdapter.ViewHolder>() {
 
     private val parameters: ArrayList<String> = ArrayList()
@@ -53,25 +51,13 @@ class ContainerDetailItemAdapter(
         holder.bind(getItem(position))
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private var textViewHeader: TextView = view.textViewHeader
         private var textViewValue: TextView = view.textViewValue
 
         fun bind(pair: Pair<String, String?>) {
             textViewHeader.text = pair.first.capitalize()
             textViewValue.text = if (!StringUtils.isNullOrEmpty(pair.second)) pair.second else "NA"
-
-            itemView.setOnClickListener(this)
-        }
-
-        override fun onClick(view: View?) {
-            view?.let {
-                when (view.id) {
-                    itemView.id -> {
-                        onAdapterClick.onItemClick()
-                    }
-                }
-            }
         }
     }
 }

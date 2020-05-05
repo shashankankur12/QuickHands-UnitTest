@@ -4,7 +4,7 @@
     android:id="@+id/constraint_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/schedule_item_background">
+    android:background="@drawable/schedule_item_background_non_ripple">
 
     <RelativeLayout
         android:id="@+id/relativeLayoutSide"
@@ -18,8 +18,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:padding="@dimen/_10sdp"
+        android:paddingStart="@dimen/_6sdp"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_10sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,6 +48,7 @@
             android:id="@+id/textViewWorkItemType"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4sdp"
             android:layout_marginEnd="@dimen/_4sdp"
             android:clickable="false"
             android:text="Live Loads"
@@ -56,23 +59,41 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewBO"
+        <RelativeLayout
+            android:id="@+id/relativeLayoutBO"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginEnd="@dimen/_4sdp"
             android:layout_marginBottom="@dimen/_8sdp"
-            android:clickable="false"
+            android:background="@drawable/notes_item_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewWorkItemType" />
+            app:layout_constraintTop_toBottomOf="@id/textViewWorkItemType">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewBO"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/_8sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_5sdp" />
+
+            <View
+                android:id="@+id/clickableViewBO"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/recyclerViewBO"
+                android:layout_alignBottom="@+id/recyclerViewBO"
+                android:background="?android:attr/selectableItemBackground" />
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/linearLayoutNotes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginEnd="@dimen/_4sdp"
             android:background="@drawable/notes_item_background"
             android:orientation="vertical"
@@ -80,13 +101,13 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/recyclerViewBO">
+            app:layout_constraintTop_toBottomOf="@id/relativeLayoutBO">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/string_note"
-                android:textColor="@color/scheduleDetail"
+                android:textColor="@color/buildingTitle"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold" />
 
@@ -96,8 +117,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:ellipsize="end"
-                android:maxLines="2"
-                android:text="@string/request_help_error_message" />
+                android:maxLines="1"
+                android:text="@string/request_help_error_message"
+                android:textColor="@color/scheduleDetail" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

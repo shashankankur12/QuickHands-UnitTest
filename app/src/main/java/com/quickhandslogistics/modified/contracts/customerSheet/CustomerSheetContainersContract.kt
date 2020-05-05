@@ -5,7 +5,8 @@ import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 class CustomerSheetContainersContract {
     interface View {
         interface OnAdapterItemClickListener {
-            fun onItemClick(workItemDetail: WorkItemDetail)
+            fun onBOItemClick(workItemDetail: WorkItemDetail)
+            fun onNotesItemClick(notesQHLCustomer: String?)
         }
     }
 }

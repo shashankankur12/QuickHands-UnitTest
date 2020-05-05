@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.contracts.customerSheet.ContainerDetailItemContract
 import com.quickhandslogistics.modified.contracts.customerSheet.CustomerSheetContainersContract
 import com.quickhandslogistics.modified.controls.ScheduleUtils
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
@@ -79,21 +78,23 @@ class CustomerSheetContainersAdapter(
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
-        View.OnClickListener, ContainerDetailItemContract.OnAdapterItemClickListener {
+        View.OnClickListener {
 
         var textViewWorkItemType: TextView = itemView.textViewWorkItemType
         var textViewNote: TextView = itemView.textViewNote
         var textViewStatus: TextView = itemView.textViewStatus
         var relativeLayoutSide: RelativeLayout = itemView.relativeLayoutSide
-        var linearLayoutNotes: LinearLayout = itemView.linearLayoutNotes
+        var clickableViewBO: View = itemView.clickableViewBO
         var recyclerViewBO: RecyclerView = itemView.recyclerViewBO
+        var linearLayoutNotes: LinearLayout = itemView.linearLayoutNotes
 
         init {
             recyclerViewBO.apply {
                 layoutManager = LinearLayoutManager(context)
             }
 
-            itemView.setOnClickListener(this)
+            clickableViewBO.setOnClickListener(this)
+            linearLayoutNotes.setOnClickListener(this)
         }
 
         fun bind(workItemDetail: WorkItemDetail) {
@@ -112,23 +113,23 @@ class CustomerSheetContainersAdapter(
 
             recyclerViewBO.adapter = ContainerDetailItemAdapter(
                 workItemDetail.buildingOps,
-                workItemDetail.buildingDetailData?.parameters, this
+                workItemDetail.buildingDetailData?.parameters
             )
         }
 
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
-                    itemView.id -> {
+                    clickableViewBO.id -> {
                         val workItemDetail = getItem(adapterPosition)
-                        adapterItemClickListener.onItemClick(workItemDetail)
+                        adapterItemClickListener.onBOItemClick(workItemDetail)
+                    }
+                    linearLayoutNotes.id -> {
+                        val workItemDetail = getItem(adapterPosition)
+                        adapterItemClickListener.onNotesItemClick(workItemDetail.notesQHLCustomer)
                     }
                 }
             }
-        }
-
-        override fun onItemClick() {
-            itemView.performClick()
         }
     }
 }
