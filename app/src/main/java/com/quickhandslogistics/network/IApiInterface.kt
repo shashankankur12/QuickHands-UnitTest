@@ -46,7 +46,7 @@ interface IApiInterface {
     fun getScheduleDetail(
         @Header("Authorization") auth: String,
         @Path("scheduleIdentityId") scheduleIdentityId: String,
-        @Query("date") date: String
+        @Query("day") day: String
     ): Call<ScheduleDetailAPIResponse>
 
     @GET("schedule/{workItemId}")
