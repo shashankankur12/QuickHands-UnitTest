@@ -1,13 +1,11 @@
 package com.quickhandslogistics.modified.views
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.ForgotPasswordContract
-import com.quickhandslogistics.modified.contracts.common.InfoDialogContract
 import com.quickhandslogistics.modified.presenters.ForgotPasswordPresenter
-import com.quickhandslogistics.modified.views.common.InfoDialogFragment
+import com.quickhandslogistics.utils.CustomDialogSuccessListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
@@ -15,7 +13,6 @@ import kotlinx.android.synthetic.main.activity_forgot_password.*
 
 class ForgotPasswordActivity : BaseActivity(), ForgotPasswordContract.View, View.OnClickListener {
 
-    private var progressDialog: Dialog? = null
     private lateinit var forgotPasswordPresenter: ForgotPasswordPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,15 +47,6 @@ class ForgotPasswordActivity : BaseActivity(), ForgotPasswordContract.View, View
         )
     }
 
-    override fun showProgress(message: String) {
-        progressDialog =
-            CustomProgressBar.getInstance(activity).showProgressDialog(message)
-    }
-
-    override fun hideProgress() {
-        progressDialog?.dismiss()
-    }
-
     override fun showAPIErrorMessage(message: String) {
         editTextEmpId.requestFocus()
         SnackBarFactory.createSnackBar(
@@ -69,13 +57,12 @@ class ForgotPasswordActivity : BaseActivity(), ForgotPasswordContract.View, View
     }
 
     override fun showAPISuccessMessage(message: String) {
-        val dialog = InfoDialogFragment.newInstance(message,
-            onClickListener = object : InfoDialogContract.View.OnClickListener {
-                override fun onPositiveButtonClick() {
+        CustomProgressBar.getInstance()
+            .showSuccessDialog(message, activity, object : CustomDialogSuccessListener {
+                override fun onConfirmClick() {
                     onBackPressed()
                 }
             })
-        dialog.show(supportFragmentManager, InfoDialogFragment::class.simpleName)
     }
 
     override fun onDestroy() {

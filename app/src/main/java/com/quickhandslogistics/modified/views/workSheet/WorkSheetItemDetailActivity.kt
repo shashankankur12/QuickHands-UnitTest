@@ -1,6 +1,5 @@
 package com.quickhandslogistics.modified.views.workSheet
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -21,7 +20,6 @@ import com.quickhandslogistics.modified.views.common.InfoWarningDialogFragment
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
 import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.activity_work_sheet_item_detail.*
@@ -41,8 +39,6 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
     private lateinit var workSheetItemDetailPagerAdapter: WorkSheetItemDetailPagerAdapter
 
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
-
-    private var progressDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -212,15 +208,6 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
                 }
             })
         dialog.show(supportFragmentManager, InfoWarningDialogFragment::class.simpleName)
-    }
-
-    override fun hideProgressDialog() {
-        progressDialog?.dismiss()
-    }
-
-    override fun showProgressDialog(message: String) {
-        progressDialog =
-            CustomProgressBar.getInstance(activity).showProgressDialog(message)
     }
 
     override fun showAPIErrorMessage(message: String) {

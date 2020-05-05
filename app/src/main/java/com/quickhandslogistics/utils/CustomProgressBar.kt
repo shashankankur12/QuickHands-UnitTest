@@ -1,23 +1,17 @@
 package com.quickhandslogistics.utils
 
-import android.app.Dialog
 import android.content.Context
-import android.view.Window
-import android.widget.LinearLayout
-import android.widget.TextView
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog
 import com.quickhandslogistics.R
 
 class CustomProgressBar {
 
-    private var dialog: Dialog? = null
+    private var progressDialog: SweetAlertDialog? = null
 
     companion object {
         private var customProgressBar: CustomProgressBar? = null
-        private var mContext: Context? = null
 
-        fun getInstance(context: Context): CustomProgressBar {
-            mContext = context
-
+        fun getInstance(): CustomProgressBar {
             if (customProgressBar == null) {
                 customProgressBar = CustomProgressBar()
             }
@@ -25,28 +19,42 @@ class CustomProgressBar {
         }
     }
 
-    fun showProgressDialog(progressMsg: String): Dialog {
-        dialog = Dialog(mContext!!)
-        dialog?.let { dialog ->
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog.window?.let { window ->
-                window.setLayout(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-                window.setContentView(R.layout.dialog_progress)
-            }
-
-            dialog.setCancelable(false)
-            dialog.show()
-
-            val textProgress = dialog.findViewById<TextView>(R.id.text_progress)
-            textProgress?.text = progressMsg
+    fun show(titleMessage: String = "", message: String = "", activityContext: Context) {
+        progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.PROGRESS_TYPE)
+        //  pDialog.progressHelper.barColor = Color.parseColor("#A5DC86")
+        progressDialog?.titleText =
+            if (titleMessage.isEmpty()) activityContext.getString(R.string.loading) else titleMessage
+        if (message.isNotEmpty()) {
+            progressDialog?.contentText = message
         }
-        return dialog!!
+        progressDialog?.setCancelable(false)
+        progressDialog?.show()
     }
 
-    fun hideProgressDialog() {
-        dialog?.dismiss()
+    fun hide() {
+        progressDialog?.dismissWithAnimation()
     }
+
+    fun showInfoDialog(title: String, message: String, activityContext: Context) {
+        val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.NORMAL_TYPE)
+        progressDialog.titleText = title
+        progressDialog.contentText = message
+        progressDialog.show()
+    }
+
+    fun showSuccessDialog(
+        message: String, activityContext: Context, listener: CustomDialogSuccessListener
+    ) {
+        val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.SUCCESS_TYPE)
+        progressDialog.titleText = activityContext.getString(R.string.success)
+        progressDialog.contentText = message
+        progressDialog.setConfirmClickListener {
+            listener.onConfirmClick()
+        }
+        progressDialog.show()
+    }
+}
+
+interface CustomDialogSuccessListener {
+    fun onConfirmClick()
 }

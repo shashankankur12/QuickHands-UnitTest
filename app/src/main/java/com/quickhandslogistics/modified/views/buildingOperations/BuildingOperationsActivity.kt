@@ -1,6 +1,5 @@
 package com.quickhandslogistics.modified.views.buildingOperations
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,7 +12,6 @@ import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_ALLOW_UPDATE
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_BUILDING_PARAMETERS
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
-import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.content_building_operations.*
 
@@ -25,8 +23,6 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener,
     private var allowUpdate: Boolean = true
     private var workItemId: String = ""
     private var parameters: ArrayList<String> = ArrayList()
-
-    private var progressDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,15 +62,6 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener,
                 }
             }
         }
-    }
-
-    override fun hideProgressDialog() {
-        progressDialog?.dismiss()
-    }
-
-    override fun showProgressDialog(message: String) {
-        progressDialog =
-            CustomProgressBar.getInstance(activity).showProgressDialog(message)
     }
 
     override fun showAPIErrorMessage(message: String) {

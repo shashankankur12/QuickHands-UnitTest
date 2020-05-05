@@ -1,5 +1,6 @@
 package com.quickhandslogistics.modified.contracts.workSheet
 
+import com.quickhandslogistics.modified.contracts.BaseContract
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 
@@ -18,9 +19,7 @@ class AllWorkScheduleCancelContract {
         }
     }
 
-    interface View {
-        fun hideProgressDialog()
-        fun showProgressDialog(message: String)
+    interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
         fun showLumpersData(employeeDataList: ArrayList<EmployeeData>)
         fun cancellingWorkScheduleFinished()

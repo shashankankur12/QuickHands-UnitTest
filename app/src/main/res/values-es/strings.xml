@@ -127,7 +127,7 @@
     <string name="replacementRequested">Reemplazo\nRequerido</string>
     <string name="building_operations">Operaciones de construcción</string>
     <string name="logging_in">Iniciando sesión...</string>
-    <string name="api_loading_message">Espere mientras se cargan los datos ...</string>
+    <string name="api_loading_message">**Please wait while we set things up for you!**</string>
     <string name="internal_server_error">error de servidor interno</string>
     <string name="lumper_name">Nombre de Lumper</string>
     <string name="role">Papel</string>
@@ -230,4 +230,6 @@
     <string name="add_signature">Add Signature</string>
     <string name="string_clear">Clear</string>
     <string name="unfinished_s">Unfinished: %s</string>
+    <string name="loading">Loading</string>
+    <string name="success">Success</string>
 </resources>

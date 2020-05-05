@@ -1,6 +1,5 @@
 package com.quickhandslogistics.modified.views.schedule
 
-import android.app.Dialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,14 +8,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.adapters.schedule.AddWorkItemLumperAdapter
 import com.quickhandslogistics.modified.contracts.schedule.AddWorkItemLumpersContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.presenters.schedule.AddWorkItemLumpersPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.modified.adapters.schedule.AddWorkItemLumperAdapter
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE
-import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.activity_add_work_item_lumpers.*
@@ -30,8 +28,6 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
 
     private lateinit var addWorkItemLumpersPresenter: AddWorkItemLumpersPresenter
     private lateinit var addWorkItemLumperAdapter: AddWorkItemLumperAdapter
-
-    private var progressDialog: Dialog? = null
 
     companion object {
         const val ARG_IS_ADD_LUMPER = "ARG_IS_ADD_LUMPER"
@@ -137,15 +133,6 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
     /*
     * Presenter Listeners
     */
-    override fun hideProgressDialog() {
-        progressDialog?.dismiss()
-    }
-
-    override fun showProgressDialog(message: String) {
-        progressDialog =
-            CustomProgressBar.getInstance(activity).showProgressDialog(message)
-    }
-
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }

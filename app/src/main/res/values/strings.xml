@@ -121,7 +121,7 @@
     <string name="building_operations">Building Operations</string>
     <string name="logging_in">Logging In...</string>
     <string name="please_wait">Please Wait...</string>
-    <string name="api_loading_message">Please wait while data is loading...</string>
+    <string name="api_loading_message">Please wait while we set things up for you!</string>
     <string name="internal_server_error">Internal Server Error</string>
     <string name="lumper_name">Lumper Name</string>
     <string name="role">Role</string>
@@ -230,4 +230,6 @@
     <string name="add_signature">Add Signature</string>
     <string name="string_clear">Clear</string>
     <string name="unfinished_s">Unfinished: %s</string>
+    <string name="loading">Loading</string>
+    <string name="success">Success</string>
 </resources>

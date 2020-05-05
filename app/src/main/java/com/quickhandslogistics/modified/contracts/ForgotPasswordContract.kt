@@ -23,12 +23,10 @@ class ForgotPasswordContract {
         )
     }
 
-    interface View {
-        fun hideProgress()
+    interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
         fun showAPISuccessMessage(message: String)
         fun showEmptyEmployeeIdError()
-        fun showProgress(message: String)
     }
 
     interface Presenter {

@@ -1,20 +1,17 @@
 package com.quickhandslogistics.modified.views.schedule
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.contracts.common.InfoDialogContract
+import com.quickhandslogistics.modified.adapters.schedule.UnScheduledWorkItemAdapter
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleDetailContract
+import com.quickhandslogistics.modified.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.presenters.schedule.UnScheduleDetailPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.modified.adapters.schedule.UnScheduledWorkItemAdapter
-import com.quickhandslogistics.modified.controls.SpaceDividerItemDecorator
-import com.quickhandslogistics.modified.views.common.InfoDialogFragment
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_DETAIL
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_FROM_DATE
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_IDENTITY
@@ -33,10 +30,7 @@ class UnScheduleDetailActivity : BaseActivity(), UnScheduleDetailContract.View {
     private lateinit var outBondsAdapter: UnScheduledWorkItemAdapter
     private lateinit var unScheduleDetailPresenter: UnScheduleDetailPresenter
 
-    private var scheduleIdentity = ""
     private var scheduleDetail: ScheduleDetail? = null
-
-    private var progressDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,13 +110,10 @@ class UnScheduleDetailActivity : BaseActivity(), UnScheduleDetailContract.View {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionNotes -> {
-                val dialog = InfoDialogFragment.newInstance(scheduleDetail?.scheduleNote!!,
-                    showInfoIcon = false,
-                    onClickListener = object : InfoDialogContract.View.OnClickListener {
-                        override fun onPositiveButtonClick() {
-                        }
-                    })
-                dialog.show(supportFragmentManager, InfoDialogFragment::class.simpleName)
+                CustomProgressBar.getInstance()
+                    .showInfoDialog(
+                        getString(R.string.string_note), scheduleDetail?.scheduleNote!!, activity
+                    )
             }
         }
         return super.onOptionsItemSelected(item)
@@ -185,15 +176,6 @@ class UnScheduleDetailActivity : BaseActivity(), UnScheduleDetailContract.View {
                 recyclerViewOutBonds.visibility = View.GONE
             }
         }
-    }
-
-    override fun hideProgressDialog() {
-        progressDialog?.dismiss()
-    }
-
-    override fun showProgressDialog(message: String) {
-        progressDialog =
-            CustomProgressBar.getInstance(activity).showProgressDialog(message)
     }
 
     override fun showAPIErrorMessage(message: String) {

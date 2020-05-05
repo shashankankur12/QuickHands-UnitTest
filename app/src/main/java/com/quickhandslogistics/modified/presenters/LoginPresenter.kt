@@ -46,7 +46,7 @@ class LoginPresenter(
     }
 
     override fun processCredentials(employeeLoginId: String, password: String) {
-        loginView?.showProgress(resources.getString(R.string.logging_in))
+        loginView?.showProgressDialog(resources.getString(R.string.api_loading_message))
         loginModel.fetchRegistrationToken(employeeLoginId, password, this)
     }
 
@@ -60,7 +60,7 @@ class LoginPresenter(
     }
 
     override fun onFailure(message: String) {
-        loginView?.hideProgress()
+        loginView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
             loginView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
         } else {
@@ -73,7 +73,7 @@ class LoginPresenter(
     }
 
     override fun onLeadProfileSuccess(leadProfileAPIResponse: LeadProfileAPIResponse) {
-        loginView?.hideProgress()
+        loginView?.hideProgressDialog()
         leadProfileAPIResponse.data?.let {
             loginModel.processLeadProfileData(it, this)
         }

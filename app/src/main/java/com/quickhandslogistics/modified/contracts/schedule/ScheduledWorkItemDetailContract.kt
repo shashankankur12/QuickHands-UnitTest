@@ -1,5 +1,6 @@
 package com.quickhandslogistics.modified.contracts.schedule
 
+import com.quickhandslogistics.modified.contracts.BaseContract
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetailAPIResponse
 
@@ -13,9 +14,7 @@ class ScheduledWorkItemDetailContract {
         }
     }
 
-    interface View {
-        fun hideProgressDialog()
-        fun showProgressDialog(message: String)
+    interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
         fun showWorkItemDetail(workItemDetail: WorkItemDetail)
     }

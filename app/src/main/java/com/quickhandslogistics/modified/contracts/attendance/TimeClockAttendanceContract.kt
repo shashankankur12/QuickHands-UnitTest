@@ -1,5 +1,6 @@
 package com.quickhandslogistics.modified.contracts.attendance
 
+import com.quickhandslogistics.modified.contracts.BaseContract
 import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.attendance.GetAttendanceAPIResponse
 import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
@@ -19,9 +20,7 @@ class TimeClockAttendanceContract {
         }
     }
 
-    interface View {
-        fun hideProgressDialog()
-        fun showProgressDialog(message: String)
+    interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
         fun showLumpersAttendance(lumperAttendanceList: ArrayList<LumperAttendanceData>)
         fun showDataSavedMessage()
@@ -31,6 +30,7 @@ class TimeClockAttendanceContract {
                 lumperAttendanceData: LumperAttendanceData,
                 itemPosition: Int
             )
+
             fun onAddNotes(updatedDataSize: Int)
             fun onRowLongClicked(itemPosition: Int)
             fun onRowClicked(itemPosition: Int)

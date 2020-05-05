@@ -1,6 +1,5 @@
 package com.quickhandslogistics.modified.views.scheduleTime
 
-import android.app.Dialog
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.os.Bundle
@@ -21,7 +20,6 @@ import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULED_TIME_NOTES
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
-import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
 import com.quickhandslogistics.utils.ValueUtils
@@ -39,8 +37,6 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
 
     private lateinit var editScheduleTimePresenter: EditScheduleTimePresenter
     private lateinit var editScheduleTimeAdapter: EditScheduleTimeAdapter
-
-    private var progressDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -185,15 +181,6 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     /*
     * Presenter Listeners
     */
-    override fun hideProgressDialog() {
-        progressDialog?.dismiss()
-    }
-
-    override fun showProgressDialog(message: String) {
-        progressDialog =
-            CustomProgressBar.getInstance(activity).showProgressDialog(message)
-    }
-
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }

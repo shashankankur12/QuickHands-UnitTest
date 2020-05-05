@@ -11,10 +11,12 @@ import com.franmontiel.localechanger.LocaleChanger
 import com.franmontiel.localechanger.utils.ActivityRecreationHelper
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.contracts.BaseContract
+import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SharedPref
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
-open class BaseActivity : AppCompatActivity() {
+open class BaseActivity : AppCompatActivity(), BaseContract.View {
 
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     lateinit var sharedPref: SharedPref
@@ -97,5 +99,13 @@ open class BaseActivity : AppCompatActivity() {
     override fun onDestroy() {
         ActivityRecreationHelper.onDestroy(this)
         super.onDestroy()
+    }
+
+    override fun showProgressDialog(message: String) {
+        CustomProgressBar.getInstance().show(message = message, activityContext = activity)
+    }
+
+    override fun hideProgressDialog() {
+        CustomProgressBar.getInstance().hide()
     }
 }

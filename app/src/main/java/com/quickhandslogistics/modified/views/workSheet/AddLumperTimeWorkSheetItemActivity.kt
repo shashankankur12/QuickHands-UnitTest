@@ -1,6 +1,5 @@
 package com.quickhandslogistics.modified.views.workSheet
 
-import android.app.Dialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.View
@@ -15,7 +14,10 @@ import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_DATA
 import com.quickhandslogistics.modified.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_TIMING_DATA
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment
-import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.StringUtils
+import com.quickhandslogistics.utils.ValueUtils
 import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
 import java.util.*
 
@@ -30,8 +32,6 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private var selectedEndTime: Long = 0
     private var selectedBreakInTime: Long = 0
     private var selectedBreakOutTime: Long = 0
-
-    private var progressDialog: Dialog? = null
 
     private lateinit var addLumperTimeWorkSheetItemPresenter: AddLumperTimeWorkSheetItemPresenter
 
@@ -102,7 +102,8 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun toggleSaveButtonVisibility() {
-        buttonSave.isEnabled = editTextWaitingTime.isEnabled || buttonStartTime.isEnabled || buttonEndTime.isEnabled || buttonBreakInTime.isEnabled || buttonBreakOutTime.isEnabled
+        buttonSave.isEnabled =
+            editTextWaitingTime.isEnabled || buttonStartTime.isEnabled || buttonEndTime.isEnabled || buttonBreakInTime.isEnabled || buttonBreakOutTime.isEnabled
     }
 
     private fun updateInitialTime(dateStamp: String?, buttonTime: Button): Long {
@@ -246,19 +247,9 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         fun onSelectTime(calendar: Calendar)
     }
 
-    override fun hideProgressDialog() {
-        progressDialog?.dismiss()
-    }
-
-    override fun showProgressDialog(message: String) {
-        progressDialog =
-            CustomProgressBar.getInstance(activity).showProgressDialog(message)
-    }
-
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }
-
 
     override fun lumpersTimingSaved() {
         setResult(RESULT_OK)
