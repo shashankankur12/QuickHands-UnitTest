@@ -15,7 +15,7 @@
         tools:context=".modified.views.customerSheet.CustomerSheetCustomerFragment">
 
         <LinearLayout
-            android:id="@+id/layoutCustomerNotes"
+            android:id="@+id/layoutCustomerName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
@@ -29,13 +29,45 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/notes_by_customer"
+                android:text="@string/customer_representative_name"
                 android:textColor="@color/buildingTitle"
                 android:textSize="@dimen/_14ssp"
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/editTextQHLCustomerNotes"
+                android:id="@+id/editTextCustomerName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:backgroundTint="@color/buildingTitle"
+                android:inputType="textPersonName|textCapWords"
+                android:textColor="@color/scheduleDetail"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:textSize="@dimen/_12ssp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutCustomerNotes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/schedule_item_background"
+            android:orientation="vertical"
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutCustomerName">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notes"
+                android:textColor="@color/buildingTitle"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/editTextCustomerNotes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_2sdp"
@@ -51,10 +83,12 @@
             android:id="@+id/layoutSignature"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:background="@drawable/schedule_item_background"
             android:orientation="vertical"
             android:padding="@dimen/_10sdp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonSubmit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layoutCustomerNotes">
@@ -71,7 +105,7 @@
                 android:id="@+id/imageViewSignature"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_80sdp"
-                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_4sdp"
                 android:visibility="gone" />
 
             <TextView
@@ -90,13 +124,28 @@
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"
                 android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/textViewSignature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:drawableStart="@drawable/ic_done"
+                android:drawablePadding="@dimen/_5sdp"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/signature"
+                android:textColor="@color/online"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold"
+                android:visibility="visible" />
         </LinearLayout>
 
         <Button
             android:id="@+id/buttonSubmit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:background="@drawable/round_button_selector"
             android:text="@string/string_submit"
@@ -104,6 +153,7 @@
             android:textColor="@android:color/white"
             android:textSize="@dimen/_14ssp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layoutSignature" />

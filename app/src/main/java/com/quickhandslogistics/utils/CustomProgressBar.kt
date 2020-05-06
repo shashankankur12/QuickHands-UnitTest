@@ -43,12 +43,20 @@ class CustomProgressBar {
         progressDialog.show()
     }
 
+    fun showErrorDialog(message: String, activityContext: Context) {
+        val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.ERROR_TYPE)
+        progressDialog.titleText = activityContext.getString(R.string.error)
+        progressDialog.contentText = message
+        progressDialog.show()
+    }
+
     fun showSuccessDialog(
         message: String, activityContext: Context, listener: CustomDialogListener
     ) {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.SUCCESS_TYPE)
         progressDialog.titleText = activityContext.getString(R.string.success)
         progressDialog.contentText = message
+        progressDialog.setCancelable(false)
         progressDialog.setConfirmClickListener {
             it.dismiss()
             listener.onConfirmClick()

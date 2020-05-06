@@ -4,6 +4,7 @@ import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.attendance.GetAttendanceAPIResponse
 import com.quickhandslogistics.modified.data.buildingOperations.BuildingOperationAPIResponse
+import com.quickhandslogistics.modified.data.customerSheet.CustomerSheetListAPIResponse
 import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRequest
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordResponse
@@ -14,6 +15,8 @@ import com.quickhandslogistics.modified.data.schedule.*
 import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeRequest
 import com.quickhandslogistics.modified.data.workSheet.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -137,6 +140,23 @@ interface IApiInterface {
         @Header("Authorization") auth: String,
         @Path("day") day: String,
         @Body request: CancelAllSchedulesRequest
+    ): Call<BaseResponse>
+    /////////////////////////////////////////////////////////////
+
+    // Customer Sheet /////////////////////////////////////////////////
+    @GET("customers/sheet")
+    fun getCustomerSheetList(
+        @Header("Authorization") auth: String,
+        @Query("day") day: String
+    ): Call<CustomerSheetListAPIResponse>
+
+    @Multipart
+    @POST("customers/sheet")
+    fun saveCustomerSheet(
+        @Header("Authorization") auth: String,
+        @Part("customerRepresentativeName") customerRepresentativeName: RequestBody,
+        @Part("note") note: RequestBody,
+        @Part signature: MultipartBody.Part
     ): Call<BaseResponse>
     /////////////////////////////////////////////////////////////
 

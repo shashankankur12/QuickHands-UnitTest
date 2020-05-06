@@ -238,4 +238,10 @@
     <string name="string_ask_to_change_status_permanently">You want to change the status. Consider adding notes before changing permanently</string>
     <string name="info">Info</string>
     <string name="notification_off_info">Notification are turned off from the app Settings. Click to update.</string>
+    <string name="customer_representative_name">Customer Representative Name</string>
+    <string name="string_ask_to_submit_customer_sheet">You want to submit the customer sheet.</string>
+    <string name="string_ask_to_submit_customer_sheet_permanently">You want to submit the customer sheet. Consider adding notes before changing permanently</string>
+    <string name="customer_sheet_warning_message"><![CDATA[Please provide both Customer Representative Name & his Signature.]]></string>
+    <string name="error">Error</string>
+    <string name="customer_sheet_submitted_successfully">Customer Sheet submitted successfully</string>
 </resources>

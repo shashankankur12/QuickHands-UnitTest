@@ -6,10 +6,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.data.customerSheet.CustomerSheetListAPIResponse
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.views.customerSheet.CustomerSheetContainersFragment
 import com.quickhandslogistics.modified.views.customerSheet.CustomerSheetCustomerFragment
-import java.util.ArrayList
+import java.util.*
 
 class CustomerSheetPagerAdapter(
     childFragmentManager: FragmentManager, private val resources: Resources
@@ -40,9 +41,11 @@ class CustomerSheetPagerAdapter(
     fun updateCustomerSheetList(
         onGoingWorkItems: ArrayList<WorkItemDetail>,
         cancelledWorkItems: ArrayList<WorkItemDetail>,
-        completedWorkItems: ArrayList<WorkItemDetail>
+        completedWorkItems: ArrayList<WorkItemDetail>,
+        customerSheet: CustomerSheetListAPIResponse.CustomerSheetData?, selectedTime: Long
     ) {
         containersFragment.updateWorkItemsList(onGoingWorkItems, cancelledWorkItems, completedWorkItems)
+        customerFragment.updateCustomerDetails(customerSheet, selectedTime, onGoingWorkItems.size)
 
     }
 }
