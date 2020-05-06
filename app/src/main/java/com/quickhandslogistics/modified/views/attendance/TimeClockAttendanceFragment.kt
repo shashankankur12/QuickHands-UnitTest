@@ -1,6 +1,5 @@
 package com.quickhandslogistics.modified.views.attendance
 
-import android.app.Dialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,15 +14,10 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.adapters.attendance.TimeClockAttendanceAdapter
 import com.quickhandslogistics.modified.contracts.attendance.TimeClockAttendanceContract
-import com.quickhandslogistics.modified.contracts.common.InfoDialogWarningContract
 import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.modified.presenters.attendance.TimeClockAttendancePresenter
 import com.quickhandslogistics.modified.views.BaseFragment
-import com.quickhandslogistics.modified.views.common.InfoWarningDialogFragment
-import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.utils.Utils
+import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.bottom_sheet_add_attendance_time.*
 import kotlinx.android.synthetic.main.content_time_clock_attendance.*
 import kotlinx.android.synthetic.main.fragment_time_clock_attendance.*
@@ -192,21 +186,18 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
                     Utils.hideSoftKeyboard(fragmentActivity!!)
                 }
                 buttonSave.id -> {
-                    val dialog = InfoWarningDialogFragment.newInstance(
+                    CustomProgressBar.getInstance().showWarningDialog(
                         getString(R.string.string_ask_to_save_attendance_details),
-                        positiveButtonText = getString(R.string.string_yes),
-                        negativeButtonText = getString(R.string.string_no),
-                        onClickListener = object : InfoDialogWarningContract.View.OnClickListener {
-                            override fun onPositiveButtonClick() {
+                        fragmentActivity!!, object : CustomDialogWarningListener {
+                            override fun onConfirmClick() {
                                 imageViewCancel.performClick()
                                 val updatedData = timeClockAttendanceAdapter.getUpdatedData()
                                 timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct())
                             }
 
-                            override fun onNegativeButtonClick() {
+                            override fun onCancelClick() {
                             }
                         })
-                    dialog.show(childFragmentManager, InfoWarningDialogFragment::class.simpleName)
                 }
                 buttonAddTime.id -> {
                     showTimePickerLayoutForMultipleLumpers()

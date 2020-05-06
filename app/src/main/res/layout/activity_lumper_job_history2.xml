@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".modified.views.LumperJobHistoryActivity">
+    tools:context=".view.activities.LumperJobHistoryActivity">
 
     <include layout="@layout/layout_toolbar" />
 

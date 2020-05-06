@@ -1,7 +1,6 @@
 package com.quickhandslogistics.modified.views.workSheet
 
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -10,18 +9,14 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.adapters.workSheet.WorkSheetItemDetailPagerAdapter
 import com.quickhandslogistics.modified.adapters.workSheet.WorkSheetItemStatusAdapter
-import com.quickhandslogistics.modified.contracts.common.InfoDialogWarningContract
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.modified.presenters.workSheet.WorkSheetItemDetailPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.modified.views.common.InfoWarningDialogFragment
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.activity_work_sheet_item_detail.*
 import kotlinx.android.synthetic.main.bottom_sheet_select_status.*
 import kotlinx.android.synthetic.main.content_work_sheet_item_detail.*
@@ -154,27 +149,6 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
         bottomSheetBackgroundStatus.visibility = View.GONE
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.actionCancelWorkItem -> {
-                val dialog = InfoWarningDialogFragment.newInstance(
-                    getString(R.string.string_ask_to_cancel_work_item),
-                    positiveButtonText = getString(R.string.string_yes),
-                    negativeButtonText = getString(R.string.string_no),
-                    onClickListener = object : InfoDialogWarningContract.View.OnClickListener {
-                        override fun onPositiveButtonClick() {
-                            onBackPressed()
-                        }
-
-                        override fun onNegativeButtonClick() {
-                        }
-                    })
-                dialog.show(supportFragmentManager, InfoWarningDialogFragment::class.simpleName)
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
@@ -193,21 +167,21 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener,
     }
 
     override fun onSelectStatus(status: String) {
-        val dialog = InfoWarningDialogFragment.newInstance(
-            getString(R.string.string_ask_to_change_status),
-            positiveButtonText = getString(R.string.string_yes),
-            negativeButtonText = getString(R.string.string_no),
-            onClickListener = object : InfoDialogWarningContract.View.OnClickListener {
-                override fun onPositiveButtonClick() {
+        var message = getString(R.string.string_ask_to_change_status)
+        if (status == AppConstant.WORK_ITEM_STATUS_CANCELLED || status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
+            message = getString(R.string.string_ask_to_change_status_permanently)
+        }
+        CustomProgressBar.getInstance().showWarningDialog(
+            message, activity, object : CustomDialogWarningListener {
+                override fun onConfirmClick() {
                     closeBottomSheet()
                     workSheetItemDetailPresenter.changeWorkItemStatus(workItemId, status)
                 }
 
-                override fun onNegativeButtonClick() {
+                override fun onCancelClick() {
                     workSheetItemStatusAdapter.updateInitialStatus(textViewStatus.text.toString())
                 }
             })
-        dialog.show(supportFragmentManager, InfoWarningDialogFragment::class.simpleName)
     }
 
     override fun showAPIErrorMessage(message: String) {

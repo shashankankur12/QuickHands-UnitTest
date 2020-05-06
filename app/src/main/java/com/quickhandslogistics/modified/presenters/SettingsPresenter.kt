@@ -1,16 +1,16 @@
 package com.quickhandslogistics.modified.presenters
 
+import android.content.res.Resources
 import com.quickhandslogistics.modified.contracts.setting.SettingContract
 import com.quickhandslogistics.modified.models.SettingsModel
 import com.quickhandslogistics.utils.SharedPref
 
 class SettingsPresenter(
     private var settingView: SettingContract.View?,
-    sharedPref: SharedPref
+    resources: Resources, sharedPref: SharedPref
 ) : SettingContract.Presenter, SettingContract.Model.OnFinishedListener {
 
-    private val settingsModel: SettingsModel =
-        SettingsModel(sharedPref)
+    private val settingsModel: SettingsModel = SettingsModel(resources, sharedPref)
 
     /*
     *Presenter Interfaces
@@ -19,12 +19,16 @@ class SettingsPresenter(
         settingView = null
     }
 
-    override fun checkSelectedLanguage() {
-        settingsModel.checkSelectedLanguage(this)
+    override fun checkSelectedSettings() {
+        settingsModel.checkSelectedSettings(this)
     }
 
     override fun saveSelectedLanguage(selectedLanguage: String) {
         settingsModel.saveSelectedLanguage(selectedLanguage, this)
+    }
+
+    override fun changeNotificationState(checked: Boolean) {
+        settingsModel.saveNotificationState(checked, this)
     }
 
     /*
@@ -34,8 +38,8 @@ class SettingsPresenter(
         settingView?.restartActivity()
     }
 
-    override fun showSelectedLanguage(selectedLanguage: String) {
-        settingView?.showSelectedLanguage(selectedLanguage)
+    override fun showSelectedSettings(selectedLanguage: String, notificationEnabled: Boolean) {
+        settingView?.showSelectedSettings(selectedLanguage, notificationEnabled)
     }
 }
 

@@ -9,12 +9,13 @@ import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.contracts.common.InfoDialogWarningContract
+import com.quickhandslogistics.modified.adapters.common.DisplayLumpersListAdapter
 import com.quickhandslogistics.modified.contracts.lumpers.LumpersContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.modified.adapters.common.DisplayLumpersListAdapter
 import com.quickhandslogistics.modified.views.lumpers.LumperDetailActivity
+import com.quickhandslogistics.utils.CustomDialogWarningListener
+import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.content_choose_lumper.*
@@ -99,16 +100,15 @@ class DisplayLumpersListActivity : BaseActivity(), View.OnClickListener, TextWat
     }
 
     override fun onPhoneViewClick(lumperName: String, phone: String) {
-        val dialog = InfoWarningDialogFragment.newInstance(
+        CustomProgressBar.getInstance().showWarningDialog(
             String.format(getString(R.string.call_lumper_dialog_message), lumperName),
-            onClickListener = object : InfoDialogWarningContract.View.OnClickListener {
-                override fun onPositiveButtonClick() {
+            activity, object : CustomDialogWarningListener {
+                override fun onConfirmClick() {
                     startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))
                 }
 
-                override fun onNegativeButtonClick() {
+                override fun onCancelClick() {
                 }
             })
-        dialog.show(supportFragmentManager, InfoWarningDialogFragment::class.simpleName)
     }
 }

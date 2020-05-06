@@ -10,13 +10,14 @@ import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.views.SplashActivity
-import com.quickhandslogistics.modified.views.schedule.UnScheduleDetailActivity
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_FROM_DATE
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_IDENTITY
+import com.quickhandslogistics.modified.views.schedule.UnScheduleDetailActivity
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 
@@ -31,22 +32,30 @@ class NotificationService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        var notificationTitle = getString(R.string.app_name)
-        var notificationContent = ""
-        var notificationType = ""
-        if (!message.data.isNullOrEmpty()) {
-            if (message.data.containsKey(AppConstant.NOTIFICATION_KEY_TITLE)) {
-                notificationTitle = message.data[AppConstant.NOTIFICATION_KEY_TITLE].toString()
+        val notificationSystemSettingsEnabled =
+            NotificationManagerCompat.from(applicationContext).areNotificationsEnabled()
+        val notificationEnabled = SharedPref.getInstance()
+            .getBoolean(AppConstant.PREFERENCE_NOTIFICATION, defaultValue = true)
+
+        if (notificationSystemSettingsEnabled && notificationEnabled) {
+            var notificationTitle = getString(R.string.app_name)
+            var notificationContent = ""
+            var notificationType = ""
+            if (!message.data.isNullOrEmpty()) {
+                if (message.data.containsKey(AppConstant.NOTIFICATION_KEY_TITLE)) {
+                    notificationTitle = message.data[AppConstant.NOTIFICATION_KEY_TITLE].toString()
+                }
+                if (message.data.containsKey(AppConstant.NOTIFICATION_KEY_CONTENT)) {
+                    notificationContent =
+                        message.data[AppConstant.NOTIFICATION_KEY_CONTENT].toString()
+                }
+                if (message.data.containsKey(AppConstant.NOTIFICATION_KEY_TYPE)) {
+                    notificationType = message.data[AppConstant.NOTIFICATION_KEY_TYPE].toString()
+                }
+                createNotification(
+                    notificationTitle, notificationContent, notificationType, message.data
+                )
             }
-            if (message.data.containsKey(AppConstant.NOTIFICATION_KEY_CONTENT)) {
-                notificationContent = message.data[AppConstant.NOTIFICATION_KEY_CONTENT].toString()
-            }
-            if (message.data.containsKey(AppConstant.NOTIFICATION_KEY_TYPE)) {
-                notificationType = message.data[AppConstant.NOTIFICATION_KEY_TYPE].toString()
-            }
-            createNotification(
-                notificationTitle, notificationContent, notificationType, message.data
-            )
         }
     }
 

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.views.BaseFragment
-import com.quickhandslogistics.modified.views.LumperJobHistoryActivity
+import com.quickhandslogistics.view.activities.LumperJobHistoryActivity
 import com.quickhandslogistics.view.activities.LumperListActivity
 import kotlinx.android.synthetic.main.fragment_reports.*
 

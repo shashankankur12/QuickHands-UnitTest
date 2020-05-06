@@ -80,13 +80,6 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             R.id.actionNotes -> {
                 CustomProgressBar.getInstance()
                     .showInfoDialog(getString(R.string.string_note), scheduleTimeNotes, activity)
-/*                val dialog = InfoDialogFragment.newInstance(scheduleTimeNotes,
-                    showInfoIcon = false,
-                    onClickListener = object : InfoDialogContract.View.OnClickListener {
-                        override fun onPositiveButtonClick() {
-                        }
-                    })
-                dialog.show(supportFragmentManager, InfoDialogFragment::class.simpleName)*/
             }
             R.id.actionCancelAllWork -> {
                 startIntent(

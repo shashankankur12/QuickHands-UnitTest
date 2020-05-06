@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="LockedOrientationActivity">
         <activity
-            android:name=".modified.views.LumperJobHistoryActivity"
+            android:name=".view.activities.LumperJobHistoryActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".modified.views.common.BuildingOperationsViewActivity"
@@ -100,9 +100,6 @@
         </activity>
         <activity
             android:name=".modified.views.DashBoardActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".modified.views.common.ChooseLumperActivity"
             android:screenOrientation="portrait" />
 
         <service

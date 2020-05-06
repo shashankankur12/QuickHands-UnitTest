@@ -20,9 +20,7 @@ import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULED_TIME_NOTES
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
-import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.utils.Utils
-import com.quickhandslogistics.utils.ValueUtils
+import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.activity_edit_schedule_time.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -128,11 +126,20 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
                                 getString(R.string.request_help_error_message)
                             )
                         } else {
-                            editScheduleTimePresenter.initiateScheduleTime(
-                                scheduledLumpersIdsTimeMap, notes,
-                                if (requiredLumperCount.isNotEmpty()) requiredLumperCount.toInt() else 0,
-                                notesDM, Date(selectedTime)
-                            )
+                            CustomProgressBar.getInstance().showWarningDialog(
+                                activityContext = activity,
+                                listener = object : CustomDialogWarningListener {
+                                    override fun onConfirmClick() {
+                                        editScheduleTimePresenter.initiateScheduleTime(
+                                            scheduledLumpersIdsTimeMap, notes,
+                                            if (requiredLumperCount.isNotEmpty()) requiredLumperCount.toInt() else 0,
+                                            notesDM, Date(selectedTime)
+                                        )
+                                    }
+
+                                    override fun onCancelClick() {
+                                    }
+                                })
                         }
                     }
                 }

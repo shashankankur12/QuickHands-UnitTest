@@ -5,7 +5,7 @@ import android.view.View
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.ForgotPasswordContract
 import com.quickhandslogistics.modified.presenters.ForgotPasswordPresenter
-import com.quickhandslogistics.utils.CustomDialogSuccessListener
+import com.quickhandslogistics.utils.CustomDialogListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
@@ -58,7 +58,7 @@ class ForgotPasswordActivity : BaseActivity(), ForgotPasswordContract.View, View
 
     override fun showAPISuccessMessage(message: String) {
         CustomProgressBar.getInstance()
-            .showSuccessDialog(message, activity, object : CustomDialogSuccessListener {
+            .showSuccessDialog(message, activity, object : CustomDialogListener {
                 override fun onConfirmClick() {
                     onBackPressed()
                 }
