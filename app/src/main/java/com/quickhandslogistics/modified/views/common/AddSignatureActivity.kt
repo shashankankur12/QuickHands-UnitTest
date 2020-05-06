@@ -20,9 +20,9 @@ class AddSignatureActivity : BaseActivity(), View.OnClickListener, SignaturePad.
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
+        /*window.setFlags(
             WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE
-        )
+        )*/
         setContentView(R.layout.activity_add_signature)
         setupToolbar(getString(R.string.add_signature))
 
