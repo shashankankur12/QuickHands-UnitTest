@@ -7,6 +7,7 @@ import com.quickhandslogistics.modified.data.ErrorResponse
 import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.attendance.GetAttendanceAPIResponse
 import com.quickhandslogistics.modified.data.buildingOperations.BuildingOperationAPIResponse
+import com.quickhandslogistics.modified.data.customerSheet.CustomerSheetListAPIResponse
 import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRequest
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordResponse
@@ -19,15 +20,16 @@ import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeRequest
 import com.quickhandslogistics.modified.data.workSheet.*
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
-import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
+import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 import java.util.concurrent.TimeUnit
+
 
 object DataManager : AppConstant {
     private var retrofitStandard: Retrofit? = null
@@ -653,6 +655,70 @@ object DataManager : AppConstant {
         call.enqueue(object : Callback<BaseResponse> {
             override fun onResponse(
                 call: Call<BaseResponse>, response: Response<BaseResponse>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun getCustomerSheetList(
+        day: String, listener: ResponseListener<CustomerSheetListAPIResponse>
+    ) {
+        val call = getService().getCustomerSheetList(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN), day
+        )
+        call.enqueue(object : Callback<CustomerSheetListAPIResponse> {
+            override fun onResponse(
+                call: Call<CustomerSheetListAPIResponse>,
+                response: Response<CustomerSheetListAPIResponse>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<CustomerSheetListAPIResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun saveCustomerSheetList(
+        name: String, notes: String, file: File, listener: ResponseListener<BaseResponse>
+    ) {
+        val nameRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), name)
+        val notesRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), notes)
+
+        val signatureRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        val signatureMultiPartBody =
+            MultipartBody.Part.createFormData("signature", file.name, signatureRequestBody)
+
+        val call = getService().saveCustomerSheet(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
+            nameRequestBody, notesRequestBody, signatureMultiPartBody
+        )
+        call.enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(
+                call: Call<BaseResponse>,
+                response: Response<BaseResponse>
             ) {
                 var errorMessage = ""
                 if (!response.isSuccessful) {

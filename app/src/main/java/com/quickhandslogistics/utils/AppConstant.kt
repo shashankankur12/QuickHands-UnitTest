@@ -11,6 +11,7 @@ interface AppConstant {
         const val PREFERENCE_LANGUAGE = "pref_language"
         const val PREFERENCE_BUILDING_ID = "pref_building_id"
         const val PREFERENCE_REGISTRATION_TOKEN = "pref_registration_token"
+        const val PREFERENCE_NOTIFICATION = "pref_notification"
 
         //Notification Data Keys
         const val NOTIFICATION_KEY_TITLE = "NotificationTitle"

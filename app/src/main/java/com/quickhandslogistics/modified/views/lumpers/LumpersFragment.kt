@@ -1,6 +1,5 @@
 package com.quickhandslogistics.modified.views.lumpers
 
-import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -15,13 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.contracts.common.InfoDialogWarningContract
+import com.quickhandslogistics.modified.adapters.lumpers.LumpersAdapter
 import com.quickhandslogistics.modified.contracts.lumpers.LumpersContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.presenters.lumpers.LumpersPresenter
 import com.quickhandslogistics.modified.views.BaseFragment
-import com.quickhandslogistics.modified.adapters.lumpers.LumpersAdapter
-import com.quickhandslogistics.modified.views.common.InfoWarningDialogFragment
+import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
@@ -32,7 +30,6 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
 
     private lateinit var lumpersAdapter: LumpersAdapter
     private lateinit var lumpersPresenter: LumpersPresenter
-    private var progressDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,15 +84,6 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     /*
     * Presenter Listeners
     */
-   /* override fun hideProgressDialog() {
-        progressDialog?.dismiss()
-    }
-
-    override fun showProgressDialog(message: String) {
-        progressDialog =
-            CustomProgressBar.getInstance(fragmentActivity!!).showProgressDialog(message)
-    }*/
-
     override fun showAPIErrorMessage(message: String) {
         recyclerViewLumpers.visibility = View.GONE
         textViewEmptyData.visibility = View.VISIBLE
@@ -158,16 +146,15 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     }
 
     override fun onPhoneViewClick(lumperName: String, phone: String) {
-        val dialog = InfoWarningDialogFragment.newInstance(
+        CustomProgressBar.getInstance().showWarningDialog(
             String.format(getString(R.string.call_lumper_dialog_message), lumperName),
-            onClickListener = object : InfoDialogWarningContract.View.OnClickListener {
-                override fun onPositiveButtonClick() {
+            fragmentActivity!!, object : CustomDialogWarningListener {
+                override fun onConfirmClick() {
                     startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))
                 }
 
-                override fun onNegativeButtonClick() {
+                override fun onCancelClick() {
                 }
             })
-        dialog.show(childFragmentManager, InfoWarningDialogFragment::class.simpleName)
     }
 }

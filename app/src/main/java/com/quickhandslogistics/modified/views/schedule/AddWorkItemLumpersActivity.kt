@@ -15,6 +15,8 @@ import com.quickhandslogistics.modified.presenters.schedule.AddWorkItemLumpersPr
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE
+import com.quickhandslogistics.utils.CustomDialogWarningListener
+import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.activity_add_work_item_lumpers.*
@@ -95,9 +97,18 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
                 buttonAdd.id -> {
                     val selectedLumperIdsList = addWorkItemLumperAdapter.getSelectedLumper()
                     if (selectedLumperIdsList.size > 0) {
-                        addWorkItemLumpersPresenter.initiateAssigningLumpers(
-                            selectedLumperIdsList, workItemId, workItemType
-                        )
+                        CustomProgressBar.getInstance().showWarningDialog(
+                            activityContext = activity,
+                            listener = object : CustomDialogWarningListener {
+                                override fun onConfirmClick() {
+                                    addWorkItemLumpersPresenter.initiateAssigningLumpers(
+                                        selectedLumperIdsList, workItemId, workItemType
+                                    )
+                                }
+
+                                override fun onCancelClick() {
+                                }
+                            })
                     }
                 }
 

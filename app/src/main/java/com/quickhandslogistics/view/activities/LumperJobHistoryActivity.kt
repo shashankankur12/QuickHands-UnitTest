@@ -1,34 +1,37 @@
-package com.quickhandslogistics.modified.views.common
+package com.quickhandslogistics.view.activities
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.adapters.common.ChooseLumperAdapter
+import com.quickhandslogistics.view.adapter.LumperJobHistoryAdapter
 import com.quickhandslogistics.modified.contracts.common.ChooseLumperContract
-import com.quickhandslogistics.modified.contracts.common.InfoDialogWarningContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.presenters.common.ChooseLumperPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.lumpers.LumperDetailActivity
+import com.quickhandslogistics.utils.CustomDialogWarningListener
+import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.content_choose_lumper.*
 
-class ChooseLumperActivity : BaseActivity(), ChooseLumperContract.View, TextWatcher,
+class LumperJobHistoryActivity : BaseActivity(), ChooseLumperContract.View, TextWatcher,
     View.OnClickListener, ChooseLumperContract.View.OnAdapterItemClickListener {
 
+    private lateinit var chooseLumperAdapter: LumperJobHistoryAdapter
     private lateinit var chooseLumperPresenter: ChooseLumperPresenter
-    private lateinit var chooseLumperAdapter: ChooseLumperAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_choose_lumper)
-        setupToolbar(title = getString(R.string.choose_lumper))
+        setContentView(R.layout.activity_lumper_job_history2)
+
+        setupToolbar(getString(R.string.lumper_job_history))
 
         recyclerViewLumpers.apply {
             val linearLayoutManager = LinearLayoutManager(activity)
@@ -37,20 +40,9 @@ class ChooseLumperActivity : BaseActivity(), ChooseLumperContract.View, TextWatc
                 DividerItemDecoration(activity, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
             chooseLumperAdapter =
-                ChooseLumperAdapter(
-                    this@ChooseLumperActivity
-                )
+                LumperJobHistoryAdapter(this@LumperJobHistoryActivity)
             adapter = chooseLumperAdapter
         }
-
-        chooseLumperAdapter.registerAdapterDataObserver(object :
-            RecyclerView.AdapterDataObserver() {
-            override fun onChanged() {
-                super.onChanged()
-                textViewEmptyData.visibility =
-                    if (chooseLumperAdapter.itemCount == 0) View.VISIBLE else View.GONE
-            }
-        })
 
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
@@ -63,9 +55,6 @@ class ChooseLumperActivity : BaseActivity(), ChooseLumperContract.View, TextWatc
         chooseLumperPresenter.fetchLumpersList()
     }
 
-    /*
-    * Presenter Listeners
-    */
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }
@@ -114,6 +103,7 @@ class ChooseLumperActivity : BaseActivity(), ChooseLumperContract.View, TextWatc
     /*
     * Adapter Item Click Listeners
     */
+
     override fun onClickLumperDetail(employeeData: EmployeeData) {
         val bundle = Bundle()
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
@@ -121,22 +111,19 @@ class ChooseLumperActivity : BaseActivity(), ChooseLumperContract.View, TextWatc
     }
 
     override fun onSelectLumper(employeeData: EmployeeData) {
-        val dialog = InfoWarningDialogFragment.newInstance(
-            getString(R.string.string_ask_to_replace_new_lumper),
-            positiveButtonText = getString(R.string.string_yes),
-            negativeButtonText = getString(R.string.string_no),
-            onClickListener = object : InfoDialogWarningContract.View.OnClickListener {
-                override fun onPositiveButtonClick() {
-                    onBackPressed()
-                }
-
-                override fun onNegativeButtonClick() {
-                }
-            })
-        dialog.show(supportFragmentManager, InfoWarningDialogFragment::class.simpleName)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onPhoneViewClick(lumperName: String, phone: String) {
+        CustomProgressBar.getInstance().showWarningDialog(
+            String.format(getString(R.string.call_lumper_dialog_message), lumperName),
+            activity, object : CustomDialogWarningListener {
+                override fun onConfirmClick() {
+                    startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))
+                }
 
+                override fun onCancelClick() {
+                }
+            })
     }
 }

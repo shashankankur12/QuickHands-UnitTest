@@ -1,4 +1,4 @@
-package com.quickhandslogistics.modified.adapters
+package com.quickhandslogistics.view.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -28,7 +28,7 @@ class LumperJobHistoryAdapter(var adapterItemClickListener: ChooseLumperContract
 
     override fun onCreateViewHolder(
         parent: ViewGroup, viewType: Int
-    ): LumperJobHistoryAdapter.ViewHolder {
+    ): ViewHolder {
         val view: View =
             LayoutInflater.from(parent.context).inflate(R.layout.item_lumper_layout, parent, false)
         return ViewHolder(view, parent.context)
@@ -42,7 +42,7 @@ class LumperJobHistoryAdapter(var adapterItemClickListener: ChooseLumperContract
         return if (searchEnabled) filteredItems[position] else items[position]
     }
 
-    override fun onBindViewHolder(holder: LumperJobHistoryAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 

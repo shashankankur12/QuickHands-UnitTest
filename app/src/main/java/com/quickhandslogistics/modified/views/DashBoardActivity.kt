@@ -43,9 +43,9 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
+        /*window.setFlags(
             WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE
-        )
+        )*/
         setContentView(R.layout.activity_dashboard)
         setupToolbar(showBackButton = false)
         setUpNavigationBar()
@@ -80,13 +80,6 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             R.id.actionNotes -> {
                 CustomProgressBar.getInstance()
                     .showInfoDialog(getString(R.string.string_note), scheduleTimeNotes, activity)
-/*                val dialog = InfoDialogFragment.newInstance(scheduleTimeNotes,
-                    showInfoIcon = false,
-                    onClickListener = object : InfoDialogContract.View.OnClickListener {
-                        override fun onPositiveButtonClick() {
-                        }
-                    })
-                dialog.show(supportFragmentManager, InfoDialogFragment::class.simpleName)*/
             }
             R.id.actionCancelAllWork -> {
                 startIntent(

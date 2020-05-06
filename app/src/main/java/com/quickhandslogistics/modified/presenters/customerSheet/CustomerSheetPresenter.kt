@@ -4,11 +4,12 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.customerSheet.CustomerSheetContract
-import com.quickhandslogistics.modified.data.workSheet.WorkSheetListAPIResponse
+import com.quickhandslogistics.modified.data.customerSheet.CustomerSheetListAPIResponse
 import com.quickhandslogistics.modified.models.customerSheet.CustomerSheetModel
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 import kotlin.Comparator
+import kotlin.math.sign
 
 class CustomerSheetPresenter(
     private var workSheetView: CustomerSheetContract.View?,
@@ -21,6 +22,13 @@ class CustomerSheetPresenter(
         workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_message))
         customerSheetModel.fetchHeaderInfo(date, this)
         customerSheetModel.fetchCustomerSheetList(date, this)
+    }
+
+    override fun saveCustomerSheet(
+        customerName: String, notesCustomer: String, signatureFilePath: String
+    ) {
+        workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        customerSheetModel.saveCustomerSheet(customerName, notesCustomer, signatureFilePath, this)
     }
 
     override fun onDestroy() {
@@ -36,32 +44,41 @@ class CustomerSheetPresenter(
         }
     }
 
-    override fun onSuccessFetchCustomerSheet(workSheetListAPIResponse: WorkSheetListAPIResponse) {
+    override fun onSuccessFetchCustomerSheet(
+        customerSheetListAPIResponse: CustomerSheetListAPIResponse, selectedDate: Date
+    ) {
         workSheetView?.hideProgressDialog()
-        workSheetListAPIResponse.data?.let { data ->
+        customerSheetListAPIResponse.data?.scheduleDetails?.let { scheduleDetails ->
 
             // Sort all the work Items by their Start Time
-            data.inProgress?.sortWith(Comparator { workItem1, workItem2 ->
+            scheduleDetails.inProgress?.sortWith(Comparator { workItem1, workItem2 ->
                 workItem1.startTime!!.compareTo(workItem2.startTime!!)
             })
-            data.onHold?.sortWith(Comparator { workItem1, workItem2 ->
+            scheduleDetails.onHold?.sortWith(Comparator { workItem1, workItem2 ->
                 workItem1.startTime!!.compareTo(workItem2.startTime!!)
             })
-            data.scheduled?.sortWith(Comparator { workItem1, workItem2 ->
+            scheduleDetails.scheduled?.sortWith(Comparator { workItem1, workItem2 ->
                 workItem1.startTime!!.compareTo(workItem2.startTime!!)
             })
-            data.cancelled?.sortWith(Comparator { workItem1, workItem2 ->
+            scheduleDetails.cancelled?.sortWith(Comparator { workItem1, workItem2 ->
                 workItem1.startTime!!.compareTo(workItem2.startTime!!)
             })
-            data.completed?.sortWith(Comparator { workItem1, workItem2 ->
+            scheduleDetails.completed?.sortWith(Comparator { workItem1, workItem2 ->
                 workItem1.startTime!!.compareTo(workItem2.startTime!!)
             })
 
-            workSheetView?.showCustomerSheets(data)
+            workSheetView?.showCustomerSheets(
+                scheduleDetails, customerSheetListAPIResponse.data?.customerSheet, selectedDate
+            )
         }
     }
 
     override fun onSuccessGetHeaderInfo(buildingName: String, date: String) {
         workSheetView?.showHeaderInfo(buildingName, date)
+    }
+
+    override fun onSuccessSaveCustomerSheet() {
+        workSheetView?.hideProgressDialog()
+        workSheetView?.customerSavedSuccessfully()
     }
 }

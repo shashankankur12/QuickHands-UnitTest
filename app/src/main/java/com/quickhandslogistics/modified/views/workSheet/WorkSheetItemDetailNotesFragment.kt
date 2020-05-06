@@ -53,6 +53,14 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener {
         ) {
             editTextQHLNotes.setText(workItemDetail.notesQHL)
         }
+
+        workItemDetail.status?.let { status ->
+            if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED || status == AppConstant.WORK_ITEM_STATUS_CANCELLED) {
+                buttonSubmit.visibility = View.GONE
+            } else {
+                buttonSubmit.visibility = View.VISIBLE
+            }
+        }
     }
 
     override fun onClick(view: View?) {

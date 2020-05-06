@@ -1,24 +1,28 @@
 package com.quickhandslogistics.modified.contracts.setting
 
+import com.quickhandslogistics.modified.presenters.SettingsPresenter
+
 class SettingContract {
     interface Model {
-        fun checkSelectedLanguage(listener: OnFinishedListener)
+        fun checkSelectedSettings(listener: OnFinishedListener)
         fun saveSelectedLanguage(selectedLanguage: String, listener: OnFinishedListener)
+        fun saveNotificationState(checked: Boolean, listener: OnFinishedListener)
 
         interface OnFinishedListener {
-            fun showSelectedLanguage(selectedLanguage: String)
+            fun showSelectedSettings(selectedLanguage: String, notificationEnabled: Boolean)
             fun restartActivity()
         }
     }
 
     interface View {
-        fun showSelectedLanguage(selectedLanguage: String)
+        fun showSelectedSettings(selectedLanguage: String, notificationEnabled: Boolean)
         fun restartActivity()
     }
 
     interface Presenter {
         fun onDestroy()
-        fun checkSelectedLanguage()
+        fun checkSelectedSettings()
         fun saveSelectedLanguage(selectedLanguage: String)
+        fun changeNotificationState(checked: Boolean)
     }
 }

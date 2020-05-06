@@ -29,16 +29,16 @@ class SharedPref private constructor(context: Context) : AppConstant {
         }
     }
 
-    fun getBoolean(key: String): Boolean {
-        return sharedPreferences.getBoolean(key, false)
+    fun getBoolean(key: String, defaultValue: Boolean = false): Boolean {
+        return sharedPreferences.getBoolean(key, defaultValue)
     }
 
     fun setBoolean(key: String, loggedIn: Boolean) {
         editor.putBoolean(key, loggedIn).apply()
     }
 
-    fun getString(key: String): String {
-        return sharedPreferences.getString(key, "")!!
+    fun getString(key: String, defaultValue: String = ""): String {
+        return sharedPreferences.getString(key, defaultValue)!!
     }
 
     fun getClassObject(key: String, javaClass: Class<*>): Any? {

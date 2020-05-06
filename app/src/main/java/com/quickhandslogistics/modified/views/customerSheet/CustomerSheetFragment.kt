@@ -16,16 +16,19 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.adapters.customerSheet.CustomerSheetPagerAdapter
 import com.quickhandslogistics.modified.contracts.DashBoardContract
 import com.quickhandslogistics.modified.contracts.customerSheet.CustomerSheetContract
+import com.quickhandslogistics.modified.data.customerSheet.CustomerSheetListAPIResponse
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
-import com.quickhandslogistics.modified.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.modified.presenters.customerSheet.CustomerSheetPresenter
 import com.quickhandslogistics.modified.views.BaseFragment
+import com.quickhandslogistics.utils.CustomDialogListener
+import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.fragment_customer_sheet.*
 import kotlinx.android.synthetic.main.item_calendar_view.view.*
 import java.util.*
 
-class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View {
+class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
+    CustomerSheetContract.View.OnFragmentInteractionListener {
 
     private var listener: DashBoardContract.View.OnFragmentInteractionListener? = null
 
@@ -80,25 +83,44 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View {
         textViewTotalCount.text = ""
     }
 
-    override fun showCustomerSheets(data: WorkSheetListAPIResponse.Data) {
+    override fun showCustomerSheets(
+        scheduleDetails: CustomerSheetListAPIResponse.ScheduleDetails,
+        customerSheet: CustomerSheetListAPIResponse.CustomerSheetData?,
+        selectedDate: Date
+    ) {
+        selectedTime = selectedDate.time
+
         val onGoingWorkItems = ArrayList<WorkItemDetail>()
-        onGoingWorkItems.addAll(data.inProgress!!)
-        onGoingWorkItems.addAll(data.onHold!!)
-        onGoingWorkItems.addAll(data.scheduled!!)
+        onGoingWorkItems.addAll(scheduleDetails.inProgress!!)
+        onGoingWorkItems.addAll(scheduleDetails.onHold!!)
+        onGoingWorkItems.addAll(scheduleDetails.scheduled!!)
 
         val allWorkItems = ArrayList<WorkItemDetail>()
         allWorkItems.addAll(onGoingWorkItems)
-        allWorkItems.addAll(data.cancelled!!)
-        allWorkItems.addAll(data.completed!!)
+        allWorkItems.addAll(scheduleDetails.cancelled!!)
+        allWorkItems.addAll(scheduleDetails.completed!!)
         textViewTotalCount.text =
             String.format(getString(R.string.total_containers_s), allWorkItems.size)
 
-        adapter.updateCustomerSheetList(onGoingWorkItems, data.cancelled!!, data.completed!!)
+        adapter.updateCustomerSheetList(
+            onGoingWorkItems, scheduleDetails.cancelled!!,
+            scheduleDetails.completed!!, customerSheet, selectedTime
+        )
     }
 
     override fun showHeaderInfo(buildingName: String, date: String) {
         textViewBuildingName.text = buildingName.capitalize()
         textViewWorkItemsDate.text = date
+    }
+
+    override fun customerSavedSuccessfully() {
+        CustomProgressBar.getInstance()
+            .showSuccessDialog(getString(R.string.customer_sheet_submitted_successfully),
+                fragmentActivity!!, object : CustomDialogListener {
+                    override fun onConfirmClick() {
+                        customerSheetPresenter.getCustomerSheetByDate(Date(selectedTime))
+                    }
+                })
     }
 
     private fun initializeCalendar() {
@@ -174,5 +196,11 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View {
     override fun onDestroy() {
         super.onDestroy()
         customerSheetPresenter.onDestroy()
+    }
+
+    override fun saveCustomerSheet(
+        customerName: String, notesCustomer: String, signatureFilePath: String
+    ) {
+        customerSheetPresenter.saveCustomerSheet(customerName, notesCustomer, signatureFilePath)
     }
 }

@@ -21,7 +21,7 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View {
         setContentView(R.layout.activity_lead_profile)
         setupToolbar(title = getString(R.string.my_profile))
 
-        leadProfilePresenter = LeadProfilePresenter(this, sharedPref)
+        leadProfilePresenter = LeadProfilePresenter(this, resources, sharedPref)
         leadProfilePresenter.loadLeadProfileData()
     }
 

@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="LockedOrientationActivity">
         <activity
-            android:name=".modified.views.LumperJobHistoryActivity"
+            android:name=".view.activities.LumperJobHistoryActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".modified.views.common.BuildingOperationsViewActivity"
@@ -101,9 +101,6 @@
         <activity
             android:name=".modified.views.DashBoardActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".modified.views.common.ChooseLumperActivity"
-            android:screenOrientation="portrait" />
 
         <service
             android:name=".services.NotificationService"
@@ -112,6 +109,15 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.quickhandslogistics.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths" />
+        </provider>
     </application>
 
 </manifest>

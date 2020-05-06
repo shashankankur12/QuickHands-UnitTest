@@ -12,6 +12,8 @@ import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_ALLOW_UPDATE
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_BUILDING_PARAMETERS
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
+import com.quickhandslogistics.utils.CustomDialogWarningListener
+import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.content_building_operations.*
 
@@ -55,7 +57,18 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener,
                 buttonSubmit.id -> {
                     val data = buildingOperationsAdapter?.getUpdatedData()
                     data?.let {
-                        buildingOperationsPresenter.saveBuildingOperationsData(workItemId, data)
+                        CustomProgressBar.getInstance().showWarningDialog(
+                            activityContext = activity,
+                            listener = object : CustomDialogWarningListener {
+                                override fun onConfirmClick() {
+                                    buildingOperationsPresenter.saveBuildingOperationsData(
+                                        workItemId, data
+                                    )
+                                }
+
+                                override fun onCancelClick() {
+                                }
+                            })
                     }
                 }
                 else -> {
