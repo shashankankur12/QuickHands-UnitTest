@@ -14,6 +14,7 @@ import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.DateUtils.Companion.convertDateStringToTime
 import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import de.hdodenhof.circleimageview.CircleImageView
@@ -25,11 +26,10 @@ class WorkSheetItemDetailLumpersAdapter(
 
     private var workItemStatus = ""
     private var lumperList = ArrayList<EmployeeData>()
-    private var timingsData = LinkedHashMap<String, LumpersTimeSchedule>()
+    private var timingsData = HashMap<String, LumpersTimeSchedule>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemHolder {
-        val view: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_work_item_detail_lumper_time, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_work_item_detail_lumper_time, parent, false)
         return WorkItemHolder(view, parent.context)
     }
 
@@ -58,9 +58,7 @@ class WorkSheetItemDetailLumpersAdapter(
 
         fun bind(employeeData: EmployeeData) {
             if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl)) {
-                Glide.with(context).load(employeeData.profileImageUrl)
-                    .placeholder(R.drawable.dummy).error(R.drawable.dummy)
-                    .into(circleImageViewProfile)
+                Glide.with(context).load(employeeData.profileImageUrl).placeholder(R.drawable.dummy).error(R.drawable.dummy).into(circleImageViewProfile)
             } else {
                 Glide.with(context).clear(circleImageViewProfile);
             }
@@ -80,13 +78,9 @@ class WorkSheetItemDetailLumpersAdapter(
 
             if (timingsData.containsKey(employeeData.id)) {
                 val timingDetail = timingsData[employeeData.id]
-                timingDetail?.let { timingDetail ->
-                    val startTime = DateUtils.convertDateStringToTime(
-                        DateUtils.PATTERN_API_RESPONSE, timingDetail.startTime
-                    )
-                    val endTime = DateUtils.convertDateStringToTime(
-                        DateUtils.PATTERN_API_RESPONSE, timingDetail.endTime
-                    )
+                timingDetail?.let {
+                    val startTime = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.startTime)
+                    val endTime = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.endTime)
                     textViewWorkTime.text = String.format(
                         "%s - %s",
                         if (startTime.isNotEmpty()) startTime else "NA",
@@ -100,18 +94,18 @@ class WorkSheetItemDetailLumpersAdapter(
                         textViewWaitingTime.text = "NA"
                     }
 
-                    val breakTimeStart = DateUtils.convertDateStringToTime(
-                        DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeStart
-                    )
-                    val breakTimeEnd = DateUtils.convertDateStringToTime(
-                        DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeEnd
-                    )
+                    val breakTimeStart = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeStart)
+                    val breakTimeEnd = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeEnd)
                     textViewBreakTime.text = String.format(
                         "%s - %s",
                         if (breakTimeStart.isNotEmpty()) breakTimeStart else "NA",
                         if (breakTimeEnd.isNotEmpty()) breakTimeEnd else "NA"
                     )
                 }
+            } else {
+                textViewWorkTime.text = "NA - NA"
+                textViewWaitingTime.text = "NA"
+                textViewBreakTime.text = "NA - NA"
             }
 
             changeAddButtonVisibility()
@@ -139,11 +133,7 @@ class WorkSheetItemDetailLumpersAdapter(
         }
     }
 
-    fun updateList(
-        lumperList: ArrayList<EmployeeData>?,
-        timingsData: LinkedHashMap<String, LumpersTimeSchedule>,
-        status: String? = ""
-    ) {
+    fun updateList(lumperList: ArrayList<EmployeeData>?, timingsData: LinkedHashMap<String, LumpersTimeSchedule>, status: String? = "") {
         this.timingsData.clear()
         this.lumperList.clear()
         lumperList?.let {

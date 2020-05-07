@@ -139,5 +139,21 @@ class DateUtils {
             }
             return 0
         }
+
+        fun isFutureTime(beforeTime: Long, afterTime: Long): Boolean {
+            val beforeCalendar = Calendar.getInstance()
+            beforeCalendar.timeInMillis = beforeTime
+            val afterCalendar = Calendar.getInstance()
+            afterCalendar.timeInMillis = afterTime
+
+            val isPastHour =
+                beforeCalendar[Calendar.HOUR_OF_DAY] < afterCalendar[Calendar.HOUR_OF_DAY]
+            return if (isPastHour) {
+                true
+            } else {
+                (beforeCalendar[Calendar.HOUR_OF_DAY] == afterCalendar[Calendar.HOUR_OF_DAY]
+                        && beforeCalendar[Calendar.MINUTE] < afterCalendar[Calendar.MINUTE])
+            }
+        }
     }
 }

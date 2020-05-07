@@ -108,4 +108,8 @@ open class BaseActivity : AppCompatActivity(), BaseContract.View {
     override fun hideProgressDialog() {
         CustomProgressBar.getInstance().hide()
     }
+
+    fun showErrorDialog(message: String) {
+        CustomProgressBar.getInstance().showErrorDialog(message, activity)
+    }
 }
