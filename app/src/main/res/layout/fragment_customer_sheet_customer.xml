@@ -79,41 +79,52 @@
                 android:textSize="@dimen/_12ssp" />
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutSignature"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
             android:background="@drawable/schedule_item_background"
             android:orientation="vertical"
-            android:padding="@dimen/_10sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_5sdp"
             app:layout_constraintBottom_toTopOf="@+id/buttonSubmit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layoutCustomerNotes">
 
             <TextView
+                android:id="@+id/textViewSignatureHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_5sdp"
                 android:text="@string/signature"
                 android:textColor="@color/buildingTitle"
                 android:textSize="@dimen/_14ssp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/imageViewSignature"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_80sdp"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:visibility="gone" />
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewSignatureHeader" />
 
             <TextView
                 android:id="@+id/textViewAddSignature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginTop="@dimen/_2sdp"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:drawableStart="@drawable/ic_add_time_plus"
@@ -123,14 +134,16 @@
                 android:textColor="@color/buttonRed"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"
-                android:visibility="visible" />
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textViewSignature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginTop="@dimen/_2sdp"
                 android:drawableStart="@drawable/ic_done"
                 android:drawablePadding="@dimen/_5sdp"
                 android:padding="@dimen/_5sdp"
@@ -138,14 +151,17 @@
                 android:textColor="@color/online"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"
-                android:visibility="visible" />
-        </LinearLayout>
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/buttonSubmit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:background="@drawable/round_button_selector"
             android:text="@string/string_submit"
