@@ -5,14 +5,15 @@ import com.quickhandslogistics.modified.contracts.lumperSheet.LumperSheetContrac
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
+import java.util.*
 
 class LumperSheetModel : LumperSheetContract.Model {
 
-    override fun fetchLumperSheetList(onFinishedListener: LumperSheetContract.Model.OnFinishedListener) {
+    override fun fetchLumperSheetList(selectedDate: Date, onFinishedListener: LumperSheetContract.Model.OnFinishedListener) {
         DataManager.getAllLumpersData(object : ResponseListener<AllLumpersResponse> {
             override fun onSuccess(response: AllLumpersResponse) {
                 if (response.success) {
-                    onFinishedListener.onSuccess(response)
+                    onFinishedListener.onSuccess(response, selectedDate)
                 } else {
                     onFinishedListener.onFailure(response.message)
                 }

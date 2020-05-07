@@ -45,9 +45,7 @@ class CustomerSheetContract {
 
     interface Presenter {
         fun getCustomerSheetByDate(date: Date)
-        fun saveCustomerSheet(
-            customerName: String, notesCustomer: String, signatureFilePath: String
-        )
+        fun saveCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String)
         fun onDestroy()
     }
 }

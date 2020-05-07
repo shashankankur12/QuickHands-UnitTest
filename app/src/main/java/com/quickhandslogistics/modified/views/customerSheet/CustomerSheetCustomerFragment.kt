@@ -139,8 +139,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
             data?.let {
-                val signatureFilePath =
-                    data.getStringExtra(AddSignatureActivity.ARG_SIGNATURE_FILE_PATH)
+                val signatureFilePath = data.getStringExtra(AddSignatureActivity.ARG_SIGNATURE_FILE_PATH)
                 showLocalSignatureOnUI(signatureFilePath)
             }
         }
@@ -149,8 +148,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
     private fun showLocalSignatureOnUI(signatureFilePath: String?) {
         if (!signatureFilePath.isNullOrEmpty()) {
             this.signatureFilePath = signatureFilePath
-            Glide.with(fragmentActivity!!).load(File(signatureFilePath))
-                .into(imageViewSignature)
+            Glide.with(fragmentActivity!!).load(File(signatureFilePath)).into(imageViewSignature)
             imageViewSignature.visibility = View.VISIBLE
             textViewAddSignature.visibility = View.GONE
         } else {

@@ -24,9 +24,7 @@ class CustomerSheetPresenter(
         customerSheetModel.fetchCustomerSheetList(date, this)
     }
 
-    override fun saveCustomerSheet(
-        customerName: String, notesCustomer: String, signatureFilePath: String
-    ) {
+    override fun saveCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String) {
         workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_message))
         customerSheetModel.saveCustomerSheet(customerName, notesCustomer, signatureFilePath, this)
     }

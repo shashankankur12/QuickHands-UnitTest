@@ -1,5 +1,7 @@
 package com.quickhandslogistics.modified.views.lumperSheet
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
@@ -16,13 +18,14 @@ import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
 import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
 import com.michalsvec.singlerowcalendar.utils.DateUtils
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.views.common.AddSignatureActivity
 import com.quickhandslogistics.modified.adapters.lumperSheet.LumperSheetAdapter
 import com.quickhandslogistics.modified.contracts.lumperSheet.LumperSheetContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.presenters.lumperSheet.LumperSheetPresenter
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.lumpers.LumperDetailActivity
+import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
@@ -47,10 +50,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         availableDates = getAvailableDates()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_lumper_sheet, container, false)
     }
 
@@ -60,10 +60,9 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         recyclerViewLumpersSheet.apply {
             val linearLayoutManager = LinearLayoutManager(fragmentActivity!!)
             layoutManager = linearLayoutManager
-            val dividerItemDecoration =
-                DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
+            val dividerItemDecoration = DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            lumperSheetAdapter = LumperSheetAdapter(this@LumperSheetFragment)
+            lumperSheetAdapter = LumperSheetAdapter(resources, this@LumperSheetFragment)
             adapter = lumperSheetAdapter
         }
 
@@ -95,9 +94,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
                 }
             }
 
-            override fun setCalendarViewResourceId(
-                position: Int, date: Date, isSelected: Boolean
-            ): Int {
+            override fun setCalendarViewResourceId(position: Int, date: Date, isSelected: Boolean): Int {
                 return R.layout.item_calendar_view
             }
         }
@@ -192,10 +189,14 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     override fun onItemClick(employeeData: EmployeeData) {
         val bundle = Bundle()
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
-        startIntent(LumperWorkDetailActivity::class.java, bundle = bundle)
+        bundle.putLong(ScheduleMainFragment.ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
+        startIntent(LumperWorkDetailActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }
 
-    override fun onAddSignatureItemClick(position: Int) {
-        startIntent(AddSignatureActivity::class.java)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
+            lumperSheetPresenter.getLumpersSheetByDate(Date(selectedTime))
+        }
     }
 }

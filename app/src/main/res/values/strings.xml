@@ -244,4 +244,5 @@
     <string name="customer_sheet_warning_message"><![CDATA[Please provide both Customer Representative Name & his Signature.]]></string>
     <string name="error">Error</string>
     <string name="customer_sheet_submitted_successfully">Customer Sheet submitted successfully</string>
+    <string name="pending">Pending</string>
 </resources>

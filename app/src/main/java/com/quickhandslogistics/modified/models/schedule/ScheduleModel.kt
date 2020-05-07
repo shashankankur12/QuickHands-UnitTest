@@ -15,8 +15,7 @@ class ScheduleModel(private val sharedPref: SharedPref) : ScheduleContract.Model
         selectedDate: Date,
         onFinishedListener: ScheduleContract.Model.OnFinishedListener
     ) {
-        val dateString =
-            DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
+        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
 
         DataManager.getSchedulesList(
             dateString, object : ResponseListener<ScheduleListAPIResponse> {

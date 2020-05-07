@@ -16,12 +16,9 @@ class LumperSheetPresenter(
 
     private val lumperSheetModel: LumperSheetModel = LumperSheetModel()
 
-    override fun getLumpersSheetByDate(date: Date) {
-        val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, date)
-        lumperSheetView?.showDateString(dateString)
-
+    override fun getLumpersSheetByDate(selectedDate: Date) {
         lumperSheetView?.showProgressDialog(resources.getString(R.string.api_loading_message))
-        lumperSheetModel.fetchLumperSheetList(this)
+        lumperSheetModel.fetchLumperSheetList(selectedDate, this)
     }
 
     override fun onDestroy() {
@@ -37,8 +34,11 @@ class LumperSheetPresenter(
         }
     }
 
-    override fun onSuccess(response: AllLumpersResponse) {
+    override fun onSuccess(response: AllLumpersResponse, selectedDate: Date) {
         lumperSheetView?.hideProgressDialog()
+
+        val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
+        lumperSheetView?.showDateString(dateString)
         lumperSheetView?.showLumperSheetData(response.data!!)
     }
 }

@@ -737,6 +737,42 @@ object DataManager : AppConstant {
         })
     }
 
+    fun saveLumperSigntaure(
+        lumperId: String, day: String, file: File, listener: ResponseListener<BaseResponse>
+    ) {
+        val lumperIdRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), lumperId)
+        val dayRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), day)
+
+        val signatureRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        val signatureMultiPartBody =
+            MultipartBody.Part.createFormData("signature", file.name, signatureRequestBody)
+
+        val call = getService().saveLumperSignature(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
+            dayRequestBody, lumperIdRequestBody, signatureMultiPartBody
+        )
+        call.enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(
+                call: Call<BaseResponse>,
+                response: Response<BaseResponse>
+            ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
     private fun getErrorMessage(errorBody: ResponseBody?): String {
         var errorMessage = ""
         errorBody?.let {

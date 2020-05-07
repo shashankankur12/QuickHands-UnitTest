@@ -1,6 +1,7 @@
 package com.quickhandslogistics.modified.adapters.lumperSheet
 
 import android.content.Context
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class LumperSheetAdapter(
+    private var resources: Resources,
     var adapterItemClickListener: LumperSheetContract.View.OnAdapterItemClickListener
 ) : Adapter<LumperSheetAdapter.LumperViewHolder>() {
 
@@ -57,8 +59,7 @@ class LumperSheetAdapter(
         var textViewLumperName: TextView = view.textViewLumperName
         var circleImageViewProfile: CircleImageView = view.circleImageViewProfile
         var textViewEmployeeId: TextView = view.textViewEmployeeId
-        var textViewAddSignature: TextView = view.textViewAddSignature
-        var textViewSignature: TextView = view.textViewSignature
+        var textViewStatus: TextView = view.textViewStatus
 
         fun bind(employeeData: EmployeeData) {
             if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl)) {
@@ -83,23 +84,19 @@ class LumperSheetAdapter(
             }
 
             if (adapterPosition % 2 == 0) {
-                textViewAddSignature.visibility = View.VISIBLE
-                textViewSignature.visibility = View.GONE
+                textViewStatus.text = resources.getString(R.string.complete)
+                textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
             } else {
-                textViewAddSignature.visibility = View.GONE
-                textViewSignature.visibility = View.VISIBLE
+                textViewStatus.text = resources.getString(R.string.pending)
+                textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
             }
 
-            textViewAddSignature.setOnClickListener(this)
             itemView.setOnClickListener(this)
         }
 
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
-                    textViewAddSignature.id -> {
-                        adapterItemClickListener.onAddSignatureItemClick(adapterPosition)
-                    }
                     itemView.id -> {
                         val lumperData = getItem(adapterPosition)
                         adapterItemClickListener.onItemClick(lumperData)
