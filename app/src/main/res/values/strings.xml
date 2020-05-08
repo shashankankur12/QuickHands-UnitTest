@@ -245,4 +245,6 @@
     <string name="error">Error</string>
     <string name="customer_sheet_submitted_successfully">Customer Sheet submitted successfully</string>
     <string name="pending">Pending</string>
+    <string name="lumper_sheet_submitted_successfully">Lumper Sheet submitted successfully</string>
+    <string name="string_ask_to_submit_lumper_sheet">You want to submit the lumper sheet.</string>
 </resources>

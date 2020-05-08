@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.lumperSheet.LumperSheetContract
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.data.lumperSheet.LumperSheetListAPIResponse
 import com.quickhandslogistics.modified.models.lumperSheet.LumperSheetModel
 import com.quickhandslogistics.utils.DateUtils
 import java.util.*
@@ -21,6 +21,11 @@ class LumperSheetPresenter(
         lumperSheetModel.fetchLumperSheetList(selectedDate, this)
     }
 
+    override fun initiateSheetSubmission(selectedDate: Date) {
+        lumperSheetView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        lumperSheetModel.submitLumperSheet(selectedDate, this)
+    }
+
     override fun onDestroy() {
         lumperSheetView = null
     }
@@ -34,11 +39,16 @@ class LumperSheetPresenter(
         }
     }
 
-    override fun onSuccess(response: AllLumpersResponse, selectedDate: Date) {
+    override fun onSuccess(response: LumperSheetListAPIResponse, selectedDate: Date) {
         lumperSheetView?.hideProgressDialog()
 
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
         lumperSheetView?.showDateString(dateString)
-        lumperSheetView?.showLumperSheetData(response.data!!)
+        lumperSheetView?.showLumperSheetData(response.data?.lumpersInfo!!, response.data?.isSheetSubmitted!!, selectedDate)
+    }
+
+    override fun onSuccessSubmitLumperSheet() {
+        lumperSheetView?.hideProgressDialog()
+        lumperSheetView?.sheetSubmittedSuccessfully()
     }
 }

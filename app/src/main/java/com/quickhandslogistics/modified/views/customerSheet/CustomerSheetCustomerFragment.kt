@@ -105,9 +105,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-    private fun updateUIVisibility(
-        signed: Boolean, currentDate: Boolean, inCompleteWorkItemsCount: Int
-    ) {
+    private fun updateUIVisibility(signed: Boolean, currentDate: Boolean, inCompleteWorkItemsCount: Int) {
         imageViewSignature.visibility = View.GONE
         buttonSubmit.visibility = if (currentDate) View.VISIBLE else View.GONE
         textViewSignature.visibility = if (signed) View.VISIBLE else View.GONE

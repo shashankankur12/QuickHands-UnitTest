@@ -164,6 +164,7 @@
                     android:backgroundTint="@color/buildingTitle"
                     android:hint="@string/no_of_lumpers_needed"
                     android:inputType="number"
+                    android:maxLength="3"
                     android:textColor="@color/scheduleDetail"
                     android:textCursorDrawable="@drawable/color_cursor"
                     android:textSize="@dimen/_12ssp" />

@@ -13,6 +13,9 @@ import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordReques
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordResponse
 import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
+import com.quickhandslogistics.modified.data.lumperSheet.LumperSheetListAPIResponse
+import com.quickhandslogistics.modified.data.lumperSheet.LumperWorkDetailAPIResponse
+import com.quickhandslogistics.modified.data.lumperSheet.SubmitLumperSheetRequest
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.data.schedule.*
 import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
@@ -737,9 +740,53 @@ object DataManager : AppConstant {
         })
     }
 
-    fun saveLumperSigntaure(
-        lumperId: String, day: String, file: File, listener: ResponseListener<BaseResponse>
-    ) {
+    fun getLumperSheetList(day: String, listener: ResponseListener<LumperSheetListAPIResponse>) {
+        val call = getService().getLumperSheetList(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN), day
+        )
+        call.enqueue(object : Callback<LumperSheetListAPIResponse> {
+            override fun onResponse(call: Call<LumperSheetListAPIResponse>, response: Response<LumperSheetListAPIResponse>) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<LumperSheetListAPIResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun getLumperWorkDetails(lumperId: String, day: String, listener: ResponseListener<LumperWorkDetailAPIResponse>) {
+        val call = getService().getLumperWorkDetail(
+            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN), day, lumperId
+        )
+        call.enqueue(object : Callback<LumperWorkDetailAPIResponse> {
+            override fun onResponse(call: Call<LumperWorkDetailAPIResponse>, response: Response<LumperWorkDetailAPIResponse>) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<LumperWorkDetailAPIResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun saveLumperSigntaure(lumperId: String, day: String, file: File, listener: ResponseListener<BaseResponse>) {
         val lumperIdRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), lumperId)
         val dayRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), day)
 
@@ -756,6 +803,27 @@ object DataManager : AppConstant {
                 call: Call<BaseResponse>,
                 response: Response<BaseResponse>
             ) {
+                var errorMessage = ""
+                if (!response.isSuccessful) {
+                    errorMessage = getErrorMessage(response.errorBody())
+                    listener.onError(errorMessage)
+                } else {
+                    response.body()?.let { it ->
+                        listener.onSuccess(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                listener.onError(t)
+            }
+        })
+    }
+
+    fun submitLumperSheet(request: SubmitLumperSheetRequest, listener: ResponseListener<BaseResponse>) {
+        val call = getService().submitLumperSheet("Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN), request)
+        call.enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 var errorMessage = ""
                 if (!response.isSuccessful) {
                     errorMessage = getErrorMessage(response.errorBody())

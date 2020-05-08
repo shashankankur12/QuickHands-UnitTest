@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.lumperSheet.LumperSheetContract
-import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.modified.data.lumperSheet.LumpersInfo
 import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.ValueUtils
 import de.hdodenhof.circleimageview.CircleImageView
@@ -20,70 +20,63 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class LumperSheetAdapter(
-    private var resources: Resources,
-    var adapterItemClickListener: LumperSheetContract.View.OnAdapterItemClickListener
+    private var resources: Resources, var adapterItemClickListener: LumperSheetContract.View.OnAdapterItemClickListener
 ) : Adapter<LumperSheetAdapter.LumperViewHolder>() {
 
     private var searchEnabled = false
     private var searchTerm = ""
 
-    private var employeesList: ArrayList<EmployeeData> = ArrayList()
-    private var filteredEmployeesList: ArrayList<EmployeeData> = ArrayList()
+    private var lumperInfoList: ArrayList<LumpersInfo> = ArrayList()
+    private var filteredEmployeesList: ArrayList<LumpersInfo> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LumperViewHolder {
-        val view: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_lumper_sheet_layout, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_lumper_sheet_layout, parent, false)
         return LumperViewHolder(view, parent.context)
     }
 
     override fun getItemCount(): Int {
-        return if (searchEnabled) filteredEmployeesList.size else employeesList.size
+        return if (searchEnabled) filteredEmployeesList.size else lumperInfoList.size
     }
 
-    private fun getItem(position: Int): EmployeeData {
-        return if (searchEnabled) filteredEmployeesList[position] else employeesList[position]
+    private fun getItem(position: Int): LumpersInfo {
+        return if (searchEnabled) filteredEmployeesList[position] else lumperInfoList[position]
     }
 
     override fun onBindViewHolder(holder: LumperViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    fun updateLumpersData(employeeDataList: ArrayList<EmployeeData>) {
-        this.employeesList.clear()
-        this.employeesList.addAll(employeeDataList)
+    fun updateLumperSheetData(lumperInfoList: ArrayList<LumpersInfo>) {
+        this.lumperInfoList.clear()
+        this.lumperInfoList.addAll(lumperInfoList)
         notifyDataSetChanged()
     }
 
     inner class LumperViewHolder(view: View, private val context: Context) :
         RecyclerView.ViewHolder(view), View.OnClickListener {
-        var textViewLumperName: TextView = view.textViewLumperName
-        var circleImageViewProfile: CircleImageView = view.circleImageViewProfile
-        var textViewEmployeeId: TextView = view.textViewEmployeeId
-        var textViewStatus: TextView = view.textViewStatus
 
-        fun bind(employeeData: EmployeeData) {
-            if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl)) {
-                Glide.with(context).load(employeeData.profileImageUrl)
-                    .placeholder(R.drawable.dummy).error(R.drawable.dummy)
-                    .into(circleImageViewProfile)
+        private val textViewLumperName: TextView = view.textViewLumperName
+        private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
+        private val textViewEmployeeId: TextView = view.textViewEmployeeId
+        private val textViewStatus: TextView = view.textViewStatus
+
+        fun bind(employeeData: LumpersInfo) {
+            if (!StringUtils.isNullOrEmpty(employeeData.lumperImageUrl)) {
+                Glide.with(context).load(employeeData.lumperImageUrl).placeholder(R.drawable.dummy).error(R.drawable.dummy).into(circleImageViewProfile)
             } else {
                 Glide.with(context).clear(circleImageViewProfile);
             }
 
-            textViewLumperName.text = String.format(
-                "%s %s",
-                ValueUtils.getDefaultOrValue(employeeData.firstName).capitalize(),
-                ValueUtils.getDefaultOrValue(employeeData.lastName).capitalize()
-            )
+            textViewLumperName.text = ValueUtils.getDefaultOrValue(employeeData.lumperName).capitalize()
 
-            if (StringUtils.isNullOrEmpty(employeeData.employeeId)) {
+            if (StringUtils.isNullOrEmpty(employeeData.lumperEmployeeId)) {
                 textViewEmployeeId.visibility = View.GONE
             } else {
                 textViewEmployeeId.visibility = View.VISIBLE
-                textViewEmployeeId.text = String.format("(Emp ID: %s)", employeeData.employeeId)
+                textViewEmployeeId.text = String.format("(Emp ID: %s)", employeeData.lumperEmployeeId)
             }
 
-            if (adapterPosition % 2 == 0) {
+            if (ValueUtils.getDefaultOrValue(employeeData.sheetSigned)) {
                 textViewStatus.text = resources.getString(R.string.complete)
                 textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
             } else {
@@ -98,8 +91,8 @@ class LumperSheetAdapter(
             view?.let {
                 when (view.id) {
                     itemView.id -> {
-                        val lumperData = getItem(adapterPosition)
-                        adapterItemClickListener.onItemClick(lumperData)
+                        val lumperInfo = getItem(adapterPosition)
+                        adapterItemClickListener.onItemClick(lumperInfo)
                     }
                 }
             }
@@ -121,10 +114,10 @@ class LumperSheetAdapter(
     private fun filter() {
         filteredEmployeesList.clear()
         if (searchTerm.isEmpty()) {
-            filteredEmployeesList.addAll(employeesList)
+            filteredEmployeesList.addAll(lumperInfoList)
         } else {
-            for (data in employeesList) {
-                val term = "${data.firstName} ${data.lastName}"
+            for (data in lumperInfoList) {
+                val term = ValueUtils.getDefaultOrValue(data.lumperName)
                 if (term.toLowerCase(Locale.getDefault()).contains(searchTerm)) {
                     filteredEmployeesList.add(data)
                 }

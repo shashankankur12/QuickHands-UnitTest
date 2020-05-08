@@ -3,7 +3,7 @@ package com.quickhandslogistics.modified.models.lumperSheet
 import android.util.Log
 import com.quickhandslogistics.modified.contracts.lumperSheet.LumperWorkDetailContract
 import com.quickhandslogistics.modified.data.BaseResponse
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.data.lumperSheet.LumperWorkDetailAPIResponse
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.ResponseListener
 import com.quickhandslogistics.utils.DateUtils
@@ -12,11 +12,11 @@ import java.util.*
 
 class LumperWorkDetailModel : LumperWorkDetailContract.Model {
 
-    override fun fetchLumperWorkDetails(lumperId:String?, selectedDate: Date, onFinishedListener: LumperWorkDetailContract.Model.OnFinishedListener) {
+    override fun fetchLumperWorkDetails(lumperId:String, selectedDate: Date, onFinishedListener: LumperWorkDetailContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
 
-        DataManager.getAllLumpersData(object : ResponseListener<AllLumpersResponse> {
-            override fun onSuccess(response: AllLumpersResponse) {
+        DataManager.getLumperWorkDetails(lumperId, dateString, object : ResponseListener<LumperWorkDetailAPIResponse> {
+            override fun onSuccess(response: LumperWorkDetailAPIResponse) {
                 if (response.success) {
                     onFinishedListener.onSuccess(response)
                 } else {

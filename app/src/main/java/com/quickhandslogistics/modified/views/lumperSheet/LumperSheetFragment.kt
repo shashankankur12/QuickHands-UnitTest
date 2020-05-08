@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
 import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
 import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
@@ -20,14 +21,11 @@ import com.michalsvec.singlerowcalendar.utils.DateUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.adapters.lumperSheet.LumperSheetAdapter
 import com.quickhandslogistics.modified.contracts.lumperSheet.LumperSheetContract
-import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.modified.data.lumperSheet.LumpersInfo
 import com.quickhandslogistics.modified.presenters.lumperSheet.LumperSheetPresenter
 import com.quickhandslogistics.modified.views.BaseFragment
-import com.quickhandslogistics.modified.views.lumpers.LumperDetailActivity
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.utils.Utils
+import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
 import kotlinx.android.synthetic.main.item_calendar_view.view.*
 import java.util.*
@@ -40,6 +38,10 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
 
     private lateinit var lumperSheetAdapter: LumperSheetAdapter
     private lateinit var lumperSheetPresenter: LumperSheetPresenter
+
+    companion object {
+        const val ARG_LUMPER_INFO = "ARG_LUMPER_INFO"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +67,13 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
             lumperSheetAdapter = LumperSheetAdapter(resources, this@LumperSheetFragment)
             adapter = lumperSheetAdapter
         }
+
+        lumperSheetAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                textViewEmptyData.visibility = if (lumperSheetAdapter.itemCount == 0) View.VISIBLE else View.GONE
+            }
+        })
 
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
@@ -161,10 +170,23 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
                     Utils.hideSoftKeyboard(fragmentActivity!!)
                 }
                 buttonSubmit.id -> {
+                    CustomProgressBar.getInstance().showWarningDialog(
+                        getString(R.string.string_ask_to_submit_lumper_sheet), fragmentActivity!!, object : CustomDialogWarningListener {
+                            override fun onConfirmClick() {
+                                lumperSheetPresenter.initiateSheetSubmission(Date(selectedTime))
+                            }
 
+                            override fun onCancelClick() {
+                            }
+                        })
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        lumperSheetPresenter.onDestroy()
     }
 
     override fun showAPIErrorMessage(message: String) {
@@ -175,9 +197,25 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         textViewDate.text = dateString
     }
 
-    override fun showLumperSheetData(employeeDataList: ArrayList<EmployeeData>) {
-        lumperSheetAdapter.updateLumpersData(employeeDataList)
-        if (employeeDataList.size > 0) {
+    override fun showLumperSheetData(lumperInfoList: ArrayList<LumpersInfo>, sheetSubmitted: Boolean, selectedDate: Date) {
+        selectedTime = selectedDate.time
+
+        var isSignatureLeft = 0
+        for (lumperInfo in lumperInfoList) {
+            if (!ValueUtils.getDefaultOrValue(lumperInfo.sheetSigned)) {
+                isSignatureLeft++
+            }
+        }
+
+        if (com.quickhandslogistics.utils.DateUtils.isCurrentDate(selectedTime) && lumperInfoList.size > 0) {
+            buttonSubmit.visibility = if (!sheetSubmitted) View.VISIBLE else View.GONE
+            buttonSubmit.isEnabled = !sheetSubmitted && isSignatureLeft == 0
+        } else {
+            buttonSubmit.visibility = View.GONE
+        }
+
+        lumperSheetAdapter.updateLumperSheetData(lumperInfoList)
+        if (lumperInfoList.size > 0) {
             textViewEmptyData.visibility = View.GONE
             recyclerViewLumpersSheet.visibility = View.VISIBLE
         } else {
@@ -186,9 +224,18 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         }
     }
 
-    override fun onItemClick(employeeData: EmployeeData) {
+    override fun sheetSubmittedSuccessfully() {
+        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.lumper_sheet_submitted_successfully),
+            fragmentActivity!!, object : CustomDialogListener {
+                override fun onConfirmClick() {
+                    lumperSheetPresenter.getLumpersSheetByDate(Date(selectedTime))
+                }
+            })
+    }
+
+    override fun onItemClick(lumperInfo: LumpersInfo) {
         val bundle = Bundle()
-        bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
+        bundle.putParcelable(ARG_LUMPER_INFO, lumperInfo)
         bundle.putLong(ScheduleMainFragment.ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
         startIntent(LumperWorkDetailActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }

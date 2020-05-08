@@ -10,6 +10,9 @@ import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordReques
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordResponse
 import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
+import com.quickhandslogistics.modified.data.lumperSheet.LumperSheetListAPIResponse
+import com.quickhandslogistics.modified.data.lumperSheet.LumperWorkDetailAPIResponse
+import com.quickhandslogistics.modified.data.lumperSheet.SubmitLumperSheetRequest
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.data.schedule.*
 import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
@@ -116,8 +119,13 @@ interface IApiInterface {
     /////////////////////////////////////////////////////////////
 
     // Lumper Sheet /////////////////////////////////////////////////
-    @GET("employees/sheets/lumpers")
-    fun getLumperSheetList(@Header("Authorization") auth: String, @Query("day") day: String): Call<CustomerSheetListAPIResponse>
+    @GET("employees/siginfo/lumpers")
+    fun getLumperSheetList(@Header("Authorization") auth: String, @Query("day") day: String): Call<LumperSheetListAPIResponse>
+
+    @GET("employees/daily/worksheet")
+    fun getLumperWorkDetail(
+        @Header("Authorization") auth: String, @Query("day") day: String, @Query("lumperId") lumperId: String
+    ): Call<LumperWorkDetailAPIResponse>
 
     @Multipart
     @POST("employees/sig/lumper")
@@ -125,5 +133,8 @@ interface IApiInterface {
         @Header("Authorization") auth: String, @Part("day") day: RequestBody,
         @Part("lumperId") lumperId: RequestBody, @Part signature: MultipartBody.Part
     ): Call<BaseResponse>
+
+    @POST("employees/lumpersheet/finalize")
+    fun submitLumperSheet(@Header("Authorization") auth: String, @Body request: SubmitLumperSheetRequest): Call<BaseResponse>
     /////////////////////////////////////////////////////////////
 }

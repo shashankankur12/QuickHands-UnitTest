@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.lumperSheet.LumperWorkDetailContract
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.data.lumperSheet.LumperWorkDetailAPIResponse
 import com.quickhandslogistics.modified.models.lumperSheet.LumperWorkDetailModel
 import java.util.*
 
@@ -15,7 +15,7 @@ class LumperWorkDetailPresenter(
 
     private val lumperWorkDetailModel: LumperWorkDetailModel = LumperWorkDetailModel()
 
-    override fun getLumperWorkDetails(lumperId: String?, selectedDate: Date) {
+    override fun getLumperWorkDetails(lumperId: String, selectedDate: Date) {
         lumperWorkDetailView?.showProgressDialog(resources.getString(R.string.api_loading_message))
         lumperWorkDetailModel.fetchLumperWorkDetails(lumperId, selectedDate, this)
     }
@@ -38,12 +38,13 @@ class LumperWorkDetailPresenter(
         }
     }
 
-    override fun onSuccess(response: AllLumpersResponse) {
+    override fun onSuccess(response: LumperWorkDetailAPIResponse) {
         lumperWorkDetailView?.hideProgressDialog()
-        lumperWorkDetailView?.showLumperWorkDetails(response.data!!)
+        lumperWorkDetailView?.showLumperWorkDetails(response.data?.lumperDaySheet!!)
     }
 
     override fun onSuccessSaveLumperSignature(lumperId: String, date: Date) {
+        lumperWorkDetailView?.lumperSignatureSaved()
         lumperWorkDetailModel.fetchLumperWorkDetails(lumperId, date, this)
     }
 }

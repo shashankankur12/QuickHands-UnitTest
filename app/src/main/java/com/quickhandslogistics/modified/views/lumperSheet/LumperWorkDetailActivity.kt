@@ -10,13 +10,16 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.adapters.lumperSheet.LumperWorkDetailAdapter
 import com.quickhandslogistics.modified.contracts.lumperSheet.LumperWorkDetailContract
 import com.quickhandslogistics.modified.controls.SpaceDividerItemDecorator
-import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.modified.data.lumperSheet.LumperDaySheet
+import com.quickhandslogistics.modified.data.lumperSheet.LumpersInfo
+import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.presenters.lumperSheet.LumperWorkDetailPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.common.AddSignatureActivity
 import com.quickhandslogistics.modified.views.common.BuildingOperationsViewActivity
-import com.quickhandslogistics.modified.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_DATA
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment
+import com.quickhandslogistics.modified.views.lumperSheet.LumperSheetFragment.Companion.ARG_LUMPER_INFO
+import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_BUILDING_PARAMETERS
+import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_BUILDING_PARAMETER_VALUES
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.activity_lumper_work_detail.*
@@ -28,7 +31,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
 
     private var signatureFilePath = ""
     private var selectedTime: Long = 0
-    private var employeeData: EmployeeData? = null
+    private var lumpersInfo: LumpersInfo? = null
 
     private lateinit var lumperWorkDetailPresenter: LumperWorkDetailPresenter
     private lateinit var lumperWorkDetailAdapter: LumperWorkDetailAdapter
@@ -42,37 +45,31 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         setupToolbar(getString(R.string.lumper_work_detail))
 
         intent.extras?.let { bundle ->
-            if (bundle.containsKey(ARG_LUMPER_DATA)) {
-                employeeData = bundle.getParcelable(ARG_LUMPER_DATA) as EmployeeData?
-                selectedTime = bundle.getLong(ARG_SELECTED_DATE_MILLISECONDS, 0)
-            }
+            lumpersInfo = bundle.getParcelable(ARG_LUMPER_INFO) as LumpersInfo?
+            selectedTime = bundle.getLong(ARG_SELECTED_DATE_MILLISECONDS, 0)
         }
 
         initializeUI()
 
         lumperWorkDetailPresenter = LumperWorkDetailPresenter(this, resources)
-        lumperWorkDetailPresenter.getLumperWorkDetails(employeeData?.id, Date(selectedTime))
+        lumperWorkDetailPresenter.getLumperWorkDetails(ValueUtils.getDefaultOrValue(lumpersInfo?.lumperId), Date(selectedTime))
     }
 
     private fun initializeUI() {
-        employeeData?.let { employeeData ->
-            if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl)) {
-                Glide.with(activity).load(employeeData.profileImageUrl).placeholder(R.drawable.dummy).error(R.drawable.dummy).into(circleImageViewProfile)
+        lumpersInfo?.let { employeeData ->
+            if (!StringUtils.isNullOrEmpty(employeeData.lumperImageUrl)) {
+                Glide.with(activity).load(employeeData.lumperImageUrl).placeholder(R.drawable.dummy).error(R.drawable.dummy).into(circleImageViewProfile)
             } else {
                 Glide.with(activity).clear(circleImageViewProfile);
             }
 
-            textViewLumperName.text = String.format(
-                "%s %s",
-                ValueUtils.getDefaultOrValue(employeeData.firstName),
-                ValueUtils.getDefaultOrValue(employeeData.lastName)
-            )
+            textViewLumperName.text = ValueUtils.getDefaultOrValue(employeeData.lumperName)
 
-            if (StringUtils.isNullOrEmpty(employeeData.employeeId)) {
+            if (StringUtils.isNullOrEmpty(employeeData.lumperEmployeeId)) {
                 textViewEmployeeId.visibility = View.GONE
             } else {
                 textViewEmployeeId.visibility = View.VISIBLE
-                textViewEmployeeId.text = String.format("(Emp ID: %s)", employeeData.employeeId)
+                textViewEmployeeId.text = String.format("(Emp ID: %s)", employeeData.lumperEmployeeId)
             }
         }
 
@@ -97,7 +94,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
                     CustomProgressBar.getInstance().showWarningDialog(
                         activityContext = activity, listener = object : CustomDialogWarningListener {
                             override fun onConfirmClick() {
-                                lumperWorkDetailPresenter.saveLumperSignature(employeeData?.id!!, Date(selectedTime), signatureFilePath)
+                                lumperWorkDetailPresenter.saveLumperSignature(lumpersInfo?.lumperId!!, Date(selectedTime), signatureFilePath)
                             }
 
                             override fun onCancelClick() {
@@ -133,10 +130,10 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         }
     }
 
-    override fun onBOItemClick(buildingOps: HashMap<String, String>, parameters: ArrayList<String>) {
+    override fun onBOItemClick(workItemDetail: WorkItemDetail) {
         val bundle = Bundle()
-        bundle.putStringArrayList(ScheduleMainFragment.ARG_BUILDING_PARAMETERS, parameters)
-        bundle.putSerializable(ScheduleMainFragment.ARG_BUILDING_PARAMETER_VALUES, buildingOps)
+        bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, workItemDetail.buildingDetailData?.parameters)
+        bundle.putSerializable(ARG_BUILDING_PARAMETER_VALUES, workItemDetail.buildingOps)
         startIntent(BuildingOperationsViewActivity::class.java, bundle = bundle)
     }
 
@@ -150,7 +147,49 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }
 
-    override fun showLumperWorkDetails(employeeDataList: java.util.ArrayList<EmployeeData>) {
+    override fun showLumperWorkDetails(lumperDaySheetList: ArrayList<LumperDaySheet>) {
+        val isCurrentDate = DateUtils.isCurrentDate(selectedTime)
         buttonSave.visibility = View.GONE
+
+        lumperWorkDetailAdapter.updateWorkDetails(lumperDaySheetList)
+
+        var inCompleteWorkItemsCount = 0
+        for (lumperDaySheet in lumperDaySheetList) {
+            if (lumperDaySheet.workItemDetail?.status != AppConstant.WORK_ITEM_STATUS_COMPLETED
+                && lumperDaySheet.workItemDetail?.status != AppConstant.WORK_ITEM_STATUS_CANCELLED
+            ) {
+                inCompleteWorkItemsCount++
+            }
+        }
+
+        if (lumperDaySheetList.size > 0) {
+            updateUIVisibility(
+                ValueUtils.getDefaultOrValue(lumperDaySheetList[0].lumpersTimeSchedule?.sheetSigned),
+                isCurrentDate, inCompleteWorkItemsCount
+            )
+        } else {
+            updateUIVisibility(false, isCurrentDate, inCompleteWorkItemsCount)
+        }
+    }
+
+    override fun lumperSignatureSaved() {
+        setResult(RESULT_OK)
+    }
+
+    private fun updateUIVisibility(signed: Boolean, currentDate: Boolean, inCompleteWorkItemsCount: Int) {
+        imageViewSignature.visibility = View.GONE
+        textViewSignature.visibility = if (signed) View.VISIBLE else View.GONE
+
+        if (!signed && currentDate && inCompleteWorkItemsCount == 0) {
+            textViewAddSignature.visibility = View.VISIBLE
+        } else {
+            textViewAddSignature.visibility = View.GONE
+        }
+
+        if (signed || (currentDate && inCompleteWorkItemsCount == 0)) {
+            layoutSignature.visibility = View.VISIBLE
+        } else {
+            layoutSignature.visibility = View.GONE
+        }
     }
 }
