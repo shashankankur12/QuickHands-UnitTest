@@ -1,5 +1,6 @@
 package com.quickhandslogistics.modified.contracts.lumpers
 
+import com.quickhandslogistics.modified.contracts.BaseContract
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 
@@ -7,15 +8,12 @@ class LumpersContract {
     interface Model {
         fun fetchLumpersList(onFinishedListener: OnFinishedListener)
 
-        interface OnFinishedListener {
-            fun onFailure(message: String = "")
+        interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(allLumpersResponse: AllLumpersResponse)
         }
     }
 
-    interface View {
-        fun hideProgressDialog()
-        fun showProgressDialog(message: String)
+    interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
         fun showLumpersData(employeeDataList: ArrayList<EmployeeData>)
 
@@ -25,8 +23,7 @@ class LumpersContract {
         }
     }
 
-    interface Presenter {
+    interface Presenter : BaseContract.Presenter {
         fun fetchLumpersList()
-        fun onDestroy()
     }
 }

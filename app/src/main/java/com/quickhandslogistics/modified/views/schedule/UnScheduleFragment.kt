@@ -44,7 +44,7 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        unSchedulePresenter = UnSchedulePresenter(this, resources, sharedPref)
+        unSchedulePresenter = UnSchedulePresenter(this, resources)
     }
 
     override fun onCreateView(

@@ -9,8 +9,7 @@ import com.quickhandslogistics.modified.models.LeadProfileModel
 import com.quickhandslogistics.utils.SharedPref
 
 class LeadProfilePresenter(
-    private var leadProfileView: LeadProfileContract.View?,
-    private val resources: Resources, sharedPref: SharedPref
+    private var leadProfileView: LeadProfileContract.View?, private val resources: Resources, sharedPref: SharedPref
 ) : LeadProfileContract.Presenter, LeadProfileContract.Model.OnFinishedListener {
 
     private val leadProfileModel: LeadProfileModel = LeadProfileModel(sharedPref)

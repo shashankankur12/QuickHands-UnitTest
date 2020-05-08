@@ -8,8 +8,7 @@ class ChooseLumperContract {
     interface Model {
         fun fetchLumpersList(onFinishedListener: OnFinishedListener)
 
-        interface OnFinishedListener {
-            fun onFailure(message: String = "")
+        interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(allLumpersResponse: AllLumpersResponse)
         }
     }
@@ -25,8 +24,7 @@ class ChooseLumperContract {
         }
     }
 
-    interface Presenter {
+    interface Presenter : BaseContract.Presenter {
         fun fetchLumpersList()
-        fun onDestroy()
     }
 }

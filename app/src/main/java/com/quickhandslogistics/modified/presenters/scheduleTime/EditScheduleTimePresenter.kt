@@ -10,12 +10,10 @@ import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 
 class EditScheduleTimePresenter(
-    private var editScheduleTimeView: EditScheduleTimeContract.View?,
-    private val resources: Resources,
-    sharedPref: SharedPref
+    private var editScheduleTimeView: EditScheduleTimeContract.View?, private val resources: Resources
 ) : EditScheduleTimeContract.Presenter, EditScheduleTimeContract.Model.OnFinishedListener {
 
-    private val editScheduleTimeModel = EditScheduleTimeModel(sharedPref)
+    private val editScheduleTimeModel = EditScheduleTimeModel()
 
     override fun fetchLumpersList() {
         editScheduleTimeView?.showProgressDialog(resources.getString(R.string.api_loading_message))

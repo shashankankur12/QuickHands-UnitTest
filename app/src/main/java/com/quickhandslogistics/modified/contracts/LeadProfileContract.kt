@@ -7,14 +7,11 @@ class LeadProfileContract {
     interface Model {
         fun fetchLeadProfileDataAPI(onFinishedListener: OnFinishedListener)
         fun fetchLeadProfileDataLocal(onFinishedListener: OnFinishedListener)
-        fun processLeadProfileData(
-            leadProfileData: LeadProfileData, onFinishedListener: OnFinishedListener
-        )
+        fun processLeadProfileData(leadProfileData: LeadProfileData, onFinishedListener: OnFinishedListener)
 
-        interface OnFinishedListener {
+        interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onLoadLeadProfile(employeeData: LeadProfileData)
             fun onFetchLeadProfileSuccess(response: LeadProfileAPIResponse)
-            fun onFailure(message: String = "")
         }
     }
 
@@ -22,8 +19,7 @@ class LeadProfileContract {
         fun loadLeadProfile(employeeData: LeadProfileData)
     }
 
-    interface Presenter {
-        fun onDestroy()
+    interface Presenter : BaseContract.Presenter {
         fun loadLeadProfileData()
     }
 }

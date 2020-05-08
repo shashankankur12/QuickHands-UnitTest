@@ -22,6 +22,10 @@ class ScheduleDetailPresenter(
         scheduleDetailModel.fetchScheduleDetail(scheduleIdentityId, selectedDate, this)
     }
 
+    override fun onDestroy() {
+        scheduleDetailView = null
+    }
+
     override fun onFailure(message: String) {
         scheduleDetailView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {

@@ -9,13 +9,11 @@ class EditScheduleTimeContract {
     interface Model {
         fun fetchLumpersList(onFinishedListener: OnFinishedListener)
         fun assignScheduleTime(
-            scheduledLumpersIdsTimeMap: HashMap<String, Long>,
-            notes: String, requiredLumpersCount: Int, notesDM: String,
-            selectedDate: Date, onFinishedListener: OnFinishedListener
+            scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, requiredLumpersCount: Int,
+            notesDM: String, selectedDate: Date, onFinishedListener: OnFinishedListener
         )
 
-        interface OnFinishedListener {
-            fun onFailure(message: String = "")
+        interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccessFetchLumpers(allLumpersResponse: AllLumpersResponse)
             fun onSuccessScheduleTime()
         }
@@ -31,12 +29,10 @@ class EditScheduleTimeContract {
         }
     }
 
-    interface Presenter {
+    interface Presenter : BaseContract.Presenter {
         fun fetchLumpersList()
-        fun onDestroy()
         fun initiateScheduleTime(
-            scheduledLumpersIdsTimeMap: HashMap<String, Long>,
-            notes: String, requiredLumpersCount: Int, notesDM: String, selectedDate: Date
+            scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, requiredLumpersCount: Int, notesDM: String, selectedDate: Date
         )
     }
 }

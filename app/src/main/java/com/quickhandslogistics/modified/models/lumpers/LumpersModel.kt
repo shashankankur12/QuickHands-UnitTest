@@ -4,27 +4,25 @@ import android.util.Log
 import com.quickhandslogistics.modified.contracts.lumpers.LumpersContract
 import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
 import com.quickhandslogistics.network.DataManager
-import com.quickhandslogistics.network.ResponseListener
+import com.quickhandslogistics.network.DataManager.getAuthToken
+import com.quickhandslogistics.network.DataManager.isSuccessResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LumpersModel : LumpersContract.Model {
 
     override fun fetchLumpersList(onFinishedListener: LumpersContract.Model.OnFinishedListener) {
-        DataManager.getAllLumpersData(object : ResponseListener<AllLumpersResponse> {
-            override fun onSuccess(response: AllLumpersResponse) {
-                if (response.success) {
-                    onFinishedListener.onSuccess(response)
-                } else {
-                    onFinishedListener.onFailure(response.message)
+        DataManager.getService().getAllLumpersData(getAuthToken()).enqueue(object : Callback<AllLumpersResponse> {
+            override fun onResponse(call: Call<AllLumpersResponse>, response: Response<AllLumpersResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccess(response.body()!!)
                 }
             }
 
-            override fun onError(error: Any) {
-                if (error is Throwable) {
-                    Log.e(LumpersModel::class.simpleName, error.localizedMessage!!)
-                    onFinishedListener.onFailure()
-                } else if (error is String) {
-                    onFinishedListener.onFailure(error)
-                }
+            override fun onFailure(call: Call<AllLumpersResponse>, t: Throwable) {
+                Log.e(LumpersModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
             }
         })
     }

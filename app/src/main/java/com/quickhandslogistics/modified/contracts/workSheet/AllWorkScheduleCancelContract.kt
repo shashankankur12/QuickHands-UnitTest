@@ -8,12 +8,10 @@ class AllWorkScheduleCancelContract {
     interface Model {
         fun fetchLumpersList(onFinishedListener: OnFinishedListener)
         fun cancelAllWorkSchedules(
-            selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String,
-            onFinishedListener: OnFinishedListener
+            selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String, onFinishedListener: OnFinishedListener
         )
 
-        interface OnFinishedListener {
-            fun onFailure(message: String = "")
+        interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccessFetchLumpers(allLumpersResponse: AllLumpersResponse)
             fun onSuccessCancelWorkSchedules()
         }
@@ -29,11 +27,8 @@ class AllWorkScheduleCancelContract {
         }
     }
 
-    interface Presenter {
+    interface Presenter : BaseContract.Presenter {
         fun fetchLumpersList()
-        fun onDestroy()
-        fun initiateCancellingWorkSchedules(
-            selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String
-        )
+        fun initiateCancellingWorkSchedules(selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String)
     }
 }

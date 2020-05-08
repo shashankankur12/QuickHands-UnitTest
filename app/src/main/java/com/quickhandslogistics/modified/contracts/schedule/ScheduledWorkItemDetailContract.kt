@@ -8,8 +8,7 @@ class ScheduledWorkItemDetailContract {
     interface Model {
         fun fetchWorkItemDetail(workItemId: String, onFinishedListener: OnFinishedListener)
 
-        interface OnFinishedListener {
-            fun onFailure(message: String = "")
+        interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(response: WorkItemDetailAPIResponse)
         }
     }
@@ -19,8 +18,7 @@ class ScheduledWorkItemDetailContract {
         fun showWorkItemDetail(workItemDetail: WorkItemDetail)
     }
 
-    interface Presenter {
+    interface Presenter : BaseContract.Presenter {
         fun fetchWorkItemDetail(workItemId: String)
-        fun onDestroy()
     }
 }

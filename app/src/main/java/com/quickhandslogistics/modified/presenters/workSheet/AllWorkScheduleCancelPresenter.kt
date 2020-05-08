@@ -9,12 +9,10 @@ import com.quickhandslogistics.modified.models.workSheet.AllWorkScheduleCancelMo
 import com.quickhandslogistics.utils.SharedPref
 
 class AllWorkScheduleCancelPresenter(
-    private var allWorkScheduleCancelView: AllWorkScheduleCancelContract.View?,
-    private val resources: Resources, sharedPref: SharedPref
-) : AllWorkScheduleCancelContract.Presenter,
-    AllWorkScheduleCancelContract.Model.OnFinishedListener {
+    private var allWorkScheduleCancelView: AllWorkScheduleCancelContract.View?, private val resources: Resources
+) : AllWorkScheduleCancelContract.Presenter, AllWorkScheduleCancelContract.Model.OnFinishedListener {
 
-    private val allWorkScheduleCancelModel = AllWorkScheduleCancelModel(sharedPref)
+    private val allWorkScheduleCancelModel = AllWorkScheduleCancelModel()
 
     override fun fetchLumpersList() {
         allWorkScheduleCancelView?.showProgressDialog(resources.getString(R.string.api_loading_message))

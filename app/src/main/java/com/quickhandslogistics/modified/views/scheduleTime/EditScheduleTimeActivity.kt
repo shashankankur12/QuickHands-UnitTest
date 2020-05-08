@@ -82,7 +82,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         })
 
 
-        editScheduleTimePresenter = EditScheduleTimePresenter(this, resources, sharedPref)
+        editScheduleTimePresenter = EditScheduleTimePresenter(this, resources)
         editScheduleTimePresenter.fetchLumpersList()
 
         buttonAddStartTimeAll.setOnClickListener(this)

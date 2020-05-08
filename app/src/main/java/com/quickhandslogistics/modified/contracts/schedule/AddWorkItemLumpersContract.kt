@@ -8,14 +8,10 @@ class AddWorkItemLumpersContract {
     interface Model {
         fun fetchLumpersList(onFinishedListener: OnFinishedListener)
         fun assignLumpersList(
-            workItemId: String,
-            workItemType: String,
-            selectedLumperIdsList: ArrayList<String>,
-            onFinishedListener: OnFinishedListener
+            workItemId: String, workItemType: String, selectedLumperIdsList: ArrayList<String>, onFinishedListener: OnFinishedListener
         )
 
-        interface OnFinishedListener {
-            fun onFailure(message: String = "")
+        interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccessFetchLumpers(allLumpersResponse: AllLumpersResponse)
             fun onSuccessAssignLumpers()
         }
@@ -31,13 +27,8 @@ class AddWorkItemLumpersContract {
         }
     }
 
-    interface Presenter {
+    interface Presenter : BaseContract.Presenter {
         fun fetchLumpersList()
-        fun onDestroy()
-        fun initiateAssigningLumpers(
-            selectedLumperIdsList: ArrayList<String>,
-            workItemId: String,
-            workItemType: String
-        )
+        fun initiateAssigningLumpers(selectedLumperIdsList: ArrayList<String>, workItemId: String, workItemType: String)
     }
 }

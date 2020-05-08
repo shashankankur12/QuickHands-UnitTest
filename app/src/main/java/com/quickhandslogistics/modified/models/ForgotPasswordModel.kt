@@ -6,48 +6,35 @@ import com.quickhandslogistics.modified.contracts.ForgotPasswordContract
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRequest
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordResponse
 import com.quickhandslogistics.network.DataManager
-import com.quickhandslogistics.network.ResponseListener
+import com.quickhandslogistics.network.DataManager.isSuccessResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ForgotPasswordModel : ForgotPasswordContract.Model {
 
-    override fun resetPasswordUsingEmpId(
-        employeeLoginId: String,
-        onFinishedListener: ForgotPasswordContract.Model.OnFinishedListener
-    ) {
+    override fun resetPasswordUsingEmpId(employeeLoginId: String, onFinishedListener: ForgotPasswordContract.Model.OnFinishedListener) {
         val forgotPasswordRequest = ForgotPasswordRequest(employeeLoginId)
-        DataManager.doPasswordReset(
-            forgotPasswordRequest,
-            object : ResponseListener<ForgotPasswordResponse> {
-                override fun onSuccess(response: ForgotPasswordResponse) {
-                    if (response.success) {
-                        onFinishedListener.onPasswordResetSuccess(response)
-                    } else {
-                        onFinishedListener.onFailure(response.message)
-                    }
-                }
 
-                override fun onError(error: Any) {
-                    if (error is Throwable) {
-                        Log.e(ForgotPasswordModel::class.simpleName, error.localizedMessage!!)
-                        onFinishedListener.onFailure()
-                    } else if (error is String) {
-                        onFinishedListener.onFailure(error)
-                    }
+        DataManager.getService().doResetPassword(forgotPasswordRequest).enqueue(object : Callback<ForgotPasswordResponse> {
+            override fun onResponse(call: Call<ForgotPasswordResponse>, response: Response<ForgotPasswordResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onPasswordResetSuccess(response.body()!!)
                 }
-            })
+            }
+
+            override fun onFailure(call: Call<ForgotPasswordResponse>, t: Throwable) {
+                Log.e(ForgotPasswordModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
     }
 
-    override fun validatePasswordResetDetails(
-        employeeId: String,
-        onFinishedListener: ForgotPasswordContract.Model.OnFinishedListener
-    ) {
-        when {
-            TextUtils.isEmpty(employeeId) -> {
-                onFinishedListener.emptyEmployeeId()
-            }
-            else -> {
-                onFinishedListener.processPasswordReset(employeeId)
-            }
+    override fun validatePasswordResetDetails(employeeId: String, onFinishedListener: ForgotPasswordContract.Model.OnFinishedListener) {
+        if (TextUtils.isEmpty(employeeId)) {
+            onFinishedListener.emptyEmployeeId()
+        } else {
+            onFinishedListener.processPasswordReset(employeeId)
         }
     }
 

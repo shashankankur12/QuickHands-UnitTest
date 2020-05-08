@@ -57,7 +57,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        schedulePresenter = SchedulePresenter(this, resources, sharedPref)
+        schedulePresenter = SchedulePresenter(this, resources)
 
         // Setup DatePicker Dates
         selectedTime = Date().time

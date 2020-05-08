@@ -11,7 +11,6 @@ import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.data.login.LoginUserData
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.DataManager.isSuccessResponse
-import com.quickhandslogistics.network.ResponseListener
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_AUTH_TOKEN
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_EMPLOYEE_ID
@@ -84,22 +83,16 @@ class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
     }
 
     override fun fetchLeadProfileInfo(onFinishedListener: LoginContract.Model.OnFinishedListener) {
-        DataManager.getLeadProfile(object : ResponseListener<LeadProfileAPIResponse> {
-            override fun onSuccess(response: LeadProfileAPIResponse) {
-                if (response.success) {
-                    onFinishedListener.onLeadProfileSuccess(response)
-                } else {
-                    onFinishedListener.onFailure(response.message)
+        DataManager.getService().getLeadProfile(DataManager.getAuthToken()).enqueue(object : Callback<LeadProfileAPIResponse> {
+            override fun onResponse(call: Call<LeadProfileAPIResponse>, response: Response<LeadProfileAPIResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onLeadProfileSuccess(response.body()!!)
                 }
             }
 
-            override fun onError(error: Any) {
-                if (error is Throwable) {
-                    Log.e(LoginModel::class.simpleName, error.localizedMessage!!)
-                    onFinishedListener.onFailure()
-                } else if (error is String) {
-                    onFinishedListener.onFailure(error)
-                }
+            override fun onFailure(call: Call<LeadProfileAPIResponse>, t: Throwable) {
+                Log.e(LoginModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
             }
         })
     }

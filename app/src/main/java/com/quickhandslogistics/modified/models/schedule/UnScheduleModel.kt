@@ -4,30 +4,26 @@ import android.util.Log
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleContract
 import com.quickhandslogistics.modified.data.schedule.UnScheduleListAPIResponse
 import com.quickhandslogistics.network.DataManager
-import com.quickhandslogistics.network.ResponseListener
-import com.quickhandslogistics.utils.SharedPref
+import com.quickhandslogistics.network.DataManager.getAuthToken
+import com.quickhandslogistics.network.DataManager.isSuccessResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class UnScheduleModel(private val sharedPref: SharedPref) : UnScheduleContract.Model {
+class UnScheduleModel : UnScheduleContract.Model {
 
-    override fun fetchUnSchedulesByDate(
-        onFinishedListener: UnScheduleContract.Model.OnFinishedListener
-    ) {
-        DataManager.getUnSchedulesList(object : ResponseListener<UnScheduleListAPIResponse> {
-            override fun onSuccess(response: UnScheduleListAPIResponse) {
-                if (response.success) {
-                    onFinishedListener.onSuccess(response)
-                } else {
-                    onFinishedListener.onFailure(response.message)
+    override fun fetchUnSchedulesByDate(onFinishedListener: UnScheduleContract.Model.OnFinishedListener) {
+        val call = DataManager.getService().getUnSchedulesList(getAuthToken())
+        call.enqueue(object : Callback<UnScheduleListAPIResponse> {
+            override fun onResponse(call: Call<UnScheduleListAPIResponse>, response: Response<UnScheduleListAPIResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccess(response.body()!!)
                 }
             }
 
-            override fun onError(error: Any) {
-                if (error is Throwable) {
-                    Log.e(UnScheduleModel::class.simpleName, error.localizedMessage!!)
-                    onFinishedListener.onFailure()
-                } else if (error is String) {
-                    onFinishedListener.onFailure(error)
-                }
+            override fun onFailure(call: Call<UnScheduleListAPIResponse>, t: Throwable) {
+                Log.e(UnScheduleModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
             }
         })
     }

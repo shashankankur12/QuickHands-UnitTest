@@ -49,7 +49,7 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
             }
         })
 
-        allWorkScheduleCancelPresenter = AllWorkScheduleCancelPresenter(this, resources, sharedPref)
+        allWorkScheduleCancelPresenter = AllWorkScheduleCancelPresenter(this, resources)
         allWorkScheduleCancelPresenter.fetchLumpersList()
 
         buttonSubmit.setOnClickListener(this)

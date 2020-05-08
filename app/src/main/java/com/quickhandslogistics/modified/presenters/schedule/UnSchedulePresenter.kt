@@ -11,18 +11,16 @@ import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.data.schedule.UnScheduleListAPIResponse
 import com.quickhandslogistics.modified.models.schedule.UnScheduleModel
 import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_REQUEST_PARAMETER
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 import kotlin.collections.ArrayList
 
 class UnSchedulePresenter(
-    private var unScheduleView: UnScheduleContract.View?,
-    private val resources: Resources,
-    sharedPref: SharedPref
-) :
-    UnScheduleContract.Presenter, UnScheduleContract.Model.OnFinishedListener {
+    private var unScheduleView: UnScheduleContract.View?, private val resources: Resources
+) : UnScheduleContract.Presenter, UnScheduleContract.Model.OnFinishedListener {
 
-    private val unScheduleModel: UnScheduleModel = UnScheduleModel(sharedPref)
+    private val unScheduleModel: UnScheduleModel = UnScheduleModel()
 
     override fun getUnScheduledWorkItems(showProgressDialog: Boolean) {
         if (showProgressDialog) {
@@ -67,37 +65,22 @@ class UnSchedulePresenter(
             val oldValue = iterate.next()
             oldValue.scheduleTypes?.let { scheduleTypes ->
                 var scheduleTypeNames = ""
-                scheduleTypeNames = getScheduleTypeName(
-                    scheduleTypes.liveLoads, scheduleTypeNames,
-                    resources.getString(R.string.string_live_loads)
-                )
-                scheduleTypeNames = getScheduleTypeName(
-                    scheduleTypes.drops, scheduleTypeNames,
-                    resources.getString(R.string.string_drops)
-                )
-                scheduleTypeNames = getScheduleTypeName(
-                    scheduleTypes.outbounds, scheduleTypeNames,
-                    resources.getString(R.string.string_out_bounds)
-                )
+                scheduleTypeNames = getScheduleTypeName(scheduleTypes.liveLoads, scheduleTypeNames, resources.getString(R.string.string_live_loads))
+                scheduleTypeNames = getScheduleTypeName(scheduleTypes.drops, scheduleTypeNames, resources.getString(R.string.string_drops))
+                scheduleTypeNames = getScheduleTypeName(scheduleTypes.outbounds, scheduleTypeNames, resources.getString(R.string.string_out_bounds))
+
                 oldValue.scheduleTypeNames = scheduleTypeNames
                 oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.liveLoads))
                 oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.drops))
                 oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.outbounds))
-                oldValue.allAssignedLumpers =
-                    oldValue.allAssignedLumpers.distinctBy { it.id } as ArrayList<EmployeeData>
+                oldValue.allAssignedLumpers = oldValue.allAssignedLumpers.distinctBy { it.id } as ArrayList<EmployeeData>
                 iterate.set(oldValue)
             }
         }
 
         workItemsList.sortWith(Comparator { workItem1, workItem2 ->
-            val dateLong1 = DateUtils.getMillisecondsFromDateString(
-                DateUtils.PATTERN_API_REQUEST_PARAMETER,
-                workItem1?.endDateForCurrentWorkItem
-            )
-            val dateLong2 = DateUtils.getMillisecondsFromDateString(
-                DateUtils.PATTERN_API_REQUEST_PARAMETER,
-                workItem2?.endDateForCurrentWorkItem
-            )
+            val dateLong1 = DateUtils.getMillisecondsFromDateString(PATTERN_API_REQUEST_PARAMETER, workItem1?.endDateForCurrentWorkItem)
+            val dateLong2 = DateUtils.getMillisecondsFromDateString(PATTERN_API_REQUEST_PARAMETER, workItem2?.endDateForCurrentWorkItem)
             dateLong1.compareTo(dateLong2)
         })
 

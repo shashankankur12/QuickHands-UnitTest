@@ -5,25 +5,28 @@ import com.quickhandslogistics.modified.contracts.DashBoardContract
 import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
 import com.quickhandslogistics.modified.data.dashboard.LeadProfileData
 import com.quickhandslogistics.network.DataManager
-import com.quickhandslogistics.network.ResponseListener
+import com.quickhandslogistics.network.DataManager.getAuthToken
+import com.quickhandslogistics.network.DataManager.isSuccessResponse
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_LEAD_PROFILE
 import com.quickhandslogistics.utils.SharedPref
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class DashBoardModel(private val sharedPref: SharedPref) : DashBoardContract.Model {
 
     override fun fetchLeadProfileData(onFinishedListener: DashBoardContract.Model.OnFinishedListener) {
-        DataManager.getLeadProfile(object : ResponseListener<LeadProfileAPIResponse> {
-            override fun onSuccess(response: LeadProfileAPIResponse) {
-                if (response.success) {
-                    onFinishedListener.onFetchLeadProfileSuccess(response)
+        DataManager.getService().getLeadProfile(getAuthToken()).enqueue(object : Callback<LeadProfileAPIResponse> {
+            override fun onResponse(call: Call<LeadProfileAPIResponse>, response: Response<LeadProfileAPIResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onFetchLeadProfileSuccess(response.body()!!)
                 }
             }
 
-            override fun onError(error: Any) {
-                if (error is Throwable) {
-                    Log.e(DashBoardModel::class.simpleName, error.localizedMessage!!)
-                }
+            override fun onFailure(call: Call<LeadProfileAPIResponse>, t: Throwable) {
+                Log.e(DashBoardModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
             }
         })
 

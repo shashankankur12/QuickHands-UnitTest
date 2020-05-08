@@ -4,37 +4,30 @@ import android.util.Log
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.network.DataManager
-import com.quickhandslogistics.network.ResponseListener
+import com.quickhandslogistics.network.DataManager.getAuthToken
+import com.quickhandslogistics.network.DataManager.isSuccessResponse
 import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.utils.SharedPref
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
-class ScheduleModel(private val sharedPref: SharedPref) : ScheduleContract.Model {
+class ScheduleModel : ScheduleContract.Model {
 
-    override fun fetchSchedulesByDate(
-        selectedDate: Date,
-        onFinishedListener: ScheduleContract.Model.OnFinishedListener
-    ) {
+    override fun fetchSchedulesByDate(selectedDate: Date, onFinishedListener: ScheduleContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
 
-        DataManager.getSchedulesList(
-            dateString, object : ResponseListener<ScheduleListAPIResponse> {
-                override fun onSuccess(response: ScheduleListAPIResponse) {
-                    if (response.success) {
-                        onFinishedListener.onSuccess(selectedDate, response)
-                    } else {
-                        onFinishedListener.onFailure(response.message)
-                    }
+        DataManager.getService().getSchedulesList(getAuthToken(), dateString).enqueue(object : Callback<ScheduleListAPIResponse> {
+            override fun onResponse(call: Call<ScheduleListAPIResponse>, response: Response<ScheduleListAPIResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccess(selectedDate, response.body()!!)
                 }
+            }
 
-                override fun onError(error: Any) {
-                    if (error is Throwable) {
-                        Log.e(ScheduleModel::class.simpleName, error.localizedMessage!!)
-                        onFinishedListener.onFailure()
-                    } else if (error is String) {
-                        onFinishedListener.onFailure(error)
-                    }
-                }
-            })
+            override fun onFailure(call: Call<ScheduleListAPIResponse>, t: Throwable) {
+                Log.e(ScheduleModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
     }
 }

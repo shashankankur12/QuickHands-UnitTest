@@ -7,12 +7,9 @@ class DashBoardContract {
 
     interface Model {
         fun fetchLeadProfileData(onFinishedListener: OnFinishedListener)
-        fun processLeadProfileData(
-            leadProfileData: LeadProfileData,
-            onFinishedListener: OnFinishedListener
-        )
+        fun processLeadProfileData(leadProfileData: LeadProfileData, onFinishedListener: OnFinishedListener)
 
-        interface OnFinishedListener {
+        interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onLoadLeadProfile(leadProfileData: LeadProfileData)
             fun onFetchLeadProfileSuccess(response: LeadProfileAPIResponse)
         }
@@ -27,8 +24,7 @@ class DashBoardContract {
         }
     }
 
-    interface Presenter {
-        fun onDestroy()
+    interface Presenter : BaseContract.Presenter {
         fun loadLeadProfileData()
     }
 }

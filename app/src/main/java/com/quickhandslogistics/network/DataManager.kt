@@ -5,22 +5,10 @@ import com.google.gson.JsonSyntaxException
 import com.quickhandslogistics.modified.contracts.BaseContract
 import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.ErrorResponse
-import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
-import com.quickhandslogistics.modified.data.attendance.GetAttendanceAPIResponse
-import com.quickhandslogistics.modified.data.buildingOperations.BuildingOperationAPIResponse
 import com.quickhandslogistics.modified.data.customerSheet.CustomerSheetListAPIResponse
-import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
-import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRequest
-import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordResponse
-import com.quickhandslogistics.modified.data.login.LoginRequest
-import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.data.lumperSheet.LumperSheetListAPIResponse
 import com.quickhandslogistics.modified.data.lumperSheet.LumperWorkDetailAPIResponse
 import com.quickhandslogistics.modified.data.lumperSheet.SubmitLumperSheetRequest
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
-import com.quickhandslogistics.modified.data.schedule.*
-import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
-import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeRequest
 import com.quickhandslogistics.modified.data.workSheet.*
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
@@ -33,7 +21,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
-
 
 object DataManager : AppConstant {
     private var retrofitStandard: Retrofit? = null
@@ -49,12 +36,8 @@ object DataManager : AppConstant {
 
     private fun getDataManager(): Retrofit? {
         if (retrofitStandard == null) {
-            retrofitStandard = Retrofit.Builder()
-                .baseUrl(AppConfiguration.API_BASE_URL)
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-
+            retrofitStandard = Retrofit.Builder().baseUrl(AppConfiguration.API_BASE_URL).client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create()).build()
         }
         return retrofitStandard
     }
@@ -63,274 +46,8 @@ object DataManager : AppConstant {
         return getDataManager()!!.create(IApiInterface::class.java)
     }
 
-    private fun getAuthToken(): String {
+    fun getAuthToken(): String {
         return "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN)
-    }
-
-    fun doPasswordReset(forgotPasswordRequest: ForgotPasswordRequest, listener: ResponseListener<ForgotPasswordResponse>) {
-        val call = getService().doResetPassword(forgotPasswordRequest)
-        call.enqueue(object : Callback<ForgotPasswordResponse> {
-            override fun onResponse(call: Call<ForgotPasswordResponse>, response: Response<ForgotPasswordResponse>) {
-                if (!response.isSuccessful) {
-                    listener.onError(getErrorMessage(response.errorBody()))
-                } else {
-                    response.body()?.let { it ->
-                        listener.onSuccess(it)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<ForgotPasswordResponse>, t: Throwable) {
-                listener.onError(t)
-            }
-        })
-    }
-
-    fun getAllLumpersData(listener: ResponseListener<AllLumpersResponse>) {
-        val call = getService().getAllLumpersData(getAuthToken())
-        call.enqueue(object : Callback<AllLumpersResponse> {
-            override fun onResponse(call: Call<AllLumpersResponse>, response: Response<AllLumpersResponse>) {
-                if (!response.isSuccessful) {
-                    listener.onError(getErrorMessage(response.errorBody()))
-                } else {
-                    response.body()?.let { it ->
-                        listener.onSuccess(it)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<AllLumpersResponse>, t: Throwable) {
-                listener.onError(t)
-            }
-        })
-    }
-
-    fun getLeadProfile(listener: ResponseListener<LeadProfileAPIResponse>) {
-        val call = getService().getLeadProfile(getAuthToken())
-        call.enqueue(object : Callback<LeadProfileAPIResponse> {
-            override fun onResponse(call: Call<LeadProfileAPIResponse>, response: Response<LeadProfileAPIResponse>) {
-                if (!response.isSuccessful) {
-                    listener.onError(getErrorMessage(response.errorBody()))
-                } else {
-                    response.body()?.let { it ->
-                        listener.onSuccess(it)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<LeadProfileAPIResponse>, t: Throwable) {
-                listener.onError(t)
-            }
-        })
-    }
-
-    fun getSchedulesList(date: String, listener: ResponseListener<ScheduleListAPIResponse>) {
-        val call = getService().getSchedulesList(getAuthToken(), date)
-        call.enqueue(object : Callback<ScheduleListAPIResponse> {
-            override fun onResponse(call: Call<ScheduleListAPIResponse>, response: Response<ScheduleListAPIResponse>) {
-                if (!response.isSuccessful) {
-                    listener.onError(getErrorMessage(response.errorBody()))
-                } else {
-                    response.body()?.let { it ->
-                        listener.onSuccess(it)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<ScheduleListAPIResponse>, t: Throwable) {
-                listener.onError(t)
-            }
-        })
-    }
-
-    fun getUnSchedulesList(listener: ResponseListener<UnScheduleListAPIResponse>) {
-        val call = getService().getUnSchedulesList(getAuthToken())
-        call.enqueue(object : Callback<UnScheduleListAPIResponse> {
-            override fun onResponse(call: Call<UnScheduleListAPIResponse>, response: Response<UnScheduleListAPIResponse>) {
-                if (!response.isSuccessful) {
-                    listener.onError(getErrorMessage(response.errorBody()))
-                } else {
-                    response.body()?.let { it ->
-                        listener.onSuccess(it)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<UnScheduleListAPIResponse>, t: Throwable) {
-                listener.onError(t)
-            }
-        })
-    }
-
-    fun getScheduleDetail(scheduleIdentityId: String, date: String, listener: ResponseListener<ScheduleDetailAPIResponse>) {
-        val call = getService().getScheduleDetail(getAuthToken(), scheduleIdentityId, date)
-        call.enqueue(object : Callback<ScheduleDetailAPIResponse> {
-            override fun onResponse(call: Call<ScheduleDetailAPIResponse>, response: Response<ScheduleDetailAPIResponse>) {
-                if (!response.isSuccessful) {
-                    listener.onError(getErrorMessage(response.errorBody()))
-                } else {
-                    response.body()?.let { it ->
-                        listener.onSuccess(it)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<ScheduleDetailAPIResponse>, t: Throwable) {
-                listener.onError(t)
-            }
-        })
-    }
-
-    fun getWorkItemDetail(workItemId: String, listener: ResponseListener<WorkItemDetailAPIResponse>) {
-        val call = getService().getWorkItemDetail(getAuthToken(), workItemId)
-        call.enqueue(object : Callback<WorkItemDetailAPIResponse> {
-            override fun onResponse(call: Call<WorkItemDetailAPIResponse>, response: Response<WorkItemDetailAPIResponse>) {
-                if (!response.isSuccessful) {
-                    listener.onError(getErrorMessage(response.errorBody()))
-                } else {
-                    response.body()?.let { it ->
-                        listener.onSuccess(it)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<WorkItemDetailAPIResponse>, t: Throwable) {
-                listener.onError(t)
-            }
-        })
-    }
-
-    fun assignLumpers(workItemId: String, request: AssignLumpersRequest, listener: ResponseListener<BaseResponse>) {
-        val call = getService().assignLumpers(getAuthToken(), workItemId, request)
-        call.enqueue(object : Callback<BaseResponse> {
-            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
-                if (!response.isSuccessful) {
-                    listener.onError(getErrorMessage(response.errorBody()))
-                } else {
-                    response.body()?.let { it ->
-                        listener.onSuccess(it)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-                listener.onError(t)
-            }
-        })
-    }
-
-    fun getLumpersAttendanceList(listener: ResponseListener<GetAttendanceAPIResponse>) {
-        val call = getService().getAttendanceList(getAuthToken())
-        call.enqueue(object : Callback<GetAttendanceAPIResponse> {
-            override fun onResponse(call: Call<GetAttendanceAPIResponse>, response: Response<GetAttendanceAPIResponse>) {
-                if (!response.isSuccessful) {
-                    listener.onError(getErrorMessage(response.errorBody()))
-                } else {
-                    response.body()?.let { it ->
-                        listener.onSuccess(it)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<GetAttendanceAPIResponse>, t: Throwable) {
-                listener.onError(t)
-            }
-        })
-    }
-
-    fun saveLumpersAttendanceList(attendanceDetailList: List<AttendanceDetail>, listener: ResponseListener<BaseResponse>) {
-        val call = getService().saveAttendanceDetails(getAuthToken(), attendanceDetailList)
-        call.enqueue(object : Callback<BaseResponse> {
-            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
-                if (!response.isSuccessful) {
-                    listener.onError(getErrorMessage(response.errorBody()))
-                } else {
-                    response.body()?.let { it ->
-                        listener.onSuccess(it)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-                listener.onError(t)
-            }
-        })
-    }
-
-    fun getBuildingOperationsDetail(workItemId: String, listener: ResponseListener<BuildingOperationAPIResponse>) {
-        val call = getService().getBuildingOperationsDetail(getAuthToken(), workItemId)
-        call.enqueue(object : Callback<BuildingOperationAPIResponse> {
-            override fun onResponse(call: Call<BuildingOperationAPIResponse>, response: Response<BuildingOperationAPIResponse>) {
-                if (!response.isSuccessful) {
-                    listener.onError(getErrorMessage(response.errorBody()))
-                } else {
-                    response.body()?.let { it ->
-                        listener.onSuccess(it)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<BuildingOperationAPIResponse>, t: Throwable) {
-                listener.onError(t)
-            }
-        })
-    }
-
-    fun saveBuildingOperationsDetail(workItemId: String, request: HashMap<String, String>, listener: ResponseListener<BaseResponse>) {
-        val call = getService().saveBuildingOperationsDetail(getAuthToken(), workItemId, request)
-        call.enqueue(object : Callback<BaseResponse> {
-            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
-                if (!response.isSuccessful) {
-                    listener.onError(getErrorMessage(response.errorBody()))
-                } else {
-                    response.body()?.let { it ->
-                        listener.onSuccess(it)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-                listener.onError(t)
-            }
-        })
-    }
-
-    fun getScheduleTimeList(day: String, listener: ResponseListener<GetScheduleTimeAPIResponse>) {
-        val call = getService().getScheduleTimeList(getAuthToken(), day)
-        call.enqueue(object : Callback<GetScheduleTimeAPIResponse> {
-            override fun onResponse(call: Call<GetScheduleTimeAPIResponse>, response: Response<GetScheduleTimeAPIResponse>) {
-                if (!response.isSuccessful) {
-                    listener.onError(getErrorMessage(response.errorBody()))
-                } else {
-                    response.body()?.let { it ->
-                        listener.onSuccess(it)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<GetScheduleTimeAPIResponse>, t: Throwable) {
-                listener.onError(t)
-            }
-        })
-    }
-
-    fun saveScheduleTimeDetail(request: ScheduleTimeRequest, listener: ResponseListener<BaseResponse>) {
-        val call = getService().saveScheduleTimeDetails(getAuthToken(), request)
-        call.enqueue(object : Callback<BaseResponse> {
-            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
-                if (!response.isSuccessful) {
-                    listener.onError(getErrorMessage(response.errorBody()))
-                } else {
-                    response.body()?.let { it ->
-                        listener.onSuccess(it)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-                listener.onError(t)
-            }
-        })
     }
 
     fun getWorkSheetList(day: String, listener: ResponseListener<WorkSheetListAPIResponse>) {
@@ -573,7 +290,7 @@ object DataManager : AppConstant {
         return isSuccessResponse
     }
 
-    fun getErrorMessage(errorBody: ResponseBody?): String {
+    private fun getErrorMessage(errorBody: ResponseBody?): String {
         var errorMessage = ""
         errorBody?.let {
             val errorBodyString = String(it.bytes())
