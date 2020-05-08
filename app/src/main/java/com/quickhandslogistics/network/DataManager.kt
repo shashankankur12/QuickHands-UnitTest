@@ -2,6 +2,7 @@ package com.quickhandslogistics.network
 
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
+import com.quickhandslogistics.modified.contracts.BaseContract
 import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.ErrorResponse
 import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
@@ -58,54 +59,20 @@ object DataManager : AppConstant {
         return retrofitStandard
     }
 
-    private fun getService(): IApiInterface {
+    fun getService(): IApiInterface {
         return getDataManager()!!.create(IApiInterface::class.java)
     }
 
-    fun doLogin(loginRequest: LoginRequest, listener: ResponseListener<LoginResponse>) {
-        val call = getService().doLogin(loginRequest)
-        call.enqueue(object : Callback<LoginResponse> {
-            override fun onResponse(
-                call: Call<LoginResponse>,
-                response: Response<LoginResponse>
-            ) {
-                var errorMessage = ""
-                if (!response.isSuccessful) {
-                    errorMessage =
-                        getErrorMessage(
-                            response.errorBody()
-                        )
-                    listener.onError(errorMessage)
-                } else {
-                    response.body()?.let { it ->
-                        listener.onSuccess(it)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                listener.onError(t)
-            }
-        })
+    private fun getAuthToken(): String {
+        return "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN)
     }
 
-    fun doPasswordReset(
-        forgotPasswordRequest: ForgotPasswordRequest,
-        listener: ResponseListener<ForgotPasswordResponse>
-    ) {
+    fun doPasswordReset(forgotPasswordRequest: ForgotPasswordRequest, listener: ResponseListener<ForgotPasswordResponse>) {
         val call = getService().doResetPassword(forgotPasswordRequest)
         call.enqueue(object : Callback<ForgotPasswordResponse> {
-            override fun onResponse(
-                call: Call<ForgotPasswordResponse>,
-                response: Response<ForgotPasswordResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<ForgotPasswordResponse>, response: Response<ForgotPasswordResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage =
-                        getErrorMessage(
-                            response.errorBody()
-                        )
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -120,21 +87,11 @@ object DataManager : AppConstant {
     }
 
     fun getAllLumpersData(listener: ResponseListener<AllLumpersResponse>) {
-        val call = getService().getAllLumpersData(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN)
-        )
+        val call = getService().getAllLumpersData(getAuthToken())
         call.enqueue(object : Callback<AllLumpersResponse> {
-            override fun onResponse(
-                call: Call<AllLumpersResponse>,
-                response: Response<AllLumpersResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<AllLumpersResponse>, response: Response<AllLumpersResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage =
-                        getErrorMessage(
-                            response.errorBody()
-                        )
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -149,21 +106,11 @@ object DataManager : AppConstant {
     }
 
     fun getLeadProfile(listener: ResponseListener<LeadProfileAPIResponse>) {
-        val call = getService().getLeadProfile(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN)
-        )
+        val call = getService().getLeadProfile(getAuthToken())
         call.enqueue(object : Callback<LeadProfileAPIResponse> {
-            override fun onResponse(
-                call: Call<LeadProfileAPIResponse>,
-                response: Response<LeadProfileAPIResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<LeadProfileAPIResponse>, response: Response<LeadProfileAPIResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage =
-                        getErrorMessage(
-                            response.errorBody()
-                        )
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -177,25 +124,12 @@ object DataManager : AppConstant {
         })
     }
 
-    fun getSchedulesList(
-        date: String, listener: ResponseListener<ScheduleListAPIResponse>
-    ) {
-        val call = getService().getSchedulesList(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            date
-        )
+    fun getSchedulesList(date: String, listener: ResponseListener<ScheduleListAPIResponse>) {
+        val call = getService().getSchedulesList(getAuthToken(), date)
         call.enqueue(object : Callback<ScheduleListAPIResponse> {
-            override fun onResponse(
-                call: Call<ScheduleListAPIResponse>,
-                response: Response<ScheduleListAPIResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<ScheduleListAPIResponse>, response: Response<ScheduleListAPIResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage =
-                        getErrorMessage(
-                            response.errorBody()
-                        )
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -210,21 +144,11 @@ object DataManager : AppConstant {
     }
 
     fun getUnSchedulesList(listener: ResponseListener<UnScheduleListAPIResponse>) {
-        val call = getService().getUnSchedulesList(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN)
-        )
+        val call = getService().getUnSchedulesList(getAuthToken())
         call.enqueue(object : Callback<UnScheduleListAPIResponse> {
-            override fun onResponse(
-                call: Call<UnScheduleListAPIResponse>,
-                response: Response<UnScheduleListAPIResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<UnScheduleListAPIResponse>, response: Response<UnScheduleListAPIResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage =
-                        getErrorMessage(
-                            response.errorBody()
-                        )
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -238,27 +162,12 @@ object DataManager : AppConstant {
         })
     }
 
-    fun getScheduleDetail(
-        scheduleIdentityId: String,
-        date: String,
-        listener: ResponseListener<ScheduleDetailAPIResponse>
-    ) {
-        val call = getService().getScheduleDetail(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            scheduleIdentityId, date
-        )
+    fun getScheduleDetail(scheduleIdentityId: String, date: String, listener: ResponseListener<ScheduleDetailAPIResponse>) {
+        val call = getService().getScheduleDetail(getAuthToken(), scheduleIdentityId, date)
         call.enqueue(object : Callback<ScheduleDetailAPIResponse> {
-            override fun onResponse(
-                call: Call<ScheduleDetailAPIResponse>,
-                response: Response<ScheduleDetailAPIResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<ScheduleDetailAPIResponse>, response: Response<ScheduleDetailAPIResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage =
-                        getErrorMessage(
-                            response.errorBody()
-                        )
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -272,26 +181,12 @@ object DataManager : AppConstant {
         })
     }
 
-    fun getWorkItemDetail(
-        workItemId: String,
-        listener: ResponseListener<WorkItemDetailAPIResponse>
-    ) {
-        val call = getService().getWorkItemDetail(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            workItemId
-        )
+    fun getWorkItemDetail(workItemId: String, listener: ResponseListener<WorkItemDetailAPIResponse>) {
+        val call = getService().getWorkItemDetail(getAuthToken(), workItemId)
         call.enqueue(object : Callback<WorkItemDetailAPIResponse> {
-            override fun onResponse(
-                call: Call<WorkItemDetailAPIResponse>,
-                response: Response<WorkItemDetailAPIResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<WorkItemDetailAPIResponse>, response: Response<WorkItemDetailAPIResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage =
-                        getErrorMessage(
-                            response.errorBody()
-                        )
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -305,26 +200,12 @@ object DataManager : AppConstant {
         })
     }
 
-    fun assignLumpers(
-        workItemId: String, assignLumpersRequest: AssignLumpersRequest,
-        listener: ResponseListener<BaseResponse>
-    ) {
-        val call = getService().assignLumpers(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            workItemId, assignLumpersRequest
-        )
+    fun assignLumpers(workItemId: String, request: AssignLumpersRequest, listener: ResponseListener<BaseResponse>) {
+        val call = getService().assignLumpers(getAuthToken(), workItemId, request)
         call.enqueue(object : Callback<BaseResponse> {
-            override fun onResponse(
-                call: Call<BaseResponse>,
-                response: Response<BaseResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage =
-                        getErrorMessage(
-                            response.errorBody()
-                        )
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -339,21 +220,11 @@ object DataManager : AppConstant {
     }
 
     fun getLumpersAttendanceList(listener: ResponseListener<GetAttendanceAPIResponse>) {
-        val call = getService().getAttendanceList(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN)
-        )
+        val call = getService().getAttendanceList(getAuthToken())
         call.enqueue(object : Callback<GetAttendanceAPIResponse> {
-            override fun onResponse(
-                call: Call<GetAttendanceAPIResponse>,
-                response: Response<GetAttendanceAPIResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<GetAttendanceAPIResponse>, response: Response<GetAttendanceAPIResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage =
-                        getErrorMessage(
-                            response.errorBody()
-                        )
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -367,26 +238,12 @@ object DataManager : AppConstant {
         })
     }
 
-    fun saveLumpersAttendanceList(
-        attendanceDetailList: List<AttendanceDetail>,
-        listener: ResponseListener<BaseResponse>
-    ) {
-        val call = getService().saveAttendanceDetails(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            attendanceDetailList
-        )
+    fun saveLumpersAttendanceList(attendanceDetailList: List<AttendanceDetail>, listener: ResponseListener<BaseResponse>) {
+        val call = getService().saveAttendanceDetails(getAuthToken(), attendanceDetailList)
         call.enqueue(object : Callback<BaseResponse> {
-            override fun onResponse(
-                call: Call<BaseResponse>,
-                response: Response<BaseResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage =
-                        getErrorMessage(
-                            response.errorBody()
-                        )
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -400,26 +257,12 @@ object DataManager : AppConstant {
         })
     }
 
-    fun getBuildingOperationsDetail(
-        workItemId: String,
-        listener: ResponseListener<BuildingOperationAPIResponse>
-    ) {
-        val call = getService().getBuildingOperationsDetail(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            workItemId
-        )
+    fun getBuildingOperationsDetail(workItemId: String, listener: ResponseListener<BuildingOperationAPIResponse>) {
+        val call = getService().getBuildingOperationsDetail(getAuthToken(), workItemId)
         call.enqueue(object : Callback<BuildingOperationAPIResponse> {
-            override fun onResponse(
-                call: Call<BuildingOperationAPIResponse>,
-                response: Response<BuildingOperationAPIResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<BuildingOperationAPIResponse>, response: Response<BuildingOperationAPIResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage =
-                        getErrorMessage(
-                            response.errorBody()
-                        )
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -433,27 +276,12 @@ object DataManager : AppConstant {
         })
     }
 
-    fun saveBuildingOperationsDetail(
-        workItemId: String,
-        request: HashMap<String, String>,
-        listener: ResponseListener<BaseResponse>
-    ) {
-        val call = getService().saveBuildingOperationsDetail(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            workItemId, request
-        )
+    fun saveBuildingOperationsDetail(workItemId: String, request: HashMap<String, String>, listener: ResponseListener<BaseResponse>) {
+        val call = getService().saveBuildingOperationsDetail(getAuthToken(), workItemId, request)
         call.enqueue(object : Callback<BaseResponse> {
-            override fun onResponse(
-                call: Call<BaseResponse>,
-                response: Response<BaseResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage =
-                        getErrorMessage(
-                            response.errorBody()
-                        )
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -468,21 +296,11 @@ object DataManager : AppConstant {
     }
 
     fun getScheduleTimeList(day: String, listener: ResponseListener<GetScheduleTimeAPIResponse>) {
-        val call = getService().getScheduleTimeList(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN), day
-        )
+        val call = getService().getScheduleTimeList(getAuthToken(), day)
         call.enqueue(object : Callback<GetScheduleTimeAPIResponse> {
-            override fun onResponse(
-                call: Call<GetScheduleTimeAPIResponse>,
-                response: Response<GetScheduleTimeAPIResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<GetScheduleTimeAPIResponse>, response: Response<GetScheduleTimeAPIResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage =
-                        getErrorMessage(
-                            response.errorBody()
-                        )
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -496,24 +314,12 @@ object DataManager : AppConstant {
         })
     }
 
-    fun saveScheduleTimeDetail(
-        request: ScheduleTimeRequest, listener: ResponseListener<BaseResponse>
-    ) {
-        val call = getService().saveScheduleTimeDetails(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            request
-        )
+    fun saveScheduleTimeDetail(request: ScheduleTimeRequest, listener: ResponseListener<BaseResponse>) {
+        val call = getService().saveScheduleTimeDetails(getAuthToken(), request)
         call.enqueue(object : Callback<BaseResponse> {
-            override fun onResponse(
-                call: Call<BaseResponse>, response: Response<BaseResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage =
-                        getErrorMessage(
-                            response.errorBody()
-                        )
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -527,24 +333,12 @@ object DataManager : AppConstant {
         })
     }
 
-    fun getWorkSheetList(
-        day: String, listener: ResponseListener<WorkSheetListAPIResponse>
-    ) {
-        val call = getService().getWorkSheetList(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN), day
-        )
+    fun getWorkSheetList(day: String, listener: ResponseListener<WorkSheetListAPIResponse>) {
+        val call = getService().getWorkSheetList(getAuthToken(), day)
         call.enqueue(object : Callback<WorkSheetListAPIResponse> {
-            override fun onResponse(
-                call: Call<WorkSheetListAPIResponse>,
-                response: Response<WorkSheetListAPIResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<WorkSheetListAPIResponse>, response: Response<WorkSheetListAPIResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage =
-                        getErrorMessage(
-                            response.errorBody()
-                        )
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -558,26 +352,12 @@ object DataManager : AppConstant {
         })
     }
 
-    fun changeWorkItemStatus(
-        workItemId: String, request: ChangeStatusRequest,
-        listener: ResponseListener<BaseResponse>
-    ) {
-        val call = getService().changeWorkItemStatus(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            workItemId, request
-        )
+    fun changeWorkItemStatus(workItemId: String, request: ChangeStatusRequest, listener: ResponseListener<BaseResponse>) {
+        val call = getService().changeWorkItemStatus(getAuthToken(), workItemId, request)
         call.enqueue(object : Callback<BaseResponse> {
-            override fun onResponse(
-                call: Call<BaseResponse>,
-                response: Response<BaseResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage =
-                        getErrorMessage(
-                            response.errorBody()
-                        )
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -591,22 +371,12 @@ object DataManager : AppConstant {
         })
     }
 
-    fun updateWorkItemNotes(
-        workItemId: String, request: UpdateNotesRequest, listener: ResponseListener<BaseResponse>
-    ) {
-        val call = getService().updateWorkItemNotes(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            workItemId, request
-        )
+    fun updateWorkItemNotes(workItemId: String, request: UpdateNotesRequest, listener: ResponseListener<BaseResponse>) {
+        val call = getService().updateWorkItemNotes(getAuthToken(), workItemId, request)
         call.enqueue(object : Callback<BaseResponse> {
-            override fun onResponse(
-                call: Call<BaseResponse>,
-                response: Response<BaseResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage = getErrorMessage(response.errorBody())
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -620,21 +390,12 @@ object DataManager : AppConstant {
         })
     }
 
-    fun updateLumperTimeInWorkItem(
-        request: UpdateLumperTimeRequest, listener: ResponseListener<BaseResponse>
-    ) {
-        val call = getService().updateLumperTimeInWorkItem(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            request
-        )
+    fun updateLumperTimeInWorkItem(request: UpdateLumperTimeRequest, listener: ResponseListener<BaseResponse>) {
+        val call = getService().updateLumperTimeInWorkItem(getAuthToken(), request)
         call.enqueue(object : Callback<BaseResponse> {
-            override fun onResponse(
-                call: Call<BaseResponse>, response: Response<BaseResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage = getErrorMessage(response.errorBody())
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -648,21 +409,12 @@ object DataManager : AppConstant {
         })
     }
 
-    fun cancelAllSchedules(
-        day: String, request: CancelAllSchedulesRequest, listener: ResponseListener<BaseResponse>
-    ) {
-        val call = getService().cancelAllSchedules(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            day, request
-        )
+    fun cancelAllSchedules(day: String, request: CancelAllSchedulesRequest, listener: ResponseListener<BaseResponse>) {
+        val call = getService().cancelAllSchedules(getAuthToken(), day, request)
         call.enqueue(object : Callback<BaseResponse> {
-            override fun onResponse(
-                call: Call<BaseResponse>, response: Response<BaseResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage = getErrorMessage(response.errorBody())
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -676,21 +428,12 @@ object DataManager : AppConstant {
         })
     }
 
-    fun getCustomerSheetList(
-        day: String, listener: ResponseListener<CustomerSheetListAPIResponse>
-    ) {
-        val call = getService().getCustomerSheetList(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN), day
-        )
+    fun getCustomerSheetList(day: String, listener: ResponseListener<CustomerSheetListAPIResponse>) {
+        val call = getService().getCustomerSheetList(getAuthToken(), day)
         call.enqueue(object : Callback<CustomerSheetListAPIResponse> {
-            override fun onResponse(
-                call: Call<CustomerSheetListAPIResponse>,
-                response: Response<CustomerSheetListAPIResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<CustomerSheetListAPIResponse>, response: Response<CustomerSheetListAPIResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage = getErrorMessage(response.errorBody())
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -704,29 +447,18 @@ object DataManager : AppConstant {
         })
     }
 
-    fun saveCustomerSheetList(
-        name: String, notes: String, file: File, listener: ResponseListener<BaseResponse>
-    ) {
+    fun saveCustomerSheetList(name: String, notes: String, file: File, listener: ResponseListener<BaseResponse>) {
         val nameRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), name)
         val notesRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), notes)
 
         val signatureRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-        val signatureMultiPartBody =
-            MultipartBody.Part.createFormData("signature", file.name, signatureRequestBody)
+        val signatureMultiPartBody = MultipartBody.Part.createFormData("signature", file.name, signatureRequestBody)
 
-        val call = getService().saveCustomerSheet(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            nameRequestBody, notesRequestBody, signatureMultiPartBody
-        )
+        val call = getService().saveCustomerSheet(getAuthToken(), nameRequestBody, notesRequestBody, signatureMultiPartBody)
         call.enqueue(object : Callback<BaseResponse> {
-            override fun onResponse(
-                call: Call<BaseResponse>,
-                response: Response<BaseResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage = getErrorMessage(response.errorBody())
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -741,15 +473,11 @@ object DataManager : AppConstant {
     }
 
     fun getLumperSheetList(day: String, listener: ResponseListener<LumperSheetListAPIResponse>) {
-        val call = getService().getLumperSheetList(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN), day
-        )
+        val call = getService().getLumperSheetList(getAuthToken(), day)
         call.enqueue(object : Callback<LumperSheetListAPIResponse> {
             override fun onResponse(call: Call<LumperSheetListAPIResponse>, response: Response<LumperSheetListAPIResponse>) {
-                var errorMessage = ""
                 if (!response.isSuccessful) {
-                    errorMessage = getErrorMessage(response.errorBody())
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -764,15 +492,11 @@ object DataManager : AppConstant {
     }
 
     fun getLumperWorkDetails(lumperId: String, day: String, listener: ResponseListener<LumperWorkDetailAPIResponse>) {
-        val call = getService().getLumperWorkDetail(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN), day, lumperId
-        )
+        val call = getService().getLumperWorkDetail(getAuthToken(), day, lumperId)
         call.enqueue(object : Callback<LumperWorkDetailAPIResponse> {
             override fun onResponse(call: Call<LumperWorkDetailAPIResponse>, response: Response<LumperWorkDetailAPIResponse>) {
-                var errorMessage = ""
                 if (!response.isSuccessful) {
-                    errorMessage = getErrorMessage(response.errorBody())
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -791,22 +515,13 @@ object DataManager : AppConstant {
         val dayRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), day)
 
         val signatureRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-        val signatureMultiPartBody =
-            MultipartBody.Part.createFormData("signature", file.name, signatureRequestBody)
+        val signatureMultiPartBody = MultipartBody.Part.createFormData("signature", file.name, signatureRequestBody)
 
-        val call = getService().saveLumperSignature(
-            "Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN),
-            dayRequestBody, lumperIdRequestBody, signatureMultiPartBody
-        )
+        val call = getService().saveLumperSignature(getAuthToken(), dayRequestBody, lumperIdRequestBody, signatureMultiPartBody)
         call.enqueue(object : Callback<BaseResponse> {
-            override fun onResponse(
-                call: Call<BaseResponse>,
-                response: Response<BaseResponse>
-            ) {
-                var errorMessage = ""
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (!response.isSuccessful) {
-                    errorMessage = getErrorMessage(response.errorBody())
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -821,13 +536,11 @@ object DataManager : AppConstant {
     }
 
     fun submitLumperSheet(request: SubmitLumperSheetRequest, listener: ResponseListener<BaseResponse>) {
-        val call = getService().submitLumperSheet("Bearer " + SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN), request)
+        val call = getService().submitLumperSheet(getAuthToken(), request)
         call.enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
-                var errorMessage = ""
                 if (!response.isSuccessful) {
-                    errorMessage = getErrorMessage(response.errorBody())
-                    listener.onError(errorMessage)
+                    listener.onError(getErrorMessage(response.errorBody()))
                 } else {
                     response.body()?.let { it ->
                         listener.onSuccess(it)
@@ -841,14 +554,32 @@ object DataManager : AppConstant {
         })
     }
 
-    private fun getErrorMessage(errorBody: ResponseBody?): String {
+    fun isSuccessResponse(isSuccessful: Boolean, body: BaseResponse?, errorBody: ResponseBody?, onFinishedListener: BaseContract.Model.OnFinishedListener): Boolean {
+        var isSuccessResponse = false
+
+        if (isSuccessful) {
+            body?.also { it ->
+                if (it.success) {
+                    isSuccessResponse = true
+                } else {
+                    onFinishedListener.onFailure(it.message)
+                }
+            } ?: run {
+                onFinishedListener.onFailure()
+            }
+        } else {
+            onFinishedListener.onFailure(getErrorMessage(errorBody))
+        }
+        return isSuccessResponse
+    }
+
+    fun getErrorMessage(errorBody: ResponseBody?): String {
         var errorMessage = ""
         errorBody?.let {
             val errorBodyString = String(it.bytes())
             errorMessage = try {
-                val errorResponse: ErrorResponse =
-                    Gson().fromJson(errorBodyString, ErrorResponse::class.java)
-                errorResponse.message!!
+                val errorResponse: ErrorResponse = Gson().fromJson(errorBodyString, ErrorResponse::class.java)
+                errorResponse.message
             } catch (e: JsonSyntaxException) {
                 errorBodyString
             }

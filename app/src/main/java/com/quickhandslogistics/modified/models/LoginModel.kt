@@ -10,12 +10,16 @@ import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.data.login.LoginUserData
 import com.quickhandslogistics.network.DataManager
+import com.quickhandslogistics.network.DataManager.isSuccessResponse
 import com.quickhandslogistics.network.ResponseListener
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_AUTH_TOKEN
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_EMPLOYEE_ID
 import com.quickhandslogistics.utils.SharedPref
 import com.quickhandslogistics.utils.StringUtils
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
 
@@ -26,11 +30,7 @@ class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
         }
     }
 
-    override fun validateLoginDetails(
-        employeeLoginId: String,
-        password: String,
-        onFinishedListener: LoginContract.Model.OnFinishedListener
-    ) {
+    override fun validateLoginDetails(employeeLoginId: String, password: String, onFinishedListener: LoginContract.Model.OnFinishedListener) {
         when {
             TextUtils.isEmpty(employeeLoginId) -> {
                 onFinishedListener.emptyEmployeeId()
@@ -47,48 +47,33 @@ class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
         }
     }
 
-    override fun fetchRegistrationToken(
-        employeeLoginId: String, password: String,
-        onFinishedListener: LoginContract.Model.OnFinishedListener
-    ) {
+    override fun fetchRegistrationToken(employeeLoginId: String, password: String, onFinishedListener: LoginContract.Model.OnFinishedListener) {
         if (sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN).isEmpty()) {
-            FirebaseInstanceId.getInstance().instanceId
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val token = task.result?.token
-                        sharedPref.setString(AppConstant.PREFERENCE_REGISTRATION_TOKEN, token)
-                        onFinishedListener.onRegistrationTakenSaved(employeeLoginId, password)
-                    }
+            FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val token = task.result?.token
+                    sharedPref.setString(AppConstant.PREFERENCE_REGISTRATION_TOKEN, token)
+                    onFinishedListener.onRegistrationTakenSaved(employeeLoginId, password)
                 }
+            }
         } else {
             onFinishedListener.onRegistrationTakenSaved(employeeLoginId, password)
         }
     }
 
-    override fun loginUsingEmployeeDetails(
-        employeeLoginId: String, password: String,
-        onFinishedListener: LoginContract.Model.OnFinishedListener
-    ) {
-        val loginRequest = LoginRequest(
-            employeeLoginId, password,
-            sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN)
-        )
-        DataManager.doLogin(loginRequest, object : ResponseListener<LoginResponse> {
-            override fun onSuccess(response: LoginResponse) {
-                if (response.success) {
-                    onFinishedListener.onLoginSuccess(response)
-                } else {
-                    onFinishedListener.onFailure(response.message)
+    override fun loginUsingEmployeeDetails(employeeLoginId: String, password: String, onFinishedListener: LoginContract.Model.OnFinishedListener) {
+        val loginRequest = LoginRequest(employeeLoginId, password, sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN))
+
+        DataManager.getService().doLogin(loginRequest).enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onLoginSuccess(response.body()!!)
                 }
             }
 
-            override fun onError(error: Any) {
-                if (error is Throwable) {
-                    Log.e(LoginModel::class.simpleName, error.localizedMessage!!)
-                    onFinishedListener.onFailure()
-                } else if (error is String) {
-                    onFinishedListener.onFailure(error)
-                }
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Log.e(LoginModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
             }
         })
     }
@@ -119,15 +104,9 @@ class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
         })
     }
 
-    override fun processLeadProfileData(
-        leadProfileData: LeadProfileData,
-        onFinishedListener: LoginContract.Model.OnFinishedListener
-    ) {
+    override fun processLeadProfileData(leadProfileData: LeadProfileData, onFinishedListener: LoginContract.Model.OnFinishedListener) {
         sharedPref.setClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, leadProfileData)
-        sharedPref.setString(
-            AppConstant.PREFERENCE_BUILDING_ID,
-            leadProfileData.buildingDetailData?.id
-        )
+        sharedPref.setString(AppConstant.PREFERENCE_BUILDING_ID, leadProfileData.buildingDetailData?.id)
         onFinishedListener.showNextScreen()
     }
 }

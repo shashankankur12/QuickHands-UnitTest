@@ -8,36 +8,20 @@ import com.quickhandslogistics.modified.data.login.LoginUserData
 class LoginContract {
     interface Model {
         fun fetchEmployeeId(onFinishedListener: OnFinishedListener)
-        fun loginUsingEmployeeDetails(
-            employeeLoginId: String,
-            password: String,
-            onFinishedListener: OnFinishedListener
-        )
+        fun loginUsingEmployeeDetails(employeeLoginId: String, password: String, onFinishedListener: OnFinishedListener)
 
         fun processLoginData(loginUserData: LoginUserData)
-        fun validateLoginDetails(
-            employeeLoginId: String,
-            password: String,
-            onFinishedListener: OnFinishedListener
-        )
+        fun validateLoginDetails(employeeLoginId: String, password: String, onFinishedListener: OnFinishedListener)
 
-        fun fetchRegistrationToken(
-            employeeLoginId: String,
-            password: String,
-            onFinishedListener: OnFinishedListener
-        )
+        fun fetchRegistrationToken(employeeLoginId: String, password: String, onFinishedListener: OnFinishedListener)
 
         fun fetchLeadProfileInfo(onFinishedListener: OnFinishedListener)
-        fun processLeadProfileData(
-            leadProfileData: LeadProfileData,
-            onFinishedListener: OnFinishedListener
-        )
+        fun processLeadProfileData(leadProfileData: LeadProfileData, onFinishedListener: OnFinishedListener)
 
-        interface OnFinishedListener {
+        interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun emptyEmployeeId()
             fun emptyPassword()
             fun invalidPassword()
-            fun onFailure(message: String = "")
             fun onLoadEmployeeId(employeeId: String)
             fun onLoginSuccess(loginResponse: LoginResponse)
             fun processCredentials(employeeLoginId: String, password: String)
@@ -56,9 +40,8 @@ class LoginContract {
         fun showNextScreen()
     }
 
-    interface Presenter {
+    interface Presenter : BaseContract.Presenter {
         fun loadEmployeeId()
-        fun onDestroy()
         fun validateLoginDetails(employeeLoginId: String, password: String)
     }
 }
