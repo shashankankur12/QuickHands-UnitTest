@@ -11,8 +11,7 @@ class LumperWorkDetailContract {
         fun fetchLumperWorkDetails(lumperId: String, selectedDate: Date, onFinishedListener: OnFinishedListener)
         fun saveLumperSignature(lumperId: String, date: Date, signatureFilePath: String, onFinishedListener: OnFinishedListener)
 
-        interface OnFinishedListener {
-            fun onFailure(message: String = "")
+        interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(response: LumperWorkDetailAPIResponse)
             fun onSuccessSaveLumperSignature(lumperId: String, date: Date)
         }
@@ -29,9 +28,8 @@ class LumperWorkDetailContract {
         }
     }
 
-    interface Presenter {
+    interface Presenter : BaseContract.Presenter {
         fun getLumperWorkDetails(lumperId: String, selectedDate: Date)
         fun saveLumperSignature(lumperId: String, date: Date, signatureFilePath: String)
-        fun onDestroy()
     }
 }

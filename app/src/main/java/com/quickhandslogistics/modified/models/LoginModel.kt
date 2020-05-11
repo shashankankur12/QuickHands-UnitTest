@@ -10,6 +10,7 @@ import com.quickhandslogistics.modified.data.login.LoginRequest
 import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.data.login.LoginUserData
 import com.quickhandslogistics.network.DataManager
+import com.quickhandslogistics.network.DataManager.getAuthToken
 import com.quickhandslogistics.network.DataManager.isSuccessResponse
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_AUTH_TOKEN
@@ -83,7 +84,7 @@ class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
     }
 
     override fun fetchLeadProfileInfo(onFinishedListener: LoginContract.Model.OnFinishedListener) {
-        DataManager.getService().getLeadProfile(DataManager.getAuthToken()).enqueue(object : Callback<LeadProfileAPIResponse> {
+        DataManager.getService().getLeadProfile(getAuthToken()).enqueue(object : Callback<LeadProfileAPIResponse> {
             override fun onResponse(call: Call<LeadProfileAPIResponse>, response: Response<LeadProfileAPIResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onLeadProfileSuccess(response.body()!!)

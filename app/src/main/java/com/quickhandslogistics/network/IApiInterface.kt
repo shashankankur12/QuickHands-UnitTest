@@ -73,6 +73,9 @@ interface IApiInterface {
 
     @POST("employees/lead/attendance")
     fun saveAttendanceDetails(@Header("Authorization") auth: String, @Body request: List<AttendanceDetail>): Call<BaseResponse>
+
+    @GET("employees/lumpers/present")
+    fun getPresentLumpersList(@Header("Authorization") auth: String, @Query("day") day: String): Call<AllLumpersResponse>
     /////////////////////////////////////////////////////////////
 
     // Schedule Lumper Time /////////////////////////////////////////////////

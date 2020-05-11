@@ -5,63 +5,61 @@ import com.quickhandslogistics.modified.contracts.lumperSheet.LumperWorkDetailCo
 import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.lumperSheet.LumperWorkDetailAPIResponse
 import com.quickhandslogistics.network.DataManager
-import com.quickhandslogistics.network.ResponseListener
+import com.quickhandslogistics.network.DataManager.createMultiPartBody
+import com.quickhandslogistics.network.DataManager.createRequestBody
+import com.quickhandslogistics.network.DataManager.getAuthToken
+import com.quickhandslogistics.network.DataManager.isSuccessResponse
 import com.quickhandslogistics.utils.DateUtils
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.util.*
 
 class LumperWorkDetailModel : LumperWorkDetailContract.Model {
 
-    override fun fetchLumperWorkDetails(lumperId:String, selectedDate: Date, onFinishedListener: LumperWorkDetailContract.Model.OnFinishedListener) {
+    override fun fetchLumperWorkDetails(lumperId: String, selectedDate: Date, onFinishedListener: LumperWorkDetailContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
 
-        DataManager.getLumperWorkDetails(lumperId, dateString, object : ResponseListener<LumperWorkDetailAPIResponse> {
-            override fun onSuccess(response: LumperWorkDetailAPIResponse) {
-                if (response.success) {
-                    onFinishedListener.onSuccess(response)
-                } else {
-                    onFinishedListener.onFailure(response.message)
+        DataManager.getService().getLumperWorkDetail(getAuthToken(), dateString, lumperId).enqueue(object : Callback<LumperWorkDetailAPIResponse> {
+            override fun onResponse(call: Call<LumperWorkDetailAPIResponse>, response: Response<LumperWorkDetailAPIResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccess(response.body()!!)
                 }
             }
 
-            override fun onError(error: Any) {
-                if (error is Throwable) {
-                    Log.e(LumperWorkDetailModel::class.simpleName, error.localizedMessage!!)
-                    onFinishedListener.onFailure()
-                } else if (error is String) {
-                    onFinishedListener.onFailure(error)
-                }
+            override fun onFailure(call: Call<LumperWorkDetailAPIResponse>, t: Throwable) {
+                Log.e(LumperWorkDetailModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
             }
         })
     }
 
     override fun saveLumperSignature(
-        lumperId: String, date: Date, signatureFilePath: String,
-        onFinishedListener: LumperWorkDetailContract.Model.OnFinishedListener
+        lumperId: String, date: Date, signatureFilePath: String, onFinishedListener: LumperWorkDetailContract.Model.OnFinishedListener
     ) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, date)
-        val file = File(signatureFilePath)
-        DataManager.saveLumperSigntaure(
-            lumperId, dateString, file,
-            object : ResponseListener<BaseResponse> {
-                override fun onSuccess(response: BaseResponse) {
-                    if (response.success) {
+
+        val lumperIdRequestBody = createRequestBody(lumperId)
+        val dayRequestBody = createRequestBody(dateString)
+
+        val signatureFile = File(signatureFilePath)
+        val signatureMultiPartBody = createMultiPartBody(signatureFile, "signature")
+
+        DataManager.getService().saveLumperSignature(getAuthToken(), dayRequestBody, lumperIdRequestBody, signatureMultiPartBody)
+            .enqueue(object : Callback<BaseResponse> {
+                override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                    if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                         // Delete the temporary saved file
-                        file.delete()
+                        signatureFile.delete()
 
                         onFinishedListener.onSuccessSaveLumperSignature(lumperId, date)
-                    } else {
-                        onFinishedListener.onFailure(response.message)
                     }
                 }
 
-                override fun onError(error: Any) {
-                    if (error is Throwable) {
-                        Log.e(LumperWorkDetailModel::class.simpleName, error.localizedMessage!!)
-                        onFinishedListener.onFailure()
-                    } else if (error is String) {
-                        onFinishedListener.onFailure(error)
-                    }
+                override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                    Log.e(LumperWorkDetailModel::class.simpleName, t.localizedMessage!!)
+                    onFinishedListener.onFailure()
                 }
             })
     }

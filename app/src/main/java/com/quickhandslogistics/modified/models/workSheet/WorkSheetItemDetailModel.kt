@@ -9,7 +9,6 @@ import com.quickhandslogistics.modified.data.workSheet.UpdateNotesRequest
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.DataManager.getAuthToken
 import com.quickhandslogistics.network.DataManager.isSuccessResponse
-import com.quickhandslogistics.network.ResponseListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,22 +32,17 @@ class WorkSheetItemDetailModel : WorkSheetItemDetailContract.Model {
 
     override fun changeWorkItemStatus(workItemId: String, status: String, onFinishedListener: WorkSheetItemDetailContract.Model.OnFinishedListener) {
         val request = ChangeStatusRequest(status)
-        DataManager.changeWorkItemStatus(workItemId, request, object : ResponseListener<BaseResponse> {
-            override fun onSuccess(response: BaseResponse) {
-                if (response.success) {
+
+        DataManager.getService().changeWorkItemStatus(getAuthToken(), workItemId, request).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onSuccessChangeStatus(workItemId)
-                } else {
-                    onFinishedListener.onFailure(response.message)
                 }
             }
 
-            override fun onError(error: Any) {
-                if (error is Throwable) {
-                    Log.e(WorkSheetItemDetailModel::class.simpleName, error.localizedMessage!!)
-                    onFinishedListener.onFailure()
-                } else if (error is String) {
-                    onFinishedListener.onFailure(error)
-                }
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Log.e(WorkSheetItemDetailModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
             }
         })
     }
@@ -58,22 +52,17 @@ class WorkSheetItemDetailModel : WorkSheetItemDetailContract.Model {
         onFinishedListener: WorkSheetItemDetailContract.Model.OnFinishedListener
     ) {
         val request = UpdateNotesRequest(notesQHL, notesQHLCustomer)
-        DataManager.updateWorkItemNotes(workItemId, request, object : ResponseListener<BaseResponse> {
-            override fun onSuccess(response: BaseResponse) {
-                if (response.success) {
+
+        DataManager.getService().updateWorkItemNotes(getAuthToken(), workItemId, request).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onSuccessUpdateNotes(workItemId)
-                } else {
-                    onFinishedListener.onFailure(response.message)
                 }
             }
 
-            override fun onError(error: Any) {
-                if (error is Throwable) {
-                    Log.e(WorkSheetItemDetailModel::class.simpleName, error.localizedMessage!!)
-                    onFinishedListener.onFailure()
-                } else if (error is String) {
-                    onFinishedListener.onFailure(error)
-                }
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Log.e(WorkSheetItemDetailModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
             }
         })
     }

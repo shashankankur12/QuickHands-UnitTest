@@ -11,8 +11,7 @@ class LumperSheetContract {
         fun fetchLumperSheetList(selectedDate: Date, onFinishedListener: OnFinishedListener)
         fun submitLumperSheet(selectedDate: Date, onFinishedListener: OnFinishedListener)
 
-        interface OnFinishedListener {
-            fun onFailure(message: String = "")
+        interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(response: LumperSheetListAPIResponse, selectedDate: Date)
             fun onSuccessSubmitLumperSheet()
         }
@@ -29,9 +28,8 @@ class LumperSheetContract {
         }
     }
 
-    interface Presenter {
+    interface Presenter : BaseContract.Presenter {
         fun getLumpersSheetByDate(selectedDate: Date)
         fun initiateSheetSubmission(selectedDate: Date)
-        fun onDestroy()
     }
 }

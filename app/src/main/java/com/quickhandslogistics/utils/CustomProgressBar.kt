@@ -1,8 +1,8 @@
 package com.quickhandslogistics.utils
 
 import android.content.Context
-import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog
 import com.quickhandslogistics.R
+import com.sahilgarg.forks.cn.pedant.SweetAlert.SweetAlertDialog
 
 class CustomProgressBar {
 

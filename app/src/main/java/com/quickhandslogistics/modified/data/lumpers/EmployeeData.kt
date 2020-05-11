@@ -112,8 +112,7 @@ open class EmployeeData() : Parcelable {
         workSchedule = parcel.readString()
         title = parcel.readString()
         primaryBuilding = parcel.readString()
-        abilityToTravelBetweenBuildings =
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        abilityToTravelBetweenBuildings = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         milesRadiusFromPrimaryBuilding = parcel.readString()
         hiringDate = parcel.readString()
         jobDescription = parcel.readString()

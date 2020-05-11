@@ -6,22 +6,23 @@ import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.customerSheet.CustomerSheetListAPIResponse
 import com.quickhandslogistics.modified.data.dashboard.LeadProfileData
 import com.quickhandslogistics.network.DataManager
-import com.quickhandslogistics.network.ResponseListener
+import com.quickhandslogistics.network.DataManager.createMultiPartBody
+import com.quickhandslogistics.network.DataManager.createRequestBody
+import com.quickhandslogistics.network.DataManager.getAuthToken
+import com.quickhandslogistics.network.DataManager.isSuccessResponse
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SharedPref
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.util.*
 
-class CustomerSheetModel(private val sharedPref: SharedPref) :
-    CustomerSheetContract.Model {
+class CustomerSheetModel(private val sharedPref: SharedPref) : CustomerSheetContract.Model {
 
-    override fun fetchHeaderInfo(
-        selectedDate: Date, onFinishedListener: CustomerSheetContract.Model.OnFinishedListener
-    ) {
-        val leadProfile = sharedPref.getClassObject(
-            AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java
-        ) as LeadProfileData?
+    override fun fetchHeaderInfo(selectedDate: Date, onFinishedListener: CustomerSheetContract.Model.OnFinishedListener) {
+        val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
 
         var buildingName = ""
         leadProfile?.buildingDetailData?.buildingName?.let { name ->
@@ -31,59 +32,47 @@ class CustomerSheetModel(private val sharedPref: SharedPref) :
         onFinishedListener.onSuccessGetHeaderInfo(buildingName, date)
     }
 
-    override fun fetchCustomerSheetList(
-        selectedDate: Date, onFinishedListener: CustomerSheetContract.Model.OnFinishedListener
-    ) {
-        val dateString =
-            DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
+    override fun fetchCustomerSheetList(selectedDate: Date, onFinishedListener: CustomerSheetContract.Model.OnFinishedListener) {
+        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
 
-        DataManager.getCustomerSheetList(
-            dateString, object : ResponseListener<CustomerSheetListAPIResponse> {
-                override fun onSuccess(response: CustomerSheetListAPIResponse) {
-                    if (response.success) {
-                        onFinishedListener.onSuccessFetchCustomerSheet(response, selectedDate)
-                    } else {
-                        onFinishedListener.onFailure(response.message)
-                    }
+        DataManager.getService().getCustomerSheetList(getAuthToken(), dateString).enqueue(object : Callback<CustomerSheetListAPIResponse> {
+            override fun onResponse(call: Call<CustomerSheetListAPIResponse>, response: Response<CustomerSheetListAPIResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessFetchCustomerSheet(response.body()!!, selectedDate)
                 }
+            }
 
-                override fun onError(error: Any) {
-                    if (error is Throwable) {
-                        Log.e(CustomerSheetModel::class.simpleName, error.localizedMessage!!)
-                        onFinishedListener.onFailure()
-                    } else if (error is String) {
-                        onFinishedListener.onFailure(error)
-                    }
-                }
-            })
+            override fun onFailure(call: Call<CustomerSheetListAPIResponse>, t: Throwable) {
+                Log.e(CustomerSheetModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
     }
 
     override fun saveCustomerSheet(
         customerName: String, notesCustomer: String, signatureFilePath: String,
         onFinishedListener: CustomerSheetContract.Model.OnFinishedListener
     ) {
-        val file = File(signatureFilePath)
-        DataManager.saveCustomerSheetList(
-            customerName, notesCustomer, file,
-            object : ResponseListener<BaseResponse> {
-                override fun onSuccess(response: BaseResponse) {
-                    if (response.success) {
+        val nameRequestBody = createRequestBody(customerName)
+        val notesRequestBody = createRequestBody(notesCustomer)
+
+        val signatureFile = File(signatureFilePath)
+        val signatureMultiPartBody = createMultiPartBody(signatureFile, "signature")
+
+        DataManager.getService().saveCustomerSheet(getAuthToken(), nameRequestBody, notesRequestBody, signatureMultiPartBody)
+            .enqueue(object : Callback<BaseResponse> {
+                override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                    if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                         // Delete the temporary saved file
-                        file.delete()
+                        signatureFile.delete()
 
                         onFinishedListener.onSuccessSaveCustomerSheet()
-                    } else {
-                        onFinishedListener.onFailure(response.message)
                     }
                 }
 
-                override fun onError(error: Any) {
-                    if (error is Throwable) {
-                        Log.e(CustomerSheetModel::class.simpleName, error.localizedMessage!!)
-                        onFinishedListener.onFailure()
-                    } else if (error is String) {
-                        onFinishedListener.onFailure(error)
-                    }
+                override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                    Log.e(CustomerSheetModel::class.simpleName, t.localizedMessage!!)
+                    onFinishedListener.onFailure()
                 }
             })
     }

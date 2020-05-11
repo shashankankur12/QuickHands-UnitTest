@@ -6,53 +6,46 @@ import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.lumperSheet.LumperSheetListAPIResponse
 import com.quickhandslogistics.modified.data.lumperSheet.SubmitLumperSheetRequest
 import com.quickhandslogistics.network.DataManager
-import com.quickhandslogistics.network.ResponseListener
+import com.quickhandslogistics.network.DataManager.getAuthToken
+import com.quickhandslogistics.network.DataManager.isSuccessResponse
 import com.quickhandslogistics.utils.DateUtils
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 class LumperSheetModel : LumperSheetContract.Model {
 
     override fun fetchLumperSheetList(selectedDate: Date, onFinishedListener: LumperSheetContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
-        DataManager.getLumperSheetList(dateString, object : ResponseListener<LumperSheetListAPIResponse> {
-            override fun onSuccess(response: LumperSheetListAPIResponse) {
-                if (response.success) {
-                    onFinishedListener.onSuccess(response, selectedDate)
-                } else {
-                    onFinishedListener.onFailure(response.message)
+
+        DataManager.getService().getLumperSheetList(getAuthToken(), dateString).enqueue(object : Callback<LumperSheetListAPIResponse> {
+            override fun onResponse(call: Call<LumperSheetListAPIResponse>, response: Response<LumperSheetListAPIResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccess(response.body()!!, selectedDate)
                 }
             }
 
-            override fun onError(error: Any) {
-                if (error is Throwable) {
-                    Log.e(LumperSheetModel::class.simpleName, error.localizedMessage!!)
-                    onFinishedListener.onFailure()
-                } else if (error is String) {
-                    onFinishedListener.onFailure(error)
-                }
+            override fun onFailure(call: Call<LumperSheetListAPIResponse>, t: Throwable) {
+                Log.e(LumperSheetModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
             }
         })
     }
 
     override fun submitLumperSheet(selectedDate: Date, onFinishedListener: LumperSheetContract.Model.OnFinishedListener) {
-        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
-        val request = SubmitLumperSheetRequest(dateString)
-        DataManager.submitLumperSheet(request, object : ResponseListener<BaseResponse> {
-            override fun onSuccess(response: BaseResponse) {
-                if (response.success) {
+        val request = SubmitLumperSheetRequest(DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate))
+
+        DataManager.getService().submitLumperSheet(getAuthToken(), request).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onSuccessSubmitLumperSheet()
-                } else {
-                    onFinishedListener.onFailure(response.message)
                 }
             }
 
-            override fun onError(error: Any) {
-                if (error is Throwable) {
-                    Log.e(LumperWorkDetailModel::class.simpleName, error.localizedMessage!!)
-                    onFinishedListener.onFailure()
-                } else if (error is String) {
-                    onFinishedListener.onFailure(error)
-                }
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Log.e(LumperSheetModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
             }
         })
     }
