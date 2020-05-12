@@ -3,7 +3,7 @@ package com.quickhandslogistics.modified.models.schedule
 import android.util.Log
 import com.quickhandslogistics.modified.contracts.schedule.AddWorkItemLumpersContract
 import com.quickhandslogistics.modified.data.BaseResponse
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.data.common.AllLumpersResponse
 import com.quickhandslogistics.modified.data.schedule.AssignLumpersRequest
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.DataManager.getAuthToken

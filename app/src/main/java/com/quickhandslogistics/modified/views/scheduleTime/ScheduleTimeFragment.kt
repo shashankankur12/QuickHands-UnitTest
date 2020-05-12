@@ -189,9 +189,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
-    override fun showScheduleTimeData(
-        selectedDate: Date, scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>
-    ) {
+    override fun showScheduleTimeData(selectedDate: Date, scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>) {
         this.scheduleTimeDetailList = scheduleTimeDetailList
         selectedTime = selectedDate.time
         isFutureDate = com.quickhandslogistics.utils.DateUtils.isFutureDate(selectedDate.time)

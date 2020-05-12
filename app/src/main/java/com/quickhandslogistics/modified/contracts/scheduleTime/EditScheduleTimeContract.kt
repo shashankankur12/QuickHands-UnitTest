@@ -1,8 +1,9 @@
 package com.quickhandslogistics.modified.contracts.scheduleTime
 
 import com.quickhandslogistics.modified.contracts.BaseContract
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.data.common.AllLumpersResponse
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.modified.data.lumpers.LumperListAPIResponse
 import java.util.*
 
 class EditScheduleTimeContract {
@@ -14,7 +15,7 @@ class EditScheduleTimeContract {
         )
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
-            fun onSuccessFetchLumpers(allLumpersResponse: AllLumpersResponse)
+            fun onSuccessFetchLumpers(response: LumperListAPIResponse)
             fun onSuccessScheduleTime()
         }
     }

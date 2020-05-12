@@ -4,9 +4,8 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.workSheet.AllWorkScheduleCancelContract
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.data.common.AllLumpersResponse
 import com.quickhandslogistics.modified.models.workSheet.AllWorkScheduleCancelModel
-import com.quickhandslogistics.utils.SharedPref
 
 class AllWorkScheduleCancelPresenter(
     private var allWorkScheduleCancelView: AllWorkScheduleCancelContract.View?, private val resources: Resources

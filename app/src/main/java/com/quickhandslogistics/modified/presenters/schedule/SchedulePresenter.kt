@@ -11,6 +11,7 @@ import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.modified.models.schedule.ScheduleModel
 import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.ValueUtils
 import java.util.*
 
 class SchedulePresenter(
@@ -19,9 +20,9 @@ class SchedulePresenter(
 
     private val scheduleModel: ScheduleModel = ScheduleModel()
 
-    override fun getScheduledWorkItemsByDate(date: Date) {
+    override fun getScheduledWorkItemsByDate(date: Date, pageIndex: Int) {
         scheduleView?.showProgressDialog(resources.getString(R.string.api_loading_message))
-        scheduleModel.fetchSchedulesByDate(date, this)
+        scheduleModel.fetchSchedulesByDate(date, pageIndex, this)
     }
 
     override fun onDestroy() {
@@ -37,7 +38,7 @@ class SchedulePresenter(
         }
     }
 
-    override fun onSuccess(selectedDate: Date, scheduleListAPIResponse: ScheduleListAPIResponse) {
+    override fun onSuccess(selectedDate: Date, scheduleListAPIResponse: ScheduleListAPIResponse, currentPageIndex: Int) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
         scheduleView?.showDateString(dateString)
 
@@ -69,11 +70,19 @@ class SchedulePresenter(
             }
         }
 
+        val totalPagesCount = ValueUtils.getDefaultOrValue(scheduleListAPIResponse.data?.pageCount)
+        val nextPageIndex = ValueUtils.getDefaultOrValue(scheduleListAPIResponse.data?.next)
+
         if (workItemsList.size > 0) {
-            scheduleView?.showScheduleData(selectedDate, workItemsList)
+            scheduleView?.showScheduleData(selectedDate, workItemsList, totalPagesCount, nextPageIndex, currentPageIndex)
         } else {
             scheduleView?.showEmptyData()
         }
-        scheduleView?.fetchUnsScheduledWorkItems()
+
+        if (currentPageIndex == 1) {
+            scheduleView?.fetchUnScheduledWorkItems()
+        } else {
+            scheduleView?.hideProgressDialog()
+        }
     }
 }

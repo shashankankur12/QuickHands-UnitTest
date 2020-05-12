@@ -35,5 +35,7 @@ interface AppConstant {
         const val EDIT_DIALOG = "edit_dialog"
 
         const val REQUEST_CODE_CHANGED = 101
+
+        const val API_PAGE_SIZE = 20
     }
 }

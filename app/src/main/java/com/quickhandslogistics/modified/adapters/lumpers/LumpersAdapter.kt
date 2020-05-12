@@ -45,8 +45,10 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
         holder.bind(getItem(position))
     }
 
-    fun updateLumpersData(employeeDataList: java.util.ArrayList<EmployeeData>) {
-        items.clear()
+    fun updateLumpersData(employeeDataList: java.util.ArrayList<EmployeeData>, currentPageIndex: Int) {
+        if (currentPageIndex == 1) {
+            this.items.clear()
+        }
         items.addAll(employeeDataList)
         notifyDataSetChanged()
     }

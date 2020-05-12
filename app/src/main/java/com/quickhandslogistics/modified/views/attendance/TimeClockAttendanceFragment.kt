@@ -31,16 +31,10 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        timeClockAttendancePresenter =
-            TimeClockAttendancePresenter(
-                this,
-                resources
-            )
+        timeClockAttendancePresenter = TimeClockAttendancePresenter(this, resources)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_time_clock_attendance, container, false)
     }
 
@@ -57,11 +51,9 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         recyclerViewLumpers.apply {
             val linearLayoutManager = LinearLayoutManager(activity)
             layoutManager = linearLayoutManager
-            val dividerItemDecoration =
-                DividerItemDecoration(activity, linearLayoutManager.orientation)
+            val dividerItemDecoration = DividerItemDecoration(activity, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            timeClockAttendanceAdapter =
-                TimeClockAttendanceAdapter(this@TimeClockAttendanceFragment)
+            timeClockAttendanceAdapter = TimeClockAttendanceAdapter(this@TimeClockAttendanceFragment)
             adapter = timeClockAttendanceAdapter
         }
 
@@ -72,8 +64,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
                 val updatedData = timeClockAttendanceAdapter.getUpdatedData()
                 buttonSave.isEnabled = updatedData.size > 0
 
-                textViewEmptyData.visibility =
-                    if (timeClockAttendanceAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                textViewEmptyData.visibility = if (timeClockAttendanceAdapter.itemCount == 0) View.VISIBLE else View.GONE
             }
         })
 
@@ -109,18 +100,12 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
                     val isMultiSelect = bottomSheetBackground.getTag(R.id.isMultiSelect) as Boolean
                     if (isMultiSelect) {
-                        timeClockAttendanceAdapter.updateClockInTimeForSelectedPositions(
-                            System.currentTimeMillis()
-                        )
+                        timeClockAttendanceAdapter.updateClockInTimeForSelectedPositions(System.currentTimeMillis())
                         timeClockAttendanceAdapter.resetAnimationIndex()
                         toggleSaveButton(timeClockAttendanceAdapter.getSelectedItemCount())
                     } else {
-                        val itemPosition =
-                            bottomSheetBackground.getTag(R.id.attendancePosition) as Int
-                        timeClockAttendanceAdapter.updateClockInTime(
-                            itemPosition,
-                            System.currentTimeMillis()
-                        )
+                        val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
+                        timeClockAttendanceAdapter.updateClockInTime(itemPosition, System.currentTimeMillis())
                     }
                 }
                 buttonClockOut.id -> {
@@ -128,18 +113,12 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
                     val isMultiSelect = bottomSheetBackground.getTag(R.id.isMultiSelect) as Boolean
                     if (isMultiSelect) {
-                        timeClockAttendanceAdapter.updateClockOutTimeForSelectedPositions(
-                            System.currentTimeMillis()
-                        )
+                        timeClockAttendanceAdapter.updateClockOutTimeForSelectedPositions(System.currentTimeMillis())
                         timeClockAttendanceAdapter.resetAnimationIndex()
                         toggleSaveButton(timeClockAttendanceAdapter.getSelectedItemCount())
                     } else {
-                        val itemPosition =
-                            bottomSheetBackground.getTag(R.id.attendancePosition) as Int
-                        timeClockAttendanceAdapter.updateClockOutTime(
-                            itemPosition,
-                            System.currentTimeMillis()
-                        )
+                        val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
+                        timeClockAttendanceAdapter.updateClockOutTime(itemPosition, System.currentTimeMillis())
                     }
 
                 }
@@ -148,18 +127,12 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
                     val isMultiSelect = bottomSheetBackground.getTag(R.id.isMultiSelect) as Boolean
                     if (isMultiSelect) {
-                        timeClockAttendanceAdapter.updateLunchInTimeForSelectedPositions(
-                            System.currentTimeMillis()
-                        )
+                        timeClockAttendanceAdapter.updateLunchInTimeForSelectedPositions(System.currentTimeMillis())
                         timeClockAttendanceAdapter.resetAnimationIndex()
                         toggleSaveButton(timeClockAttendanceAdapter.getSelectedItemCount())
                     } else {
-                        val itemPosition =
-                            bottomSheetBackground.getTag(R.id.attendancePosition) as Int
-                        timeClockAttendanceAdapter.updateLunchInTime(
-                            itemPosition,
-                            System.currentTimeMillis()
-                        )
+                        val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
+                        timeClockAttendanceAdapter.updateLunchInTime(itemPosition, System.currentTimeMillis())
                     }
                 }
                 buttonLunchOut.id -> {
@@ -167,18 +140,12 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
                     val isMultiSelect = bottomSheetBackground.getTag(R.id.isMultiSelect) as Boolean
                     if (isMultiSelect) {
-                        timeClockAttendanceAdapter.updateLunchOutTimeForSelectedPositions(
-                            System.currentTimeMillis()
-                        )
+                        timeClockAttendanceAdapter.updateLunchOutTimeForSelectedPositions(System.currentTimeMillis())
                         timeClockAttendanceAdapter.resetAnimationIndex()
                         toggleSaveButton(timeClockAttendanceAdapter.getSelectedItemCount())
                     } else {
-                        val itemPosition =
-                            bottomSheetBackground.getTag(R.id.attendancePosition) as Int
-                        timeClockAttendanceAdapter.updateLunchOutTime(
-                            itemPosition,
-                            System.currentTimeMillis()
-                        )
+                        val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
+                        timeClockAttendanceAdapter.updateLunchOutTime(itemPosition, System.currentTimeMillis())
                     }
                 }
                 imageViewCancel.id -> {
@@ -187,8 +154,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
                 }
                 buttonSave.id -> {
                     CustomProgressBar.getInstance().showWarningDialog(
-                        getString(R.string.string_ask_to_save_attendance_details),
-                        fragmentActivity!!, object : CustomDialogWarningListener {
+                        getString(R.string.string_ask_to_save_attendance_details), fragmentActivity!!, object : CustomDialogWarningListener {
                             override fun onConfirmClick() {
                                 imageViewCancel.performClick()
                                 val updatedData = timeClockAttendanceAdapter.getUpdatedData()
@@ -266,16 +232,14 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
                 DateUtils.PATTERN_API_RESPONSE,
                 lumperAttendanceData.attendanceDetail?.morningPunchIn
             )
-            buttonClockIn.text =
-                if (clockInTime.isNotEmpty()) clockInTime else getString(R.string.clock_in)
+            buttonClockIn.text = if (clockInTime.isNotEmpty()) clockInTime else getString(R.string.clock_in)
             buttonClockIn.isEnabled = timeClockAttendanceAdapter.checkIfEditable(
                 clockInTime.isNotEmpty(), "isMorningPunchIn", lumperAttendanceData.id!!
             )
 
             // Show Clock-Out Time
             val clockOutTime = DateUtils.convertDateStringToTime(
-                DateUtils.PATTERN_API_RESPONSE,
-                lumperAttendanceData.attendanceDetail?.eveningPunchOut
+                DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.eveningPunchOut
             )
             buttonClockOut.text =
                 if (clockOutTime.isNotEmpty()) clockOutTime else getString(R.string.clock_out)

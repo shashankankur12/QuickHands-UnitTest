@@ -4,6 +4,7 @@ import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.attendance.GetAttendanceAPIResponse
 import com.quickhandslogistics.modified.data.buildingOperations.BuildingOperationAPIResponse
+import com.quickhandslogistics.modified.data.common.AllLumpersResponse
 import com.quickhandslogistics.modified.data.customerSheet.CustomerSheetListAPIResponse
 import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
 import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRequest
@@ -13,7 +14,7 @@ import com.quickhandslogistics.modified.data.login.LoginResponse
 import com.quickhandslogistics.modified.data.lumperSheet.LumperSheetListAPIResponse
 import com.quickhandslogistics.modified.data.lumperSheet.LumperWorkDetailAPIResponse
 import com.quickhandslogistics.modified.data.lumperSheet.SubmitLumperSheetRequest
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.modified.data.schedule.*
 import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeRequest
@@ -28,7 +29,9 @@ interface IApiInterface {
     fun doLogin(@Body request: LoginRequest): Call<LoginResponse>
 
     @GET("employees/lead/lumpers")
-    fun getAllLumpersData(@Header("Authorization") auth: String): Call<AllLumpersResponse>
+    fun getAllLumpersData(
+        @Header("Authorization") auth: String, @Query("page") page: Int, @Query("pageSize") pageSize: Int
+    ): Call<LumperListAPIResponse>
 
     @GET("employees/me")
     fun getLeadProfile(@Header("Authorization") auth: String): Call<LeadProfileAPIResponse>
@@ -38,7 +41,10 @@ interface IApiInterface {
 
     // Schedule /////////////////////////////////////////////////
     @GET("schedule/lookup/date")
-    fun getSchedulesList(@Header("Authorization") auth: String, @Query("date") date: String): Call<ScheduleListAPIResponse>
+    fun getSchedulesList(
+        @Header("Authorization") auth: String, @Query("date") date: String,
+        @Query("page") page: Int, @Query("pageSize") pageSize: Int
+    ): Call<ScheduleListAPIResponse>
 
     @GET("schedule/unscheduled")
     fun getUnSchedulesList(@Header("Authorization") auth: String): Call<UnScheduleListAPIResponse>

@@ -3,7 +3,7 @@ package com.quickhandslogistics.modified.models.workSheet
 import android.util.Log
 import com.quickhandslogistics.modified.contracts.workSheet.AllWorkScheduleCancelContract
 import com.quickhandslogistics.modified.data.BaseResponse
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.data.common.AllLumpersResponse
 import com.quickhandslogistics.modified.data.workSheet.CancelAllSchedulesRequest
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.DataManager.getAuthToken

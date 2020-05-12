@@ -1,15 +1,12 @@
 package com.quickhandslogistics.modified.views.common
 
 import android.os.Bundle
-import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.adapters.common.ContainerDetailAdapter
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_BUILDING_PARAMETERS
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_BUILDING_PARAMETER_VALUES
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_CUSTOMER_NOTE
-import com.quickhandslogistics.utils.AppConstant
 import kotlinx.android.synthetic.main.activity_work_item_bo_detail.*
 
 class BuildingOperationsViewActivity : BaseActivity() {

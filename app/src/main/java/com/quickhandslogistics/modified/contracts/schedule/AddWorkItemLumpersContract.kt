@@ -1,7 +1,7 @@
 package com.quickhandslogistics.modified.contracts.schedule
 
 import com.quickhandslogistics.modified.contracts.BaseContract
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.data.common.AllLumpersResponse
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 
 class AddWorkItemLumpersContract {

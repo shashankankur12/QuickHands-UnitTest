@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.common.ChooseLumperContract
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.modified.models.common.ChooseLumperModel
 
 class ChooseLumperPresenter(
@@ -33,8 +33,8 @@ class ChooseLumperPresenter(
         }
     }
 
-    override fun onSuccess(allLumpersResponse: AllLumpersResponse) {
+    override fun onSuccess(response: LumperListAPIResponse) {
         chooseLumperView?.hideProgressDialog()
-        chooseLumperView?.showLumpersData(allLumpersResponse.data!!)
+        chooseLumperView?.showLumpersData(response.data?.employeeDataList!!)
     }
 }

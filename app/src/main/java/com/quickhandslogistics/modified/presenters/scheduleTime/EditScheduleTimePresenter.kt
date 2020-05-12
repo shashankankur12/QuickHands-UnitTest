@@ -4,9 +4,8 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.scheduleTime.EditScheduleTimeContract
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.modified.models.scheduleTime.EditScheduleTimeModel
-import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 
 class EditScheduleTimePresenter(
@@ -43,9 +42,9 @@ class EditScheduleTimePresenter(
         }
     }
 
-    override fun onSuccessFetchLumpers(allLumpersResponse: AllLumpersResponse) {
+    override fun onSuccessFetchLumpers(response: LumperListAPIResponse) {
         editScheduleTimeView?.hideProgressDialog()
-        editScheduleTimeView?.showLumpersData(allLumpersResponse.data!!)
+        editScheduleTimeView?.showLumpersData(response.data?.employeeDataList!!)
     }
 
     override fun onSuccessScheduleTime() {

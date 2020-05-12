@@ -1,15 +1,16 @@
 package com.quickhandslogistics.modified.contracts.common
 
 import com.quickhandslogistics.modified.contracts.BaseContract
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.data.common.AllLumpersResponse
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.modified.data.lumpers.LumperListAPIResponse
 
 class ChooseLumperContract {
     interface Model {
         fun fetchLumpersList(onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
-            fun onSuccess(allLumpersResponse: AllLumpersResponse)
+            fun onSuccess(response: LumperListAPIResponse)
         }
     }
 
