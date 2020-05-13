@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground"
     android:orientation="vertical"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_choose_lumpers">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainConstraintLayout"
@@ -47,20 +49,21 @@
             app:layout_constraintTop_toTopOf="@+id/editTextSearch" />
 
         <View
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@drawable/shadow_effect"
-        android:translationY="-15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@drawable/shadow_effect"
+            android:translationY="-15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/linearLayout" />
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout"
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_20sdp"
             android:background="@drawable/top_left_round_background"
+            android:orientation="vertical"
             android:paddingStart="@dimen/_20ssp"
             android:paddingTop="@dimen/_10ssp"
             android:paddingEnd="@dimen/_20ssp"
@@ -69,19 +72,39 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextSearch">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewLumpers"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/textViewEmptyData"
-                android:layout_width="wrap_content"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewLumpers"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/textViewEmptyData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/string_no_record_found"
+                    android:textSize="@dimen/_12ssp"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/buttonAdd"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/string_no_record_found"
-                android:textSize="@dimen/_12ssp"
-                android:visibility="gone" />
-        </RelativeLayout>
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/round_button_disabled"
+                android:enabled="false"
+                android:text="@string/string_submit"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout>

@@ -23,7 +23,6 @@ class LumperListActivity : AppCompatActivity() {
     lateinit var lumperAdapter: LumperDummyAdapter
 
     companion object {
-        const val ARG_LUMPER_LIST_SHEET = "ARG_LUMPER_LIST_SHEET"
         const val ARG_STRING_LUMPER = "ARG_STRING_LUMPER"
     }
 
@@ -37,7 +36,7 @@ class LumperListActivity : AppCompatActivity() {
         if (intent.hasExtra(getString(R.string.string_lumper_sheet)))
             lumperJobDetail = intent.getStringExtra(getString(R.string.string_lumper_sheet))
 
-        text_title?.setText(getString(R.string.choose_lumper))
+        text_title?.setText(getString(R.string.choose_lumpers))
 
         searchLumper()
 

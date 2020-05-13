@@ -2,9 +2,12 @@ package com.quickhandslogistics.modified.views.scheduleTime
 
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +20,8 @@ import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeNotes
 import com.quickhandslogistics.modified.presenters.scheduleTime.EditScheduleTimePresenter
 import com.quickhandslogistics.modified.views.BaseActivity
+import com.quickhandslogistics.modified.views.common.ChooseLumpersActivity
+import com.quickhandslogistics.modified.views.common.DisplayLumpersListActivity.Companion.ARG_LUMPERS_LIST
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULED_TIME_NOTES
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
@@ -43,8 +48,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
 
         intent.extras?.let { bundle ->
             selectedTime = bundle.getLong(ARG_SELECTED_DATE_MILLISECONDS, 0)
-            scheduleTimeList =
-                bundle.getParcelableArrayList<ScheduleTimeDetail>(ARG_SCHEDULED_TIME_LIST) as ArrayList<ScheduleTimeDetail>
+            scheduleTimeList = bundle.getParcelableArrayList<ScheduleTimeDetail>(ARG_SCHEDULED_TIME_LIST) as ArrayList<ScheduleTimeDetail>
 
             if (bundle.containsKey(ARG_SCHEDULED_TIME_NOTES)) {
                 scheduleTimeNotes = bundle.getParcelable(ARG_SCHEDULED_TIME_NOTES)
@@ -61,58 +65,105 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             }
         }
 
+        if (scheduleTimeList.size == 0) {
+            textViewEmptyData.visibility = View.VISIBLE
+        } else {
+            buttonSubmit.isEnabled = true
+        }
+
         recyclerViewLumpers.apply {
             val linearLayoutManager = LinearLayoutManager(activity)
             layoutManager = linearLayoutManager
-            val dividerItemDecoration =
-                DividerItemDecoration(activity, linearLayoutManager.orientation)
+            val dividerItemDecoration = DividerItemDecoration(activity, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            editScheduleTimeAdapter =
-                EditScheduleTimeAdapter(scheduleTimeList, this@EditScheduleTimeActivity)
+            editScheduleTimeAdapter = EditScheduleTimeAdapter(scheduleTimeList, this@EditScheduleTimeActivity)
             adapter = editScheduleTimeAdapter
         }
 
-        editScheduleTimeAdapter.registerAdapterDataObserver(object :
-            RecyclerView.AdapterDataObserver() {
+        editScheduleTimeAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                textViewEmptyData.visibility =
-                    if (editScheduleTimeAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                buttonSubmit.isEnabled = editScheduleTimeAdapter.itemCount != 0
+                textViewEmptyData.visibility = if (editScheduleTimeAdapter.itemCount == 0) View.VISIBLE else View.GONE
             }
         })
 
 
         editScheduleTimePresenter = EditScheduleTimePresenter(this, resources)
-        editScheduleTimePresenter.fetchLumpersList()
 
-        buttonAddStartTimeAll.setOnClickListener(this)
         buttonSubmit.setOnClickListener(this)
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
+
+        invalidateOptionsMenu()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
+        menu?.findItem(R.id.actionAddLumpers)?.isVisible = true
+        menu?.findItem(R.id.actionAddSameLumperTime)?.isVisible = true
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.let {
+            val menuItem = menu.findItem(R.id.actionAddLumpers)
+            if (editScheduleTimeAdapter.itemCount > 0) {
+                menuItem.title = getString(R.string.update_lumpers)
+            } else {
+                menuItem.title = getString(R.string.add_lumpers)
+            }
+        }
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.actionAddSameLumperTime -> {
+                val calendar = Calendar.getInstance()
+                calendar.timeInMillis = selectedTime
+                val mHour = calendar.get(Calendar.HOUR_OF_DAY)
+                val mMinute = calendar.get(Calendar.MINUTE)
+
+                val timePickerDialog = TimePickerDialog(
+                    this,
+                    OnTimeSetListener { view, hourOfDay, minute ->
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                        calendar.set(Calendar.MINUTE, minute)
+                        editScheduleTimeAdapter.addStartTimetoAll(calendar.timeInMillis)
+                    },
+                    mHour, mMinute, false
+                )
+                timePickerDialog.show()
+            }
+            R.id.actionAddLumpers -> {
+                val lumpersList = editScheduleTimeAdapter.getLumpersList()
+                val bundle = Bundle()
+                bundle.putParcelableArrayList(ChooseLumpersActivity.ARG_ASSIGNED_LUMPERS_LIST, lumpersList)
+                bundle.putParcelableArrayList(ARG_SCHEDULED_TIME_LIST, scheduleTimeList)
+                startIntent(ChooseLumpersActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == RESULT_OK) {
+            data?.extras?.let { bundle ->
+                val employeeDataList = bundle.getParcelableArrayList<EmployeeData>(ARG_LUMPERS_LIST)
+                employeeDataList?.let {
+                    editScheduleTimeAdapter.addLumpersList(employeeDataList)
+                }
+            }
+        }
     }
 
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
-                buttonAddStartTimeAll.id -> {
-                    val calendar = Calendar.getInstance()
-                    calendar.timeInMillis = selectedTime
-                    val mHour = calendar.get(Calendar.HOUR_OF_DAY)
-                    val mMinute = calendar.get(Calendar.MINUTE)
-
-                    val timePickerDialog = TimePickerDialog(
-                        this,
-                        OnTimeSetListener { view, hourOfDay, minute ->
-                            calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
-                            calendar.set(Calendar.MINUTE, minute)
-                            editScheduleTimeAdapter.addStartTimetoAll(calendar.timeInMillis)
-                        },
-                        mHour, mMinute, false
-                    )
-                    timePickerDialog.show()
-                }
                 buttonSubmit.id -> {
-                    val scheduledLumpersIdsTimeMap = editScheduleTimeAdapter.getSelectedLumpers()
+                    val scheduledLumpersIdsTimeMap = editScheduleTimeAdapter.getScheduledLumpersTimeMap()
                     if (scheduledLumpersIdsTimeMap.size > 0) {
                         val notes = editTextNotes.text.toString()
                         val requiredLumperCount = editTextLumpersRequired.text.toString()
@@ -190,17 +241,6 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     */
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
-    }
-
-    override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
-        editScheduleTimeAdapter.updateLumpersData(employeeDataList)
-        if (employeeDataList.size > 0) {
-            textViewEmptyData.visibility = View.GONE
-            recyclerViewLumpers.visibility = View.VISIBLE
-        } else {
-            recyclerViewLumpers.visibility = View.GONE
-            textViewEmptyData.visibility = View.VISIBLE
-        }
     }
 
     override fun scheduleTimeFinished() {

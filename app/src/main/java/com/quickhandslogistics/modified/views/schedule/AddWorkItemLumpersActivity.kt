@@ -43,8 +43,7 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
         intent.extras?.let { it ->
             val isAddLumper = it.getBoolean(ARG_IS_ADD_LUMPER, true)
             if (it.containsKey(ARG_ASSIGNED_LUMPERS_LIST)) {
-                assignedLumpersList =
-                    it.getParcelableArrayList<EmployeeData>(ARG_ASSIGNED_LUMPERS_LIST) as ArrayList<EmployeeData>
+                assignedLumpersList = it.getParcelableArrayList<EmployeeData>(ARG_ASSIGNED_LUMPERS_LIST) as ArrayList<EmployeeData>
             }
 
             workItemId = it.getString(ARG_WORK_ITEM_ID, "")
@@ -60,23 +59,16 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
         recyclerViewLumpers.apply {
             val linearLayoutManager = LinearLayoutManager(activity)
             layoutManager = linearLayoutManager
-            val dividerItemDecoration =
-                DividerItemDecoration(activity, linearLayoutManager.orientation)
+            val dividerItemDecoration = DividerItemDecoration(activity, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            addWorkItemLumperAdapter =
-                AddWorkItemLumperAdapter(
-                    assignedLumpersList,
-                    this@AddWorkItemLumpersActivity
-                )
+            addWorkItemLumperAdapter = AddWorkItemLumperAdapter(assignedLumpersList, this@AddWorkItemLumpersActivity)
             adapter = addWorkItemLumperAdapter
         }
 
-        addWorkItemLumperAdapter.registerAdapterDataObserver(object :
-            RecyclerView.AdapterDataObserver() {
+        addWorkItemLumperAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                textViewEmptyData.visibility =
-                    if (addWorkItemLumperAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                textViewEmptyData.visibility = if (addWorkItemLumperAdapter.itemCount == 0) View.VISIBLE else View.GONE
             }
         })
 
@@ -97,18 +89,16 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
                 buttonAdd.id -> {
                     val selectedLumperIdsList = addWorkItemLumperAdapter.getSelectedLumper()
                     if (selectedLumperIdsList.size > 0) {
-                        CustomProgressBar.getInstance().showWarningDialog(
-                            activityContext = activity,
-                            listener = object : CustomDialogWarningListener {
-                                override fun onConfirmClick() {
-                                    addWorkItemLumpersPresenter.initiateAssigningLumpers(
-                                        selectedLumperIdsList, workItemId, workItemType
-                                    )
-                                }
+                        CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
+                            override fun onConfirmClick() {
+                                addWorkItemLumpersPresenter.initiateAssigningLumpers(
+                                    selectedLumperIdsList, workItemId, workItemType
+                                )
+                            }
 
-                                override fun onCancelClick() {
-                                }
-                            })
+                            override fun onCancelClick() {
+                            }
+                        })
                     }
                 }
 

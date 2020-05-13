@@ -5,7 +5,7 @@
     android:id="@+id/mainConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorPrimary"
+    android:background="@color/appBackground"
     tools:context=".modified.views.schedule.AddWorkItemLumpersActivity">
 
     <include
@@ -52,10 +52,10 @@
         android:translationY="-15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
+        app:layout_constraintTop_toTopOf="@+id/linearLayout" />
 
     <LinearLayout
-        android:id="@+id/relativeLayout"
+        android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_20sdp"

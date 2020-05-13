@@ -108,7 +108,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
 
         initializeCalendar()
 
-        singleRowCalendarScheduleTime.select(currentDatePosition)
+        singleRowCalendarScheduleTime.select(currentDatePosition+1)
     }
 
     private fun invalidateScheduleButton() {

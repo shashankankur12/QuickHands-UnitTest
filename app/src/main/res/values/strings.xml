@@ -94,7 +94,7 @@
     <string name="string_phone">Phone Number</string>
     <string name="customer_name">Customer Name</string>
     <string name="building_name">Building Name</string>
-    <string name="choose_lumper">Choose Lumper</string>
+    <string name="choose_lumpers">Choose Lumpers</string>
     <string name="string_yes">Yes</string>
     <string name="string_no">No</string>
     <string name="string_forgot_password_request">Please Contact your admin for forgot password request.</string>
@@ -248,4 +248,5 @@
     <string name="lumper_sheet_submitted_successfully">Lumper Sheet submitted successfully</string>
     <string name="string_ask_to_submit_lumper_sheet">You want to submit the lumper sheet.</string>
     <string name="attendance_saved_successfully">Attendance Details are saved successfully</string>
+    <string name="string_ask_to_choose_lumper">You want to choose these lumpers.</string>
 </resources>
