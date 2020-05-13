@@ -295,10 +295,12 @@ class TimeClockAttendanceAdapter(
         notifyDataSetChanged()
     }
 
-    fun updateList(lumperAttendanceList: ArrayList<LumperAttendanceData>) {
-        this.updateData.clear()
-        this.lumperAttendanceList.clear()
-        this.lumperAttendanceFilteredList.clear()
+    fun updateList(lumperAttendanceList: ArrayList<LumperAttendanceData>, currentPageIndex: Int) {
+        if (currentPageIndex == 1) {
+            this.updateData.clear()
+            this.lumperAttendanceList.clear()
+        }
+
         this.lumperAttendanceList.addAll(lumperAttendanceList)
         notifyDataSetChanged()
     }

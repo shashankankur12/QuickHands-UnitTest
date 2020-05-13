@@ -84,6 +84,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
         initializeCalendar()
 
+        resetPaginationValues()
         singleRowCalendarSchedule.select(availableDates.size - 1)
     }
 

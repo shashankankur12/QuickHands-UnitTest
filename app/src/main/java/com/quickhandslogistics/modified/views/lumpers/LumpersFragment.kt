@@ -70,6 +70,7 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
 
+        resetPaginationValues()
         lumpersPresenter.fetchLumpersList(currentPageIndex)
     }
 

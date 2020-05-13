@@ -46,6 +46,7 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
     }
 
     fun updateLumpersData(employeeDataList: java.util.ArrayList<EmployeeData>, currentPageIndex: Int) {
+        setSearchEnabled(false)
         if (currentPageIndex == 1) {
             this.items.clear()
         }

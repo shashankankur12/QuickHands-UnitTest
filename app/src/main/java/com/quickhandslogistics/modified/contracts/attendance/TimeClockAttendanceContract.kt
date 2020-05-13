@@ -7,18 +7,18 @@ import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
 
 class TimeClockAttendanceContract {
     interface Model {
-        fun fetchLumpersAttendanceList(onFinishedListener: OnFinishedListener)
+        fun fetchLumpersAttendanceList(pageIndex: Int, onFinishedListener: OnFinishedListener)
         fun saveLumpersAttendanceList(attendanceDetailList: List<AttendanceDetail>, onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
-            fun onSuccessGetList(attendanceAPIResponse: GetAttendanceAPIResponse)
+            fun onSuccessGetList(attendanceAPIResponse: GetAttendanceAPIResponse, currentPageIndex: Int)
             fun onSuccessSaveDate()
         }
     }
 
     interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
-        fun showLumpersAttendance(lumperAttendanceList: ArrayList<LumperAttendanceData>)
+        fun showLumpersAttendance(lumperAttendanceList: ArrayList<LumperAttendanceData>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int)
         fun showDataSavedMessage()
 
         interface OnAdapterItemClickListener {
@@ -30,7 +30,7 @@ class TimeClockAttendanceContract {
     }
 
     interface Presenter : BaseContract.Presenter {
-        fun fetchAttendanceList()
+        fun fetchAttendanceList(pageIndex: Int)
         fun saveAttendanceDetails(attendanceDetailList: List<AttendanceDetail>)
     }
 }
