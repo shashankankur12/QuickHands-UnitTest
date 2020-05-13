@@ -6,16 +6,17 @@ import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.workSheet.TimingDetails
 import com.quickhandslogistics.modified.data.workSheet.UpdateLumperTimeRequest
 import com.quickhandslogistics.network.DataManager
-import com.quickhandslogistics.network.ResponseListener
-import com.quickhandslogistics.utils.SharedPref
+import com.quickhandslogistics.network.DataManager.getAuthToken
+import com.quickhandslogistics.network.DataManager.isSuccessResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class AddLumperTimeWorkSheetItemModel(private val sharedPref: SharedPref) :
-    AddLumperTimeWorkSheetItemContract.Model {
+class AddLumperTimeWorkSheetItemModel : AddLumperTimeWorkSheetItemContract.Model {
 
     override fun saveLumperTimings(
-        id: String, workItemId: String, selectedStartTime: Long, selectedEndTime: Long,
-        selectedBreakInTime: Long, selectedBreakOutTime: Long, waitingTime: String,
-        onFinishedListener: AddLumperTimeWorkSheetItemContract.Model.OnFinishedListener
+        id: String, workItemId: String, selectedStartTime: Long, selectedEndTime: Long, selectedBreakInTime: Long,
+        selectedBreakOutTime: Long, waitingTime: String, onFinishedListener: AddLumperTimeWorkSheetItemContract.Model.OnFinishedListener
     ) {
         val waitingTimeInt = if (waitingTime.isNotEmpty()) waitingTime.toInt() else 0
         val timingDetail = TimingDetails()
@@ -26,24 +27,17 @@ class AddLumperTimeWorkSheetItemModel(private val sharedPref: SharedPref) :
         if (waitingTimeInt > 0) timingDetail.waitingTime = waitingTimeInt
 
         val request = UpdateLumperTimeRequest(id, workItemId, timingDetail)
-        DataManager.updateLumperTimeInWorkItem(request,
-            object : ResponseListener<BaseResponse> {
-                override fun onSuccess(response: BaseResponse) {
-                    if (response.success) {
-                        onFinishedListener.onSuccess()
-                    } else {
-                        onFinishedListener.onFailure(response.message)
-                    }
+        DataManager.getService().updateLumperTimeInWorkItem(getAuthToken(), request).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccess()
                 }
+            }
 
-                override fun onError(error: Any) {
-                    if (error is Throwable) {
-                        Log.e(WorkSheetItemDetailModel::class.simpleName, error.localizedMessage!!)
-                        onFinishedListener.onFailure()
-                    } else if (error is String) {
-                        onFinishedListener.onFailure(error)
-                    }
-                }
-            })
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Log.e(AddLumperTimeWorkSheetItemModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
     }
 }

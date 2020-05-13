@@ -14,22 +14,18 @@ import kotlinx.android.synthetic.main.fragment_work_sheet_item_detail_notes.*
 
 class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener {
 
-    private var onFragmentInteractionListener: WorkSheetItemDetailContract.View.OnFragmentInteractionListener? =
-        null
+    private var onFragmentInteractionListener: WorkSheetItemDetailContract.View.OnFragmentInteractionListener? = null
 
     private var workItemDetail: WorkItemDetail? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (activity is WorkSheetItemDetailContract.View.OnFragmentInteractionListener) {
-            onFragmentInteractionListener =
-                activity as WorkSheetItemDetailContract.View.OnFragmentInteractionListener
+            onFragmentInteractionListener = activity as WorkSheetItemDetailContract.View.OnFragmentInteractionListener
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_work_sheet_item_detail_notes, container, false)
     }
 
@@ -42,22 +38,22 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener {
     fun showNotesData(workItemDetail: WorkItemDetail) {
         this.workItemDetail = workItemDetail
 
-        if (!workItemDetail.notesQHLCustomer.isNullOrEmpty() &&
-            workItemDetail.notesQHLCustomer != AppConstant.NOTES_NOT_AVAILABLE
-        ) {
+        if (!workItemDetail.notesQHLCustomer.isNullOrEmpty() && workItemDetail.notesQHLCustomer != AppConstant.NOTES_NOT_AVAILABLE) {
             editTextQHLCustomerNotes.setText(workItemDetail.notesQHLCustomer)
         }
 
-        if (!workItemDetail.notesQHL.isNullOrEmpty() &&
-            workItemDetail.notesQHL != AppConstant.NOTES_NOT_AVAILABLE
-        ) {
+        if (!workItemDetail.notesQHL.isNullOrEmpty() && workItemDetail.notesQHL != AppConstant.NOTES_NOT_AVAILABLE) {
             editTextQHLNotes.setText(workItemDetail.notesQHL)
         }
 
         workItemDetail.status?.let { status ->
             if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED || status == AppConstant.WORK_ITEM_STATUS_CANCELLED) {
+                editTextQHLCustomerNotes.isEnabled = false
+                editTextQHLNotes.isEnabled = false
                 buttonSubmit.visibility = View.GONE
             } else {
+                editTextQHLCustomerNotes.isEnabled = true
+                editTextQHLNotes.isEnabled = true
                 buttonSubmit.visibility = View.VISIBLE
             }
         }
@@ -71,9 +67,7 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener {
                         val notesQHLCustomer = editTextQHLCustomerNotes.text.toString()
                         val notesQHL = editTextQHLNotes.text.toString()
 
-                        onFragmentInteractionListener?.updateWorkItemNotes(
-                            notesQHLCustomer, notesQHL
-                        )
+                        onFragmentInteractionListener?.updateWorkItemNotes(notesQHLCustomer, notesQHL)
                     }
                 }
                 else -> {
@@ -86,5 +80,4 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener {
         @JvmStatic
         fun newInstance() = WorkSheetItemDetailNotesFragment()
     }
-
 }

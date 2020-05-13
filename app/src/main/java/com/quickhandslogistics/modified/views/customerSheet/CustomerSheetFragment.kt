@@ -198,9 +198,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         customerSheetPresenter.onDestroy()
     }
 
-    override fun saveCustomerSheet(
-        customerName: String, notesCustomer: String, signatureFilePath: String
-    ) {
+    override fun saveCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String) {
         customerSheetPresenter.saveCustomerSheet(customerName, notesCustomer, signatureFilePath)
     }
 }

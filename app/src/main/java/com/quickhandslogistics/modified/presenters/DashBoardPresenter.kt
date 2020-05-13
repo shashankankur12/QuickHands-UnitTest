@@ -30,4 +30,7 @@ class DashBoardPresenter(
             dashBoardModel.processLeadProfileData(it, this)
         }
     }
+
+    override fun onFailure(message: String) {
+    }
 }

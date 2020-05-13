@@ -7,18 +7,18 @@ import com.quickhandslogistics.modified.contracts.attendance.TimeClockAttendance
 import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.attendance.GetAttendanceAPIResponse
 import com.quickhandslogistics.modified.models.attendance.TimeClockAttendanceModel
+import com.quickhandslogistics.utils.ValueUtils
 
 class TimeClockAttendancePresenter(
-    private var timeClockAttendanceView: TimeClockAttendanceContract.View?,
-    private val resources: Resources
+    private var timeClockAttendanceView: TimeClockAttendanceContract.View?, private val resources: Resources
 ) : TimeClockAttendanceContract.Presenter, TimeClockAttendanceContract.Model.OnFinishedListener {
 
     private val timeClockAttendanceModel: TimeClockAttendanceModel =
         TimeClockAttendanceModel()
 
-    override fun fetchAttendanceList() {
+    override fun fetchAttendanceList(pageIndex: Int) {
         timeClockAttendanceView?.showProgressDialog(resources.getString(R.string.api_loading_message))
-        timeClockAttendanceModel.fetchLumpersAttendanceList(this)
+        timeClockAttendanceModel.fetchLumpersAttendanceList(pageIndex, this)
     }
 
     override fun saveAttendanceDetails(attendanceDetailList: List<AttendanceDetail>) {
@@ -39,10 +39,14 @@ class TimeClockAttendancePresenter(
         }
     }
 
-    override fun onSuccessGetList(attendanceAPIResponse: GetAttendanceAPIResponse) {
+    override fun onSuccessGetList(response: GetAttendanceAPIResponse, currentPageIndex: Int) {
         timeClockAttendanceView?.hideProgressDialog()
-        attendanceAPIResponse.data?.let { data ->
-            timeClockAttendanceView?.showLumpersAttendance(data)
+
+        val totalPagesCount = ValueUtils.getDefaultOrValue(response.data?.pageCount)
+        val nextPageIndex = ValueUtils.getDefaultOrValue(response.data?.next)
+
+        response.data?.employeeDataList?.let { employeeDataList ->
+            timeClockAttendanceView?.showLumpersAttendance(employeeDataList, totalPagesCount, nextPageIndex, currentPageIndex)
         }
     }
 

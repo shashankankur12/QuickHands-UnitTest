@@ -1,7 +1,6 @@
 package com.quickhandslogistics.modified.views.scheduleTime
 
 import android.app.Activity
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -21,22 +20,21 @@ import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
 import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
 import com.michalsvec.singlerowcalendar.utils.DateUtils
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.adapters.scheduleTime.ScheduleTimeAdapter
 import com.quickhandslogistics.modified.contracts.DashBoardContract
 import com.quickhandslogistics.modified.contracts.scheduleTime.ScheduleTimeContract
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeNotes
 import com.quickhandslogistics.modified.presenters.scheduleTime.ScheduleTimePresenter
 import com.quickhandslogistics.modified.views.BaseFragment
-import com.quickhandslogistics.modified.adapters.scheduleTime.ScheduleTimeAdapter
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULED_TIME_NOTES
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
-import kotlinx.android.synthetic.main.item_calendar_view.view.*
 import kotlinx.android.synthetic.main.fragment_schedule_time.*
+import kotlinx.android.synthetic.main.item_calendar_view.view.*
 import java.util.*
 
 class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
@@ -189,9 +187,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener,
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
-    override fun showScheduleTimeData(
-        selectedDate: Date, scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>
-    ) {
+    override fun showScheduleTimeData(selectedDate: Date, scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>) {
         this.scheduleTimeDetailList = scheduleTimeDetailList
         selectedTime = selectedDate.time
         isFutureDate = com.quickhandslogistics.utils.DateUtils.isFutureDate(selectedDate.time)

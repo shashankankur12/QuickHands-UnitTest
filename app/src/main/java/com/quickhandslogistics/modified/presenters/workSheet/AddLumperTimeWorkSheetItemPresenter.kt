@@ -5,15 +5,12 @@ import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.workSheet.AddLumperTimeWorkSheetItemContract
 import com.quickhandslogistics.modified.models.workSheet.AddLumperTimeWorkSheetItemModel
-import com.quickhandslogistics.utils.SharedPref
 
 class AddLumperTimeWorkSheetItemPresenter(
-    private var addLumperTimeWorkSheetItemView: AddLumperTimeWorkSheetItemContract.View?,
-    private val resources: Resources, sharedPref: SharedPref
-) : AddLumperTimeWorkSheetItemContract.Presenter,
-    AddLumperTimeWorkSheetItemContract.Model.OnFinishedListener {
+    private var addLumperTimeWorkSheetItemView: AddLumperTimeWorkSheetItemContract.View?, private val resources: Resources
+) : AddLumperTimeWorkSheetItemContract.Presenter, AddLumperTimeWorkSheetItemContract.Model.OnFinishedListener {
 
-    private val addLumperTimeWorkSheetItemModel = AddLumperTimeWorkSheetItemModel(sharedPref)
+    private val addLumperTimeWorkSheetItemModel = AddLumperTimeWorkSheetItemModel()
 
     override fun onDestroy() {
         addLumperTimeWorkSheetItemView = null

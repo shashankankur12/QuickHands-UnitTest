@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="LockedOrientationActivity">
         <activity
-            android:name=".view.activities.LumperJobHistoryActivity"
+            android:name=".modified.views.common.ChooseLumpersActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".modified.views.common.BuildingOperationsViewActivity"
@@ -54,10 +54,6 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".view.activities.CompleteCustomerJobHistory"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".view.activities.CustomerActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity

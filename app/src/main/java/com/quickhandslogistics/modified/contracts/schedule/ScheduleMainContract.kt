@@ -6,7 +6,6 @@ class ScheduleMainContract {
             fun hideProgressDialog()
             fun showProgressDialog(message: String)
             fun fetchUnScheduledWorkItems()
-            fun updateAllSchedules()
         }
     }
 }

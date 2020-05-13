@@ -46,6 +46,10 @@ class LumpersTimeSchedule() : Parcelable {
     @Expose
     var updatedAt: String? = null
 
+    @SerializedName("sheetSigned")
+    @Expose
+    var sheetSigned: Boolean? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         lumperId = parcel.readString()
@@ -57,6 +61,7 @@ class LumpersTimeSchedule() : Parcelable {
         breakTimeEnd = parcel.readString()
         createdAt = parcel.readString()
         updatedAt = parcel.readString()
+        sheetSigned = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -70,6 +75,7 @@ class LumpersTimeSchedule() : Parcelable {
         parcel.writeString(breakTimeEnd)
         parcel.writeString(createdAt)
         parcel.writeString(updatedAt)
+        parcel.writeValue(sheetSigned)
     }
 
     override fun describeContents(): Int {

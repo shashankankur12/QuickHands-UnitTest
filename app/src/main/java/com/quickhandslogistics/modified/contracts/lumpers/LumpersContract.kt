@@ -1,23 +1,21 @@
 package com.quickhandslogistics.modified.contracts.lumpers
 
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.contracts.BaseContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.modified.data.lumpers.LumperListAPIResponse
 
 class LumpersContract {
     interface Model {
-        fun fetchLumpersList(onFinishedListener: OnFinishedListener)
+        fun fetchLumpersList(pageIndex: Int, onFinishedListener: OnFinishedListener)
 
-        interface OnFinishedListener {
-            fun onFailure(message: String = "")
-            fun onSuccess(allLumpersResponse: AllLumpersResponse)
+        interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
+            fun onSuccess(response: LumperListAPIResponse, currentPageIndex: Int)
         }
     }
 
-    interface View {
-        fun hideProgressDialog()
-        fun showProgressDialog(message: String)
+    interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
-        fun showLumpersData(employeeDataList: ArrayList<EmployeeData>)
+        fun showLumpersData(employeeDataList: ArrayList<EmployeeData>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int)
 
         interface OnAdapterItemClickListener {
             fun onItemClick(employeeData: EmployeeData)
@@ -25,8 +23,7 @@ class LumpersContract {
         }
     }
 
-    interface Presenter {
-        fun fetchLumpersList()
-        fun onDestroy()
+    interface Presenter : BaseContract.Presenter {
+        fun fetchLumpersList(currentPageIndex: Int)
     }
 }

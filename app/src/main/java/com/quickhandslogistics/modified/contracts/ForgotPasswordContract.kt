@@ -4,23 +4,15 @@ import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRespon
 
 class ForgotPasswordContract {
     interface Model {
+        fun resetPasswordUsingEmpId(employeeLoginId: String, onFinishedListener: OnFinishedListener)
 
-        fun resetPasswordUsingEmpId(
-            employeeLoginId: String,
-            onFinishedListener: OnFinishedListener
-        )
-
-        interface OnFinishedListener {
+        interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun emptyEmployeeId()
-            fun onFailure(message: String = "")
             fun onPasswordResetSuccess(forgotPasswordResponse: ForgotPasswordResponse)
             fun processPasswordReset(employeeId: String)
         }
 
-        fun validatePasswordResetDetails(
-            employeeLoginId: String,
-            onFinishedListener: OnFinishedListener
-        )
+        fun validatePasswordResetDetails(employeeId: String, onFinishedListener: OnFinishedListener)
     }
 
     interface View : BaseContract.View {
@@ -29,8 +21,7 @@ class ForgotPasswordContract {
         fun showEmptyEmployeeIdError()
     }
 
-    interface Presenter {
-        fun onDestroy()
+    interface Presenter : BaseContract.Presenter {
         fun validatePasswordResetDetails(employeeId: String)
     }
 }

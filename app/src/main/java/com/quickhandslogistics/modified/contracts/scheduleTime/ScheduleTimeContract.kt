@@ -8,13 +8,9 @@ import java.util.*
 
 class ScheduleTimeContract {
     interface Model {
-        fun fetchSchedulesTimeByDate(
-            selectedDate: Date,
-            onFinishedListener: OnFinishedListener
-        )
+        fun fetchSchedulesTimeByDate(selectedDate: Date, onFinishedListener: OnFinishedListener)
 
-        interface OnFinishedListener {
-            fun onFailure(message: String = "")
+        interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(selectedDate: Date, scheduleTimeAPIResponse: GetScheduleTimeAPIResponse)
         }
     }
@@ -23,13 +19,10 @@ class ScheduleTimeContract {
         fun showDateString(dateString: String)
         fun showAPIErrorMessage(message: String)
         fun showNotesData(notes: ScheduleTimeNotes?)
-        fun showScheduleTimeData(
-            selectedDate: Date, scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>
-        )
+        fun showScheduleTimeData(selectedDate: Date, scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>)
     }
 
-    interface Presenter {
+    interface Presenter : BaseContract.Presenter {
         fun getSchedulesTimeByDate(date: Date)
-        fun onDestroy()
     }
 }

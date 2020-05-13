@@ -99,35 +99,45 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
                 isCurrentDate, inCompleteWorkItemsCount
             )
         } ?: run {
+            editTextCustomerName.setText("")
+            editTextCustomerNotes.setText("")
             updateUIVisibility(false, isCurrentDate, inCompleteWorkItemsCount)
         }
     }
 
-    private fun updateUIVisibility(
-        signed: Boolean, currentDate: Boolean, inCompleteWorkItemsCount: Int
-    ) {
+    private fun updateUIVisibility(signed: Boolean, currentDate: Boolean, inCompleteWorkItemsCount: Int) {
+        imageViewSignature.visibility = View.GONE
+        buttonSubmit.visibility = if (currentDate) View.VISIBLE else View.GONE
+        textViewSignature.visibility = if (signed) View.VISIBLE else View.GONE
+
         if (!currentDate || signed || inCompleteWorkItemsCount > 0) {
             editTextCustomerName.isEnabled = false
             editTextCustomerNotes.isEnabled = false
-            textViewAddSignature.visibility = View.GONE
-            textViewSignature.visibility = if (signed) View.VISIBLE else View.GONE
-            buttonSubmit.visibility = View.GONE
+            buttonSubmit.isEnabled = false
         } else {
             editTextCustomerName.isEnabled = true
             editTextCustomerNotes.isEnabled = true
-            textViewAddSignature.visibility = if (signed) View.GONE else View.VISIBLE
-            textViewSignature.visibility = if (signed) View.VISIBLE else View.GONE
-            buttonSubmit.visibility = View.VISIBLE
+            buttonSubmit.isEnabled = true
         }
-        imageViewSignature.visibility = View.GONE
+
+        if (!signed && currentDate && inCompleteWorkItemsCount == 0) {
+            textViewAddSignature.visibility = View.VISIBLE
+        } else {
+            textViewAddSignature.visibility = View.GONE
+        }
+
+        if (signed || (currentDate && inCompleteWorkItemsCount == 0)) {
+            layoutSignature.visibility = View.VISIBLE
+        } else {
+            layoutSignature.visibility = View.GONE
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
             data?.let {
-                val signatureFilePath =
-                    data.getStringExtra(AddSignatureActivity.ARG_SIGNATURE_FILE_PATH)
+                val signatureFilePath = data.getStringExtra(AddSignatureActivity.ARG_SIGNATURE_FILE_PATH)
                 showLocalSignatureOnUI(signatureFilePath)
             }
         }
@@ -136,8 +146,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
     private fun showLocalSignatureOnUI(signatureFilePath: String?) {
         if (!signatureFilePath.isNullOrEmpty()) {
             this.signatureFilePath = signatureFilePath
-            Glide.with(fragmentActivity!!).load(File(signatureFilePath))
-                .into(imageViewSignature)
+            Glide.with(fragmentActivity!!).load(File(signatureFilePath)).into(imageViewSignature)
             imageViewSignature.visibility = View.VISIBLE
             textViewAddSignature.visibility = View.GONE
         } else {

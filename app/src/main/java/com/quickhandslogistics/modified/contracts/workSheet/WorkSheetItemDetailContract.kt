@@ -8,17 +8,11 @@ import com.quickhandslogistics.modified.data.workSheet.LumpersTimeSchedule
 class WorkSheetItemDetailContract {
     interface Model {
         fun fetchWorkItemDetail(workItemId: String, onFinishedListener: OnFinishedListener)
-        fun changeWorkItemStatus(
-            workItemId: String, status: String, onFinishedListener: OnFinishedListener
-        )
+        fun changeWorkItemStatus(workItemId: String, status: String, onFinishedListener: OnFinishedListener)
 
-        fun updateWorkItemNotes(
-            workItemId: String, notesQHLCustomer: String, notesQHL: String,
-            onFinishedListener: OnFinishedListener
-        )
+        fun updateWorkItemNotes(workItemId: String, notesQHLCustomer: String, notesQHL: String, onFinishedListener: OnFinishedListener)
 
-        interface OnFinishedListener {
-            fun onFailure(message: String = "")
+        interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(response: WorkItemDetailAPIResponse)
             fun onSuccessChangeStatus(workItemId: String)
             fun onSuccessUpdateNotes(workItemId: String)
@@ -27,10 +21,7 @@ class WorkSheetItemDetailContract {
 
     interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
-        fun showWorkItemDetail(
-            workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?
-        )
-
+        fun showWorkItemDetail(workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?)
         fun statusChangedSuccessfully()
         fun notesSavedSuccessfully()
 
@@ -44,10 +35,9 @@ class WorkSheetItemDetailContract {
         }
     }
 
-    interface Presenter {
+    interface Presenter : BaseContract.Presenter {
         fun fetchWorkItemDetail(workItemId: String)
         fun changeWorkItemStatus(workItemId: String, status: String)
         fun updateWorkItemNotes(workItemId: String, notesQHLCustomer: String, notesQHL: String)
-        fun onDestroy()
     }
 }

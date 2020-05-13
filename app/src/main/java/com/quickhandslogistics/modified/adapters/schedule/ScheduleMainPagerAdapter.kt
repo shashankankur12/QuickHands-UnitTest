@@ -40,8 +40,4 @@ class ScheduleMainPagerAdapter(
     fun fetchUnScheduledWorkItems() {
         unScheduleFragment.fetchUnScheduledWorkItems()
     }
-
-    fun fetchScheduledWorkItems() {
-        scheduleFragment.fetchScheduledWorkItems()
-    }
 }

@@ -47,9 +47,11 @@ class ScheduleAdapter(
         return workItemsList[position]
     }
 
-    fun updateList(scheduledData: ArrayList<ScheduleDetail>) {
-        this.workItemsList.clear()
-        this.workItemsList = scheduledData
+    fun updateList(scheduledData: ArrayList<ScheduleDetail>, currentPageIndex: Int) {
+        if (currentPageIndex == 1) {
+            this.workItemsList.clear()
+        }
+        this.workItemsList.addAll(scheduledData)
         notifyDataSetChanged()
     }
 

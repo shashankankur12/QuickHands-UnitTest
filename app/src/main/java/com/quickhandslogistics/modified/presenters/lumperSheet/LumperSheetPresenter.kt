@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.lumperSheet.LumperSheetContract
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.data.lumperSheet.LumperSheetListAPIResponse
 import com.quickhandslogistics.modified.models.lumperSheet.LumperSheetModel
 import com.quickhandslogistics.utils.DateUtils
 import java.util.*
@@ -16,12 +16,14 @@ class LumperSheetPresenter(
 
     private val lumperSheetModel: LumperSheetModel = LumperSheetModel()
 
-    override fun getLumpersSheetByDate(date: Date) {
-        val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, date)
-        lumperSheetView?.showDateString(dateString)
-
+    override fun getLumpersSheetByDate(selectedDate: Date) {
         lumperSheetView?.showProgressDialog(resources.getString(R.string.api_loading_message))
-        lumperSheetModel.fetchLumperSheetList(this)
+        lumperSheetModel.fetchLumperSheetList(selectedDate, this)
+    }
+
+    override fun initiateSheetSubmission(selectedDate: Date) {
+        lumperSheetView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        lumperSheetModel.submitLumperSheet(selectedDate, this)
     }
 
     override fun onDestroy() {
@@ -37,8 +39,16 @@ class LumperSheetPresenter(
         }
     }
 
-    override fun onSuccess(response: AllLumpersResponse) {
+    override fun onSuccess(response: LumperSheetListAPIResponse, selectedDate: Date) {
         lumperSheetView?.hideProgressDialog()
-        lumperSheetView?.showLumperSheetData(response.data!!)
+
+        val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
+        lumperSheetView?.showDateString(dateString)
+        lumperSheetView?.showLumperSheetData(response.data?.lumpersInfo!!, response.data?.isSheetSubmitted!!, selectedDate)
+    }
+
+    override fun onSuccessSubmitLumperSheet() {
+        lumperSheetView?.hideProgressDialog()
+        lumperSheetView?.sheetSubmittedSuccessfully()
     }
 }

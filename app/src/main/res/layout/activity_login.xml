@@ -117,6 +117,7 @@
                 android:clickable="true"
                 android:padding="@dimen/_10sdp"
                 android:text="@string/string_forgot_password"
+                android:textSize="@dimen/_12ssp"
                 android:textStyle="bold" />
 
             <Button

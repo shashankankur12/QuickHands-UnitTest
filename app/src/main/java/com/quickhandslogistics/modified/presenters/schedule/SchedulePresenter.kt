@@ -4,28 +4,25 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
+import com.quickhandslogistics.modified.controls.ScheduleUtils.getAllAssignedLumpersList
+import com.quickhandslogistics.modified.controls.ScheduleUtils.getScheduleTypeName
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.modified.models.schedule.ScheduleModel
-import com.quickhandslogistics.modified.controls.ScheduleUtils.getAllAssignedLumpersList
-import com.quickhandslogistics.modified.controls.ScheduleUtils.getScheduleTypeName
 import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.utils.SharedPref
+import com.quickhandslogistics.utils.ValueUtils
 import java.util.*
 
 class SchedulePresenter(
-    private var scheduleView: ScheduleContract.View?,
-    private val resources: Resources,
-    sharedPref: SharedPref
-) :
-    ScheduleContract.Presenter, ScheduleContract.Model.OnFinishedListener {
+    private var scheduleView: ScheduleContract.View?, private val resources: Resources
+) : ScheduleContract.Presenter, ScheduleContract.Model.OnFinishedListener {
 
-    private val scheduleModel: ScheduleModel = ScheduleModel(sharedPref)
+    private val scheduleModel: ScheduleModel = ScheduleModel()
 
-    override fun getScheduledWorkItemsByDate(date: Date) {
+    override fun getScheduledWorkItemsByDate(date: Date, pageIndex: Int) {
         scheduleView?.showProgressDialog(resources.getString(R.string.api_loading_message))
-        scheduleModel.fetchSchedulesByDate(date, this)
+        scheduleModel.fetchSchedulesByDate(date, pageIndex, this)
     }
 
     override fun onDestroy() {
@@ -41,7 +38,7 @@ class SchedulePresenter(
         }
     }
 
-    override fun onSuccess(selectedDate: Date, scheduleListAPIResponse: ScheduleListAPIResponse) {
+    override fun onSuccess(selectedDate: Date, scheduleListAPIResponse: ScheduleListAPIResponse, currentPageIndex: Int) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
         scheduleView?.showDateString(dateString)
 
@@ -55,18 +52,10 @@ class SchedulePresenter(
             val oldValue = iterate.next()
             oldValue.scheduleTypes?.let { scheduleTypes ->
                 var scheduleTypeNames = ""
-                scheduleTypeNames = getScheduleTypeName(
-                    scheduleTypes.liveLoads, scheduleTypeNames,
-                    resources.getString(R.string.string_live_loads)
-                )
-                scheduleTypeNames = getScheduleTypeName(
-                    scheduleTypes.drops, scheduleTypeNames,
-                    resources.getString(R.string.string_drops)
-                )
-                scheduleTypeNames = getScheduleTypeName(
-                    scheduleTypes.outbounds, scheduleTypeNames,
-                    resources.getString(R.string.string_out_bounds)
-                )
+                scheduleTypeNames = getScheduleTypeName(scheduleTypes.liveLoads, scheduleTypeNames, resources.getString(R.string.string_live_loads))
+                scheduleTypeNames = getScheduleTypeName(scheduleTypes.drops, scheduleTypeNames, resources.getString(R.string.string_drops))
+                scheduleTypeNames = getScheduleTypeName(scheduleTypes.outbounds, scheduleTypeNames, resources.getString(R.string.string_out_bounds))
+
                 if (scheduleTypeNames.isEmpty()) {
                     // Remove the wrong record returned from API of another date.
                     iterate.remove()
@@ -75,18 +64,25 @@ class SchedulePresenter(
                     oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.liveLoads))
                     oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.drops))
                     oldValue.allAssignedLumpers.addAll(getAllAssignedLumpersList(scheduleTypes.outbounds))
-                    oldValue.allAssignedLumpers =
-                        oldValue.allAssignedLumpers.distinctBy { it.id } as ArrayList<EmployeeData>
+                    oldValue.allAssignedLumpers = oldValue.allAssignedLumpers.distinctBy { it.id } as ArrayList<EmployeeData>
                     iterate.set(oldValue)
                 }
             }
         }
 
+        val totalPagesCount = ValueUtils.getDefaultOrValue(scheduleListAPIResponse.data?.pageCount)
+        val nextPageIndex = ValueUtils.getDefaultOrValue(scheduleListAPIResponse.data?.next)
+
         if (workItemsList.size > 0) {
-            scheduleView?.showScheduleData(selectedDate, workItemsList)
+            scheduleView?.showScheduleData(selectedDate, workItemsList, totalPagesCount, nextPageIndex, currentPageIndex)
         } else {
             scheduleView?.showEmptyData()
         }
-        scheduleView?.fetchUnsScheduledWorkItems()
+
+        if (currentPageIndex == 1) {
+            scheduleView?.fetchUnScheduledWorkItems()
+        } else {
+            scheduleView?.hideProgressDialog()
+        }
     }
 }

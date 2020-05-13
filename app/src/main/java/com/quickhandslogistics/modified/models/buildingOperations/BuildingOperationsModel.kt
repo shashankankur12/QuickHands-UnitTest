@@ -5,57 +5,43 @@ import com.quickhandslogistics.modified.contracts.buildingOperations.BuildingOpe
 import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.buildingOperations.BuildingOperationAPIResponse
 import com.quickhandslogistics.network.DataManager
-import com.quickhandslogistics.network.ResponseListener
+import com.quickhandslogistics.network.DataManager.getAuthToken
+import com.quickhandslogistics.network.DataManager.isSuccessResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class BuildingOperationsModel : BuildingOperationsContract.Model {
 
-    override fun fetchBuildingOperationDetails(
-        workItemId: String,
-        onFinishedListener: BuildingOperationsContract.Model.OnFinishedListener
-    ) {
-        DataManager.getBuildingOperationsDetail(workItemId,
-            object : ResponseListener<BuildingOperationAPIResponse> {
-                override fun onSuccess(response: BuildingOperationAPIResponse) {
-                    if (response.success) {
-                        onFinishedListener.onSuccessGetBuildingOperations(response)
-                    } else {
-                        onFinishedListener.onFailure(response.message)
-                    }
+    override fun fetchBuildingOperationDetails(workItemId: String, onFinishedListener: BuildingOperationsContract.Model.OnFinishedListener) {
+        DataManager.getService().getBuildingOperationsDetail(getAuthToken(), workItemId).enqueue(object : Callback<BuildingOperationAPIResponse> {
+            override fun onResponse(call: Call<BuildingOperationAPIResponse>, response: Response<BuildingOperationAPIResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessGetBuildingOperations(response.body()!!)
                 }
+            }
 
-                override fun onError(error: Any) {
-                    if (error is Throwable) {
-                        Log.e(BuildingOperationsModel::class.simpleName, error.localizedMessage!!)
-                        onFinishedListener.onFailure()
-                    } else if (error is String) {
-                        onFinishedListener.onFailure(error)
-                    }
-                }
-            })
+            override fun onFailure(call: Call<BuildingOperationAPIResponse>, t: Throwable) {
+                Log.e(BuildingOperationsModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
     }
 
     override fun saveBuildingOperationDetails(
-        workItemId: String, data: HashMap<String, String>,
-        onFinishedListener: BuildingOperationsContract.Model.OnFinishedListener
+        workItemId: String, data: HashMap<String, String>, onFinishedListener: BuildingOperationsContract.Model.OnFinishedListener
     ) {
-        DataManager.saveBuildingOperationsDetail(workItemId, data,
-            object : ResponseListener<BaseResponse> {
-                override fun onSuccess(response: BaseResponse) {
-                    if (response.success) {
-                        onFinishedListener.onSuccessSaveBuildingOperations()
-                    } else {
-                        onFinishedListener.onFailure(response.message)
-                    }
+        DataManager.getService().saveBuildingOperationsDetail(getAuthToken(), workItemId, data).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessSaveBuildingOperations()
                 }
+            }
 
-                override fun onError(error: Any) {
-                    if (error is Throwable) {
-                        Log.e(BuildingOperationsModel::class.simpleName, error.localizedMessage!!)
-                        onFinishedListener.onFailure()
-                    } else if (error is String) {
-                        onFinishedListener.onFailure(error)
-                    }
-                }
-            })
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Log.e(BuildingOperationsModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
     }
 }

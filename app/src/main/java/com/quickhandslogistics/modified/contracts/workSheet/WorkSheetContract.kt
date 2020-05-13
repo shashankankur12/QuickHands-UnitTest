@@ -8,8 +8,7 @@ class WorkSheetContract {
         fun fetchHeaderInfo(onFinishedListener: OnFinishedListener)
         fun fetchWorkSheetList(onFinishedListener: OnFinishedListener)
 
-        interface OnFinishedListener {
-            fun onFailure(message: String = "")
+        interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccessFetchWorkSheet(workSheetListAPIResponse: WorkSheetListAPIResponse)
             fun onSuccessGetHeaderInfo(buildingName: String, date: String)
         }
@@ -29,8 +28,7 @@ class WorkSheetContract {
         }
     }
 
-    interface Presenter {
+    interface Presenter : BaseContract.Presenter {
         fun fetchWorkSheetList()
-        fun onDestroy()
     }
 }

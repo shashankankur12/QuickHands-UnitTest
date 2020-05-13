@@ -97,7 +97,7 @@
     <string name="string_change_language">Cambiar idioma</string>
     <string name="string_notification">Notificación</string>
     <string name="string_location">Ubicación</string>
-    <string name="choose_lumper">Elige Lumper</string>
+    <string name="choose_lumpers">Elige Lumpers</string>
     <string name="string_phone">Número de teléfono</string>
     <string name="string_forgot_password_request">Póngase en contacto con su administrador para solicitar una contraseña olvidada.</string>
     <string name="string_ok">Ok</string>
@@ -244,4 +244,9 @@
     <string name="customer_sheet_warning_message"><![CDATA[Please provide both Customer Representative Name & his Signature.]]></string>
     <string name="error">Error</string>
     <string name="customer_sheet_submitted_successfully">Customer Sheet submitted successfully</string>
+    <string name="pending">Pending</string>
+    <string name="lumper_sheet_submitted_successfully">Lumper Sheet submitted successfully</string>
+    <string name="string_ask_to_submit_lumper_sheet">You want to submit the lumper sheet.</string>
+    <string name="attendance_saved_successfully">Attendance Details are saved successfully</string>
+    <string name="string_ask_to_choose_lumper">You want to choose these lumpers.</string>
 </resources>

@@ -40,29 +40,6 @@ class CustomerSheetContainersAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val workItemDetail = getItem(position)
         holder.bind(workItemDetail)
-
-        when (workItemDetail.status) {
-            AppConstant.WORK_ITEM_STATUS_SCHEDULED -> {
-                holder.textViewStatus.text = resources.getString(R.string.scheduled)
-                holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_scheduled)
-            }
-            AppConstant.WORK_ITEM_STATUS_ON_HOLD -> {
-                holder.textViewStatus.text = resources.getString(R.string.on_hold)
-                holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
-            }
-            AppConstant.WORK_ITEM_STATUS_CANCELLED -> {
-                holder.textViewStatus.text = resources.getString(R.string.cancelled)
-                holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
-            }
-            AppConstant.WORK_ITEM_STATUS_IN_PROGRESS -> {
-                holder.textViewStatus.text = resources.getString(R.string.in_progress)
-                holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
-            }
-            else -> {
-                holder.textViewStatus.text = resources.getString(R.string.completed)
-                holder.textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
-            }
-        }
     }
 
     fun updateList(workItemsList: ArrayList<WorkItemDetail>) {
@@ -91,23 +68,19 @@ class CustomerSheetContainersAdapter(
         }
 
         fun bind(workItemDetail: WorkItemDetail) {
-            val workItemTypeDisplayName =
-                ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.workItemType, resources)
+            val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.workItemType, resources)
             textViewWorkItemType.text = workItemTypeDisplayName
 
-            if (!workItemDetail.notesQHLCustomer.isNullOrEmpty() &&
-                workItemDetail.notesQHLCustomer != AppConstant.NOTES_NOT_AVAILABLE
-            ) {
+            if (!workItemDetail.notesQHLCustomer.isNullOrEmpty() && workItemDetail.notesQHLCustomer != AppConstant.NOTES_NOT_AVAILABLE) {
                 linearLayoutNotes.visibility = View.VISIBLE
                 textViewNote.text = workItemDetail.notesQHLCustomer
             } else {
                 linearLayoutNotes.visibility = View.GONE
             }
 
-            recyclerViewBO.adapter = ContainerDetailItemAdapter(
-                workItemDetail.buildingOps,
-                workItemDetail.buildingDetailData?.parameters
-            )
+            ScheduleUtils.showStatusTextViewByStatus(textViewStatus, workItemDetail.status, resources)
+
+            recyclerViewBO.adapter = ContainerDetailItemAdapter(workItemDetail.buildingOps, workItemDetail.buildingDetailData?.parameters)
         }
 
         override fun onClick(view: View?) {

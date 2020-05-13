@@ -22,62 +22,76 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class EditScheduleTimeAdapter(
-    private val scheduleTimeList: ArrayList<ScheduleTimeDetail>,
+    scheduleTimeList: ArrayList<ScheduleTimeDetail>,
     private val onAdapterClick: EditScheduleTimeContract.View.OnAdapterItemClickListener
-) : Adapter<EditScheduleTimeAdapter.WorkItemHolder>() {
-
-    private var employeeDataList: ArrayList<EmployeeData> = ArrayList()
-    private var filteredEmployeeDataList: ArrayList<EmployeeData> = ArrayList()
-
-    private var scheduledLumpersIdsTimeMap: HashMap<String, Long> = HashMap()
+) : Adapter<EditScheduleTimeAdapter.ViewHolder>() {
 
     private var searchEnabled = false
     private var searchTerm = ""
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemHolder {
-        val view: View =
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_edit_schedule_time, parent, false)
-        return WorkItemHolder(view, parent.context)
+    private val scheduleTimeList: ArrayList<ScheduleTimeDetail> = ArrayList()
+    private var filteredScheduleTimeList: ArrayList<ScheduleTimeDetail> = ArrayList()
+    private var scheduledLumpersIdsTimeMap: HashMap<String, Long> = HashMap()
+
+    init {
+        for (scheduleTime in scheduleTimeList) {
+            scheduledLumpersIdsTimeMap[scheduleTime.lumperInfo?.id!!] =
+                DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, scheduleTime.reportingTimeAndDay)
+        }
+        this.scheduleTimeList.addAll(scheduleTimeList)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_edit_schedule_time, parent, false)
+        return ViewHolder(view, parent.context)
     }
 
     override fun getItemCount(): Int {
-        return if (searchEnabled) filteredEmployeeDataList.size else employeeDataList.size
+        return if (searchEnabled) filteredScheduleTimeList.size else scheduleTimeList.size
     }
 
-    private fun getItem(position: Int): EmployeeData {
-        return if (searchEnabled) filteredEmployeeDataList[position] else employeeDataList[position]
+    private fun getItem(position: Int): ScheduleTimeDetail {
+        return if (searchEnabled) filteredScheduleTimeList[position] else scheduleTimeList[position]
     }
 
-    override fun onBindViewHolder(holder: WorkItemHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    fun getSelectedLumpers(): HashMap<String, Long> {
+    fun getScheduledLumpersTimeMap(): HashMap<String, Long> {
         return scheduledLumpersIdsTimeMap
     }
 
-    fun updateLumpersData(employeeDataList: ArrayList<EmployeeData>) {
+    fun getLumpersList(): ArrayList<EmployeeData> {
+        val employeeDataList = ArrayList<EmployeeData>()
+        for (scheduleTimeDetail in scheduleTimeList) {
+            employeeDataList.add(scheduleTimeDetail.lumperInfo!!)
+        }
+        return employeeDataList
+    }
+
+    fun addLumpersList(employeeDataList: ArrayList<EmployeeData>) {
+        val oldLumpersIdsTimeMap = HashMap<String, Long>()
+        oldLumpersIdsTimeMap.putAll(scheduledLumpersIdsTimeMap)
+
         setSearchEnabled(false)
-        this.employeeDataList.clear()
-        this.employeeDataList.addAll(employeeDataList)
+        this.scheduleTimeList.clear()
+        this.scheduledLumpersIdsTimeMap.clear()
 
         for (employeeData in employeeDataList) {
-            for (scheduleTime in scheduleTimeList) {
-                if (employeeData.id == scheduleTime.lumperInfo?.id) {
-                    scheduledLumpersIdsTimeMap[employeeData.id!!] =
-                        DateUtils.convertUTCDateStringToMilliseconds(
-                            DateUtils.PATTERN_API_RESPONSE,
-                            scheduleTime.reportingTimeAndDay
-                        )
-                    break
-                }
+            val scheduleTimeDetail = ScheduleTimeDetail()
+            scheduleTimeDetail.lumperInfo = employeeData
+            this.scheduleTimeList.add(scheduleTimeDetail)
+
+            if (oldLumpersIdsTimeMap.containsKey(employeeData.id!!)) {
+                this.scheduledLumpersIdsTimeMap[employeeData.id!!] = oldLumpersIdsTimeMap[employeeData.id!!]!!
             }
         }
+
         notifyDataSetChanged()
     }
 
-    inner class WorkItemHolder(view: View, private val context: Context) :
+    inner class ViewHolder(view: View, private val context: Context) :
         RecyclerView.ViewHolder(view), View.OnClickListener {
 
         private val textViewLumperName: TextView = view.textViewLumperName
@@ -86,37 +100,37 @@ class EditScheduleTimeAdapter(
         private val textViewAddStartTime: TextView = view.textViewAddStartTime
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
 
-        fun bind(employeeData: EmployeeData) {
-            if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl)) {
-                Glide.with(context).load(employeeData.profileImageUrl)
-                    .placeholder(R.drawable.dummy).error(R.drawable.dummy)
-                    .into(circleImageViewProfile)
-            } else {
-                Glide.with(context).clear(circleImageViewProfile);
-            }
+        fun bind(scheduleTimeDetail: ScheduleTimeDetail) {
+            scheduleTimeDetail.lumperInfo?.let { employeeData ->
+                if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl)) {
+                    Glide.with(context).load(employeeData.profileImageUrl).placeholder(R.drawable.dummy)
+                        .error(R.drawable.dummy).into(circleImageViewProfile)
+                } else {
+                    Glide.with(context).clear(circleImageViewProfile);
+                }
 
-            textViewLumperName.text = String.format(
-                "%s %s",
-                ValueUtils.getDefaultOrValue(employeeData.firstName).capitalize(),
-                ValueUtils.getDefaultOrValue(employeeData.lastName).capitalize()
-            )
+                textViewLumperName.text = String.format(
+                    "%s %s",
+                    ValueUtils.getDefaultOrValue(employeeData.firstName).capitalize(),
+                    ValueUtils.getDefaultOrValue(employeeData.lastName).capitalize()
+                )
 
-            if (StringUtils.isNullOrEmpty(employeeData.employeeId)) {
-                textViewEmployeeId.visibility = View.GONE
-            } else {
-                textViewEmployeeId.visibility = View.VISIBLE
-                textViewEmployeeId.text = String.format("(Emp ID: %s)", employeeData.employeeId)
-            }
+                if (StringUtils.isNullOrEmpty(employeeData.employeeId)) {
+                    textViewEmployeeId.visibility = View.GONE
+                } else {
+                    textViewEmployeeId.visibility = View.VISIBLE
+                    textViewEmployeeId.text = String.format("(Emp ID: %s)", employeeData.employeeId)
+                }
 
-            if (scheduledLumpersIdsTimeMap.containsKey(employeeData.id!!)) {
-                textViewScheduleTime.visibility = View.VISIBLE
-                textViewAddStartTime.visibility = View.GONE
+                if (scheduledLumpersIdsTimeMap.containsKey(employeeData.id!!)) {
+                    textViewScheduleTime.visibility = View.VISIBLE
+                    textViewAddStartTime.visibility = View.GONE
 
-                textViewScheduleTime.text =
-                    DateUtils.convertMillisecondsToTimeString(scheduledLumpersIdsTimeMap[employeeData.id!!]!!)
-            } else {
-                textViewScheduleTime.visibility = View.GONE
-                textViewAddStartTime.visibility = View.VISIBLE
+                    textViewScheduleTime.text = DateUtils.convertMillisecondsToTimeString(scheduledLumpersIdsTimeMap[employeeData.id!!]!!)
+                } else {
+                    textViewScheduleTime.visibility = View.GONE
+                    textViewAddStartTime.visibility = View.VISIBLE
+                }
             }
 
             textViewAddStartTime.setOnClickListener(this)
@@ -128,9 +142,9 @@ class EditScheduleTimeAdapter(
                 when (view.id) {
                     itemView.id -> {
                         var timeInMillis: Long = 0
-                        val employeeData = getItem(adapterPosition)
-                        if (scheduledLumpersIdsTimeMap.containsKey(employeeData.id!!)) {
-                            timeInMillis = scheduledLumpersIdsTimeMap[employeeData.id!!]!!
+                        val scheduleTimeDetail = getItem(adapterPosition)
+                        if (scheduledLumpersIdsTimeMap.containsKey(scheduleTimeDetail.lumperInfo?.id!!)) {
+                            timeInMillis = scheduledLumpersIdsTimeMap[scheduleTimeDetail.lumperInfo?.id!!]!!
                         }
                         onAdapterClick.onAddStartTimeClick(adapterPosition, timeInMillis)
                     }
@@ -146,7 +160,7 @@ class EditScheduleTimeAdapter(
         this.searchEnabled = enabled
         if (!searchEnabled) {
             this.searchTerm = ""
-            filteredEmployeeDataList.clear()
+            filteredScheduleTimeList.clear()
             notifyDataSetChanged()
             return
         }
@@ -155,15 +169,15 @@ class EditScheduleTimeAdapter(
     }
 
     private fun filter() {
-        filteredEmployeeDataList.clear()
+        filteredScheduleTimeList.clear()
         if (searchTerm.isEmpty()) {
-            filteredEmployeeDataList.addAll(employeeDataList)
+            filteredScheduleTimeList.addAll(scheduleTimeList)
         } else {
-            for (data in employeeDataList) {
-                val term = "${data.firstName} ${data.lastName}"
+            for (data in scheduleTimeList) {
+                val term = "${data.lumperInfo?.firstName} ${data.lumperInfo?.lastName}"
 
                 if (term.toLowerCase(Locale.getDefault()).contains(searchTerm)) {
-                    filteredEmployeeDataList.add(data)
+                    filteredScheduleTimeList.add(data)
                 }
             }
         }
@@ -171,15 +185,15 @@ class EditScheduleTimeAdapter(
     }
 
     fun addStartTime(adapterPosition: Int, timeInMillis: Long) {
-        val employeeData = getItem(adapterPosition)
-        scheduledLumpersIdsTimeMap[employeeData.id!!] = timeInMillis
+        val scheduleTimeDetail = getItem(adapterPosition)
+        scheduledLumpersIdsTimeMap[scheduleTimeDetail.lumperInfo?.id!!] = timeInMillis
         notifyDataSetChanged()
     }
 
     fun addStartTimetoAll(timeInMillis: Long) {
         setSearchEnabled(false)
-        for (employeeData in employeeDataList) {
-            scheduledLumpersIdsTimeMap[employeeData.id!!] = timeInMillis
+        for (scheduleTimeDetail in scheduleTimeList) {
+            scheduledLumpersIdsTimeMap[scheduleTimeDetail.lumperInfo?.id!!] = timeInMillis
         }
         notifyDataSetChanged()
     }

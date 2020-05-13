@@ -4,24 +4,32 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.lumpers.LumpersContract
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
+import com.quickhandslogistics.modified.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.modified.models.lumpers.LumpersModel
-import com.quickhandslogistics.utils.StringUtils
+import com.quickhandslogistics.utils.ValueUtils
 
 class LumpersPresenter(
-    private var lumpersView: LumpersContract.View?,
-    private val resources: Resources
+    private var lumpersView: LumpersContract.View?, private val resources: Resources
 ) : LumpersContract.Presenter, LumpersContract.Model.OnFinishedListener {
 
     private val lumpersModel: LumpersModel = LumpersModel()
 
-    override fun fetchLumpersList() {
+    override fun fetchLumpersList(currentPageIndex: Int) {
         lumpersView?.showProgressDialog(resources.getString(R.string.api_loading_message))
-        lumpersModel.fetchLumpersList(this)
+        lumpersModel.fetchLumpersList(currentPageIndex, this)
     }
 
     override fun onDestroy() {
         lumpersView = null
+    }
+
+    override fun onSuccess(response: LumperListAPIResponse, currentPageIndex: Int) {
+        lumpersView?.hideProgressDialog()
+
+        val totalPagesCount = ValueUtils.getDefaultOrValue(response.data?.pageCount)
+        val nextPageIndex = ValueUtils.getDefaultOrValue(response.data?.next)
+
+        lumpersView?.showLumpersData(response.data?.employeeDataList!!, totalPagesCount, nextPageIndex, currentPageIndex)
     }
 
     override fun onFailure(message: String) {
@@ -31,10 +39,5 @@ class LumpersPresenter(
         } else {
             lumpersView?.showAPIErrorMessage(message)
         }
-    }
-
-    override fun onSuccess(allLumpersResponse: AllLumpersResponse) {
-        lumpersView?.hideProgressDialog()
-        lumpersView?.showLumpersData(allLumpersResponse.data!!)
     }
 }

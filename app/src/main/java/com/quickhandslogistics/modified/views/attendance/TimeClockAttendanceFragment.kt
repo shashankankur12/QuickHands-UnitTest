@@ -25,22 +25,20 @@ import kotlinx.android.synthetic.main.fragment_time_clock_attendance.*
 class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWatcher,
     TimeClockAttendanceContract.View, TimeClockAttendanceContract.View.OnAdapterItemClickListener {
 
+    private var currentPageIndex: Int = 1
+    private var nextPageIndex: Int = 1
+    private var totalPagesCount: Int = 1
+
     private lateinit var timeClockAttendancePresenter: TimeClockAttendancePresenter
     private lateinit var timeClockAttendanceAdapter: TimeClockAttendanceAdapter
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        timeClockAttendancePresenter =
-            TimeClockAttendancePresenter(
-                this,
-                resources
-            )
+        timeClockAttendancePresenter = TimeClockAttendancePresenter(this, resources)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_time_clock_attendance, container, false)
     }
 
@@ -49,7 +47,8 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
         initializeUI()
 
-        timeClockAttendancePresenter.fetchAttendanceList()
+        resetPaginationValues()
+        timeClockAttendancePresenter.fetchAttendanceList(currentPageIndex)
     }
 
     private fun initializeUI() {
@@ -57,12 +56,11 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         recyclerViewLumpers.apply {
             val linearLayoutManager = LinearLayoutManager(activity)
             layoutManager = linearLayoutManager
-            val dividerItemDecoration =
-                DividerItemDecoration(activity, linearLayoutManager.orientation)
+            val dividerItemDecoration = DividerItemDecoration(activity, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            timeClockAttendanceAdapter =
-                TimeClockAttendanceAdapter(this@TimeClockAttendanceFragment)
+            timeClockAttendanceAdapter = TimeClockAttendanceAdapter(this@TimeClockAttendanceFragment)
             adapter = timeClockAttendanceAdapter
+            addOnScrollListener(onScrollListener)
         }
 
         timeClockAttendanceAdapter.registerAdapterDataObserver(object :
@@ -72,8 +70,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
                 val updatedData = timeClockAttendanceAdapter.getUpdatedData()
                 buttonSave.isEnabled = updatedData.size > 0
 
-                textViewEmptyData.visibility =
-                    if (timeClockAttendanceAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                textViewEmptyData.visibility = if (timeClockAttendanceAdapter.itemCount == 0) View.VISIBLE else View.GONE
             }
         })
 
@@ -109,18 +106,12 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
                     val isMultiSelect = bottomSheetBackground.getTag(R.id.isMultiSelect) as Boolean
                     if (isMultiSelect) {
-                        timeClockAttendanceAdapter.updateClockInTimeForSelectedPositions(
-                            System.currentTimeMillis()
-                        )
+                        timeClockAttendanceAdapter.updateClockInTimeForSelectedPositions(System.currentTimeMillis())
                         timeClockAttendanceAdapter.resetAnimationIndex()
                         toggleSaveButton(timeClockAttendanceAdapter.getSelectedItemCount())
                     } else {
-                        val itemPosition =
-                            bottomSheetBackground.getTag(R.id.attendancePosition) as Int
-                        timeClockAttendanceAdapter.updateClockInTime(
-                            itemPosition,
-                            System.currentTimeMillis()
-                        )
+                        val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
+                        timeClockAttendanceAdapter.updateClockInTime(itemPosition, System.currentTimeMillis())
                     }
                 }
                 buttonClockOut.id -> {
@@ -128,18 +119,12 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
                     val isMultiSelect = bottomSheetBackground.getTag(R.id.isMultiSelect) as Boolean
                     if (isMultiSelect) {
-                        timeClockAttendanceAdapter.updateClockOutTimeForSelectedPositions(
-                            System.currentTimeMillis()
-                        )
+                        timeClockAttendanceAdapter.updateClockOutTimeForSelectedPositions(System.currentTimeMillis())
                         timeClockAttendanceAdapter.resetAnimationIndex()
                         toggleSaveButton(timeClockAttendanceAdapter.getSelectedItemCount())
                     } else {
-                        val itemPosition =
-                            bottomSheetBackground.getTag(R.id.attendancePosition) as Int
-                        timeClockAttendanceAdapter.updateClockOutTime(
-                            itemPosition,
-                            System.currentTimeMillis()
-                        )
+                        val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
+                        timeClockAttendanceAdapter.updateClockOutTime(itemPosition, System.currentTimeMillis())
                     }
 
                 }
@@ -148,18 +133,12 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
                     val isMultiSelect = bottomSheetBackground.getTag(R.id.isMultiSelect) as Boolean
                     if (isMultiSelect) {
-                        timeClockAttendanceAdapter.updateLunchInTimeForSelectedPositions(
-                            System.currentTimeMillis()
-                        )
+                        timeClockAttendanceAdapter.updateLunchInTimeForSelectedPositions(System.currentTimeMillis())
                         timeClockAttendanceAdapter.resetAnimationIndex()
                         toggleSaveButton(timeClockAttendanceAdapter.getSelectedItemCount())
                     } else {
-                        val itemPosition =
-                            bottomSheetBackground.getTag(R.id.attendancePosition) as Int
-                        timeClockAttendanceAdapter.updateLunchInTime(
-                            itemPosition,
-                            System.currentTimeMillis()
-                        )
+                        val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
+                        timeClockAttendanceAdapter.updateLunchInTime(itemPosition, System.currentTimeMillis())
                     }
                 }
                 buttonLunchOut.id -> {
@@ -167,18 +146,12 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
                     val isMultiSelect = bottomSheetBackground.getTag(R.id.isMultiSelect) as Boolean
                     if (isMultiSelect) {
-                        timeClockAttendanceAdapter.updateLunchOutTimeForSelectedPositions(
-                            System.currentTimeMillis()
-                        )
+                        timeClockAttendanceAdapter.updateLunchOutTimeForSelectedPositions(System.currentTimeMillis())
                         timeClockAttendanceAdapter.resetAnimationIndex()
                         toggleSaveButton(timeClockAttendanceAdapter.getSelectedItemCount())
                     } else {
-                        val itemPosition =
-                            bottomSheetBackground.getTag(R.id.attendancePosition) as Int
-                        timeClockAttendanceAdapter.updateLunchOutTime(
-                            itemPosition,
-                            System.currentTimeMillis()
-                        )
+                        val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
+                        timeClockAttendanceAdapter.updateLunchOutTime(itemPosition, System.currentTimeMillis())
                     }
                 }
                 imageViewCancel.id -> {
@@ -187,8 +160,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
                 }
                 buttonSave.id -> {
                     CustomProgressBar.getInstance().showWarningDialog(
-                        getString(R.string.string_ask_to_save_attendance_details),
-                        fragmentActivity!!, object : CustomDialogWarningListener {
+                        getString(R.string.string_ask_to_save_attendance_details), fragmentActivity!!, object : CustomDialogWarningListener {
                             override fun onConfirmClick() {
                                 imageViewCancel.performClick()
                                 val updatedData = timeClockAttendanceAdapter.getUpdatedData()
@@ -201,6 +173,26 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
                 }
                 buttonAddTime.id -> {
                     showTimePickerLayoutForMultipleLumpers()
+                }
+            }
+        }
+    }
+
+    private val onScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            recyclerView.layoutManager?.let { layoutManager ->
+                if (layoutManager is LinearLayoutManager) {
+                    val visibleItemCount: Int = layoutManager.childCount
+                    val totalItemCount: Int = layoutManager.itemCount
+                    val firstVisibleItemPosition: Int = layoutManager.findFirstVisibleItemPosition()
+                    if (currentPageIndex != totalPagesCount) {
+                        if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
+                            currentPageIndex = nextPageIndex
+                            timeClockAttendancePresenter.fetchAttendanceList(currentPageIndex)
+                        }
+                    }
                 }
             }
         }
@@ -236,8 +228,8 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         textViewEmptyData.visibility = View.VISIBLE
     }
 
-    override fun showLumpersAttendance(lumperAttendanceList: ArrayList<LumperAttendanceData>) {
-        timeClockAttendanceAdapter.updateList(lumperAttendanceList)
+    override fun showLumpersAttendance(lumperAttendanceList: ArrayList<LumperAttendanceData>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int) {
+        timeClockAttendanceAdapter.updateList(lumperAttendanceList, currentPageIndex)
         if (lumperAttendanceList.size > 0) {
             textViewEmptyData.visibility = View.GONE
             recyclerViewLumpers.visibility = View.VISIBLE
@@ -245,10 +237,25 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             recyclerViewLumpers.visibility = View.GONE
             textViewEmptyData.visibility = View.VISIBLE
         }
+
+        this.totalPagesCount = totalPagesCount
+        this.nextPageIndex = nextPageIndex
     }
 
     override fun showDataSavedMessage() {
-        timeClockAttendancePresenter.fetchAttendanceList()
+        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.attendance_saved_successfully),
+            fragmentActivity!!, object : CustomDialogListener {
+                override fun onConfirmClick() {
+                    resetPaginationValues()
+                    timeClockAttendancePresenter.fetchAttendanceList(currentPageIndex)
+                }
+            })
+    }
+
+    private fun resetPaginationValues() {
+        currentPageIndex = 1
+        nextPageIndex = 1
+        totalPagesCount = 1
     }
 
     /*
@@ -266,16 +273,14 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
                 DateUtils.PATTERN_API_RESPONSE,
                 lumperAttendanceData.attendanceDetail?.morningPunchIn
             )
-            buttonClockIn.text =
-                if (clockInTime.isNotEmpty()) clockInTime else getString(R.string.clock_in)
+            buttonClockIn.text = if (clockInTime.isNotEmpty()) clockInTime else getString(R.string.clock_in)
             buttonClockIn.isEnabled = timeClockAttendanceAdapter.checkIfEditable(
                 clockInTime.isNotEmpty(), "isMorningPunchIn", lumperAttendanceData.id!!
             )
 
             // Show Clock-Out Time
             val clockOutTime = DateUtils.convertDateStringToTime(
-                DateUtils.PATTERN_API_RESPONSE,
-                lumperAttendanceData.attendanceDetail?.eveningPunchOut
+                DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.eveningPunchOut
             )
             buttonClockOut.text =
                 if (clockOutTime.isNotEmpty()) clockOutTime else getString(R.string.clock_out)

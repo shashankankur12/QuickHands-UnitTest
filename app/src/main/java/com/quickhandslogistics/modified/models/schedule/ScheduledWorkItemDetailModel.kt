@@ -4,35 +4,26 @@ import android.util.Log
 import com.quickhandslogistics.modified.contracts.schedule.ScheduledWorkItemDetailContract
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetailAPIResponse
 import com.quickhandslogistics.network.DataManager
-import com.quickhandslogistics.network.ResponseListener
+import com.quickhandslogistics.network.DataManager.getAuthToken
+import com.quickhandslogistics.network.DataManager.isSuccessResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ScheduledWorkItemDetailModel : ScheduledWorkItemDetailContract.Model {
 
-    override fun fetchWorkItemDetail(
-        workItemId: String,
-        onFinishedListener: ScheduledWorkItemDetailContract.Model.OnFinishedListener
-    ) {
-        DataManager.getWorkItemDetail(workItemId,
-            object : ResponseListener<WorkItemDetailAPIResponse> {
-                override fun onSuccess(response: WorkItemDetailAPIResponse) {
-                    if (response.success) {
-                        onFinishedListener.onSuccess(response)
-                    } else {
-                        onFinishedListener.onFailure(response.message)
-                    }
+    override fun fetchWorkItemDetail(workItemId: String, onFinishedListener: ScheduledWorkItemDetailContract.Model.OnFinishedListener) {
+        DataManager.getService().getWorkItemDetail(getAuthToken(), workItemId).enqueue(object : Callback<WorkItemDetailAPIResponse> {
+            override fun onResponse(call: Call<WorkItemDetailAPIResponse>, response: Response<WorkItemDetailAPIResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccess(response.body()!!)
                 }
+            }
 
-                override fun onError(error: Any) {
-                    if (error is Throwable) {
-                        Log.e(
-                            ScheduledWorkItemDetailModel::class.simpleName,
-                            error.localizedMessage!!
-                        )
-                        onFinishedListener.onFailure()
-                    } else if (error is String) {
-                        onFinishedListener.onFailure(error)
-                    }
-                }
-            })
+            override fun onFailure(call: Call<WorkItemDetailAPIResponse>, t: Throwable) {
+                Log.e(ScheduledWorkItemDetailModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
     }
 }

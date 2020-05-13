@@ -4,11 +4,9 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.AddWorkItemLumpersContract
-import com.quickhandslogistics.modified.data.lumpers.AllLumpersResponse
-import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.modified.data.common.AllLumpersResponse
 import com.quickhandslogistics.modified.models.schedule.AddWorkItemLumpersModel
 import com.quickhandslogistics.utils.SharedPref
-import com.quickhandslogistics.utils.StringUtils
 
 class AddWorkItemLumpersPresenter(
     private var addWorkItemLumpersView: AddWorkItemLumpersContract.View?,

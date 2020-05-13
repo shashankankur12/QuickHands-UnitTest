@@ -1,6 +1,7 @@
-package com.quickhandslogistics.modified.data.lumpers
+package com.quickhandslogistics.modified.data.common
 
 import com.quickhandslogistics.modified.data.BaseResponse
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.utils.StringUtils
 
 class AllLumpersResponse : BaseResponse() {
