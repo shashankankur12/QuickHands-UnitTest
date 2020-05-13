@@ -41,8 +41,8 @@ class TimeClockAttendancePresenter(
 
     override fun onSuccessGetList(attendanceAPIResponse: GetAttendanceAPIResponse) {
         timeClockAttendanceView?.hideProgressDialog()
-        attendanceAPIResponse.data?.let { data ->
-            timeClockAttendanceView?.showLumpersAttendance(data)
+        attendanceAPIResponse.data?.employeeDataList?.let { employeeDataList ->
+            timeClockAttendanceView?.showLumpersAttendance(employeeDataList)
         }
     }
 

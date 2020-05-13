@@ -247,4 +247,5 @@
     <string name="pending">Pending</string>
     <string name="lumper_sheet_submitted_successfully">Lumper Sheet submitted successfully</string>
     <string name="string_ask_to_submit_lumper_sheet">You want to submit the lumper sheet.</string>
+    <string name="attendance_saved_successfully">Attendance Details are saved successfully</string>
 </resources>

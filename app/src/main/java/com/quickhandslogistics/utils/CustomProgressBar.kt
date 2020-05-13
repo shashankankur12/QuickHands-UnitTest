@@ -22,8 +22,7 @@ class CustomProgressBar {
     fun show(titleMessage: String = "", message: String = "", activityContext: Context) {
         progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.PROGRESS_TYPE)
         //  pDialog.progressHelper.barColor = Color.parseColor("#A5DC86")
-        progressDialog?.titleText =
-            if (titleMessage.isEmpty()) activityContext.getString(R.string.loading) else titleMessage
+        progressDialog?.titleText = if (titleMessage.isEmpty()) activityContext.getString(R.string.loading) else titleMessage
         if (message.isNotEmpty()) {
             progressDialog?.contentText = message
         }
@@ -37,8 +36,7 @@ class CustomProgressBar {
 
     fun showInfoDialog(title: String = "", message: String, activityContext: Context) {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.NORMAL_TYPE)
-        progressDialog.titleText =
-            if (title.isEmpty()) activityContext.getString(R.string.info) else title
+        progressDialog.titleText = if (title.isEmpty()) activityContext.getString(R.string.info) else title
         progressDialog.contentText = message
         progressDialog.show()
     }
@@ -50,9 +48,7 @@ class CustomProgressBar {
         progressDialog.show()
     }
 
-    fun showSuccessDialog(
-        message: String, activityContext: Context, listener: CustomDialogListener
-    ) {
+    fun showSuccessDialog(message: String, activityContext: Context, listener: CustomDialogListener) {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.SUCCESS_TYPE)
         progressDialog.titleText = activityContext.getString(R.string.success)
         progressDialog.contentText = message
@@ -64,13 +60,10 @@ class CustomProgressBar {
         progressDialog.show()
     }
 
-    fun showWarningDialog(
-        message: String = "", activityContext: Context, listener: CustomDialogWarningListener
-    ) {
+    fun showWarningDialog(message: String = "", activityContext: Context, listener: CustomDialogWarningListener) {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.WARNING_TYPE)
         progressDialog.titleText = activityContext.getString(R.string.are_you_sure)
-        progressDialog.contentText =
-            if (message.isEmpty()) activityContext.getString(R.string.you_want_make_these_changes) else message
+        progressDialog.contentText = if (message.isEmpty()) activityContext.getString(R.string.you_want_make_these_changes) else message
         progressDialog.confirmText = activityContext.getString(R.string.string_yes)
         progressDialog.cancelText = activityContext.getString(R.string.string_no)
         progressDialog.showCancelButton(true)
