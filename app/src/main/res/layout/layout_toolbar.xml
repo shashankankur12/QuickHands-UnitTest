@@ -15,6 +15,6 @@
         app:buttonGravity="center_vertical"
         app:titleTextAppearance="@style/ToolbarTitleTextAppearance"
         app:popupTheme="@style/AppTheme.PopupOverlay"
-        app:titleTextColor="@android:color/black" />
+        app:titleTextColor="@color/textBlack" />
 
 </com.google.android.material.appbar.AppBarLayout>

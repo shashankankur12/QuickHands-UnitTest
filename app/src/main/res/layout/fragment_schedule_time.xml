@@ -118,14 +118,9 @@
 
             <Button
                 android:id="@+id/buttonScheduleLumpers"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/positiveRoundButtonTheme"
                 android:layout_marginBottom="@dimen/_4sdp"
-                android:background="@drawable/round_button_selector"
-                android:text="@string/schedule_lumpers_time"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/_14ssp" />
+                android:text="@string/schedule_lumpers_time" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

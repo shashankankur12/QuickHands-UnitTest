@@ -11,10 +11,10 @@ import kotlinx.android.synthetic.main.activity_work_item_bo_detail.*
 
 class BuildingOperationsViewActivity : BaseActivity() {
 
-    private lateinit var containerDetailAdapter: ContainerDetailAdapter
-
     private var parameters: ArrayList<String> = ArrayList()
     private var buildingOps = HashMap<String, String>()
+
+    private lateinit var containerDetailAdapter: ContainerDetailAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,8 +23,7 @@ class BuildingOperationsViewActivity : BaseActivity() {
 
         intent.extras?.let { it ->
             parameters = it.getStringArrayList(ARG_BUILDING_PARAMETERS) as ArrayList<String>
-            val buildingOps =
-                it.getSerializable(ARG_BUILDING_PARAMETER_VALUES) as? HashMap<String, String>
+            val buildingOps = it.getSerializable(ARG_BUILDING_PARAMETER_VALUES) as? HashMap<String, String>
 
             buildingOps?.let {
                 this.buildingOps.putAll(buildingOps)

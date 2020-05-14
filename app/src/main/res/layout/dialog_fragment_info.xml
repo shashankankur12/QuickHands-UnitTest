@@ -44,14 +44,10 @@
 
         <Button
             android:id="@+id/buttonPositive"
+            style="@style/positiveRoundButtonTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_7sdp"
             android:layout_weight="1"
-            android:background="@drawable/round_button_red"
-            android:text="@string/string_okay"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_14ssp" />
+            android:text="@string/string_okay" />
     </LinearLayout>
 </LinearLayout>

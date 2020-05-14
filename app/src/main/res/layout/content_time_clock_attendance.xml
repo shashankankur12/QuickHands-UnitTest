@@ -94,24 +94,14 @@
 
             <Button
                 android:id="@+id/buttonSave"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/round_button_selector"
+                style="@style/positiveRoundButtonTheme"
                 android:enabled="false"
-                android:text="@string/string_save"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/_14ssp" />
+                android:text="@string/string_save" />
 
             <Button
                 android:id="@+id/buttonAddTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/round_button_selector"
+                style="@style/positiveRoundButtonTheme"
                 android:text="@string/add_time"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/_14ssp"
                 android:visibility="gone" />
         </RelativeLayout>
 

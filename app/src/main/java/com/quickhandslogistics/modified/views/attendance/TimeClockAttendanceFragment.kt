@@ -18,6 +18,12 @@ import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.modified.presenters.attendance.TimeClockAttendancePresenter
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_EVENING_PUNCH_OUT
+import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_LUNCH_PUNCH_IN
+import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_LUNCH_PUNCH_OUT
+import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_MORNING_PUNCH_IN
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
+import com.quickhandslogistics.utils.DateUtils.Companion.convertDateStringToTime
 import kotlinx.android.synthetic.main.bottom_sheet_add_attendance_time.*
 import kotlinx.android.synthetic.main.content_time_clock_attendance.*
 import kotlinx.android.synthetic.main.fragment_time_clock_attendance.*
@@ -51,8 +57,12 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         timeClockAttendancePresenter.fetchAttendanceList(currentPageIndex)
     }
 
-    private fun initializeUI() {
+    override fun onDestroy() {
+        super.onDestroy()
+        timeClockAttendancePresenter.onDestroy()
+    }
 
+    private fun initializeUI() {
         recyclerViewLumpers.apply {
             val linearLayoutManager = LinearLayoutManager(activity)
             layoutManager = linearLayoutManager
@@ -94,85 +104,152 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         bottomSheetBackground.visibility = View.GONE
     }
 
-    /*
-    * Native Views Listeners
-    */
+    private fun resetPaginationValues() {
+        currentPageIndex = 1
+        nextPageIndex = 1
+        totalPagesCount = 1
+    }
+
+    private fun showTimePickerLayoutForMultipleLumpers() {
+        if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+            var isClockInEditable = true
+            var isClockOutEditable = true
+            var isLunchInEditable = true
+            var isLunchOutEditable = true
+
+            val list = timeClockAttendanceAdapter.getSelectedItems()
+            for (lumperAttendanceData in list) {
+                // Check Clock-In Time
+                val clockInTime = convertDateStringToTime(PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.morningPunchIn)
+                if (isClockInEditable && !(timeClockAttendanceAdapter.checkIfEditable(clockInTime.isNotEmpty(), ATTENDANCE_MORNING_PUNCH_IN, lumperAttendanceData.id!!))) {
+                    isClockInEditable = false
+                }
+
+                // Check Clock-Out Time
+                val clockOutTime = convertDateStringToTime(PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.eveningPunchOut)
+                if (isClockOutEditable && !(timeClockAttendanceAdapter.checkIfEditable(clockOutTime.isNotEmpty(), ATTENDANCE_EVENING_PUNCH_OUT, lumperAttendanceData.id!!))) {
+                    isClockOutEditable = false
+                }
+
+                // Check Lunch-In Time
+                val lunchInTime = convertDateStringToTime(PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.lunchPunchIn)
+                if (isLunchInEditable && !(timeClockAttendanceAdapter.checkIfEditable(lunchInTime.isNotEmpty(), ATTENDANCE_LUNCH_PUNCH_IN, lumperAttendanceData.id!!))) {
+                    isLunchInEditable = false
+                }
+
+                // Check Lunch-Out Time
+                val lunchOutTime = convertDateStringToTime(PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.lunchPunchOut)
+                if (isLunchOutEditable && !(timeClockAttendanceAdapter.checkIfEditable(lunchOutTime.isNotEmpty(), ATTENDANCE_LUNCH_PUNCH_OUT, lumperAttendanceData.id!!))) {
+                    isLunchOutEditable = false
+                }
+            }
+
+            buttonClockIn.isEnabled = isClockInEditable
+            buttonClockOut.isEnabled = isClockOutEditable
+            buttonLunchIn.isEnabled = isLunchInEditable
+            buttonLunchOut.isEnabled = isLunchOutEditable
+
+            sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            bottomSheetBackground.visibility = View.VISIBLE
+            bottomSheetBackground.setTag(R.id.isMultiSelect, true)
+        } else {
+            closeBottomSheet()
+        }
+    }
+
+    private fun toggleSaveButton(selectedCount: Int) {
+        if (selectedCount > 0) {
+            buttonAddTime.visibility = View.VISIBLE
+            buttonSave.visibility = View.GONE
+        } else {
+            buttonAddTime.visibility = View.GONE
+            buttonSave.visibility = View.VISIBLE
+        }
+    }
+
+    private fun clockInButtonClicked() {
+        closeBottomSheet()
+
+        val isMultiSelect = bottomSheetBackground.getTag(R.id.isMultiSelect) as Boolean
+        if (isMultiSelect) {
+            timeClockAttendanceAdapter.updateClockInTimeForSelectedPositions(System.currentTimeMillis())
+            timeClockAttendanceAdapter.resetAnimationIndex()
+            toggleSaveButton(timeClockAttendanceAdapter.getSelectedItemCount())
+        } else {
+            val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
+            timeClockAttendanceAdapter.updateClockInTime(itemPosition, System.currentTimeMillis())
+        }
+    }
+
+    private fun clockOutButtonClicked() {
+        closeBottomSheet()
+
+        val isMultiSelect = bottomSheetBackground.getTag(R.id.isMultiSelect) as Boolean
+        if (isMultiSelect) {
+            timeClockAttendanceAdapter.updateClockOutTimeForSelectedPositions(System.currentTimeMillis())
+            timeClockAttendanceAdapter.resetAnimationIndex()
+            toggleSaveButton(timeClockAttendanceAdapter.getSelectedItemCount())
+        } else {
+            val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
+            timeClockAttendanceAdapter.updateClockOutTime(itemPosition, System.currentTimeMillis())
+        }
+    }
+
+    private fun lunchInButtonClicked() {
+        closeBottomSheet()
+
+        val isMultiSelect = bottomSheetBackground.getTag(R.id.isMultiSelect) as Boolean
+        if (isMultiSelect) {
+            timeClockAttendanceAdapter.updateLunchInTimeForSelectedPositions(System.currentTimeMillis())
+            timeClockAttendanceAdapter.resetAnimationIndex()
+            toggleSaveButton(timeClockAttendanceAdapter.getSelectedItemCount())
+        } else {
+            val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
+            timeClockAttendanceAdapter.updateLunchInTime(itemPosition, System.currentTimeMillis())
+        }
+    }
+
+    private fun lunchOutButtonClicked() {
+        closeBottomSheet()
+
+        val isMultiSelect = bottomSheetBackground.getTag(R.id.isMultiSelect) as Boolean
+        if (isMultiSelect) {
+            timeClockAttendanceAdapter.updateLunchOutTimeForSelectedPositions(System.currentTimeMillis())
+            timeClockAttendanceAdapter.resetAnimationIndex()
+            toggleSaveButton(timeClockAttendanceAdapter.getSelectedItemCount())
+        } else {
+            val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
+            timeClockAttendanceAdapter.updateLunchOutTime(itemPosition, System.currentTimeMillis())
+        }
+    }
+
+    private fun showConfirmationDialog() {
+        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.string_ask_to_save_attendance_details), fragmentActivity!!, object : CustomDialogWarningListener {
+            override fun onConfirmClick() {
+                imageViewCancel.performClick()
+                val updatedData = timeClockAttendanceAdapter.getUpdatedData()
+                timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct())
+            }
+
+            override fun onCancelClick() {
+            }
+        })
+    }
+
+    /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
                 bottomSheetBackground.id -> closeBottomSheet()
-                buttonClockIn.id -> {
-                    closeBottomSheet()
-
-                    val isMultiSelect = bottomSheetBackground.getTag(R.id.isMultiSelect) as Boolean
-                    if (isMultiSelect) {
-                        timeClockAttendanceAdapter.updateClockInTimeForSelectedPositions(System.currentTimeMillis())
-                        timeClockAttendanceAdapter.resetAnimationIndex()
-                        toggleSaveButton(timeClockAttendanceAdapter.getSelectedItemCount())
-                    } else {
-                        val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
-                        timeClockAttendanceAdapter.updateClockInTime(itemPosition, System.currentTimeMillis())
-                    }
-                }
-                buttonClockOut.id -> {
-                    closeBottomSheet()
-
-                    val isMultiSelect = bottomSheetBackground.getTag(R.id.isMultiSelect) as Boolean
-                    if (isMultiSelect) {
-                        timeClockAttendanceAdapter.updateClockOutTimeForSelectedPositions(System.currentTimeMillis())
-                        timeClockAttendanceAdapter.resetAnimationIndex()
-                        toggleSaveButton(timeClockAttendanceAdapter.getSelectedItemCount())
-                    } else {
-                        val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
-                        timeClockAttendanceAdapter.updateClockOutTime(itemPosition, System.currentTimeMillis())
-                    }
-
-                }
-                buttonLunchIn.id -> {
-                    closeBottomSheet()
-
-                    val isMultiSelect = bottomSheetBackground.getTag(R.id.isMultiSelect) as Boolean
-                    if (isMultiSelect) {
-                        timeClockAttendanceAdapter.updateLunchInTimeForSelectedPositions(System.currentTimeMillis())
-                        timeClockAttendanceAdapter.resetAnimationIndex()
-                        toggleSaveButton(timeClockAttendanceAdapter.getSelectedItemCount())
-                    } else {
-                        val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
-                        timeClockAttendanceAdapter.updateLunchInTime(itemPosition, System.currentTimeMillis())
-                    }
-                }
-                buttonLunchOut.id -> {
-                    closeBottomSheet()
-
-                    val isMultiSelect = bottomSheetBackground.getTag(R.id.isMultiSelect) as Boolean
-                    if (isMultiSelect) {
-                        timeClockAttendanceAdapter.updateLunchOutTimeForSelectedPositions(System.currentTimeMillis())
-                        timeClockAttendanceAdapter.resetAnimationIndex()
-                        toggleSaveButton(timeClockAttendanceAdapter.getSelectedItemCount())
-                    } else {
-                        val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
-                        timeClockAttendanceAdapter.updateLunchOutTime(itemPosition, System.currentTimeMillis())
-                    }
-                }
+                buttonClockIn.id -> clockInButtonClicked()
+                buttonClockOut.id -> clockOutButtonClicked()
+                buttonLunchIn.id -> lunchInButtonClicked()
+                buttonLunchOut.id -> lunchOutButtonClicked()
+                buttonSave.id -> showConfirmationDialog()
+                buttonAddTime.id -> showTimePickerLayoutForMultipleLumpers()
                 imageViewCancel.id -> {
                     editTextSearch.setText("")
                     Utils.hideSoftKeyboard(fragmentActivity!!)
-                }
-                buttonSave.id -> {
-                    CustomProgressBar.getInstance().showWarningDialog(
-                        getString(R.string.string_ask_to_save_attendance_details), fragmentActivity!!, object : CustomDialogWarningListener {
-                            override fun onConfirmClick() {
-                                imageViewCancel.performClick()
-                                val updatedData = timeClockAttendanceAdapter.getUpdatedData()
-                                timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct())
-                            }
-
-                            override fun onCancelClick() {
-                            }
-                        })
-                }
-                buttonAddTime.id -> {
-                    showTimePickerLayoutForMultipleLumpers()
                 }
             }
         }
@@ -213,15 +290,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        timeClockAttendancePresenter.onDestroy()
-    }
-
-
-    /*
-    * Presenter Listeners
-    */
+    /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
         recyclerViewLumpers.visibility = View.GONE
@@ -252,15 +321,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             })
     }
 
-    private fun resetPaginationValues() {
-        currentPageIndex = 1
-        nextPageIndex = 1
-        totalPagesCount = 1
-    }
-
-    /*
-    * Adapter Item Click Listeners
-    */
+    /** Adapter Listeners */
     override fun onAddTimeClick(lumperAttendanceData: LumperAttendanceData, itemPosition: Int) {
         if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
             sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -269,46 +330,24 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             bottomSheetBackground.setTag(R.id.isMultiSelect, false)
 
             // Show Clock-In Time
-            val clockInTime = DateUtils.convertDateStringToTime(
-                DateUtils.PATTERN_API_RESPONSE,
-                lumperAttendanceData.attendanceDetail?.morningPunchIn
-            )
+            val clockInTime = convertDateStringToTime(PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.morningPunchIn)
             buttonClockIn.text = if (clockInTime.isNotEmpty()) clockInTime else getString(R.string.clock_in)
-            buttonClockIn.isEnabled = timeClockAttendanceAdapter.checkIfEditable(
-                clockInTime.isNotEmpty(), "isMorningPunchIn", lumperAttendanceData.id!!
-            )
+            buttonClockIn.isEnabled = timeClockAttendanceAdapter.checkIfEditable(clockInTime.isNotEmpty(), ATTENDANCE_MORNING_PUNCH_IN, lumperAttendanceData.id!!)
 
             // Show Clock-Out Time
-            val clockOutTime = DateUtils.convertDateStringToTime(
-                DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.eveningPunchOut
-            )
-            buttonClockOut.text =
-                if (clockOutTime.isNotEmpty()) clockOutTime else getString(R.string.clock_out)
-            buttonClockOut.isEnabled = timeClockAttendanceAdapter.checkIfEditable(
-                clockOutTime.isNotEmpty(), "isEveningPunchOut", lumperAttendanceData.id!!
-            )
+            val clockOutTime = convertDateStringToTime(PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.eveningPunchOut)
+            buttonClockOut.text = if (clockOutTime.isNotEmpty()) clockOutTime else getString(R.string.clock_out)
+            buttonClockOut.isEnabled = timeClockAttendanceAdapter.checkIfEditable(clockOutTime.isNotEmpty(), ATTENDANCE_EVENING_PUNCH_OUT, lumperAttendanceData.id!!)
 
             // Show Lunch-In Time
-            val lunchInTime = DateUtils.convertDateStringToTime(
-                DateUtils.PATTERN_API_RESPONSE,
-                lumperAttendanceData.attendanceDetail?.lunchPunchIn
-            )
-            buttonLunchIn.text =
-                if (lunchInTime.isNotEmpty()) lunchInTime else getString(R.string.out_to_lunch)
-            buttonLunchIn.isEnabled = timeClockAttendanceAdapter.checkIfEditable(
-                lunchInTime.isNotEmpty(), "isLunchPunchIn", lumperAttendanceData.id!!
-            )
+            val lunchInTime = convertDateStringToTime(PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.lunchPunchIn)
+            buttonLunchIn.text = if (lunchInTime.isNotEmpty()) lunchInTime else getString(R.string.out_to_lunch)
+            buttonLunchIn.isEnabled = timeClockAttendanceAdapter.checkIfEditable(lunchInTime.isNotEmpty(), ATTENDANCE_LUNCH_PUNCH_IN, lumperAttendanceData.id!!)
 
             // Show Lunch-Out Time
-            val lunchOutTime = DateUtils.convertDateStringToTime(
-                DateUtils.PATTERN_API_RESPONSE,
-                lumperAttendanceData.attendanceDetail?.lunchPunchOut
-            )
-            buttonLunchOut.text =
-                if (lunchOutTime.isNotEmpty()) lunchOutTime else getString(R.string.back_to_work)
-            buttonLunchOut.isEnabled = timeClockAttendanceAdapter.checkIfEditable(
-                lunchOutTime.isNotEmpty(), "isLunchPunchOut", lumperAttendanceData.id!!
-            )
+            val lunchOutTime = convertDateStringToTime(PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.lunchPunchOut)
+            buttonLunchOut.text = if (lunchOutTime.isNotEmpty()) lunchOutTime else getString(R.string.back_to_work)
+            buttonLunchOut.isEnabled = timeClockAttendanceAdapter.checkIfEditable(lunchOutTime.isNotEmpty(), ATTENDANCE_LUNCH_PUNCH_OUT, lumperAttendanceData.id!!)
         } else {
             closeBottomSheet()
         }
@@ -328,87 +367,6 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     override fun onRowClicked(itemPosition: Int) {
         if (timeClockAttendanceAdapter.getSelectedItemCount() > 0) {
             onRowLongClicked(itemPosition)
-        }
-    }
-
-    private fun toggleSaveButton(selectedCount: Int) {
-        if (selectedCount > 0) {
-            buttonAddTime.visibility = View.VISIBLE
-            buttonSave.visibility = View.GONE
-        } else {
-            buttonAddTime.visibility = View.GONE
-            buttonSave.visibility = View.VISIBLE
-        }
-    }
-
-    private fun showTimePickerLayoutForMultipleLumpers() {
-        if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-            var isClockInEditable = true
-            var isClockOutEditable = true
-            var isLunchInEditable = true
-            var isLunchOutEditable = true
-
-            val list = timeClockAttendanceAdapter.getSelectedItems()
-            for (lumperAttendanceData in list) {
-                // Show Clock-In Time
-                val clockInTime = DateUtils.convertDateStringToTime(
-                    DateUtils.PATTERN_API_RESPONSE,
-                    lumperAttendanceData.attendanceDetail?.morningPunchIn
-                )
-                if (isClockInEditable && !(timeClockAttendanceAdapter.checkIfEditable(
-                        clockInTime.isNotEmpty(), "isMorningPunchIn", lumperAttendanceData.id!!
-                    ))
-                ) {
-                    isClockInEditable = false
-                }
-
-                // Show Clock-Out Time
-                val clockOutTime = DateUtils.convertDateStringToTime(
-                    DateUtils.PATTERN_API_RESPONSE,
-                    lumperAttendanceData.attendanceDetail?.eveningPunchOut
-                )
-                if (isClockOutEditable && !(timeClockAttendanceAdapter.checkIfEditable(
-                        clockOutTime.isNotEmpty(), "isEveningPunchOut", lumperAttendanceData.id!!
-                    ))
-                ) {
-                    isClockOutEditable = false
-                }
-
-                // Show Lunch-In Time
-                val lunchInTime = DateUtils.convertDateStringToTime(
-                    DateUtils.PATTERN_API_RESPONSE,
-                    lumperAttendanceData.attendanceDetail?.lunchPunchIn
-                )
-                if (isLunchInEditable && !(timeClockAttendanceAdapter.checkIfEditable(
-                        lunchInTime.isNotEmpty(), "isLunchPunchIn", lumperAttendanceData.id!!
-                    ))
-                ) {
-                    isLunchInEditable = false
-                }
-
-                // Show Lunch-Out Time
-                val lunchOutTime = DateUtils.convertDateStringToTime(
-                    DateUtils.PATTERN_API_RESPONSE,
-                    lumperAttendanceData.attendanceDetail?.lunchPunchOut
-                )
-                if (isLunchOutEditable && !(timeClockAttendanceAdapter.checkIfEditable(
-                        lunchOutTime.isNotEmpty(), "isLunchPunchOut", lumperAttendanceData.id!!
-                    ))
-                ) {
-                    isLunchOutEditable = false
-                }
-            }
-
-            buttonClockIn.isEnabled = isClockInEditable
-            buttonClockOut.isEnabled = isClockOutEditable
-            buttonLunchIn.isEnabled = isLunchInEditable
-            buttonLunchOut.isEnabled = isLunchOutEditable
-
-            sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            bottomSheetBackground.visibility = View.VISIBLE
-            bottomSheetBackground.setTag(R.id.isMultiSelect, true)
-        } else {
-            closeBottomSheet()
         }
     }
 }

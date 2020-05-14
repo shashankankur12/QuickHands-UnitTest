@@ -26,7 +26,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:drawableEnd="@drawable/ic_arrow_right"
         android:text="Lead Name"
-        android:textColor="@android:color/black"
+        android:textColor="@color/textBlack"
         android:textSize="@dimen/_13ssp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,7 +50,7 @@
         android:layout_marginTop="@dimen/_2sdp"
         android:layout_marginBottom="@dimen/_5sdp"
         android:text="Emp ID: 1001"
-        android:textColor="@android:color/black"
+        android:textColor="@color/textBlack"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewEmail" />

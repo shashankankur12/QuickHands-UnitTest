@@ -78,7 +78,7 @@ class CustomerSheetContainersAdapter(
                 linearLayoutNotes.visibility = View.GONE
             }
 
-            ScheduleUtils.showStatusTextViewByStatus(textViewStatus, workItemDetail.status, resources)
+            ScheduleUtils.changeStatusUIByValue(resources, workItemDetail.status, textViewStatus)
 
             recyclerViewBO.adapter = ContainerDetailItemAdapter(workItemDetail.buildingOps, workItemDetail.buildingDetailData?.parameters)
         }

@@ -121,26 +121,20 @@
 
             <Button
                 android:id="@+id/buttonUpdateLumpers"
+                style="@style/negativeRoundButtonTheme"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/_10ssp"
                 android:layout_weight="1"
-                android:background="@drawable/round_button_negative"
-                android:textAllCaps="false"
-                android:textColor="@color/buttonRed"
-                android:textSize="@dimen/_14ssp"
-                android:visibility="visible" />
+                android:text="@string/update_lumpers" />
 
             <Button
                 android:id="@+id/buttonAddBuildingOperations"
+                style="@style/positiveRoundButtonTheme"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/round_button_red"
-                android:text="@string/update_building_operations"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/_14ssp" />
+                android:text="@string/update_building_operations" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

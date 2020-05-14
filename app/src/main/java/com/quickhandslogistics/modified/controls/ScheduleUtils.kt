@@ -1,6 +1,7 @@
 package com.quickhandslogistics.modified.controls
 
 import android.content.res.Resources
+import android.widget.RelativeLayout
 import android.widget.TextView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
@@ -62,28 +63,76 @@ object ScheduleUtils {
         return Triple(liveLoadsCount, dropsCount, outBoundsCount)
     }
 
-    fun showStatusTextViewByStatus(textViewStatus: TextView, status: String?, resources: Resources) {
+    fun changeStatusUIByValue(
+        resources: Resources, status: String?, textViewStatus: TextView,
+        relativeLayoutSide: RelativeLayout? = null, isEditable: Boolean = false
+    ) {
         when (status) {
             AppConstant.WORK_ITEM_STATUS_SCHEDULED -> {
                 textViewStatus.text = resources.getString(R.string.scheduled)
                 textViewStatus.setBackgroundResource(R.drawable.chip_background_scheduled)
+                relativeLayoutSide?.setBackgroundResource(R.drawable.schedule_item_stroke_scheduled)
+                setStatusViewEditable(isEditable, textViewStatus)
             }
             AppConstant.WORK_ITEM_STATUS_ON_HOLD -> {
                 textViewStatus.text = resources.getString(R.string.on_hold)
                 textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
-            }
-            AppConstant.WORK_ITEM_STATUS_CANCELLED -> {
-                textViewStatus.text = resources.getString(R.string.cancelled)
-                textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
+                relativeLayoutSide?.setBackgroundResource(R.drawable.schedule_item_stroke_on_hold)
+                setStatusViewEditable(isEditable, textViewStatus)
             }
             AppConstant.WORK_ITEM_STATUS_IN_PROGRESS -> {
                 textViewStatus.text = resources.getString(R.string.in_progress)
                 textViewStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
+                relativeLayoutSide?.setBackgroundResource(R.drawable.schedule_item_stroke_in_progress)
+                setStatusViewEditable(isEditable, textViewStatus)
             }
-            else -> {
+            AppConstant.WORK_ITEM_STATUS_CANCELLED -> {
+                textViewStatus.text = resources.getString(R.string.cancelled)
+                textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
+                relativeLayoutSide?.setBackgroundResource(R.drawable.schedule_item_stroke_cancelled)
+                setStatusViewEditable(false, textViewStatus)
+            }
+            AppConstant.WORK_ITEM_STATUS_COMPLETED -> {
                 textViewStatus.text = resources.getString(R.string.completed)
                 textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
+                relativeLayoutSide?.setBackgroundResource(R.drawable.schedule_item_stroke_completed)
+                setStatusViewEditable(false, textViewStatus)
             }
         }
+    }
+
+    private fun setStatusViewEditable(isEditable: Boolean, textViewStatus: TextView) {
+        if (isEditable) {
+            textViewStatus.isClickable = true
+            textViewStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit, 0)
+        } else {
+            textViewStatus.isClickable = false
+            textViewStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+        }
+    }
+
+    fun createStatusList(resources: Resources, status: String): LinkedHashMap<String, String> {
+        val statusList: LinkedHashMap<String, String> = LinkedHashMap()
+        when (status) {
+            AppConstant.WORK_ITEM_STATUS_SCHEDULED -> {
+                statusList[resources.getString(R.string.scheduled)] = AppConstant.WORK_ITEM_STATUS_SCHEDULED
+                statusList[resources.getString(R.string.in_progress)] = AppConstant.WORK_ITEM_STATUS_IN_PROGRESS
+                statusList[resources.getString(R.string.on_hold)] = AppConstant.WORK_ITEM_STATUS_ON_HOLD
+                statusList[resources.getString(R.string.cancelled)] = AppConstant.WORK_ITEM_STATUS_CANCELLED
+            }
+            AppConstant.WORK_ITEM_STATUS_ON_HOLD -> {
+                statusList[resources.getString(R.string.in_progress)] = AppConstant.WORK_ITEM_STATUS_IN_PROGRESS
+                statusList[resources.getString(R.string.on_hold)] = AppConstant.WORK_ITEM_STATUS_ON_HOLD
+                statusList[resources.getString(R.string.cancelled)] = AppConstant.WORK_ITEM_STATUS_CANCELLED
+                statusList[resources.getString(R.string.completed)] = AppConstant.WORK_ITEM_STATUS_COMPLETED
+            }
+            AppConstant.WORK_ITEM_STATUS_IN_PROGRESS -> {
+                statusList[resources.getString(R.string.in_progress)] = AppConstant.WORK_ITEM_STATUS_IN_PROGRESS
+                statusList[resources.getString(R.string.on_hold)] = AppConstant.WORK_ITEM_STATUS_ON_HOLD
+                statusList[resources.getString(R.string.cancelled)] = AppConstant.WORK_ITEM_STATUS_CANCELLED
+                statusList[resources.getString(R.string.completed)] = AppConstant.WORK_ITEM_STATUS_COMPLETED
+            }
+        }
+        return statusList
     }
 }

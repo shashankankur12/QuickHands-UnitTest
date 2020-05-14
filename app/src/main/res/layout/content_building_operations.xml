@@ -46,16 +46,11 @@
 
             <Button
                 android:id="@+id/buttonSubmit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/positiveRoundButtonTheme"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_10ssp"
-                android:background="@drawable/round_button_red"
-                android:text="@string/string_submit"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/_14ssp" />
+                android:text="@string/string_submit" />
         </LinearLayout>
 
         <TextView

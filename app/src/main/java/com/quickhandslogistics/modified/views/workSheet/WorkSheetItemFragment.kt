@@ -64,7 +64,7 @@ class WorkSheetItemFragment : BaseFragment(),
             layoutManager = LinearLayoutManager(fragmentActivity!!)
             addItemDecoration(SpaceDividerItemDecorator(15))
             workSheetItemAdapter =
-                WorkSheetItemAdapter(workItemType, resources, this@WorkSheetItemFragment)
+                WorkSheetItemAdapter(resources, this@WorkSheetItemFragment)
             adapter = workSheetItemAdapter
         }
 

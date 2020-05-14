@@ -72,14 +72,8 @@
 
         <Button
             android:id="@+id/buttonClockIn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/round_button_selector_long"
-            android:padding="@dimen/_10ssp"
-            android:text="@string/clock_in"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_14ssp" />
+            style="@style/positiveButtonTheme"
+            android:text="@string/clock_in" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -92,14 +86,8 @@
 
         <Button
             android:id="@+id/buttonClockOut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/round_button_selector_long"
-            android:padding="@dimen/_10ssp"
-            android:text="@string/clock_out"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_14ssp" />
+            style="@style/positiveButtonTheme"
+            android:text="@string/clock_out" />
 
         <Space
             android:layout_width="0dp"
@@ -140,14 +128,8 @@
 
         <Button
             android:id="@+id/buttonLunchIn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/round_button_selector_long"
-            android:padding="@dimen/_10ssp"
-            android:text="@string/out_to_lunch"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_14ssp" />
+            style="@style/positiveButtonTheme"
+            android:text="@string/out_to_lunch" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -160,14 +142,8 @@
 
         <Button
             android:id="@+id/buttonLunchOut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/round_button_selector_long"
-            android:padding="@dimen/_10ssp"
-            android:text="@string/back_to_work"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_14ssp" />
+            style="@style/positiveButtonTheme"
+            android:text="@string/back_to_work" />
 
         <Space
             android:layout_width="0dp"

@@ -13,13 +13,14 @@ import com.quickhandslogistics.modified.contracts.workSheet.AllWorkScheduleCance
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.presenters.workSheet.AllWorkScheduleCancelPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
+import com.quickhandslogistics.utils.CustomDialogWarningListener
+import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.Utils
 import kotlinx.android.synthetic.main.activity_all_work_schedule_cancel.*
 
 class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, TextWatcher,
-    AllWorkScheduleCancelContract.View,
-    AllWorkScheduleCancelContract.View.OnAdapterItemClickListener {
+    AllWorkScheduleCancelContract.View, AllWorkScheduleCancelContract.View.OnAdapterItemClickListener {
 
     private lateinit var allWorkScheduleCancelPresenter: AllWorkScheduleCancelPresenter
     private lateinit var allWorkScheduleCancelAdapter: AllWorkScheduleCancelAdapter
@@ -29,14 +30,19 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
         setContentView(R.layout.activity_all_work_schedule_cancel)
         setupToolbar(getString(R.string.cancel_all_work_schedules))
 
+        initializeUI()
+
+        allWorkScheduleCancelPresenter = AllWorkScheduleCancelPresenter(this, resources)
+        allWorkScheduleCancelPresenter.fetchLumpersList()
+    }
+
+    fun initializeUI() {
         recyclerViewLumpers.apply {
             val linearLayoutManager = LinearLayoutManager(activity)
             layoutManager = linearLayoutManager
-            val dividerItemDecoration =
-                DividerItemDecoration(activity, linearLayoutManager.orientation)
+            val dividerItemDecoration = DividerItemDecoration(activity, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            allWorkScheduleCancelAdapter =
-                AllWorkScheduleCancelAdapter(this@AllWorkScheduleCancelActivity)
+            allWorkScheduleCancelAdapter = AllWorkScheduleCancelAdapter(this@AllWorkScheduleCancelActivity)
             adapter = allWorkScheduleCancelAdapter
         }
 
@@ -44,19 +50,27 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
             RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                textViewEmptyData.visibility =
-                    if (allWorkScheduleCancelAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                textViewEmptyData.visibility = if (allWorkScheduleCancelAdapter.itemCount == 0) View.VISIBLE else View.GONE
             }
         })
-
-        allWorkScheduleCancelPresenter = AllWorkScheduleCancelPresenter(this, resources)
-        allWorkScheduleCancelPresenter.fetchLumpersList()
 
         buttonSubmit.setOnClickListener(this)
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
     }
 
+    private fun showConfirmationDialog(selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String) {
+        CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
+            override fun onConfirmClick() {
+                allWorkScheduleCancelPresenter.initiateCancellingWorkSchedules(selectedLumperIdsList, notesQHL, notesCustomer)
+            }
+
+            override fun onCancelClick() {
+            }
+        })
+    }
+
+    /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
@@ -65,9 +79,7 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
                     val notesQHL = editTextQHLNotes.text.toString()
                     val notesCustomer = editTextCustomerNotes.text.toString()
                     if (selectedLumperIdsList.size > 0) {
-                        allWorkScheduleCancelPresenter.initiateCancellingWorkSchedules(
-                            selectedLumperIdsList, notesQHL, notesCustomer
-                        )
+                        showConfirmationDialog(selectedLumperIdsList, notesQHL, notesCustomer)
                     }
                 }
 
@@ -90,13 +102,7 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
         }
     }
 
-    override fun onSelectLumper(totalSelectedCount: Int) {
-        buttonSubmit.isEnabled = totalSelectedCount > 0
-    }
-
-    /*
-    * Presenter Listeners
-    */
+    /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }
@@ -108,5 +114,10 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
     override fun cancellingWorkScheduleFinished() {
         setResult(RESULT_OK)
         onBackPressed()
+    }
+
+    /** Adapter Listeners */
+    override fun onSelectLumper(totalSelectedCount: Int) {
+        buttonSubmit.isEnabled = totalSelectedCount > 0
     }
 }

@@ -25,23 +25,23 @@ class SplashActivity : BaseActivity(), SplashContract.View {
         splashPresenter.decideNextActivity()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        splashPresenter.onDestroy()
+    }
+
     private fun showLogoAnimation() {
         val anim = AnimationUtils.loadAnimation(this, R.anim.anim_slide_up)
-        anim.duration =
-            LOGO_ANIMATION_DURATION
+        anim.duration = LOGO_ANIMATION_DURATION
         imageViewSplashLogo.startAnimation(anim)
     }
 
+    /** Presenter Listeners */
     override fun showNextScreen(isLoggedIn: Boolean) {
         if (isLoggedIn) {
             startIntent(DashBoardActivity::class.java, isFinish = true)
         } else {
             startIntent(LoginActivity::class.java, isFinish = true)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        splashPresenter.onDestroy()
     }
 }

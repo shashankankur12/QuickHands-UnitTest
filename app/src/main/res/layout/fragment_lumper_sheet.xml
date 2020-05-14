@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
-        android:id="@+id/singleRowCalendarScheduleTime"
+        android:id="@+id/singleRowCalendarLumperSheet"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10ssp"
@@ -52,7 +52,7 @@
         android:paddingBottom="@dimen/_8sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/singleRowCalendarScheduleTime" />
+        app:layout_constraintTop_toBottomOf="@id/singleRowCalendarLumperSheet" />
 
     <ImageView
         android:id="@+id/imageViewCancel"
@@ -112,13 +112,8 @@
 
         <Button
             android:id="@+id/buttonSubmit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/positiveRoundButtonTheme"
             android:layout_marginBottom="@dimen/_4sdp"
-            android:background="@drawable/round_button_selector"
-            android:text="@string/string_submit"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_14ssp" />
+            android:text="@string/string_submit" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

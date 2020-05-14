@@ -63,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/signInCaption"
-                android:textColor="@android:color/black"
+                android:textColor="@color/textBlack"
                 android:textSize="@dimen/_10sdp"
                 android:textStyle="bold" />
 
@@ -124,13 +124,8 @@
 
             <Button
                 android:id="@+id/buttonLogin"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_30sdp"
-                android:background="@drawable/round_button_red"
-                android:text="@string/string_login"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/_12ssp" />
+                style="@style/positiveRoundButtonTheme"
+                android:text="@string/string_login" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

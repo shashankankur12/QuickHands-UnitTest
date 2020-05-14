@@ -56,6 +56,13 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
             }
         }
 
+        initializeUI()
+
+        addWorkItemLumpersPresenter = AddWorkItemLumpersPresenter(this, resources, sharedPref)
+        addWorkItemLumpersPresenter.fetchLumpersList()
+    }
+
+    private fun initializeUI() {
         recyclerViewLumpers.apply {
             val linearLayoutManager = LinearLayoutManager(activity)
             layoutManager = linearLayoutManager
@@ -75,33 +82,30 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
         // Enable Submit button if Lead is Updating Lumpers
         onSelectLumper(assignedLumpersList.size)
 
-        addWorkItemLumpersPresenter = AddWorkItemLumpersPresenter(this, resources, sharedPref)
-        addWorkItemLumpersPresenter.fetchLumpersList()
-
         buttonAdd.setOnClickListener(this)
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
     }
 
+    private fun assignLumpersToWorkItem() {
+        val selectedLumperIdsList = addWorkItemLumperAdapter.getSelectedLumper()
+        if (selectedLumperIdsList.size > 0) {
+            CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
+                override fun onConfirmClick() {
+                    addWorkItemLumpersPresenter.initiateAssigningLumpers(selectedLumperIdsList, workItemId, workItemType)
+                }
+
+                override fun onCancelClick() {
+                }
+            })
+        }
+    }
+
+    /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
-                buttonAdd.id -> {
-                    val selectedLumperIdsList = addWorkItemLumperAdapter.getSelectedLumper()
-                    if (selectedLumperIdsList.size > 0) {
-                        CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
-                            override fun onConfirmClick() {
-                                addWorkItemLumpersPresenter.initiateAssigningLumpers(
-                                    selectedLumperIdsList, workItemId, workItemType
-                                )
-                            }
-
-                            override fun onCancelClick() {
-                            }
-                        })
-                    }
-                }
-
+                buttonAdd.id -> assignLumpersToWorkItem()
                 imageViewCancel.id -> {
                     editTextSearch.setText("")
                     Utils.hideSoftKeyboard(activity)
@@ -121,19 +125,7 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
         }
     }
 
-    override fun onSelectLumper(totalSelectedCount: Int) {
-        if (totalSelectedCount > 0) {
-            buttonAdd.isEnabled = true
-            buttonAdd.setBackgroundResource(R.drawable.round_button_red)
-        } else {
-            buttonAdd.isEnabled = false
-            buttonAdd.setBackgroundResource(R.drawable.round_button_disabled)
-        }
-    }
-
-    /*
-    * Presenter Listeners
-    */
+    /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }
@@ -152,5 +144,10 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
     override fun lumperAssignmentFinished() {
         setResult(RESULT_OK)
         onBackPressed()
+    }
+
+    /** Adapter Listeners */
+    override fun onSelectLumper(totalSelectedCount: Int) {
+        buttonAdd.isEnabled = totalSelectedCount > 0
     }
 }

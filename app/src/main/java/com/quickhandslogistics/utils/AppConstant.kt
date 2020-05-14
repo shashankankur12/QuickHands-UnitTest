@@ -30,6 +30,13 @@ interface AppConstant {
         const val WORK_ITEM_STATUS_CANCELLED = "CANCELLED"
         const val WORK_ITEM_STATUS_SCHEDULED = "SCHEDULED"
 
+        // Attendance
+        const val ATTENDANCE_IS_PRESENT = "ATTENDANCE_IS_PRESENT"
+        const val ATTENDANCE_MORNING_PUNCH_IN = "ATTENDANCE_MORNING_PUNCH_IN"
+        const val ATTENDANCE_EVENING_PUNCH_OUT = "ATTENDANCE_EVENING_PUNCH_OUT"
+        const val ATTENDANCE_LUNCH_PUNCH_IN = "ATTENDANCE_LUNCH_PUNCH_IN"
+        const val ATTENDANCE_LUNCH_PUNCH_OUT = "ATTENDANCE_LUNCH_PUNCH_OUT"
+
         const val NOTES_NOT_AVAILABLE = "NA"
 
         const val EDIT_DIALOG = "edit_dialog"

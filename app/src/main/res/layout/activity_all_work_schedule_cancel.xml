@@ -157,17 +157,11 @@
 
             <Button
                 android:id="@+id/buttonSubmit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/positiveRoundButtonTheme"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:background="@drawable/round_button_selector"
                 android:enabled="false"
-                android:text="@string/string_submit"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/_14ssp"
-                android:textStyle="bold" />
+                android:text="@string/string_submit" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

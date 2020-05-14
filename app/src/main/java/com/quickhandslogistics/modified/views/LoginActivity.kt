@@ -27,6 +27,12 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
         loginPresenter.loadEmployeeId()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        loginPresenter.onDestroy()
+    }
+
+    /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
@@ -45,6 +51,7 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
         }
     }
 
+    /** Presenter Listeners */
     override fun loadEmployeeId(employeeId: String) {
         editTextEmployeeId.setText(employeeId)
         editTextEmployeeId.setSelection(employeeId.length)
@@ -52,29 +59,17 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
 
     override fun showEmptyEmployeeIdError() {
         editTextEmployeeId.requestFocus()
-        SnackBarFactory.createSnackBar(
-            activity,
-            mainConstraintLayout,
-            resources.getString(R.string.text_employee_error_msg)
-        )
+        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, resources.getString(R.string.text_employee_error_msg))
     }
 
     override fun showEmptyPasswordError() {
         editTextPassword.requestFocus()
-        SnackBarFactory.createSnackBar(
-            activity,
-            mainConstraintLayout,
-            resources.getString(R.string.text_password_err_msg)
-        )
+        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, resources.getString(R.string.text_password_err_msg))
     }
 
     override fun showInvalidPasswordError() {
         editTextPassword.requestFocus()
-        SnackBarFactory.createSnackBar(
-            activity,
-            mainConstraintLayout,
-            resources.getString(R.string.text_password_err_length)
-        )
+        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, resources.getString(R.string.text_password_err_length))
     }
 
     override fun showAPIErrorMessage(message: String) {
@@ -83,15 +78,6 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
     }
 
     override fun showNextScreen() {
-        startIntent(
-            DashBoardActivity::class.java,
-            isFinish = true,
-            flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK)
-        )
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        loginPresenter.onDestroy()
+        startIntent(DashBoardActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 }

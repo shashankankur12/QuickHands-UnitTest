@@ -23,17 +23,8 @@
 
         <TextView
             android:id="@+id/textViewStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/chip_background_in_progress"
-            android:paddingStart="@dimen/_10ssp"
-            android:paddingTop="@dimen/_5ssp"
-            android:paddingEnd="@dimen/_10ssp"
-            android:paddingBottom="@dimen/_5ssp"
-            android:text="In-Progress"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_10ssp"
-            android:textStyle="bold"
+            style="@style/baseChipTheme"
+            android:text="@string/in_progress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

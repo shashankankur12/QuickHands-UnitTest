@@ -15,12 +15,9 @@ class ScheduleContract {
         }
     }
 
-    interface View {
+    interface View : BaseContract.View {
         fun showDateString(dateString: String)
         fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<ScheduleDetail>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int)
-
-        fun hideProgressDialog()
-        fun showProgressDialog(message: String)
         fun showAPIErrorMessage(message: String)
         fun fetchUnScheduledWorkItems()
         fun showEmptyData()

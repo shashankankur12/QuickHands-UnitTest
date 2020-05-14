@@ -21,25 +21,25 @@ import com.quickhandslogistics.utils.CustomProgressBar
 import kotlinx.android.synthetic.main.fragment_customer_sheet_containers.*
 import java.util.*
 
-class CustomerSheetContainersFragment : BaseFragment(),
-    CustomerSheetContainersContract.View.OnAdapterItemClickListener {
+class CustomerSheetContainersFragment : BaseFragment(), CustomerSheetContainersContract.View.OnAdapterItemClickListener {
 
-    private var onFragmentInteractionListener: CustomerSheetContract.View.OnFragmentInteractionListener? =
-        null
+    private var onFragmentInteractionListener: CustomerSheetContract.View.OnFragmentInteractionListener? = null
 
     private lateinit var customerSheetContainersAdapter: CustomerSheetContainersAdapter
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = CustomerSheetContainersFragment()
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (parentFragment is CustomerSheetContract.View.OnFragmentInteractionListener) {
-            onFragmentInteractionListener =
-                parentFragment as CustomerSheetContract.View.OnFragmentInteractionListener
+            onFragmentInteractionListener = parentFragment as CustomerSheetContract.View.OnFragmentInteractionListener
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_customer_sheet_containers, container, false)
     }
 
@@ -49,26 +49,19 @@ class CustomerSheetContainersFragment : BaseFragment(),
         recyclerViewContainers.apply {
             layoutManager = LinearLayoutManager(fragmentActivity!!)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            customerSheetContainersAdapter =
-                CustomerSheetContainersAdapter(resources, this@CustomerSheetContainersFragment)
+            customerSheetContainersAdapter = CustomerSheetContainersAdapter(resources, this@CustomerSheetContainersFragment)
             adapter = customerSheetContainersAdapter
         }
 
-        customerSheetContainersAdapter.registerAdapterDataObserver(object :
-            RecyclerView.AdapterDataObserver() {
+        customerSheetContainersAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                textViewEmptyData.visibility =
-                    if (customerSheetContainersAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                textViewEmptyData.visibility = if (customerSheetContainersAdapter.itemCount == 0) View.VISIBLE else View.GONE
             }
         })
     }
 
-    fun updateWorkItemsList(
-        onGoingWorkItems: ArrayList<WorkItemDetail>,
-        cancelledWorkItems: ArrayList<WorkItemDetail>,
-        completedWorkItems: ArrayList<WorkItemDetail>
-    ) {
+    fun updateWorkItemsList(onGoingWorkItems: ArrayList<WorkItemDetail>, cancelledWorkItems: ArrayList<WorkItemDetail>, completedWorkItems: ArrayList<WorkItemDetail>) {
         val allWorkItems = ArrayList<WorkItemDetail>()
         allWorkItems.addAll(completedWorkItems)
         allWorkItems.addAll(cancelledWorkItems)
@@ -76,17 +69,12 @@ class CustomerSheetContainersFragment : BaseFragment(),
 
         customerSheetContainersAdapter.updateList(allWorkItems)
 
-        textViewCompletedCount.text =
-            String.format(getString(R.string.completed_s), completedWorkItems.size)
-        textViewCancelledCount.text =
-            String.format(getString(R.string.cancelled_s), cancelledWorkItems.size)
-        textViewUnfinishedCount.text =
-            String.format(getString(R.string.unfinished_s), onGoingWorkItems.size)
+        textViewCompletedCount.text = String.format(getString(R.string.completed_s), completedWorkItems.size)
+        textViewCancelledCount.text = String.format(getString(R.string.cancelled_s), cancelledWorkItems.size)
+        textViewUnfinishedCount.text = String.format(getString(R.string.unfinished_s), onGoingWorkItems.size)
     }
 
-    /*
-    * Adapter Item Click Listeners
-    */
+    /** Adapter Listeners */
     override fun onBOItemClick(workItemDetail: WorkItemDetail) {
         val bundle = Bundle()
         bundle.putStringArrayList(
@@ -98,15 +86,7 @@ class CustomerSheetContainersFragment : BaseFragment(),
 
     override fun onNotesItemClick(notesQHLCustomer: String?) {
         notesQHLCustomer?.let {
-            CustomProgressBar.getInstance().showInfoDialog(
-                getString(R.string.string_note), notesQHLCustomer,
-                fragmentActivity!!
-            )
+            CustomProgressBar.getInstance().showInfoDialog(getString(R.string.string_note), notesQHLCustomer, fragmentActivity!!)
         }
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = CustomerSheetContainersFragment()
     }
 }

@@ -1,7 +1,9 @@
 package com.quickhandslogistics.modified.contracts.customerSheet
 
 import com.quickhandslogistics.modified.contracts.BaseContract
+import com.quickhandslogistics.modified.data.customerSheet.CustomerSheetData
 import com.quickhandslogistics.modified.data.customerSheet.CustomerSheetListAPIResponse
+import com.quickhandslogistics.modified.data.customerSheet.CustomerSheetScheduleDetails
 import java.util.*
 
 class CustomerSheetContract {
@@ -19,11 +21,7 @@ class CustomerSheetContract {
 
     interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
-        fun showCustomerSheets(
-            scheduleDetails: CustomerSheetListAPIResponse.ScheduleDetails,
-            customerSheet: CustomerSheetListAPIResponse.CustomerSheetData?, selectedDate: Date
-        )
-
+        fun showCustomerSheets(scheduleDetails: CustomerSheetScheduleDetails, customerSheet: CustomerSheetData?, selectedDate: Date)
         fun showHeaderInfo(buildingName: String, date: String)
         fun customerSavedSuccessfully()
 

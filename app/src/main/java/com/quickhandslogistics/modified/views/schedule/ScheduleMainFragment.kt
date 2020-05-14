@@ -10,7 +10,7 @@ import com.quickhandslogistics.modified.contracts.schedule.ScheduleMainContract
 import com.quickhandslogistics.modified.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_schedule_main.*
 
-class ScheduleMainFragment : BaseFragment(), ScheduleMainContract.View.OnScheduleFragmentInteractionListener {
+class ScheduleMainFragment : BaseFragment(), ScheduleMainContract.View.OnFragmentInteractionListener {
 
     private lateinit var adapter: ScheduleMainPagerAdapter
 
@@ -45,6 +45,7 @@ class ScheduleMainFragment : BaseFragment(), ScheduleMainContract.View.OnSchedul
         tabLayoutSchedule.setupWithViewPager(viewPagerSchedule)
     }
 
+    /** Fragment Interaction Listeners */
     override fun fetchUnScheduledWorkItems() {
         adapter.fetchUnScheduledWorkItems()
     }

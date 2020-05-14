@@ -46,7 +46,7 @@
             app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <com.quickhandslogistics.modified.controls.CustomTextView
             android:id="@+id/textViewEmployeeId"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -145,15 +145,8 @@
 
                 <Button
                     android:id="@+id/buttonStartTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/round_button_selector_long"
-                    android:paddingStart="@dimen/_10ssp"
-                    android:paddingEnd="@dimen/_10ssp"
-                    android:text="@string/start_time"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/_14ssp" />
+                    style="@style/positiveButtonTheme"
+                    android:text="@string/start_time" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -166,15 +159,8 @@
 
                 <Button
                     android:id="@+id/buttonEndTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/round_button_selector_long"
-                    android:paddingStart="@dimen/_10ssp"
-                    android:paddingEnd="@dimen/_10ssp"
-                    android:text="@string/end_time"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/_14ssp" />
+                    style="@style/positiveButtonTheme"
+                    android:text="@string/end_time" />
 
                 <Space
                     android:layout_width="0dp"
@@ -215,15 +201,8 @@
 
                 <Button
                     android:id="@+id/buttonBreakInTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/round_button_selector_long"
-                    android:paddingStart="@dimen/_10ssp"
-                    android:paddingEnd="@dimen/_10ssp"
-                    android:text="@string/string_start"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/_14ssp" />
+                    style="@style/positiveButtonTheme"
+                    android:text="@string/string_start" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -236,15 +215,8 @@
 
                 <Button
                     android:id="@+id/buttonBreakOutTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/round_button_selector_long"
-                    android:paddingStart="@dimen/_10ssp"
-                    android:paddingEnd="@dimen/_10ssp"
-                    android:text="@string/string_end"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/_14ssp" />
+                    style="@style/positiveButtonTheme"
+                    android:text="@string/string_end" />
 
                 <Space
                     android:layout_width="0dp"
@@ -260,15 +232,9 @@
 
         <Button
             android:id="@+id/buttonSave"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/positiveRoundButtonTheme"
             android:layout_marginTop="@dimen/_10ssp"
             android:layout_marginBottom="@dimen/_10ssp"
-            android:background="@drawable/round_button_selector"
-            android:enabled="true"
-            android:text="@string/string_save"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_14ssp" />
+            android:text="@string/string_save" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

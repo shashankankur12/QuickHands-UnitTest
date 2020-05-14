@@ -50,7 +50,7 @@
             app:tabIndicatorColor="@color/buttonRed"
             app:tabIndicatorFullWidth="false"
             app:tabMode="scrollable"
-            app:tabSelectedTextColor="@android:color/black"
+            app:tabSelectedTextColor="@color/textBlack"
             app:tabTextAppearance="@style/TabTextAppearance"
             app:tabTextColor="@color/detailHeader" />
     </androidx.constraintlayout.widget.ConstraintLayout>

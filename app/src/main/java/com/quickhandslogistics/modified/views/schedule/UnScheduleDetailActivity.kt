@@ -25,31 +25,33 @@ import kotlinx.android.synthetic.main.content_unschedule_detail.*
 
 class UnScheduleDetailActivity : BaseActivity(), UnScheduleDetailContract.View {
 
+    private var scheduleDetail: ScheduleDetail? = null
+
     private lateinit var liveLoadsAdapter: UnScheduledWorkItemAdapter
     private lateinit var dropsAdapter: UnScheduledWorkItemAdapter
     private lateinit var outBondsAdapter: UnScheduledWorkItemAdapter
     private lateinit var unScheduleDetailPresenter: UnScheduleDetailPresenter
-
-    private var scheduleDetail: ScheduleDetail? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_unschedule_detail)
         setupToolbar(getString(R.string.unscheduled_work))
 
-        unScheduleDetailPresenter = UnScheduleDetailPresenter(this, resources)
-
         initializeUI()
+
+        unScheduleDetailPresenter = UnScheduleDetailPresenter(this, resources)
 
         intent.extras?.let { bundle ->
             when {
                 bundle.containsKey(ARG_SCHEDULE_DETAIL) -> {
+                    // Show Schedule Detail passed from previous listing
                     scheduleDetail = bundle.getParcelable(ARG_SCHEDULE_DETAIL)
                     scheduleDetail?.let { scheduleDetail ->
                         showScheduleData(scheduleDetail, scheduleDetail.endDateForCurrentWorkItem)
                     }
                 }
                 bundle.containsKey(ARG_SCHEDULE_IDENTITY) -> {
+                    // Fetch Schedule Detail using id & date
                     val scheduleIdentity = bundle.getString(ARG_SCHEDULE_IDENTITY, "")
                     val scheduleFromDate = bundle.getString(ARG_SCHEDULE_FROM_DATE, "")
                     unScheduleDetailPresenter.getScheduleDetail(scheduleIdentity, scheduleFromDate)
@@ -60,12 +62,31 @@ class UnScheduleDetailActivity : BaseActivity(), UnScheduleDetailContract.View {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.let {
+            val menuItem = menu.findItem(R.id.actionNotes)
+            menuItem.isVisible = !scheduleDetail?.scheduleNote.isNullOrEmpty() && scheduleDetail?.scheduleNote != NOTES_NOT_AVAILABLE
+        }
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.actionNotes -> CustomProgressBar.getInstance().showInfoDialog(getString(R.string.string_note), scheduleDetail?.scheduleNote!!, activity)
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun initializeUI() {
         recyclerViewLiveLoad.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            liveLoadsAdapter =
-                UnScheduledWorkItemAdapter(resources, getString(R.string.string_live_loads))
+            liveLoadsAdapter = UnScheduledWorkItemAdapter(resources, getString(R.string.string_live_loads))
             adapter = liveLoadsAdapter
         }
 
@@ -79,8 +100,7 @@ class UnScheduleDetailActivity : BaseActivity(), UnScheduleDetailContract.View {
         recyclerViewOutBonds.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            outBondsAdapter =
-                UnScheduledWorkItemAdapter(resources, getString(R.string.string_out_bounds))
+            outBondsAdapter = UnScheduledWorkItemAdapter(resources, getString(R.string.string_out_bounds))
             adapter = outBondsAdapter
         }
     }
@@ -93,97 +113,71 @@ class UnScheduleDetailActivity : BaseActivity(), UnScheduleDetailContract.View {
         layoutAllWorkItems.visibility = View.GONE
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_toolbar, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        menu?.let {
-            val menuItem = menu.findItem(R.id.actionNotes)
-            menuItem.isVisible = !scheduleDetail?.scheduleNote.isNullOrEmpty() &&
-                    scheduleDetail?.scheduleNote != NOTES_NOT_AVAILABLE
+    private fun showLiveLoadsList(scheduleTypes: ScheduleDetail.ScheduleTypes) {
+        // Show LiveLoads work Items Listing
+        if (!scheduleTypes.liveLoads.isNullOrEmpty()) {
+            scheduleTypes.liveLoads!!.sortWith(Comparator { workItem1, workItem2 ->
+                workItem1.startTime!!.compareTo(workItem2.startTime!!)
+            })
+            liveLoadsAdapter.updateData(scheduleTypes.liveLoads!!)
+            layoutLiveLoadScheduleType.visibility = View.VISIBLE
+            recyclerViewLiveLoad.visibility = View.VISIBLE
+        } else {
+            layoutLiveLoadScheduleType.visibility = View.GONE
+            recyclerViewLiveLoad.visibility = View.GONE
         }
-        return super.onPrepareOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.actionNotes -> {
-                CustomProgressBar.getInstance()
-                    .showInfoDialog(
-                        getString(R.string.string_note), scheduleDetail?.scheduleNote!!, activity
-                    )
-            }
+    private fun showDropsList(scheduleTypes: ScheduleDetail.ScheduleTypes) {
+        // Show Drops work Items Listing
+        if (!scheduleTypes.drops.isNullOrEmpty()) {
+            dropsAdapter.updateData(scheduleTypes.drops!!)
+            layoutDropsScheduleType.visibility = View.VISIBLE
+            recyclerViewDrops.visibility = View.VISIBLE
+        } else {
+            layoutDropsScheduleType.visibility = View.GONE
+            recyclerViewDrops.visibility = View.GONE
         }
-        return super.onOptionsItemSelected(item)
     }
 
-    /*
-    * Presenter Listeners
-    */
+    private fun showOutBoundsList(scheduleTypes: ScheduleDetail.ScheduleTypes) {
+        // Show Out Bonds work Items Listing
+        if (!scheduleTypes.outbounds.isNullOrEmpty()) {
+            scheduleTypes.outbounds!!.sortWith(Comparator { workItem1, workItem2 ->
+                workItem1.startTime!!.compareTo(workItem2.startTime!!)
+            })
+            outBondsAdapter.updateData(scheduleTypes.outbounds!!)
+            layoutOutBondsScheduleType.visibility = View.VISIBLE
+            recyclerViewOutBonds.visibility = View.VISIBLE
+        } else {
+            layoutOutBondsScheduleType.visibility = View.GONE
+            recyclerViewOutBonds.visibility = View.GONE
+        }
+    }
+
+    /** Presenter Listeners */
     override fun showScheduleData(scheduleDetail: ScheduleDetail, scheduleDate: String?) {
         this.scheduleDetail = scheduleDetail
         invalidateOptionsMenu()
 
         if (!scheduleDetail.buildingName.isNullOrEmpty())
             textViewBuildingName.text = scheduleDetail.buildingName?.capitalize()
+
         scheduleDate?.let {
-            textViewScheduleDate.text =
-                DateUtils.changeDateString(PATTERN_API_REQUEST_PARAMETER, PATTERN_NORMAL, it)
+            textViewScheduleDate.text = DateUtils.changeDateString(PATTERN_API_REQUEST_PARAMETER, PATTERN_NORMAL, it)
         }
         textViewScheduleType.text = scheduleDetail.scheduleTypeNames
-        textViewWorkItemsCount.text = String.format(
-            getString(R.string.work_items_count),
-            scheduleDetail.totalNumberOfWorkItems
-        )
+        textViewWorkItemsCount.text = String.format(getString(R.string.work_items_count), scheduleDetail.totalNumberOfWorkItems)
 
         scheduleDetail.scheduleTypes?.let { scheduleTypes ->
-
-            // Show LiveLoads work Items Listing
-            if (!scheduleTypes.liveLoads.isNullOrEmpty()) {
-                scheduleTypes.liveLoads!!.sortWith(Comparator { workItem1, workItem2 ->
-                    workItem1.startTime!!.compareTo(workItem2.startTime!!)
-                })
-                liveLoadsAdapter.updateData(scheduleTypes.liveLoads!!)
-                layoutLiveLoadScheduleType.visibility = View.VISIBLE
-                recyclerViewLiveLoad.visibility = View.VISIBLE
-            } else {
-                layoutLiveLoadScheduleType.visibility = View.GONE
-                recyclerViewLiveLoad.visibility = View.GONE
-            }
-
-            // Show Drops work Items Listing
-            if (!scheduleTypes.drops.isNullOrEmpty()) {
-                dropsAdapter.updateData(scheduleTypes.drops!!)
-                layoutDropsScheduleType.visibility = View.VISIBLE
-                recyclerViewDrops.visibility = View.VISIBLE
-            } else {
-                layoutDropsScheduleType.visibility = View.GONE
-                recyclerViewDrops.visibility = View.GONE
-            }
-
-            // Show Out Bonds work Items Listing
-            if (!scheduleTypes.outbounds.isNullOrEmpty()) {
-                scheduleTypes.outbounds!!.sortWith(Comparator { workItem1, workItem2 ->
-                    workItem1.startTime!!.compareTo(workItem2.startTime!!)
-                })
-                outBondsAdapter.updateData(scheduleTypes.outbounds!!)
-                layoutOutBondsScheduleType.visibility = View.VISIBLE
-                recyclerViewOutBonds.visibility = View.VISIBLE
-            } else {
-                layoutOutBondsScheduleType.visibility = View.GONE
-                recyclerViewOutBonds.visibility = View.GONE
-            }
+            showLiveLoadsList(scheduleTypes)
+            showDropsList(scheduleTypes)
+            showOutBoundsList(scheduleTypes)
         }
     }
 
     override fun showAPIErrorMessage(message: String) {
         clearAllData()
-        SnackBarFactory.createSnackBar(activity,
-            mainConstraintLayout, message, getString(R.string.goBack),
-            View.OnClickListener {
-                onBackPressed()
-            })
+        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message, getString(R.string.goBack), View.OnClickListener { onBackPressed() })
     }
 }

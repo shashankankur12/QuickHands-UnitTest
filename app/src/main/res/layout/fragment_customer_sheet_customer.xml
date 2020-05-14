@@ -159,16 +159,11 @@
 
         <Button
             android:id="@+id/buttonSubmit"
+            style="@style/positiveRoundButtonTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:background="@drawable/round_button_selector"
             android:text="@string/string_submit"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

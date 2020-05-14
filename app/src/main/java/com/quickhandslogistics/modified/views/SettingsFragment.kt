@@ -18,17 +18,16 @@ import kotlinx.android.synthetic.main.fragment_settings.*
 
 class SettingsFragment : BaseFragment(), SettingContract.View, View.OnClickListener {
 
-    private var settingsPresenter: SettingsPresenter? = null
     private lateinit var selectedLanguage: String
+
+    private var settingsPresenter: SettingsPresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         settingsPresenter = SettingsPresenter(this, resources, sharedPref)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
@@ -46,19 +45,37 @@ class SettingsFragment : BaseFragment(), SettingContract.View, View.OnClickListe
         settingsPresenter?.checkSelectedSettings()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        settingsPresenter?.onDestroy()
+    }
+
+    private fun showConfirmationDialog(language: String) {
+        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.string_language_dialog), fragmentActivity!!, object : CustomDialogWarningListener {
+            override fun onConfirmClick() {
+                settingsPresenter?.saveSelectedLanguage(language)
+            }
+
+            override fun onCancelClick() {
+                if (language == getString(R.string.english)) {
+                    radioBtnSpanish.isChecked = true
+                } else {
+                    radioBtnEnglish.isChecked = true
+                }
+            }
+        })
+    }
+
+    /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
                 radioBtnEnglish.id -> {
-                    if (selectedLanguage != getString(R.string.english))
-                        showConfirmationDialog(getString(R.string.english))
-                    else {
+                    if (selectedLanguage != getString(R.string.english)) showConfirmationDialog(getString(R.string.english)) else {
                     }
                 }
                 radioBtnSpanish.id -> {
-                    if (selectedLanguage != getString(R.string.spanish))
-                        showConfirmationDialog(getString(R.string.spanish))
-                    else {
+                    if (selectedLanguage != getString(R.string.spanish)) showConfirmationDialog(getString(R.string.spanish)) else {
                     }
                 }
                 switchNotification.id -> {
@@ -82,11 +99,7 @@ class SettingsFragment : BaseFragment(), SettingContract.View, View.OnClickListe
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        settingsPresenter?.onDestroy()
-    }
-
+    /** Presenter Listeners */
     override fun restartActivity() {
         ActivityRecreationHelper.recreate(fragmentActivity!!, false)
     }
@@ -110,23 +123,5 @@ class SettingsFragment : BaseFragment(), SettingContract.View, View.OnClickListe
             switchNotification.isEnabled = false
             textViewNotificationInfo.visibility = View.VISIBLE
         }
-    }
-
-    private fun showConfirmationDialog(language: String) {
-        CustomProgressBar.getInstance().showWarningDialog(
-            getString(R.string.string_language_dialog),
-            fragmentActivity!!, object : CustomDialogWarningListener {
-                override fun onConfirmClick() {
-                    settingsPresenter?.saveSelectedLanguage(language)
-                }
-
-                override fun onCancelClick() {
-                    if (language == getString(R.string.english)) {
-                        radioBtnSpanish.isChecked = true
-                    } else {
-                        radioBtnEnglish.isChecked = true
-                    }
-                }
-            })
     }
 }

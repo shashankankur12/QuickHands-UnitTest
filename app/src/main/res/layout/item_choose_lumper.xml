@@ -27,7 +27,7 @@
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:text="John Snow"
-        android:textColor="@android:color/black"
+        android:textColor="@color/textBlack"
         android:textSize="@dimen/_14ssp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +42,7 @@
         android:layout_marginTop="@dimen/_2sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:text="(Emp ID: 1001)"
-        android:textColor="@android:color/black"
+        android:textColor="@color/textBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />

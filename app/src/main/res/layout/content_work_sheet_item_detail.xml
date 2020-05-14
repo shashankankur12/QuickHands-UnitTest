@@ -11,21 +11,10 @@
 
     <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/baseChipTheme"
         android:layout_marginTop="@dimen/_5ssp"
         android:layout_marginEnd="@dimen/_10ssp"
-        android:background="@drawable/chip_background_in_progress"
-        android:clickable="true"
-        android:drawableEnd="@drawable/ic_edit"
         android:drawablePadding="@dimen/_5ssp"
-        android:paddingStart="@dimen/_10ssp"
-        android:paddingTop="@dimen/_5ssp"
-        android:paddingEnd="@dimen/_10ssp"
-        android:paddingBottom="@dimen/_5ssp"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/_10ssp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -30,7 +30,6 @@ import kotlinx.android.synthetic.main.activity_edit_schedule_time.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-
 class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatcher,
     EditScheduleTimeContract.View, EditScheduleTimeContract.View.OnAdapterItemClickListener {
 
@@ -55,6 +54,70 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             }
         }
 
+        initializeUI()
+
+        editScheduleTimePresenter = EditScheduleTimePresenter(this, resources)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
+        menu?.findItem(R.id.actionAddLumpers)?.isVisible = true
+        menu?.findItem(R.id.actionAddSameLumperTime)?.isVisible = true
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.let {
+            val menuItem = menu.findItem(R.id.actionAddLumpers)
+            if (editScheduleTimeAdapter.itemCount > 0) {
+                menuItem.title = getString(R.string.update_lumpers)
+            } else {
+                menuItem.title = getString(R.string.add_lumpers)
+            }
+        }
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.actionAddSameLumperTime -> {
+                val calendar = Calendar.getInstance()
+                calendar.timeInMillis = selectedTime
+                val mHour = calendar.get(Calendar.HOUR_OF_DAY)
+                val mMinute = calendar.get(Calendar.MINUTE)
+
+                TimePickerDialog(
+                    this, OnTimeSetListener { view, hourOfDay, minute ->
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                        calendar.set(Calendar.MINUTE, minute)
+                        editScheduleTimeAdapter.addStartTimetoAll(calendar.timeInMillis)
+                    }, mHour, mMinute, false
+                ).show()
+            }
+            R.id.actionAddLumpers -> {
+                val lumpersList = editScheduleTimeAdapter.getLumpersList()
+                val bundle = Bundle()
+                bundle.putParcelableArrayList(ChooseLumpersActivity.ARG_ASSIGNED_LUMPERS_LIST, lumpersList)
+                bundle.putParcelableArrayList(ARG_SCHEDULED_TIME_LIST, scheduleTimeList)
+                startIntent(ChooseLumpersActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == RESULT_OK) {
+            data?.extras?.let { bundle ->
+                val employeeDataList = bundle.getParcelableArrayList<EmployeeData>(ARG_LUMPERS_LIST)
+                employeeDataList?.let {
+                    editScheduleTimeAdapter.addLumpersList(employeeDataList)
+                }
+            }
+        }
+    }
+
+    private fun initializeUI() {
         scheduleTimeNotes?.let { notes ->
             editTextNotes.setText(notes.notesForLead)
             editTextDMNotes.setText(notes.notesForDM)
@@ -88,9 +151,6 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             }
         })
 
-
-        editScheduleTimePresenter = EditScheduleTimePresenter(this, resources)
-
         buttonSubmit.setOnClickListener(this)
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
@@ -98,103 +158,40 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         invalidateOptionsMenu()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_toolbar, menu)
-        menu?.findItem(R.id.actionAddLumpers)?.isVisible = true
-        menu?.findItem(R.id.actionAddSameLumperTime)?.isVisible = true
-        return super.onCreateOptionsMenu(menu)
-    }
+    private fun saveLumperScheduleTimings() {
+        val scheduledLumpersIdsTimeMap = editScheduleTimeAdapter.getScheduledLumpersTimeMap()
+        if (scheduledLumpersIdsTimeMap.size > 0) {
+            val notes = editTextNotes.text.toString()
+            val requiredLumperCount = editTextLumpersRequired.text.toString()
+            val notesDM = editTextDMNotes.text.toString()
 
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        menu?.let {
-            val menuItem = menu.findItem(R.id.actionAddLumpers)
-            if (editScheduleTimeAdapter.itemCount > 0) {
-                menuItem.title = getString(R.string.update_lumpers)
+            if ((requiredLumperCount.isNotEmpty() && notesDM.isEmpty()) || (requiredLumperCount.isEmpty() && notesDM.isNotEmpty())) {
+                SnackBarFactory.createSnackBar(activity, mainConstraintLayout, getString(R.string.request_help_error_message))
             } else {
-                menuItem.title = getString(R.string.add_lumpers)
+                showConfirmationDialog(scheduledLumpersIdsTimeMap, notes, requiredLumperCount, notesDM)
             }
         }
-        return super.onPrepareOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.actionAddSameLumperTime -> {
-                val calendar = Calendar.getInstance()
-                calendar.timeInMillis = selectedTime
-                val mHour = calendar.get(Calendar.HOUR_OF_DAY)
-                val mMinute = calendar.get(Calendar.MINUTE)
-
-                val timePickerDialog = TimePickerDialog(
-                    this,
-                    OnTimeSetListener { view, hourOfDay, minute ->
-                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
-                        calendar.set(Calendar.MINUTE, minute)
-                        editScheduleTimeAdapter.addStartTimetoAll(calendar.timeInMillis)
-                    },
-                    mHour, mMinute, false
+    private fun showConfirmationDialog(scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, requiredLumperCount: String, notesDM: String) {
+        CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
+            override fun onConfirmClick() {
+                editScheduleTimePresenter.initiateScheduleTime(
+                    scheduledLumpersIdsTimeMap, notes, if (requiredLumperCount.isNotEmpty()) requiredLumperCount.toInt() else 0,
+                    notesDM, Date(selectedTime)
                 )
-                timePickerDialog.show()
             }
-            R.id.actionAddLumpers -> {
-                val lumpersList = editScheduleTimeAdapter.getLumpersList()
-                val bundle = Bundle()
-                bundle.putParcelableArrayList(ChooseLumpersActivity.ARG_ASSIGNED_LUMPERS_LIST, lumpersList)
-                bundle.putParcelableArrayList(ARG_SCHEDULED_TIME_LIST, scheduleTimeList)
-                startIntent(ChooseLumpersActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
+
+            override fun onCancelClick() {
             }
-        }
-        return super.onOptionsItemSelected(item)
+        })
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == RESULT_OK) {
-            data?.extras?.let { bundle ->
-                val employeeDataList = bundle.getParcelableArrayList<EmployeeData>(ARG_LUMPERS_LIST)
-                employeeDataList?.let {
-                    editScheduleTimeAdapter.addLumpersList(employeeDataList)
-                }
-            }
-        }
-    }
-
+    /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
-                buttonSubmit.id -> {
-                    val scheduledLumpersIdsTimeMap = editScheduleTimeAdapter.getScheduledLumpersTimeMap()
-                    if (scheduledLumpersIdsTimeMap.size > 0) {
-                        val notes = editTextNotes.text.toString()
-                        val requiredLumperCount = editTextLumpersRequired.text.toString()
-                        val notesDM = editTextDMNotes.text.toString()
-
-                        if ((requiredLumperCount.isNotEmpty() && notesDM.isEmpty())
-                            || (requiredLumperCount.isEmpty() && notesDM.isNotEmpty())
-                        ) {
-                            SnackBarFactory.createSnackBar(
-                                activity, mainConstraintLayout,
-                                getString(R.string.request_help_error_message)
-                            )
-                        } else {
-                            CustomProgressBar.getInstance().showWarningDialog(
-                                activityContext = activity,
-                                listener = object : CustomDialogWarningListener {
-                                    override fun onConfirmClick() {
-                                        editScheduleTimePresenter.initiateScheduleTime(
-                                            scheduledLumpersIdsTimeMap, notes,
-                                            if (requiredLumperCount.isNotEmpty()) requiredLumperCount.toInt() else 0,
-                                            notesDM, Date(selectedTime)
-                                        )
-                                    }
-
-                                    override fun onCancelClick() {
-                                    }
-                                })
-                        }
-                    }
-                }
-
+                buttonSubmit.id -> saveLumperScheduleTimings()
                 imageViewCancel.id -> {
                     editTextSearch.setText("")
                     Utils.hideSoftKeyboard(activity)
@@ -214,6 +211,17 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         }
     }
 
+    /** Presenter Listeners */
+    override fun showAPIErrorMessage(message: String) {
+        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
+    }
+
+    override fun scheduleTimeFinished() {
+        setResult(RESULT_OK)
+        onBackPressed()
+    }
+
+    /** Adapter Listeners */
     override fun onAddStartTimeClick(adapterPosition: Int, timeInMillis: Long) {
         val calendar = Calendar.getInstance()
         if (timeInMillis > 0) {
@@ -224,27 +232,12 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         val mHour = calendar.get(Calendar.HOUR_OF_DAY)
         val mMinute = calendar.get(Calendar.MINUTE)
 
-        val timePickerDialog = TimePickerDialog(
-            this,
-            OnTimeSetListener { view, hourOfDay, minute ->
+        TimePickerDialog(
+            this, OnTimeSetListener { view, hourOfDay, minute ->
                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                 calendar.set(Calendar.MINUTE, minute)
                 editScheduleTimeAdapter.addStartTime(adapterPosition, calendar.timeInMillis)
-            },
-            mHour, mMinute, false
-        )
-        timePickerDialog.show()
-    }
-
-    /*
-    * Presenter Listeners
-    */
-    override fun showAPIErrorMessage(message: String) {
-        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
-    }
-
-    override fun scheduleTimeFinished() {
-        setResult(RESULT_OK)
-        onBackPressed()
+            }, mHour, mMinute, false
+        ).show()
     }
 }

@@ -17,14 +17,14 @@ import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.content_building_operations.*
 
-class BuildingOperationsActivity : BaseActivity(), View.OnClickListener,
-    BuildingOperationsContract.View {
+class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, BuildingOperationsContract.View {
 
-    private lateinit var buildingOperationsPresenter: BuildingOperationsPresenter
-    private var buildingOperationsAdapter: BuildingOperationsAdapter? = null
     private var allowUpdate: Boolean = true
     private var workItemId: String = ""
     private var parameters: ArrayList<String> = ArrayList()
+
+    private lateinit var buildingOperationsPresenter: BuildingOperationsPresenter
+    private var buildingOperationsAdapter: BuildingOperationsAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +37,13 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener,
             parameters = it.getStringArrayList(ARG_BUILDING_PARAMETERS) as ArrayList<String>
         }
 
+        initializeUI()
+
+        buildingOperationsPresenter = BuildingOperationsPresenter(this, resources)
+        buildingOperationsPresenter.fetchBuildingOperationDetails(workItemId)
+    }
+
+    private fun initializeUI() {
         buttonSubmit.visibility = if (allowUpdate) View.VISIBLE else View.GONE
         buttonSubmit.setOnClickListener(this)
 
@@ -46,37 +53,32 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener,
             buildingOperationsAdapter = BuildingOperationsAdapter(allowUpdate, parameters)
             adapter = buildingOperationsAdapter
         }
-
-        buildingOperationsPresenter = BuildingOperationsPresenter(this, resources)
-        buildingOperationsPresenter.fetchBuildingOperationDetails(workItemId)
     }
 
+    private fun submitBODetails() {
+        val data = buildingOperationsAdapter?.getUpdatedData()
+        data?.let {
+            CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
+                override fun onConfirmClick() {
+                    buildingOperationsPresenter.saveBuildingOperationsData(workItemId, data)
+                }
+
+                override fun onCancelClick() {
+                }
+            })
+        }
+    }
+
+    /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
-                buttonSubmit.id -> {
-                    val data = buildingOperationsAdapter?.getUpdatedData()
-                    data?.let {
-                        CustomProgressBar.getInstance().showWarningDialog(
-                            activityContext = activity,
-                            listener = object : CustomDialogWarningListener {
-                                override fun onConfirmClick() {
-                                    buildingOperationsPresenter.saveBuildingOperationsData(
-                                        workItemId, data
-                                    )
-                                }
-
-                                override fun onCancelClick() {
-                                }
-                            })
-                    }
-                }
-                else -> {
-                }
+                buttonSubmit.id -> submitBODetails()
             }
         }
     }
 
+    /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }

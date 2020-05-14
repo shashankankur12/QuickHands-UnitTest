@@ -19,6 +19,11 @@ import com.quickhandslogistics.modified.contracts.attendance.TimeClockAttendance
 import com.quickhandslogistics.modified.controls.FlipAnimator
 import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
+import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_EVENING_PUNCH_OUT
+import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_IS_PRESENT
+import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_LUNCH_PUNCH_IN
+import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_LUNCH_PUNCH_OUT
+import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_MORNING_PUNCH_IN
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
@@ -155,7 +160,7 @@ class TimeClockAttendanceAdapter(
         private fun updateTimeUI(isPresent: Boolean, lumperId: String) {
             viewAttendanceStatus.setBackgroundResource(if (isPresent) R.drawable.online_dot else R.drawable.offline_dot)
             checkBoxAttendance.isChecked = isPresent
-            checkBoxAttendance.isEnabled = checkIfEditable(isPresent, "isPresent", lumperId)
+            checkBoxAttendance.isEnabled = checkIfEditable(isPresent, ATTENDANCE_IS_PRESENT, lumperId)
             textViewAddTime.visibility = if (isPresent) View.VISIBLE else View.GONE
             linearLayoutLumperTime.visibility = if (isPresent) View.VISIBLE else View.GONE
             textViewNoTimeLoggedIn.visibility = if (isPresent) View.GONE else View.VISIBLE
@@ -400,11 +405,11 @@ class TimeClockAttendanceAdapter(
     fun checkIfEditable(hasValue: Boolean, variableName: String, lumperId: String): Boolean {
         return if (updateData.containsKey(lumperId)) {
             val isChanged = when (variableName) {
-                "isPresent" -> updateData[lumperId]?.isPresentChanged!!
-                "isMorningPunchIn" -> updateData[lumperId]?.isMorningPunchInChanged!!
-                "isEveningPunchOut" -> updateData[lumperId]?.isEveningPunchOutChanged!!
-                "isLunchPunchIn" -> updateData[lumperId]?.isLunchPunchInChanged!!
-                "isLunchPunchOut" -> updateData[lumperId]?.isLunchPunchOutChanged!!
+                ATTENDANCE_IS_PRESENT -> updateData[lumperId]?.isPresentChanged!!
+                ATTENDANCE_MORNING_PUNCH_IN -> updateData[lumperId]?.isMorningPunchInChanged!!
+                ATTENDANCE_EVENING_PUNCH_OUT -> updateData[lumperId]?.isEveningPunchOutChanged!!
+                ATTENDANCE_LUNCH_PUNCH_IN -> updateData[lumperId]?.isLunchPunchInChanged!!
+                ATTENDANCE_LUNCH_PUNCH_OUT -> updateData[lumperId]?.isLunchPunchOutChanged!!
                 else -> false
             }
             if (isChanged) {

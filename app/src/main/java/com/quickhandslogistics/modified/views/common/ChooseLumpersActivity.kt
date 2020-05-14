@@ -16,7 +16,6 @@ import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.modified.presenters.common.ChooseLumpersPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.common.DisplayLumpersListActivity.Companion.ARG_LUMPERS_LIST
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
@@ -57,6 +56,11 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
         chooseLumpersPresenter.fetchLumpersList(currentPageIndex)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        chooseLumpersPresenter.onDestroy()
+    }
+
     private fun initializeUI() {
         recyclerViewLumpers.apply {
             val linearLayoutManager = LinearLayoutManager(activity)
@@ -83,26 +87,32 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
         imageViewCancel.setOnClickListener(this)
     }
 
+    private fun showConfirmationDialog(selectedLumpersList: ArrayList<EmployeeData>) {
+        CustomProgressBar.getInstance().showWarningDialog(
+            getString(R.string.string_ask_to_choose_lumper), activity, object : CustomDialogWarningListener {
+                override fun onConfirmClick() {
+                    val intent = Intent().apply {
+                        putExtras(Bundle().apply {
+                            putParcelableArrayList(ARG_LUMPERS_LIST, selectedLumpersList)
+                        })
+                    }
+                    setResult(RESULT_OK, intent)
+                    onBackPressed()
+                }
+
+                override fun onCancelClick() {
+                }
+            })
+    }
+
+    /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
                 buttonAdd.id -> {
                     val selectedLumpersList = chooseLumpersAdapter.getSelectedLumpersList()
                     if (selectedLumpersList.isNotEmpty()) {
-                        CustomProgressBar.getInstance().showWarningDialog(
-                            getString(R.string.string_ask_to_choose_lumper), activity, object : CustomDialogWarningListener {
-                                override fun onConfirmClick() {
-                                    val intent = Intent()
-                                    val bundle = Bundle()
-                                    bundle.putParcelableArrayList(ARG_LUMPERS_LIST, selectedLumpersList)
-                                    intent.putExtras(bundle)
-                                    setResult(RESULT_OK, intent)
-                                    onBackPressed()
-                                }
-
-                                override fun onCancelClick() {
-                                }
-                            })
+                        showConfirmationDialog(selectedLumpersList)
                     }
                 }
 
@@ -145,19 +155,7 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
         }
     }
 
-    override fun onSelectLumper(totalSelectedCount: Int) {
-        if (totalSelectedCount > 0) {
-            buttonAdd.isEnabled = true
-            buttonAdd.setBackgroundResource(R.drawable.round_button_red)
-        } else {
-            buttonAdd.isEnabled = false
-            buttonAdd.setBackgroundResource(R.drawable.round_button_disabled)
-        }
-    }
-
-    /*
-    * Presenter Listeners
-    */
+    /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }
@@ -174,5 +172,10 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
 
         this.totalPagesCount = totalPagesCount
         this.nextPageIndex = nextPageIndex
+    }
+
+    /** Adapter Listeners */
+    override fun onSelectLumper(totalSelectedCount: Int) {
+        buttonAdd.isEnabled = totalSelectedCount > 0
     }
 }

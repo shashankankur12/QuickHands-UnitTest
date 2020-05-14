@@ -25,26 +25,27 @@ import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Comp
 import com.quickhandslogistics.utils.AppConstant
 import kotlinx.android.synthetic.main.content_work_sheet_item_detail_lumpers.*
 
-class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
-    WorkSheetItemDetailLumpersContract.View.OnAdapterItemClickListener {
+class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener, WorkSheetItemDetailLumpersContract.View.OnAdapterItemClickListener {
+
+    private var onFragmentInteractionListener: WorkSheetItemDetailContract.View.OnFragmentInteractionListener? = null
+
+    private lateinit var workSheetItemDetailLumpersAdapter: WorkSheetItemDetailLumpersAdapter
 
     private var workItemDetail: WorkItemDetail? = null
 
-    private lateinit var workSheetItemDetailLumpersAdapter: WorkSheetItemDetailLumpersAdapter
-    private var onFragmentInteractionListener: WorkSheetItemDetailContract.View.OnFragmentInteractionListener? =
-        null
+    companion object {
+        @JvmStatic
+        fun newInstance() = WorkSheetItemDetailLumpersFragment()
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (activity is WorkSheetItemDetailContract.View.OnFragmentInteractionListener) {
-            onFragmentInteractionListener =
-                activity as WorkSheetItemDetailContract.View.OnFragmentInteractionListener
+            onFragmentInteractionListener = activity as WorkSheetItemDetailContract.View.OnFragmentInteractionListener
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_work_sheet_item_detail_lumpers, container, false)
     }
 
@@ -54,33 +55,33 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         recyclerViewLumpers.apply {
             val linearLayoutManager = LinearLayoutManager(fragmentActivity!!)
             layoutManager = linearLayoutManager
-            val dividerItemDecoration =
-                DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
+            val dividerItemDecoration = DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            workSheetItemDetailLumpersAdapter =
-                WorkSheetItemDetailLumpersAdapter(this@WorkSheetItemDetailLumpersFragment)
+            workSheetItemDetailLumpersAdapter = WorkSheetItemDetailLumpersAdapter(this@WorkSheetItemDetailLumpersFragment)
             adapter = workSheetItemDetailLumpersAdapter
         }
 
-        workSheetItemDetailLumpersAdapter.registerAdapterDataObserver(object :
-            RecyclerView.AdapterDataObserver() {
+        workSheetItemDetailLumpersAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                textViewEmptyData.visibility =
-                    if (workSheetItemDetailLumpersAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                textViewEmptyData.visibility = if (workSheetItemDetailLumpersAdapter.itemCount == 0) View.VISIBLE else View.GONE
             }
         })
 
         buttonAddLumpers.setOnClickListener(this)
     }
 
-    fun showLumpersData(
-        workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?
-    ) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
+            onFragmentInteractionListener?.fetchWorkItemDetail(changeResultCode = true)
+        }
+    }
+
+    fun showLumpersData(workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?) {
         this.workItemDetail = workItemDetail
 
         val timingsData = LinkedHashMap<String, LumpersTimeSchedule>()
-
         workItemDetail.assignedLumpersList?.let { assignedLumpersList ->
             if (!lumpersTimeSchedule.isNullOrEmpty()) {
                 for (lumper in assignedLumpersList) {
@@ -94,9 +95,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
             }
         }
 
-        workSheetItemDetailLumpersAdapter.updateList(
-            workItemDetail.assignedLumpersList, timingsData, workItemDetail.status
-        )
+        workSheetItemDetailLumpersAdapter.updateList(workItemDetail.assignedLumpersList, timingsData, workItemDetail.status)
 
         if (workItemDetail.assignedLumpersList.isNullOrEmpty()) {
             buttonAddLumpers.text = getString(R.string.add_lumpers)
@@ -118,57 +117,36 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         buttonAddLumpers.visibility = View.GONE
     }
 
+    private fun showAddLumpersScreen() {
+        workItemDetail?.let { workItemDetail ->
+            val bundle = Bundle()
+            bundle.putString(ARG_WORK_ITEM_ID, workItemDetail.id)
+            bundle.putString(ARG_WORK_ITEM_TYPE, workItemDetail.workItemType)
+            if (workItemDetail.assignedLumpersList.isNullOrEmpty()) {
+                bundle.putBoolean(AddWorkItemLumpersActivity.ARG_IS_ADD_LUMPER, true)
+            } else {
+                bundle.putBoolean(AddWorkItemLumpersActivity.ARG_IS_ADD_LUMPER, false)
+                bundle.putParcelableArrayList(AddWorkItemLumpersActivity.ARG_ASSIGNED_LUMPERS_LIST, workItemDetail.assignedLumpersList)
+            }
+            startIntent(AddWorkItemLumpersActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
+        }
+    }
+
+    /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
-                buttonAddLumpers.id -> {
-                    workItemDetail?.let { workItemDetail ->
-                        val bundle = Bundle()
-                        bundle.putString(ARG_WORK_ITEM_ID, workItemDetail.id)
-                        bundle.putString(ARG_WORK_ITEM_TYPE, workItemDetail.workItemType)
-                        if (workItemDetail.assignedLumpersList.isNullOrEmpty()) {
-                            bundle.putBoolean(AddWorkItemLumpersActivity.ARG_IS_ADD_LUMPER, true)
-                        } else {
-                            bundle.putBoolean(AddWorkItemLumpersActivity.ARG_IS_ADD_LUMPER, false)
-                            bundle.putParcelableArrayList(
-                                AddWorkItemLumpersActivity.ARG_ASSIGNED_LUMPERS_LIST,
-                                workItemDetail.assignedLumpersList
-                            )
-                        }
-                        startIntent(
-                            AddWorkItemLumpersActivity::class.java, bundle = bundle,
-                            requestCode = AppConstant.REQUEST_CODE_CHANGED
-                        )
-                    }
-                }
-                else -> {
-                }
+                buttonAddLumpers.id -> showAddLumpersScreen()
             }
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
-            onFragmentInteractionListener?.fetchWorkItemDetail(changeResultCode = true)
-        }
-    }
-
-    override fun onAddTimeClick(
-        employeeData: EmployeeData, timingData: LumpersTimeSchedule?
-    ) {
+    /** Adapter Listeners */
+    override fun onAddTimeClick(employeeData: EmployeeData, timingData: LumpersTimeSchedule?) {
         val bundle = Bundle()
         bundle.putString(ARG_WORK_ITEM_ID, workItemDetail?.id)
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_TIMING_DATA, timingData)
-        startIntent(
-            AddLumperTimeWorkSheetItemActivity::class.java,
-            bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED
-        )
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = WorkSheetItemDetailLumpersFragment()
+        startIntent(AddLumperTimeWorkSheetItemActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }
 }

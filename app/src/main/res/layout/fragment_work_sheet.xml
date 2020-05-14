@@ -65,47 +65,20 @@
 
         <com.quickhandslogistics.modified.controls.CustomTextView
             android:id="@+id/textViewDropsCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:background="@drawable/chip_background"
-            android:paddingStart="@dimen/_10ssp"
-            android:paddingTop="@dimen/_5ssp"
-            android:paddingEnd="@dimen/_10ssp"
-            android:paddingBottom="@dimen/_5ssp"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_12ssp"
-            android:textStyle="bold" />
+            style="@style/blueChipTheme"
+            android:layout_marginTop="@dimen/_8sdp" />
 
         <com.quickhandslogistics.modified.controls.CustomTextView
             android:id="@+id/textViewLiveLoadsCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/blueChipTheme"
             android:layout_marginStart="@dimen/_4ssp"
             android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginEnd="@dimen/_4ssp"
-            android:background="@drawable/chip_background"
-            android:paddingStart="@dimen/_10ssp"
-            android:paddingTop="@dimen/_5ssp"
-            android:paddingEnd="@dimen/_10ssp"
-            android:paddingBottom="@dimen/_5ssp"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_12ssp"
-            android:textStyle="bold" />
+            android:layout_marginEnd="@dimen/_4ssp" />
 
         <com.quickhandslogistics.modified.controls.CustomTextView
             android:id="@+id/textViewOutBoundsCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:background="@drawable/chip_background"
-            android:paddingStart="@dimen/_10ssp"
-            android:paddingTop="@dimen/_5ssp"
-            android:paddingEnd="@dimen/_10ssp"
-            android:paddingBottom="@dimen/_5ssp"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_12ssp"
-            android:textStyle="bold" />
+            style="@style/blueChipTheme"
+            android:layout_marginTop="@dimen/_8sdp" />
     </com.google.android.flexbox.FlexboxLayout>
 
     <View
