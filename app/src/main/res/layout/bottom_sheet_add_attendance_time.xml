@@ -28,29 +28,22 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Current Time: "
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_16ssp"
-            android:textStyle="bold" />
+            style="@style/titleBigTextViewTheme"
+            android:text="@string/current_time"
+            android:textColor="@android:color/white" />
 
         <TextClock
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_14ssp" />
+            style="@style/titleTextViewTheme"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/textViewShiftTime"
+        style="@style/titleBigTextViewTheme"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:padding="@dimen/_10ssp"
         android:text="@string/shift_time"
         android:textColor="@color/textBlack"
-        android:textSize="@dimen/_16ssp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layoutCurrentTime" />
@@ -97,14 +90,12 @@
 
     <TextView
         android:id="@+id/textViewLunchTime"
+        style="@style/titleBigTextViewTheme"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
         android:padding="@dimen/_10ssp"
         android:text="@string/lunch_time"
         android:textColor="@color/textBlack"
-        android:textSize="@dimen/_16ssp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutShiftTime" />

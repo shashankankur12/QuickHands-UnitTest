@@ -101,4 +101,99 @@
         <item name="android:textSize">@dimen/_12ssp</item>
         <item name="android:textColor">@color/textBlack</item>
     </style>
+
+    <style name="searchEditTextTheme" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/edit_search_bg</item>
+        <item name="android:drawableStart">@drawable/ic_search</item>
+        <item name="android:drawablePadding">@dimen/_4sdp</item>
+        <item name="android:hint">@string/search_by_name</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:inputType">textPersonName</item>
+        <item name="android:paddingTop">@dimen/_8sdp</item>
+        <item name="android:paddingBottom">@dimen/_8sdp</item>
+        <item name="android:paddingEnd">@dimen/_30sdp</item>
+        <item name="android:paddingStart">@dimen/_5sdp</item>
+        <item name="android:textColor">@color/textBlack</item>
+        <item name="android:textSize">@dimen/_14ssp</item>
+    </style>
+
+    <style name="valueEditTextTheme" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/_2sdp</item>
+        <item name="android:backgroundTint">@color/buildingTitle</item>
+        <item name="android:inputType">textPersonName|textCapWords</item>
+        <item name="android:textColor">@color/scheduleDetail</item>
+        <item name="android:textSize">@dimen/_12ssp</item>
+        <item name="android:textCursorDrawable">@drawable/color_cursor</item>
+    </style>
+    <!---->
+
+    <!--TextView Styles-->
+    <style name="titleTextViewTheme" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/buildingTitle</item>
+        <item name="android:textSize">@dimen/_14ssp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="titleBigTextViewTheme" parent="titleTextViewTheme">
+        <item name="android:textSize">@dimen/_16ssp</item>
+    </style>
+
+    <style name="titleSmallTextViewTheme" parent="titleTextViewTheme">
+        <item name="android:textSize">@dimen/_12ssp</item>
+    </style>
+
+    <style name="titleVerySmallTextViewTheme" parent="titleTextViewTheme">
+        <item name="android:textSize">@dimen/_10ssp</item>
+    </style>
+
+    <style name="valuesTextViewTheme" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/scheduleDetail</item>
+        <item name="android:textSize">@dimen/_12ssp</item>
+    </style>
+
+    <style name="valuesSmallTextViewTheme" parent="valuesTextViewTheme">
+        <item name="android:textSize">@dimen/_10ssp</item>
+    </style>
+
+    <style name="valuesBigTextViewTheme" parent="valuesTextViewTheme">
+        <item name="android:textSize">@dimen/_14ssp</item>
+    </style>
+
+    <style name="noRecordTextViewTheme" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/textBlack</item>
+        <item name="android:textSize">@dimen/_12ssp</item>
+        <item name="android:text">@string/string_no_record_found</item>
+    </style>
+
+    <style name="addTextViewTheme" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:drawableStart">@drawable/ic_add_time_plus</item>
+        <item name="android:drawablePadding">@dimen/_5sdp</item>
+        <item name="android:padding">@dimen/_5sdp</item>
+        <item name="android:textColor">@color/buttonRed</item>
+        <item name="android:textSize">@dimen/_12ssp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <!---->
+
+    <!--ImageView Styles-->
+    <style name="circularImageViewTheme">
+        <item name="android:layout_width">@dimen/_35sdp</item>
+        <item name="android:layout_height">@dimen/_35sdp</item>
+        <item name="android:src">@drawable/dummy</item>
+        <item name="civ_border_color">@color/imageBorder</item>
+        <item name="civ_border_width">1dp</item>
+    </style>
 </resources>

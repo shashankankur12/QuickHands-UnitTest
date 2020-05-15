@@ -25,24 +25,14 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/notes_for_qhl_and_customer"
-                android:textColor="@color/buildingTitle"
-                android:textSize="@dimen/_14ssp"
-                android:textStyle="bold" />
+                style="@style/titleTextViewTheme"
+                android:text="@string/notes_for_qhl_and_customer" />
 
             <EditText
                 android:id="@+id/editTextQHLCustomerNotes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:backgroundTint="@color/buildingTitle"
+                style="@style/valueEditTextTheme"
                 android:inputType="textMultiLine|textCapWords"
-                android:maxLines="3"
-                android:textColor="@color/scheduleDetail"
-                android:textCursorDrawable="@drawable/color_cursor"
-                android:textSize="@dimen/_12ssp" />
+                android:maxLines="3" />
         </LinearLayout>
 
         <LinearLayout
@@ -58,24 +48,14 @@
             app:layout_constraintTop_toBottomOf="@id/layoutCustomerNotes">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/notes_for_qhl"
-                android:textColor="@color/buildingTitle"
-                android:textSize="@dimen/_14ssp"
-                android:textStyle="bold" />
+                style="@style/titleTextViewTheme"
+                android:text="@string/notes_for_qhl" />
 
             <EditText
                 android:id="@+id/editTextQHLNotes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:backgroundTint="@color/buildingTitle"
+                style="@style/valueEditTextTheme"
                 android:inputType="textMultiLine|textCapWords"
-                android:maxLines="3"
-                android:textColor="@color/scheduleDetail"
-                android:textCursorDrawable="@drawable/color_cursor"
-                android:textSize="@dimen/_12ssp" />
+                android:maxLines="3" />
         </LinearLayout>
 
         <Button

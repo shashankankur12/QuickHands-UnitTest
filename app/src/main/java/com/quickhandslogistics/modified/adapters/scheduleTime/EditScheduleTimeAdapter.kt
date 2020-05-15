@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.scheduleTime.EditScheduleTimeContract
+import com.quickhandslogistics.modified.controls.CustomTextView
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.utils.DateUtils
@@ -58,7 +59,7 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
     inner class ViewHolder(view: View, private val context: Context) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
         private val textViewLumperName: TextView = view.textViewLumperName
-        private val textViewEmployeeId: TextView = view.textViewEmployeeId
+        private val textViewEmployeeId: CustomTextView = view.textViewEmployeeId
         private val textViewScheduleTime: TextView = view.textViewScheduleTime
         private val textViewAddStartTime: TextView = view.textViewAddStartTime
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile

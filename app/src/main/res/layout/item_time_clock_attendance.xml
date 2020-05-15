@@ -28,12 +28,9 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circleImageViewProfile"
+                style="@style/circularImageViewTheme"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/nav_header_desc"
-                android:src="@drawable/dummy"
-                app:civ_border_color="@color/imageBorder"
-                app:civ_border_width="1dp" />
+                android:layout_height="match_parent" />
 
             <RelativeLayout
                 android:id="@+id/relativeLayoutSelected"
@@ -46,7 +43,7 @@
                     android:src="@drawable/background_selected_image" />
 
                 <ImageView
-                    android:layout_width="25dp"
+                    android:layout_width="@dimen/_22sdp"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:src="@drawable/ic_done"
@@ -65,28 +62,25 @@
 
         <TextView
             android:id="@+id/textViewLumperName"
+            style="@style/titleTextViewTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:text="John Snow"
             android:textColor="@color/textBlack"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/checkBoxAttendance"
             app:layout_constraintStart_toEndOf="@+id/relativeLayoutImage"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.quickhandslogistics.modified.controls.CustomTextView
             android:id="@+id/textViewEmployeeId"
+            style="@style/valuesSmallTextViewTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:text="(Emp ID: 1001)"
             android:textColor="@color/textBlack"
-            android:textSize="@dimen/_10ssp"
             app:emptyDataVisibility="empty_gone"
             app:layout_constraintEnd_toStartOf="@id/checkBoxAttendance"
             app:layout_constraintStart_toEndOf="@+id/relativeLayoutImage"
@@ -113,15 +107,14 @@
 
         <TextView
             android:id="@+id/textViewNoTimeLoggedIn"
+            style="@style/valuesSmallTextViewTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10ssp"
             android:text="No time logged in yet"
             android:textColor="@color/detailHeader"
-            android:textSize="@dimen/_10ssp"
             android:textStyle="italic"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/editTextNotes"
@@ -142,19 +135,17 @@
             app:layout_constraintTop_toBottomOf="@id/textViewEmployeeId">
 
             <TextView
+                style="@style/valuesSmallTextViewTheme"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_4sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:text="@string/shift_time"
-                android:textColor="@color/detailHeader"
-                android:textSize="@dimen/_10ssp" />
+                android:textColor="@color/detailHeader" />
 
             <TextView
                 android:id="@+id/textViewShiftTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/titleVerySmallTextViewTheme"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
@@ -162,11 +153,10 @@
                 android:drawablePadding="@dimen/_5sdp"
                 android:gravity="center_vertical"
                 android:text="10:00 pm - 00:00 am"
-                android:textColor="@color/textBlack"
-                android:textSize="@dimen/_10ssp"
-                android:textStyle="bold" />
+                android:textColor="@color/textBlack" />
 
             <TextView
+                style="@style/valuesSmallTextViewTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
@@ -178,8 +168,7 @@
 
             <TextView
                 android:id="@+id/textViewLunchTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/titleVerySmallTextViewTheme"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
@@ -187,24 +176,14 @@
                 android:drawablePadding="@dimen/_5sdp"
                 android:gravity="center_vertical"
                 android:text="10:00 pm - 00:00 am"
-                android:textColor="@color/textBlack"
-                android:textSize="@dimen/_10ssp"
-                android:textStyle="bold" />
+                android:textColor="@color/textBlack" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/textViewAddTime"
+            style="@style/addTextViewTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:drawableStart="@drawable/ic_add_time_plus"
-            android:drawablePadding="@dimen/_5sdp"
-            android:padding="@dimen/_5sdp"
             android:text="@string/add_time"
-            android:textColor="@color/buttonRed"
-            android:textSize="@dimen/_12ssp"
-            android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/editTextNotes"
             app:layout_constraintEnd_toEndOf="parent" />

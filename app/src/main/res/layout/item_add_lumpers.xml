@@ -11,39 +11,31 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circleImageViewProfile"
-        android:layout_width="@dimen/_35sdp"
-        android:layout_height="@dimen/_35sdp"
-        android:contentDescription="@string/nav_header_desc"
-        android:src="@drawable/dummy"
-        app:civ_border_color="@color/imageBorder"
-        app:civ_border_width="1dp"
+        style="@style/circularImageViewTheme"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewLumperName"
+        style="@style/titleTextViewTheme"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:text="John Snow"
         android:textColor="@color/textBlack"
-        android:textSize="@dimen/_14ssp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/imageViewAdd"
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewEmployeeId"
+        style="@style/valuesSmallTextViewTheme"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_2sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:text="(Emp ID: 1001)"
         android:textColor="@color/textBlack"
-        android:textSize="@dimen/_10ssp"
         app:emptyDataVisibility="empty_gone"
         app:layout_constraintEnd_toStartOf="@id/imageViewAdd"
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
@@ -51,14 +43,13 @@
 
     <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewShiftHours"
+        style="@style/valuesSmallTextViewTheme"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_2sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:text="Shift Hours: 9:00am to 6:00pm"
         android:textColor="@color/detailHeader"
-        android:textSize="@dimen/_10ssp"
         app:emptyDataVisibility="empty_gone"
         app:layout_constraintEnd_toStartOf="@id/imageViewAdd"
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"

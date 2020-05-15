@@ -10,110 +10,31 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circleImageViewProfile"
-        android:layout_width="@dimen/_35sdp"
-        android:layout_height="@dimen/_35sdp"
-        android:contentDescription="@string/nav_header_desc"
-        android:src="@drawable/dummy"
-        app:civ_border_color="@color/imageBorder"
-        app:civ_border_width="1dp"
+        style="@style/circularImageViewTheme"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:id="@+id/viewAttendanceStatus"
-        android:layout_width="@dimen/_8sdp"
-        android:layout_height="@dimen/_8sdp"
-        android:background="@drawable/offline_dot"
-        android:translationX="-2dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/circleImageViewProfile"
-        app:layout_constraintEnd_toEndOf="@+id/circleImageViewProfile" />
-
     <TextView
         android:id="@+id/textViewLumperName"
+        style="@style/titleTextViewTheme"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_5sdp"
         android:text="John Snow"
         android:textColor="@color/textBlack"
-        android:textSize="@dimen/_14ssp"
-        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewEmployeeId"
+        style="@style/valuesSmallTextViewTheme"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_2sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:text="(Emp ID: 1001)"
         android:textColor="@color/textBlack"
-        android:textSize="@dimen/_10ssp"
         app:emptyDataVisibility="empty_gone"
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
-
-    <LinearLayout
-        android:id="@+id/linearLayoutLumperTime"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@+id/textViewAddTime"
-        app:layout_constraintStart_toEndOf="@id/circleImageViewProfile"
-        app:layout_constraintTop_toBottomOf="@id/textViewEmployeeId">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:text="Shift Time"
-            android:textColor="@color/detailHeader"
-            android:textSize="@dimen/_10ssp" />
-
-        <TextView
-            android:id="@+id/textViewShiftTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:drawableStart="@drawable/ic_lumper_list_clock"
-            android:drawablePadding="@dimen/_5sdp"
-            android:gravity="center_vertical"
-            android:text="10:00 pm - 00:00 am"
-            android:textColor="@color/textBlack"
-            android:textSize="@dimen/_10ssp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:text="Lunch Time"
-            android:textColor="@color/detailHeader"
-            android:textSize="@dimen/_10ssp" />
-
-        <TextView
-            android:id="@+id/textViewLunchTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:drawableStart="@drawable/ic_lumper_list_clock"
-            android:drawablePadding="@dimen/_5sdp"
-            android:gravity="center_vertical"
-            android:text="10:00 pm - 00:00 am"
-            android:textColor="@color/textBlack"
-            android:textSize="@dimen/_10ssp"
-            android:textStyle="bold" />
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,43 +20,34 @@
 
     <TextView
         android:id="@+id/textViewStartTime"
+        style="@style/titleBigTextViewTheme"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginTop="@dimen/_5ssp"
         android:layout_marginEnd="@dimen/_10ssp"
-        android:textColor="@color/scheduleDetail"
-        android:textSize="@dimen/_16ssp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/textViewStatus"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewWorkItemType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/valuesTextViewTheme"
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginEnd="@dimen/_10ssp"
         android:drawableStart="@drawable/ic_schedule_type"
         android:drawablePadding="@dimen/_5sdp"
-        android:textColor="@color/scheduleDetail"
-        android:textSize="@dimen/_12ssp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
 
     <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewDropItems"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/valuesTextViewTheme"
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginEnd="@dimen/_10ssp"
         android:drawableStart="@drawable/ic_schedule_work_items"
         android:drawablePadding="@dimen/_5sdp"
-        android:textColor="@color/scheduleDetail"
-        android:textSize="@dimen/_12ssp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemType" />
 
