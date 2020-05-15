@@ -14,10 +14,7 @@ class MyApplication : Application() {
         application = this
         mApp = this
 
-        val supportedLocales = listOf(
-            Locale(getString(R.string.english)),
-            Locale(getString(R.string.spanish))
-        )
+        val supportedLocales = listOf(Locale(getString(R.string.english)), Locale(getString(R.string.spanish)))
         LocaleChanger.initialize(applicationContext, supportedLocales);
     }
 

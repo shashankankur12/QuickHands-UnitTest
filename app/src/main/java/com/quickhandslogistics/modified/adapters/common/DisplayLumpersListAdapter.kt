@@ -7,32 +7,28 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.lumpers.LumpersContract
+import com.quickhandslogistics.modified.controls.CustomTextView
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
-import com.quickhandslogistics.utils.StringUtils
-import com.quickhandslogistics.utils.ValueUtils
+import com.quickhandslogistics.utils.UIUtils
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_lumper_layout.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 class DisplayLumpersListAdapter(
-    private val lumpersList: ArrayList<EmployeeData>,
-    var adapterItemClickListener: LumpersContract.View.OnAdapterItemClickListener
-) :
-    RecyclerView.Adapter<DisplayLumpersListAdapter.WorkItemHolder>() {
+    private val lumpersList: ArrayList<EmployeeData>, var adapterItemClickListener: LumpersContract.View.OnAdapterItemClickListener
+) : RecyclerView.Adapter<DisplayLumpersListAdapter.ViewHolder>() {
+
+    private var searchTerm = ""
+    private var searchEnabled = false
 
     private val filteredLumpersList: ArrayList<EmployeeData> = ArrayList()
 
-    private var searchEnabled = false
-    private var searchTerm = ""
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemHolder {
-        val view: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_lumper_layout, parent, false)
-        return WorkItemHolder(view, parent.context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_lumper_layout, parent, false)
+        return ViewHolder(view, parent.context)
     }
 
     override fun getItemCount(): Int {
@@ -43,48 +39,23 @@ class DisplayLumpersListAdapter(
         return if (searchEnabled) filteredLumpersList[position] else lumpersList[position]
     }
 
-    override fun onBindViewHolder(holder: WorkItemHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    inner class WorkItemHolder(view: View, private val context: Context) :
-        RecyclerView.ViewHolder(view), View.OnClickListener {
+    inner class ViewHolder(view: View, private val context: Context) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
         private val textViewLumperName: TextView = view.textViewLumperName
-        private val textViewEmployeeId: TextView = view.textViewEmployeeId
+        private val textViewEmployeeId: CustomTextView = view.textViewEmployeeId
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
-        private val textViewShiftHours: TextView = view.textViewShiftHours
+        private val textViewShiftHours: CustomTextView = view.textViewShiftHours
         private val imageViewCall: ImageView = view.imageViewCall
 
         fun bind(employeeData: EmployeeData) {
-            if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl)) {
-                Glide.with(context).load(employeeData.profileImageUrl)
-                    .placeholder(R.drawable.dummy).error(R.drawable.dummy)
-                    .into(circleImageViewProfile)
-            } else {
-                Glide.with(context).clear(circleImageViewProfile);
-            }
-
-            textViewLumperName.text = String.format(
-                "%s %s",
-                ValueUtils.getDefaultOrValue(employeeData.firstName).capitalize(),
-                ValueUtils.getDefaultOrValue(employeeData.lastName).capitalize()
-            )
-
-            if (StringUtils.isNullOrEmpty(employeeData.employeeId)) {
-                textViewEmployeeId.visibility = View.GONE
-            } else {
-                textViewEmployeeId.visibility = View.VISIBLE
-                textViewEmployeeId.text = String.format("(Emp ID: %s)", employeeData.employeeId)
-            }
-
-            if (StringUtils.isNullOrEmpty(employeeData.shiftHours)) {
-                textViewShiftHours.visibility = View.GONE
-            } else {
-                textViewShiftHours.visibility = View.VISIBLE
-                textViewShiftHours.text =
-                    String.format("(Shift Hours: %s)", employeeData.shiftHours)
-            }
+            UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
+            textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
+            textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
+            textViewShiftHours.text = UIUtils.getDisplayShiftHours(employeeData)
 
             imageViewCall.setOnClickListener(this)
             itemView.setOnClickListener(this)
@@ -99,11 +70,8 @@ class DisplayLumpersListAdapter(
                     }
                     imageViewCall.id -> {
                         val lumperData = getItem(adapterPosition)
-                        lumperData.phone?.let { it1 ->
-                            adapterItemClickListener.onPhoneViewClick(
-                                textViewLumperName.text.toString(),
-                                it1
-                            )
+                        lumperData.phone?.let { phone ->
+                            adapterItemClickListener.onPhoneViewClick(textViewLumperName.text.toString(), phone)
                         }
                     }
                     else -> {

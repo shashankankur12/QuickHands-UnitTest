@@ -5,16 +5,13 @@ import android.util.AttributeSet
 import androidx.core.widget.NestedScrollView
 import com.quickhandslogistics.R
 
-class MaxHeightNestedScrollView(context: Context, attrs: AttributeSet) :
-    NestedScrollView(context, attrs) {
+class MaxHeightNestedScrollView(context: Context, attrs: AttributeSet) : NestedScrollView(context, attrs) {
 
     private var maxHeight: Float
 
     init {
-        val attributes =
-            context.obtainStyledAttributes(attrs, R.styleable.MaxHeightNestedScrollView)
-        maxHeight =
-            attributes.getDimension(R.styleable.MaxHeightNestedScrollView_maxHeight, 0F)
+        val attributes = context.obtainStyledAttributes(attrs, R.styleable.MaxHeightNestedScrollView)
+        maxHeight = attributes.getDimension(R.styleable.MaxHeightNestedScrollView_maxHeight, 0F)
         attributes.recycle()
     }
 

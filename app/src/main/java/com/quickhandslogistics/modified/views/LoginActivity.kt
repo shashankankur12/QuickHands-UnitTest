@@ -8,7 +8,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.LoginContract
 import com.quickhandslogistics.modified.presenters.LoginPresenter
 import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.utils.Utils
+import com.quickhandslogistics.utils.AppUtils
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
@@ -40,7 +40,7 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
                     startIntent(ForgotPasswordActivity::class.java, isFinish = false)
                 }
                 buttonLogin.id -> {
-                    Utils.hideSoftKeyboard(activity)
+                    AppUtils.hideSoftKeyboard(activity)
 
                     val employeeLoginId = editTextEmployeeId.text.toString().trim()
                     val password = editTextPassword.text.toString().trim()

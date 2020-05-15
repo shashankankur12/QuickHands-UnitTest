@@ -194,7 +194,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
                 buttonSubmit.id -> saveLumperScheduleTimings()
                 imageViewCancel.id -> {
                     editTextSearch.setText("")
-                    Utils.hideSoftKeyboard(activity)
+                    AppUtils.hideSoftKeyboard(activity)
                 }
             }
         }

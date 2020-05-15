@@ -22,35 +22,39 @@ object UIUtils {
     }
 
     fun getDisplayEmployeeID(employeeData: EmployeeData?): String {
-        var dsisplayEmployeeId = ""
+        var displayEmployeeId = ""
         employeeData?.let {
-            if (!StringUtils.isNullOrEmpty(employeeData.employeeId)) {
-                dsisplayEmployeeId = String.format("(Emp ID: %s)", employeeData.employeeId)
-            }
+            displayEmployeeId = getDisplayEmployeeID(employeeData.employeeId)
         }
-        return dsisplayEmployeeId
+        return displayEmployeeId
     }
 
     fun getDisplayEmployeeID(employeeId: String?): String {
-        var dsisplayEmployeeId = ""
-        if (!StringUtils.isNullOrEmpty(employeeId)) {
-            dsisplayEmployeeId = String.format("(Emp ID: %s)", employeeId)
+        var displayEmployeeId = ""
+        if (!employeeId.isNullOrEmpty()) {
+            displayEmployeeId = String.format("(Emp ID: %s)", employeeId)
         }
-        return dsisplayEmployeeId
+        return displayEmployeeId
+    }
+
+    fun getDisplayShiftHours(employeeData: EmployeeData?): String {
+        var displayShiftHours = ""
+        employeeData?.let {
+            if (!employeeData.shiftHours.isNullOrEmpty()) {
+                displayShiftHours = String.format("(Shift Hours: %s)", employeeData.shiftHours)
+            }
+        }
+        return displayShiftHours
     }
 
     fun showEmployeeProfileImage(context: Context, employeeData: EmployeeData?, imageView: CircleImageView) {
         employeeData?.let {
-            if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl)) {
-                Glide.with(context).load(employeeData.profileImageUrl).placeholder(R.drawable.dummy).error(R.drawable.dummy).into(imageView)
-            } else {
-                Glide.with(context).clear(imageView)
-            }
+            showEmployeeProfileImage(context, employeeData.profileImageUrl, imageView)
         }
     }
 
     fun showEmployeeProfileImage(context: Context, profileImageUrl: String?, imageView: CircleImageView) {
-        if (!StringUtils.isNullOrEmpty(profileImageUrl)) {
+        if (!profileImageUrl.isNullOrEmpty()) {
             Glide.with(context).load(profileImageUrl).placeholder(R.drawable.dummy).error(R.drawable.dummy).into(imageView)
         } else {
             Glide.with(context).clear(imageView)

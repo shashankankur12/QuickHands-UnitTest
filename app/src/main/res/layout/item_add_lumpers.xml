@@ -34,7 +34,7 @@
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewEmployeeId"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -44,11 +44,12 @@
         android:text="(Emp ID: 1001)"
         android:textColor="@color/textBlack"
         android:textSize="@dimen/_10ssp"
+        app:emptyDataVisibility="empty_gone"
         app:layout_constraintEnd_toStartOf="@id/imageViewAdd"
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
 
-    <TextView
+    <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewShiftHours"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -58,6 +59,7 @@
         android:text="Shift Hours: 9:00am to 6:00pm"
         android:textColor="@color/detailHeader"
         android:textSize="@dimen/_10ssp"
+        app:emptyDataVisibility="empty_gone"
         app:layout_constraintEnd_toStartOf="@id/imageViewAdd"
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toBottomOf="@+id/textViewEmployeeId" />

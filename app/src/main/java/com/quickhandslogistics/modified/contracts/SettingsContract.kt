@@ -1,8 +1,6 @@
-package com.quickhandslogistics.modified.contracts.setting
+package com.quickhandslogistics.modified.contracts
 
-import com.quickhandslogistics.modified.contracts.BaseContract
-
-class SettingContract {
+class SettingsContract {
     interface Model {
         fun checkSelectedSettings(listener: OnFinishedListener)
         fun saveSelectedLanguage(selectedLanguage: String, listener: OnFinishedListener)

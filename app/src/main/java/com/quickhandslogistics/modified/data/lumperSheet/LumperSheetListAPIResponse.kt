@@ -3,7 +3,6 @@ package com.quickhandslogistics.modified.data.lumperSheet
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.quickhandslogistics.modified.data.BaseResponse
-import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.ValueUtils
 
 class LumperSheetListAPIResponse : BaseResponse() {
@@ -17,7 +16,7 @@ class LumperSheetListAPIResponse : BaseResponse() {
         val lumpersInfo: ArrayList<LumpersInfo>? = null
             get() = if (!field.isNullOrEmpty()) {
                 field.sortWith(Comparator { lumper1, lumper2 ->
-                    if (!StringUtils.isNullOrEmpty(lumper1.lumperName)) {
+                    if (!lumper1.lumperName.isNullOrEmpty() && !lumper2.lumperName.isNullOrEmpty()) {
                         lumper1.lumperName?.toLowerCase()!!.compareTo(lumper2.lumperName?.toLowerCase()!!)
                     } else {
                         0

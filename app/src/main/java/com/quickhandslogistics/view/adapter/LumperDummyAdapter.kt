@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
-import com.quickhandslogistics.utils.Utils
 import com.quickhandslogistics.modified.data.lumperSheet.LumperModel
 import de.hdodenhof.circleimageview.CircleImageView
 import io.bloco.faker.Faker
@@ -42,7 +41,7 @@ class LumperDummyAdapter(
         holder.lumperBuilding?.text = "Lumper"
 
         holder.constraintRoot.setOnClickListener {
-            Utils.finishActivity(context)
+
 
         }
         holder.imagePhone.visibility = View.GONE

@@ -9,7 +9,6 @@ class WorkSheetItemDetailContract {
     interface Model {
         fun fetchWorkItemDetail(workItemId: String, onFinishedListener: OnFinishedListener)
         fun changeWorkItemStatus(workItemId: String, status: String, onFinishedListener: OnFinishedListener)
-
         fun updateWorkItemNotes(workItemId: String, notesQHLCustomer: String, notesQHL: String, onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {

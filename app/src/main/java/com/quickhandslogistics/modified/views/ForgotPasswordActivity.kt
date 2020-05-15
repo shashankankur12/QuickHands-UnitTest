@@ -8,7 +8,7 @@ import com.quickhandslogistics.modified.presenters.ForgotPasswordPresenter
 import com.quickhandslogistics.utils.CustomDialogListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.utils.Utils
+import com.quickhandslogistics.utils.AppUtils
 import kotlinx.android.synthetic.main.activity_forgot_password.*
 
 class ForgotPasswordActivity : BaseActivity(), ForgotPasswordContract.View, View.OnClickListener {
@@ -35,7 +35,7 @@ class ForgotPasswordActivity : BaseActivity(), ForgotPasswordContract.View, View
         view?.let {
             when (view.id) {
                 buttonPasswordReset.id -> {
-                    Utils.hideSoftKeyboard(activity)
+                    AppUtils.hideSoftKeyboard(activity)
 
                     val employeePasswordResetId = editTextEmpId.text.toString().trim()
                     forgotPasswordPresenter.validatePasswordResetDetails(employeePasswordResetId)

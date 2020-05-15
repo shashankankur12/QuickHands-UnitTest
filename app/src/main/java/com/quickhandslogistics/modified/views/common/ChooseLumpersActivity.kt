@@ -20,7 +20,7 @@ import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Comp
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.utils.Utils
+import com.quickhandslogistics.utils.AppUtils
 import kotlinx.android.synthetic.main.content_choose_lumper.*
 
 class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
@@ -118,7 +118,7 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
 
                 imageViewCancel.id -> {
                     editTextSearch.setText("")
-                    Utils.hideSoftKeyboard(activity)
+                    AppUtils.hideSoftKeyboard(activity)
                 }
             }
         }

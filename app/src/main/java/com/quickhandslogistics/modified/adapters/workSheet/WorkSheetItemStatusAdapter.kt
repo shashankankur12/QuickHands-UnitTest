@@ -16,18 +16,15 @@ import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemDetailC
 import com.quickhandslogistics.utils.AppConstant
 import kotlinx.android.synthetic.main.item_select_status.view.*
 
-class WorkSheetItemStatusAdapter(
-    private val resources: Resources,
-    private val onAdapterClick: WorkSheetItemDetailContract.View.OnAdapterItemClickListener
-) : Adapter<WorkSheetItemStatusAdapter.ViewHolder>() {
+class WorkSheetItemStatusAdapter(private val resources: Resources, private val onAdapterClick: WorkSheetItemDetailContract.View.OnAdapterItemClickListener) :
+    Adapter<WorkSheetItemStatusAdapter.ViewHolder>() {
 
     private var statusList: LinkedHashMap<String, String> = LinkedHashMap()
     private var initialDisplayStatus: String = ""
     private var selectedDisplayStatus: String = ""
 
     init {
-        statusList[resources.getString(R.string.in_progress)] =
-            AppConstant.WORK_ITEM_STATUS_IN_PROGRESS
+        statusList[resources.getString(R.string.in_progress)] = AppConstant.WORK_ITEM_STATUS_IN_PROGRESS
         statusList[resources.getString(R.string.on_hold)] = AppConstant.WORK_ITEM_STATUS_ON_HOLD
         statusList[resources.getString(R.string.scheduled)] = AppConstant.WORK_ITEM_STATUS_SCHEDULED
         statusList[resources.getString(R.string.cancelled)] = AppConstant.WORK_ITEM_STATUS_CANCELLED
@@ -35,8 +32,7 @@ class WorkSheetItemStatusAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_select_status, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_select_status, parent, false)
         return ViewHolder(view, parent.context)
     }
 
@@ -54,20 +50,7 @@ class WorkSheetItemStatusAdapter(
         holder.bind(getItem(position))
     }
 
-    fun updateInitialStatus(initialStatus: String) {
-        this.initialDisplayStatus = initialStatus
-        selectedDisplayStatus = initialStatus
-        notifyDataSetChanged()
-    }
-
-    fun updateStatusList(statusList: LinkedHashMap<String, String>) {
-        this.statusList.clear()
-        this.statusList.putAll(statusList)
-        notifyDataSetChanged()
-    }
-
-    inner class ViewHolder(view: View, private val context: Context) :
-        RecyclerView.ViewHolder(view), View.OnClickListener {
+    inner class ViewHolder(view: View, private val context: Context) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
         private val textViewStatus: TextView = view.textViewStatus
         private val imageViewAdd: ImageView = view.imageViewAdd
@@ -76,21 +59,11 @@ class WorkSheetItemStatusAdapter(
             textViewStatus.text = pair.first
 
             when (pair.first) {
-                resources.getString(R.string.in_progress) -> textViewStatus.setTextColor(
-                    ContextCompat.getColor(context, android.R.color.holo_green_light)
-                )
-                resources.getString(R.string.on_hold) -> textViewStatus.setTextColor(
-                    ContextCompat.getColor(context, android.R.color.holo_orange_dark)
-                )
-                resources.getString(R.string.scheduled) -> textViewStatus.setTextColor(
-                    ContextCompat.getColor(context, android.R.color.holo_blue_light)
-                )
-                resources.getString(R.string.cancelled) -> textViewStatus.setTextColor(
-                    ContextCompat.getColor(context, android.R.color.holo_red_dark)
-                )
-                resources.getString(R.string.completed) -> textViewStatus.setTextColor(
-                    ContextCompat.getColor(context, android.R.color.darker_gray)
-                )
+                resources.getString(R.string.in_progress) -> textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_green_light))
+                resources.getString(R.string.on_hold) -> textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_orange_dark))
+                resources.getString(R.string.scheduled) -> textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_blue_light))
+                resources.getString(R.string.cancelled) -> textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_dark))
+                resources.getString(R.string.completed) -> textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.darker_gray))
             }
 
             if (selectedDisplayStatus == pair.first) {
@@ -120,4 +93,15 @@ class WorkSheetItemStatusAdapter(
         }
     }
 
+    fun updateInitialStatus(initialStatus: String) {
+        this.initialDisplayStatus = initialStatus
+        selectedDisplayStatus = initialStatus
+        notifyDataSetChanged()
+    }
+
+    fun updateStatusList(statusList: LinkedHashMap<String, String>) {
+        this.statusList.clear()
+        this.statusList.putAll(statusList)
+        notifyDataSetChanged()
+    }
 }

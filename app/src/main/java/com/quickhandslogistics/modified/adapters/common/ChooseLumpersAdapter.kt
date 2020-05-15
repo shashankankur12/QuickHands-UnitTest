@@ -8,13 +8,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
-import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.common.ChooseLumpersContract
+import com.quickhandslogistics.modified.controls.CustomTextView
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeDetail
-import com.quickhandslogistics.utils.StringUtils
-import com.quickhandslogistics.utils.ValueUtils
+import com.quickhandslogistics.utils.UIUtils
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_add_lumpers.view.*
 import java.util.*
@@ -60,73 +59,20 @@ class ChooseLumpersAdapter(
         holder.bind(getItem(position))
     }
 
-    fun getSelectedLumpersList(): ArrayList<EmployeeData> {
-        return selectedLumpersMap.values.distinct() as ArrayList<EmployeeData>
-    }
-
-    fun updateLumpersData(employeeDataList: ArrayList<EmployeeData>, currentPageIndex: Int) {
-        setSearchEnabled(false)
-        if (currentPageIndex == 1) {
-            this.employeeDataList.clear()
-        }
-        this.employeeDataList.addAll(employeeDataList)
-
-        val extraEmployeesList = ArrayList<EmployeeData>()
-        for (assignedLumper in assignedLumpersList) {
-            var isAddedInSelectedIdsList = false
-            for (employee in employeeDataList) {
-                if (assignedLumper.id == employee.id && !selectedLumperIdsList.contains(employee.id)) {
-                    selectedLumperIdsList.add(employee.id!!)
-                    selectedLumpersMap[employee.id!!] = employee
-                    isAddedInSelectedIdsList = true
-                    break
-                }
-            }
-            if (!isAddedInSelectedIdsList && !selectedLumperIdsList.contains(assignedLumper.id)) {
-                selectedLumperIdsList.add(assignedLumper.id!!)
-                selectedLumpersMap[assignedLumper.id!!] = assignedLumper
-                extraEmployeesList.add(assignedLumper)
-            }
-        }
-        this.employeeDataList.addAll(extraEmployeesList)
-        notifyDataSetChanged()
-    }
-
     inner class WorkItemHolder(view: View, private val context: Context) :
         RecyclerView.ViewHolder(view), View.OnClickListener {
 
         private val textViewLumperName: TextView = view.textViewLumperName
-        private val textViewEmployeeId: TextView = view.textViewEmployeeId
+        private val textViewEmployeeId: CustomTextView = view.textViewEmployeeId
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
-        private val textViewShiftHours: TextView = view.textViewShiftHours
+        private val textViewShiftHours: CustomTextView = view.textViewShiftHours
         private val imageViewAdd: ImageView = view.imageViewAdd
 
         fun bind(employeeData: EmployeeData) {
-            if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl)) {
-                Glide.with(context).load(employeeData.profileImageUrl).placeholder(R.drawable.dummy).error(R.drawable.dummy).into(circleImageViewProfile)
-            } else {
-                Glide.with(context).clear(circleImageViewProfile);
-            }
-
-            textViewLumperName.text = String.format(
-                "%s %s",
-                ValueUtils.getDefaultOrValue(employeeData.firstName).capitalize(),
-                ValueUtils.getDefaultOrValue(employeeData.lastName).capitalize()
-            )
-
-            if (StringUtils.isNullOrEmpty(employeeData.employeeId)) {
-                textViewEmployeeId.visibility = View.GONE
-            } else {
-                textViewEmployeeId.visibility = View.VISIBLE
-                textViewEmployeeId.text = String.format("(Emp ID: %s)", employeeData.employeeId)
-            }
-
-            if (StringUtils.isNullOrEmpty(employeeData.shiftHours)) {
-                textViewShiftHours.visibility = View.GONE
-            } else {
-                textViewShiftHours.visibility = View.VISIBLE
-                textViewShiftHours.text = String.format("(Shift Hours: %s)", employeeData.shiftHours)
-            }
+            UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
+            textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
+            textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
+            textViewShiftHours.text = UIUtils.getDisplayShiftHours(employeeData)
 
             if (assignedLumperIdsList.contains(employeeData.id!!)) {
                 imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick_disabled)
@@ -188,6 +134,38 @@ class ChooseLumpersAdapter(
                 }
             }
         }
+        notifyDataSetChanged()
+    }
+
+    fun getSelectedLumpersList(): ArrayList<EmployeeData> {
+        return selectedLumpersMap.values.distinct() as ArrayList<EmployeeData>
+    }
+
+    fun updateLumpersData(employeeDataList: ArrayList<EmployeeData>, currentPageIndex: Int) {
+        setSearchEnabled(false)
+        if (currentPageIndex == 1) {
+            this.employeeDataList.clear()
+        }
+        this.employeeDataList.addAll(employeeDataList)
+
+        val extraEmployeesList = ArrayList<EmployeeData>()
+        for (assignedLumper in assignedLumpersList) {
+            var isAddedInSelectedIdsList = false
+            for (employee in employeeDataList) {
+                if (assignedLumper.id == employee.id && !selectedLumperIdsList.contains(employee.id)) {
+                    selectedLumperIdsList.add(employee.id!!)
+                    selectedLumpersMap[employee.id!!] = employee
+                    isAddedInSelectedIdsList = true
+                    break
+                }
+            }
+            if (!isAddedInSelectedIdsList && !selectedLumperIdsList.contains(assignedLumper.id)) {
+                selectedLumperIdsList.add(assignedLumper.id!!)
+                selectedLumpersMap[assignedLumper.id!!] = assignedLumper
+                extraEmployeesList.add(assignedLumper)
+            }
+        }
+        this.employeeDataList.addAll(extraEmployeesList)
         notifyDataSetChanged()
     }
 }

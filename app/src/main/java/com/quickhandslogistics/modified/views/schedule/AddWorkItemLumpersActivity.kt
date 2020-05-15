@@ -18,7 +18,7 @@ import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Comp
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.utils.Utils
+import com.quickhandslogistics.utils.AppUtils
 import kotlinx.android.synthetic.main.activity_add_work_item_lumpers.*
 
 class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
@@ -108,7 +108,7 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
                 buttonAdd.id -> assignLumpersToWorkItem()
                 imageViewCancel.id -> {
                     editTextSearch.setText("")
-                    Utils.hideSoftKeyboard(activity)
+                    AppUtils.hideSoftKeyboard(activity)
                 }
             }
         }

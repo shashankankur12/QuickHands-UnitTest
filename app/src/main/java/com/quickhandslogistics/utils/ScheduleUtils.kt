@@ -1,4 +1,4 @@
-package com.quickhandslogistics.modified.controls
+package com.quickhandslogistics.utils
 
 import android.content.res.Resources
 import android.widget.RelativeLayout
@@ -6,8 +6,6 @@ import android.widget.TextView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.StringUtils
 import java.util.*
 import kotlin.Comparator
 import kotlin.collections.ArrayList
@@ -144,7 +142,7 @@ object ScheduleUtils {
     fun sortEmployeesList(employeesList: ArrayList<EmployeeData>?): ArrayList<EmployeeData> {
         return if (!employeesList.isNullOrEmpty()) {
             employeesList.sortWith(Comparator { lumper1, lumper2 ->
-                if (!StringUtils.isNullOrEmpty(lumper1.firstName) && !StringUtils.isNullOrEmpty(lumper2.firstName)) {
+                if (!lumper1.firstName.isNullOrEmpty() && !lumper2.firstName.isNullOrEmpty()) {
                     lumper1.firstName?.toLowerCase(Locale.getDefault())!!.compareTo(lumper2.firstName?.toLowerCase(Locale.getDefault())!!)
                 } else {
                     0

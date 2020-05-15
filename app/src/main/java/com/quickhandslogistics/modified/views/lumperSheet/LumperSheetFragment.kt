@@ -104,7 +104,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
             when (view.id) {
                 imageViewCancel.id -> {
                     editTextSearch.setText("")
-                    Utils.hideSoftKeyboard(fragmentActivity!!)
+                    AppUtils.hideSoftKeyboard(fragmentActivity!!)
                 }
                 buttonSubmit.id -> showConfirmationDialog()
             }

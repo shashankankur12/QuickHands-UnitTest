@@ -9,7 +9,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.adapters.workSheet.WorkSheetPagerAdapter
 import com.quickhandslogistics.modified.contracts.DashBoardContract
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetContract
-import com.quickhandslogistics.modified.controls.ScheduleUtils
+import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.modified.presenters.workSheet.WorkSheetPresenter

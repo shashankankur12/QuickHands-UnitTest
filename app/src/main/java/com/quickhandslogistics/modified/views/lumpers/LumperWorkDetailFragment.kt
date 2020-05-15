@@ -8,7 +8,6 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_DATA
-import com.quickhandslogistics.utils.StringUtils
 import kotlinx.android.synthetic.main.fragment_lumper_work_detail.*
 import java.util.*
 
@@ -41,8 +40,8 @@ class LumperWorkDetailFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         employeeData?.let { employeeData ->
-            textViewShift.text = if (!StringUtils.isNullOrEmpty(employeeData.shift)) employeeData.shift!!.capitalize(Locale.getDefault()) else "-"
-            textViewShiftHours.text = if (!StringUtils.isNullOrEmpty(employeeData.shiftHours)) employeeData.shiftHours else "-"
+            textViewShift.text = if (!employeeData.shift.isNullOrEmpty()) employeeData.shift!!.capitalize(Locale.getDefault()) else "-"
+            textViewShiftHours.text = if (!employeeData.shiftHours.isNullOrEmpty()) employeeData.shiftHours else "-"
 
             employeeData.fullTime?.also { fullTime ->
                 textViewAvailability.text = if (fullTime) getString(R.string.full_time) else getString(R.string.part_time)
@@ -58,8 +57,8 @@ class LumperWorkDetailFragment : BaseFragment() {
                 textViewAbilityTravel.text = "-"
             }
 
-            textViewPrimaryBuilding.text = if (!StringUtils.isNullOrEmpty(employeeData.primaryBuilding)) employeeData.primaryBuilding else "-"
-            textViewMilesRadius.text = if (!StringUtils.isNullOrEmpty(employeeData.milesRadiusFromPrimaryBuilding))
+            textViewPrimaryBuilding.text = if (!employeeData.primaryBuilding.isNullOrEmpty()) employeeData.primaryBuilding else "-"
+            textViewMilesRadius.text = if (!employeeData.milesRadiusFromPrimaryBuilding.isNullOrEmpty())
                 String.format("%s Miles", employeeData.milesRadiusFromPrimaryBuilding) else "-"
         }
     }

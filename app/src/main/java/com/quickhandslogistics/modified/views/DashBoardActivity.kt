@@ -21,7 +21,6 @@ import com.quickhandslogistics.modified.views.workSheet.AllWorkScheduleCancelAct
 import com.quickhandslogistics.modified.views.workSheet.WorkSheetFragment
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.StringUtils
 import com.quickhandslogistics.utils.UIUtils
 import com.quickhandslogistics.view.fragments.ReportFragment
 import kotlinx.android.synthetic.main.include_main_nav_drawer.*
@@ -129,8 +128,8 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         UIUtils.showEmployeeProfileImage(activity, leadProfileData, circleImageViewProfile)
 
         textViewLeadName.text = UIUtils.getEmployeeFullName(leadProfileData)
-        textViewEmail.text = if (!StringUtils.isNullOrEmpty(leadProfileData.email)) leadProfileData.email else "-"
-        textViewEmployeeId.text = if (!StringUtils.isNullOrEmpty(leadProfileData.employeeId)) leadProfileData.employeeId else "-"
+        textViewEmail.text = if (!leadProfileData.email.isNullOrEmpty()) leadProfileData.email else "-"
+        textViewEmployeeId.text = if (!leadProfileData.employeeId.isNullOrEmpty()) leadProfileData.employeeId else "-"
 
         textViewVersionName.text = String.format("v%s", BuildConfig.VERSION_NAME)
     }

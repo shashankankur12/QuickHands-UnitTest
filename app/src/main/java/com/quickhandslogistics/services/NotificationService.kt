@@ -32,10 +32,8 @@ class NotificationService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        val notificationSystemSettingsEnabled =
-            NotificationManagerCompat.from(applicationContext).areNotificationsEnabled()
-        val notificationEnabled = SharedPref.getInstance()
-            .getBoolean(AppConstant.PREFERENCE_NOTIFICATION, defaultValue = true)
+        val notificationSystemSettingsEnabled = NotificationManagerCompat.from(applicationContext).areNotificationsEnabled()
+        val notificationEnabled = SharedPref.getInstance().getBoolean(AppConstant.PREFERENCE_NOTIFICATION, defaultValue = true)
 
         if (notificationSystemSettingsEnabled && notificationEnabled) {
             var notificationTitle = getString(R.string.app_name)
@@ -46,8 +44,7 @@ class NotificationService : FirebaseMessagingService() {
                     notificationTitle = message.data[AppConstant.NOTIFICATION_KEY_TITLE].toString()
                 }
                 if (message.data.containsKey(AppConstant.NOTIFICATION_KEY_CONTENT)) {
-                    notificationContent =
-                        message.data[AppConstant.NOTIFICATION_KEY_CONTENT].toString()
+                    notificationContent = message.data[AppConstant.NOTIFICATION_KEY_CONTENT].toString()
                 }
                 if (message.data.containsKey(AppConstant.NOTIFICATION_KEY_TYPE)) {
                     notificationType = message.data[AppConstant.NOTIFICATION_KEY_TYPE].toString()
@@ -59,20 +56,13 @@ class NotificationService : FirebaseMessagingService() {
         }
     }
 
-    private fun createNotification(
-        notificationTitle: String,
-        notificationContent: String,
-        notificationType: String,
-        data: MutableMap<String, String>
-    ) {
-
+    private fun createNotification(notificationTitle: String, notificationContent: String, notificationType: String, data: MutableMap<String, String>) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel()
         }
 
         val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle(notificationTitle)
+            .setSmallIcon(R.mipmap.ic_launcher).setContentTitle(notificationTitle)
             .setStyle(NotificationCompat.BigTextStyle().bigText(notificationContent))
             .setAutoCancel(true)
 
@@ -82,13 +72,10 @@ class NotificationService : FirebaseMessagingService() {
         // Check for different Notification Type and extract relevant data.
         val bundle = Bundle()
         if (notificationType == AppConstant.NOTIFICATION_TYPE_SCHEDULE_CREATE) {
-            if (data.containsKey(AppConstant.NOTIFICATION_KEY_SCHEDULE_IDENTITY)
-                && data.containsKey(AppConstant.NOTIFICATION_KEY_SCHEDULE_FROM_DATE)
-            ) {
-                val scheduleIdentity =
-                    data[AppConstant.NOTIFICATION_KEY_SCHEDULE_IDENTITY].toString()
-                val scheduleFromDate =
-                    data[AppConstant.NOTIFICATION_KEY_SCHEDULE_FROM_DATE].toString()
+            if (data.containsKey(AppConstant.NOTIFICATION_KEY_SCHEDULE_IDENTITY) && data.containsKey(AppConstant.NOTIFICATION_KEY_SCHEDULE_FROM_DATE)) {
+                val scheduleIdentity = data[AppConstant.NOTIFICATION_KEY_SCHEDULE_IDENTITY].toString()
+                val scheduleFromDate = data[AppConstant.NOTIFICATION_KEY_SCHEDULE_FROM_DATE].toString()
+
                 bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleIdentity)
                 bundle.putString(ARG_SCHEDULE_FROM_DATE, scheduleFromDate)
                 intent.setClass(applicationContext, UnScheduleDetailActivity::class.java)
@@ -96,28 +83,20 @@ class NotificationService : FirebaseMessagingService() {
             intent.putExtras(bundle)
         }
 
-        val pendingIntent = PendingIntent.getActivity(
-            applicationContext, System.currentTimeMillis().toInt(),
-            intent, 0
-        )
+        val pendingIntent = PendingIntent.getActivity(applicationContext, System.currentTimeMillis().toInt(), intent, 0)
         notification.setContentIntent(pendingIntent)
 
-        val notificationManager: NotificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(System.currentTimeMillis().toInt(), notification.build())
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel() {
-        val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
         notificationManager?.let {
             val channel = notificationManager.getNotificationChannel(NOTIFICATION_CHANNEL_ID)
             if (channel == null) {
-                val notificationChannel = NotificationChannel(
-                    NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_HIGH
-                )
+                val notificationChannel = NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
                 notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
                 notificationManager.createNotificationChannel(notificationChannel)
             }

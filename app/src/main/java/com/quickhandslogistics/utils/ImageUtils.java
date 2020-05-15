@@ -7,14 +7,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class ImageUtils {
 
     public static File saveSignatureTemporary(Bitmap bitmap, int quality, Context context) throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "SIGNATURE_" + timeStamp + ".jpg";
+        String imageFileName = "TEMP_" + System.currentTimeMillis() + ".jpg";
         File fileDir = context.getExternalFilesDir(null);
         File dest = new File(fileDir, imageFileName);
 

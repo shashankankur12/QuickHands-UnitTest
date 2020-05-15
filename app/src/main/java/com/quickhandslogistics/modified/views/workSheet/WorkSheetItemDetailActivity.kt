@@ -10,7 +10,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.adapters.workSheet.WorkSheetItemDetailPagerAdapter
 import com.quickhandslogistics.modified.adapters.workSheet.WorkSheetItemStatusAdapter
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemDetailContract
-import com.quickhandslogistics.modified.controls.ScheduleUtils
+import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.modified.presenters.workSheet.WorkSheetItemDetailPresenter

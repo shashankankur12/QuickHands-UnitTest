@@ -2,7 +2,7 @@ package com.quickhandslogistics.modified.data.lumpers
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import com.quickhandslogistics.modified.controls.ScheduleUtils
+import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.PaginationResponse
 

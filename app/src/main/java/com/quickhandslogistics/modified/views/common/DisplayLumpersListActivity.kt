@@ -16,8 +16,7 @@ import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.lumpers.LumperDetailActivity
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.StringUtils
-import com.quickhandslogistics.utils.Utils
+import com.quickhandslogistics.utils.AppUtils
 import kotlinx.android.synthetic.main.content_choose_lumper.*
 import java.util.ArrayList
 import kotlin.Comparator
@@ -40,7 +39,7 @@ class DisplayLumpersListActivity : BaseActivity(), View.OnClickListener, TextWat
 
             lumpersList?.let {
                 lumpersList.sortWith(Comparator { lumper1, lumper2 ->
-                    if (!StringUtils.isNullOrEmpty(lumper1.firstName) && !StringUtils.isNullOrEmpty(lumper2.firstName)) {
+                    if (!lumper1.firstName.isNullOrEmpty() && !lumper2.firstName.isNullOrEmpty()) {
                         lumper1.firstName?.toLowerCase()!!.compareTo(lumper2.firstName?.toLowerCase()!!)
                     } else {
                         0
@@ -72,7 +71,7 @@ class DisplayLumpersListActivity : BaseActivity(), View.OnClickListener, TextWat
             when (view.id) {
                 imageViewCancel.id -> {
                     editTextSearch.setText("")
-                    Utils.hideSoftKeyboard(activity)
+                    AppUtils.hideSoftKeyboard(activity)
                 }
             }
         }

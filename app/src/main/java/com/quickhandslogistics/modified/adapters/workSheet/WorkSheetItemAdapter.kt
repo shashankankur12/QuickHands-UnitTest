@@ -1,6 +1,5 @@
 package com.quickhandslogistics.modified.adapters.workSheet
 
-import android.content.Context
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
@@ -14,10 +13,10 @@ import com.quickhandslogistics.modified.adapters.common.LumperImagesAdapter
 import com.quickhandslogistics.modified.contracts.common.LumperImagesContract
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemContract
 import com.quickhandslogistics.modified.controls.OverlapDecoration
-import com.quickhandslogistics.modified.controls.ScheduleUtils
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.ScheduleUtils
 import kotlinx.android.synthetic.main.item_work_sheet.view.*
 
 class WorkSheetItemAdapter(private val resources: Resources, var adapterItemClickListener: WorkSheetItemContract.View.OnAdapterItemClickListener) :
@@ -27,7 +26,7 @@ class WorkSheetItemAdapter(private val resources: Resources, var adapterItemClic
 
     override fun onCreateViewHolder(parent: ViewGroup, i: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_work_sheet, parent, false)
-        return ViewHolder(view, parent.context)
+        return ViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -43,21 +42,14 @@ class WorkSheetItemAdapter(private val resources: Resources, var adapterItemClic
         holder.bind(workItemDetail)
     }
 
-    fun updateList(workItemsList: ArrayList<WorkItemDetail>) {
-        this.workItemsList.clear()
-        this.workItemsList = workItemsList
-        notifyDataSetChanged()
-    }
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener, LumperImagesContract.OnItemClickListener {
 
-    inner class ViewHolder(itemView: View, private val context: Context) : RecyclerView.ViewHolder(itemView),
-        View.OnClickListener, LumperImagesContract.OnItemClickListener {
-
-        var textViewStartTime: TextView = itemView.textViewStartTime
-        var textViewWorkItemType: TextView = itemView.textViewWorkItemType
-        var textViewNoOfDrops: TextView = itemView.textViewNoOfDrops
-        var textViewStatus: TextView = itemView.textViewStatus
-        var relativeLayoutSide: RelativeLayout = itemView.relativeLayoutSide
-        var recyclerViewLumpersImagesList: RecyclerView = itemView.recyclerViewLumpersImagesList
+        private val textViewStartTime: TextView = itemView.textViewStartTime
+        private val textViewWorkItemType: TextView = itemView.textViewWorkItemType
+        private val textViewNoOfDrops: TextView = itemView.textViewNoOfDrops
+        private val textViewStatus: TextView = itemView.textViewStatus
+        private val relativeLayoutSide: RelativeLayout = itemView.relativeLayoutSide
+        private val recyclerViewLumpersImagesList: RecyclerView = itemView.recyclerViewLumpersImagesList
 
         init {
             recyclerViewLumpersImagesList.apply {
@@ -75,15 +67,9 @@ class WorkSheetItemAdapter(private val resources: Resources, var adapterItemClic
             textViewWorkItemType.text = workItemTypeDisplayName
 
             when (workItemTypeDisplayName) {
-                resources.getString(R.string.string_drops) -> {
-                    textViewNoOfDrops.text = String.format(resources.getString(R.string.no_of_drops), workItemDetail.numberOfDrops)
-                }
-                resources.getString(R.string.string_live_loads) -> {
-                    textViewNoOfDrops.text = String.format(resources.getString(R.string.live_load_sequence), workItemDetail.sequence)
-                }
-                else -> {
-                    textViewNoOfDrops.text = String.format(resources.getString(R.string.outbound_sequence), workItemDetail.sequence)
-                }
+                resources.getString(R.string.string_drops) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.no_of_drops), workItemDetail.numberOfDrops)
+                resources.getString(R.string.string_live_loads) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.live_load_sequence), workItemDetail.sequence)
+                else -> textViewNoOfDrops.text = String.format(resources.getString(R.string.outbound_sequence), workItemDetail.sequence)
             }
 
             workItemDetail.assignedLumpersList?.let { imagesList ->
@@ -98,15 +84,8 @@ class WorkSheetItemAdapter(private val resources: Resources, var adapterItemClic
                 when (view.id) {
                     itemView.id -> {
                         val workItemDetail = getItem(adapterPosition)
-                        val workItemTypeDisplayName =
-                            ScheduleUtils.getWorkItemTypeDisplayName(
-                                workItemDetail.workItemType,
-                                resources
-                            )
-                        adapterItemClickListener.onItemClick(
-                            workItemDetail.id!!,
-                            workItemTypeDisplayName
-                        )
+                        val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.workItemType, resources)
+                        adapterItemClickListener.onItemClick(workItemDetail.id!!, workItemTypeDisplayName)
                     }
                 }
             }
@@ -115,5 +94,11 @@ class WorkSheetItemAdapter(private val resources: Resources, var adapterItemClic
         override fun onLumperImageItemClick(lumpersList: ArrayList<EmployeeData>) {
             adapterItemClickListener.onLumperImagesClick(lumpersList)
         }
+    }
+
+    fun updateList(workItemsList: ArrayList<WorkItemDetail>) {
+        this.workItemsList.clear()
+        this.workItemsList = workItemsList
+        notifyDataSetChanged()
     }
 }

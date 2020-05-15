@@ -249,7 +249,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
                 buttonAddTime.id -> showTimePickerLayoutForMultipleLumpers()
                 imageViewCancel.id -> {
                     editTextSearch.setText("")
-                    Utils.hideSoftKeyboard(fragmentActivity!!)
+                    AppUtils.hideSoftKeyboard(fragmentActivity!!)
                 }
             }
         }

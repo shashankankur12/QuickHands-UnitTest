@@ -1,6 +1,6 @@
 package com.quickhandslogistics.modified.data.common
 
-import com.quickhandslogistics.modified.controls.ScheduleUtils
+import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 

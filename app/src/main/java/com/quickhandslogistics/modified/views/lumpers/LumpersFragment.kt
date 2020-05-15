@@ -22,7 +22,7 @@ import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.utils.Utils
+import com.quickhandslogistics.utils.AppUtils
 import kotlinx.android.synthetic.main.fragment_lumpers.*
 
 class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.OnClickListener,
@@ -91,7 +91,7 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
             when (view.id) {
                 imageViewCancel.id -> {
                     editTextSearch.setText("")
-                    Utils.hideSoftKeyboard(fragmentActivity!!)
+                    AppUtils.hideSoftKeyboard(fragmentActivity!!)
                 }
             }
         }

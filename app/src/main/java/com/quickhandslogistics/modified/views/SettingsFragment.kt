@@ -10,13 +10,13 @@ import android.view.ViewGroup
 import androidx.core.app.NotificationManagerCompat
 import com.franmontiel.localechanger.utils.ActivityRecreationHelper
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.contracts.setting.SettingContract
+import com.quickhandslogistics.modified.contracts.SettingsContract
 import com.quickhandslogistics.modified.presenters.SettingsPresenter
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import kotlinx.android.synthetic.main.fragment_settings.*
 
-class SettingsFragment : BaseFragment(), SettingContract.View, View.OnClickListener {
+class SettingsFragment : BaseFragment(), SettingsContract.View, View.OnClickListener {
 
     private lateinit var selectedLanguage: String
 

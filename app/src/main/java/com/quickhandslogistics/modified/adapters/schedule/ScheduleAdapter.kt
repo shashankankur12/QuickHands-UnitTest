@@ -16,27 +16,18 @@ import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import kotlinx.android.synthetic.main.item_schedule.view.*
 
-class ScheduleAdapter(
-    private val resources: Resources,
-    var adapterItemClickListener: ScheduleContract.View.OnAdapterItemClickListener
-) :
-    RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
+class ScheduleAdapter(private val resources: Resources, var adapterItemClickListener: ScheduleContract.View.OnAdapterItemClickListener) :
+    RecyclerView.Adapter<ScheduleAdapter.ViewHolder>() {
 
     private var workItemsList: ArrayList<ScheduleDetail> = ArrayList()
 
-    override fun onCreateViewHolder(
-        viewGroup: ViewGroup,
-        i: Int
-    ): ScheduleViewHolder {
-        val view =
-            LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.item_schedule, viewGroup, false)
-        return ScheduleViewHolder(view)
+    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
+        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_schedule, viewGroup, false)
+        return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(scheduleViewHolder: ScheduleViewHolder, position: Int) {
-        val item = getItem(position)
-        scheduleViewHolder.bind(item)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 
     override fun getItemCount(): Int {
@@ -47,21 +38,12 @@ class ScheduleAdapter(
         return workItemsList[position]
     }
 
-    fun updateList(scheduledData: ArrayList<ScheduleDetail>, currentPageIndex: Int) {
-        if (currentPageIndex == 1) {
-            this.workItemsList.clear()
-        }
-        this.workItemsList.addAll(scheduledData)
-        notifyDataSetChanged()
-    }
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener, LumperImagesContract.OnItemClickListener {
 
-    inner class ScheduleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
-        View.OnClickListener, LumperImagesContract.OnItemClickListener {
-
-        var textViewBuildingName: TextView = itemView.textViewBuildingName
-        var textViewScheduleType: TextView = itemView.textViewScheduleType
-        var textViewWorkItemsCount: TextView = itemView.textViewWorkItemsCount
-        var recyclerViewLumpersImagesList: RecyclerView = itemView.recyclerViewLumpersImagesList
+        private val textViewBuildingName: TextView = itemView.textViewBuildingName
+        private val textViewScheduleType: TextView = itemView.textViewScheduleType
+        private val textViewWorkItemsCount: TextView = itemView.textViewWorkItemsCount
+        private val recyclerViewLumpersImagesList: RecyclerView = itemView.recyclerViewLumpersImagesList
 
         init {
             recyclerViewLumpersImagesList.apply {
@@ -74,17 +56,10 @@ class ScheduleAdapter(
             if (!scheduleDetail.buildingName.isNullOrEmpty())
                 textViewBuildingName.text = scheduleDetail.buildingName?.capitalize()
             textViewScheduleType.text = scheduleDetail.scheduleTypeNames
-            textViewWorkItemsCount.text = String.format(
-                resources.getString(R.string.work_items_count),
-                scheduleDetail.totalNumberOfWorkItems
-            )
+            textViewWorkItemsCount.text = String.format(resources.getString(R.string.work_items_count), scheduleDetail.totalNumberOfWorkItems)
 
             recyclerViewLumpersImagesList.apply {
-                adapter =
-                    LumperImagesAdapter(
-                        scheduleDetail.allAssignedLumpers,
-                        this@ScheduleViewHolder
-                    )
+                adapter = LumperImagesAdapter(scheduleDetail.allAssignedLumpers, this@ViewHolder)
             }
 
             itemView.setOnClickListener(this)
@@ -93,11 +68,7 @@ class ScheduleAdapter(
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
-                    itemView.id -> adapterItemClickListener.onScheduleItemClick(
-                        getItem(
-                            adapterPosition
-                        )
-                    )
+                    itemView.id -> adapterItemClickListener.onScheduleItemClick(getItem(adapterPosition))
                 }
             }
         }
@@ -105,5 +76,13 @@ class ScheduleAdapter(
         override fun onLumperImageItemClick(lumpersList: ArrayList<EmployeeData>) {
             adapterItemClickListener.onLumperImagesClick(lumpersList)
         }
+    }
+
+    fun updateList(scheduledData: ArrayList<ScheduleDetail>, currentPageIndex: Int) {
+        if (currentPageIndex == 1) {
+            this.workItemsList.clear()
+        }
+        this.workItemsList.addAll(scheduledData)
+        notifyDataSetChanged()
     }
 }

@@ -1,19 +1,19 @@
 package com.quickhandslogistics.modified.presenters
 
 import android.content.res.Resources
-import com.quickhandslogistics.modified.contracts.setting.SettingContract
+import com.quickhandslogistics.modified.contracts.SettingsContract
 import com.quickhandslogistics.modified.models.SettingsModel
 import com.quickhandslogistics.utils.SharedPref
 
 class SettingsPresenter(
-    private var settingView: SettingContract.View?, resources: Resources, sharedPref: SharedPref
-) : SettingContract.Presenter, SettingContract.Model.OnFinishedListener {
+    private var settingsView: SettingsContract.View?, resources: Resources, sharedPref: SharedPref
+) : SettingsContract.Presenter, SettingsContract.Model.OnFinishedListener {
 
     private val settingsModel = SettingsModel(resources, sharedPref)
 
     /** View Listeners */
     override fun onDestroy() {
-        settingView = null
+        settingsView = null
     }
 
     override fun checkSelectedSettings() {
@@ -30,11 +30,11 @@ class SettingsPresenter(
 
     /** Model Result Listeners */
     override fun restartActivity() {
-        settingView?.restartActivity()
+        settingsView?.restartActivity()
     }
 
     override fun showSelectedSettings(selectedLanguage: String, notificationEnabled: Boolean) {
-        settingView?.showSelectedSettings(selectedLanguage, notificationEnabled)
+        settingsView?.showSelectedSettings(selectedLanguage, notificationEnabled)
     }
 }
 

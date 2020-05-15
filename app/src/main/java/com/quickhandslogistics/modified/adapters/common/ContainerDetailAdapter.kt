@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
-import com.quickhandslogistics.utils.StringUtils
 import kotlinx.android.synthetic.main.item_container_detail.view.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -17,8 +16,7 @@ class ContainerDetailAdapter : RecyclerView.Adapter<ContainerDetailAdapter.ViewH
     private val buildingOps: HashMap<String, String> = HashMap()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_container_detail, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_container_detail, parent, false)
         return ViewHolder(view)
     }
 
@@ -36,6 +34,16 @@ class ContainerDetailAdapter : RecyclerView.Adapter<ContainerDetailAdapter.ViewH
         holder.bind(getItem(position))
     }
 
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val textViewHeader: TextView = view.textViewHeader
+        private val textViewValue: TextView = view.textViewValue
+
+        fun bind(pair: Pair<String, String?>) {
+            textViewHeader.text = pair.first.capitalize()
+            textViewValue.text = if (!pair.second.isNullOrEmpty()) pair.second else "NA"
+        }
+    }
+
     fun updateData(buildingOps: HashMap<String, String>?, parameters: ArrayList<String>?) {
         this.parameters.clear()
         this.buildingOps.clear()
@@ -51,15 +59,5 @@ class ContainerDetailAdapter : RecyclerView.Adapter<ContainerDetailAdapter.ViewH
             this.buildingOps.putAll(buildingOps)
         }
         notifyDataSetChanged()
-    }
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private var textViewHeader: TextView = view.textViewHeader
-        private var textViewValue: TextView = view.textViewValue
-
-        fun bind(pair: Pair<String, String?>) {
-            textViewHeader.text = pair.first.capitalize()
-            textViewValue.text = if (!StringUtils.isNullOrEmpty(pair.second)) pair.second else "NA"
-        }
     }
 }

@@ -26,7 +26,7 @@ import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Comp
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.CalendarUtils
 import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.utils.Utils
+import com.quickhandslogistics.utils.AppUtils
 import kotlinx.android.synthetic.main.fragment_schedule_time.*
 import java.util.*
 
@@ -120,7 +120,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             when (view.id) {
                 imageViewCancel.id -> {
                     editTextSearch.setText("")
-                    Utils.hideSoftKeyboard(fragmentActivity!!)
+                    AppUtils.hideSoftKeyboard(fragmentActivity!!)
                 }
                 buttonScheduleLumpers.id -> {
                     val bundle = Bundle()

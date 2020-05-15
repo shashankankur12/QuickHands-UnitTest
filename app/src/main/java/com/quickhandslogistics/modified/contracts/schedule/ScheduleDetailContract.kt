@@ -8,7 +8,6 @@ import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import java.util.*
 
 class ScheduleDetailContract {
-
     interface Model {
         fun fetchScheduleDetail(scheduleIdentityId: String, selectedDate: Date, onFinishedListener: OnFinishedListener)
 

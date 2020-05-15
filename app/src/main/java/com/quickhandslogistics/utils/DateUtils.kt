@@ -22,11 +22,7 @@ class DateUtils {
             return dateFormat.format(date)
         }
 
-        fun changeDateString(
-            patternFrom: String,
-            patternTo: String,
-            dateString: String = ""
-        ): String {
+        fun changeDateString(patternFrom: String, patternTo: String, dateString: String = ""): String {
             val dateFormatFrom = SimpleDateFormat(patternFrom)
             val dateFormatTo = SimpleDateFormat(patternTo)
             try {
@@ -66,10 +62,7 @@ class DateUtils {
             return selectedCalendar.after(currentCalendar)
         }
 
-        fun convertDateStringToTime(
-            patternDate: String,
-            dateString: String? = ""
-        ): String {
+        fun convertDateStringToTime(patternDate: String, dateString: String? = ""): String {
             val dateStringValue = ValueUtils.getDefaultOrValue(dateString)
 
             val dateFormatFrom = SimpleDateFormat(patternDate)
@@ -85,9 +78,7 @@ class DateUtils {
             return dateStringValue
         }
 
-        fun convertUTCDateStringToLocalDateString(
-            pattern: String, dateString: String? = ""
-        ): String {
+        fun convertUTCDateStringToLocalDateString(pattern: String, dateString: String? = ""): String {
             val dateStringValue = ValueUtils.getDefaultOrValue(dateString)
 
             val dateFormatFrom = SimpleDateFormat(pattern)
@@ -123,9 +114,7 @@ class DateUtils {
             }
         }
 
-        fun convertUTCDateStringToMilliseconds(
-            patternDate: String, dateString: String? = ""
-        ): Long {
+        fun convertUTCDateStringToMilliseconds(patternDate: String, dateString: String? = ""): Long {
             val dateStringValue = ValueUtils.getDefaultOrValue(dateString)
 
             val dateFormatFrom = SimpleDateFormat(patternDate)
@@ -146,13 +135,11 @@ class DateUtils {
             val afterCalendar = Calendar.getInstance()
             afterCalendar.timeInMillis = afterTime
 
-            val isPastHour =
-                beforeCalendar[Calendar.HOUR_OF_DAY] < afterCalendar[Calendar.HOUR_OF_DAY]
+            val isPastHour = beforeCalendar[Calendar.HOUR_OF_DAY] < afterCalendar[Calendar.HOUR_OF_DAY]
             return if (isPastHour) {
                 true
             } else {
-                (beforeCalendar[Calendar.HOUR_OF_DAY] == afterCalendar[Calendar.HOUR_OF_DAY]
-                        && beforeCalendar[Calendar.MINUTE] < afterCalendar[Calendar.MINUTE])
+                (beforeCalendar[Calendar.HOUR_OF_DAY] == afterCalendar[Calendar.HOUR_OF_DAY] && beforeCalendar[Calendar.MINUTE] < afterCalendar[Calendar.MINUTE])
             }
         }
     }
