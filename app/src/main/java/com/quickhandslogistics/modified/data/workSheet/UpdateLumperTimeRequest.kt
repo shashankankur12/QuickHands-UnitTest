@@ -1,10 +1,6 @@
 package com.quickhandslogistics.modified.data.workSheet
 
-data class UpdateLumperTimeRequest(
-    val lumperId: String,
-    val workItemId: String,
-    val timingDetails: TimingDetails
-)
+data class UpdateLumperTimeRequest(val lumperId: String, val workItemId: String, val timingDetails: TimingDetails)
 
 class TimingDetails {
     var startTime: Long? = null

@@ -17,9 +17,7 @@ class GetAttendanceAPIResponse : BaseResponse() {
         var employeeDataList: ArrayList<LumperAttendanceData>? = null
             get() = if (!field.isNullOrEmpty()) {
                 field?.sortWith(Comparator { lumper1, lumper2 ->
-                    if (!StringUtils.isNullOrEmpty(lumper1.firstName)
-                        && !StringUtils.isNullOrEmpty(lumper2.firstName)
-                    ) {
+                    if (!StringUtils.isNullOrEmpty(lumper1.firstName) && !StringUtils.isNullOrEmpty(lumper2.firstName)) {
                         lumper1.firstName?.toLowerCase()!!.compareTo(lumper2.firstName?.toLowerCase()!!)
                     } else {
                         0
