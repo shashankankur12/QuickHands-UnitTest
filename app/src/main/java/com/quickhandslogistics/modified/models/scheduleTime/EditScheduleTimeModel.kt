@@ -18,9 +18,8 @@ import kotlin.collections.ArrayList
 class EditScheduleTimeModel : EditScheduleTimeContract.Model {
 
     override fun assignScheduleTime(
-        scheduledLumpersIdsTimeMap: HashMap<String, Long>,
-        notes: String, requiredLumpersCount: Int, notesDM: String, selectedDate: Date,
-        onFinishedListener: EditScheduleTimeContract.Model.OnFinishedListener
+        scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, requiredLumpersCount: Int, notesDM: String,
+        selectedDate: Date, onFinishedListener: EditScheduleTimeContract.Model.OnFinishedListener
     ) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
 

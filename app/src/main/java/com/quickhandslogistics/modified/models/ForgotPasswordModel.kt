@@ -37,5 +37,4 @@ class ForgotPasswordModel : ForgotPasswordContract.Model {
             onFinishedListener.processPasswordReset(employeeId)
         }
     }
-
 }

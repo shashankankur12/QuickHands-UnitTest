@@ -20,6 +20,7 @@ class AddWorkItemLumpersModel(private val sharedPref: SharedPref) : AddWorkItemL
 
     override fun fetchLumpersList(onFinishedListener: AddWorkItemLumpersContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, Date())
+
         DataManager.getService().getPresentLumpersList(getAuthToken(), dateString).enqueue(object : Callback<AllLumpersResponse> {
             override fun onResponse(call: Call<AllLumpersResponse>, response: Response<AllLumpersResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
@@ -35,10 +36,10 @@ class AddWorkItemLumpersModel(private val sharedPref: SharedPref) : AddWorkItemL
     }
 
     override fun assignLumpersList(
-        workItemId: String, workItemType: String, selectedLumperIdsList: ArrayList<String>,
-        onFinishedListener: AddWorkItemLumpersContract.Model.OnFinishedListener
+        workItemId: String, workItemType: String, selectedLumperIdsList: ArrayList<String>, onFinishedListener: AddWorkItemLumpersContract.Model.OnFinishedListener
     ) {
         val request = AssignLumpersRequest(sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID), workItemType, selectedLumperIdsList)
+
         DataManager.getService().assignLumpers(getAuthToken(), workItemId, request).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {

@@ -30,25 +30,15 @@ class DashBoardModel(private val sharedPref: SharedPref) : DashBoardContract.Mod
             }
         })
 
-        val leadProfile = sharedPref.getClassObject(
-            PREFERENCE_LEAD_PROFILE,
-            LeadProfileData::class.java
-        ) as LeadProfileData?
-
+        val leadProfile = sharedPref.getClassObject(PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
         if (leadProfile != null) {
             onFinishedListener.onLoadLeadProfile(leadProfile)
         }
     }
 
-    override fun processLeadProfileData(
-        leadProfileData: LeadProfileData,
-        onFinishedListener: DashBoardContract.Model.OnFinishedListener
-    ) {
+    override fun processLeadProfileData(leadProfileData: LeadProfileData, onFinishedListener: DashBoardContract.Model.OnFinishedListener) {
         sharedPref.setClassObject(PREFERENCE_LEAD_PROFILE, leadProfileData)
-        sharedPref.setString(
-            AppConstant.PREFERENCE_BUILDING_ID,
-            leadProfileData.buildingDetailData?.id
-        )
+        sharedPref.setString(AppConstant.PREFERENCE_BUILDING_ID, leadProfileData.buildingDetailData?.id)
         onFinishedListener.onLoadLeadProfile(leadProfileData)
     }
 }

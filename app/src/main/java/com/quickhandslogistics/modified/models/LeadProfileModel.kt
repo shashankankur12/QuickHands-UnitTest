@@ -33,7 +33,6 @@ class LeadProfileModel(private val sharedPref: SharedPref) : LeadProfileContract
 
     override fun fetchLeadProfileDataLocal(onFinishedListener: LeadProfileContract.Model.OnFinishedListener) {
         val leadProfile = sharedPref.getClassObject(PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
-
         leadProfile?.let {
             onFinishedListener.onLoadLeadProfile(leadProfile)
         }

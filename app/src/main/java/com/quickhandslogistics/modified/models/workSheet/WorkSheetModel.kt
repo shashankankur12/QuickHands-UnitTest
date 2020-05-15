@@ -29,9 +29,9 @@ class WorkSheetModel(private val sharedPref: SharedPref) : WorkSheetContract.Mod
     }
 
     override fun fetchWorkSheetList(onFinishedListener: WorkSheetContract.Model.OnFinishedListener) {
-        val day = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, Date())
+        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, Date())
 
-        DataManager.getService().getWorkSheetList(getAuthToken(), day).enqueue(object : Callback<WorkSheetListAPIResponse> {
+        DataManager.getService().getWorkSheetList(getAuthToken(), dateString).enqueue(object : Callback<WorkSheetListAPIResponse> {
             override fun onResponse(call: Call<WorkSheetListAPIResponse>, response: Response<WorkSheetListAPIResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onSuccessFetchWorkSheet(response.body()!!)

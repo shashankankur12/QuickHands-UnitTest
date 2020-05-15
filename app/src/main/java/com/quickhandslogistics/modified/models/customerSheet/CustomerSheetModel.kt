@@ -50,8 +50,7 @@ class CustomerSheetModel(private val sharedPref: SharedPref) : CustomerSheetCont
     }
 
     override fun saveCustomerSheet(
-        customerName: String, notesCustomer: String, signatureFilePath: String,
-        onFinishedListener: CustomerSheetContract.Model.OnFinishedListener
+        customerName: String, notesCustomer: String, signatureFilePath: String, onFinishedListener: CustomerSheetContract.Model.OnFinishedListener
     ) {
         val nameRequestBody = createRequestBody(customerName)
         val notesRequestBody = createRequestBody(notesCustomer)

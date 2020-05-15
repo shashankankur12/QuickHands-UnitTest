@@ -15,10 +15,7 @@ class SplashModel(private val sharedPref: SharedPref) : SplashContract.Model {
 
     override fun waitForSometime(onFinishedListener: SplashContract.Model.OnFinishedListener?) {
         Handler().postDelayed({
-            val leadProfile = sharedPref.getClassObject(
-                PREFERENCE_LEAD_PROFILE,
-                LeadProfileData::class.java
-            ) as LeadProfileData?
+            val leadProfile = sharedPref.getClassObject(PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
             leadProfile?.also {
                 onFinishedListener?.onFinished(isLoggedIn = ValueUtils.getDefaultOrValue(leadProfile.isActive))
             } ?: run {

@@ -18,6 +18,7 @@ class AllWorkScheduleCancelModel : AllWorkScheduleCancelContract.Model {
 
     override fun fetchLumpersList(onFinishedListener: AllWorkScheduleCancelContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, Date())
+
         DataManager.getService().getPresentLumpersList(getAuthToken(), dateString).enqueue(object : Callback<AllLumpersResponse> {
             override fun onResponse(call: Call<AllLumpersResponse>, response: Response<AllLumpersResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
@@ -33,8 +34,7 @@ class AllWorkScheduleCancelModel : AllWorkScheduleCancelContract.Model {
     }
 
     override fun cancelAllWorkSchedules(
-        selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String,
-        onFinishedListener: AllWorkScheduleCancelContract.Model.OnFinishedListener
+        selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String, onFinishedListener: AllWorkScheduleCancelContract.Model.OnFinishedListener
     ) {
         val request = CancelAllSchedulesRequest(selectedLumperIdsList, notesQHL, notesCustomer)
         val day = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, Date())

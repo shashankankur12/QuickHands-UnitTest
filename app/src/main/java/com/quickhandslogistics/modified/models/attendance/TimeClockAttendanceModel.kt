@@ -31,8 +31,7 @@ class TimeClockAttendanceModel : TimeClockAttendanceContract.Model {
     }
 
     override fun saveLumpersAttendanceList(
-        attendanceDetailList: List<AttendanceDetail>,
-        onFinishedListener: TimeClockAttendanceContract.Model.OnFinishedListener
+        attendanceDetailList: List<AttendanceDetail>, onFinishedListener: TimeClockAttendanceContract.Model.OnFinishedListener
     ) {
         DataManager.getService().saveAttendanceDetails(getAuthToken(), attendanceDetailList).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
