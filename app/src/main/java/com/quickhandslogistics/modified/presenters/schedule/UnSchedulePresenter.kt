@@ -12,15 +12,18 @@ import com.quickhandslogistics.modified.data.schedule.UnScheduleListAPIResponse
 import com.quickhandslogistics.modified.models.schedule.UnScheduleModel
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_REQUEST_PARAMETER
-import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 import kotlin.collections.ArrayList
 
-class UnSchedulePresenter(
-    private var unScheduleView: UnScheduleContract.View?, private val resources: Resources
-) : UnScheduleContract.Presenter, UnScheduleContract.Model.OnFinishedListener {
+class UnSchedulePresenter(private var unScheduleView: UnScheduleContract.View?, private val resources: Resources) :
+    UnScheduleContract.Presenter, UnScheduleContract.Model.OnFinishedListener {
 
-    private val unScheduleModel: UnScheduleModel = UnScheduleModel()
+    private val unScheduleModel = UnScheduleModel()
+
+    /** View Listeners */
+    override fun onDestroy() {
+        unScheduleView = null
+    }
 
     override fun getUnScheduledWorkItems(showProgressDialog: Boolean) {
         if (showProgressDialog) {
@@ -29,10 +32,7 @@ class UnSchedulePresenter(
         unScheduleModel.fetchUnSchedulesByDate(this)
     }
 
-    override fun onDestroy() {
-        unScheduleView = null
-    }
-
+    /** Model Result Listeners */
     override fun onFailure(message: String) {
         unScheduleView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {

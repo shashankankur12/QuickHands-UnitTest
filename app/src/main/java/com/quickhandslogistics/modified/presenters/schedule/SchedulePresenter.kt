@@ -14,21 +14,22 @@ import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.ValueUtils
 import java.util.*
 
-class SchedulePresenter(
-    private var scheduleView: ScheduleContract.View?, private val resources: Resources
-) : ScheduleContract.Presenter, ScheduleContract.Model.OnFinishedListener {
+class SchedulePresenter(private var scheduleView: ScheduleContract.View?, private val resources: Resources) :
+    ScheduleContract.Presenter, ScheduleContract.Model.OnFinishedListener {
 
-    private val scheduleModel: ScheduleModel = ScheduleModel()
+    private val scheduleModel = ScheduleModel()
+
+    /** View Listeners */
+    override fun onDestroy() {
+        scheduleView == null
+    }
 
     override fun getScheduledWorkItemsByDate(date: Date, pageIndex: Int) {
         scheduleView?.showProgressDialog(resources.getString(R.string.api_loading_message))
         scheduleModel.fetchSchedulesByDate(date, pageIndex, this)
     }
 
-    override fun onDestroy() {
-        scheduleView == null
-    }
-
+    /** Model Result Listeners */
     override fun onFailure(message: String) {
         scheduleView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {

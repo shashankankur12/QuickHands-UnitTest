@@ -12,6 +12,7 @@ class AddLumperTimeWorkSheetItemPresenter(
 
     private val addLumperTimeWorkSheetItemModel = AddLumperTimeWorkSheetItemModel()
 
+    /** View Listeners */
     override fun onDestroy() {
         addLumperTimeWorkSheetItemView = null
     }
@@ -27,6 +28,7 @@ class AddLumperTimeWorkSheetItemPresenter(
         )
     }
 
+    /** Model Result Listeners */
     override fun onFailure(message: String) {
         addLumperTimeWorkSheetItemView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {

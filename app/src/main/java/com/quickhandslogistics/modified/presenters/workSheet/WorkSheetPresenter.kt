@@ -4,17 +4,19 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetContract
-import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.modified.models.workSheet.WorkSheetModel
 import com.quickhandslogistics.utils.SharedPref
 
-class WorkSheetPresenter(
-    private var workSheetView: WorkSheetContract.View?,
-    private val resources: Resources, sharedPref: SharedPref
-) : WorkSheetContract.Presenter, WorkSheetContract.Model.OnFinishedListener {
+class WorkSheetPresenter(private var workSheetView: WorkSheetContract.View?, private val resources: Resources, sharedPref: SharedPref) :
+    WorkSheetContract.Presenter, WorkSheetContract.Model.OnFinishedListener {
 
     private val workSheetModel = WorkSheetModel(sharedPref)
+
+    /** View Listeners */
+    override fun onDestroy() {
+        workSheetView = null
+    }
 
     override fun fetchWorkSheetList() {
         workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_message))
@@ -22,10 +24,7 @@ class WorkSheetPresenter(
         workSheetModel.fetchWorkSheetList(this)
     }
 
-    override fun onDestroy() {
-        workSheetView = null
-    }
-
+    /** Model Result Listeners */
     override fun onFailure(message: String) {
         workSheetView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {

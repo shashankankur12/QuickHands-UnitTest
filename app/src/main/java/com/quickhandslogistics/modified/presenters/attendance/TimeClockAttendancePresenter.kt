@@ -9,12 +9,15 @@ import com.quickhandslogistics.modified.data.attendance.GetAttendanceAPIResponse
 import com.quickhandslogistics.modified.models.attendance.TimeClockAttendanceModel
 import com.quickhandslogistics.utils.ValueUtils
 
-class TimeClockAttendancePresenter(
-    private var timeClockAttendanceView: TimeClockAttendanceContract.View?, private val resources: Resources
-) : TimeClockAttendanceContract.Presenter, TimeClockAttendanceContract.Model.OnFinishedListener {
+class TimeClockAttendancePresenter(private var timeClockAttendanceView: TimeClockAttendanceContract.View?, private val resources: Resources) :
+    TimeClockAttendanceContract.Presenter, TimeClockAttendanceContract.Model.OnFinishedListener {
 
-    private val timeClockAttendanceModel: TimeClockAttendanceModel =
-        TimeClockAttendanceModel()
+    private val timeClockAttendanceModel = TimeClockAttendanceModel()
+
+    /** View Listeners */
+    override fun onDestroy() {
+        timeClockAttendanceView = null
+    }
 
     override fun fetchAttendanceList(pageIndex: Int) {
         timeClockAttendanceView?.showProgressDialog(resources.getString(R.string.api_loading_message))
@@ -26,10 +29,7 @@ class TimeClockAttendancePresenter(
         timeClockAttendanceModel.saveLumpersAttendanceList(attendanceDetailList, this)
     }
 
-    override fun onDestroy() {
-        timeClockAttendanceView = null
-    }
-
+    /** Model Result Listeners */
     override fun onFailure(message: String) {
         timeClockAttendanceView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {

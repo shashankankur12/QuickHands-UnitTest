@@ -6,19 +6,22 @@ import com.quickhandslogistics.modified.data.dashboard.LeadProfileData
 import com.quickhandslogistics.modified.models.DashBoardModel
 import com.quickhandslogistics.utils.SharedPref
 
-class DashBoardPresenter(
-    private var dashBoardView: DashBoardContract.View?,
-    sharedPref: SharedPref
-) :
+class DashBoardPresenter(private var dashBoardView: DashBoardContract.View?, sharedPref: SharedPref) :
     DashBoardContract.Presenter, DashBoardContract.Model.OnFinishedListener {
-    private val dashBoardModel: DashBoardModel = DashBoardModel(sharedPref)
 
+    private val dashBoardModel = DashBoardModel(sharedPref)
+
+    /** View Listeners */
     override fun onDestroy() {
         dashBoardView = null
     }
 
     override fun loadLeadProfileData() {
         dashBoardModel.fetchLeadProfileData(this)
+    }
+
+    /** Model Result Listeners */
+    override fun onFailure(message: String) {
     }
 
     override fun onLoadLeadProfile(leadProfileData: LeadProfileData) {
@@ -29,8 +32,5 @@ class DashBoardPresenter(
         response.data?.let {
             dashBoardModel.processLeadProfileData(it, this)
         }
-    }
-
-    override fun onFailure(message: String) {
     }
 }

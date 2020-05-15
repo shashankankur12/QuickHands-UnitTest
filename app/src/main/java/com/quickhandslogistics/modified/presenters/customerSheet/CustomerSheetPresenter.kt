@@ -9,14 +9,16 @@ import com.quickhandslogistics.modified.models.customerSheet.CustomerSheetModel
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 import kotlin.Comparator
-import kotlin.math.sign
 
-class CustomerSheetPresenter(
-    private var workSheetView: CustomerSheetContract.View?,
-    private val resources: Resources, sharedPref: SharedPref
-) : CustomerSheetContract.Presenter, CustomerSheetContract.Model.OnFinishedListener {
+class CustomerSheetPresenter(private var workSheetView: CustomerSheetContract.View?, private val resources: Resources, sharedPref: SharedPref) :
+    CustomerSheetContract.Presenter, CustomerSheetContract.Model.OnFinishedListener {
 
     private val customerSheetModel = CustomerSheetModel(sharedPref)
+
+    /** View Listeners */
+    override fun onDestroy() {
+        workSheetView = null
+    }
 
     override fun getCustomerSheetByDate(date: Date) {
         workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_message))
@@ -29,10 +31,7 @@ class CustomerSheetPresenter(
         customerSheetModel.saveCustomerSheet(customerName, notesCustomer, signatureFilePath, this)
     }
 
-    override fun onDestroy() {
-        workSheetView = null
-    }
-
+    /** Model Result Listeners */
     override fun onFailure(message: String) {
         workSheetView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
@@ -42,9 +41,7 @@ class CustomerSheetPresenter(
         }
     }
 
-    override fun onSuccessFetchCustomerSheet(
-        customerSheetListAPIResponse: CustomerSheetListAPIResponse, selectedDate: Date
-    ) {
+    override fun onSuccessFetchCustomerSheet(customerSheetListAPIResponse: CustomerSheetListAPIResponse, selectedDate: Date) {
         workSheetView?.hideProgressDialog()
         customerSheetListAPIResponse.data?.scheduleDetails?.let { scheduleDetails ->
 
@@ -65,9 +62,7 @@ class CustomerSheetPresenter(
                 workItem1.startTime!!.compareTo(workItem2.startTime!!)
             })
 
-            workSheetView?.showCustomerSheets(
-                scheduleDetails, customerSheetListAPIResponse.data?.customerSheet, selectedDate
-            )
+            workSheetView?.showCustomerSheets(scheduleDetails, customerSheetListAPIResponse.data?.customerSheet, selectedDate)
         }
     }
 

@@ -8,12 +8,15 @@ import com.quickhandslogistics.modified.data.lumperSheet.LumperWorkDetailAPIResp
 import com.quickhandslogistics.modified.models.lumperSheet.LumperWorkDetailModel
 import java.util.*
 
-class LumperWorkDetailPresenter(
-    private var lumperWorkDetailView: LumperWorkDetailContract.View?,
-    private val resources: Resources
-) : LumperWorkDetailContract.Presenter, LumperWorkDetailContract.Model.OnFinishedListener {
+class LumperWorkDetailPresenter(private var lumperWorkDetailView: LumperWorkDetailContract.View?, private val resources: Resources) :
+    LumperWorkDetailContract.Presenter, LumperWorkDetailContract.Model.OnFinishedListener {
 
-    private val lumperWorkDetailModel: LumperWorkDetailModel = LumperWorkDetailModel()
+    private val lumperWorkDetailModel = LumperWorkDetailModel()
+
+    /** View Listeners */
+    override fun onDestroy() {
+        lumperWorkDetailView = null
+    }
 
     override fun getLumperWorkDetails(lumperId: String, selectedDate: Date) {
         lumperWorkDetailView?.showProgressDialog(resources.getString(R.string.api_loading_message))
@@ -25,10 +28,7 @@ class LumperWorkDetailPresenter(
         lumperWorkDetailModel.saveLumperSignature(lumperId, date, signatureFilePath, this)
     }
 
-    override fun onDestroy() {
-        lumperWorkDetailView = null
-    }
-
+    /** Model Result Listeners */
     override fun onFailure(message: String) {
         lumperWorkDetailView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {

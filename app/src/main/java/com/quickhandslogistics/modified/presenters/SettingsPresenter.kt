@@ -6,15 +6,12 @@ import com.quickhandslogistics.modified.models.SettingsModel
 import com.quickhandslogistics.utils.SharedPref
 
 class SettingsPresenter(
-    private var settingView: SettingContract.View?,
-    resources: Resources, sharedPref: SharedPref
+    private var settingView: SettingContract.View?, resources: Resources, sharedPref: SharedPref
 ) : SettingContract.Presenter, SettingContract.Model.OnFinishedListener {
 
-    private val settingsModel: SettingsModel = SettingsModel(resources, sharedPref)
+    private val settingsModel = SettingsModel(resources, sharedPref)
 
-    /*
-    *Presenter Interfaces
-    */
+    /** View Listeners */
     override fun onDestroy() {
         settingView = null
     }
@@ -31,9 +28,7 @@ class SettingsPresenter(
         settingsModel.saveNotificationState(checked, this)
     }
 
-    /*
-    *Model Result Interfaces
-    */
+    /** Model Result Listeners */
     override fun restartActivity() {
         settingView?.restartActivity()
     }

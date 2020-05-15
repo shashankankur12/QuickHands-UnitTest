@@ -22,12 +22,12 @@ class LoginContract {
             fun emptyEmployeeId()
             fun emptyPassword()
             fun invalidPassword()
+            fun onLeadProfileSuccess(leadProfileAPIResponse: LeadProfileAPIResponse)
             fun onLoadEmployeeId(employeeId: String)
             fun onLoginSuccess(loginResponse: LoginResponse)
-            fun processCredentials(employeeLoginId: String, password: String)
             fun onRegistrationTakenSaved(employeeLoginId: String, password: String)
+            fun processCredentials(employeeLoginId: String, password: String)
             fun showNextScreen()
-            fun onLeadProfileSuccess(leadProfileAPIResponse: LeadProfileAPIResponse)
         }
     }
 

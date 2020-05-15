@@ -1,6 +1,6 @@
 package com.quickhandslogistics.modified.contracts.setting
 
-import com.quickhandslogistics.modified.presenters.SettingsPresenter
+import com.quickhandslogistics.modified.contracts.BaseContract
 
 class SettingContract {
     interface Model {
@@ -19,8 +19,7 @@ class SettingContract {
         fun restartActivity()
     }
 
-    interface Presenter {
-        fun onDestroy()
+    interface Presenter : BaseContract.Presenter {
         fun checkSelectedSettings()
         fun saveSelectedLanguage(selectedLanguage: String)
         fun changeNotificationState(checked: Boolean)

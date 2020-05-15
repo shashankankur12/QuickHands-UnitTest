@@ -7,14 +7,12 @@ import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemDetailC
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetailAPIResponse
 import com.quickhandslogistics.modified.models.workSheet.WorkSheetItemDetailModel
 
-class WorkSheetItemDetailPresenter(
-    private var workSheetItemDetailView: WorkSheetItemDetailContract.View?,
-    private val resources: Resources
-) : WorkSheetItemDetailContract.Presenter,
-    WorkSheetItemDetailContract.Model.OnFinishedListener {
+class WorkSheetItemDetailPresenter(private var workSheetItemDetailView: WorkSheetItemDetailContract.View?, private val resources: Resources) :
+    WorkSheetItemDetailContract.Presenter, WorkSheetItemDetailContract.Model.OnFinishedListener {
 
     private val workSheetItemDetailModel = WorkSheetItemDetailModel()
 
+    /** View Listeners */
     override fun onDestroy() {
         workSheetItemDetailView = null
     }
@@ -29,13 +27,12 @@ class WorkSheetItemDetailPresenter(
         workSheetItemDetailModel.changeWorkItemStatus(workItemId, status, this)
     }
 
-    override fun updateWorkItemNotes(
-        workItemId: String, notesQHLCustomer: String, notesQHL: String
-    ) {
+    override fun updateWorkItemNotes(workItemId: String, notesQHLCustomer: String, notesQHL: String) {
         workSheetItemDetailView?.showProgressDialog(resources.getString(R.string.api_loading_message))
         workSheetItemDetailModel.updateWorkItemNotes(workItemId, notesQHLCustomer, notesQHL, this)
     }
 
+    /** Model Result Listeners */
     override fun onFailure(message: String) {
         workSheetItemDetailView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
@@ -48,9 +45,7 @@ class WorkSheetItemDetailPresenter(
     override fun onSuccess(response: WorkItemDetailAPIResponse) {
         workSheetItemDetailView?.hideProgressDialog()
         response.data?.workItemDetail?.let { workItemDetail ->
-            workSheetItemDetailView?.showWorkItemDetail(
-                workItemDetail, response.data?.lumpersTimeSchedule
-            )
+            workSheetItemDetailView?.showWorkItemDetail(workItemDetail, response.data?.lumpersTimeSchedule)
         }
     }
 

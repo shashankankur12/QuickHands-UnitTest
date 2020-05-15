@@ -8,21 +8,22 @@ import com.quickhandslogistics.modified.controls.ScheduleUtils.getScheduleTypeNa
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetailAPIResponse
 import com.quickhandslogistics.modified.models.schedule.UnScheduleDetailModel
 
-class UnScheduleDetailPresenter(
-    private var unScheduleDetailView: UnScheduleDetailContract.View?, private val resources: Resources
-) : UnScheduleDetailContract.Presenter, UnScheduleDetailContract.Model.OnFinishedListener {
+class UnScheduleDetailPresenter(private var unScheduleDetailView: UnScheduleDetailContract.View?, private val resources: Resources) :
+    UnScheduleDetailContract.Presenter, UnScheduleDetailContract.Model.OnFinishedListener {
 
-    private val unScheduleDetailModel: UnScheduleDetailModel = UnScheduleDetailModel()
+    private val unScheduleDetailModel = UnScheduleDetailModel()
+
+    /** View Listeners */
+    override fun onDestroy() {
+        unScheduleDetailView = null
+    }
 
     override fun getScheduleDetail(scheduleIdentityId: String, scheduleFromDate: String) {
         unScheduleDetailView?.showProgressDialog(resources.getString(R.string.api_loading_message))
         unScheduleDetailModel.fetchScheduleDetail(scheduleIdentityId, scheduleFromDate, this)
     }
 
-    override fun onDestroy() {
-        unScheduleDetailView = null
-    }
-
+    /** Model Result Listeners */
     override fun onFailure(message: String) {
         unScheduleDetailView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {

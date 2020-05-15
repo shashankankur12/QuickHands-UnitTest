@@ -9,13 +9,15 @@ import com.quickhandslogistics.modified.models.scheduleTime.ScheduleTimeModel
 import com.quickhandslogistics.utils.DateUtils
 import java.util.*
 
-class ScheduleTimePresenter(
-    private var scheduleTimeView: ScheduleTimeContract.View?,
-    private val resources: Resources
-) :
+class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.View?, private val resources: Resources) :
     ScheduleTimeContract.Presenter, ScheduleTimeContract.Model.OnFinishedListener {
 
-    private val scheduleTimeModel: ScheduleTimeModel = ScheduleTimeModel()
+    private val scheduleTimeModel = ScheduleTimeModel()
+
+    /** View Listeners */
+    override fun onDestroy() {
+        scheduleTimeView = null
+    }
 
     override fun getSchedulesTimeByDate(date: Date) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, date)
@@ -25,10 +27,7 @@ class ScheduleTimePresenter(
         scheduleTimeModel.fetchSchedulesTimeByDate(date, this)
     }
 
-    override fun onDestroy() {
-        scheduleTimeView = null
-    }
-
+    /** Model Result Listeners */
     override fun onFailure(message: String) {
         scheduleTimeView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
@@ -38,17 +37,12 @@ class ScheduleTimePresenter(
         }
     }
 
-    override fun onSuccess(
-        selectedDate: Date, scheduleTimeAPIResponse: GetScheduleTimeAPIResponse
-    ) {
+    override fun onSuccess(selectedDate: Date, scheduleTimeAPIResponse: GetScheduleTimeAPIResponse) {
         scheduleTimeView?.hideProgressDialog()
 
         scheduleTimeAPIResponse.data?.scheduledLumpers?.let {
-            scheduleTimeView?.showScheduleTimeData(
-                selectedDate, scheduleTimeAPIResponse.data?.scheduledLumpers!!
-            )
+            scheduleTimeView?.showScheduleTimeData(selectedDate, scheduleTimeAPIResponse.data?.scheduledLumpers!!)
         }
-
         scheduleTimeView?.showNotesData(scheduleTimeAPIResponse.data?.notes)
     }
 }
