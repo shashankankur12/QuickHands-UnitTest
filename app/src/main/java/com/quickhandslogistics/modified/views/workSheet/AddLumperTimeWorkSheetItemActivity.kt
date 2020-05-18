@@ -17,8 +17,7 @@ import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
 import java.util.*
 
-class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
-    AddLumperTimeWorkSheetItemContract.View {
+class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener, AddLumperTimeWorkSheetItemContract.View {
 
     private var workItemId = ""
     private var employeeData: EmployeeData? = null

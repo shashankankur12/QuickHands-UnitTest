@@ -21,7 +21,7 @@ import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_REQUEST_PARAMETER
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
 import com.quickhandslogistics.utils.SnackBarFactory
-import kotlinx.android.synthetic.main.content_unschedule_detail.*
+import kotlinx.android.synthetic.main.content_schedule_detail.*
 
 class UnScheduleDetailActivity : BaseActivity(), UnScheduleDetailContract.View {
 
@@ -34,7 +34,7 @@ class UnScheduleDetailActivity : BaseActivity(), UnScheduleDetailContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_unschedule_detail)
+        setContentView(R.layout.activity_schedule_detail)
         setupToolbar(getString(R.string.unscheduled_work))
 
         initializeUI()

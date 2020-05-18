@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
+    android:paddingBottom="@dimen/_6sdp"
     tools:context=".modified.views.workSheet.WorkSheetItemDetailNotesFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -63,7 +64,6 @@
             style="@style/positiveRoundButtonTheme"
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
             android:text="@string/string_submit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

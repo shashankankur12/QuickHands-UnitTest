@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.utils.DateUtils
-import kotlinx.android.synthetic.main.item_unscheduled_workitem.view.*
+import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.item_scheduled_workitem.view.*
 
 class UnScheduledWorkItemAdapter(private val resources: Resources, private val workItemTypeDisplayName: String) :
     RecyclerView.Adapter<UnScheduledWorkItemAdapter.ViewHolder>() {
@@ -17,7 +18,7 @@ class UnScheduledWorkItemAdapter(private val resources: Resources, private val w
     private val workItemsList: ArrayList<WorkItemDetail> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_unscheduled_workitem, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_scheduled_workitem, parent, false)
         return ViewHolder(view)
     }
 
@@ -37,6 +38,11 @@ class UnScheduledWorkItemAdapter(private val resources: Resources, private val w
 
         private val textViewStartTime: TextView = view.textViewStartTime
         private val textViewDropItems: TextView = view.textViewDropItems
+        private val circleImageViewArrow: CircleImageView = view.circleImageViewArrow
+
+        init {
+            circleImageViewArrow.visibility = View.GONE
+        }
 
         fun bind(workItemDetail: WorkItemDetail) {
             textViewStartTime.text = String.format(resources.getString(R.string.start_time_container), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))

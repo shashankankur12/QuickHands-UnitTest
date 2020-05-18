@@ -15,7 +15,8 @@
         android:textColor="@color/detailHeader"
         app:layout_constraintEnd_toStartOf="@id/textViewValue"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.65" />
 
     <TextView
         android:id="@+id/textViewValue"
@@ -25,6 +26,7 @@
         android:textColor="@color/textBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/textViewHeader"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.35" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

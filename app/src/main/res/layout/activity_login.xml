@@ -27,13 +27,13 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_140sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:src="@drawable/ic_splash_logo" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_250sdp"
+                android:layout_height="@dimen/_125sdp"
                 android:layout_marginTop="@dimen/_30sdp"
                 android:src="@drawable/login_illustration" />
         </LinearLayout>
@@ -73,8 +73,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:drawableStart="@drawable/ic_employee_id_deselect"
                 android:hint="@string/enter_employee_id"
-                android:inputType="textPersonName|textCapCharacters"
-                android:textSize="@dimen/_12ssp" />
+                android:inputType="textPersonName|textCapCharacters" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -108,6 +107,7 @@
             <Button
                 android:id="@+id/buttonLogin"
                 style="@style/positiveRoundButtonTheme"
+                android:layout_height="wrap_content"
                 android:text="@string/string_login" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

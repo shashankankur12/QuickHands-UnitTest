@@ -18,6 +18,7 @@
             android:layout_width="@dimen/_70sdp"
             android:layout_height="@dimen/_70sdp"
             android:src="@drawable/dummy"
+            android:transitionName="@string/transition_name"
             app:civ_border_color="@color/imageBorder"
             app:civ_border_width="1dp"
             app:layout_constraintEnd_toEndOf="parent"

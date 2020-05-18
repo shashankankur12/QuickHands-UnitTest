@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_40sdp"
+    android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
     android:gravity="start|center_vertical"
     android:orientation="horizontal"
-    android:paddingStart="@dimen/_12ssp"
-    android:paddingEnd="@dimen/_12ssp">
+    android:padding="@dimen/_12ssp">
 
     <ImageView
         android:id="@+id/list_item_nav_drawer_icon"

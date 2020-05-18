@@ -32,7 +32,6 @@
         android:id="@+id/buttonUpdate"
         style="@style/positiveRoundButtonTheme"
         android:layout_width="0dp"
-        android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginBottom="@dimen/_10sdp"
         android:text="@string/update_building_operations"
         android:visibility="gone"

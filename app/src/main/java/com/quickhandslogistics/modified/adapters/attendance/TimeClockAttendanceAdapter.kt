@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.util.keyIterator
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import com.google.android.flexbox.FlexboxLayout
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.attendance.TimeClockAttendanceContract
 import com.quickhandslogistics.modified.controls.CustomTextView
@@ -77,7 +78,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
         private val textViewEmployeeId: CustomTextView = view.textViewEmployeeId
         private val textViewAddTime: TextView = view.textViewAddTime
         private val textViewNoTimeLoggedIn: TextView = view.textViewNoTimeLoggedIn
-        private val linearLayoutLumperTime: LinearLayout = view.linearLayoutLumperTime
+        private val flexboxLayoutLumperTime: FlexboxLayout = view.flexboxLayoutLumperTime
         private val textViewShiftTime: TextView = view.textViewShiftTime
         private val textViewLunchTime: TextView = view.textViewLunchTime
         private val editTextNotes: EditText = view.editTextNotes
@@ -137,7 +138,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
             checkBoxAttendance.isChecked = isPresent
             checkBoxAttendance.isEnabled = checkIfEditable(isPresent, ATTENDANCE_IS_PRESENT, lumperId)
             textViewAddTime.visibility = if (isPresent) View.VISIBLE else View.GONE
-            linearLayoutLumperTime.visibility = if (isPresent) View.VISIBLE else View.GONE
+            flexboxLayoutLumperTime.visibility = if (isPresent) View.VISIBLE else View.GONE
             textViewNoTimeLoggedIn.visibility = if (isPresent) View.GONE else View.VISIBLE
 
             checkBoxAttendance.setOnClickListener(this)

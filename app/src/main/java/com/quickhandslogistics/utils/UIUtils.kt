@@ -1,6 +1,7 @@
 package com.quickhandslogistics.utils
 
 import android.content.Context
+import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
@@ -47,13 +48,13 @@ object UIUtils {
         return displayShiftHours
     }
 
-    fun showEmployeeProfileImage(context: Context, employeeData: EmployeeData?, imageView: CircleImageView) {
+    fun showEmployeeProfileImage(context: Context, employeeData: EmployeeData?, imageView: ImageView) {
         employeeData?.let {
             showEmployeeProfileImage(context, employeeData.profileImageUrl, imageView)
         }
     }
 
-    fun showEmployeeProfileImage(context: Context, profileImageUrl: String?, imageView: CircleImageView) {
+    fun showEmployeeProfileImage(context: Context, profileImageUrl: String?, imageView: ImageView) {
         if (!profileImageUrl.isNullOrEmpty()) {
             Glide.with(context).load(profileImageUrl).placeholder(R.drawable.dummy).error(R.drawable.dummy).into(imageView)
         } else {

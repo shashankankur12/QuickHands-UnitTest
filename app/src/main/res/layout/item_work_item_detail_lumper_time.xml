@@ -116,7 +116,6 @@
             android:layout_marginTop="@dimen/_2sdp"
             android:drawableStart="@drawable/ic_lumper_list_clock"
             android:drawablePadding="@dimen/_5sdp"
-            android:lineSpacingExtra="@dimen/_2sdp"
             android:text="NA - NA"
             android:textColor="@color/textBlack" />
     </LinearLayout>

@@ -28,6 +28,8 @@ class CustomProgressBar {
         }
         progressDialog?.setCancelable(false)
         progressDialog?.show()
+        progressDialog?.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
+        progressDialog?.setContentTextAppearance(R.style.dialogContentTextViewTheme)
     }
 
     fun hide() {
@@ -39,6 +41,8 @@ class CustomProgressBar {
         progressDialog.titleText = if (title.isEmpty()) activityContext.getString(R.string.info) else title
         progressDialog.contentText = message
         progressDialog.show()
+        progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
+        progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
     }
 
     fun showErrorDialog(message: String, activityContext: Context) {
@@ -46,6 +50,8 @@ class CustomProgressBar {
         progressDialog.titleText = activityContext.getString(R.string.error)
         progressDialog.contentText = message
         progressDialog.show()
+        progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
+        progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
     }
 
     fun showSuccessDialog(message: String, activityContext: Context, listener: CustomDialogListener) {
@@ -58,6 +64,8 @@ class CustomProgressBar {
             listener.onConfirmClick()
         }
         progressDialog.show()
+        progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
+        progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
     }
 
     fun showWarningDialog(message: String = "", activityContext: Context, listener: CustomDialogWarningListener) {
@@ -76,6 +84,8 @@ class CustomProgressBar {
             listener.onCancelClick()
         }
         progressDialog.show()
+        progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
+        progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
     }
 }
 

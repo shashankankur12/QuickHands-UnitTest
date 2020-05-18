@@ -20,21 +20,21 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="@dimen/_30sdp"
+            android:padding="@dimen/_25sdp"
             app:layout_constraintBottom_toTopOf="@+id/layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_130sdp"
+                android:layout_height="@dimen/_35sdp"
                 android:src="@drawable/ic_splash_logo" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_width="@dimen/_230sdp"
+                android:layout_height="@dimen/_115sdp"
+                android:layout_marginTop="@dimen/_25sdp"
                 android:src="@drawable/login_illustration" />
         </LinearLayout>
 
@@ -64,48 +64,33 @@
                 android:layout_height="wrap_content"
                 android:text="@string/signInCaption"
                 android:textColor="@color/textBlack"
-                android:textSize="@dimen/_10sdp"
+                android:textSize="@dimen/_10ssp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/editTextEmployeeId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/loginEditTextTheme"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/edittext_background"
                 android:drawableStart="@drawable/ic_employee_id_deselect"
-                android:drawablePadding="@dimen/_10ssp"
                 android:hint="@string/enter_employee_id"
-                android:inputType="textPersonName|textCapCharacters"
-                android:paddingStart="@dimen/_14ssp"
-                android:paddingTop="@dimen/_10ssp"
-                android:paddingEnd="@dimen/_14ssp"
-                android:paddingBottom="@dimen/_10ssp"
-                android:textSize="@dimen/_10ssp" />
+                android:inputType="textPersonName|textCapCharacters" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:background="@drawable/edittext_background"
-                android:paddingEnd="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_6sdp"
                 app:hintEnabled="false"
                 app:passwordToggleEnabled="true">
 
                 <EditText
                     android:id="@+id/editTextPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
+                    style="@style/loginEditTextTheme"
+                    android:background="@null"
                     android:drawableStart="@drawable/ic_password_deselect"
-                    android:drawablePadding="@dimen/_10ssp"
                     android:hint="@string/enter_password"
-                    android:inputType="textPassword"
-                    android:paddingStart="@dimen/_14ssp"
-                    android:paddingTop="@dimen/_10ssp"
-                    android:paddingEnd="@dimen/_14ssp"
-                    android:paddingBottom="@dimen/_10ssp"
-                    android:textSize="@dimen/_10ssp" />
+                    android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -113,11 +98,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
-                android:padding="@dimen/_10sdp"
+                android:padding="@dimen/_8sdp"
                 android:text="@string/string_forgot_password"
                 android:textSize="@dimen/_10ssp"
                 android:textStyle="bold" />

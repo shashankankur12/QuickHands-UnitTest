@@ -21,32 +21,29 @@
 
     <TextView
         android:id="@+id/textViewLeadName"
+        style="@style/titleBigTextViewTheme"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
         android:drawableEnd="@drawable/ic_arrow_right"
         android:text="Lead Name"
         android:textColor="@color/textBlack"
-        android:textSize="@dimen/_13ssp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/circleImageViewProfile" />
 
     <TextView
         android:id="@+id/textViewEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/valuesTextViewTheme"
         android:layout_marginTop="@dimen/_2sdp"
         android:text="abc@quickhands.com"
-        android:textColor="@color/colorLightGrey"
+        android:textColor="@color/detailHeader"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewLeadName" />
 
     <TextView
         android:id="@+id/textViewEmployeeId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/valuesTextViewTheme"
         android:layout_marginTop="@dimen/_2sdp"
         android:layout_marginBottom="@dimen/_5sdp"
         android:text="Emp ID: 1001"

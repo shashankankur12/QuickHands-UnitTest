@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15ssp"
             android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/layoutEmailAddress"
+            app:layout_constraintEnd_toStartOf="@+id/layoutPhoneNumber"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labelBarrier1">
 
@@ -91,7 +91,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layoutEmailAddress"
+            android:id="@+id/layoutPhoneNumber"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15ssp"
@@ -99,38 +99,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/layoutEmployeeId"
             app:layout_constraintTop_toBottomOf="@+id/labelBarrier1">
-
-            <TextView
-                style="@style/detailTextHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/string_email_address" />
-
-            <TextView
-                android:id="@+id/textViewEmailAddress"
-                style="@style/detailTextValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:text="connordavidson321@gmail.com" />
-        </LinearLayout>
-
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/labelBarrier2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="layoutEmployeeId,layoutEmailAddress" />
-
-        <LinearLayout
-            android:id="@+id/layoutPhoneNumber"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15ssp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/labelBarrier2">
 
             <TextView
                 style="@style/detailTextHeader"
@@ -144,7 +112,39 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_2sdp"
-                android:text="+91 - 9876543210" />
+                android:text="+91 - 9876543210"  />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/labelBarrier2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="layoutEmployeeId,layoutPhoneNumber" />
+
+        <LinearLayout
+            android:id="@+id/layoutEmailAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15ssp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelBarrier2">
+
+            <TextView
+                style="@style/detailTextHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/string_email_address" />
+
+            <TextView
+                android:id="@+id/textViewEmailAddress"
+                style="@style/detailTextValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="connordavidson321@gmail.com"/>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

@@ -16,6 +16,9 @@
         android:theme="@style/AppTheme"
         tools:ignore="LockedOrientationActivity">
         <activity
+            android:name=".modified.views.common.FullScreenImageActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".modified.views.common.ChooseLumpersActivity"
             android:screenOrientation="portrait" />
         <activity

@@ -33,7 +33,6 @@
         android:id="@+id/buttonAddLumpers"
         style="@style/positiveRoundButtonTheme"
         android:layout_width="0dp"
-        android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginBottom="@dimen/_10sdp"
         android:text="@string/add_lumpers"
         android:visibility="gone"

@@ -13,6 +13,7 @@
         android:layout_width="0dp"
         android:text="@string/in_progress"
         android:textColor="@color/textBlack"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/imageViewAdd"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -1,11 +1,13 @@
 package com.quickhandslogistics.modified.views
 
 import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.franmontiel.localechanger.LocaleChanger
 import com.franmontiel.localechanger.utils.ActivityRecreationHelper
@@ -90,6 +92,14 @@ open class BaseActivity : AppCompatActivity(), BaseContract.View {
         }
         if (isFinish) finish()
         overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out)
+    }
+
+    fun startZoomIntent(className: Class<*>, bundle: Bundle, view: View) {
+        val intent = Intent(this, className)
+        intent.putExtras(bundle)
+
+        val transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(this, view, getString(R.string.transition_name))
+        startActivity(intent, transitionActivityOptions.toBundle())
     }
 
     fun showErrorDialog(message: String) {

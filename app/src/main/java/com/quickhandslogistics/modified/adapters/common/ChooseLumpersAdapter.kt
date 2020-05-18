@@ -138,7 +138,7 @@ class ChooseLumpersAdapter(
     }
 
     fun getSelectedLumpersList(): ArrayList<EmployeeData> {
-        return selectedLumpersMap.values.distinct() as ArrayList<EmployeeData>
+        return ArrayList(selectedLumpersMap.values)
     }
 
     fun updateLumpersData(employeeDataList: ArrayList<EmployeeData>, currentPageIndex: Int) {
