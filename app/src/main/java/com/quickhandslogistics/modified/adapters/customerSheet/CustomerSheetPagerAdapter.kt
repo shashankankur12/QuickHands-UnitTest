@@ -15,7 +15,7 @@ import java.util.*
 class CustomerSheetPagerAdapter(childFragmentManager: FragmentManager, private val resources: Resources) :
     FragmentStatePagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    private val tabTitles = arrayOf(R.string.containers, R.string.string_customer)
+    private val tabTitles = arrayOf(R.string.containers, R.string.customer_details)
 
     private var containersFragment = CustomerSheetContainersFragment.newInstance()
     private var customerFragment = CustomerSheetCustomerFragment.newInstance()

@@ -40,24 +40,29 @@ class CustomProgressBar {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.NORMAL_TYPE)
         progressDialog.titleText = if (title.isEmpty()) activityContext.getString(R.string.info) else title
         progressDialog.contentText = message
+        progressDialog.confirmText = activityContext.getString(R.string.string_ok)
         progressDialog.show()
         progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
         progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
+        updateButtonsUI(progressDialog, activityContext)
     }
 
     fun showErrorDialog(message: String, activityContext: Context) {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.ERROR_TYPE)
         progressDialog.titleText = activityContext.getString(R.string.error)
         progressDialog.contentText = message
+        progressDialog.confirmText = activityContext.getString(R.string.string_ok)
         progressDialog.show()
         progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
         progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
+        updateButtonsUI(progressDialog, activityContext)
     }
 
     fun showSuccessDialog(message: String, activityContext: Context, listener: CustomDialogListener) {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.SUCCESS_TYPE)
         progressDialog.titleText = activityContext.getString(R.string.success)
         progressDialog.contentText = message
+        progressDialog.confirmText = activityContext.getString(R.string.string_ok)
         progressDialog.setCancelable(false)
         progressDialog.setConfirmClickListener {
             it.dismiss()
@@ -66,6 +71,7 @@ class CustomProgressBar {
         progressDialog.show()
         progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
         progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
+        updateButtonsUI(progressDialog, activityContext)
     }
 
     fun showWarningDialog(message: String = "", activityContext: Context, listener: CustomDialogWarningListener) {
@@ -86,6 +92,17 @@ class CustomProgressBar {
         progressDialog.show()
         progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
         progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
+        updateButtonsUI(progressDialog, activityContext)
+    }
+
+    private fun updateButtonsUI(progressDialog: SweetAlertDialog, activityContext: Context) {
+        progressDialog.setConfirmTextAppearance(R.style.dialogConfirmButtonTheme)
+        progressDialog.setConfirmButtonBackground(R.drawable.round_button_red_selector)
+        progressDialog.setConfirmButtonHeight(((activityContext.resources.getDimension(R.dimen.dialogButtonHeight) / activityContext.resources.displayMetrics.density).toInt()))
+
+        progressDialog.setCancelTextAppearance(R.style.dialogCancelButtonTheme)
+        progressDialog.setCancelButtonBackground(R.drawable.round_button_negative_selector)
+        progressDialog.setCancelButtonHeight(((activityContext.resources.getDimension(R.dimen.dialogButtonHeight) / activityContext.resources.displayMetrics.density).toInt()))
     }
 }
 

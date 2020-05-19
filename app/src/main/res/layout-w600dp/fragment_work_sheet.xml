@@ -9,7 +9,7 @@
     tools:context=".modified.views.workSheet.WorkSheetFragment">
 
     <com.quickhandslogistics.modified.controls.CustomTextView
-        android:id="@+id/textViewBuildingName"
+        android:id="@+id/textViewCompanyName"
         style="@style/titleBigTextViewTheme"
         android:layout_width="match_parent"
         android:layout_marginStart="@dimen/_12ssp"
@@ -29,7 +29,7 @@
         android:drawablePadding="@dimen/_5sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewBuildingName" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewCompanyName" />
 
     <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewTotalCount"

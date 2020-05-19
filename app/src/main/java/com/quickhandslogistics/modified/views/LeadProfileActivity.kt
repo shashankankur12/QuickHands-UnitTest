@@ -61,6 +61,6 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
         textViewEmailAddress.text = if (!employeeData.email.isNullOrEmpty()) employeeData.email else "-"
         textViewPhoneNumber.text = if (!employeeData.phone.isNullOrEmpty()) PhoneNumberUtils.formatNumber(employeeData.phone, "US") else "-"
         textViewShiftHours.text = if (!employeeData.shiftHours.isNullOrEmpty()) employeeData.shiftHours else "-"
-        textViewBuildingName.text = if (!employeeData.buildingDetailData?.buildingName.isNullOrEmpty()) employeeData.buildingDetailData?.buildingName else "-"
+        textViewBuildingName.text = if (!employeeData.buildingDetailData?.buildingName.isNullOrEmpty()) employeeData.buildingDetailData?.buildingName!!.capitalize() else "-"
     }
 }

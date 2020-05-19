@@ -19,10 +19,9 @@ import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment
 import com.quickhandslogistics.modified.views.scheduleTime.ScheduleTimeFragment
 import com.quickhandslogistics.modified.views.workSheet.AllWorkScheduleCancelActivity
 import com.quickhandslogistics.modified.views.workSheet.WorkSheetFragment
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.UIUtils
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.view.fragments.ReportFragment
+import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.include_main_nav_drawer.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import kotlinx.android.synthetic.main.nav_header_dashboard.*
@@ -46,7 +45,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
 
         headerLayout.setOnClickListener(this)
 
-        dashBoardPresenter = DashBoardPresenter(this, sharedPref)
+        dashBoardPresenter = DashBoardPresenter(this, resources, sharedPref)
         dashBoardPresenter.loadLeadProfileData()
     }
 
@@ -123,6 +122,10 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         }
     }
 
+    override fun showAPIErrorMessage(message: String) {
+        SnackBarFactory.createSnackBar(activity, frameLayoutMain, message)
+    }
+
     /** Presenter Listeners */
     override fun showLeadProfile(leadProfileData: LeadProfileData) {
         UIUtils.showEmployeeProfileImage(activity, leadProfileData, circleImageViewProfile)
@@ -132,6 +135,10 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         textViewEmployeeId.text = if (!leadProfileData.employeeId.isNullOrEmpty()) leadProfileData.employeeId else "-"
 
         textViewVersionName.text = String.format("v%s", BuildConfig.VERSION_NAME)
+    }
+
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
     /** Child Fragment Interaction Listeners */
@@ -148,5 +155,16 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     override fun invalidateCancelAllSchedulesOption(isShown: Boolean) {
         this.isCancelAllScheduleVisible = isShown
         invalidateOptionsMenu()
+    }
+
+    override fun onLogoutOptionSelected() {
+        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.string_logout_dialog), activity, object : CustomDialogWarningListener {
+            override fun onConfirmClick() {
+                dashBoardPresenter.performLogout()
+            }
+
+            override fun onCancelClick() {
+            }
+        })
     }
 }

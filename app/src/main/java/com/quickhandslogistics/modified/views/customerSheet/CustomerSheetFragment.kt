@@ -73,7 +73,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
 
         // Reset Whole Screen Data
-        textViewBuildingName.text = ""
+        textViewCompanyName.text = ""
         textViewWorkItemsDate.text = ""
         textViewTotalCount.text = ""
     }
@@ -95,8 +95,8 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         adapter.updateCustomerSheetList(onGoingWorkItems, scheduleDetails.cancelled!!, scheduleDetails.completed!!, customerSheet, selectedTime)
     }
 
-    override fun showHeaderInfo(buildingName: String, date: String) {
-        textViewBuildingName.text = buildingName.capitalize()
+    override fun showHeaderInfo(companyName: String, date: String) {
+        textViewCompanyName.text = companyName.capitalize()
         textViewWorkItemsDate.text = date
     }
 

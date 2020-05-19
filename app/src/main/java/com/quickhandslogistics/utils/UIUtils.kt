@@ -15,8 +15,8 @@ object UIUtils {
         employeeData?.let {
             fullName = String.format(
                 "%s %s",
-                getDefaultOrValue(employeeData.firstName).capitalize(),
-                getDefaultOrValue(employeeData.lastName).capitalize()
+                getDefaultOrValue(employeeData.firstName).trim().capitalize(),
+                getDefaultOrValue(employeeData.lastName).trim().capitalize()
             )
         }
         return fullName

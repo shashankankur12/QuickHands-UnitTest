@@ -10,14 +10,14 @@ class WorkSheetContract {
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccessFetchWorkSheet(workSheetListAPIResponse: WorkSheetListAPIResponse)
-            fun onSuccessGetHeaderInfo(buildingName: String, date: String)
+            fun onSuccessGetHeaderInfo(companyName: String, date: String)
         }
     }
 
     interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
         fun showWorkSheets(data: WorkSheetListAPIResponse.Data)
-        fun showHeaderInfo(buildingName: String, date: String)
+        fun showHeaderInfo(companyName: String, date: String)
 
         interface OnAdapterItemClickListener {
             fun onSelectLumper(totalSelectedCount: Int)

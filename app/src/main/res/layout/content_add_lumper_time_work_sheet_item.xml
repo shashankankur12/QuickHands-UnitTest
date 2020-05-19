@@ -124,6 +124,7 @@
                 <Button
                     android:id="@+id/buttonStartTime"
                     style="@style/positiveButtonTheme"
+                    android:layout_height="wrap_content"
                     android:text="@string/start_time" />
 
                 <TextView
@@ -138,6 +139,7 @@
                 <Button
                     android:id="@+id/buttonEndTime"
                     style="@style/positiveButtonTheme"
+                    android:layout_height="wrap_content"
                     android:text="@string/end_time" />
 
                 <Space
@@ -176,6 +178,7 @@
                 <Button
                     android:id="@+id/buttonBreakInTime"
                     style="@style/positiveButtonTheme"
+                    android:layout_height="wrap_content"
                     android:text="@string/string_start" />
 
                 <TextView
@@ -190,6 +193,7 @@
                 <Button
                     android:id="@+id/buttonBreakOutTime"
                     style="@style/positiveButtonTheme"
+                    android:layout_height="wrap_content"
                     android:text="@string/string_end" />
 
                 <Space

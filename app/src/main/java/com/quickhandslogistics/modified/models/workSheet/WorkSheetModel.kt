@@ -20,12 +20,12 @@ class WorkSheetModel(private val sharedPref: SharedPref) : WorkSheetContract.Mod
     override fun fetchHeaderInfo(onFinishedListener: WorkSheetContract.Model.OnFinishedListener) {
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
 
-        var buildingName = ""
-        leadProfile?.buildingDetailData?.buildingName?.let { name ->
-            buildingName = name
+        var companyName = ""
+        leadProfile?.buildingDetailData?.customerDetail?.companyName?.let { name ->
+            companyName = name
         }
         val date = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, Date())
-        onFinishedListener.onSuccessGetHeaderInfo(buildingName, date)
+        onFinishedListener.onSuccessGetHeaderInfo(companyName, date)
     }
 
     override fun fetchWorkSheetList(onFinishedListener: WorkSheetContract.Model.OnFinishedListener) {

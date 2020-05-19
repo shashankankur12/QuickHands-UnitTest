@@ -32,26 +32,31 @@ class NotificationService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        val notificationSystemSettingsEnabled = NotificationManagerCompat.from(applicationContext).areNotificationsEnabled()
-        val notificationEnabled = SharedPref.getInstance().getBoolean(AppConstant.PREFERENCE_NOTIFICATION, defaultValue = true)
+        val authToken = SharedPref.getInstance().getString(AppConstant.PREFERENCE_AUTH_TOKEN)
 
-        if (notificationSystemSettingsEnabled && notificationEnabled) {
-            var notificationTitle = getString(R.string.app_name)
-            var notificationContent = ""
-            var notificationType = ""
-            if (!message.data.isNullOrEmpty()) {
-                if (message.data.containsKey(AppConstant.NOTIFICATION_KEY_TITLE)) {
-                    notificationTitle = message.data[AppConstant.NOTIFICATION_KEY_TITLE].toString()
+        // Check if user is logged in or not
+        if (authToken.isNotEmpty()) {
+            val notificationSystemSettingsEnabled = NotificationManagerCompat.from(applicationContext).areNotificationsEnabled()
+            val notificationEnabled = SharedPref.getInstance().getBoolean(AppConstant.PREFERENCE_NOTIFICATION, defaultValue = true)
+
+            if (notificationSystemSettingsEnabled && notificationEnabled) {
+                var notificationTitle = getString(R.string.app_name)
+                var notificationContent = ""
+                var notificationType = ""
+                if (!message.data.isNullOrEmpty()) {
+                    if (message.data.containsKey(AppConstant.NOTIFICATION_KEY_TITLE)) {
+                        notificationTitle = message.data[AppConstant.NOTIFICATION_KEY_TITLE].toString()
+                    }
+                    if (message.data.containsKey(AppConstant.NOTIFICATION_KEY_CONTENT)) {
+                        notificationContent = message.data[AppConstant.NOTIFICATION_KEY_CONTENT].toString()
+                    }
+                    if (message.data.containsKey(AppConstant.NOTIFICATION_KEY_TYPE)) {
+                        notificationType = message.data[AppConstant.NOTIFICATION_KEY_TYPE].toString()
+                    }
+                    createNotification(
+                        notificationTitle, notificationContent, notificationType, message.data
+                    )
                 }
-                if (message.data.containsKey(AppConstant.NOTIFICATION_KEY_CONTENT)) {
-                    notificationContent = message.data[AppConstant.NOTIFICATION_KEY_CONTENT].toString()
-                }
-                if (message.data.containsKey(AppConstant.NOTIFICATION_KEY_TYPE)) {
-                    notificationType = message.data[AppConstant.NOTIFICATION_KEY_TYPE].toString()
-                }
-                createNotification(
-                    notificationTitle, notificationContent, notificationType, message.data
-                )
             }
         }
     }

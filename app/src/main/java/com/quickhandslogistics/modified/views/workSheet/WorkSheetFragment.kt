@@ -64,7 +64,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
 
     private fun resetUI() {
         // Reset Whole Screen Data
-        textViewBuildingName.text = ""
+        textViewCompanyName.text = ""
         textViewWorkItemsDate.text = ""
         textViewTotalCount.text = ""
         textViewLiveLoadsCount.text = ""
@@ -109,8 +109,8 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         adapter.updateWorkItemsList(onGoingWorkItems, data.cancelled!!, data.completed!!)
     }
 
-    override fun showHeaderInfo(buildingName: String, date: String) {
-        textViewBuildingName.text = buildingName.capitalize()
+    override fun showHeaderInfo(companyName: String, date: String) {
+        textViewCompanyName.text = companyName.capitalize()
         textViewWorkItemsDate.text = date
     }
 

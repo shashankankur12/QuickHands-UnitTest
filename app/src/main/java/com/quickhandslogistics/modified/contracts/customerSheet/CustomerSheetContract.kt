@@ -14,7 +14,7 @@ class CustomerSheetContract {
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccessFetchCustomerSheet(customerSheetListAPIResponse: CustomerSheetListAPIResponse, selectedDate: Date)
-            fun onSuccessGetHeaderInfo(buildingName: String, date: String)
+            fun onSuccessGetHeaderInfo(companyName: String, date: String)
             fun onSuccessSaveCustomerSheet()
         }
     }
@@ -22,7 +22,7 @@ class CustomerSheetContract {
     interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
         fun showCustomerSheets(scheduleDetails: CustomerSheetScheduleDetails, customerSheet: CustomerSheetData?, selectedDate: Date)
-        fun showHeaderInfo(buildingName: String, date: String)
+        fun showHeaderInfo(companyName: String, date: String)
         fun customerSavedSuccessfully()
 
         interface OnFragmentInteractionListener {

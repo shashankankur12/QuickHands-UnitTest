@@ -4,7 +4,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
 
 class BuildingDetailData() : Parcelable {
     @SerializedName("id")
@@ -63,6 +62,10 @@ class BuildingDetailData() : Parcelable {
     @Expose
     var updatedAt: String? = null
 
+    @SerializedName("belongsTo")
+    @Expose
+    var customerDetail: CustomerDetail? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         buildingName = parcel.readString()
@@ -78,6 +81,7 @@ class BuildingDetailData() : Parcelable {
         isActive = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         createdAt = parcel.readString()
         updatedAt = parcel.readString()
+        customerDetail = parcel.readParcelable(CustomerDetail::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -95,6 +99,7 @@ class BuildingDetailData() : Parcelable {
         parcel.writeValue(isActive)
         parcel.writeString(createdAt)
         parcel.writeString(updatedAt)
+        parcel.writeParcelable(customerDetail, flags)
     }
 
     override fun describeContents(): Int {

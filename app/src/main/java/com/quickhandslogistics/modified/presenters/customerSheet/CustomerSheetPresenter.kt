@@ -66,8 +66,8 @@ class CustomerSheetPresenter(private var workSheetView: CustomerSheetContract.Vi
         }
     }
 
-    override fun onSuccessGetHeaderInfo(buildingName: String, date: String) {
-        workSheetView?.showHeaderInfo(buildingName, date)
+    override fun onSuccessGetHeaderInfo(companyName: String, date: String) {
+        workSheetView?.showHeaderInfo(companyName, date)
     }
 
     override fun onSuccessSaveCustomerSheet() {
