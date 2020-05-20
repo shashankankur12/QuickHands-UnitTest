@@ -256,4 +256,8 @@
     <string name="customer_details">Customer Details</string>
     <string name="email_lumper_dialog_message">You want to email %s</string>
     <string name="sheet_submitted">Sheet Submitted</string>
+    <string name="schedule_lumpers">Schedule Lumpers</string>
+    <string name="create_new_request">Create New Request</string>
+    <string name="requested_lumpers_s">Requested Lumpers: %s</string>
+    <string name="update_request">Update Request</string>
 </resources>

@@ -43,7 +43,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_schedule_time)
-        setupToolbar(getString(R.string.schedule_lumpers_time))
+        setupToolbar(getString(R.string.schedule_lumpers))
 
         intent.extras?.let { bundle ->
             selectedTime = bundle.getLong(ARG_SELECTED_DATE_MILLISECONDS, 0)

@@ -46,8 +46,6 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         const val ARG_SELECTED_DATE_MILLISECONDS = "ARG_SELECTED_DATE_MILLISECONDS"
 
         const val ARG_SCHEDULE_IDENTITY = "ARG_SCHEDULE_IDENTITY"
-        const val ARG_SCHEDULE_DETAIL = "ARG_SCHEDULE_DETAIL"
-        const val ARG_SCHEDULE_FROM_DATE = "ARG_SCHEDULE_FROM_DATE"
 
         const val ARG_WORK_ITEM_ID = "ARG_WORK_ITEM_ID"
         const val ARG_WORK_ITEM_TYPE = "ARG_WORK_ITEM_TYPE"

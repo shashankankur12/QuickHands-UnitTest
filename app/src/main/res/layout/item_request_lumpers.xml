@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/schedule_item_background"
+    android:padding="@dimen/_10sdp">
+
+    <TextView
+        android:id="@+id/textViewStatus"
+        style="@style/baseChipTheme"
+        android:layout_marginEnd="@dimen/_4sdp"
+        android:background="@drawable/chip_background_on_hold"
+        android:text="@string/pending"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewRequestedLumpersCount"
+        style="@style/titleBigTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginEnd="@dimen/_4sdp"
+        android:clickable="false"
+        android:text="@string/requested_lumpers_s"
+        app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutNotes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:background="@drawable/notes_item_background"
+        android:orientation="vertical"
+        android:padding="@dimen/_8sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewRequestedLumpersCount">
+
+        <TextView
+            style="@style/titleSmallTextViewTheme"
+            android:text="@string/notes_for_qhl_dm"
+            android:textColor="@color/scheduleDetail" />
+
+        <TextView
+            android:id="@+id/textViewNote"
+            style="@style/valuesTextViewTheme"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:text="@string/request_help_error_message" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textViewUpdateRequest"
+        style="@style/addTextViewTheme"
+        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:drawableStart="@drawable/ic_edit_red"
+        android:text="@string/update_request"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutNotes" />
+</androidx.constraintlayout.widget.ConstraintLayout>

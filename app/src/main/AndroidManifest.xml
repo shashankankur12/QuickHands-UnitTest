@@ -37,6 +37,9 @@
             android:name=".modified.views.scheduleTime.EditScheduleTimeActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".modified.views.scheduleTime.RequestLumpersActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".modified.views.workSheet.AllWorkScheduleCancelActivity"
             android:screenOrientation="portrait" />
         <activity

@@ -90,11 +90,29 @@
                     android:visibility="gone" />
             </RelativeLayout>
 
-            <Button
-                android:id="@+id/buttonScheduleLumpers"
-                style="@style/positiveRoundButtonTheme"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_8sdp"
-                android:text="@string/schedule_lumpers_time" />
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonScheduleLumpers"
+                    style="@style/positiveRoundButtonTheme"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/_10ssp"
+                    android:layout_weight="1"
+                    android:text="@string/schedule_lumpers" />
+
+                <Button
+                    android:id="@+id/buttonRequestHelp"
+                    style="@style/negativeRoundButtonTheme"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/request_help" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
