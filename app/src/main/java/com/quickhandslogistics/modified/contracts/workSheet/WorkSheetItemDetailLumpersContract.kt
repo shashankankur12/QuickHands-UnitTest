@@ -6,9 +6,7 @@ import com.quickhandslogistics.modified.data.workSheet.LumpersTimeSchedule
 class WorkSheetItemDetailLumpersContract {
     interface View {
         interface OnAdapterItemClickListener {
-            fun onAddTimeClick(
-                employeeData: EmployeeData, timingData: LumpersTimeSchedule?
-            )
+            fun onAddTimeClick(employeeData: EmployeeData, timingData: LumpersTimeSchedule?)
         }
     }
 }

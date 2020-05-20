@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.PaginationResponse
-import com.quickhandslogistics.utils.StringUtils
 
 class GetAttendanceAPIResponse : BaseResponse() {
     @SerializedName("data")
@@ -17,9 +16,7 @@ class GetAttendanceAPIResponse : BaseResponse() {
         var employeeDataList: ArrayList<LumperAttendanceData>? = null
             get() = if (!field.isNullOrEmpty()) {
                 field?.sortWith(Comparator { lumper1, lumper2 ->
-                    if (!StringUtils.isNullOrEmpty(lumper1.firstName)
-                        && !StringUtils.isNullOrEmpty(lumper2.firstName)
-                    ) {
+                    if (!lumper1.firstName.isNullOrEmpty() && !lumper2.firstName.isNullOrEmpty()) {
                         lumper1.firstName?.toLowerCase()!!.compareTo(lumper2.firstName?.toLowerCase()!!)
                     } else {
                         0

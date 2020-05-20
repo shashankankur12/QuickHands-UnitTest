@@ -22,6 +22,7 @@ import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Comp
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_BUILDING_PARAMETER_VALUES
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import kotlinx.android.synthetic.main.activity_lumper_work_detail.*
 import java.io.File
 import java.util.*
@@ -38,9 +39,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /*window.setFlags(
-            WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE
-        )*/
+        //window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         setContentView(R.layout.activity_lumper_work_detail)
         setupToolbar(getString(R.string.lumper_work_detail))
 
@@ -55,22 +54,21 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         lumperWorkDetailPresenter.getLumperWorkDetails(ValueUtils.getDefaultOrValue(lumpersInfo?.lumperId), Date(selectedTime))
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
+            data?.let {
+                val signatureFilePath = data.getStringExtra(AddSignatureActivity.ARG_SIGNATURE_FILE_PATH)
+                showLocalSignatureOnUI(signatureFilePath)
+            }
+        }
+    }
+
     private fun initializeUI() {
         lumpersInfo?.let { employeeData ->
-            if (!StringUtils.isNullOrEmpty(employeeData.lumperImageUrl)) {
-                Glide.with(activity).load(employeeData.lumperImageUrl).placeholder(R.drawable.dummy).error(R.drawable.dummy).into(circleImageViewProfile)
-            } else {
-                Glide.with(activity).clear(circleImageViewProfile);
-            }
-
+            UIUtils.showEmployeeProfileImage(activity, employeeData.lumperImageUrl, circleImageViewProfile)
             textViewLumperName.text = ValueUtils.getDefaultOrValue(employeeData.lumperName)
-
-            if (StringUtils.isNullOrEmpty(employeeData.lumperEmployeeId)) {
-                textViewEmployeeId.visibility = View.GONE
-            } else {
-                textViewEmployeeId.visibility = View.VISIBLE
-                textViewEmployeeId.text = String.format("(Emp ID: %s)", employeeData.lumperEmployeeId)
-            }
+            textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData.lumperEmployeeId)
         }
 
         recyclerViewLumperWork.apply {
@@ -82,37 +80,6 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
 
         textViewAddSignature.setOnClickListener(this)
         buttonSave.setOnClickListener(this)
-    }
-
-    override fun onClick(view: View?) {
-        view?.let {
-            when (view.id) {
-                textViewAddSignature.id -> {
-                    startIntent(AddSignatureActivity::class.java, requestCode = AppConstant.REQUEST_CODE_CHANGED)
-                }
-                buttonSave.id -> {
-                    CustomProgressBar.getInstance().showWarningDialog(
-                        activityContext = activity, listener = object : CustomDialogWarningListener {
-                            override fun onConfirmClick() {
-                                lumperWorkDetailPresenter.saveLumperSignature(lumpersInfo?.lumperId!!, Date(selectedTime), signatureFilePath)
-                            }
-
-                            override fun onCancelClick() {
-                            }
-                        })
-                }
-            }
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
-            data?.let {
-                val signatureFilePath = data.getStringExtra(AddSignatureActivity.ARG_SIGNATURE_FILE_PATH)
-                showLocalSignatureOnUI(signatureFilePath)
-            }
-        }
     }
 
     private fun showLocalSignatureOnUI(signatureFilePath: String?) {
@@ -130,19 +97,45 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         }
     }
 
-    override fun onBOItemClick(workItemDetail: WorkItemDetail) {
-        val bundle = Bundle()
-        bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, workItemDetail.buildingDetailData?.parameters)
-        bundle.putSerializable(ARG_BUILDING_PARAMETER_VALUES, workItemDetail.buildingOps)
-        startIntent(BuildingOperationsViewActivity::class.java, bundle = bundle)
-    }
+    private fun updateUIVisibility(signed: Boolean, currentDate: Boolean, inCompleteWorkItemsCount: Int) {
+        imageViewSignature.visibility = View.GONE
+        textViewSignature.visibility = if (signed) View.VISIBLE else View.GONE
 
-    override fun onNotesItemClick(notes: String?) {
-        notes?.let {
-            CustomProgressBar.getInstance().showInfoDialog(getString(R.string.string_note), notes, activity)
+        if (!signed && currentDate && inCompleteWorkItemsCount == 0) {
+            textViewAddSignature.visibility = View.VISIBLE
+        } else {
+            textViewAddSignature.visibility = View.GONE
+        }
+
+        if (signed || (currentDate && inCompleteWorkItemsCount == 0)) {
+            layoutSignature.visibility = View.VISIBLE
+        } else {
+            layoutSignature.visibility = View.GONE
         }
     }
 
+    private fun showConfirmationDialog() {
+        CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
+            override fun onConfirmClick() {
+                lumperWorkDetailPresenter.saveLumperSignature(lumpersInfo?.lumperId!!, Date(selectedTime), signatureFilePath)
+            }
+
+            override fun onCancelClick() {
+            }
+        })
+    }
+
+    /** Native Views Listeners */
+    override fun onClick(view: View?) {
+        view?.let {
+            when (view.id) {
+                textViewAddSignature.id -> startIntent(AddSignatureActivity::class.java, requestCode = AppConstant.REQUEST_CODE_CHANGED)
+                buttonSave.id -> showConfirmationDialog()
+            }
+        }
+    }
+
+    /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }
@@ -163,10 +156,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         }
 
         if (lumperDaySheetList.size > 0) {
-            updateUIVisibility(
-                ValueUtils.getDefaultOrValue(lumperDaySheetList[0].lumpersTimeSchedule?.sheetSigned),
-                isCurrentDate, inCompleteWorkItemsCount
-            )
+            updateUIVisibility(getDefaultOrValue(lumperDaySheetList[0].lumpersTimeSchedule?.sheetSigned), isCurrentDate, inCompleteWorkItemsCount)
         } else {
             updateUIVisibility(false, isCurrentDate, inCompleteWorkItemsCount)
         }
@@ -176,20 +166,17 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         setResult(RESULT_OK)
     }
 
-    private fun updateUIVisibility(signed: Boolean, currentDate: Boolean, inCompleteWorkItemsCount: Int) {
-        imageViewSignature.visibility = View.GONE
-        textViewSignature.visibility = if (signed) View.VISIBLE else View.GONE
+    /** Adapter Listeners */
+    override fun onBOItemClick(workItemDetail: WorkItemDetail) {
+        val bundle = Bundle()
+        bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, workItemDetail.buildingDetailData?.parameters)
+        bundle.putSerializable(ARG_BUILDING_PARAMETER_VALUES, workItemDetail.buildingOps)
+        startIntent(BuildingOperationsViewActivity::class.java, bundle = bundle)
+    }
 
-        if (!signed && currentDate && inCompleteWorkItemsCount == 0) {
-            textViewAddSignature.visibility = View.VISIBLE
-        } else {
-            textViewAddSignature.visibility = View.GONE
-        }
-
-        if (signed || (currentDate && inCompleteWorkItemsCount == 0)) {
-            layoutSignature.visibility = View.VISIBLE
-        } else {
-            layoutSignature.visibility = View.GONE
+    override fun onNotesItemClick(notes: String?) {
+        notes?.let {
+            CustomProgressBar.getInstance().showInfoDialog(getString(R.string.string_note), notes, activity)
         }
     }
 }

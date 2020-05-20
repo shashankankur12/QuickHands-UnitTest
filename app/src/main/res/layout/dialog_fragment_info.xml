@@ -27,13 +27,11 @@
 
         <TextView
             android:id="@+id/textViewMessage"
+            style="@style/titleTextViewTheme"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/_5sdp"
-            android:textColor="@color/textBlack"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold" />
+            android:textColor="@color/textBlack" />
     </com.quickhandslogistics.modified.controls.MaxHeightNestedScrollView>
 
     <LinearLayout
@@ -44,14 +42,10 @@
 
         <Button
             android:id="@+id/buttonPositive"
+            style="@style/positiveRoundButtonTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_7sdp"
             android:layout_weight="1"
-            android:background="@drawable/round_button_red"
-            android:text="@string/string_okay"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_14ssp" />
+            android:text="@string/string_okay" />
     </LinearLayout>
 </LinearLayout>

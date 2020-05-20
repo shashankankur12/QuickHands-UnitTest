@@ -46,26 +46,17 @@
 
             <Button
                 android:id="@+id/buttonSubmit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/positiveRoundButtonTheme"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_10ssp"
-                android:background="@drawable/round_button_red"
-                android:text="@string/string_submit"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/_14ssp" />
+                android:text="@string/string_submit" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/textViewEmptyData"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/noRecordTextViewTheme"
             android:layout_centerInParent="true"
-            android:text="@string/string_no_record_found"
-            android:textSize="@dimen/_12ssp"
             android:visibility="gone" />
     </RelativeLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

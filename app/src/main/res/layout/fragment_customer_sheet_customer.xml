@@ -27,23 +27,12 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/customer_representative_name"
-                android:textColor="@color/buildingTitle"
-                android:textSize="@dimen/_14ssp"
-                android:textStyle="bold" />
+                style="@style/titleTextViewTheme"
+                android:text="@string/customer_representative_name" />
 
             <EditText
                 android:id="@+id/editTextCustomerName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:backgroundTint="@color/buildingTitle"
-                android:inputType="textPersonName|textCapWords"
-                android:textColor="@color/scheduleDetail"
-                android:textCursorDrawable="@drawable/color_cursor"
-                android:textSize="@dimen/_12ssp" />
+                style="@style/valueEditTextTheme" />
         </LinearLayout>
 
         <LinearLayout
@@ -59,24 +48,14 @@
             app:layout_constraintTop_toBottomOf="@id/layoutCustomerName">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/notes"
-                android:textColor="@color/buildingTitle"
-                android:textSize="@dimen/_14ssp"
-                android:textStyle="bold" />
+                style="@style/titleTextViewTheme"
+                android:text="@string/notes" />
 
             <EditText
                 android:id="@+id/editTextCustomerNotes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:backgroundTint="@color/buildingTitle"
+                style="@style/valueEditTextTheme"
                 android:inputType="textMultiLine|textCapWords"
-                android:maxLines="3"
-                android:textColor="@color/scheduleDetail"
-                android:textCursorDrawable="@drawable/color_cursor"
-                android:textSize="@dimen/_12ssp" />
+                android:maxLines="3" />
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -97,14 +76,10 @@
 
             <TextView
                 android:id="@+id/textViewSignatureHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/titleTextViewTheme"
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingBottom="@dimen/_5sdp"
                 android:text="@string/signature"
-                android:textColor="@color/buildingTitle"
-                android:textSize="@dimen/_14ssp"
-                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -122,18 +97,9 @@
 
             <TextView
                 android:id="@+id/textViewAddSignature"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/addTextViewTheme"
                 android:layout_gravity="end"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:drawableStart="@drawable/ic_add_time_plus"
-                android:drawablePadding="@dimen/_5sdp"
-                android:padding="@dimen/_5sdp"
                 android:text="@string/signature"
-                android:textColor="@color/buttonRed"
-                android:textSize="@dimen/_12ssp"
-                android:textStyle="bold"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -141,16 +107,12 @@
 
             <TextView
                 android:id="@+id/textViewSignature"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/addTextViewTheme"
                 android:layout_gravity="end"
+                android:background="@null"
                 android:drawableStart="@drawable/ic_done"
-                android:drawablePadding="@dimen/_5sdp"
-                android:padding="@dimen/_5sdp"
                 android:text="@string/signature"
                 android:textColor="@color/online"
-                android:textSize="@dimen/_12ssp"
-                android:textStyle="bold"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -159,16 +121,11 @@
 
         <Button
             android:id="@+id/buttonSubmit"
+            style="@style/positiveRoundButtonTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:background="@drawable/round_button_selector"
             android:text="@string/string_submit"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -1,6 +1,5 @@
 package com.quickhandslogistics.modified.controls;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.quickhandslogistics.R;
 import com.quickhandslogistics.modified.contracts.DashBoardContract;
-import com.quickhandslogistics.modified.contracts.common.InfoDialogWarningContract;
 import com.quickhandslogistics.modified.views.BaseActivity;
-import com.quickhandslogistics.modified.views.LoginActivity;
-import com.quickhandslogistics.modified.views.common.InfoWarningDialogFragment;
 import com.quickhandslogistics.modified.views.workSheet.WorkSheetFragment;
 
 import java.util.ArrayList;
@@ -86,6 +82,10 @@ public class NavDrawer {
 
     private void invalidateOptionMenu(String title) {
         onFragmentInteractionListener.onNewFragmentReplaced(title);
+    }
+
+    private void showLogoutDialog() {
+        onFragmentInteractionListener.onLogoutOptionSelected();
     }
 
     public void create() {
@@ -201,29 +201,13 @@ public class NavDrawer {
             super.onClick(v);
 
             if (text.equals(activity.getString(R.string.string_logout))) {
-                InfoWarningDialogFragment dialog = InfoWarningDialogFragment.newInstance(activity.getString(R.string.string_logout_dialog),
-                        "", "", new InfoDialogWarningContract.View.OnClickListener() {
-                            @Override
-                            public void onPositiveButtonClick() {
-                                clearDataAndRestart(activity);
-                            }
-
-                            @Override
-                            public void onNegativeButtonClick() {
-                            }
-                        });
-                dialog.show(activity.getSupportFragmentManager(), InfoWarningDialogFragment.class.getSimpleName());
+                navDrawer.showLogoutDialog();
             } else {
                 toolbar.setTitle(text);
                 navDrawer.setSelectedItem(this);
                 showFragment(activity);
                 navDrawer.invalidateOptionMenu(text);
             }
-        }
-
-        private void clearDataAndRestart(BaseActivity activity) {
-            activity.sharedPref.performLogout();
-            activity.startIntent(LoginActivity.class, null, true, new Integer[]{Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK}, null);
         }
 
         private void showFragment(BaseActivity activity) {

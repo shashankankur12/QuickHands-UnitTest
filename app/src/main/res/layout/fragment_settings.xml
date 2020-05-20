@@ -25,14 +25,12 @@
 
         <TextView
             android:id="@+id/changeLanguageText"
+            style="@style/titleTextViewTheme"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_20sdp"
             android:text="@string/string_change_language"
             android:textColor="@color/textBlack"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,14 +74,12 @@
 
         <TextView
             android:id="@+id/textViewNotification"
+            style="@style/titleTextViewTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/string_notification"
             android:textColor="@color/textBlack"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/switchNotification"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/viewLine" />

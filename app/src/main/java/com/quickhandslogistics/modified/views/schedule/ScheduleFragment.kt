@@ -3,19 +3,12 @@ package com.quickhandslogistics.modified.views.schedule
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
-import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
-import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
-import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
-import com.michalsvec.singlerowcalendar.utils.DateUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.adapters.schedule.ScheduleAdapter
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
@@ -30,17 +23,14 @@ import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Comp
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_IDENTITY
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.CalendarUtils
 import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.fragment_schedule.*
-import kotlinx.android.synthetic.main.item_calendar_view.view.*
 import java.util.*
 
+class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract.View.OnAdapterItemClickListener, CalendarUtils.CalendarSelectionListener {
 
-class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract.View.OnAdapterItemClickListener {
-
-    private lateinit var schedulePresenter: SchedulePresenter
-    private lateinit var scheduleAdapter: ScheduleAdapter
-    private var onScheduleFragmentInteractionListener: ScheduleMainContract.View.OnScheduleFragmentInteractionListener? = null
+    private var onFragmentInteractionListener: ScheduleMainContract.View.OnFragmentInteractionListener? = null
 
     private var currentPageIndex: Int = 1
     private var nextPageIndex: Int = 1
@@ -48,13 +38,20 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
     private var selectedTime: Long = 0
     private var isCurrentDate: Boolean = true
-
     private lateinit var availableDates: List<Date>
+
+    private lateinit var schedulePresenter: SchedulePresenter
+    private lateinit var scheduleAdapter: ScheduleAdapter
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = ScheduleFragment()
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (parentFragment is ScheduleMainContract.View.OnScheduleFragmentInteractionListener) {
-            onScheduleFragmentInteractionListener = parentFragment as ScheduleMainContract.View.OnScheduleFragmentInteractionListener
+        if (parentFragment is ScheduleMainContract.View.OnFragmentInteractionListener) {
+            onFragmentInteractionListener = parentFragment as ScheduleMainContract.View.OnFragmentInteractionListener
         }
     }
 
@@ -64,7 +61,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
         // Setup DatePicker Dates
         selectedTime = Date().time
-        availableDates = getAvailableDates()
+        availableDates = CalendarUtils.getPastCalendarDates()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -82,72 +79,13 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
             addOnScrollListener(onScrollListener)
         }
 
-        initializeCalendar()
-
-        resetPaginationValues()
+        CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarSchedule, availableDates, this)
         singleRowCalendarSchedule.select(availableDates.size - 1)
     }
 
-    private fun initializeCalendar() {
-        val myCalendarViewManager = object : CalendarViewManager {
-            override fun bindDataToCalendarView(holder: SingleRowCalendarAdapter.CalendarViewHolder, date: Date, position: Int, isSelected: Boolean) {
-                holder.itemView.tv_date_calendar_item.text = DateUtils.getDayNumber(date)
-                holder.itemView.tv_day_calendar_item.text = DateUtils.getDay3LettersName(date)
-
-                if (isSelected) {
-                    holder.itemView.tv_date_calendar_item.setTextColor(Color.WHITE)
-                    holder.itemView.tv_date_calendar_item.setBackgroundResource(R.drawable.selected_calendar_item_background)
-                } else {
-                    holder.itemView.tv_date_calendar_item.setTextColor(ContextCompat.getColor(fragmentActivity!!, R.color.detailHeader))
-                    holder.itemView.tv_date_calendar_item.setBackgroundColor(Color.TRANSPARENT)
-                }
-            }
-
-            override fun setCalendarViewResourceId(position: Int, date: Date, isSelected: Boolean): Int {
-                return R.layout.item_calendar_view
-            }
-        }
-
-        val myCalendarChangesObserver = object : CalendarChangesObserver {
-            override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
-                if (isSelected) {
-                    resetPaginationValues()
-                    schedulePresenter.getScheduledWorkItemsByDate(date, currentPageIndex)
-                }
-                super.whenSelectionChanged(isSelected, position, date)
-            }
-        }
-
-        val mySelectionManager = object : CalendarSelectionManager {
-            override fun canBeItemSelected(position: Int, date: Date): Boolean {
-                return true
-            }
-        }
-
-        singleRowCalendarSchedule.apply {
-            calendarViewManager = myCalendarViewManager
-            calendarChangesObserver = myCalendarChangesObserver
-            calendarSelectionManager = mySelectionManager
-            setDates(availableDates)
-            init()
-            scrollToPosition(availableDates.size - 1)
-        }
-    }
-
-    private fun getAvailableDates(): List<Date> {
-        val list: MutableList<Date> = mutableListOf()
-
-        val calendar = Calendar.getInstance()
-        val currentDate = calendar[Calendar.DATE]
-        calendar.add(Calendar.WEEK_OF_YEAR, -2)
-
-        while (currentDate != calendar[Calendar.DATE]) {
-            calendar.add(Calendar.DATE, 1)
-            if (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
-                list.add(calendar.time)
-            }
-        }
-        return list
+    override fun onDestroy() {
+        super.onDestroy()
+        schedulePresenter.onDestroy()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -158,17 +96,19 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         }
     }
 
+    private fun fetchScheduledWorkItems() {
+        if (singleRowCalendarSchedule.getSelectedDates().isNotEmpty()) {
+            schedulePresenter.getScheduledWorkItemsByDate(singleRowCalendarSchedule.getSelectedDates()[0], currentPageIndex)
+        }
+    }
+
     private fun resetPaginationValues() {
         currentPageIndex = 1
         nextPageIndex = 1
         totalPagesCount = 1
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        schedulePresenter.onDestroy()
-    }
-
+    /** Native Views Listeners */
     private val onScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -189,34 +129,12 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         }
     }
 
-    /*
-    * Adapter Item Click Listeners
-    */
-    override fun onScheduleItemClick(scheduleDetail: ScheduleDetail) {
-        val bundle = Bundle()
-        bundle.putBoolean(ARG_ALLOW_UPDATE, isCurrentDate)
-        bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleDetail.scheduleIdentity)
-        bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
-        startIntent(ScheduleDetailActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
-    }
-
-    override fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>) {
-        val bundle = Bundle()
-        bundle.putParcelableArrayList(DisplayLumpersListActivity.ARG_LUMPERS_LIST, lumpersList)
-        startIntent(DisplayLumpersListActivity::class.java, bundle = bundle)
-    }
-
-    /*
-    * Presenter Listeners
-    */
+    /** Presenter Listeners */
     override fun showDateString(dateString: String) {
         textViewDate.text = dateString
     }
 
-    override fun showScheduleData(
-        selectedDate: Date, workItemsList: ArrayList<ScheduleDetail>,
-        totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int
-    ) {
+    override fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<ScheduleDetail>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int) {
         selectedTime = selectedDate.time
         isCurrentDate = com.quickhandslogistics.utils.DateUtils.isCurrentDate(selectedTime)
         scheduleAdapter.updateList(workItemsList, currentPageIndex)
@@ -236,7 +154,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     }
 
     override fun fetchUnScheduledWorkItems() {
-        onScheduleFragmentInteractionListener?.fetchUnScheduledWorkItems()
+        onFragmentInteractionListener?.fetchUnScheduledWorkItems()
     }
 
     override fun showEmptyData() {
@@ -245,14 +163,24 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         textViewDate.visibility = View.GONE
     }
 
-    private fun fetchScheduledWorkItems() {
-        if (singleRowCalendarSchedule.getSelectedDates().isNotEmpty()) {
-            schedulePresenter.getScheduledWorkItemsByDate(singleRowCalendarSchedule.getSelectedDates()[0], currentPageIndex)
-        }
+    /** Adapter Listeners */
+    override fun onScheduleItemClick(scheduleDetail: ScheduleDetail) {
+        val bundle = Bundle()
+        bundle.putBoolean(ARG_ALLOW_UPDATE, isCurrentDate)
+        bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleDetail.scheduleIdentity)
+        bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
+        startIntent(ScheduleDetailActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = ScheduleFragment()
+    override fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>) {
+        val bundle = Bundle()
+        bundle.putParcelableArrayList(DisplayLumpersListActivity.ARG_LUMPERS_LIST, lumpersList)
+        startIntent(DisplayLumpersListActivity::class.java, bundle = bundle)
+    }
+
+    /** Calendar Listeners */
+    override fun onSelectCalendarDate(date: Date) {
+        resetPaginationValues()
+        schedulePresenter.getScheduledWorkItemsByDate(date, currentPageIndex)
     }
 }

@@ -36,6 +36,9 @@ interface IApiInterface {
     @GET("employees/me")
     fun getLeadProfile(@Header("Authorization") auth: String): Call<LeadProfileAPIResponse>
 
+    @POST("employees/logout")
+    fun logout(@Header("Authorization") auth: String): Call<BaseResponse>
+
     @POST("emails/forgot-password/lead")
     fun doResetPassword(@Body forgotPasswordRequest: ForgotPasswordRequest): Call<ForgotPasswordResponse>
 

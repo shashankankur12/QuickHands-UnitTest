@@ -1,48 +1,40 @@
 package com.quickhandslogistics.modified.views.customerSheet
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
-import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
-import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
-import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
-import com.michalsvec.singlerowcalendar.utils.DateUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.adapters.customerSheet.CustomerSheetPagerAdapter
 import com.quickhandslogistics.modified.contracts.DashBoardContract
 import com.quickhandslogistics.modified.contracts.customerSheet.CustomerSheetContract
-import com.quickhandslogistics.modified.data.customerSheet.CustomerSheetListAPIResponse
+import com.quickhandslogistics.modified.data.customerSheet.CustomerSheetData
+import com.quickhandslogistics.modified.data.customerSheet.CustomerSheetScheduleDetails
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.presenters.customerSheet.CustomerSheetPresenter
 import com.quickhandslogistics.modified.views.BaseFragment
+import com.quickhandslogistics.utils.CalendarUtils
 import com.quickhandslogistics.utils.CustomDialogListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.fragment_customer_sheet.*
-import kotlinx.android.synthetic.main.item_calendar_view.view.*
 import java.util.*
 
-class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
-    CustomerSheetContract.View.OnFragmentInteractionListener {
+class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, CustomerSheetContract.View.OnFragmentInteractionListener, CalendarUtils.CalendarSelectionListener {
 
-    private var listener: DashBoardContract.View.OnFragmentInteractionListener? = null
+    private var onFragmentInteractionListener: DashBoardContract.View.OnFragmentInteractionListener? = null
+
+    private var selectedTime: Long = 0
+    private lateinit var availableDates: List<Date>
 
     private lateinit var customerSheetPresenter: CustomerSheetPresenter
     private lateinit var adapter: CustomerSheetPagerAdapter
 
-    private var selectedTime: Long = 0
-
-    private lateinit var availableDates: List<Date>
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is DashBoardContract.View.OnFragmentInteractionListener) {
-            listener = context
+            onFragmentInteractionListener = context
         }
     }
 
@@ -52,12 +44,10 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
 
         // Setup DatePicker Dates
         selectedTime = Date().time
-        availableDates = getAvailableDates()
+        availableDates = CalendarUtils.getPastCalendarDates()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_customer_sheet, container, false)
     }
 
@@ -69,25 +59,26 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         viewPagerCustomerSheet.adapter = adapter
         tabLayoutCustomerSheet.setupWithViewPager(viewPagerCustomerSheet)
 
-        initializeCalendar()
-
+        CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarCustomerSheet, availableDates, this)
         singleRowCalendarCustomerSheet.select(availableDates.size - 1)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        customerSheetPresenter.onDestroy()
+    }
+
+    /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
 
         // Reset Whole Screen Data
-        textViewBuildingName.text = ""
+        textViewCompanyName.text = ""
         textViewWorkItemsDate.text = ""
         textViewTotalCount.text = ""
     }
 
-    override fun showCustomerSheets(
-        scheduleDetails: CustomerSheetListAPIResponse.ScheduleDetails,
-        customerSheet: CustomerSheetListAPIResponse.CustomerSheetData?,
-        selectedDate: Date
-    ) {
+    override fun showCustomerSheets(scheduleDetails: CustomerSheetScheduleDetails, customerSheet: CustomerSheetData?, selectedDate: Date) {
         selectedTime = selectedDate.time
 
         val onGoingWorkItems = ArrayList<WorkItemDetail>()
@@ -99,106 +90,32 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         allWorkItems.addAll(onGoingWorkItems)
         allWorkItems.addAll(scheduleDetails.cancelled!!)
         allWorkItems.addAll(scheduleDetails.completed!!)
-        textViewTotalCount.text =
-            String.format(getString(R.string.total_containers_s), allWorkItems.size)
+        textViewTotalCount.text = String.format(getString(R.string.total_containers_s), allWorkItems.size)
 
-        adapter.updateCustomerSheetList(
-            onGoingWorkItems, scheduleDetails.cancelled!!,
-            scheduleDetails.completed!!, customerSheet, selectedTime
-        )
+        adapter.updateCustomerSheetList(onGoingWorkItems, scheduleDetails.cancelled!!, scheduleDetails.completed!!, customerSheet, selectedTime)
     }
 
-    override fun showHeaderInfo(buildingName: String, date: String) {
-        textViewBuildingName.text = buildingName.capitalize()
+    override fun showHeaderInfo(companyName: String, date: String) {
+        textViewCompanyName.text = companyName.capitalize()
         textViewWorkItemsDate.text = date
     }
 
     override fun customerSavedSuccessfully() {
-        CustomProgressBar.getInstance()
-            .showSuccessDialog(getString(R.string.customer_sheet_submitted_successfully),
-                fragmentActivity!!, object : CustomDialogListener {
-                    override fun onConfirmClick() {
-                        customerSheetPresenter.getCustomerSheetByDate(Date(selectedTime))
-                    }
-                })
-    }
-
-    private fun initializeCalendar() {
-        val myCalendarViewManager = object : CalendarViewManager {
-            override fun bindDataToCalendarView(
-                holder: SingleRowCalendarAdapter.CalendarViewHolder,
-                date: Date, position: Int, isSelected: Boolean
-            ) {
-                holder.itemView.tv_date_calendar_item.text = DateUtils.getDayNumber(date)
-                holder.itemView.tv_day_calendar_item.text = DateUtils.getDay3LettersName(date)
-
-                if (isSelected) {
-                    holder.itemView.tv_date_calendar_item.setTextColor(Color.WHITE)
-                    holder.itemView.tv_date_calendar_item.setBackgroundResource(R.drawable.selected_calendar_item_background)
-                } else {
-                    holder.itemView.tv_date_calendar_item.setTextColor(
-                        ContextCompat.getColor(fragmentActivity!!, R.color.detailHeader)
-                    )
-                    holder.itemView.tv_date_calendar_item.setBackgroundColor(Color.TRANSPARENT)
+        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.customer_sheet_submitted_successfully),
+            fragmentActivity!!, object : CustomDialogListener {
+                override fun onConfirmClick() {
+                    customerSheetPresenter.getCustomerSheetByDate(Date(selectedTime))
                 }
-            }
-
-            override fun setCalendarViewResourceId(
-                position: Int, date: Date, isSelected: Boolean
-            ): Int {
-                return R.layout.item_calendar_view
-            }
-        }
-
-        val myCalendarChangesObserver = object : CalendarChangesObserver {
-            override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
-                if (isSelected) {
-                    customerSheetPresenter.getCustomerSheetByDate(date)
-                }
-                super.whenSelectionChanged(isSelected, position, date)
-            }
-        }
-
-        val mySelectionManager = object : CalendarSelectionManager {
-            override fun canBeItemSelected(position: Int, date: Date): Boolean {
-                return true
-            }
-        }
-
-        singleRowCalendarCustomerSheet.apply {
-            calendarViewManager = myCalendarViewManager
-            calendarChangesObserver = myCalendarChangesObserver
-            calendarSelectionManager = mySelectionManager
-            setDates(availableDates)
-            init()
-            scrollToPosition(availableDates.size - 1)
-        }
+            })
     }
 
-    private fun getAvailableDates(): List<Date> {
-        val list: MutableList<Date> = mutableListOf()
-
-        val calendar = Calendar.getInstance()
-        val currentDate = calendar[Calendar.DATE]
-        calendar.add(Calendar.WEEK_OF_YEAR, -2)
-
-        while (currentDate != calendar[Calendar.DATE]) {
-            calendar.add(Calendar.DATE, 1)
-            if (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY &&
-                calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY
-            ) {
-                list.add(calendar.time)
-            }
-        }
-        return list
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        customerSheetPresenter.onDestroy()
-    }
-
+    /** Fragment Interaction Listeners */
     override fun saveCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String) {
         customerSheetPresenter.saveCustomerSheet(customerName, notesCustomer, signatureFilePath)
+    }
+
+    /** Calendar Listeners */
+    override fun onSelectCalendarDate(date: Date) {
+        customerSheetPresenter.getCustomerSheetByDate(date)
     }
 }

@@ -1,9 +1,6 @@
 package com.quickhandslogistics.modified.contracts.scheduleTime
 
 import com.quickhandslogistics.modified.contracts.BaseContract
-import com.quickhandslogistics.modified.data.common.AllLumpersResponse
-import com.quickhandslogistics.modified.data.lumpers.EmployeeData
-import com.quickhandslogistics.modified.data.lumpers.LumperListAPIResponse
 import java.util.*
 
 class EditScheduleTimeContract {
@@ -28,8 +25,6 @@ class EditScheduleTimeContract {
     }
 
     interface Presenter : BaseContract.Presenter {
-        fun initiateScheduleTime(
-            scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, requiredLumpersCount: Int, notesDM: String, selectedDate: Date
-        )
+        fun initiateScheduleTime(scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, requiredLumpersCount: Int, notesDM: String, selectedDate: Date)
     }
 }

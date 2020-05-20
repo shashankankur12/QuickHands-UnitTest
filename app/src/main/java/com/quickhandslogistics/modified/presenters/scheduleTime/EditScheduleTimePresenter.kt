@@ -7,12 +7,12 @@ import com.quickhandslogistics.modified.contracts.scheduleTime.EditScheduleTimeC
 import com.quickhandslogistics.modified.models.scheduleTime.EditScheduleTimeModel
 import java.util.*
 
-class EditScheduleTimePresenter(
-    private var editScheduleTimeView: EditScheduleTimeContract.View?, private val resources: Resources
-) : EditScheduleTimeContract.Presenter, EditScheduleTimeContract.Model.OnFinishedListener {
+class EditScheduleTimePresenter(private var editScheduleTimeView: EditScheduleTimeContract.View?, private val resources: Resources) :
+    EditScheduleTimeContract.Presenter, EditScheduleTimeContract.Model.OnFinishedListener {
 
     private val editScheduleTimeModel = EditScheduleTimeModel()
 
+    /** View Listeners */
     override fun onDestroy() {
         editScheduleTimeView = null
     }
@@ -24,6 +24,7 @@ class EditScheduleTimePresenter(
         editScheduleTimeModel.assignScheduleTime(scheduledLumpersIdsTimeMap, notes, requiredLumpersCount, notesDM, selectedDate, this)
     }
 
+    /** Model Result Listeners */
     override fun onFailure(message: String) {
         editScheduleTimeView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {

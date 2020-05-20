@@ -13,24 +13,24 @@ class AllWorkScheduleCancelPresenter(
 
     private val allWorkScheduleCancelModel = AllWorkScheduleCancelModel()
 
+    /** View Listeners */
+    override fun onDestroy() {
+        allWorkScheduleCancelView = null
+    }
+
     override fun fetchLumpersList() {
         allWorkScheduleCancelView?.showProgressDialog(resources.getString(R.string.api_loading_message))
         allWorkScheduleCancelModel.fetchLumpersList(this)
     }
 
-    override fun onDestroy() {
-        allWorkScheduleCancelView = null
-    }
-
-    override fun initiateCancellingWorkSchedules(
-        selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String
-    ) {
+    override fun initiateCancellingWorkSchedules(selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String) {
         allWorkScheduleCancelView?.showProgressDialog(resources.getString(R.string.api_loading_message))
         allWorkScheduleCancelModel.cancelAllWorkSchedules(
             selectedLumperIdsList, notesQHL, notesCustomer, this
         )
     }
 
+    /** Model Result Listeners */
     override fun onFailure(message: String) {
         allWorkScheduleCancelView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {

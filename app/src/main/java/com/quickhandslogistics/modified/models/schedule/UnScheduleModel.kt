@@ -13,8 +13,7 @@ import retrofit2.Response
 class UnScheduleModel : UnScheduleContract.Model {
 
     override fun fetchUnSchedulesByDate(onFinishedListener: UnScheduleContract.Model.OnFinishedListener) {
-        val call = DataManager.getService().getUnSchedulesList(getAuthToken())
-        call.enqueue(object : Callback<UnScheduleListAPIResponse> {
+        DataManager.getService().getUnSchedulesList(getAuthToken()).enqueue(object : Callback<UnScheduleListAPIResponse> {
             override fun onResponse(call: Call<UnScheduleListAPIResponse>, response: Response<UnScheduleListAPIResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onSuccess(response.body()!!)

@@ -9,12 +9,15 @@ import com.quickhandslogistics.modified.models.lumperSheet.LumperSheetModel
 import com.quickhandslogistics.utils.DateUtils
 import java.util.*
 
-class LumperSheetPresenter(
-    private var lumperSheetView: LumperSheetContract.View?,
-    private val resources: Resources
-) : LumperSheetContract.Presenter, LumperSheetContract.Model.OnFinishedListener {
+class LumperSheetPresenter(private var lumperSheetView: LumperSheetContract.View?, private val resources: Resources) :
+    LumperSheetContract.Presenter, LumperSheetContract.Model.OnFinishedListener {
 
-    private val lumperSheetModel: LumperSheetModel = LumperSheetModel()
+    private val lumperSheetModel = LumperSheetModel()
+
+    /** View Listeners */
+    override fun onDestroy() {
+        lumperSheetView = null
+    }
 
     override fun getLumpersSheetByDate(selectedDate: Date) {
         lumperSheetView?.showProgressDialog(resources.getString(R.string.api_loading_message))
@@ -26,10 +29,7 @@ class LumperSheetPresenter(
         lumperSheetModel.submitLumperSheet(selectedDate, this)
     }
 
-    override fun onDestroy() {
-        lumperSheetView = null
-    }
-
+    /** Model Result Listeners */
     override fun onFailure(message: String) {
         lumperSheetView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {

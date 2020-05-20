@@ -13,11 +13,7 @@ import com.quickhandslogistics.R
 import kotlinx.android.synthetic.main.item_building_operation.view.*
 import java.util.*
 
-class BuildingOperationsAdapter(
-    private val allowUpdate: Boolean,
-    private val parameters: ArrayList<String>
-) :
-    Adapter<BuildingOperationsAdapter.ViewHolder>() {
+class BuildingOperationsAdapter(private val allowUpdate: Boolean, private val parameters: ArrayList<String>) : Adapter<BuildingOperationsAdapter.ViewHolder>() {
 
     private var data = HashMap<String, String>()
 
@@ -28,8 +24,7 @@ class BuildingOperationsAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_building_operation, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_building_operation, parent, false)
         return ViewHolder(view)
     }
 
@@ -41,19 +36,9 @@ class BuildingOperationsAdapter(
         holder.bind()
     }
 
-    fun updateData(data: HashMap<String, String>) {
-        this.data.clear()
-        this.data.putAll(data)
-        notifyDataSetChanged()
-    }
-
-    fun getUpdatedData(): HashMap<String, String> {
-        return data
-    }
-
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), TextWatcher {
-        var textViewHeader: TextView = view.textViewHeader
-        var editTextValue: EditText = view.editTextValue
+        private val textViewHeader: TextView = view.textViewHeader
+        private val editTextValue: EditText = view.editTextValue
 
         fun bind() {
             editTextValue.isEnabled = allowUpdate
@@ -79,5 +64,15 @@ class BuildingOperationsAdapter(
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         }
+    }
+
+    fun updateData(data: HashMap<String, String>) {
+        this.data.clear()
+        this.data.putAll(data)
+        notifyDataSetChanged()
+    }
+
+    fun getUpdatedData(): HashMap<String, String> {
+        return data
     }
 }

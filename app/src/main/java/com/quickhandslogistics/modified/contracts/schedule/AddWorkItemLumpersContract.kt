@@ -7,9 +7,7 @@ import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 class AddWorkItemLumpersContract {
     interface Model {
         fun fetchLumpersList(onFinishedListener: OnFinishedListener)
-        fun assignLumpersList(
-            workItemId: String, workItemType: String, selectedLumperIdsList: ArrayList<String>, onFinishedListener: OnFinishedListener
-        )
+        fun assignLumpersList(workItemId: String, workItemType: String, selectedLumperIdsList: ArrayList<String>, onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccessFetchLumpers(allLumpersResponse: AllLumpersResponse)

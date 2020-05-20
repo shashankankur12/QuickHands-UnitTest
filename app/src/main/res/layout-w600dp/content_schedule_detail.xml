@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_schedule_detail">
+
+    <TextView
+        android:id="@+id/textViewBuildingName"
+        style="@style/titleBigTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_12ssp"
+        android:layout_marginTop="@dimen/_3ssp"
+        android:layout_marginEnd="@dimen/_12ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.quickhandslogistics.modified.controls.CustomTextView
+        android:id="@+id/textViewScheduleDate"
+        style="@style/valuesTextViewTheme"
+        android:layout_width="match_parent"
+        android:layout_marginStart="@dimen/_12ssp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginEnd="@dimen/_12ssp"
+        android:drawableStart="@drawable/ic_schedule_calendar"
+        android:drawablePadding="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBuildingName" />
+
+    <com.quickhandslogistics.modified.controls.CustomTextView
+        android:id="@+id/textViewScheduleType"
+        style="@style/valuesTextViewTheme"
+        android:layout_width="match_parent"
+        android:layout_marginStart="@dimen/_12ssp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginEnd="@dimen/_12ssp"
+        android:drawableStart="@drawable/ic_schedule_type"
+        android:drawablePadding="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleDate" />
+
+    <com.quickhandslogistics.modified.controls.CustomTextView
+        android:id="@+id/textViewWorkItemsCount"
+        style="@style/valuesTextViewTheme"
+        android:layout_width="match_parent"
+        android:layout_marginStart="@dimen/_12ssp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginEnd="@dimen/_12ssp"
+        android:drawableStart="@drawable/ic_schedule_work_items"
+        android:drawablePadding="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewLumpersImagesList"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_12ssp"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:layout_marginEnd="@dimen/_12ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewWorkItemsCount" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/shadow_effect"
+        android:translationY="-15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/nestedScrollView" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:background="@drawable/top_left_round_background"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/_10ssp"
+        android:paddingTop="@dimen/_4ssp"
+        android:paddingEnd="@dimen/_10ssp"
+        android:paddingBottom="@dimen/_10ssp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewLumpersImagesList">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layoutLiveLoadScheduleType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:layout_marginBottom="@dimen/_6sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/_14ssp"
+                    android:layout_height="@dimen/_14ssp"
+                    android:layout_marginEnd="@dimen/_2sdp"
+                    android:src="@drawable/ic_schedule_type"
+                    android:tint="@color/buildingTitle" />
+
+                <TextView
+                    style="@style/titleBigTextViewTheme"
+                    android:text="@string/string_live_loads" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewLiveLoad"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:id="@+id/layoutDropsScheduleType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_6sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/_14ssp"
+                    android:layout_height="@dimen/_14ssp"
+                    android:layout_marginEnd="@dimen/_2sdp"
+                    android:src="@drawable/ic_schedule_type"
+                    android:tint="@color/buildingTitle" />
+
+                <TextView
+                    style="@style/titleBigTextViewTheme"
+                    android:text="@string/string_drops" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewDrops"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/layoutOutBondsScheduleType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_6sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/_14ssp"
+                    android:layout_height="@dimen/_14ssp"
+                    android:layout_marginEnd="@dimen/_2sdp"
+                    android:src="@drawable/ic_schedule_type"
+                    android:tint="@color/buildingTitle" />
+
+                <TextView
+                    style="@style/titleBigTextViewTheme"
+                    android:text="@string/string_out_bounds" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewOutBonds"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

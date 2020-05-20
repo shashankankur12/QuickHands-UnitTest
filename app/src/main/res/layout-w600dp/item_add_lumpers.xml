@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/_8ssp"
+    android:paddingBottom="@dimen/_8ssp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageViewProfile"
+        style="@style/circularImageViewTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewLumperName"
+        style="@style/titleTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:text="John Snow"
+        android:textColor="@color/textBlack"
+        app:layout_constraintEnd_toStartOf="@id/imageViewAdd"
+        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.quickhandslogistics.modified.controls.CustomTextView
+        android:id="@+id/textViewEmployeeId"
+        style="@style/valuesSmallTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:text="(Emp ID: 1001)"
+        android:textColor="@color/textBlack"
+        app:emptyDataVisibility="empty_gone"
+        app:layout_constraintEnd_toStartOf="@id/imageViewAdd"
+        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
+
+    <com.quickhandslogistics.modified.controls.CustomTextView
+        android:id="@+id/textViewShiftHours"
+        style="@style/valuesSmallTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:text="Shift Hours: 9:00am to 6:00pm"
+        android:textColor="@color/detailHeader"
+        app:emptyDataVisibility="empty_gone"
+        app:layout_constraintEnd_toStartOf="@id/imageViewAdd"
+        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEmployeeId" />
+
+    <ImageView
+        android:id="@+id/imageViewAdd"
+        android:layout_width="@dimen/_18sdp"
+        android:layout_height="@dimen/_18sdp"
+        android:src="@drawable/ic_add_lumer_tick"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

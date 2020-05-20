@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.customerSheet.CustomerSheetContract
-import com.quickhandslogistics.modified.data.customerSheet.CustomerSheetListAPIResponse
+import com.quickhandslogistics.modified.data.customerSheet.CustomerSheetData
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.common.AddSignatureActivity
 import com.quickhandslogistics.utils.*
@@ -19,22 +19,23 @@ import java.io.File
 
 class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
 
-    private var onFragmentInteractionListener: CustomerSheetContract.View.OnFragmentInteractionListener? =
-        null
+    private var onFragmentInteractionListener: CustomerSheetContract.View.OnFragmentInteractionListener? = null
 
     private var signatureFilePath = ""
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = CustomerSheetCustomerFragment()
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (parentFragment is CustomerSheetContract.View.OnFragmentInteractionListener) {
-            onFragmentInteractionListener =
-                parentFragment as CustomerSheetContract.View.OnFragmentInteractionListener
+            onFragmentInteractionListener = parentFragment as CustomerSheetContract.View.OnFragmentInteractionListener
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_customer_sheet_customer, container, false)
     }
 
@@ -45,59 +46,23 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
         buttonSubmit.setOnClickListener(this)
     }
 
-    override fun onClick(view: View?) {
-        view?.let {
-            when (view.id) {
-                textViewAddSignature.id -> {
-                    startIntent(
-                        AddSignatureActivity::class.java,
-                        requestCode = AppConstant.REQUEST_CODE_CHANGED
-                    )
-                }
-                buttonSubmit.id -> {
-                    val customerName = editTextCustomerName.text.toString()
-                    val notesCustomer = editTextCustomerNotes.text.toString()
-                    if (customerName.isNotEmpty() && signatureFilePath.isNotEmpty()) {
-                        var message = getString(R.string.string_ask_to_submit_customer_sheet)
-                        if (notesCustomer.isEmpty()) {
-                            message =
-                                getString(R.string.string_ask_to_submit_customer_sheet_permanently)
-                        }
-                        CustomProgressBar.getInstance().showWarningDialog(
-                            message, fragmentActivity!!, object : CustomDialogWarningListener {
-                                override fun onConfirmClick() {
-                                    onFragmentInteractionListener?.saveCustomerSheet(
-                                        customerName, notesCustomer, signatureFilePath
-                                    )
-                                }
-
-                                override fun onCancelClick() {
-                                }
-                            })
-
-                    } else {
-                        CustomProgressBar.getInstance().showErrorDialog(
-                            getString(R.string.customer_sheet_warning_message), fragmentActivity!!
-                        )
-                    }
-                }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
+            data?.let {
+                val signatureFilePath = data.getStringExtra(AddSignatureActivity.ARG_SIGNATURE_FILE_PATH)
+                showLocalSignatureOnUI(signatureFilePath)
             }
         }
     }
 
-    fun updateCustomerDetails(
-        customerSheet: CustomerSheetListAPIResponse.CustomerSheetData?,
-        selectedTime: Long, inCompleteWorkItemsCount: Int
-    ) {
+    fun updateCustomerDetails(customerSheet: CustomerSheetData?, selectedTime: Long, inCompleteWorkItemsCount: Int) {
         val isCurrentDate = DateUtils.isCurrentDate(selectedTime)
+
         customerSheet?.also {
             editTextCustomerName.setText(customerSheet.customerRepresentativeName)
             editTextCustomerNotes.setText(customerSheet.note)
-
-            updateUIVisibility(
-                ValueUtils.getDefaultOrValue(customerSheet.isSigned),
-                isCurrentDate, inCompleteWorkItemsCount
-            )
+            updateUIVisibility(ValueUtils.getDefaultOrValue(customerSheet.isSigned), isCurrentDate, inCompleteWorkItemsCount)
         } ?: run {
             editTextCustomerName.setText("")
             editTextCustomerNotes.setText("")
@@ -133,16 +98,6 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
-            data?.let {
-                val signatureFilePath = data.getStringExtra(AddSignatureActivity.ARG_SIGNATURE_FILE_PATH)
-                showLocalSignatureOnUI(signatureFilePath)
-            }
-        }
-    }
-
     private fun showLocalSignatureOnUI(signatureFilePath: String?) {
         if (!signatureFilePath.isNullOrEmpty()) {
             this.signatureFilePath = signatureFilePath
@@ -156,8 +111,38 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = CustomerSheetCustomerFragment()
+    private fun submitCustomerSheet() {
+        val customerName = editTextCustomerName.text.toString()
+        val notesCustomer = editTextCustomerNotes.text.toString()
+        if (customerName.isNotEmpty() && signatureFilePath.isNotEmpty()) {
+            var message = getString(R.string.string_ask_to_submit_customer_sheet)
+            if (notesCustomer.isEmpty()) {
+                message = getString(R.string.string_ask_to_submit_customer_sheet_permanently)
+            }
+            showConfirmationDialog(message, customerName, notesCustomer)
+        } else {
+            CustomProgressBar.getInstance().showErrorDialog(getString(R.string.customer_sheet_warning_message), fragmentActivity!!)
+        }
+    }
+
+    private fun showConfirmationDialog(message: String, customerName: String, notesCustomer: String) {
+        CustomProgressBar.getInstance().showWarningDialog(message, fragmentActivity!!, object : CustomDialogWarningListener {
+            override fun onConfirmClick() {
+                onFragmentInteractionListener?.saveCustomerSheet(customerName, notesCustomer, signatureFilePath)
+            }
+
+            override fun onCancelClick() {
+            }
+        })
+    }
+
+    /** Native Views Listeners */
+    override fun onClick(view: View?) {
+        view?.let {
+            when (view.id) {
+                textViewAddSignature.id -> startIntent(AddSignatureActivity::class.java, requestCode = AppConstant.REQUEST_CODE_CHANGED)
+                buttonSubmit.id -> submitCustomerSheet()
+            }
+        }
     }
 }

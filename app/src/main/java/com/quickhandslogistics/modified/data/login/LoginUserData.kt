@@ -9,5 +9,4 @@ class LoginUserData : EmployeeData(), Serializable {
     @SerializedName("token")
     @Expose
     var token: String? = null
-
 }

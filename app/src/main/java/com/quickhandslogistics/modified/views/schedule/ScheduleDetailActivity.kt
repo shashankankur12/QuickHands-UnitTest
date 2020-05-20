@@ -40,75 +40,33 @@ import kotlin.collections.ArrayList
 class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickListener,
     ScheduleDetailContract.View, ScheduleDetailContract.View.OnAdapterItemClickListener {
 
+    private var allowUpdate: Boolean = false
+    private var selectedTime: Long = 0
+    private var scheduleIdentity = ""
+    private var scheduleDetail: ScheduleDetail? = null
+
     private lateinit var allLumpersImagesAdapter: LumperImagesAdapter
     private lateinit var liveLoadsAdapter: ScheduledWorkItemAdapter
     private lateinit var dropsAdapter: ScheduledWorkItemAdapter
     private lateinit var outBondsAdapter: ScheduledWorkItemAdapter
     private lateinit var scheduleDetailPresenter: ScheduleDetailPresenter
 
-    private var allowUpdate: Boolean = false
-    private var selectedTime: Long = 0
-    private var scheduleIdentity = ""
-    private var scheduleDetail: ScheduleDetail? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_schedule_detail)
         setupToolbar(getString(R.string.scheduled_work))
 
-        scheduleDetailPresenter = ScheduleDetailPresenter(this, resources)
 
         intent.extras?.let { bundle ->
             allowUpdate = bundle.getBoolean(ARG_ALLOW_UPDATE)
             scheduleIdentity = bundle.getString(ARG_SCHEDULE_IDENTITY, "")
             selectedTime = bundle.getLong(ARG_SELECTED_DATE_MILLISECONDS, 0)
-
-            initializeUI()
-            scheduleDetailPresenter.getScheduleDetail(scheduleIdentity, Date(selectedTime))
-        }
-    }
-
-    private fun initializeUI() {
-        recyclerViewLiveLoad.apply {
-            layoutManager = LinearLayoutManager(activity)
-            addItemDecoration(SpaceDividerItemDecorator(15))
-            liveLoadsAdapter = ScheduledWorkItemAdapter(
-                resources, getString(R.string.string_live_loads),
-                adapterItemClickListener = this@ScheduleDetailActivity
-            )
-            adapter = liveLoadsAdapter
         }
 
-        recyclerViewDrops.apply {
-            layoutManager = LinearLayoutManager(activity)
-            addItemDecoration(SpaceDividerItemDecorator(15))
-            dropsAdapter = ScheduledWorkItemAdapter(
-                resources, getString(R.string.string_drops),
-                adapterItemClickListener = this@ScheduleDetailActivity
-            )
-            adapter = dropsAdapter
-        }
+        initializeUI()
 
-        recyclerViewOutBonds.apply {
-            layoutManager = LinearLayoutManager(activity)
-            addItemDecoration(SpaceDividerItemDecorator(15))
-            outBondsAdapter = ScheduledWorkItemAdapter(
-                resources, getString(R.string.string_out_bounds),
-                adapterItemClickListener = this@ScheduleDetailActivity
-            )
-            adapter = outBondsAdapter
-        }
-
-        recyclerViewLumpersImagesList.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            addItemDecoration(OverlapDecoration())
-            allLumpersImagesAdapter =
-                LumperImagesAdapter(
-                    ArrayList(),
-                    this@ScheduleDetailActivity
-                )
-            adapter = allLumpersImagesAdapter
-        }
+        scheduleDetailPresenter = ScheduleDetailPresenter(this, resources)
+        scheduleDetailPresenter.getScheduleDetail(scheduleIdentity, Date(selectedTime))
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -127,12 +85,7 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.actionNotes -> {
-                CustomProgressBar.getInstance()
-                    .showInfoDialog(
-                        getString(R.string.string_note), scheduleDetail?.scheduleNote!!, activity
-                    )
-            }
+            R.id.actionNotes -> CustomProgressBar.getInstance().showInfoDialog(getString(R.string.string_note), scheduleDetail?.scheduleNote!!, activity)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -145,75 +98,123 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
         }
     }
 
-    /*
-    * Presenter Listeners
-    */
+    private fun initializeUI() {
+        recyclerViewLiveLoad.apply {
+            layoutManager = LinearLayoutManager(activity)
+            addItemDecoration(SpaceDividerItemDecorator(15))
+            liveLoadsAdapter = ScheduledWorkItemAdapter(resources, getString(R.string.string_live_loads), this@ScheduleDetailActivity)
+            adapter = liveLoadsAdapter
+        }
+
+        recyclerViewDrops.apply {
+            layoutManager = LinearLayoutManager(activity)
+            addItemDecoration(SpaceDividerItemDecorator(15))
+            dropsAdapter = ScheduledWorkItemAdapter(resources, getString(R.string.string_drops), this@ScheduleDetailActivity)
+            adapter = dropsAdapter
+        }
+
+        recyclerViewOutBonds.apply {
+            layoutManager = LinearLayoutManager(activity)
+            addItemDecoration(SpaceDividerItemDecorator(15))
+            outBondsAdapter = ScheduledWorkItemAdapter(resources, getString(R.string.string_out_bounds), this@ScheduleDetailActivity)
+            adapter = outBondsAdapter
+        }
+
+        recyclerViewLumpersImagesList.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            addItemDecoration(OverlapDecoration())
+            allLumpersImagesAdapter = LumperImagesAdapter(ArrayList(), this@ScheduleDetailActivity)
+            adapter = allLumpersImagesAdapter
+        }
+    }
+
+    private fun showHeaderInfo(scheduleDetail: ScheduleDetail) {
+        if (!scheduleDetail.buildingName.isNullOrEmpty())
+            textViewBuildingName.text = scheduleDetail.buildingName?.capitalize()
+
+        scheduleDetail.scheduledFrom?.let {
+            textViewScheduleDate.text = DateUtils.changeDateString(PATTERN_API_REQUEST_PARAMETER, PATTERN_NORMAL, it)
+        }
+        textViewScheduleType.text = scheduleDetail.scheduleTypeNames
+        textViewWorkItemsCount.text = String.format(getString(R.string.work_items_count), scheduleDetail.totalNumberOfWorkItems)
+    }
+
+    private fun showLiveLoadsList(scheduleTypes: ScheduleDetail.ScheduleTypes): ArrayList<EmployeeData> {
+        val allLumpersList = ArrayList<EmployeeData>()
+        if (!scheduleTypes.liveLoads.isNullOrEmpty()) {
+            scheduleTypes.liveLoads!!.sortWith(Comparator { workItem1, workItem2 ->
+                workItem1.startTime!!.compareTo(workItem2.startTime!!)
+            })
+            liveLoadsAdapter.updateData(scheduleTypes.liveLoads!!)
+            layoutLiveLoadScheduleType.visibility = View.VISIBLE
+            recyclerViewLiveLoad.visibility = View.VISIBLE
+
+            for (workItem in scheduleTypes.liveLoads!!) {
+                allLumpersList.addAll(workItem.assignedLumpersList!!)
+            }
+        } else {
+            layoutLiveLoadScheduleType.visibility = View.GONE
+            recyclerViewLiveLoad.visibility = View.GONE
+        }
+        return allLumpersList
+    }
+
+    private fun showDropsList(scheduleTypes: ScheduleDetail.ScheduleTypes): ArrayList<EmployeeData> {
+        val allLumpersList = ArrayList<EmployeeData>()
+        if (!scheduleTypes.drops.isNullOrEmpty()) {
+            dropsAdapter.updateData(scheduleTypes.drops!!)
+            layoutDropsScheduleType.visibility = View.VISIBLE
+            recyclerViewDrops.visibility = View.VISIBLE
+
+            for (workItem in scheduleTypes.drops!!) {
+                allLumpersList.addAll(workItem.assignedLumpersList!!)
+            }
+        } else {
+            layoutDropsScheduleType.visibility = View.GONE
+            recyclerViewDrops.visibility = View.GONE
+        }
+        return allLumpersList
+    }
+
+    private fun showOutBoundsList(scheduleTypes: ScheduleDetail.ScheduleTypes): ArrayList<EmployeeData> {
+        val allLumpersList = ArrayList<EmployeeData>()
+        if (!scheduleTypes.outbounds.isNullOrEmpty()) {
+            scheduleTypes.outbounds!!.sortWith(Comparator { workItem1, workItem2 ->
+                workItem1.startTime!!.compareTo(workItem2.startTime!!)
+            })
+            outBondsAdapter.updateData(scheduleTypes.outbounds!!)
+            layoutOutBondsScheduleType.visibility = View.VISIBLE
+            recyclerViewOutBonds.visibility = View.VISIBLE
+
+            for (workItem in scheduleTypes.outbounds!!) {
+                allLumpersList.addAll(workItem.assignedLumpersList!!)
+            }
+        } else {
+            layoutOutBondsScheduleType.visibility = View.GONE
+            recyclerViewOutBonds.visibility = View.GONE
+        }
+        return allLumpersList
+    }
+
+
+    /** Presenter Listeners */
     override fun showScheduleData(scheduleDetail: ScheduleDetail) {
         this.scheduleDetail = scheduleDetail
         invalidateOptionsMenu()
 
-        if (!scheduleDetail.buildingName.isNullOrEmpty())
-            textViewBuildingName.text = scheduleDetail.buildingName?.capitalize()
-        scheduleDetail.scheduledFrom?.let {
-            textViewScheduleDate.text =
-                DateUtils.changeDateString(PATTERN_API_REQUEST_PARAMETER, PATTERN_NORMAL, it)
-        }
-        textViewScheduleType.text = scheduleDetail.scheduleTypeNames
-        textViewWorkItemsCount.text = String.format(
-            getString(R.string.work_items_count),
-            scheduleDetail.totalNumberOfWorkItems
-        )
+        showHeaderInfo(scheduleDetail)
 
         var allLumpersList = ArrayList<EmployeeData>()
 
         scheduleDetail.scheduleTypes?.let { scheduleTypes ->
             // Show Live Loads work Items Listing
-            if (!scheduleTypes.liveLoads.isNullOrEmpty()) {
-                scheduleTypes.liveLoads!!.sortWith(Comparator { workItem1, workItem2 ->
-                    workItem1.startTime!!.compareTo(workItem2.startTime!!)
-                })
-                liveLoadsAdapter.updateData(scheduleTypes.liveLoads!!)
-                layoutLiveLoadScheduleType.visibility = View.VISIBLE
-                recyclerViewLiveLoad.visibility = View.VISIBLE
-
-                for (workItem in scheduleTypes.liveLoads!!) {
-                    allLumpersList.addAll(workItem.assignedLumpersList!!)
-                }
-            } else {
-                layoutLiveLoadScheduleType.visibility = View.GONE
-                recyclerViewLiveLoad.visibility = View.GONE
-            }
+            allLumpersList.addAll(showLiveLoadsList(scheduleTypes))
 
             // Show Drops work Items Listing
-            if (!scheduleTypes.drops.isNullOrEmpty()) {
-                dropsAdapter.updateData(scheduleTypes.drops!!)
-                layoutDropsScheduleType.visibility = View.VISIBLE
-                recyclerViewDrops.visibility = View.VISIBLE
-
-                for (workItem in scheduleTypes.drops!!) {
-                    allLumpersList.addAll(workItem.assignedLumpersList!!)
-                }
-            } else {
-                layoutDropsScheduleType.visibility = View.GONE
-                recyclerViewDrops.visibility = View.GONE
-            }
+            allLumpersList.addAll(showDropsList(scheduleTypes))
 
             // Show Out Bonds work Items Listing
-            if (!scheduleTypes.outbounds.isNullOrEmpty()) {
-                scheduleTypes.outbounds!!.sortWith(Comparator { workItem1, workItem2 ->
-                    workItem1.startTime!!.compareTo(workItem2.startTime!!)
-                })
-                outBondsAdapter.updateData(scheduleTypes.outbounds!!)
-                layoutOutBondsScheduleType.visibility = View.VISIBLE
-                recyclerViewOutBonds.visibility = View.VISIBLE
-
-                for (workItem in scheduleTypes.outbounds!!) {
-                    allLumpersList.addAll(workItem.assignedLumpersList!!)
-                }
-            } else {
-                layoutOutBondsScheduleType.visibility = View.GONE
-                recyclerViewOutBonds.visibility = View.GONE
-            }
+            allLumpersList.addAll(showOutBoundsList(scheduleTypes))
         }
 
         if (allLumpersList.size > 0) {
@@ -229,9 +230,7 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }
 
-    /*
-    * Adapter Item Click Listeners
-    */
+    /** Adapter Listeners */
     override fun onLumperImageItemClick(lumpersList: ArrayList<EmployeeData>) {
         val bundle = Bundle()
         bundle.putParcelableArrayList(ARG_LUMPERS_LIST, lumpersList)
@@ -244,17 +243,11 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
         startIntent(DisplayLumpersListActivity::class.java, bundle = bundle)
     }
 
-    override fun onWorkItemClick(
-        workItemDetail: WorkItemDetail,
-        workItemTypeDisplayName: String
-    ) {
+    override fun onWorkItemClick(workItemDetail: WorkItemDetail, workItemTypeDisplayName: String) {
         val bundle = Bundle()
         bundle.putBoolean(ARG_ALLOW_UPDATE, allowUpdate)
         bundle.putString(ARG_WORK_ITEM_ID, workItemDetail.id)
         bundle.putString(ARG_WORK_ITEM_TYPE_DISPLAY_NAME, workItemTypeDisplayName)
-        startIntent(
-            ScheduledWorkItemDetailActivity::class.java, bundle = bundle,
-            requestCode = AppConstant.REQUEST_CODE_CHANGED
-        )
+        startIntent(ScheduledWorkItemDetailActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }
 }

@@ -7,24 +7,23 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
-import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.scheduleTime.EditScheduleTimeContract
+import com.quickhandslogistics.modified.controls.CustomTextView
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.utils.StringUtils
-import com.quickhandslogistics.utils.ValueUtils
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
+import com.quickhandslogistics.utils.DateUtils.Companion.convertUTCDateStringToMilliseconds
+import com.quickhandslogistics.utils.UIUtils
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_edit_schedule_time.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class EditScheduleTimeAdapter(
-    scheduleTimeList: ArrayList<ScheduleTimeDetail>,
-    private val onAdapterClick: EditScheduleTimeContract.View.OnAdapterItemClickListener
-) : Adapter<EditScheduleTimeAdapter.ViewHolder>() {
+class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, private val onAdapterClick: EditScheduleTimeContract.View.OnAdapterItemClickListener) :
+    Adapter<EditScheduleTimeAdapter.ViewHolder>() {
 
     private var searchEnabled = false
     private var searchTerm = ""
@@ -35,8 +34,7 @@ class EditScheduleTimeAdapter(
 
     init {
         for (scheduleTime in scheduleTimeList) {
-            scheduledLumpersIdsTimeMap[scheduleTime.lumperInfo?.id!!] =
-                DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, scheduleTime.reportingTimeAndDay)
+            scheduledLumpersIdsTimeMap[scheduleTime.lumperInfo?.id!!] = convertUTCDateStringToMilliseconds(PATTERN_API_RESPONSE, scheduleTime.reportingTimeAndDay)
         }
         this.scheduleTimeList.addAll(scheduleTimeList)
     }
@@ -58,69 +56,19 @@ class EditScheduleTimeAdapter(
         holder.bind(getItem(position))
     }
 
-    fun getScheduledLumpersTimeMap(): HashMap<String, Long> {
-        return scheduledLumpersIdsTimeMap
-    }
-
-    fun getLumpersList(): ArrayList<EmployeeData> {
-        val employeeDataList = ArrayList<EmployeeData>()
-        for (scheduleTimeDetail in scheduleTimeList) {
-            employeeDataList.add(scheduleTimeDetail.lumperInfo!!)
-        }
-        return employeeDataList
-    }
-
-    fun addLumpersList(employeeDataList: ArrayList<EmployeeData>) {
-        val oldLumpersIdsTimeMap = HashMap<String, Long>()
-        oldLumpersIdsTimeMap.putAll(scheduledLumpersIdsTimeMap)
-
-        setSearchEnabled(false)
-        this.scheduleTimeList.clear()
-        this.scheduledLumpersIdsTimeMap.clear()
-
-        for (employeeData in employeeDataList) {
-            val scheduleTimeDetail = ScheduleTimeDetail()
-            scheduleTimeDetail.lumperInfo = employeeData
-            this.scheduleTimeList.add(scheduleTimeDetail)
-
-            if (oldLumpersIdsTimeMap.containsKey(employeeData.id!!)) {
-                this.scheduledLumpersIdsTimeMap[employeeData.id!!] = oldLumpersIdsTimeMap[employeeData.id!!]!!
-            }
-        }
-
-        notifyDataSetChanged()
-    }
-
-    inner class ViewHolder(view: View, private val context: Context) :
-        RecyclerView.ViewHolder(view), View.OnClickListener {
+    inner class ViewHolder(view: View, private val context: Context) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
         private val textViewLumperName: TextView = view.textViewLumperName
-        private val textViewEmployeeId: TextView = view.textViewEmployeeId
+        private val textViewEmployeeId: CustomTextView = view.textViewEmployeeId
         private val textViewScheduleTime: TextView = view.textViewScheduleTime
         private val textViewAddStartTime: TextView = view.textViewAddStartTime
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
 
         fun bind(scheduleTimeDetail: ScheduleTimeDetail) {
             scheduleTimeDetail.lumperInfo?.let { employeeData ->
-                if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl)) {
-                    Glide.with(context).load(employeeData.profileImageUrl).placeholder(R.drawable.dummy)
-                        .error(R.drawable.dummy).into(circleImageViewProfile)
-                } else {
-                    Glide.with(context).clear(circleImageViewProfile);
-                }
-
-                textViewLumperName.text = String.format(
-                    "%s %s",
-                    ValueUtils.getDefaultOrValue(employeeData.firstName).capitalize(),
-                    ValueUtils.getDefaultOrValue(employeeData.lastName).capitalize()
-                )
-
-                if (StringUtils.isNullOrEmpty(employeeData.employeeId)) {
-                    textViewEmployeeId.visibility = View.GONE
-                } else {
-                    textViewEmployeeId.visibility = View.VISIBLE
-                    textViewEmployeeId.text = String.format("(Emp ID: %s)", employeeData.employeeId)
-                }
+                UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
+                textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
+                textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
 
                 if (scheduledLumpersIdsTimeMap.containsKey(employeeData.id!!)) {
                     textViewScheduleTime.visibility = View.VISIBLE
@@ -195,6 +143,39 @@ class EditScheduleTimeAdapter(
         for (scheduleTimeDetail in scheduleTimeList) {
             scheduledLumpersIdsTimeMap[scheduleTimeDetail.lumperInfo?.id!!] = timeInMillis
         }
+        notifyDataSetChanged()
+    }
+
+    fun getScheduledLumpersTimeMap(): HashMap<String, Long> {
+        return scheduledLumpersIdsTimeMap
+    }
+
+    fun getLumpersList(): ArrayList<EmployeeData> {
+        val employeeDataList = ArrayList<EmployeeData>()
+        for (scheduleTimeDetail in scheduleTimeList) {
+            employeeDataList.add(scheduleTimeDetail.lumperInfo!!)
+        }
+        return employeeDataList
+    }
+
+    fun addLumpersList(employeeDataList: ArrayList<EmployeeData>) {
+        val oldLumpersIdsTimeMap = HashMap<String, Long>()
+        oldLumpersIdsTimeMap.putAll(scheduledLumpersIdsTimeMap)
+
+        setSearchEnabled(false)
+        this.scheduleTimeList.clear()
+        this.scheduledLumpersIdsTimeMap.clear()
+
+        for (employeeData in employeeDataList) {
+            val scheduleTimeDetail = ScheduleTimeDetail()
+            scheduleTimeDetail.lumperInfo = employeeData
+            this.scheduleTimeList.add(scheduleTimeDetail)
+
+            if (oldLumpersIdsTimeMap.containsKey(employeeData.id!!)) {
+                this.scheduledLumpersIdsTimeMap[employeeData.id!!] = oldLumpersIdsTimeMap[employeeData.id!!]!!
+            }
+        }
+
         notifyDataSetChanged()
     }
 }

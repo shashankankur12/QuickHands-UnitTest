@@ -7,30 +7,29 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
-import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemDetailLumpersContract
+import com.quickhandslogistics.modified.controls.CustomTextView
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.convertDateStringToTime
-import com.quickhandslogistics.utils.StringUtils
+import com.quickhandslogistics.utils.UIUtils
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_work_item_detail_lumper_time.view.*
 
-class WorkSheetItemDetailLumpersAdapter(
-    private var onAdapterClick: WorkSheetItemDetailLumpersContract.View.OnAdapterItemClickListener
-) : Adapter<WorkSheetItemDetailLumpersAdapter.WorkItemHolder>() {
+class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetItemDetailLumpersContract.View.OnAdapterItemClickListener) :
+    Adapter<WorkSheetItemDetailLumpersAdapter.ViewHolder>() {
 
     private var workItemStatus = ""
     private var lumperList = ArrayList<EmployeeData>()
     private var timingsData = HashMap<String, LumpersTimeSchedule>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_work_item_detail_lumper_time, parent, false)
-        return WorkItemHolder(view, parent.context)
+        return ViewHolder(view, parent.context)
     }
 
     override fun getItemCount(): Int {
@@ -41,51 +40,31 @@ class WorkSheetItemDetailLumpersAdapter(
         return lumperList[position]
     }
 
-    override fun onBindViewHolder(holder: WorkItemHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    inner class WorkItemHolder(view: View, private val context: Context) :
-        RecyclerView.ViewHolder(view), View.OnClickListener {
+    inner class ViewHolder(view: View, private val context: Context) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
         private val textViewLumperName: TextView = view.textViewLumperName
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
-        private val textViewEmployeeId: TextView = view.textViewEmployeeId
+        private val textViewEmployeeId: CustomTextView = view.textViewEmployeeId
         private val textViewAddTime: TextView = view.textViewAddTime
         private val textViewWorkTime: TextView = view.textViewWorkTime
         private val textViewWaitingTime: TextView = view.textViewWaitingTime
         private val textViewBreakTime: TextView = view.textViewBreakTime
 
         fun bind(employeeData: EmployeeData) {
-            if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl)) {
-                Glide.with(context).load(employeeData.profileImageUrl).placeholder(R.drawable.dummy).error(R.drawable.dummy).into(circleImageViewProfile)
-            } else {
-                Glide.with(context).clear(circleImageViewProfile);
-            }
-
-            textViewLumperName.text = String.format(
-                "%s %s",
-                getDefaultOrValue(employeeData.firstName).capitalize(),
-                getDefaultOrValue(employeeData.lastName).capitalize()
-            )
-
-            if (StringUtils.isNullOrEmpty(employeeData.employeeId)) {
-                textViewEmployeeId.visibility = View.GONE
-            } else {
-                textViewEmployeeId.visibility = View.VISIBLE
-                textViewEmployeeId.text = String.format("(Emp ID: %s)", employeeData.employeeId)
-            }
+            UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
+            textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
+            textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
 
             if (timingsData.containsKey(employeeData.id)) {
                 val timingDetail = timingsData[employeeData.id]
                 timingDetail?.let {
                     val startTime = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.startTime)
                     val endTime = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.endTime)
-                    textViewWorkTime.text = String.format(
-                        "%s - %s",
-                        if (startTime.isNotEmpty()) startTime else "NA",
-                        if (endTime.isNotEmpty()) endTime else "NA"
-                    )
+                    textViewWorkTime.text = String.format("%s - %s", if (startTime.isNotEmpty()) startTime else "NA", if (endTime.isNotEmpty()) endTime else "NA")
 
                     val waitingTime = getDefaultOrValue(timingDetail.waitingTime)
                     if (waitingTime.isNotEmpty() && waitingTime.toInt() != 0) {
@@ -96,11 +75,7 @@ class WorkSheetItemDetailLumpersAdapter(
 
                     val breakTimeStart = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeStart)
                     val breakTimeEnd = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeEnd)
-                    textViewBreakTime.text = String.format(
-                        "%s - %s",
-                        if (breakTimeStart.isNotEmpty()) breakTimeStart else "NA",
-                        if (breakTimeEnd.isNotEmpty()) breakTimeEnd else "NA"
-                    )
+                    textViewBreakTime.text = String.format("%s - %s", if (breakTimeStart.isNotEmpty()) breakTimeStart else "NA", if (breakTimeEnd.isNotEmpty()) breakTimeEnd else "NA")
                 }
             } else {
                 textViewWorkTime.text = "NA - NA"

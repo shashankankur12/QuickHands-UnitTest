@@ -22,17 +22,22 @@ import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Comp
 import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.fragment_unschedule.*
 
-class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItemClickListener,
-    UnScheduleContract.View, SwipeRefreshLayout.OnRefreshListener {
+class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItemClickListener, UnScheduleContract.View, SwipeRefreshLayout.OnRefreshListener {
+
+    private var onFragmentInteractionListener: ScheduleMainContract.View.OnFragmentInteractionListener? = null
 
     private lateinit var unSchedulePresenter: UnSchedulePresenter
     private lateinit var unScheduleAdapter: UnScheduleAdapter
-    private var onScheduleFragmentInteractionListener: ScheduleMainContract.View.OnScheduleFragmentInteractionListener? = null
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = UnScheduleFragment()
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (parentFragment is ScheduleMainContract.View.OnScheduleFragmentInteractionListener) {
-            onScheduleFragmentInteractionListener = parentFragment as ScheduleMainContract.View.OnScheduleFragmentInteractionListener
+        if (parentFragment is ScheduleMainContract.View.OnFragmentInteractionListener) {
+            onFragmentInteractionListener = parentFragment as ScheduleMainContract.View.OnFragmentInteractionListener
         }
     }
 
@@ -59,37 +64,22 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
         swipeRefreshLayoutUnSchedule.setOnRefreshListener(this)
     }
 
-    /*
-    * Native Views Listeners
-    */
-    override fun onRefresh() {
-        swipeRefreshLayoutUnSchedule.isRefreshing = false
-        unSchedulePresenter.getUnScheduledWorkItems(showProgressDialog = true)
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         unSchedulePresenter.onDestroy()
     }
 
-    /*
-    * Adapter Item Click Listeners
-    */
-    override fun onUnScheduleItemClick(scheduleDetail: ScheduleDetail) {
-        val bundle = Bundle()
-        bundle.putParcelable(ARG_SCHEDULE_DETAIL, scheduleDetail)
-        startIntent(UnScheduleDetailActivity::class.java, bundle = bundle)
+    fun fetchUnScheduledWorkItems() {
+        unSchedulePresenter.getUnScheduledWorkItems(showProgressDialog = false)
     }
 
-    override fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>) {
-        val bundle = Bundle()
-        bundle.putParcelableArrayList(DisplayLumpersListActivity.ARG_LUMPERS_LIST, lumpersList)
-        startIntent(DisplayLumpersListActivity::class.java, bundle = bundle)
+    /** Native Views Listeners */
+    override fun onRefresh() {
+        swipeRefreshLayoutUnSchedule.isRefreshing = false
+        unSchedulePresenter.getUnScheduledWorkItems(showProgressDialog = true)
     }
 
-    /*
-    * Presenter Listeners
-    */
+    /** Presenter Listeners */
     override fun showUnScheduleData(workItemsList: ArrayList<ScheduleDetail>) {
         unScheduleAdapter.updateList(workItemsList)
 
@@ -108,14 +98,16 @@ class UnScheduleFragment : BaseFragment(), UnScheduleContract.View.OnAdapterItem
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
-    fun fetchUnScheduledWorkItems() {
-        unSchedulePresenter.getUnScheduledWorkItems(showProgressDialog = false)
+    /** Adapter Listeners */
+    override fun onUnScheduleItemClick(scheduleDetail: ScheduleDetail) {
+        val bundle = Bundle()
+        bundle.putParcelable(ARG_SCHEDULE_DETAIL, scheduleDetail)
+        startIntent(UnScheduleDetailActivity::class.java, bundle = bundle)
     }
 
-    companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            UnScheduleFragment()
+    override fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>) {
+        val bundle = Bundle()
+        bundle.putParcelableArrayList(DisplayLumpersListActivity.ARG_LUMPERS_LIST, lumpersList)
+        startIntent(DisplayLumpersListActivity::class.java, bundle = bundle)
     }
 }

@@ -2,22 +2,15 @@ package com.quickhandslogistics.modified.views.lumperSheet
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
-import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
-import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
-import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
-import com.michalsvec.singlerowcalendar.utils.DateUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.adapters.lumperSheet.LumperSheetAdapter
 import com.quickhandslogistics.modified.contracts.lumperSheet.LumperSheetContract
@@ -27,11 +20,10 @@ import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment
 import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
-import kotlinx.android.synthetic.main.item_calendar_view.view.*
 import java.util.*
 
-class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatcher,
-    View.OnClickListener, LumperSheetContract.View.OnAdapterItemClickListener {
+class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatcher, View.OnClickListener,
+    LumperSheetContract.View.OnAdapterItemClickListener, CalendarUtils.CalendarSelectionListener {
 
     private var selectedTime: Long = 0
     private lateinit var availableDates: List<Date>
@@ -49,7 +41,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
 
         // Setup DatePicker Dates
         selectedTime = Date().time
-        availableDates = getAvailableDates()
+        availableDates = CalendarUtils.getPastCalendarDates()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -79,76 +71,44 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         imageViewCancel.setOnClickListener(this)
         buttonSubmit.setOnClickListener(this)
 
-        initializeCalendar()
-        singleRowCalendarScheduleTime.select(availableDates.size - 1)
+        CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarLumperSheet, availableDates, this)
+        singleRowCalendarLumperSheet.select(availableDates.size - 1)
     }
 
-    private fun initializeCalendar() {
-        val myCalendarViewManager = object : CalendarViewManager {
-            override fun bindDataToCalendarView(
-                holder: SingleRowCalendarAdapter.CalendarViewHolder,
-                date: Date, position: Int, isSelected: Boolean
-            ) {
-                holder.itemView.tv_date_calendar_item.text = DateUtils.getDayNumber(date)
-                holder.itemView.tv_day_calendar_item.text = DateUtils.getDay3LettersName(date)
+    override fun onDestroy() {
+        super.onDestroy()
+        lumperSheetPresenter.onDestroy()
+    }
 
-                if (isSelected) {
-                    holder.itemView.tv_date_calendar_item.setTextColor(Color.WHITE)
-                    holder.itemView.tv_date_calendar_item.setBackgroundResource(R.drawable.selected_calendar_item_background)
-                } else {
-                    holder.itemView.tv_date_calendar_item.setTextColor(
-                        ContextCompat.getColor(fragmentActivity!!, R.color.detailHeader)
-                    )
-                    holder.itemView.tv_date_calendar_item.setBackgroundColor(Color.TRANSPARENT)
-                }
-            }
-
-            override fun setCalendarViewResourceId(position: Int, date: Date, isSelected: Boolean): Int {
-                return R.layout.item_calendar_view
-            }
-        }
-
-        val myCalendarChangesObserver = object : CalendarChangesObserver {
-            override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
-                if (isSelected) {
-                    lumperSheetPresenter.getLumpersSheetByDate(date)
-                }
-                super.whenSelectionChanged(isSelected, position, date)
-            }
-        }
-
-        val mySelectionManager = object : CalendarSelectionManager {
-            override fun canBeItemSelected(position: Int, date: Date): Boolean {
-                return true
-            }
-        }
-
-        singleRowCalendarScheduleTime.apply {
-            calendarViewManager = myCalendarViewManager
-            calendarChangesObserver = myCalendarChangesObserver
-            calendarSelectionManager = mySelectionManager
-            setDates(availableDates)
-            init()
-            scrollToPosition(availableDates.size - 1)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
+            lumperSheetPresenter.getLumpersSheetByDate(Date(selectedTime))
         }
     }
 
-    private fun getAvailableDates(): List<Date> {
-        val list: MutableList<Date> = mutableListOf()
+    private fun showConfirmationDialog() {
+        CustomProgressBar.getInstance().showWarningDialog(
+            getString(R.string.string_ask_to_submit_lumper_sheet), fragmentActivity!!, object : CustomDialogWarningListener {
+                override fun onConfirmClick() {
+                    lumperSheetPresenter.initiateSheetSubmission(Date(selectedTime))
+                }
 
-        val calendar = Calendar.getInstance()
-        val currentDate = calendar[Calendar.DATE]
-        calendar.add(Calendar.WEEK_OF_YEAR, -2)
+                override fun onCancelClick() {
+                }
+            })
+    }
 
-        while (currentDate != calendar[Calendar.DATE]) {
-            calendar.add(Calendar.DATE, 1)
-            if (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY &&
-                calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY
-            ) {
-                list.add(calendar.time)
+    override fun onClick(view: View?) {
+        view?.let {
+            when (view.id) {
+                imageViewCancel.id -> {
+                    editTextSearch.setText("")
+                    AppUtils.hideSoftKeyboard(fragmentActivity!!)
+                }
+                buttonSubmit.id -> showConfirmationDialog()
             }
         }
-        return list
     }
 
     override fun afterTextChanged(p0: Editable?) {}
@@ -162,33 +122,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         }
     }
 
-    override fun onClick(view: View?) {
-        view?.let {
-            when (view.id) {
-                imageViewCancel.id -> {
-                    editTextSearch.setText("")
-                    Utils.hideSoftKeyboard(fragmentActivity!!)
-                }
-                buttonSubmit.id -> {
-                    CustomProgressBar.getInstance().showWarningDialog(
-                        getString(R.string.string_ask_to_submit_lumper_sheet), fragmentActivity!!, object : CustomDialogWarningListener {
-                            override fun onConfirmClick() {
-                                lumperSheetPresenter.initiateSheetSubmission(Date(selectedTime))
-                            }
-
-                            override fun onCancelClick() {
-                            }
-                        })
-                }
-            }
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        lumperSheetPresenter.onDestroy()
-    }
-
+    /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
@@ -207,7 +141,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
             }
         }
 
-        if (com.quickhandslogistics.utils.DateUtils.isCurrentDate(selectedTime) && lumperInfoList.size > 0) {
+        if (DateUtils.isCurrentDate(selectedTime) && lumperInfoList.size > 0) {
             buttonSubmit.visibility = if (!sheetSubmitted) View.VISIBLE else View.GONE
             buttonSubmit.isEnabled = !sheetSubmitted && isSignatureLeft == 0
         } else {
@@ -225,14 +159,14 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     }
 
     override fun sheetSubmittedSuccessfully() {
-        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.lumper_sheet_submitted_successfully),
-            fragmentActivity!!, object : CustomDialogListener {
-                override fun onConfirmClick() {
-                    lumperSheetPresenter.getLumpersSheetByDate(Date(selectedTime))
-                }
-            })
+        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.lumper_sheet_submitted_successfully), fragmentActivity!!, object : CustomDialogListener {
+            override fun onConfirmClick() {
+                lumperSheetPresenter.getLumpersSheetByDate(Date(selectedTime))
+            }
+        })
     }
 
+    /** Adapter Listeners */
     override fun onItemClick(lumperInfo: LumpersInfo) {
         val bundle = Bundle()
         bundle.putParcelable(ARG_LUMPER_INFO, lumperInfo)
@@ -240,10 +174,8 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         startIntent(LumperWorkDetailActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
-            lumperSheetPresenter.getLumpersSheetByDate(Date(selectedTime))
-        }
+    /** Calendar Listeners */
+    override fun onSelectCalendarDate(date: Date) {
+        lumperSheetPresenter.getLumpersSheetByDate(date)
     }
 }

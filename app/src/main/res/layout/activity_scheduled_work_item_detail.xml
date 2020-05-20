@@ -15,58 +15,46 @@
 
     <TextView
         android:id="@+id/textViewStartTime"
+        style="@style/titleBigTextViewTheme"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginEnd="@dimen/_1ssp"
-        android:textColor="@color/buildingTitle"
-        android:textSize="@dimen/_16ssp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header" />
 
-    <TextView
+    <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewScheduledDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/valuesTextViewTheme"
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginEnd="@dimen/_1ssp"
         android:drawableStart="@drawable/ic_schedule_calendar"
         android:drawablePadding="@dimen/_5sdp"
-        android:textColor="@color/scheduleDetail"
-        android:textSize="@dimen/_12ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
 
-    <TextView
+    <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewScheduleType"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/valuesTextViewTheme"
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginEnd="@dimen/_1ssp"
         android:drawableStart="@drawable/ic_schedule_type"
         android:drawablePadding="@dimen/_5sdp"
-        android:textColor="@color/scheduleDetail"
-        android:textSize="@dimen/_12ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewScheduledDate" />
 
-    <TextView
+    <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewWorkItemsCount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/valuesTextViewTheme"
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginEnd="@dimen/_1ssp"
         android:drawableStart="@drawable/ic_schedule_work_items"
         android:drawablePadding="@dimen/_5sdp"
-        android:textColor="@color/scheduleDetail"
-        android:textSize="@dimen/_10ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />
@@ -106,11 +94,8 @@
 
             <TextView
                 android:id="@+id/textViewEmptyData"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/noRecordTextViewTheme"
                 android:layout_centerInParent="true"
-                android:text="@string/string_no_record_found"
-                android:textSize="@dimen/_12ssp"
                 android:visibility="gone" />
         </RelativeLayout>
 
@@ -121,26 +106,20 @@
 
             <Button
                 android:id="@+id/buttonUpdateLumpers"
+                style="@style/negativeRoundButtonTheme"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/_10ssp"
                 android:layout_weight="1"
-                android:background="@drawable/round_button_negative"
-                android:textAllCaps="false"
-                android:textColor="@color/buttonRed"
-                android:textSize="@dimen/_14ssp"
-                android:visibility="visible" />
+                android:text="@string/update_lumpers" />
 
             <Button
                 android:id="@+id/buttonAddBuildingOperations"
+                style="@style/positiveRoundButtonTheme"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/round_button_red"
-                android:text="@string/update_building_operations"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/_14ssp" />
+                android:text="@string/update_building_operations" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

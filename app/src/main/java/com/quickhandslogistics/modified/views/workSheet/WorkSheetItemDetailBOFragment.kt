@@ -23,23 +23,25 @@ import kotlinx.android.synthetic.main.fragment_work_sheet_item_detail_bo.*
 
 class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
 
+    private var onFragmentInteractionListener: WorkSheetItemDetailContract.View.OnFragmentInteractionListener? = null
+
     private lateinit var containerDetailAdapter: ContainerDetailAdapter
-    private var onFragmentInteractionListener: WorkSheetItemDetailContract.View.OnFragmentInteractionListener? =
-        null
 
     private var workItemDetail: WorkItemDetail? = null
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = WorkSheetItemDetailBOFragment()
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (activity is WorkSheetItemDetailContract.View.OnFragmentInteractionListener) {
-            onFragmentInteractionListener =
-                activity as WorkSheetItemDetailContract.View.OnFragmentInteractionListener
+            onFragmentInteractionListener = activity as WorkSheetItemDetailContract.View.OnFragmentInteractionListener
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_work_sheet_item_detail_bo, container, false)
     }
 
@@ -52,8 +54,7 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
             adapter = containerDetailAdapter
         }
 
-        containerDetailAdapter.registerAdapterDataObserver(object :
-            RecyclerView.AdapterDataObserver() {
+        containerDetailAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
                 if (containerDetailAdapter.itemCount == 0) {
@@ -69,6 +70,13 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
         buttonUpdate.setOnClickListener(this)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
+            onFragmentInteractionListener?.fetchWorkItemDetail(changeResultCode = false)
+        }
+    }
+
     fun showBuildingOperationsData(workItemDetail: WorkItemDetail) {
         this.workItemDetail = workItemDetail
         workItemDetail.status?.let { status ->
@@ -79,10 +87,7 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
             }
         }
 
-        containerDetailAdapter.updateData(
-            workItemDetail.buildingOps,
-            workItemDetail.buildingDetailData?.parameters
-        )
+        containerDetailAdapter.updateData(workItemDetail.buildingOps, workItemDetail.buildingDetailData?.parameters)
     }
 
     fun showEmptyData() {
@@ -90,6 +95,7 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
         buttonUpdate.visibility = View.GONE
     }
 
+    /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
@@ -97,29 +103,10 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
                     val bundle = Bundle()
                     bundle.putBoolean(ARG_ALLOW_UPDATE, true)
                     bundle.putString(ARG_WORK_ITEM_ID, workItemDetail?.id)
-                    bundle.putStringArrayList(
-                        ARG_BUILDING_PARAMETERS,
-                        workItemDetail?.buildingDetailData?.parameters
-                    )
-                    startIntent(
-                        BuildingOperationsActivity::class.java,
-                        bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED
-                    )
+                    bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, workItemDetail?.buildingDetailData?.parameters)
+                    startIntent(BuildingOperationsActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
                 }
             }
         }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
-            onFragmentInteractionListener?.fetchWorkItemDetail(changeResultCode = false)
-        }
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            WorkSheetItemDetailBOFragment()
     }
 }

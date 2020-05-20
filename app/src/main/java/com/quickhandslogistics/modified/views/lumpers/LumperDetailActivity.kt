@@ -1,16 +1,16 @@
 package com.quickhandslogistics.modified.views.lumpers
 
 import android.os.Bundle
-import com.bumptech.glide.Glide
+import android.view.View
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.adapters.lumpers.LumperPagerAdapter
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.modified.adapters.lumpers.LumperPagerAdapter
-import com.quickhandslogistics.utils.StringUtils
-import com.quickhandslogistics.utils.ValueUtils
+import com.quickhandslogistics.modified.views.common.FullScreenImageActivity
+import com.quickhandslogistics.utils.UIUtils
 import kotlinx.android.synthetic.main.content_lumper_detail.*
 
-class LumperDetailActivity : BaseActivity() {
+class LumperDetailActivity : BaseActivity(), View.OnClickListener {
 
     private var employeeData: EmployeeData? = null
     private lateinit var lumperPagerAdapter: LumperPagerAdapter
@@ -25,43 +25,39 @@ class LumperDetailActivity : BaseActivity() {
         setContentView(R.layout.activity_lumper_detail)
         setupToolbar()
 
-        displayLumperDetails()
-    }
-
-    private fun displayLumperDetails() {
         intent.extras?.let { it ->
             if (it.containsKey(ARG_LUMPER_DATA)) {
                 employeeData = it.getParcelable(ARG_LUMPER_DATA) as EmployeeData?
-                employeeData?.let { lumperData ->
-
-                    if (!StringUtils.isNullOrEmpty(lumperData.profileImageUrl)) {
-                        Glide.with(activity).load(lumperData.profileImageUrl)
-                            .placeholder(R.drawable.dummy).error(R.drawable.dummy)
-                            .into(circleImageViewProfile)
-                    } else {
-                        Glide.with(activity).clear(circleImageViewProfile);
-                    }
-
-                    textViewLumperName.text = String.format(
-                        "%s %s",
-                        ValueUtils.getDefaultOrValue(lumperData.firstName),
-                        ValueUtils.getDefaultOrValue(lumperData.lastName)
-                    )
-
-                    initializeUI(lumperData)
-                }
             }
+        }
+
+        initializeUI()
+    }
+
+    private fun initializeUI() {
+        employeeData?.let { employeeData ->
+            UIUtils.showEmployeeProfileImage(activity, employeeData, circleImageViewProfile)
+            textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
+
+            lumperPagerAdapter = LumperPagerAdapter(supportFragmentManager, resources, employeeData)
+            viewPagerLumperDetail.adapter = lumperPagerAdapter
+            tabLayoutLumperDetail.setupWithViewPager(viewPagerLumperDetail)
+
+         //   circleImageViewProfile.setOnClickListener(this@LumperDetailActivity)
         }
     }
 
-    private fun initializeUI(employeeData: EmployeeData) {
-        lumperPagerAdapter =
-            LumperPagerAdapter(
-                supportFragmentManager,
-                resources,
-                employeeData
-            )
-        viewPagerLumperDetail.adapter = lumperPagerAdapter
-        tabLayoutLumperDetail.setupWithViewPager(viewPagerLumperDetail)
+    override fun onClick(view: View?) {
+        view?.let {
+            when (view.id) {
+                circleImageViewProfile.id -> {
+                    if (!employeeData?.profileImageUrl.isNullOrEmpty()) {
+                        val bundle = Bundle()
+                        bundle.putString(FullScreenImageActivity.ARG_IMAGE_URL, employeeData?.profileImageUrl)
+                        startZoomIntent(FullScreenImageActivity::class.java, bundle, circleImageViewProfile)
+                    }
+                }
+            }
+        }
     }
 }

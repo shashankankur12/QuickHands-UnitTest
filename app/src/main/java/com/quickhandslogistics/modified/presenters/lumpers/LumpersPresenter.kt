@@ -8,19 +8,29 @@ import com.quickhandslogistics.modified.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.modified.models.lumpers.LumpersModel
 import com.quickhandslogistics.utils.ValueUtils
 
-class LumpersPresenter(
-    private var lumpersView: LumpersContract.View?, private val resources: Resources
-) : LumpersContract.Presenter, LumpersContract.Model.OnFinishedListener {
+class LumpersPresenter(private var lumpersView: LumpersContract.View?, private val resources: Resources) :
+    LumpersContract.Presenter, LumpersContract.Model.OnFinishedListener {
 
-    private val lumpersModel: LumpersModel = LumpersModel()
+    private val lumpersModel = LumpersModel()
+
+    /** View Listeners */
+    override fun onDestroy() {
+        lumpersView = null
+    }
 
     override fun fetchLumpersList(currentPageIndex: Int) {
         lumpersView?.showProgressDialog(resources.getString(R.string.api_loading_message))
         lumpersModel.fetchLumpersList(currentPageIndex, this)
     }
 
-    override fun onDestroy() {
-        lumpersView = null
+    /** Model Result Listeners */
+    override fun onFailure(message: String) {
+        lumpersView?.hideProgressDialog()
+        if (TextUtils.isEmpty(message)) {
+            lumpersView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+        } else {
+            lumpersView?.showAPIErrorMessage(message)
+        }
     }
 
     override fun onSuccess(response: LumperListAPIResponse, currentPageIndex: Int) {
@@ -30,14 +40,5 @@ class LumpersPresenter(
         val nextPageIndex = ValueUtils.getDefaultOrValue(response.data?.next)
 
         lumpersView?.showLumpersData(response.data?.employeeDataList!!, totalPagesCount, nextPageIndex, currentPageIndex)
-    }
-
-    override fun onFailure(message: String) {
-        lumpersView?.hideProgressDialog()
-        if (TextUtils.isEmpty(message)) {
-            lumpersView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
-        } else {
-            lumpersView?.showAPIErrorMessage(message)
-        }
     }
 }

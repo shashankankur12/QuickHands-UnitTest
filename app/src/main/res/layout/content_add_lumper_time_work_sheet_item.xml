@@ -23,38 +23,30 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circleImageViewProfile"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
+            style="@style/circularImageViewTheme"
             android:layout_marginStart="@dimen/_12sdp"
-            android:contentDescription="@string/nav_header_desc"
-            android:src="@drawable/dummy"
-            app:civ_border_color="@color/imageBorder"
-            app:civ_border_width="1dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textViewLumperName"
+            style="@style/titleTextViewTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <com.quickhandslogistics.modified.controls.CustomTextView
             android:id="@+id/textViewEmployeeId"
+            style="@style/valuesSmallTextViewTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:textColor="@color/textWhite"
-            android:textSize="@dimen/_10ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
             app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
@@ -93,24 +85,14 @@
             android:padding="@dimen/_10sdp">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/waiting_time_in_min"
-                android:textColor="@color/buildingTitle"
-                android:textSize="@dimen/_14ssp"
-                android:textStyle="bold" />
+                style="@style/titleTextViewTheme"
+                android:text="@string/waiting_time_in_min" />
 
             <EditText
                 android:id="@+id/editTextWaitingTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:backgroundTint="@color/buildingTitle"
+                style="@style/valueEditTextTheme"
                 android:inputType="number"
-                android:maxLength="3"
-                android:textColor="@color/scheduleDetail"
-                android:textCursorDrawable="@drawable/color_cursor"
-                android:textSize="@dimen/_14ssp" />
+                android:maxLength="3" />
         </LinearLayout>
 
         <LinearLayout
@@ -122,12 +104,8 @@
             android:padding="@dimen/_10sdp">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/work_time"
-                android:textColor="@color/buildingTitle"
-                android:textSize="@dimen/_14ssp"
-                android:textStyle="bold" />
+                style="@style/titleTextViewTheme"
+                android:text="@string/work_time" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -145,15 +123,9 @@
 
                 <Button
                     android:id="@+id/buttonStartTime"
-                    android:layout_width="wrap_content"
+                    style="@style/positiveButtonTheme"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/round_button_selector_long"
-                    android:paddingStart="@dimen/_10ssp"
-                    android:paddingEnd="@dimen/_10ssp"
-                    android:text="@string/start_time"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/_14ssp" />
+                    android:text="@string/start_time" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -166,15 +138,9 @@
 
                 <Button
                     android:id="@+id/buttonEndTime"
-                    android:layout_width="wrap_content"
+                    style="@style/positiveButtonTheme"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/round_button_selector_long"
-                    android:paddingStart="@dimen/_10ssp"
-                    android:paddingEnd="@dimen/_10ssp"
-                    android:text="@string/end_time"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/_14ssp" />
+                    android:text="@string/end_time" />
 
                 <Space
                     android:layout_width="0dp"
@@ -192,12 +158,8 @@
             android:padding="@dimen/_10sdp">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/break_time"
-                android:textColor="@color/buildingTitle"
-                android:textSize="@dimen/_14ssp"
-                android:textStyle="bold" />
+                style="@style/titleTextViewTheme"
+                android:text="@string/break_time" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -215,15 +177,9 @@
 
                 <Button
                     android:id="@+id/buttonBreakInTime"
-                    android:layout_width="wrap_content"
+                    style="@style/positiveButtonTheme"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/round_button_selector_long"
-                    android:paddingStart="@dimen/_10ssp"
-                    android:paddingEnd="@dimen/_10ssp"
-                    android:text="@string/string_start"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/_14ssp" />
+                    android:text="@string/string_start" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -236,15 +192,9 @@
 
                 <Button
                     android:id="@+id/buttonBreakOutTime"
-                    android:layout_width="wrap_content"
+                    style="@style/positiveButtonTheme"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/round_button_selector_long"
-                    android:paddingStart="@dimen/_10ssp"
-                    android:paddingEnd="@dimen/_10ssp"
-                    android:text="@string/string_end"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/_14ssp" />
+                    android:text="@string/string_end" />
 
                 <Space
                     android:layout_width="0dp"
@@ -260,15 +210,9 @@
 
         <Button
             android:id="@+id/buttonSave"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/positiveRoundButtonTheme"
             android:layout_marginTop="@dimen/_10ssp"
             android:layout_marginBottom="@dimen/_10ssp"
-            android:background="@drawable/round_button_selector"
-            android:enabled="true"
-            android:text="@string/string_save"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_14ssp" />
+            android:text="@string/string_save" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

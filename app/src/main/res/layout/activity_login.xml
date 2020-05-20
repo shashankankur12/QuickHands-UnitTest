@@ -27,13 +27,13 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_140sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:src="@drawable/ic_splash_logo" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_250sdp"
+                android:layout_height="@dimen/_125sdp"
                 android:layout_marginTop="@dimen/_30sdp"
                 android:src="@drawable/login_illustration" />
         </LinearLayout>
@@ -63,25 +63,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/signInCaption"
-                android:textColor="@android:color/black"
+                android:textColor="@color/textBlack"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/editTextEmployeeId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/loginEditTextTheme"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/edittext_background"
                 android:drawableStart="@drawable/ic_employee_id_deselect"
-                android:drawablePadding="@dimen/_10ssp"
                 android:hint="@string/enter_employee_id"
-                android:inputType="textPersonName|textCapCharacters"
-                android:paddingStart="@dimen/_14ssp"
-                android:paddingTop="@dimen/_10ssp"
-                android:paddingEnd="@dimen/_14ssp"
-                android:paddingBottom="@dimen/_10ssp"
-                android:textSize="@dimen/_12ssp" />
+                android:inputType="textPersonName|textCapCharacters" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -92,18 +84,10 @@
 
                 <EditText
                     android:id="@+id/editTextPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edittext_background"
+                    style="@style/loginEditTextTheme"
                     android:drawableStart="@drawable/ic_password_deselect"
-                    android:drawablePadding="@dimen/_10ssp"
                     android:hint="@string/enter_password"
-                    android:inputType="textPassword"
-                    android:paddingStart="@dimen/_14ssp"
-                    android:paddingTop="@dimen/_10ssp"
-                    android:paddingEnd="@dimen/_14ssp"
-                    android:paddingBottom="@dimen/_10ssp"
-                    android:textSize="@dimen/_12ssp" />
+                    android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -122,13 +106,9 @@
 
             <Button
                 android:id="@+id/buttonLogin"
-                android:layout_width="match_parent"
+                style="@style/positiveRoundButtonTheme"
                 android:layout_height="wrap_content"
-                android:background="@drawable/round_button_red"
-                android:text="@string/string_login"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/_14ssp" />
+                android:text="@string/string_login" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

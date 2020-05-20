@@ -4,8 +4,8 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
-import com.quickhandslogistics.modified.controls.ScheduleUtils.getAllAssignedLumpersList
-import com.quickhandslogistics.modified.controls.ScheduleUtils.getScheduleTypeName
+import com.quickhandslogistics.utils.ScheduleUtils.getAllAssignedLumpersList
+import com.quickhandslogistics.utils.ScheduleUtils.getScheduleTypeName
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
@@ -14,21 +14,22 @@ import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.ValueUtils
 import java.util.*
 
-class SchedulePresenter(
-    private var scheduleView: ScheduleContract.View?, private val resources: Resources
-) : ScheduleContract.Presenter, ScheduleContract.Model.OnFinishedListener {
+class SchedulePresenter(private var scheduleView: ScheduleContract.View?, private val resources: Resources) :
+    ScheduleContract.Presenter, ScheduleContract.Model.OnFinishedListener {
 
-    private val scheduleModel: ScheduleModel = ScheduleModel()
+    private val scheduleModel = ScheduleModel()
+
+    /** View Listeners */
+    override fun onDestroy() {
+        scheduleView == null
+    }
 
     override fun getScheduledWorkItemsByDate(date: Date, pageIndex: Int) {
         scheduleView?.showProgressDialog(resources.getString(R.string.api_loading_message))
         scheduleModel.fetchSchedulesByDate(date, pageIndex, this)
     }
 
-    override fun onDestroy() {
-        scheduleView == null
-    }
-
+    /** Model Result Listeners */
     override fun onFailure(message: String) {
         scheduleView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {

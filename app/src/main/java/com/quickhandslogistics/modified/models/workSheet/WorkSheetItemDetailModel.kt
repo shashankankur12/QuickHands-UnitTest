@@ -48,8 +48,7 @@ class WorkSheetItemDetailModel : WorkSheetItemDetailContract.Model {
     }
 
     override fun updateWorkItemNotes(
-        workItemId: String, notesQHLCustomer: String, notesQHL: String,
-        onFinishedListener: WorkSheetItemDetailContract.Model.OnFinishedListener
+        workItemId: String, notesQHLCustomer: String, notesQHL: String, onFinishedListener: WorkSheetItemDetailContract.Model.OnFinishedListener
     ) {
         val request = UpdateNotesRequest(notesQHL, notesQHLCustomer)
 

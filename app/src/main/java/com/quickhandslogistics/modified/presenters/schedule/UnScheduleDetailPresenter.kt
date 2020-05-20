@@ -4,25 +4,26 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.UnScheduleDetailContract
-import com.quickhandslogistics.modified.controls.ScheduleUtils.getScheduleTypeName
+import com.quickhandslogistics.utils.ScheduleUtils.getScheduleTypeName
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetailAPIResponse
 import com.quickhandslogistics.modified.models.schedule.UnScheduleDetailModel
 
-class UnScheduleDetailPresenter(
-    private var unScheduleDetailView: UnScheduleDetailContract.View?, private val resources: Resources
-) : UnScheduleDetailContract.Presenter, UnScheduleDetailContract.Model.OnFinishedListener {
+class UnScheduleDetailPresenter(private var unScheduleDetailView: UnScheduleDetailContract.View?, private val resources: Resources) :
+    UnScheduleDetailContract.Presenter, UnScheduleDetailContract.Model.OnFinishedListener {
 
-    private val unScheduleDetailModel: UnScheduleDetailModel = UnScheduleDetailModel()
+    private val unScheduleDetailModel = UnScheduleDetailModel()
+
+    /** View Listeners */
+    override fun onDestroy() {
+        unScheduleDetailView = null
+    }
 
     override fun getScheduleDetail(scheduleIdentityId: String, scheduleFromDate: String) {
         unScheduleDetailView?.showProgressDialog(resources.getString(R.string.api_loading_message))
         unScheduleDetailModel.fetchScheduleDetail(scheduleIdentityId, scheduleFromDate, this)
     }
 
-    override fun onDestroy() {
-        unScheduleDetailView = null
-    }
-
+    /** Model Result Listeners */
     override fun onFailure(message: String) {
         unScheduleDetailView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {

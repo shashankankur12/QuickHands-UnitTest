@@ -26,11 +26,8 @@
 
     <TextView
         android:id="@+id/textViewEmptyData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/noRecordTextViewTheme"
         android:layout_centerInParent="true"
-        android:text="@string/string_no_record_found"
-        android:textSize="@dimen/_12ssp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

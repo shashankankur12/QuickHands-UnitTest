@@ -14,36 +14,26 @@ class WorkSheetListAPIResponse : BaseResponse() {
         @SerializedName("cancelled")
         @Expose
         var cancelled: ArrayList<WorkItemDetail>? = null
-            get() = if (!field.isNullOrEmpty()) {
-                field
-            } else ArrayList()
+            get() = if (!field.isNullOrEmpty()) field else ArrayList()
 
         @SerializedName("onHold")
         @Expose
         var onHold: ArrayList<WorkItemDetail>? = null
-            get() = if (!field.isNullOrEmpty()) {
-                field
-            } else ArrayList()
+            get() = if (!field.isNullOrEmpty()) field else ArrayList()
 
         @SerializedName("inProgress")
         @Expose
         var inProgress: ArrayList<WorkItemDetail>? = null
-            get() = if (!field.isNullOrEmpty()) {
-                field
-            } else ArrayList()
+            get() = if (!field.isNullOrEmpty()) field else ArrayList()
 
         @SerializedName("scheduled")
         @Expose
         var scheduled: ArrayList<WorkItemDetail>? = null
-            get() = if (!field.isNullOrEmpty()) {
-                field
-            } else ArrayList()
+            get() = if (!field.isNullOrEmpty()) field else ArrayList()
 
         @SerializedName("completed")
         @Expose
         var completed: ArrayList<WorkItemDetail>? = null
-            get() = if (!field.isNullOrEmpty()) {
-                field
-            } else ArrayList()
+            get() = if (!field.isNullOrEmpty()) field else ArrayList()
     }
 }

@@ -11,63 +11,43 @@
 
     <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/baseChipTheme"
         android:layout_marginTop="@dimen/_5ssp"
         android:layout_marginEnd="@dimen/_10ssp"
-        android:background="@drawable/chip_background_in_progress"
-        android:clickable="true"
-        android:drawableEnd="@drawable/ic_edit"
         android:drawablePadding="@dimen/_5ssp"
-        android:paddingStart="@dimen/_10ssp"
-        android:paddingTop="@dimen/_5ssp"
-        android:paddingEnd="@dimen/_10ssp"
-        android:paddingBottom="@dimen/_5ssp"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/_10ssp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewStartTime"
+        style="@style/titleBigTextViewTheme"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginTop="@dimen/_5ssp"
         android:layout_marginEnd="@dimen/_10ssp"
-        android:textColor="@color/scheduleDetail"
-        android:textSize="@dimen/_16ssp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/textViewStatus"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewWorkItemType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/valuesTextViewTheme"
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginEnd="@dimen/_10ssp"
         android:drawableStart="@drawable/ic_schedule_type"
         android:drawablePadding="@dimen/_5sdp"
-        android:textColor="@color/scheduleDetail"
-        android:textSize="@dimen/_12ssp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
 
     <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewDropItems"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/valuesTextViewTheme"
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginEnd="@dimen/_10ssp"
         android:drawableStart="@drawable/ic_schedule_work_items"
         android:drawablePadding="@dimen/_5sdp"
-        android:textColor="@color/scheduleDetail"
-        android:textSize="@dimen/_12ssp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemType" />
 

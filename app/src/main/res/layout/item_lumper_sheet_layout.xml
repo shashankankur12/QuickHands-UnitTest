@@ -11,56 +11,40 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circleImageViewProfile"
-        android:layout_width="@dimen/_35sdp"
-        android:layout_height="@dimen/_35sdp"
-        android:contentDescription="@string/nav_header_desc"
-        android:src="@drawable/dummy"
-        app:civ_border_color="@color/colorLightGrey"
-        app:civ_border_width="1dp"
+        style="@style/circularImageViewTheme"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewLumperName"
+        style="@style/titleTextViewTheme"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:text="John Snow"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/_14ssp"
-        android:textStyle="bold"
+        android:textColor="@color/textBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewEmployeeId"
+        style="@style/valuesSmallTextViewTheme"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_2sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:text="(Emp ID: 1001)"
-        android:textColor="@android:color/black"
+        android:textColor="@color/textBlack"
+        app:emptyDataVisibility="empty_gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
 
     <com.quickhandslogistics.modified.controls.CustomTextView
         android:id="@+id/textViewStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/baseChipTheme"
         android:layout_marginTop="@dimen/_4sdp"
-        android:layout_marginEnd="@dimen/_4sdp"
-        android:background="@drawable/chip_background_in_progress"
-        android:paddingStart="@dimen/_10ssp"
-        android:paddingTop="@dimen/_5ssp"
-        android:paddingEnd="@dimen/_10ssp"
-        android:paddingBottom="@dimen/_5ssp"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/_10ssp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewLumperName" />

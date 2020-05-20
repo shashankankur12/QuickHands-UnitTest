@@ -3,7 +3,6 @@ package com.quickhandslogistics.modified.views.common
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import com.github.gcacace.signaturepad.views.SignaturePad
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.views.BaseActivity
@@ -20,9 +19,7 @@ class AddSignatureActivity : BaseActivity(), View.OnClickListener, SignaturePad.
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /*window.setFlags(
-            WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE
-        )*/
+        //window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         setContentView(R.layout.activity_add_signature)
         setupToolbar(getString(R.string.add_signature))
 
@@ -31,27 +28,15 @@ class AddSignatureActivity : BaseActivity(), View.OnClickListener, SignaturePad.
         buttonClear.setOnClickListener(this)
     }
 
-    override fun onClick(view: View?) {
-        view?.let {
-            when (view.id) {
-                buttonClear.id -> {
-                    signaturePad.clear();
-                }
-                buttonSubmit.id -> {
-                    CustomProgressBar.getInstance().showWarningDialog(activityContext = activity,
-                        listener = object : CustomDialogWarningListener {
-                            override fun onConfirmClick() {
-                                saveSignature()
-                            }
-
-                            override fun onCancelClick() {
-                            }
-                        })
-                }
-                else -> {
-                }
+    private fun showConfirmationDialog() {
+        CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
+            override fun onConfirmClick() {
+                saveSignature()
             }
-        }
+
+            override fun onCancelClick() {
+            }
+        })
     }
 
     private fun saveSignature() {
@@ -63,13 +48,22 @@ class AddSignatureActivity : BaseActivity(), View.OnClickListener, SignaturePad.
             setResult(RESULT_OK, intent)
             onBackPressed()
         } ?: run {
-            CustomProgressBar.getInstance()
-                .showErrorDialog(getString(R.string.something_went_wrong), activity)
+            CustomProgressBar.getInstance().showErrorDialog(getString(R.string.something_went_wrong), activity)
         }
     }
 
-    override fun onStartSigning() {
+    /** Native Views Listeners */
+    override fun onClick(view: View?) {
+        view?.let {
+            when (view.id) {
+                buttonClear.id -> signaturePad.clear()
+                buttonSubmit.id -> showConfirmationDialog()
+            }
+        }
+    }
 
+    /** Signature Listeners */
+    override fun onStartSigning() {
     }
 
     override fun onClear() {

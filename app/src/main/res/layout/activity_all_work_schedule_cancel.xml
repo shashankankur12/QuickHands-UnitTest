@@ -14,21 +14,11 @@
 
     <EditText
         android:id="@+id/editTextSearch"
+        style="@style/searchEditTextTheme"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_12sdp"
         android:layout_marginEnd="@dimen/_12sdp"
         android:layout_marginBottom="@dimen/_12sdp"
-        android:background="@drawable/edit_search_bg"
-        android:drawableStart="@drawable/ic_search"
-        android:drawablePadding="@dimen/_4sdp"
-        android:hint="@string/search_by_name"
-        android:imeOptions="actionDone"
-        android:inputType="textPersonName"
-        android:paddingStart="@dimen/_5sdp"
-        android:paddingTop="@dimen/_8sdp"
-        android:paddingEnd="@dimen/_30sdp"
-        android:paddingBottom="@dimen/_8sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header" />
@@ -88,12 +78,10 @@
 
                 <TextView
                     android:id="@+id/textViewEmptyData"
-                    android:layout_width="wrap_content"
+                    style="@style/noRecordTextViewTheme"
                     android:layout_height="200dp"
                     android:layout_centerInParent="true"
                     android:gravity="center"
-                    android:text="@string/string_no_record_found"
-                    android:textSize="@dimen/_12ssp"
                     android:visibility="gone" />
             </RelativeLayout>
 
@@ -106,24 +94,14 @@
                 android:padding="@dimen/_10sdp">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/notes_for_customer"
-                    android:textColor="@color/buildingTitle"
-                    android:textSize="@dimen/_14ssp"
-                    android:textStyle="bold" />
+                    style="@style/titleTextViewTheme"
+                    android:text="@string/notes_for_customer" />
 
                 <EditText
                     android:id="@+id/editTextCustomerNotes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:backgroundTint="@color/buildingTitle"
+                    style="@style/valueEditTextTheme"
                     android:inputType="textMultiLine|textCapWords"
-                    android:maxLines="3"
-                    android:textColor="@color/scheduleDetail"
-                    android:textCursorDrawable="@drawable/color_cursor"
-                    android:textSize="@dimen/_12ssp" />
+                    android:maxLines="3" />
             </LinearLayout>
 
             <LinearLayout
@@ -135,39 +113,23 @@
                 android:padding="@dimen/_10sdp">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/notes_for_qhl"
-                    android:textColor="@color/buildingTitle"
-                    android:textSize="@dimen/_14ssp"
-                    android:textStyle="bold" />
+                    style="@style/titleTextViewTheme"
+                    android:text="@string/notes_for_qhl" />
 
                 <EditText
                     android:id="@+id/editTextQHLNotes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:backgroundTint="@color/buildingTitle"
+                    style="@style/valueEditTextTheme"
                     android:inputType="textMultiLine|textCapWords"
-                    android:maxLines="3"
-                    android:textColor="@color/scheduleDetail"
-                    android:textCursorDrawable="@drawable/color_cursor"
-                    android:textSize="@dimen/_12ssp" />
+                    android:maxLines="3" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/buttonSubmit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/positiveRoundButtonTheme"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:background="@drawable/round_button_selector"
                 android:enabled="false"
-                android:text="@string/string_submit"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/_14ssp"
-                android:textStyle="bold" />
+                android:text="@string/string_submit" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

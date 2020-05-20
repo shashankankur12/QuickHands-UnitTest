@@ -11,7 +11,7 @@ class TimeClockAttendanceContract {
         fun saveLumpersAttendanceList(attendanceDetailList: List<AttendanceDetail>, onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
-            fun onSuccessGetList(attendanceAPIResponse: GetAttendanceAPIResponse, currentPageIndex: Int)
+            fun onSuccessGetList(response: GetAttendanceAPIResponse, currentPageIndex: Int)
             fun onSuccessSaveDate()
         }
     }

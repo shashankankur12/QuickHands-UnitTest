@@ -8,12 +8,15 @@ import com.quickhandslogistics.modified.data.buildingOperations.BuildingOperatio
 import com.quickhandslogistics.modified.models.buildingOperations.BuildingOperationsModel
 import java.util.*
 
-class BuildingOperationsPresenter(
-    private var buildingOperationsView: BuildingOperationsContract.View?,
-    private val resources: Resources
-) : BuildingOperationsContract.Presenter, BuildingOperationsContract.Model.OnFinishedListener {
+class BuildingOperationsPresenter(private var buildingOperationsView: BuildingOperationsContract.View?, private val resources: Resources) :
+    BuildingOperationsContract.Presenter, BuildingOperationsContract.Model.OnFinishedListener {
 
-    private val buildingOperationsModel: BuildingOperationsModel = BuildingOperationsModel()
+    private val buildingOperationsModel = BuildingOperationsModel()
+
+    /** View Listeners */
+    override fun onDestroy() {
+        buildingOperationsView = null
+    }
 
     override fun fetchBuildingOperationDetails(workItemId: String) {
         buildingOperationsView?.showProgressDialog(resources.getString(R.string.api_loading_message))
@@ -25,10 +28,7 @@ class BuildingOperationsPresenter(
         buildingOperationsModel.saveBuildingOperationDetails(workItemId, data, this)
     }
 
-    override fun onDestroy() {
-        buildingOperationsView = null
-    }
-
+    /** Model Result Listeners */
     override fun onFailure(message: String) {
         buildingOperationsView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {

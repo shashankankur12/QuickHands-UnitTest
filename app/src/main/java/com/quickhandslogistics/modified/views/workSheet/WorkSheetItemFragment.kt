@@ -24,23 +24,30 @@ import com.quickhandslogistics.utils.AppConstant
 import kotlinx.android.synthetic.main.fragment_work_sheet_item.*
 import java.util.*
 
-class WorkSheetItemFragment : BaseFragment(),
-    WorkSheetItemContract.View.OnAdapterItemClickListener {
+class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapterItemClickListener {
+
+    private var onFragmentInteractionListener: WorkSheetContract.View.OnFragmentInteractionListener? = null
 
     private var workItemType: String = ""
 
     private lateinit var workSheetItemAdapter: WorkSheetItemAdapter
 
-    private var onFragmentInteractionListener: WorkSheetContract.View.OnFragmentInteractionListener? =
-        null
+    companion object {
+        private const val ARG_WORK_ITEM_TYPE = "ARG_WORK_ITEM_TYPE"
 
-    private var workItemDetail: WorkItemDetail? = null
+        @JvmStatic
+        fun newInstance(workItemType: String) = WorkSheetItemFragment()
+            .apply {
+                arguments = Bundle().apply {
+                    putString(ARG_WORK_ITEM_TYPE, workItemType)
+                }
+            }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (parentFragment is WorkSheetContract.View.OnFragmentInteractionListener) {
-            onFragmentInteractionListener =
-                parentFragment as WorkSheetContract.View.OnFragmentInteractionListener
+            onFragmentInteractionListener = parentFragment as WorkSheetContract.View.OnFragmentInteractionListener
         }
     }
 
@@ -51,9 +58,7 @@ class WorkSheetItemFragment : BaseFragment(),
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_work_sheet_item, container, false)
     }
 
@@ -63,8 +68,7 @@ class WorkSheetItemFragment : BaseFragment(),
         recyclerViewWorkSheet.apply {
             layoutManager = LinearLayoutManager(fragmentActivity!!)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            workSheetItemAdapter =
-                WorkSheetItemAdapter(workItemType, resources, this@WorkSheetItemFragment)
+            workSheetItemAdapter = WorkSheetItemAdapter(resources, this@WorkSheetItemFragment)
             adapter = workSheetItemAdapter
         }
 
@@ -72,33 +76,9 @@ class WorkSheetItemFragment : BaseFragment(),
             RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                textViewEmptyData.visibility =
-                    if (workSheetItemAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                textViewEmptyData.visibility = if (workSheetItemAdapter.itemCount == 0) View.VISIBLE else View.GONE
             }
         })
-    }
-
-    fun updateWorkItemsList(workItemsList: ArrayList<WorkItemDetail>) {
-        workSheetItemAdapter.updateList(workItemsList)
-    }
-
-    /*
-    * Adapter Item Click Listeners
-    */
-    override fun onItemClick(workItemId: String, workItemTypeDisplayName: String) {
-        val bundle = Bundle()
-        bundle.putString(ARG_WORK_ITEM_ID, workItemId)
-        bundle.putString(ARG_WORK_ITEM_TYPE_DISPLAY_NAME, workItemTypeDisplayName)
-        startIntent(
-            WorkSheetItemDetailActivity::class.java,
-            bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED
-        )
-    }
-
-    override fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>) {
-        val bundle = Bundle()
-        bundle.putParcelableArrayList(DisplayLumpersListActivity.ARG_LUMPERS_LIST, lumpersList)
-        startIntent(DisplayLumpersListActivity::class.java, bundle = bundle)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -108,16 +88,21 @@ class WorkSheetItemFragment : BaseFragment(),
         }
     }
 
-    companion object {
-        private const val ARG_WORK_ITEM_TYPE = "ARG_WORK_ITEM_TYPE"
+    fun updateWorkItemsList(workItemsList: ArrayList<WorkItemDetail>) {
+        workSheetItemAdapter.updateList(workItemsList)
+    }
 
-        @JvmStatic
-        fun newInstance(workItemType: String) =
-            WorkSheetItemFragment()
-                .apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_WORK_ITEM_TYPE, workItemType)
-                    }
-                }
+    /** Adapter Listeners */
+    override fun onItemClick(workItemId: String, workItemTypeDisplayName: String) {
+        val bundle = Bundle()
+        bundle.putString(ARG_WORK_ITEM_ID, workItemId)
+        bundle.putString(ARG_WORK_ITEM_TYPE_DISPLAY_NAME, workItemTypeDisplayName)
+        startIntent(WorkSheetItemDetailActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
+    }
+
+    override fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>) {
+        val bundle = Bundle()
+        bundle.putParcelableArrayList(DisplayLumpersListActivity.ARG_LUMPERS_LIST, lumpersList)
+        startIntent(DisplayLumpersListActivity::class.java, bundle = bundle)
     }
 }

@@ -57,7 +57,7 @@
     <string name="string_last_name">Apellido</string>
     <string name="string_email_address">Dirección de correo electrónico</string>
     <string name="string_lead_employee_id">Id_Deempleado</string>
-    <string name="string_logout_dialog">Seguro que quieres cerrar sesión?</string>
+    <string name="string_logout_dialog">**You want to logout.**</string>
     <string name="string_shifting_hours">Turno de horas</string>
     <string name="stirng_general_info">General Info</string>
     <string name="string_title">Titulo</string>
@@ -249,4 +249,8 @@
     <string name="string_ask_to_submit_lumper_sheet">You want to submit the lumper sheet.</string>
     <string name="attendance_saved_successfully">Attendance Details are saved successfully</string>
     <string name="string_ask_to_choose_lumper">You want to choose these lumpers.</string>
+    <string name="current_time">Current Time: </string>
+    <string name="to">- to -</string>
+    <string name="no_time_logged_in_yet">No time logged in yet</string>
+    <string name="customer_details">Customer Details</string>
 </resources>

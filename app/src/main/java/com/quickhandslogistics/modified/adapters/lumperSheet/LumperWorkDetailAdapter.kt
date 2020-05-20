@@ -11,24 +11,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.adapters.customerSheet.ContainerDetailItemAdapter
 import com.quickhandslogistics.modified.contracts.lumperSheet.LumperWorkDetailContract
-import com.quickhandslogistics.modified.controls.ScheduleUtils
 import com.quickhandslogistics.modified.data.lumperSheet.LumperDaySheet
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.ValueUtils
 import kotlinx.android.synthetic.main.item_lumper_work_detail.view.*
 
-class LumperWorkDetailAdapter(
-    private val resources: Resources,
-    private var adapterItemClickListener: LumperWorkDetailContract.View.OnAdapterItemClickListener
-) :
+class LumperWorkDetailAdapter(private val resources: Resources, private var adapterItemClickListener: LumperWorkDetailContract.View.OnAdapterItemClickListener) :
     RecyclerView.Adapter<LumperWorkDetailAdapter.ViewHolder>() {
 
     private val lumperDaySheetList: ArrayList<LumperDaySheet> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_lumper_work_detail, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_lumper_work_detail, parent, false)
         return ViewHolder(view)
     }
 
@@ -44,14 +40,7 @@ class LumperWorkDetailAdapter(
         holder.bind(getItem(position))
     }
 
-    fun updateWorkDetails(lumperDaySheetList: ArrayList<LumperDaySheet>) {
-        this.lumperDaySheetList.clear()
-        this.lumperDaySheetList.addAll(lumperDaySheetList)
-        notifyDataSetChanged()
-    }
-
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
-        View.OnClickListener {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         private val textViewWorkItemType: TextView = itemView.textViewWorkItemType
         private val textViewCustomerNote: TextView = itemView.textViewCustomerNote
@@ -94,7 +83,7 @@ class LumperWorkDetailAdapter(
                     linearLayoutQHLNotes.visibility = View.GONE
                 }
 
-                ScheduleUtils.showStatusTextViewByStatus(textViewStatus, workItemDetail.status, resources)
+                ScheduleUtils.changeStatusUIByValue(resources, workItemDetail.status, textViewStatus)
 
                 recyclerViewBO.adapter = ContainerDetailItemAdapter(
                     workItemDetail.buildingOps,
@@ -105,11 +94,7 @@ class LumperWorkDetailAdapter(
             lumperDaySheet.lumpersTimeSchedule?.let { timingDetail ->
                 val startTime = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.startTime)
                 val endTime = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.endTime)
-                textViewWorkTime.text = String.format(
-                    "%s - %s",
-                    if (startTime.isNotEmpty()) startTime else "NA",
-                    if (endTime.isNotEmpty()) endTime else "NA"
-                )
+                textViewWorkTime.text = String.format("%s - %s", if (startTime.isNotEmpty()) startTime else "NA", if (endTime.isNotEmpty()) endTime else "NA")
 
                 val waitingTime = ValueUtils.getDefaultOrValue(timingDetail.waitingTime)
                 if (waitingTime.isNotEmpty() && waitingTime.toInt() != 0) {
@@ -120,11 +105,7 @@ class LumperWorkDetailAdapter(
 
                 val breakTimeStart = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeStart)
                 val breakTimeEnd = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeEnd)
-                textViewBreakTime.text = String.format(
-                    "%s - %s",
-                    if (breakTimeStart.isNotEmpty()) breakTimeStart else "NA",
-                    if (breakTimeEnd.isNotEmpty()) breakTimeEnd else "NA"
-                )
+                textViewBreakTime.text = String.format("%s - %s", if (breakTimeStart.isNotEmpty()) breakTimeStart else "NA", if (breakTimeEnd.isNotEmpty()) breakTimeEnd else "NA")
             }
         }
 
@@ -154,5 +135,11 @@ class LumperWorkDetailAdapter(
                 }
             }
         }
+    }
+
+    fun updateWorkDetails(lumperDaySheetList: ArrayList<LumperDaySheet>) {
+        this.lumperDaySheetList.clear()
+        this.lumperDaySheetList.addAll(lumperDaySheetList)
+        notifyDataSetChanged()
     }
 }

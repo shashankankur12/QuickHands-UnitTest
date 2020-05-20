@@ -10,22 +10,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.customerSheet.CustomerSheetContainersContract
-import com.quickhandslogistics.modified.controls.ScheduleUtils
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.ScheduleUtils
 import kotlinx.android.synthetic.main.item_customer_sheet_container.view.*
 
 class CustomerSheetContainersAdapter(
-    private val resources: Resources,
-    var adapterItemClickListener: CustomerSheetContainersContract.View.OnAdapterItemClickListener
-) :
-    RecyclerView.Adapter<CustomerSheetContainersAdapter.ViewHolder>() {
+    private val resources: Resources, var adapterItemClickListener: CustomerSheetContainersContract.View.OnAdapterItemClickListener
+) : RecyclerView.Adapter<CustomerSheetContainersAdapter.ViewHolder>() {
 
     private var workItemsList: ArrayList<WorkItemDetail> = ArrayList()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
-        val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.item_customer_sheet_container, viewGroup, false)
+        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_customer_sheet_container, viewGroup, false)
         return ViewHolder(view)
     }
 
@@ -42,21 +39,14 @@ class CustomerSheetContainersAdapter(
         holder.bind(workItemDetail)
     }
 
-    fun updateList(workItemsList: ArrayList<WorkItemDetail>) {
-        this.workItemsList.clear()
-        this.workItemsList = workItemsList
-        notifyDataSetChanged()
-    }
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
-        View.OnClickListener {
-
-        var textViewWorkItemType: TextView = itemView.textViewWorkItemType
-        var textViewNote: TextView = itemView.textViewNote
-        var textViewStatus: TextView = itemView.textViewStatus
-        var clickableViewBO: View = itemView.clickableViewBO
-        var recyclerViewBO: RecyclerView = itemView.recyclerViewBO
-        var linearLayoutNotes: LinearLayout = itemView.linearLayoutNotes
+        private val textViewWorkItemType: TextView = itemView.textViewWorkItemType
+        private val textViewNote: TextView = itemView.textViewNote
+        private val textViewStatus: TextView = itemView.textViewStatus
+        private val clickableViewBO: View = itemView.clickableViewBO
+        private val recyclerViewBO: RecyclerView = itemView.recyclerViewBO
+        private val linearLayoutNotes: LinearLayout = itemView.linearLayoutNotes
 
         init {
             recyclerViewBO.apply {
@@ -78,7 +68,7 @@ class CustomerSheetContainersAdapter(
                 linearLayoutNotes.visibility = View.GONE
             }
 
-            ScheduleUtils.showStatusTextViewByStatus(textViewStatus, workItemDetail.status, resources)
+            ScheduleUtils.changeStatusUIByValue(resources, workItemDetail.status, textViewStatus)
 
             recyclerViewBO.adapter = ContainerDetailItemAdapter(workItemDetail.buildingOps, workItemDetail.buildingDetailData?.parameters)
         }
@@ -97,5 +87,11 @@ class CustomerSheetContainersAdapter(
                 }
             }
         }
+    }
+
+    fun updateList(workItemsList: ArrayList<WorkItemDetail>) {
+        this.workItemsList.clear()
+        this.workItemsList = workItemsList
+        notifyDataSetChanged()
     }
 }

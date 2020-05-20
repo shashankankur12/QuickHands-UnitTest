@@ -1,7 +1,6 @@
 package com.quickhandslogistics.modified.contracts
 
 open class BaseContract {
-
     interface Model {
         interface OnFinishedListener {
             fun onFailure(message: String = "")

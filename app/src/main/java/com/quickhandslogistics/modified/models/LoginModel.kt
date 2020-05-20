@@ -16,7 +16,6 @@ import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_AUTH_TOKEN
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_EMPLOYEE_ID
 import com.quickhandslogistics.utils.SharedPref
-import com.quickhandslogistics.utils.StringUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,7 +24,7 @@ class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
 
     override fun fetchEmployeeId(onFinishedListener: LoginContract.Model.OnFinishedListener) {
         val employeeId = sharedPref.getString(PREFERENCE_EMPLOYEE_ID)
-        if (!StringUtils.isNullOrEmpty(employeeId)) {
+        if (employeeId.isNotEmpty()) {
             onFinishedListener.onLoadEmployeeId(employeeId)
         }
     }

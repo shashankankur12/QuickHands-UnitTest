@@ -11,25 +11,14 @@ import com.quickhandslogistics.modified.views.lumpers.LumperJobDetailFragment
 import com.quickhandslogistics.modified.views.lumpers.LumperPersonalDetailFragment
 import com.quickhandslogistics.modified.views.lumpers.LumperWorkDetailFragment
 
-class LumperPagerAdapter(
-    fragmentManager: FragmentManager, private val resources: Resources, employeeData: EmployeeData
-) :
-    FragmentStatePagerAdapter(
-        fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
-    ) {
+class LumperPagerAdapter(fragmentManager: FragmentManager, private val resources: Resources, employeeData: EmployeeData) :
+    FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    private var lumperPersonalDetailFragment =
-        LumperPersonalDetailFragment.newInstance(employeeData)
-    private var lumperWorkDetailFragment =
-        LumperWorkDetailFragment.newInstance(employeeData)
-    private var lumperJobDetailFragment =
-        LumperJobDetailFragment.newInstance(employeeData)
+    private var lumperPersonalDetailFragment = LumperPersonalDetailFragment.newInstance(employeeData)
+    private var lumperWorkDetailFragment = LumperWorkDetailFragment.newInstance(employeeData)
+    private var lumperJobDetailFragment = LumperJobDetailFragment.newInstance(employeeData)
 
-    private val tabTitles = arrayOf(
-        R.string.contact_info,
-        R.string.shift_details,
-        R.string.string_lumper_details
-    )
+    private val tabTitles = arrayOf(R.string.contact_info, R.string.shift_details, R.string.string_lumper_details)
 
     override fun getItem(position: Int): Fragment {
         return when (position) {

@@ -8,13 +8,12 @@ import com.quickhandslogistics.modified.data.schedule.WorkItemDetailAPIResponse
 import com.quickhandslogistics.modified.models.schedule.ScheduledWorkItemDetailModel
 
 class ScheduledWorkItemDetailPresenter(
-    private var scheduledWorkItemDetailView: ScheduledWorkItemDetailContract.View?,
-    private val resources: Resources
-) : ScheduledWorkItemDetailContract.Presenter,
-    ScheduledWorkItemDetailContract.Model.OnFinishedListener {
+    private var scheduledWorkItemDetailView: ScheduledWorkItemDetailContract.View?, private val resources: Resources
+) : ScheduledWorkItemDetailContract.Presenter, ScheduledWorkItemDetailContract.Model.OnFinishedListener {
 
     private val scheduledWorkItemDetailModel = ScheduledWorkItemDetailModel()
 
+    /** View Listeners */
     override fun onDestroy() {
         scheduledWorkItemDetailView = null
     }
@@ -24,6 +23,7 @@ class ScheduledWorkItemDetailPresenter(
         scheduledWorkItemDetailModel.fetchWorkItemDetail(workItemId, this)
     }
 
+    /** Model Result Listeners */
     override fun onFailure(message: String) {
         scheduledWorkItemDetailView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {

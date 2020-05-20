@@ -22,7 +22,7 @@ import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.utils.Utils
+import com.quickhandslogistics.utils.AppUtils
 import kotlinx.android.synthetic.main.fragment_lumpers.*
 
 class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.OnClickListener,
@@ -74,38 +74,46 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
         lumpersPresenter.fetchLumpersList(currentPageIndex)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        lumpersPresenter.onDestroy()
+    }
+
     private fun resetPaginationValues() {
         currentPageIndex = 1
         nextPageIndex = 1
         totalPagesCount = 1
     }
 
-    /*
-    * Presenter Listeners
-    */
-    override fun showAPIErrorMessage(message: String) {
-        recyclerViewLumpers.visibility = View.GONE
-        textViewEmptyData.visibility = View.VISIBLE
-        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
-    }
-
-    override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int) {
-        lumpersAdapter.updateLumpersData(employeeDataList, currentPageIndex)
-        if (employeeDataList.size > 0) {
-            textViewEmptyData.visibility = View.GONE
-            recyclerViewLumpers.visibility = View.VISIBLE
-        } else {
-            recyclerViewLumpers.visibility = View.GONE
-            textViewEmptyData.visibility = View.VISIBLE
+    /** Native Views Listeners */
+    override fun onClick(view: View?) {
+        view?.let {
+            when (view.id) {
+                imageViewCancel.id -> {
+                    editTextSearch.setText("")
+                    AppUtils.hideSoftKeyboard(fragmentActivity!!)
+                }
+            }
         }
-
-        this.totalPagesCount = totalPagesCount
-        this.nextPageIndex = nextPageIndex
     }
 
-    /*
-    * Native Views Listeners
-    */
+    override fun onRefresh() {
+        swipeRefreshLayoutLumpers.isRefreshing = false
+        resetPaginationValues()
+        lumpersPresenter.fetchLumpersList(currentPageIndex)
+    }
+
+    override fun afterTextChanged(p0: Editable?) {}
+
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+    override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        text?.let {
+            lumpersAdapter.setSearchEnabled(text.isNotEmpty(), text.toString())
+            imageViewCancel.visibility = if (text.isNotEmpty()) View.VISIBLE else View.GONE
+        }
+    }
+
     private val onScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -126,42 +134,28 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
         }
     }
 
-    override fun afterTextChanged(p0: Editable?) {}
+    /** Presenter Listeners */
+    override fun showAPIErrorMessage(message: String) {
+        recyclerViewLumpers.visibility = View.GONE
+        textViewEmptyData.visibility = View.VISIBLE
+        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+    }
 
-    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-    override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
-        text?.let {
-            lumpersAdapter.setSearchEnabled(text.isNotEmpty(), text.toString())
-            imageViewCancel.visibility = if (text.isNotEmpty()) View.VISIBLE else View.GONE
+    override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int) {
+        lumpersAdapter.updateLumpersData(employeeDataList, currentPageIndex)
+        if (employeeDataList.size > 0) {
+            textViewEmptyData.visibility = View.GONE
+            recyclerViewLumpers.visibility = View.VISIBLE
+        } else {
+            recyclerViewLumpers.visibility = View.GONE
+            textViewEmptyData.visibility = View.VISIBLE
         }
+
+        this.totalPagesCount = totalPagesCount
+        this.nextPageIndex = nextPageIndex
     }
 
-    override fun onClick(view: View?) {
-        view?.let {
-            when (view.id) {
-                imageViewCancel.id -> {
-                    editTextSearch.setText("")
-                    Utils.hideSoftKeyboard(fragmentActivity!!)
-                }
-            }
-        }
-    }
-
-    override fun onRefresh() {
-        swipeRefreshLayoutLumpers.isRefreshing = false
-        resetPaginationValues()
-        lumpersPresenter.fetchLumpersList(currentPageIndex)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        lumpersPresenter.onDestroy()
-    }
-
-    /*
-    * Adapter Item Click Listeners
-    */
+    /** Adapter Listeners */
     override fun onItemClick(employeeData: EmployeeData) {
         val bundle = Bundle()
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
@@ -169,8 +163,7 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     }
 
     override fun onPhoneViewClick(lumperName: String, phone: String) {
-        CustomProgressBar.getInstance().showWarningDialog(
-            String.format(getString(R.string.call_lumper_dialog_message), lumperName),
+        CustomProgressBar.getInstance().showWarningDialog(String.format(getString(R.string.call_lumper_dialog_message), lumperName),
             fragmentActivity!!, object : CustomDialogWarningListener {
                 override fun onConfirmClick() {
                     startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))

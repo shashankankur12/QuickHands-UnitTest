@@ -23,31 +23,18 @@
 
         <TextView
             android:id="@+id/textViewStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/chip_background_in_progress"
-            android:paddingStart="@dimen/_10ssp"
-            android:paddingTop="@dimen/_5ssp"
-            android:paddingEnd="@dimen/_10ssp"
-            android:paddingBottom="@dimen/_5ssp"
+            style="@style/baseChipTheme"
             android:text="In-Progress"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_10ssp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textViewWorkItemType"
+            style="@style/titleBigTextViewTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_4sdp"
             android:layout_marginEnd="@dimen/_4sdp"
             android:clickable="false"
-            android:text="Live Loads"
-            android:textColor="@color/buildingTitle"
-            android:textSize="@dimen/_16ssp"
-            android:textStyle="bold"
+            android:text="@string/string_live_loads"
             app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -77,23 +64,17 @@
                     android:orientation="vertical">
 
                     <TextView
+                        style="@style/valuesSmallTextViewTheme"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/start_and_end_time"
-                        android:textColor="@color/scheduleDetail"
-                        android:textSize="@dimen/_10ssp" />
+                        android:text="@string/start_and_end_time" />
 
                     <TextView
                         android:id="@+id/textViewWorkTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/titleVerySmallTextViewTheme"
                         android:layout_marginTop="@dimen/_2sdp"
                         android:drawableStart="@drawable/ic_lumper_list_clock"
                         android:drawablePadding="@dimen/_5sdp"
-                        android:text="NA - NA"
-                        android:textColor="@color/buildingTitle"
-                        android:textSize="@dimen/_10ssp"
-                        android:textStyle="bold" />
+                        android:text="NA - NA" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -103,46 +84,33 @@
                     android:orientation="vertical">
 
                     <TextView
+                        style="@style/valuesSmallTextViewTheme"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/waiting_time"
-                        android:textColor="@color/scheduleDetail"
-                        android:textSize="@dimen/_10ssp" />
+                        android:text="@string/waiting_time" />
 
                     <TextView
                         android:id="@+id/textViewWaitingTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/titleVerySmallTextViewTheme"
                         android:layout_marginTop="@dimen/_2sdp"
                         android:drawableStart="@drawable/ic_lumper_list_clock"
                         android:drawablePadding="@dimen/_5sdp"
-                        android:text="NA"
-                        android:textColor="@color/buildingTitle"
-                        android:textSize="@dimen/_10ssp"
-                        android:textStyle="bold" />
+                        android:text="NA" />
                 </LinearLayout>
             </LinearLayout>
 
             <TextView
+                style="@style/valuesSmallTextViewTheme"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_6sdp"
-                android:text="@string/break_time"
-                android:textColor="@color/scheduleDetail"
-                android:textSize="@dimen/_10ssp" />
+                android:text="@string/break_time" />
 
             <TextView
                 android:id="@+id/textViewBreakTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/titleVerySmallTextViewTheme"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:drawableStart="@drawable/ic_lumper_list_clock"
                 android:drawablePadding="@dimen/_5sdp"
-                android:lineSpacingExtra="@dimen/_2sdp"
-                android:text="NA - NA"
-                android:textColor="@color/buildingTitle"
-                android:textSize="@dimen/_10ssp"
-                android:textStyle="bold" />
+                android:text="NA - NA" />
         </LinearLayout>
 
         <RelativeLayout
@@ -187,22 +155,17 @@
             app:layout_constraintTop_toBottomOf="@id/relativeLayoutBO">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/titleSmallTextViewTheme"
                 android:text="@string/notes_for_customer"
-                android:textColor="@color/scheduleDetail"
-                android:textSize="@dimen/_12ssp"
-                android:textStyle="bold" />
+                android:textColor="@color/scheduleDetail" />
 
             <TextView
                 android:id="@+id/textViewCustomerNote"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/valuesTextViewTheme"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@string/request_help_error_message"
-                android:textColor="@color/scheduleDetail" />
+                android:text="@string/request_help_error_message" />
         </LinearLayout>
 
         <LinearLayout
@@ -219,22 +182,17 @@
             app:layout_constraintTop_toBottomOf="@id/linearLayoutCustomerNotes">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/titleSmallTextViewTheme"
                 android:text="@string/notes_for_qhl"
-                android:textColor="@color/scheduleDetail"
-                android:textSize="@dimen/_12ssp"
-                android:textStyle="bold" />
+                android:textColor="@color/scheduleDetail" />
 
             <TextView
                 android:id="@+id/textViewQHLNote"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/valuesTextViewTheme"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@string/request_help_error_message"
-                android:textColor="@color/scheduleDetail" />
+                android:text="@string/request_help_error_message" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

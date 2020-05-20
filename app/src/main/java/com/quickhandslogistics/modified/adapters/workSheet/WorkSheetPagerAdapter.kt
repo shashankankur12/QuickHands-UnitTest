@@ -10,32 +10,24 @@ import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.views.workSheet.WorkSheetItemFragment
 import java.util.*
 
-class WorkSheetPagerAdapter(
-    childFragmentManager: FragmentManager, private val resources: Resources
-) :
-    FragmentStatePagerAdapter(
-        childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
-    ) {
+class WorkSheetPagerAdapter(childFragmentManager: FragmentManager, private val resources: Resources) :
+    FragmentStatePagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private val tabTitles = arrayOf(R.string.ongoing, R.string.cancelled, R.string.completed)
     private var onGoingWorkItemsCount = 0
     private var cancelledWorkItemsCount = 0
     private var completedWorkItemsCount = 0
 
-    private var ongoingFragment =
-        WorkSheetItemFragment.newInstance(resources.getString(tabTitles[0]))
-    private var cancelledFragment =
-        WorkSheetItemFragment.newInstance(resources.getString(tabTitles[1]))
-    private var completedFragment =
-        WorkSheetItemFragment.newInstance(resources.getString(tabTitles[2]))
+    private var ongoingFragment = WorkSheetItemFragment.newInstance(resources.getString(tabTitles[0]))
+    private var cancelledFragment = WorkSheetItemFragment.newInstance(resources.getString(tabTitles[1]))
+    private var completedFragment = WorkSheetItemFragment.newInstance(resources.getString(tabTitles[2]))
 
     override fun getItem(position: Int): Fragment {
         return if (position == 0) ongoingFragment else if (position == 1) cancelledFragment else completedFragment
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        val count =
-            if (position == 0) onGoingWorkItemsCount else if (position == 1) cancelledWorkItemsCount else completedWorkItemsCount
+        val count = if (position == 0) onGoingWorkItemsCount else if (position == 1) cancelledWorkItemsCount else completedWorkItemsCount
         return "${resources.getString(tabTitles[position])} ($count)"
     }
 
@@ -47,11 +39,7 @@ class WorkSheetPagerAdapter(
         return null
     }
 
-    fun updateWorkItemsList(
-        onGoingWorkItems: ArrayList<WorkItemDetail>,
-        cancelledWorkItems: ArrayList<WorkItemDetail>,
-        completedWorkItems: ArrayList<WorkItemDetail>
-    ) {
+    fun updateWorkItemsList(onGoingWorkItems: ArrayList<WorkItemDetail>, cancelledWorkItems: ArrayList<WorkItemDetail>, completedWorkItems: ArrayList<WorkItemDetail>) {
         onGoingWorkItemsCount = onGoingWorkItems.size
         cancelledWorkItemsCount = cancelledWorkItems.size
         completedWorkItemsCount = completedWorkItems.size

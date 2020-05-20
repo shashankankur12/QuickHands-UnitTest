@@ -12,13 +12,10 @@ import com.quickhandslogistics.modified.views.workSheet.WorkSheetItemDetailBOFra
 import com.quickhandslogistics.modified.views.workSheet.WorkSheetItemDetailLumpersFragment
 import com.quickhandslogistics.modified.views.workSheet.WorkSheetItemDetailNotesFragment
 
-class WorkSheetItemDetailPagerAdapter(
-    fragmentManager: FragmentManager, private val resources: Resources
-) :
+class WorkSheetItemDetailPagerAdapter(fragmentManager: FragmentManager, private val resources: Resources) :
     FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    private val tabTitles =
-        arrayOf(R.string.building_operations, R.string.string_lumpers, R.string.notes)
+    private val tabTitles = arrayOf(R.string.building_operations, R.string.string_lumpers, R.string.notes)
 
     private var buildingOperationsFragment = WorkSheetItemDetailBOFragment.newInstance()
     private var lumpersFragment = WorkSheetItemDetailLumpersFragment.newInstance()
@@ -40,9 +37,7 @@ class WorkSheetItemDetailPagerAdapter(
         return null
     }
 
-    fun showWorkItemData(
-        workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?
-    ) {
+    fun showWorkItemData(workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?) {
         buildingOperationsFragment.showBuildingOperationsData(workItemDetail)
         lumpersFragment.showLumpersData(workItemDetail, lumpersTimeSchedule)
         notesFragment.showNotesData(workItemDetail)

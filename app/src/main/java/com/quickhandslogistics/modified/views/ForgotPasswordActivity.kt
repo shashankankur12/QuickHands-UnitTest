@@ -8,7 +8,7 @@ import com.quickhandslogistics.modified.presenters.ForgotPasswordPresenter
 import com.quickhandslogistics.utils.CustomDialogListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.utils.Utils
+import com.quickhandslogistics.utils.AppUtils
 import kotlinx.android.synthetic.main.activity_forgot_password.*
 
 class ForgotPasswordActivity : BaseActivity(), ForgotPasswordContract.View, View.OnClickListener {
@@ -25,11 +25,17 @@ class ForgotPasswordActivity : BaseActivity(), ForgotPasswordContract.View, View
         forgotPasswordPresenter = ForgotPasswordPresenter(this, resources)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        forgotPasswordPresenter.onDestroy()
+    }
+
+    /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
                 buttonPasswordReset.id -> {
-                    Utils.hideSoftKeyboard(activity)
+                    AppUtils.hideSoftKeyboard(activity)
 
                     val employeePasswordResetId = editTextEmpId.text.toString().trim()
                     forgotPasswordPresenter.validatePasswordResetDetails(employeePasswordResetId)
@@ -38,35 +44,22 @@ class ForgotPasswordActivity : BaseActivity(), ForgotPasswordContract.View, View
         }
     }
 
+    /** Presenter Listeners */
     override fun showEmptyEmployeeIdError() {
         editTextEmpId.requestFocus()
-        SnackBarFactory.createSnackBar(
-            activity,
-            mainConstraintPasswordLayout,
-            resources.getString(R.string.text_employee_error_msg)
-        )
+        SnackBarFactory.createSnackBar(activity, mainConstraintPasswordLayout, resources.getString(R.string.text_employee_error_msg))
     }
 
     override fun showAPIErrorMessage(message: String) {
         editTextEmpId.requestFocus()
-        SnackBarFactory.createSnackBar(
-            activity,
-            mainConstraintPasswordLayout,
-            message
-        )
+        SnackBarFactory.createSnackBar(activity, mainConstraintPasswordLayout, message)
     }
 
     override fun showAPISuccessMessage(message: String) {
-        CustomProgressBar.getInstance()
-            .showSuccessDialog(message, activity, object : CustomDialogListener {
-                override fun onConfirmClick() {
-                    onBackPressed()
-                }
-            })
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        forgotPasswordPresenter.onDestroy()
+        CustomProgressBar.getInstance().showSuccessDialog(message, activity, object : CustomDialogListener {
+            override fun onConfirmClick() {
+                onBackPressed()
+            }
+        })
     }
 }

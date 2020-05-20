@@ -10,52 +10,34 @@ import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.common.LumperImagesContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
-import com.quickhandslogistics.utils.StringUtils
+import com.quickhandslogistics.utils.UIUtils
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_schdule_lumper_image_list.view.*
 
-class LumperImagesAdapter(
-    var lumpersList: ArrayList<EmployeeData>,
-    var onItemClickListener: LumperImagesContract.OnItemClickListener
-) :
-    RecyclerView.Adapter<LumperImagesAdapter.ScheduleImageViewHolder>() {
+class LumperImagesAdapter(var lumpersList: ArrayList<EmployeeData>, var onItemClickListener: LumperImagesContract.OnItemClickListener) :
+    RecyclerView.Adapter<LumperImagesAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(
-        viewGroup: ViewGroup, viewType: Int
-    ): ScheduleImageViewHolder {
-        val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.item_schdule_lumper_image_list, viewGroup, false)
-        return ScheduleImageViewHolder(view, viewGroup.context)
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_schdule_lumper_image_list, viewGroup, false)
+        return ViewHolder(view, viewGroup.context)
     }
 
     override fun getItemCount(): Int {
-        return if (lumpersList.size > 5) {
-            5
-        } else {
-            lumpersList.size
-        }
+        return if (lumpersList.size > 5) 5 else lumpersList.size
     }
 
     private fun getItem(position: Int): EmployeeData {
         return lumpersList[position]
     }
 
-    fun updateData(lumpersList: ArrayList<EmployeeData>) {
-        this.lumpersList.clear()
-        this.lumpersList.addAll(lumpersList)
-        notifyDataSetChanged()
-    }
-
-    override fun onBindViewHolder(holder: ScheduleImageViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    inner class ScheduleImageViewHolder(
-        itemView: View, private val context: Context
-    ) : RecyclerView.ViewHolder(itemView),
-        View.OnClickListener {
-        var circleImageViewProfile: CircleImageView = itemView.circleImageViewProfile
-        var textViewNumber: TextView = itemView.textViewNumber
+    inner class ViewHolder(itemView: View, private val context: Context) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+
+        private val circleImageViewProfile: CircleImageView = itemView.circleImageViewProfile
+        private val textViewNumber: TextView = itemView.textViewNumber
 
         init {
             itemView.setOnClickListener(this)
@@ -68,13 +50,7 @@ class LumperImagesAdapter(
                 textViewNumber.visibility = View.VISIBLE
                 textViewNumber.text = "+${lumpersList.size - 4}"
             } else {
-                if (!StringUtils.isNullOrEmpty(employeeData.profileImageUrl)) {
-                    Glide.with(context).load(employeeData.profileImageUrl)
-                        .placeholder(R.drawable.dummy).error(R.drawable.dummy)
-                        .into(circleImageViewProfile)
-                } else {
-                    Glide.with(context).clear(circleImageViewProfile);
-                }
+                UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
                 circleImageViewProfile.visibility = View.VISIBLE
                 textViewNumber.visibility = View.GONE
             }
@@ -87,5 +63,11 @@ class LumperImagesAdapter(
                 }
             }
         }
+    }
+
+    fun updateData(lumpersList: ArrayList<EmployeeData>) {
+        this.lumpersList.clear()
+        this.lumpersList.addAll(lumpersList)
+        notifyDataSetChanged()
     }
 }

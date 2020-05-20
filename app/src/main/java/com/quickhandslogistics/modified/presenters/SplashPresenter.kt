@@ -4,14 +4,12 @@ import com.quickhandslogistics.modified.contracts.SplashContract
 import com.quickhandslogistics.modified.models.SplashModel
 import com.quickhandslogistics.utils.SharedPref
 
-class SplashPresenter internal constructor(
-    private var splashView: SplashContract.View?,
-    sharedPref: SharedPref
-) :
+class SplashPresenter(private var splashView: SplashContract.View?, sharedPref: SharedPref) :
     SplashContract.Presenter, SplashContract.Model.OnFinishedListener {
 
-    private val splashModel: SplashModel = SplashModel(sharedPref)
+    private val splashModel = SplashModel(sharedPref)
 
+    /** View Listeners */
     override fun onDestroy() {
         splashView = null
     }
@@ -20,6 +18,7 @@ class SplashPresenter internal constructor(
         splashModel.waitForSometime(this)
     }
 
+    /** Model Result Listeners */
     override fun onFinished(isLoggedIn: Boolean) {
         splashView?.showNextScreen(isLoggedIn)
     }

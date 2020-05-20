@@ -26,13 +26,7 @@ open class BaseFragment : Fragment(), BaseContract.View {
         sharedPref = SharedPref.getInstance()
     }
 
-    protected fun startIntent(
-        className: Class<*>,
-        bundle: Bundle? = null,
-        isFinish: Boolean = false,
-        flags: Array<Int>? = null,
-        requestCode: Int? = null
-    ) {
+    protected fun startIntent(className: Class<*>, bundle: Bundle? = null, isFinish: Boolean = false, flags: Array<Int>? = null, requestCode: Int? = null) {
         val intent = Intent(fragmentActivity, className)
         flags?.let {
             for (flag in flags) {
@@ -49,13 +43,11 @@ open class BaseFragment : Fragment(), BaseContract.View {
                 startActivity(intent)
             }
             if (isFinish) fragmentActivity.finish()
-            fragmentActivity.overridePendingTransition(
-                R.anim.anim_next_slide_in,
-                R.anim.anim_next_slide_out
-            )
+            fragmentActivity.overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out)
         }
     }
 
+    /** Presenter Listeners */
     override fun showProgressDialog(message: String) {
         fragmentActivity?.let { context ->
             CustomProgressBar.getInstance().show(message = message, activityContext = context)

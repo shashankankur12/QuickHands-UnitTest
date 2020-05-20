@@ -27,58 +27,40 @@
 
         <TextView
             android:id="@+id/textViewStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/baseChipTheme"
             android:layout_marginEnd="@dimen/_4sdp"
-            android:background="@drawable/chip_background_in_progress"
-            android:paddingStart="@dimen/_10ssp"
-            android:paddingTop="@dimen/_5ssp"
-            android:paddingEnd="@dimen/_10ssp"
-            android:paddingBottom="@dimen/_5ssp"
-            android:text="In-Progress"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_10ssp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textViewStartTime"
+            style="@style/titleBigTextViewTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_4sdp"
             android:clickable="false"
             android:text="@string/start_time_container"
-            android:textColor="@color/buildingTitle"
-            android:textSize="@dimen/_16ssp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textViewWorkItemType"
+            style="@style/valuesTextViewTheme"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
             android:drawableStart="@drawable/ic_schedule_type"
             android:drawablePadding="@dimen/_5sdp"
             android:text="Live Loads"
-            android:textColor="@color/scheduleDetail"
-            android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
 
         <TextView
             android:id="@+id/textViewNoOfDrops"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/valuesTextViewTheme"
             android:layout_marginTop="@dimen/_4sdp"
             android:drawableStart="@drawable/ic_schedule_work_items"
             android:drawablePadding="@dimen/_5sdp"
-            android:text="Container Number - DJNSJD"
-            android:textColor="@color/scheduleDetail"
-            android:textSize="@dimen/_12ssp"
+            android:text="Container Number :"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemType" />

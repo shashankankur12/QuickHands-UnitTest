@@ -9,7 +9,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
-import com.quickhandslogistics.utils.Utils
 import com.quickhandslogistics.modified.data.lumperSheet.LumperModel
 import com.quickhandslogistics.view.adapter.LumperDummyAdapter
 import io.bloco.faker.Faker
@@ -41,7 +40,7 @@ class LumperListActivity : AppCompatActivity() {
         searchLumper()
 
         image_back.setOnClickListener {
-            Utils.finishActivity(this)
+            onBackPressed()
         }
 
         image_cancel.setOnClickListener {

@@ -9,11 +9,11 @@
 
     <TextView
         android:id="@+id/textViewStatus"
+        style="@style/valuesBigTextViewTheme"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:text="@string/in_progress"
         android:textColor="@color/textBlack"
-        android:textSize="@dimen/_14ssp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/imageViewAdd"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

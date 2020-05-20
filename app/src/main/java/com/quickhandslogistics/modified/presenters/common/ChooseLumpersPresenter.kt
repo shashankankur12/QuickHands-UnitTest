@@ -8,21 +8,22 @@ import com.quickhandslogistics.modified.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.modified.models.common.ChooseLumpersModel
 import com.quickhandslogistics.utils.ValueUtils
 
-class ChooseLumpersPresenter(
-    private var chooseLumpersView: ChooseLumpersContract.View?, private val resources: Resources
-) : ChooseLumpersContract.Presenter, ChooseLumpersContract.Model.OnFinishedListener {
+class ChooseLumpersPresenter(private var chooseLumpersView: ChooseLumpersContract.View?, private val resources: Resources) :
+    ChooseLumpersContract.Presenter, ChooseLumpersContract.Model.OnFinishedListener {
 
-    private val chooseLumpersModel: ChooseLumpersModel = ChooseLumpersModel()
+    private val chooseLumpersModel = ChooseLumpersModel()
+
+    /** View Listeners */
+    override fun onDestroy() {
+        chooseLumpersView = null
+    }
 
     override fun fetchLumpersList(pageIndex: Int) {
         chooseLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_message))
         chooseLumpersModel.fetchLumpersList(pageIndex, this)
     }
 
-    override fun onDestroy() {
-        chooseLumpersView = null
-    }
-
+    /** Model Result Listeners */
     override fun onFailure(message: String) {
         chooseLumpersView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {

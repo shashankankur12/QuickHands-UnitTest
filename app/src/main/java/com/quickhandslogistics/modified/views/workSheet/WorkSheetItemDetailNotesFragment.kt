@@ -10,6 +10,8 @@ import com.quickhandslogistics.modified.contracts.workSheet.WorkSheetItemDetailC
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.CustomDialogWarningListener
+import com.quickhandslogistics.utils.CustomProgressBar
 import kotlinx.android.synthetic.main.fragment_work_sheet_item_detail_notes.*
 
 class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener {
@@ -17,6 +19,11 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener {
     private var onFragmentInteractionListener: WorkSheetItemDetailContract.View.OnFragmentInteractionListener? = null
 
     private var workItemDetail: WorkItemDetail? = null
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = WorkSheetItemDetailNotesFragment()
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -59,25 +66,28 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
+    private fun saveWorkItemNotes() {
+        CustomProgressBar.getInstance().showWarningDialog(activityContext = fragmentActivity!!, listener = object : CustomDialogWarningListener {
+            override fun onConfirmClick() {
+                workItemDetail?.let {
+                    val notesQHLCustomer = editTextQHLCustomerNotes.text.toString()
+                    val notesQHL = editTextQHLNotes.text.toString()
+
+                    onFragmentInteractionListener?.updateWorkItemNotes(notesQHLCustomer, notesQHL)
+                }
+            }
+
+            override fun onCancelClick() {
+            }
+        })
+    }
+
+    /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
-                buttonSubmit.id -> {
-                    workItemDetail?.let {
-                        val notesQHLCustomer = editTextQHLCustomerNotes.text.toString()
-                        val notesQHL = editTextQHLNotes.text.toString()
-
-                        onFragmentInteractionListener?.updateWorkItemNotes(notesQHLCustomer, notesQHL)
-                    }
-                }
-                else -> {
-                }
+                buttonSubmit.id -> saveWorkItemNotes()
             }
         }
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = WorkSheetItemDetailNotesFragment()
     }
 }

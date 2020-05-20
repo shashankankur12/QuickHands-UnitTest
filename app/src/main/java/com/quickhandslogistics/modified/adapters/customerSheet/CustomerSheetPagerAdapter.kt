@@ -6,18 +6,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.data.customerSheet.CustomerSheetListAPIResponse
+import com.quickhandslogistics.modified.data.customerSheet.CustomerSheetData
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.views.customerSheet.CustomerSheetContainersFragment
 import com.quickhandslogistics.modified.views.customerSheet.CustomerSheetCustomerFragment
 import java.util.*
 
-class CustomerSheetPagerAdapter(
-    childFragmentManager: FragmentManager, private val resources: Resources
-) :
+class CustomerSheetPagerAdapter(childFragmentManager: FragmentManager, private val resources: Resources) :
     FragmentStatePagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    private val tabTitles = arrayOf(R.string.containers, R.string.string_customer)
+    private val tabTitles = arrayOf(R.string.containers, R.string.customer_details)
 
     private var containersFragment = CustomerSheetContainersFragment.newInstance()
     private var customerFragment = CustomerSheetCustomerFragment.newInstance()
@@ -39,10 +37,8 @@ class CustomerSheetPagerAdapter(
     }
 
     fun updateCustomerSheetList(
-        onGoingWorkItems: ArrayList<WorkItemDetail>,
-        cancelledWorkItems: ArrayList<WorkItemDetail>,
-        completedWorkItems: ArrayList<WorkItemDetail>,
-        customerSheet: CustomerSheetListAPIResponse.CustomerSheetData?, selectedTime: Long
+        onGoingWorkItems: ArrayList<WorkItemDetail>, cancelledWorkItems: ArrayList<WorkItemDetail>,
+        completedWorkItems: ArrayList<WorkItemDetail>, customerSheet: CustomerSheetData?, selectedTime: Long
     ) {
         containersFragment.updateWorkItemsList(onGoingWorkItems, cancelledWorkItems, completedWorkItems)
         customerFragment.updateCustomerDetails(customerSheet, selectedTime, onGoingWorkItems.size)
