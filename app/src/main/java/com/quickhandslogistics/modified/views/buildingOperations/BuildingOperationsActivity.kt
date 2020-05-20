@@ -9,9 +9,9 @@ import com.quickhandslogistics.modified.contracts.buildingOperations.BuildingOpe
 import com.quickhandslogistics.modified.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.modified.presenters.buildingOperations.BuildingOperationsPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_ALLOW_UPDATE
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_BUILDING_PARAMETERS
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_ALLOW_UPDATE
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETERS
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory

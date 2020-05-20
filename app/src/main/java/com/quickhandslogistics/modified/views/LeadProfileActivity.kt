@@ -1,7 +1,6 @@
 package com.quickhandslogistics.modified.views
 
 import android.os.Bundle
-import android.telephony.PhoneNumberUtils
 import android.view.View
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.LeadProfileContract
@@ -59,7 +58,10 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
         textViewEmployeeId.text = if (!employeeData.employeeId.isNullOrEmpty()) employeeData.employeeId else "-"
         textViewRole.text = if (!employeeData.role.isNullOrEmpty()) employeeData.role!!.toUpperCase(Locale.getDefault()) else "-"
         textViewEmailAddress.text = if (!employeeData.email.isNullOrEmpty()) employeeData.email else "-"
-        textViewPhoneNumber.text = if (!employeeData.phone.isNullOrEmpty()) PhoneNumberUtils.formatNumber(employeeData.phone, "US") else "-"
+
+        val phoneNumber = UIUtils.getDisplayPhoneNumber(employeeData)
+        textViewPhoneNumber.text = if (phoneNumber.isNotEmpty()) phoneNumber else "-"
+
         textViewShiftHours.text = if (!employeeData.shiftHours.isNullOrEmpty()) employeeData.shiftHours else "-"
         textViewBuildingName.text = if (!employeeData.buildingDetailData?.buildingName.isNullOrEmpty()) employeeData.buildingDetailData?.buildingName!!.capitalize() else "-"
     }

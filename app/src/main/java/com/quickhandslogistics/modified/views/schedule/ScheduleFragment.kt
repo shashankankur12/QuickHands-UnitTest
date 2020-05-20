@@ -1,7 +1,6 @@
 package com.quickhandslogistics.modified.views.schedule
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,47 +11,50 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.adapters.schedule.ScheduleAdapter
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
-import com.quickhandslogistics.modified.contracts.schedule.ScheduleMainContract
 import com.quickhandslogistics.modified.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.presenters.schedule.SchedulePresenter
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.common.DisplayLumpersListActivity
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_ALLOW_UPDATE
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_IDENTITY
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.CalendarUtils
+import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.util.*
 
 class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract.View.OnAdapterItemClickListener, CalendarUtils.CalendarSelectionListener {
 
-    private var onFragmentInteractionListener: ScheduleMainContract.View.OnFragmentInteractionListener? = null
-
     private var currentPageIndex: Int = 1
     private var nextPageIndex: Int = 1
     private var totalPagesCount: Int = 1
 
     private var selectedTime: Long = 0
-    private var isCurrentDate: Boolean = true
+    private var currentDatePosition: Int = 0
     private lateinit var availableDates: List<Date>
 
     private lateinit var schedulePresenter: SchedulePresenter
     private lateinit var scheduleAdapter: ScheduleAdapter
 
     companion object {
-        @JvmStatic
-        fun newInstance() = ScheduleFragment()
-    }
+        const val ARG_ALLOW_UPDATE = "ARG_ALLOW_UPDATE"
+        const val ARG_BUILDING_PARAMETERS = "ARG_BUILDING_PARAMETERS"
+        const val ARG_BUILDING_PARAMETER_VALUES = "ARG_BUILDING_PARAMETER_VALUES"
+        const val ARG_IS_FUTURE_DATE = "ARG_IS_FUTURE_DATE"
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (parentFragment is ScheduleMainContract.View.OnFragmentInteractionListener) {
-            onFragmentInteractionListener = parentFragment as ScheduleMainContract.View.OnFragmentInteractionListener
-        }
+        const val ARG_SELECTED_DATE_MILLISECONDS = "ARG_SELECTED_DATE_MILLISECONDS"
+
+        const val ARG_SCHEDULE_IDENTITY = "ARG_SCHEDULE_IDENTITY"
+        const val ARG_SCHEDULE_DETAIL = "ARG_SCHEDULE_DETAIL"
+        const val ARG_SCHEDULE_FROM_DATE = "ARG_SCHEDULE_FROM_DATE"
+
+        const val ARG_WORK_ITEM_ID = "ARG_WORK_ITEM_ID"
+        const val ARG_WORK_ITEM_TYPE = "ARG_WORK_ITEM_TYPE"
+        const val ARG_WORK_ITEM_TYPE_DISPLAY_NAME = "ARG_WORK_ITEM_TYPE_DISPLAY_NAME"
+
+        const val ARG_SCHEDULED_TIME_NOTES = "ARG_SCHEDULED_TIME_NOTES"
+        const val ARG_SCHEDULED_TIME_LIST = "ARG_SCHEDULED_TIME_LIST"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +63,9 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
         // Setup DatePicker Dates
         selectedTime = Date().time
-        availableDates = CalendarUtils.getPastCalendarDates()
+        val pair = CalendarUtils.getPastFutureCalendarDates()
+        availableDates = pair.first
+        currentDatePosition = pair.second
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -80,7 +84,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         }
 
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarSchedule, availableDates, this)
-        singleRowCalendarSchedule.select(availableDates.size - 1)
+        singleRowCalendarSchedule.select(currentDatePosition)
     }
 
     override fun onDestroy() {
@@ -136,7 +140,6 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
     override fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<ScheduleDetail>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int) {
         selectedTime = selectedDate.time
-        isCurrentDate = com.quickhandslogistics.utils.DateUtils.isCurrentDate(selectedTime)
         scheduleAdapter.updateList(workItemsList, currentPageIndex)
 
         textViewEmptyData.visibility = View.GONE
@@ -153,10 +156,6 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
-    override fun fetchUnScheduledWorkItems() {
-        onFragmentInteractionListener?.fetchUnScheduledWorkItems()
-    }
-
     override fun showEmptyData() {
         textViewEmptyData.visibility = View.VISIBLE
         recyclerViewSchedule.visibility = View.GONE
@@ -166,7 +165,8 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     /** Adapter Listeners */
     override fun onScheduleItemClick(scheduleDetail: ScheduleDetail) {
         val bundle = Bundle()
-        bundle.putBoolean(ARG_ALLOW_UPDATE, isCurrentDate)
+        bundle.putBoolean(ARG_ALLOW_UPDATE, DateUtils.isCurrentDate(selectedTime))
+        bundle.putBoolean(ARG_IS_FUTURE_DATE, DateUtils.isFutureDate(selectedTime))
         bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleDetail.scheduleIdentity)
         bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
         startIntent(ScheduleDetailActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)

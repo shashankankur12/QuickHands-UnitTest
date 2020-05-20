@@ -18,9 +18,9 @@ import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.common.AddSignatureActivity
 import com.quickhandslogistics.modified.views.common.BuildingOperationsViewActivity
 import com.quickhandslogistics.modified.views.lumperSheet.LumperSheetFragment.Companion.ARG_LUMPER_INFO
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_BUILDING_PARAMETERS
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_BUILDING_PARAMETER_VALUES
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETERS
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETER_VALUES
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import kotlinx.android.synthetic.main.activity_lumper_work_detail.*

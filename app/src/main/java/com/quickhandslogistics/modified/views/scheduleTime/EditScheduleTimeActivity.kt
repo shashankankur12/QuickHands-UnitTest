@@ -22,9 +22,9 @@ import com.quickhandslogistics.modified.presenters.scheduleTime.EditScheduleTime
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.common.ChooseLumpersActivity
 import com.quickhandslogistics.modified.views.common.DisplayLumpersListActivity.Companion.ARG_LUMPERS_LIST
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULED_TIME_LIST
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULED_TIME_NOTES
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_LIST
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_NOTES
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.activity_edit_schedule_time.*
 import java.util.*
@@ -95,11 +95,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
                 ).show()
             }
             R.id.actionAddLumpers -> {
-                val lumpersList = editScheduleTimeAdapter.getLumpersList()
-                val bundle = Bundle()
-                bundle.putParcelableArrayList(ChooseLumpersActivity.ARG_ASSIGNED_LUMPERS_LIST, lumpersList)
-                bundle.putParcelableArrayList(ARG_SCHEDULED_TIME_LIST, scheduleTimeList)
-                startIntent(ChooseLumpersActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
+                showChooseLumpersScreen()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -125,13 +121,9 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             val requestedLumpersCount = ValueUtils.getDefaultOrValue(notes.requestedLumpersCount)
             if (requestedLumpersCount != 0) {
                 editTextLumpersRequired.setText("$requestedLumpersCount")
+                editTextLumpersRequired.isEnabled = false
+                editTextDMNotes.isEnabled = false
             }
-        }
-
-        if (scheduleTimeList.size == 0) {
-            textViewEmptyData.visibility = View.VISIBLE
-        } else {
-            buttonSubmit.isEnabled = true
         }
 
         recyclerViewLumpers.apply {
@@ -156,6 +148,21 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         imageViewCancel.setOnClickListener(this)
 
         invalidateOptionsMenu()
+
+        if (scheduleTimeList.size == 0) {
+            textViewEmptyData.visibility = View.VISIBLE
+            showChooseLumpersScreen()
+        } else {
+            buttonSubmit.isEnabled = true
+        }
+    }
+
+    private fun showChooseLumpersScreen() {
+        val lumpersList = editScheduleTimeAdapter.getLumpersList()
+        val bundle = Bundle()
+        bundle.putParcelableArrayList(ChooseLumpersActivity.ARG_ASSIGNED_LUMPERS_LIST, lumpersList)
+        bundle.putParcelableArrayList(ARG_SCHEDULED_TIME_LIST, scheduleTimeList)
+        startIntent(ChooseLumpersActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }
 
     private fun saveLumperScheduleTimings() {

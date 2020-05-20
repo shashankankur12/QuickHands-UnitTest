@@ -12,7 +12,7 @@ import com.quickhandslogistics.modified.presenters.workSheet.AddLumperTimeWorkSh
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_DATA
 import com.quickhandslogistics.modified.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_TIMING_DATA
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment
 import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
 import java.util.*
@@ -42,7 +42,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
 
         intent.extras?.let { it ->
             if (it.containsKey(ARG_LUMPER_DATA)) {
-                workItemId = it.getString(ScheduleMainFragment.ARG_WORK_ITEM_ID, "")
+                workItemId = it.getString(ScheduleFragment.ARG_WORK_ITEM_ID, "")
                 employeeData = it.getParcelable(ARG_LUMPER_DATA) as EmployeeData?
                 employeeTimingData = it.getParcelable(ARG_LUMPER_TIMING_DATA) as LumpersTimeSchedule?
             }

@@ -17,7 +17,7 @@ import com.quickhandslogistics.modified.contracts.lumperSheet.LumperSheetContrac
 import com.quickhandslogistics.modified.data.lumperSheet.LumpersInfo
 import com.quickhandslogistics.modified.presenters.lumperSheet.LumperSheetPresenter
 import com.quickhandslogistics.modified.views.BaseFragment
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment
 import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
 import java.util.*
@@ -141,9 +141,14 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
             }
         }
 
-        if (DateUtils.isCurrentDate(selectedTime) && lumperInfoList.size > 0) {
-            buttonSubmit.visibility = if (!sheetSubmitted) View.VISIBLE else View.GONE
+        if ((DateUtils.isCurrentDate(selectedTime) && lumperInfoList.size > 0)) {
+            buttonSubmit.visibility = View.VISIBLE
             buttonSubmit.isEnabled = !sheetSubmitted && isSignatureLeft == 0
+            if (sheetSubmitted) {
+                buttonSubmit.text = getText(R.string.sheet_submitted)
+            } else {
+                buttonSubmit.text = getText(R.string.string_submit)
+            }
         } else {
             buttonSubmit.visibility = View.GONE
         }
@@ -170,7 +175,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     override fun onItemClick(lumperInfo: LumpersInfo) {
         val bundle = Bundle()
         bundle.putParcelable(ARG_LUMPER_INFO, lumperInfo)
-        bundle.putLong(ScheduleMainFragment.ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
+        bundle.putLong(ScheduleFragment.ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
         startIntent(LumperWorkDetailActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }
 

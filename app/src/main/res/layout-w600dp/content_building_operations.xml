@@ -9,21 +9,11 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_building_operations">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@drawable/shadow_effect"
-        android:translationY="-15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
-
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_12sdp"
-        android:background="@drawable/top_left_round_background"
+        android:background="@drawable/white_background"
         android:paddingStart="@dimen/_8ssp"
         android:paddingTop="@dimen/_8ssp"
         android:paddingEnd="@dimen/_8ssp"
@@ -47,8 +37,6 @@
             <Button
                 android:id="@+id/buttonSubmit"
                 style="@style/positiveRoundButtonTheme"
-                android:layout_marginStart="@dimen/_4sdp"
-                android:layout_marginEnd="@dimen/_4sdp"
                 android:layout_marginBottom="@dimen/_6ssp"
                 android:text="@string/string_submit" />
         </LinearLayout>

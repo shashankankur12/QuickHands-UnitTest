@@ -4,13 +4,13 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.ScheduleContract
-import com.quickhandslogistics.utils.ScheduleUtils.getAllAssignedLumpersList
-import com.quickhandslogistics.utils.ScheduleUtils.getScheduleTypeName
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.ScheduleDetail
 import com.quickhandslogistics.modified.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.modified.models.schedule.ScheduleModel
 import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.ScheduleUtils.getAllAssignedLumpersList
+import com.quickhandslogistics.utils.ScheduleUtils.getScheduleTypeName
 import com.quickhandslogistics.utils.ValueUtils
 import java.util.*
 
@@ -80,10 +80,6 @@ class SchedulePresenter(private var scheduleView: ScheduleContract.View?, privat
             scheduleView?.showEmptyData()
         }
 
-        if (currentPageIndex == 1) {
-            scheduleView?.fetchUnScheduledWorkItems()
-        } else {
-            scheduleView?.hideProgressDialog()
-        }
+        scheduleView?.hideProgressDialog()
     }
 }

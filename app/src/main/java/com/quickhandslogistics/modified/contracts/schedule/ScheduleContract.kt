@@ -19,7 +19,6 @@ class ScheduleContract {
         fun showDateString(dateString: String)
         fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<ScheduleDetail>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int)
         fun showAPIErrorMessage(message: String)
-        fun fetchUnScheduledWorkItems()
         fun showEmptyData()
 
         interface OnAdapterItemClickListener {

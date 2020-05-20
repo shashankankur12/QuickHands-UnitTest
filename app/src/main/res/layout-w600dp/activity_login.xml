@@ -21,7 +21,7 @@
             android:gravity="center"
             android:orientation="vertical"
             android:padding="@dimen/_25sdp"
-            app:layout_constraintBottom_toTopOf="@+id/layout"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -38,22 +38,13 @@
                 android:src="@drawable/login_illustration" />
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@drawable/shadow_effect"
-            android:translationY="-15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/layout" />
-
         <LinearLayout
-            android:id="@+id/layout"
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/login_form_background"
+            android:background="@drawable/white_background"
             android:orientation="vertical"
-            android:padding="@dimen/_20ssp"
+            android:padding="@dimen/_12ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

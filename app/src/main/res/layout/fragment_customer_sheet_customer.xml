@@ -54,7 +54,7 @@
             <EditText
                 android:id="@+id/editTextCustomerNotes"
                 style="@style/valueEditTextTheme"
-                android:inputType="textMultiLine|textCapWords"
+                android:inputType="textMultiLine|textCapSentences"
                 android:maxLines="3" />
         </LinearLayout>
 

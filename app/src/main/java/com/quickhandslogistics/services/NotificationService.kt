@@ -15,10 +15,13 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.views.SplashActivity
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_FROM_DATE
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_IDENTITY
-import com.quickhandslogistics.modified.views.schedule.UnScheduleDetailActivity
+import com.quickhandslogistics.modified.views.schedule.ScheduleDetailActivity
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_ALLOW_UPDATE
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_IS_FUTURE_DATE
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULE_IDENTITY
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SharedPref
 
 class NotificationService : FirebaseMessagingService() {
@@ -80,10 +83,13 @@ class NotificationService : FirebaseMessagingService() {
             if (data.containsKey(AppConstant.NOTIFICATION_KEY_SCHEDULE_IDENTITY) && data.containsKey(AppConstant.NOTIFICATION_KEY_SCHEDULE_FROM_DATE)) {
                 val scheduleIdentity = data[AppConstant.NOTIFICATION_KEY_SCHEDULE_IDENTITY].toString()
                 val scheduleFromDate = data[AppConstant.NOTIFICATION_KEY_SCHEDULE_FROM_DATE].toString()
+                val scheduleTime = DateUtils.getMillisecondsFromDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, scheduleFromDate)
 
+                bundle.putBoolean(ARG_ALLOW_UPDATE, DateUtils.isCurrentDate(scheduleTime))
+                bundle.putBoolean(ARG_IS_FUTURE_DATE, DateUtils.isFutureDate(scheduleTime))
                 bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleIdentity)
-                bundle.putString(ARG_SCHEDULE_FROM_DATE, scheduleFromDate)
-                intent.setClass(applicationContext, UnScheduleDetailActivity::class.java)
+                bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, scheduleTime)
+                intent.setClass(applicationContext, ScheduleDetailActivity::class.java)
             }
             intent.putExtras(bundle)
         }

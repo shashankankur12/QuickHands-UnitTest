@@ -49,7 +49,7 @@ class DisplayLumpersListAdapter(
         private val textViewEmployeeId: CustomTextView = view.textViewEmployeeId
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
         private val textViewShiftHours: CustomTextView = view.textViewShiftHours
-        private val imageViewCall: ImageView = view.imageViewCall
+        private val imageViewCall: CircleImageView = view.imageViewCall
 
         fun bind(employeeData: EmployeeData) {
             UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)

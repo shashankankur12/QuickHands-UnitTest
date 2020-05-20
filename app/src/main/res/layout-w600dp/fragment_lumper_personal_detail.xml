@@ -115,8 +115,8 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imageViewCall"
-                    android:layout_width="@dimen/_12ssp"
-                    android:layout_height="@dimen/_12ssp"
+                    android:layout_width="@dimen/_10ssp"
+                    android:layout_height="@dimen/_10ssp"
                     android:layout_marginStart="@dimen/_6sdp"
                     android:src="@drawable/ic_call"
                     app:civ_border_color="@color/online"

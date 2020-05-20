@@ -20,8 +20,8 @@ import com.quickhandslogistics.modified.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.lumpers.LumperDetailActivity
 import com.quickhandslogistics.modified.views.schedule.AddWorkItemLumpersActivity
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE
 import com.quickhandslogistics.utils.AppConstant
 import kotlinx.android.synthetic.main.content_work_sheet_item_detail_lumpers.*
 

@@ -55,11 +55,14 @@
         app:layout_constraintStart_toEndOf="@id/circleImageViewProfile"
         app:layout_constraintTop_toBottomOf="@id/textViewEmployeeId" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageViewCall"
         android:layout_width="@dimen/_20ssp"
         android:layout_height="@dimen/_20ssp"
         android:src="@drawable/ic_call"
+        app:civ_border_color="@color/online"
+        app:civ_border_width="@dimen/_4sdp"
+        app:civ_fill_color="@color/online"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

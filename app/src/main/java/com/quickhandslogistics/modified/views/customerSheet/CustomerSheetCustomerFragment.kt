@@ -79,6 +79,11 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
             editTextCustomerName.isEnabled = false
             editTextCustomerNotes.isEnabled = false
             buttonSubmit.isEnabled = false
+            if (signed) {
+                buttonSubmit.text = getText(R.string.sheet_submitted)
+            } else {
+                buttonSubmit.text = getText(R.string.string_submit)
+            }
         } else {
             editTextCustomerName.isEnabled = true
             editTextCustomerNotes.isEnabled = true

@@ -15,8 +15,8 @@ import com.quickhandslogistics.modified.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.common.BuildingOperationsViewActivity
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_BUILDING_PARAMETERS
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_BUILDING_PARAMETER_VALUES
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETERS
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETER_VALUES
 import com.quickhandslogistics.utils.CustomProgressBar
 import kotlinx.android.synthetic.main.fragment_customer_sheet_containers.*
 import java.util.*

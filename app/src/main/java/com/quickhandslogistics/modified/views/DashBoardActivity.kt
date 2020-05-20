@@ -15,7 +15,7 @@ import com.quickhandslogistics.modified.views.attendance.TimeClockAttendanceFrag
 import com.quickhandslogistics.modified.views.customerSheet.CustomerSheetFragment
 import com.quickhandslogistics.modified.views.lumperSheet.LumperSheetFragment
 import com.quickhandslogistics.modified.views.lumpers.LumpersFragment
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment
 import com.quickhandslogistics.modified.views.scheduleTime.ScheduleTimeFragment
 import com.quickhandslogistics.modified.views.workSheet.AllWorkScheduleCancelActivity
 import com.quickhandslogistics.modified.views.workSheet.WorkSheetFragment
@@ -57,7 +57,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         menu?.let {
             when (selectedFragmentTitle) {
-                getString(R.string.work_sheet) -> {
+                getString(R.string.todays_work_sheet) -> {
                     menu.findItem(R.id.actionCancelAllWork).isVisible = isCancelAllScheduleVisible
                 }
                 getString(R.string.schedule_lumpers_time) -> {
@@ -95,9 +95,9 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     private fun setUpNavigationBar() {
         navDrawer = NavDrawer(this, toolbar, supportFragmentManager.beginTransaction(), this)
         navDrawer?.let {
-            it.addItem(NavDrawer.ActivityNavDrawerItem(WorkSheetFragment(), getString(R.string.work_sheet), R.drawable.ic_sidemenu_dashboard, R.id.linearLayoutTopItems, true))
+            it.addItem(NavDrawer.ActivityNavDrawerItem(WorkSheetFragment(), getString(R.string.todays_work_sheet), R.drawable.ic_sidemenu_dashboard, R.id.linearLayoutTopItems, true))
             it.addItem(NavDrawer.ActivityNavDrawerItem(ScheduleTimeFragment(), getString(R.string.schedule_lumpers_time), R.drawable.ic_sidemenu_schedule, R.id.linearLayoutTopItems, false))
-            it.addItem(NavDrawer.ActivityNavDrawerItem(ScheduleMainFragment(), getString(R.string.string_schedule), R.drawable.ic_sidemenu_lumper_sheet, R.id.linearLayoutTopItems, false))
+            it.addItem(NavDrawer.ActivityNavDrawerItem(ScheduleFragment(), getString(R.string.string_schedule), R.drawable.ic_sidemenu_lumper_sheet, R.id.linearLayoutTopItems, false))
             it.addItem(NavDrawer.ActivityNavDrawerItem(TimeClockAttendanceFragment(), getString(R.string.time_clock_attendance), R.drawable.ic_sidemenu_schedule, R.id.linearLayoutTopItems, false))
             it.addItem(NavDrawer.ActivityNavDrawerItem(LumpersFragment(), getString(R.string.string_lumpers), R.drawable.ic_sidemenu_lumpers, R.id.linearLayoutTopItems, false))
             it.addItem(NavDrawer.ActivityNavDrawerItem(LumperSheetFragment(), getString(R.string.string_lumper_sheet), R.drawable.ic_sidemenu_lumper_sheet, R.id.linearLayoutTopItems, false))

@@ -65,6 +65,6 @@ class LumperDummyAdapter(
         var lumperCustId: TextView = view.textViewEmployeeId
         var profilePic: CircleImageView = view.circleImageViewProfile
         var lumperBuilding: TextView = view.textViewShiftHours
-        var imagePhone: ImageView = view.imageViewCall
+        var imagePhone: CircleImageView = view.imageViewCall
     }
 }

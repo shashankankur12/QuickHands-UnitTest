@@ -40,22 +40,12 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_below="@+id/constraintLayout"
-        android:layout_marginTop="-15dp"
-        android:background="@drawable/shadow_effect" />
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/constraintLayout"
-        android:background="@drawable/top_left_round_background"
-        android:paddingStart="@dimen/_16ssp"
-        android:paddingTop="@dimen/_22ssp"
-        android:paddingEnd="@dimen/_16ssp"
-        android:paddingBottom="@dimen/_22ssp"
+        android:background="@drawable/white_background"
+        android:padding="@dimen/_12ssp"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical">
 

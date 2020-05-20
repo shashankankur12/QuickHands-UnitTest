@@ -20,11 +20,12 @@ import com.quickhandslogistics.modified.presenters.schedule.ScheduleDetailPresen
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.common.DisplayLumpersListActivity
 import com.quickhandslogistics.modified.views.common.DisplayLumpersListActivity.Companion.ARG_LUMPERS_LIST
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_ALLOW_UPDATE
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_IDENTITY
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_ID
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_ALLOW_UPDATE
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_IS_FUTURE_DATE
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULE_IDENTITY
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.AppConstant.Companion.NOTES_NOT_AVAILABLE
 import com.quickhandslogistics.utils.CustomProgressBar
@@ -41,6 +42,7 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
     ScheduleDetailContract.View, ScheduleDetailContract.View.OnAdapterItemClickListener {
 
     private var allowUpdate: Boolean = false
+    private var isFutureDate: Boolean = false
     private var selectedTime: Long = 0
     private var scheduleIdentity = ""
     private var scheduleDetail: ScheduleDetail? = null
@@ -59,6 +61,7 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
 
         intent.extras?.let { bundle ->
             allowUpdate = bundle.getBoolean(ARG_ALLOW_UPDATE)
+            isFutureDate = bundle.getBoolean(ARG_IS_FUTURE_DATE)
             scheduleIdentity = bundle.getString(ARG_SCHEDULE_IDENTITY, "")
             selectedTime = bundle.getLong(ARG_SELECTED_DATE_MILLISECONDS, 0)
         }
@@ -102,21 +105,21 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
         recyclerViewLiveLoad.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            liveLoadsAdapter = ScheduledWorkItemAdapter(resources, getString(R.string.string_live_loads), this@ScheduleDetailActivity)
+            liveLoadsAdapter = ScheduledWorkItemAdapter(resources, getString(R.string.string_live_loads), isFutureDate, this@ScheduleDetailActivity)
             adapter = liveLoadsAdapter
         }
 
         recyclerViewDrops.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            dropsAdapter = ScheduledWorkItemAdapter(resources, getString(R.string.string_drops), this@ScheduleDetailActivity)
+            dropsAdapter = ScheduledWorkItemAdapter(resources, getString(R.string.string_drops), isFutureDate, this@ScheduleDetailActivity)
             adapter = dropsAdapter
         }
 
         recyclerViewOutBonds.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            outBondsAdapter = ScheduledWorkItemAdapter(resources, getString(R.string.string_out_bounds), this@ScheduleDetailActivity)
+            outBondsAdapter = ScheduledWorkItemAdapter(resources, getString(R.string.string_out_bounds), isFutureDate, this@ScheduleDetailActivity)
             adapter = outBondsAdapter
         }
 

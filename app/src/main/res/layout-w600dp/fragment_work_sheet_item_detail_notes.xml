@@ -32,7 +32,7 @@
             <EditText
                 android:id="@+id/editTextQHLCustomerNotes"
                 style="@style/valueEditTextTheme"
-                android:inputType="textMultiLine|textCapWords"
+                android:inputType="textMultiLine|textCapSentences"
                 android:maxLines="4" />
         </LinearLayout>
 
@@ -55,7 +55,7 @@
             <EditText
                 android:id="@+id/editTextQHLNotes"
                 style="@style/valueEditTextTheme"
-                android:inputType="textMultiLine|textCapWords"
+                android:inputType="textMultiLine|textCapSentences"
                 android:maxLines="4" />
         </LinearLayout>
 

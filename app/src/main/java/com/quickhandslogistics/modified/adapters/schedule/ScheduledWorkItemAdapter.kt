@@ -16,10 +16,11 @@ import com.quickhandslogistics.modified.controls.OverlapDecoration
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import com.quickhandslogistics.utils.DateUtils
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_scheduled_workitem.view.*
 
 class ScheduledWorkItemAdapter(
-    private val resources: Resources, private val workItemTypeDisplayName: String,
+    private val resources: Resources, private val workItemTypeDisplayName: String, private val isFutureDate: Boolean,
     private var adapterItemClickListener: ScheduleDetailContract.View.OnAdapterItemClickListener
 ) : Adapter<ScheduledWorkItemAdapter.ViewHolder>() {
 
@@ -47,11 +48,18 @@ class ScheduledWorkItemAdapter(
         private val textViewStartTime: TextView = view.textViewStartTime
         private val textViewDropItems: TextView = view.textViewDropItems
         private val recyclerViewLumpersImagesList: RecyclerView = view.recyclerViewLumpersImagesList
+        private val circleImageViewArrow: CircleImageView = view.circleImageViewArrow
 
         init {
             recyclerViewLumpersImagesList.apply {
                 layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
                 addItemDecoration(OverlapDecoration())
+            }
+
+            if (isFutureDate) {
+                circleImageViewArrow.visibility = View.GONE
+            } else {
+                itemView.setOnClickListener(this)
             }
         }
 
@@ -67,8 +75,6 @@ class ScheduledWorkItemAdapter(
             recyclerViewLumpersImagesList.apply {
                 adapter = LumperImagesAdapter(workItemDetail.assignedLumpersList!!, this@ViewHolder)
             }
-
-            itemView.setOnClickListener(this)
         }
 
         override fun onClick(view: View?) {
