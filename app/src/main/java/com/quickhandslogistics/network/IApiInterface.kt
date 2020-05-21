@@ -17,6 +17,8 @@ import com.quickhandslogistics.modified.data.lumperSheet.SubmitLumperSheetReques
 import com.quickhandslogistics.modified.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.modified.data.schedule.*
 import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
+import com.quickhandslogistics.modified.data.scheduleTime.RequestLumpersListAPIResponse
+import com.quickhandslogistics.modified.data.scheduleTime.RequestLumpersRequest
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeRequest
 import com.quickhandslogistics.modified.data.workSheet.*
 import okhttp3.MultipartBody
@@ -95,6 +97,17 @@ interface IApiInterface {
 
     @POST("employees/schedule/lumpers")
     fun saveScheduleTimeDetails(@Header("Authorization") auth: String, @Body request: ScheduleTimeRequest): Call<BaseResponse>
+
+    @GET("employees/lead/lumpers/requests")
+    fun getRequestLumpersList(@Header("Authorization") auth: String, @Query("day") day: String): Call<RequestLumpersListAPIResponse>
+
+    @POST("employees/lead/lumpers/request")
+    fun createRequestLumpers(@Header("Authorization") auth: String, @Body request: RequestLumpersRequest): Call<BaseResponse>
+
+    @PUT("employees/lead/lumpers/request/{requestId}")
+    fun updateRequestLumpers(
+        @Header("Authorization") auth: String, @Path("requestId") requestId: String, @Body request: RequestLumpersRequest
+    ): Call<BaseResponse>
     /////////////////////////////////////////////////////////////
 
     // Work Sheet /////////////////////////////////////////////////

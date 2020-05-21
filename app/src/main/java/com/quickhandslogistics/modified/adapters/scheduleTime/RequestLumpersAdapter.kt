@@ -1,21 +1,24 @@
 package com.quickhandslogistics.modified.adapters.scheduleTime
 
 import android.content.Context
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.scheduleTime.RequestLumpersContract
-import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeDetail
+import com.quickhandslogistics.modified.data.scheduleTime.RequestLumpersRecord
+import com.quickhandslogistics.utils.AppConstant
 import kotlinx.android.synthetic.main.item_request_lumpers.view.*
 
-class RequestLumpersAdapter(private val onAdapterClick: RequestLumpersContract.View.OnAdapterItemClickListener) :
+class RequestLumpersAdapter(private val resources: Resources, private val onAdapterClick: RequestLumpersContract.View.OnAdapterItemClickListener) :
     Adapter<RequestLumpersAdapter.ViewHolder>() {
 
-    private val scheduleTimeList: ArrayList<ScheduleTimeDetail> = ArrayList()
+    private val requestList: ArrayList<RequestLumpersRecord> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_request_lumpers, parent, false)
@@ -23,15 +26,15 @@ class RequestLumpersAdapter(private val onAdapterClick: RequestLumpersContract.V
     }
 
     override fun getItemCount(): Int {
-        return scheduleTimeList.size
+        return requestList.size
     }
 
-    private fun getItem(position: Int): ScheduleTimeDetail {
-        return scheduleTimeList[position]
+    private fun getItem(position: Int): RequestLumpersRecord {
+        return requestList[position]
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind()
+        holder.bind(getItem(position))
     }
 
     inner class ViewHolder(view: View, private val context: Context) : RecyclerView.ViewHolder(view), View.OnClickListener {
@@ -40,21 +43,54 @@ class RequestLumpersAdapter(private val onAdapterClick: RequestLumpersContract.V
         private val textViewRequestedLumpersCount: TextView = view.textViewRequestedLumpersCount
         private val textViewNote: TextView = view.textViewNote
         private val textViewUpdateRequest: TextView = view.textViewUpdateRequest
+        private val linearLayoutNotes: LinearLayout = view.linearLayoutNotes
 
-        fun bind() {
-            textViewStatus.setOnClickListener(this)
-            itemView.setOnClickListener(this)
+        fun bind(requestLumpersRecord: RequestLumpersRecord) {
+            textViewRequestedLumpersCount.text = String.format(resources.getString(R.string.requested_lumpers_s), requestLumpersRecord.requestedLumpersCount)
+            textViewNote.text = requestLumpersRecord.notesForDM
+
+            when (requestLumpersRecord.requestStatus) {
+                AppConstant.REQUEST_LUMPERS_STATUS_PENDING -> {
+                    textViewStatus.text = resources.getString(R.string.pending)
+                    textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
+                    textViewUpdateRequest.visibility = View.VISIBLE
+                }
+                AppConstant.REQUEST_LUMPERS_STATUS_APPROVED -> {
+                    textViewStatus.text = resources.getString(R.string.approved)
+                    textViewStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
+                    textViewUpdateRequest.visibility = View.GONE
+                }
+                else -> {
+                    textViewStatus.text = resources.getString(R.string.rejected)
+                    textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
+                    textViewUpdateRequest.visibility = View.GONE
+                }
+            }
+
+            textViewUpdateRequest.setOnClickListener(this)
+            linearLayoutNotes.setOnClickListener(this)
         }
 
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
-                    itemView.id -> {
-
+                    linearLayoutNotes.id -> {
+                        val record = getItem(adapterPosition)
+                        onAdapterClick.onNotesItemClick(record.notesForDM)
                     }
-
+                    textViewUpdateRequest.id -> {
+                        val record = getItem(adapterPosition)
+                        onAdapterClick.onUpdateItemClick(record)
+                    }
                 }
             }
         }
+    }
+
+    fun updateList(records: List<RequestLumpersRecord>) {
+        this.requestList.clear()
+        this.requestList.addAll(records)
+
+        notifyDataSetChanged()
     }
 }

@@ -53,6 +53,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
         const val ARG_SCHEDULED_TIME_NOTES = "ARG_SCHEDULED_TIME_NOTES"
         const val ARG_SCHEDULED_TIME_LIST = "ARG_SCHEDULED_TIME_LIST"
+        const val ARG_SCHEDULED_LUMPERS_COUNT = "ARG_SCHEDULED_LUMPERS_COUNT"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

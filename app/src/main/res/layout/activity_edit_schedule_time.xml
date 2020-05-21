@@ -94,33 +94,6 @@
                     android:maxLines="3" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/schedule_item_background"
-                android:orientation="vertical"
-                android:padding="@dimen/_10sdp">
-
-                <TextView
-                    style="@style/titleTextViewTheme"
-                    android:text="@string/request_help" />
-
-                <EditText
-                    android:id="@+id/editTextLumpersRequired"
-                    style="@style/valueEditTextTheme"
-                    android:hint="@string/no_of_lumpers_needed"
-                    android:inputType="number"
-                    android:maxLength="3" />
-
-                <EditText
-                    android:id="@+id/editTextDMNotes"
-                    style="@style/valueEditTextTheme"
-                    android:hint="@string/notes_for_qhl_dm"
-                    android:inputType="textMultiLine|textCapSentences"
-                    android:maxLines="3" />
-            </LinearLayout>
-
             <Button
                 android:id="@+id/buttonSubmit"
                 style="@style/positiveRoundButtonTheme"

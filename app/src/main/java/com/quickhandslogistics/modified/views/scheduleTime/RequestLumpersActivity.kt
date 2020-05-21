@@ -1,6 +1,5 @@
 package com.quickhandslogistics.modified.views.scheduleTime
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -8,18 +7,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.adapters.scheduleTime.EditScheduleTimeAdapter
+import com.quickhandslogistics.modified.adapters.scheduleTime.RequestLumpersAdapter
 import com.quickhandslogistics.modified.contracts.scheduleTime.RequestLumpersContract
 import com.quickhandslogistics.modified.controls.SpaceDividerItemDecorator
-import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.modified.data.scheduleTime.RequestLumpersRecord
 import com.quickhandslogistics.modified.presenters.scheduleTime.RequestLumpersPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
-import com.quickhandslogistics.modified.views.common.DisplayLumpersListActivity.Companion.ARG_LUMPERS_LIST
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_LUMPERS_COUNT
 import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.CustomDialogWarningListener
-import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.activity_request_lumpers.*
 import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.*
 import kotlinx.android.synthetic.main.content_request_lumpers.*
@@ -29,11 +25,12 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     RequestLumpersContract.View, RequestLumpersContract.View.OnAdapterItemClickListener {
 
     private var selectedTime: Long = 0
+    private var scheduledLumpersCount: Int = 0
 
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
     private lateinit var requestLumpersPresenter: RequestLumpersPresenter
-    private lateinit var editScheduleTimeAdapter: EditScheduleTimeAdapter
+    private lateinit var requestLumpersAdapter: RequestLumpersAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,24 +39,13 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
 
         intent.extras?.let { bundle ->
             selectedTime = bundle.getLong(ARG_SELECTED_DATE_MILLISECONDS, 0)
+            scheduledLumpersCount = bundle.getInt(ARG_SCHEDULED_LUMPERS_COUNT, 0)
         }
 
         initializeUI()
 
         requestLumpersPresenter = RequestLumpersPresenter(this, resources)
         requestLumpersPresenter.fetchAllRequestsByDate(Date(selectedTime))
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == RESULT_OK) {
-            data?.extras?.let { bundle ->
-                val employeeDataList = bundle.getParcelableArrayList<EmployeeData>(ARG_LUMPERS_LIST)
-                employeeDataList?.let {
-                    editScheduleTimeAdapter.addLumpersList(employeeDataList)
-                }
-            }
-        }
     }
 
     private fun initializeUI() {
@@ -69,19 +55,20 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         recyclerViewRequestLumpers.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(15))
-/*            editScheduleTimeAdapter = EditScheduleTimeAdapter(scheduleTimeList, this@RequestLumpersActivity)
-            adapter = editScheduleTimeAdapter*/
+            requestLumpersAdapter = RequestLumpersAdapter(resources, this@RequestLumpersActivity)
+            adapter = requestLumpersAdapter
         }
 
-        editScheduleTimeAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+        requestLumpersAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                textViewEmptyData.visibility = if (editScheduleTimeAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                textViewEmptyData.visibility = if (requestLumpersAdapter.itemCount == 0) View.VISIBLE else View.GONE
             }
         })
 
         buttonCreateNewRequest.setOnClickListener(this)
         bottomSheetBackgroundRequestLumpers.setOnClickListener(this)
+        buttonSubmit.setOnClickListener(this)
     }
 
     private fun closeBottomSheet() {
@@ -89,23 +76,16 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         bottomSheetBackgroundRequestLumpers.visibility = View.GONE
     }
 
-    private fun showBottomSheet() {
-        if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-            //workSheetItemStatusAdapter.updateInitialStatus(textViewStatus.text.toString())
-            sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            bottomSheetBackgroundRequestLumpers.visibility = View.VISIBLE
-        } else {
-            closeBottomSheet()
-        }
-    }
-
-    private fun showConfirmationDialog(scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, requiredLumperCount: String, notesDM: String) {
+    private fun showConfirmationDialog(requiredLumperCount: String, notesDM: String) {
         CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
             override fun onConfirmClick() {
-                requestLumpersPresenter.initiateScheduleTime(
-                    scheduledLumpersIdsTimeMap, notes, if (requiredLumperCount.isNotEmpty()) requiredLumperCount.toInt() else 0,
-                    notesDM, Date(selectedTime)
-                )
+                closeBottomSheet()
+                val requestLumperId = buttonSubmit.getTag(R.id.requestLumperId) as String?
+                if (requestLumperId.isNullOrEmpty()) {
+                    requestLumpersPresenter.createNewRequestForLumpers(requiredLumperCount, notesDM, Date(selectedTime))
+                } else {
+                    requestLumpersPresenter.updateRequestForLumpers(requestLumperId, requiredLumperCount, notesDM, Date(selectedTime))
+                }
             }
 
             override fun onCancelClick() {
@@ -113,12 +93,45 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         })
     }
 
+    private fun showBottomSheetWithData(record: RequestLumpersRecord? = null) {
+        record?.also {
+            textViewTitle.text = getString(R.string.update_request)
+            val requestedLumpersCount = ValueUtils.getDefaultOrValue(record.requestedLumpersCount)
+            editTextLumpersRequired.setText("$requestedLumpersCount")
+            editTextDMNotes.setText(record.notesForDM)
+            buttonSubmit.setTag(R.id.requestLumperId, record.id)
+        } ?: run {
+            textViewTitle.text = getString(R.string.create_new_request)
+            editTextLumpersRequired.setText("")
+            editTextDMNotes.setText("")
+            buttonSubmit.setTag(R.id.requestLumperId, "")
+        }
+
+        if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+            sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            bottomSheetBackgroundRequestLumpers.visibility = View.VISIBLE
+        } else {
+            closeBottomSheet()
+        }
+    }
+
     /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
                 bottomSheetBackgroundRequestLumpers.id -> closeBottomSheet()
-                buttonCreateNewRequest.id -> showBottomSheet()
+                buttonCreateNewRequest.id -> {
+                    showBottomSheetWithData()
+                }
+                buttonSubmit.id -> {
+                    val requiredLumperCount = editTextLumpersRequired.text.toString()
+                    val notesDM = editTextDMNotes.text.toString()
+                    if ((requiredLumperCount.isNotEmpty() && notesDM.isEmpty()) || (requiredLumperCount.isEmpty() && notesDM.isNotEmpty())) {
+                        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, getString(R.string.request_help_error_message))
+                    } else {
+                        showConfirmationDialog(requiredLumperCount, notesDM)
+                    }
+                }
             }
         }
     }
@@ -128,12 +141,32 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }
 
-    override fun showAllRequests() {
+    override fun showAllRequests(records: List<RequestLumpersRecord>) {
+        requestLumpersAdapter.updateList(records)
+    }
 
+    override fun showHeaderInfo(dateString: String) {
+        textViewDate.text = dateString
+        textViewTotalCount.text = String.format(getString(R.string.total_lumpers_assigned_s), scheduledLumpersCount)
+    }
+
+    override fun showSuccessDialog(date: Date) {
+        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.request_placed_successfully),
+            activity, object : CustomDialogListener {
+                override fun onConfirmClick() {
+                    requestLumpersPresenter.fetchAllRequestsByDate(date)
+                }
+            })
     }
 
     /** Adapter Listeners */
-    override fun onUpdateClick(adapterPosition: Int) {
+    override fun onNotesItemClick(notes: String?) {
+        notes?.let {
+            CustomProgressBar.getInstance().showInfoDialog(getString(R.string.string_note), notes, activity)
+        }
+    }
 
+    override fun onUpdateItemClick(record: RequestLumpersRecord) {
+        showBottomSheetWithData(record)
     }
 }

@@ -260,4 +260,8 @@
     <string name="create_new_request">Create New Request</string>
     <string name="requested_lumpers_s">Requested Lumpers: %s</string>
     <string name="update_request">Update Request</string>
+    <string name="total_lumpers_assigned_s">Total Lumpers Assigned: %s</string>
+    <string name="approved">Approved</string>
+    <string name="rejected">Rejected</string>
+    <string name="request_placed_successfully">Request placed successfully</string>
 </resources>

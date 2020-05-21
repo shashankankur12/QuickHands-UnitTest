@@ -3,10 +3,8 @@ package com.quickhandslogistics.modified.models.scheduleTime
 import android.util.Log
 import com.quickhandslogistics.modified.contracts.scheduleTime.RequestLumpersContract
 import com.quickhandslogistics.modified.data.BaseResponse
-import com.quickhandslogistics.modified.data.common.AllLumpersResponse
-import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
-import com.quickhandslogistics.modified.data.scheduleTime.LumperScheduleTimeData
-import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeRequest
+import com.quickhandslogistics.modified.data.scheduleTime.RequestLumpersListAPIResponse
+import com.quickhandslogistics.modified.data.scheduleTime.RequestLumpersRequest
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.DataManager.getAuthToken
 import com.quickhandslogistics.network.DataManager.isSuccessResponse
@@ -15,28 +13,33 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import kotlin.collections.ArrayList
 
 class RequestLumpersModel : RequestLumpersContract.Model {
 
-    override fun assignScheduleTime(
-        scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, requiredLumpersCount: Int, notesDM: String,
-        selectedDate: Date, onFinishedListener: RequestLumpersContract.Model.OnFinishedListener
-    ) {
+    override fun fetchAllRequestsByDate(selectedDate: Date, onFinishedListener: RequestLumpersContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
+        DataManager.getService().getRequestLumpersList(getAuthToken(), dateString).enqueue(object : Callback<RequestLumpersListAPIResponse> {
+            override fun onResponse(call: Call<RequestLumpersListAPIResponse>, response: Response<RequestLumpersListAPIResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessFetchRequests(response.body()!!)
+                }
+            }
 
-        val lumpersData: ArrayList<LumperScheduleTimeData> = ArrayList()
-        for (employeeId in scheduledLumpersIdsTimeMap.keys) {
-            val timestamp = scheduledLumpersIdsTimeMap[employeeId]!! / 1000
-            lumpersData.add(LumperScheduleTimeData(timestamp, employeeId))
-        }
+            override fun onFailure(call: Call<RequestLumpersListAPIResponse>, t: Throwable) {
+                Log.e(RequestLumpersModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
+    }
 
-        val request = ScheduleTimeRequest(lumpersData, notes, requiredLumpersCount, notesDM, dateString)
+    override fun createNewRequestForLumpers(requiredLumperCount: String, notesDM: String, date: Date, onFinishedListener: RequestLumpersContract.Model.OnFinishedListener) {
+        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, date)
+        val request = RequestLumpersRequest(requiredLumperCount.toInt(), notesDM, dateString)
 
-        DataManager.getService().saveScheduleTimeDetails(getAuthToken(), request).enqueue(object : Callback<BaseResponse> {
+        DataManager.getService().createRequestLumpers(getAuthToken(), request).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
-                    onFinishedListener.onSuccessScheduleTime()
+                    onFinishedListener.onSuccessRequest(date)
                 }
             }
 
@@ -47,16 +50,18 @@ class RequestLumpersModel : RequestLumpersContract.Model {
         })
     }
 
-    override fun fetchAllRequestsByDate(selectedDate: Date, onFinishedListener: RequestLumpersContract.Model.OnFinishedListener) {
-        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
-        DataManager.getService().getLeadProfile(getAuthToken()).enqueue(object : Callback<LeadProfileAPIResponse> {
-            override fun onResponse(call: Call<LeadProfileAPIResponse>, response: Response<LeadProfileAPIResponse>) {
+    override fun updateRequestForLumpers(requestId: String, requiredLumperCount: String, notesDM: String, date: Date, onFinishedListener: RequestLumpersContract.Model.OnFinishedListener) {
+        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, date)
+        val request = RequestLumpersRequest(requiredLumperCount.toInt(), notesDM, dateString)
+
+        DataManager.getService().updateRequestLumpers(getAuthToken(), requestId, request).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
-                    onFinishedListener.onSuccessFetchRequests()
+                    onFinishedListener.onSuccessRequest(date)
                 }
             }
 
-            override fun onFailure(call: Call<LeadProfileAPIResponse>, t: Throwable) {
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
                 Log.e(RequestLumpersModel::class.simpleName, t.localizedMessage!!)
                 onFinishedListener.onFailure()
             }

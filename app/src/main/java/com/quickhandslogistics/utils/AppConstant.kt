@@ -30,6 +30,11 @@ interface AppConstant {
         const val WORK_ITEM_STATUS_CANCELLED = "CANCELLED"
         const val WORK_ITEM_STATUS_SCHEDULED = "SCHEDULED"
 
+        // REQUEST LUMPERS Enums
+        const val REQUEST_LUMPERS_STATUS_PENDING = "pending"
+        const val REQUEST_LUMPERS_STATUS_APPROVED = "approved"
+        const val REQUEST_LUMPERS_STATUS_REJECTED = "rejected"
+
         // Attendance
         const val ATTENDANCE_IS_PRESENT = "ATTENDANCE_IS_PRESENT"
         const val ATTENDANCE_MORNING_PUNCH_IN = "ATTENDANCE_MORNING_PUNCH_IN"

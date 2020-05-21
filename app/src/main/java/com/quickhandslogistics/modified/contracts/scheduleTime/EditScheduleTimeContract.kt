@@ -6,8 +6,7 @@ import java.util.*
 class EditScheduleTimeContract {
     interface Model {
         fun assignScheduleTime(
-            scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, requiredLumpersCount: Int,
-            notesDM: String, selectedDate: Date, onFinishedListener: OnFinishedListener
+            scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, selectedDate: Date, onFinishedListener: OnFinishedListener
         )
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
@@ -25,6 +24,6 @@ class EditScheduleTimeContract {
     }
 
     interface Presenter : BaseContract.Presenter {
-        fun initiateScheduleTime(scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, requiredLumpersCount: Int, notesDM: String, selectedDate: Date)
+        fun initiateScheduleTime(scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, selectedDate: Date)
     }
 }

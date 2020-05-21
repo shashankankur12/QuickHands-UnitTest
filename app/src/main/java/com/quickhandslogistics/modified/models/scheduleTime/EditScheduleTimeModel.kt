@@ -18,7 +18,7 @@ import kotlin.collections.ArrayList
 class EditScheduleTimeModel : EditScheduleTimeContract.Model {
 
     override fun assignScheduleTime(
-        scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, requiredLumpersCount: Int, notesDM: String,
+        scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String,
         selectedDate: Date, onFinishedListener: EditScheduleTimeContract.Model.OnFinishedListener
     ) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
@@ -29,7 +29,7 @@ class EditScheduleTimeModel : EditScheduleTimeContract.Model {
             lumpersData.add(LumperScheduleTimeData(timestamp, employeeId))
         }
 
-        val request = ScheduleTimeRequest(lumpersData, notes, requiredLumpersCount, notesDM, dateString)
+        val request = ScheduleTimeRequest(lumpersData, notes, dateString)
 
         DataManager.getService().saveScheduleTimeDetails(getAuthToken(), request).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {

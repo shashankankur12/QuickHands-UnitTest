@@ -17,11 +17,9 @@ class EditScheduleTimePresenter(private var editScheduleTimeView: EditScheduleTi
         editScheduleTimeView = null
     }
 
-    override fun initiateScheduleTime(
-        scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, requiredLumpersCount: Int, notesDM: String, selectedDate: Date
-    ) {
+    override fun initiateScheduleTime(scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, selectedDate: Date) {
         editScheduleTimeView?.showProgressDialog(resources.getString(R.string.api_loading_message))
-        editScheduleTimeModel.assignScheduleTime(scheduledLumpersIdsTimeMap, notes, requiredLumpersCount, notesDM, selectedDate, this)
+        editScheduleTimeModel.assignScheduleTime(scheduledLumpersIdsTimeMap, notes, selectedDate, this)
     }
 
     /** Model Result Listeners */

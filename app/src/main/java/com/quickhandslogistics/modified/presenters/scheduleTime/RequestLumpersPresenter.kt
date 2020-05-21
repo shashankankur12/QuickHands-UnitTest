@@ -4,7 +4,9 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.scheduleTime.RequestLumpersContract
+import com.quickhandslogistics.modified.data.scheduleTime.RequestLumpersListAPIResponse
 import com.quickhandslogistics.modified.models.scheduleTime.RequestLumpersModel
+import com.quickhandslogistics.utils.DateUtils
 import java.util.*
 
 class RequestLumpersPresenter(private var requestLumpersView: RequestLumpersContract.View?, private val resources: Resources) :
@@ -17,16 +19,22 @@ class RequestLumpersPresenter(private var requestLumpersView: RequestLumpersCont
         requestLumpersView = null
     }
 
-    override fun initiateScheduleTime(
-        scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, requiredLumpersCount: Int, notesDM: String, selectedDate: Date
-    ) {
-        requestLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_message))
-        requestLumpersModel.assignScheduleTime(scheduledLumpersIdsTimeMap, notes, requiredLumpersCount, notesDM, selectedDate, this)
-    }
-
     override fun fetchAllRequestsByDate(selectedDate: Date) {
+        val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
+        requestLumpersView?.showHeaderInfo(dateString)
+
         requestLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_message))
         requestLumpersModel.fetchAllRequestsByDate(selectedDate, this)
+    }
+
+    override fun createNewRequestForLumpers(requiredLumperCount: String, notesDM: String, date: Date) {
+        requestLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        requestLumpersModel.createNewRequestForLumpers(requiredLumperCount, notesDM, date, this)
+    }
+
+    override fun updateRequestForLumpers(requestId: String, requiredLumperCount: String, notesDM: String, date: Date) {
+        requestLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        requestLumpersModel.updateRequestForLumpers(requestId, requiredLumperCount, notesDM, date, this)
     }
 
     /** Model Result Listeners */
@@ -39,13 +47,16 @@ class RequestLumpersPresenter(private var requestLumpersView: RequestLumpersCont
         }
     }
 
-    override fun onSuccessScheduleTime() {
+    override fun onSuccessFetchRequests(response: RequestLumpersListAPIResponse) {
         requestLumpersView?.hideProgressDialog()
-        requestLumpersView?.scheduleTimeFinished()
+
+        response.data?.records?.let { records ->
+            requestLumpersView?.showAllRequests(records)
+        }
     }
 
-    override fun onSuccessFetchRequests() {
+    override fun onSuccessRequest(date: Date) {
         requestLumpersView?.hideProgressDialog()
-        requestLumpersView?.showAllRequests()
+        requestLumpersView?.showSuccessDialog(date)
     }
 }

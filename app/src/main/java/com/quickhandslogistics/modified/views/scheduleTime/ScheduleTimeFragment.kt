@@ -20,13 +20,14 @@ import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeNotes
 import com.quickhandslogistics.modified.presenters.scheduleTime.ScheduleTimePresenter
 import com.quickhandslogistics.modified.views.BaseFragment
+import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_LUMPERS_COUNT
 import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_NOTES
 import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.AppUtils
 import com.quickhandslogistics.utils.CalendarUtils
 import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.utils.AppUtils
 import kotlinx.android.synthetic.main.fragment_schedule_time.*
 import java.util.*
 
@@ -91,6 +92,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
         buttonScheduleLumpers.setOnClickListener(this)
+        buttonRequestHelp.setOnClickListener(this)
 
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarScheduleTime, availableDates, this)
         singleRowCalendarScheduleTime.select(currentDatePosition)
@@ -112,6 +114,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     private fun invalidateScheduleButton() {
         buttonScheduleLumpers.visibility = if (isFutureDate) View.VISIBLE else View.GONE
+        buttonRequestHelp.visibility = if (isFutureDate) View.VISIBLE else View.GONE
     }
 
     /** Native Views Listeners */
@@ -130,6 +133,12 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                         bundle.putParcelable(ARG_SCHEDULED_TIME_NOTES, scheduleTimeNotes)
                     }
                     startIntent(EditScheduleTimeActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
+                }
+                buttonRequestHelp.id -> {
+                    val bundle = Bundle()
+                    bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
+                    bundle.putInt(ARG_SCHEDULED_LUMPERS_COUNT, scheduleTimeDetailList.size)
+                    startIntent(RequestLumpersActivity::class.java, bundle = bundle)
                 }
             }
         }

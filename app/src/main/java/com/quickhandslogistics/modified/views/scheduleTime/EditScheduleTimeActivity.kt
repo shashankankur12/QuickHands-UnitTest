@@ -116,14 +116,6 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     private fun initializeUI() {
         scheduleTimeNotes?.let { notes ->
             editTextNotes.setText(notes.notesForLead)
-            editTextDMNotes.setText(notes.notesForDM)
-
-            val requestedLumpersCount = ValueUtils.getDefaultOrValue(notes.requestedLumpersCount)
-            if (requestedLumpersCount != 0) {
-                editTextLumpersRequired.setText("$requestedLumpersCount")
-                editTextLumpersRequired.isEnabled = false
-                editTextDMNotes.isEnabled = false
-            }
         }
 
         recyclerViewLumpers.apply {
@@ -169,24 +161,14 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         val scheduledLumpersIdsTimeMap = editScheduleTimeAdapter.getScheduledLumpersTimeMap()
         if (scheduledLumpersIdsTimeMap.size > 0) {
             val notes = editTextNotes.text.toString()
-            val requiredLumperCount = editTextLumpersRequired.text.toString()
-            val notesDM = editTextDMNotes.text.toString()
-
-            if ((requiredLumperCount.isNotEmpty() && notesDM.isEmpty()) || (requiredLumperCount.isEmpty() && notesDM.isNotEmpty())) {
-                SnackBarFactory.createSnackBar(activity, mainConstraintLayout, getString(R.string.request_help_error_message))
-            } else {
-                showConfirmationDialog(scheduledLumpersIdsTimeMap, notes, requiredLumperCount, notesDM)
-            }
+            showConfirmationDialog(scheduledLumpersIdsTimeMap, notes)
         }
     }
 
-    private fun showConfirmationDialog(scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, requiredLumperCount: String, notesDM: String) {
+    private fun showConfirmationDialog(scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String) {
         CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
             override fun onConfirmClick() {
-                editScheduleTimePresenter.initiateScheduleTime(
-                    scheduledLumpersIdsTimeMap, notes, if (requiredLumperCount.isNotEmpty()) requiredLumperCount.toInt() else 0,
-                    notesDM, Date(selectedTime)
-                )
+                editScheduleTimePresenter.initiateScheduleTime(scheduledLumpersIdsTimeMap, notes, Date(selectedTime))
             }
 
             override fun onCancelClick() {
