@@ -75,6 +75,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
         private val viewAttendanceStatus: View = view.viewAttendanceStatus
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
         private val checkBoxAttendance: CheckBox = view.checkBoxAttendance
+        private val textViewCheckBoxStatus: CustomTextView = view.textViewCheckBoxStatus
         private val textViewEmployeeId: CustomTextView = view.textViewEmployeeId
         private val textViewAddTime: TextView = view.textViewAddTime
         private val textViewNoTimeLoggedIn: TextView = view.textViewNoTimeLoggedIn
@@ -144,6 +145,14 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
 
             checkBoxAttendance.setOnClickListener(this)
             editTextNotes.addTextChangedListener(this)
+
+            if (!checkBoxAttendance.isChecked) {
+                textViewCheckBoxStatus.text = context.getString(R.string.mark_present)
+            } else if (checkBoxAttendance.isEnabled) {
+                textViewCheckBoxStatus.text = context.getString(R.string.change_present)
+            } else {
+                textViewCheckBoxStatus.text = context.getString(R.string.present)
+            }
         }
 
         private fun applyIconAnimation(position: Int) {

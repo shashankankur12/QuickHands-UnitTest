@@ -14,6 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.adapters.attendance.TimeClockAttendanceAdapter
 import com.quickhandslogistics.modified.contracts.attendance.TimeClockAttendanceContract
+import com.quickhandslogistics.modified.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.modified.presenters.attendance.TimeClockAttendancePresenter
 import com.quickhandslogistics.modified.views.BaseFragment
@@ -64,10 +65,8 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
     private fun initializeUI() {
         recyclerViewLumpers.apply {
-            val linearLayoutManager = LinearLayoutManager(activity)
-            layoutManager = linearLayoutManager
-            val dividerItemDecoration = DividerItemDecoration(activity, linearLayoutManager.orientation)
-            addItemDecoration(dividerItemDecoration)
+            layoutManager = LinearLayoutManager(fragmentActivity!!)
+            addItemDecoration(SpaceDividerItemDecorator(15))
             timeClockAttendanceAdapter = TimeClockAttendanceAdapter(this@TimeClockAttendanceFragment)
             adapter = timeClockAttendanceAdapter
             addOnScrollListener(onScrollListener)

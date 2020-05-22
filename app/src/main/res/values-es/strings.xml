@@ -263,4 +263,7 @@
     <string name="approved">Approved</string>
     <string name="rejected">Rejected</string>
     <string name="request_placed_successfully">Request placed successfully</string>
+    <string name="mark_present">Mark Present</string>
+    <string name="change_present">Change Present</string>
+    <string name="present">Present</string>
 </resources>
