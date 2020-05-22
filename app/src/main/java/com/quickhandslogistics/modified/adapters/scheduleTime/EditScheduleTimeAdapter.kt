@@ -105,6 +105,10 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
         }
     }
 
+    fun isSearchEnabled(): Boolean {
+        return searchEnabled
+    }
+
     fun setSearchEnabled(enabled: Boolean, searchTerm: String = "") {
         this.searchEnabled = enabled
         if (!searchEnabled) {

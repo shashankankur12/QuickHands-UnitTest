@@ -82,6 +82,10 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
         }
     }
 
+    fun isSearchEnabled(): Boolean {
+        return searchEnabled
+    }
+
     fun setSearchEnabled(enabled: Boolean, searchTerm: String = "") {
         this.searchEnabled = enabled
         if (!searchEnabled) {

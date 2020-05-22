@@ -78,9 +78,11 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
         })
 
         if (allowUpdate) {
+            textViewEmptyData.text = getString(R.string.empty_work_item_lumpers)
             buttonAddBuildingOperations.text = getString(R.string.update_building_operations)
             buttonUpdateLumpers.visibility = View.VISIBLE
         } else {
+            textViewEmptyData.text = getString(R.string.empty_work_item_lumpers_past_date)
             buttonAddBuildingOperations.text = getString(R.string.building_operations)
             buttonUpdateLumpers.visibility = View.GONE
         }

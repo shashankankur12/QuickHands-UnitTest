@@ -63,7 +63,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         lumperSheetAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                textViewEmptyData.visibility = if (lumperSheetAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                invalidateEmptyView()
             }
         })
 
@@ -84,6 +84,20 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
             lumperSheetPresenter.getLumpersSheetByDate(Date(selectedTime))
+        }
+    }
+
+    private fun invalidateEmptyView() {
+        if (lumperSheetAdapter.itemCount == 0) {
+            textViewEmptyData.visibility = View.VISIBLE
+            if (lumperSheetAdapter.isSearchEnabled()) {
+                textViewEmptyData.text = getString(R.string.string_no_record_found)
+            } else {
+                textViewEmptyData.text = getString(R.string.empty_lumper_sheet)
+            }
+        } else {
+            textViewEmptyData.visibility = View.GONE
+            textViewEmptyData.text = getString(R.string.empty_lumper_sheet)
         }
     }
 

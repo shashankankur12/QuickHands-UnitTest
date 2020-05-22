@@ -254,6 +254,10 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
         }
     }
 
+    fun isSearchEnabled(): Boolean {
+        return searchEnabled
+    }
+
     fun setSearchEnabled(enabled: Boolean, searchTerm: String = "") {
         this.searchEnabled = enabled
         if (!searchEnabled) {

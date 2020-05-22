@@ -45,6 +45,7 @@
             android:id="@+id/textViewEmptyData"
             style="@style/noRecordTextViewTheme"
             android:layout_centerInParent="true"
+            android:text="@string/empty_building_operations"
             android:visibility="gone" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

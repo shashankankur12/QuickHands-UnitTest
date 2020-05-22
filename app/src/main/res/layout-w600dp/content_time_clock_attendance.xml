@@ -62,6 +62,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:gravity="center"
+                android:text="@string/empty_lumpers_list"
                 android:visibility="gone" />
         </RelativeLayout>
 

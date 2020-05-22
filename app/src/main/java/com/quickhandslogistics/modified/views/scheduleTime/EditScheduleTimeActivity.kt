@@ -109,9 +109,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         editScheduleTimeAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                buttonSubmit.isEnabled = editScheduleTimeAdapter.itemCount != 0
-                textViewAddSameTime.visibility = if (editScheduleTimeAdapter.itemCount != 0) View.VISIBLE else View.GONE
-                textViewEmptyData.visibility = if (editScheduleTimeAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                invalidateEmptyView()
             }
         })
 
@@ -126,7 +124,26 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             textViewEmptyData.visibility = View.VISIBLE
             showChooseLumpersScreen()
         } else {
+            textViewAddSameTime.visibility = View.VISIBLE
             buttonSubmit.isEnabled = true
+        }
+    }
+
+    private fun invalidateEmptyView() {
+        if (editScheduleTimeAdapter.itemCount == 0) {
+            buttonSubmit.isEnabled = false
+            textViewAddSameTime.visibility = View.GONE
+            textViewEmptyData.visibility = View.VISIBLE
+            if (editScheduleTimeAdapter.isSearchEnabled()) {
+                textViewEmptyData.text = getString(R.string.string_no_record_found)
+            } else {
+                textViewEmptyData.text = getString(R.string.empty_edit_schedule_time)
+            }
+        } else {
+            buttonSubmit.isEnabled = true
+            textViewAddSameTime.visibility = View.VISIBLE
+            textViewEmptyData.visibility = View.GONE
+            textViewEmptyData.text = getString(R.string.empty_edit_schedule_time)
         }
     }
 

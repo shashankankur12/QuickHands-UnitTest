@@ -17,6 +17,7 @@ import com.quickhandslogistics.R;
 import com.quickhandslogistics.modified.contracts.DashBoardContract;
 import com.quickhandslogistics.modified.views.BaseActivity;
 import com.quickhandslogistics.modified.views.workSheet.WorkSheetFragment;
+import com.quickhandslogistics.utils.AppUtils;
 
 import java.util.ArrayList;
 
@@ -49,7 +50,10 @@ public class NavDrawer {
         }
 
         this.toolbar.setNavigationIcon(R.drawable.ic_sidemenu);
-        this.toolbar.setNavigationOnClickListener(v -> setOpen(!isOpen()));
+        this.toolbar.setNavigationOnClickListener(v -> {
+            AppUtils.hideSoftKeyboard(activity);
+            setOpen(!isOpen());
+        });
     }
 
     public void addItem(NavDrawerItem item) {

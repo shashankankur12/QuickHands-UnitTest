@@ -79,6 +79,12 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
                 textViewEmptyData.visibility = if (workSheetItemAdapter.itemCount == 0) View.VISIBLE else View.GONE
             }
         })
+
+        textViewEmptyData.text = when (workItemType) {
+            getString(R.string.ongoing) -> getString(R.string.empty_containers_list_ongoing)
+            getString(R.string.cancelled) -> getString(R.string.empty_containers_list_cancelled)
+            else -> getString(R.string.empty_containers_list_completed)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

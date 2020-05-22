@@ -7,6 +7,7 @@ import java.util.*
 
 class AppUtils {
     companion object {
+        @JvmStatic
         fun hideSoftKeyboard(activity: Activity) {
             try {
                 val inputMethodManager = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager

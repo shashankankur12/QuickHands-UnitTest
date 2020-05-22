@@ -88,6 +88,10 @@ class AllWorkScheduleCancelAdapter(private val onAdapterClick: AllWorkScheduleCa
         }
     }
 
+    fun isSearchEnabled(): Boolean {
+        return searchEnabled
+    }
+
     fun setSearchEnabled(enabled: Boolean, searchTerm: String = "") {
         this.searchEnabled = enabled
         if (!searchEnabled) {

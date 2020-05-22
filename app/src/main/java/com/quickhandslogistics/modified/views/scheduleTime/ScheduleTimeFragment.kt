@@ -82,7 +82,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         scheduleTimeAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                textViewEmptyData.visibility = if (scheduleTimeAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                invalidateEmptyView()
             }
         })
 
@@ -114,6 +114,20 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     private fun invalidateScheduleButton() {
         buttonScheduleLumpers.visibility = if (isFutureDate) View.VISIBLE else View.GONE
         buttonRequestHelp.visibility = if (isFutureDate) View.VISIBLE else View.GONE
+    }
+
+    private fun invalidateEmptyView() {
+        if (scheduleTimeAdapter.itemCount == 0) {
+            textViewEmptyData.visibility = View.VISIBLE
+            if (scheduleTimeAdapter.isSearchEnabled()) {
+                textViewEmptyData.text = getString(R.string.string_no_record_found)
+            } else {
+                textViewEmptyData.text = getString(R.string.empty_schedule_time_list)
+            }
+        } else {
+            textViewEmptyData.visibility = View.GONE
+            textViewEmptyData.text = getString(R.string.empty_schedule_time_list)
+        }
     }
 
     /** Native Views Listeners */
@@ -170,13 +184,6 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         invalidateScheduleButton()
 
         scheduleTimeAdapter.updateLumpersData(scheduleTimeDetailList)
-        if (scheduleTimeDetailList.size > 0) {
-            textViewEmptyData.visibility = View.GONE
-            recyclerViewScheduleTime.visibility = View.VISIBLE
-        } else {
-            recyclerViewScheduleTime.visibility = View.GONE
-            textViewEmptyData.visibility = View.VISIBLE
-        }
     }
 
     override fun showNotesData(notes: String?) {

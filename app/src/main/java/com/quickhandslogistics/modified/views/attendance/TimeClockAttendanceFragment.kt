@@ -79,7 +79,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
                 val updatedData = timeClockAttendanceAdapter.getUpdatedData()
                 buttonSave.isEnabled = updatedData.size > 0
 
-                textViewEmptyData.visibility = if (timeClockAttendanceAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                invalidateEmptyView()
             }
         })
 
@@ -96,6 +96,20 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         buttonLunchIn.setOnClickListener(this)
         buttonLunchOut.setOnClickListener(this)
         bottomSheetBackground.setOnClickListener(this)
+    }
+
+    private fun invalidateEmptyView() {
+        if (timeClockAttendanceAdapter.itemCount == 0) {
+            textViewEmptyData.visibility = View.VISIBLE
+            if (timeClockAttendanceAdapter.isSearchEnabled()) {
+                textViewEmptyData.text = getString(R.string.string_no_record_found)
+            } else {
+                textViewEmptyData.text = getString(R.string.empty_lumpers_list)
+            }
+        } else {
+            textViewEmptyData.visibility = View.GONE
+            textViewEmptyData.text = getString(R.string.empty_lumpers_list)
+        }
     }
 
     private fun closeBottomSheet() {

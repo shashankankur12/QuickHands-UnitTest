@@ -61,6 +61,10 @@ class ScheduleTimeAdapter : Adapter<ScheduleTimeAdapter.ViewHolder>() {
         }
     }
 
+    fun isSearchEnabled(): Boolean {
+        return searchEnabled
+    }
+
     fun setSearchEnabled(enabled: Boolean, searchTerm: String = "") {
         this.searchEnabled = enabled
         if (!searchEnabled) {

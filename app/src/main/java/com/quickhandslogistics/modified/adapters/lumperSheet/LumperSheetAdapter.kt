@@ -80,6 +80,10 @@ class LumperSheetAdapter(private var resources: Resources, var adapterItemClickL
         }
     }
 
+    fun isSearchEnabled(): Boolean {
+        return searchEnabled
+    }
+
     fun setSearchEnabled(enabled: Boolean, searchTerm: String = "") {
         this.searchEnabled = enabled
         if (!searchEnabled) {

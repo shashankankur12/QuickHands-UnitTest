@@ -55,7 +55,7 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
         lumpersAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                textViewEmptyData.visibility = if (lumpersAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                invalidateEmptyView()
             }
         })
 
@@ -71,6 +71,20 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     override fun onDestroy() {
         super.onDestroy()
         lumpersPresenter.onDestroy()
+    }
+
+    private fun invalidateEmptyView() {
+        if (lumpersAdapter.itemCount == 0) {
+            textViewEmptyData.visibility = View.VISIBLE
+            if (lumpersAdapter.isSearchEnabled()) {
+                textViewEmptyData.text = getString(R.string.string_no_record_found)
+            } else {
+                textViewEmptyData.text = getString(R.string.empty_lumpers_list)
+            }
+        } else {
+            textViewEmptyData.visibility = View.GONE
+            textViewEmptyData.text = getString(R.string.empty_lumpers_list)
+        }
     }
 
     /** Native Views Listeners */
@@ -110,13 +124,6 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
         lumpersAdapter.updateLumpersData(employeeDataList)
-        if (employeeDataList.size > 0) {
-            textViewEmptyData.visibility = View.GONE
-            recyclerViewLumpers.visibility = View.VISIBLE
-        } else {
-            recyclerViewLumpers.visibility = View.GONE
-            textViewEmptyData.visibility = View.VISIBLE
-        }
     }
 
     /** Adapter Listeners */

@@ -22,6 +22,7 @@
     <TextView
         android:id="@+id/textViewEmptyData"
         style="@style/noRecordTextViewTheme"
+        android:text="@string/empty_building_operations"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/buttonUpdate"
         app:layout_constraintEnd_toEndOf="parent"

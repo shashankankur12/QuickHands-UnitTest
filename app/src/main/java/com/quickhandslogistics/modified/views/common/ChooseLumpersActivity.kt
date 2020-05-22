@@ -70,7 +70,7 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
         chooseLumpersAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                textViewEmptyData.visibility = if (chooseLumpersAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                invalidateEmptyView()
             }
         })
 
@@ -80,6 +80,20 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
         buttonAdd.setOnClickListener(this)
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
+    }
+
+    private fun invalidateEmptyView() {
+        if (chooseLumpersAdapter.itemCount == 0) {
+            textViewEmptyData.visibility = View.VISIBLE
+            if (chooseLumpersAdapter.isSearchEnabled()) {
+                textViewEmptyData.text = getString(R.string.string_no_record_found)
+            } else {
+                textViewEmptyData.text = getString(R.string.empty_lumpers_list)
+            }
+        } else {
+            textViewEmptyData.visibility = View.GONE
+            textViewEmptyData.text = getString(R.string.empty_lumpers_list)
+        }
     }
 
     private fun showConfirmationDialog(selectedLumpersList: ArrayList<EmployeeData>) {
@@ -137,13 +151,6 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
         chooseLumpersAdapter.updateLumpersData(employeeDataList)
-        if (employeeDataList.size > 0) {
-            textViewEmptyData.visibility = View.GONE
-            recyclerViewLumpers.visibility = View.VISIBLE
-        } else {
-            recyclerViewLumpers.visibility = View.GONE
-            textViewEmptyData.visibility = View.VISIBLE
-        }
     }
 
     /** Adapter Listeners */

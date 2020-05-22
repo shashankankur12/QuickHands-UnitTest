@@ -13,10 +13,10 @@ import com.quickhandslogistics.modified.contracts.workSheet.AllWorkScheduleCance
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.presenters.workSheet.AllWorkScheduleCancelPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
+import com.quickhandslogistics.utils.AppUtils
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.utils.AppUtils
 import kotlinx.android.synthetic.main.activity_all_work_schedule_cancel.*
 
 class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, TextWatcher,
@@ -50,13 +50,27 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
             RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                textViewEmptyData.visibility = if (allWorkScheduleCancelAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                invalidateEmptyView()
             }
         })
 
         buttonSubmit.setOnClickListener(this)
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
+    }
+
+    private fun invalidateEmptyView() {
+        if (allWorkScheduleCancelAdapter.itemCount == 0) {
+            textViewEmptyData.visibility = View.VISIBLE
+            if (allWorkScheduleCancelAdapter.isSearchEnabled()) {
+                textViewEmptyData.text = getString(R.string.string_no_record_found)
+            } else {
+                textViewEmptyData.text = getString(R.string.empty_add_work_item_lumpers)
+            }
+        } else {
+            textViewEmptyData.visibility = View.GONE
+            textViewEmptyData.text = getString(R.string.empty_add_work_item_lumpers)
+        }
     }
 
     private fun showConfirmationDialog(selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String) {

@@ -267,4 +267,21 @@
     <string name="mark_present">Mark Present</string>
     <string name="change_present">Change Present</string>
     <string name="present">Present</string>
+
+    <!--No Record Messages-->
+    <string name="empty_add_work_item_lumpers">This building doesn\'t have any lumpers present for the selected date. Please mark lumpers attendance in \'Time-Clock Attendance\' section for selecting them.</string>
+    <string name="empty_edit_schedule_time">You haven\'t select any lumpers for the selected date. Click on + icon on top right side of the screen to choose lumpers.</string>
+    <string name="empty_work_item_lumpers">You haven\'t assigned any lumpers to this container. Click on \'Add Lumpers\' to assign.</string>
+    <string name="empty_work_item_lumpers_past_date">You haven\'t assigned any lumpers to this container.</string>
+    <string name="empty_building_operations">This building doesn\'t have any parameters assigned. Please contact the admin to add new parameters.</string>
+    <string name="empty_lumpers_list">This building doesn\'t have any lumpers assigned. Please contact the admin to assign new lumpers.</string>
+    <string name="empty_request_lumpers_list">You haven\'t placed any request yet for the selected date. Click on \'Create New Request\' to request create one.</string>
+    <string name="empty_lumper_sheet">You didn\'t record any lumper\'s work timing details for any container. Please fill there timings in the \'Work Sheet\' section to fill there sheet.</string>
+    <string name="empty_containers_list">This building doesn\'t have any containers scheduled for the selected date.</string>
+    <string name="empty_schedules_list">This building doesn\'t have any schedules created for the selected date.</string>
+    <string name="empty_schedule_time_list">You haven\'t scheduled any lumpers for the selected date. Click on \'Schedule Lumpers\' to schedule them.</string>
+    <string name="empty_containers_list_ongoing">You don\'t have any Ongoing containers scheduled for the selected date.</string>
+    <string name="empty_containers_list_cancelled">You don\'t have any Cancelled containers scheduled for the selected date.</string>
+    <string name="empty_containers_list_completed">You don\'t have any Completed containers scheduled for the selected date.</string>
+    <!---->
 </resources>

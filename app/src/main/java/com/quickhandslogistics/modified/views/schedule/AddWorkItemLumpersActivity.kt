@@ -75,7 +75,7 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
         addWorkItemLumperAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                textViewEmptyData.visibility = if (addWorkItemLumperAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                invalidateEmptyView()
             }
         })
 
@@ -85,6 +85,20 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
         buttonAdd.setOnClickListener(this)
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
+    }
+
+    private fun invalidateEmptyView() {
+        if (addWorkItemLumperAdapter.itemCount == 0) {
+            textViewEmptyData.visibility = View.VISIBLE
+            if (addWorkItemLumperAdapter.isSearchEnabled()) {
+                textViewEmptyData.text = getString(R.string.string_no_record_found)
+            } else {
+                textViewEmptyData.text = getString(R.string.empty_add_work_item_lumpers)
+            }
+        } else {
+            textViewEmptyData.visibility = View.GONE
+            textViewEmptyData.text = getString(R.string.empty_add_work_item_lumpers)
+        }
     }
 
     private fun assignLumpersToWorkItem() {
@@ -132,13 +146,6 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
         addWorkItemLumperAdapter.updateLumpersData(employeeDataList)
-        if (employeeDataList.size > 0) {
-            textViewEmptyData.visibility = View.GONE
-            recyclerViewLumpers.visibility = View.VISIBLE
-        } else {
-            recyclerViewLumpers.visibility = View.GONE
-            textViewEmptyData.visibility = View.VISIBLE
-        }
     }
 
     override fun lumperAssignmentFinished() {
