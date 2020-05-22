@@ -310,7 +310,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
 
         // Update in API Request Object
         initiateUpdateRecord(item.id)
-        updateData[item.id]?.morningPunchIn = "${currentTime / 1000L}"
+        updateData[item.id]?.morningPunchIn = "$currentTime"
         updateData[item.id]?.isMorningPunchInChanged = true
 
         //Update in Local List Object to show changes on UI
@@ -325,7 +325,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
 
         // Update in API Request Object
         initiateUpdateRecord(item.id)
-        updateData[item.id]?.eveningPunchOut = "${currentTime / 1000L}"
+        updateData[item.id]?.eveningPunchOut = "$currentTime"
         updateData[item.id]?.isEveningPunchOutChanged = true
 
         //Update in Local List Object to show changes on UI
@@ -340,7 +340,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
 
         // Update in API Request Object
         initiateUpdateRecord(item.id)
-        updateData[item.id]?.lunchPunchIn = "${currentTime / 1000L}"
+        updateData[item.id]?.lunchPunchIn = "$currentTime"
         updateData[item.id]?.isLunchPunchInChanged = true
 
         //Update in Local List Object to show changes on UI
@@ -355,7 +355,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
 
         // Update in API Request Object
         initiateUpdateRecord(item.id)
-        updateData[item.id]?.lunchPunchOut = "${currentTime / 1000L}"
+        updateData[item.id]?.lunchPunchOut = "$currentTime"
         updateData[item.id]?.isLunchPunchOutChanged = true
 
         //Update in Local List Object to show changes on UI

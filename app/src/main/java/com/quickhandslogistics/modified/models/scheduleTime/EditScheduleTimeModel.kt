@@ -25,7 +25,7 @@ class EditScheduleTimeModel : EditScheduleTimeContract.Model {
 
         val lumpersData: ArrayList<LumperScheduleTimeData> = ArrayList()
         for (employeeId in scheduledLumpersIdsTimeMap.keys) {
-            val timestamp = scheduledLumpersIdsTimeMap[employeeId]!! / 1000
+            val timestamp = scheduledLumpersIdsTimeMap[employeeId]!!
             lumpersData.add(LumperScheduleTimeData(timestamp, employeeId))
         }
 
