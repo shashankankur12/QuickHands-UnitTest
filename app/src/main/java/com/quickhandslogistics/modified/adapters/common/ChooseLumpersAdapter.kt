@@ -70,6 +70,7 @@ class ChooseLumpersAdapter(
 
         fun bind(employeeData: EmployeeData) {
             UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
+            UIUtils.updateProfileBorder(context, employeeData.isTemporaryAssigned, circleImageViewProfile)
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
             textViewShiftHours.text = UIUtils.getDisplayShiftHours(employeeData)
@@ -141,11 +142,9 @@ class ChooseLumpersAdapter(
         return ArrayList(selectedLumpersMap.values)
     }
 
-    fun updateLumpersData(employeeDataList: ArrayList<EmployeeData>, currentPageIndex: Int) {
+    fun updateLumpersData(employeeDataList: ArrayList<EmployeeData>) {
         setSearchEnabled(false)
-        if (currentPageIndex == 1) {
-            this.employeeDataList.clear()
-        }
+        this.employeeDataList.clear()
         this.employeeDataList.addAll(employeeDataList)
 
         val extraEmployeesList = ArrayList<EmployeeData>()

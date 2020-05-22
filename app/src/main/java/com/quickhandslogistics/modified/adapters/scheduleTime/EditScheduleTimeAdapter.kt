@@ -67,6 +67,7 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
         fun bind(scheduleTimeDetail: ScheduleTimeDetail) {
             scheduleTimeDetail.lumperInfo?.let { employeeData ->
                 UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
+                UIUtils.updateProfileBorder(context, employeeData.isTemporaryAssigned, circleImageViewProfile)
                 textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
                 textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
 

@@ -4,7 +4,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
 
 open class EmployeeData() : Parcelable {
     @SerializedName("id")
@@ -95,6 +94,8 @@ open class EmployeeData() : Parcelable {
     @Expose
     var fullTime: Boolean? = null
 
+    var isTemporaryAssigned: Boolean = false
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         email = parcel.readString()
@@ -118,6 +119,7 @@ open class EmployeeData() : Parcelable {
         jobDescription = parcel.readString()
         lastDayWorked = parcel.readString()
         fullTime = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        isTemporaryAssigned = parcel.readValue(Boolean::class.java.classLoader) as Boolean
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -143,6 +145,7 @@ open class EmployeeData() : Parcelable {
         parcel.writeString(jobDescription)
         parcel.writeString(lastDayWorked)
         parcel.writeValue(fullTime)
+        parcel.writeValue(isTemporaryAssigned)
     }
 
     override fun describeContents(): Int {

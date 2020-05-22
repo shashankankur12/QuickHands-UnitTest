@@ -17,7 +17,6 @@ import com.quickhandslogistics.modified.adapters.scheduleTime.EditScheduleTimeAd
 import com.quickhandslogistics.modified.contracts.scheduleTime.EditScheduleTimeContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeDetail
-import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeNotes
 import com.quickhandslogistics.modified.presenters.scheduleTime.EditScheduleTimePresenter
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.common.ChooseLumpersActivity
@@ -35,7 +34,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
 
     private var selectedTime: Long = 0
     private var scheduleTimeList: ArrayList<ScheduleTimeDetail> = ArrayList()
-    private var scheduleTimeNotes: ScheduleTimeNotes? = null
+    private var scheduleTimeNotes: String? = null
 
     private lateinit var editScheduleTimePresenter: EditScheduleTimePresenter
     private lateinit var editScheduleTimeAdapter: EditScheduleTimeAdapter
@@ -48,10 +47,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         intent.extras?.let { bundle ->
             selectedTime = bundle.getLong(ARG_SELECTED_DATE_MILLISECONDS, 0)
             scheduleTimeList = bundle.getParcelableArrayList<ScheduleTimeDetail>(ARG_SCHEDULED_TIME_LIST) as ArrayList<ScheduleTimeDetail>
-
-            if (bundle.containsKey(ARG_SCHEDULED_TIME_NOTES)) {
-                scheduleTimeNotes = bundle.getParcelable(ARG_SCHEDULED_TIME_NOTES)
-            }
+            scheduleTimeNotes = bundle.getString(ARG_SCHEDULED_TIME_NOTES, "")
         }
 
         initializeUI()
@@ -114,9 +110,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     }
 
     private fun initializeUI() {
-        scheduleTimeNotes?.let { notes ->
-            editTextNotes.setText(notes.notesForLead)
-        }
+        editTextNotes.setText(scheduleTimeNotes)
 
         recyclerViewLumpers.apply {
             val linearLayoutManager = LinearLayoutManager(activity)

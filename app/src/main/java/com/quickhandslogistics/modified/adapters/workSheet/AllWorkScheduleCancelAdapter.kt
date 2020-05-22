@@ -56,6 +56,7 @@ class AllWorkScheduleCancelAdapter(private val onAdapterClick: AllWorkScheduleCa
 
         fun bind(employeeData: EmployeeData) {
             UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
+            UIUtils.updateProfileBorder(context, employeeData.isTemporaryAssigned, circleImageViewProfile)
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
             textViewShiftHours.text = UIUtils.getDisplayShiftHours(employeeData)

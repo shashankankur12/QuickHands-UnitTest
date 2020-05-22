@@ -97,6 +97,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
             applyIconAnimation(adapterPosition)
 
             UIUtils.showEmployeeProfileImage(context, lumperAttendance, circleImageViewProfile)
+            UIUtils.updateProfileBorder(context, lumperAttendance.isTemporaryAssigned, circleImageViewProfile)
             textViewLumperName.text = UIUtils.getEmployeeFullName(lumperAttendance)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(lumperAttendance)
 

@@ -13,7 +13,7 @@ class GetScheduleTimeAPIResponse : BaseResponse() {
 
         @SerializedName("notes")
         @Expose
-        var notes: ScheduleTimeNotes? = null
+        var notes: String? = null
 
         @SerializedName("scheduledLumpers")
         @Expose

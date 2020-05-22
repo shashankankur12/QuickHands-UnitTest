@@ -17,18 +17,14 @@ import com.quickhandslogistics.modified.presenters.common.ChooseLumpersPresenter
 import com.quickhandslogistics.modified.views.BaseActivity
 import com.quickhandslogistics.modified.views.common.DisplayLumpersListActivity.Companion.ARG_LUMPERS_LIST
 import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_LIST
+import com.quickhandslogistics.utils.AppUtils
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.utils.AppUtils
 import kotlinx.android.synthetic.main.content_choose_lumper.*
 
 class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
     ChooseLumpersContract.View, ChooseLumpersContract.View.OnAdapterItemClickListener {
-
-    private var currentPageIndex: Int = 1
-    private var nextPageIndex: Int = 1
-    private var totalPagesCount: Int = 1
 
     private var assignedLumpersList: ArrayList<EmployeeData> = ArrayList()
     private var scheduleTimeList: ArrayList<ScheduleTimeDetail> = ArrayList()
@@ -53,7 +49,7 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
         initializeUI()
 
         chooseLumpersPresenter = ChooseLumpersPresenter(this, resources)
-        chooseLumpersPresenter.fetchLumpersList(currentPageIndex)
+        chooseLumpersPresenter.fetchLumpersList()
     }
 
     override fun onDestroy() {
@@ -69,7 +65,6 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
             addItemDecoration(dividerItemDecoration)
             chooseLumpersAdapter = ChooseLumpersAdapter(assignedLumpersList, scheduleTimeList, this@ChooseLumpersActivity)
             adapter = chooseLumpersAdapter
-            addOnScrollListener(onScrollListener)
         }
 
         chooseLumpersAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
@@ -124,26 +119,6 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
         }
     }
 
-    private val onScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
-
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            recyclerView.layoutManager?.let { layoutManager ->
-                if (layoutManager is LinearLayoutManager) {
-                    val visibleItemCount: Int = layoutManager.childCount
-                    val totalItemCount: Int = layoutManager.itemCount
-                    val firstVisibleItemPosition: Int = layoutManager.findFirstVisibleItemPosition()
-                    if (currentPageIndex != totalPagesCount) {
-                        if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
-                            currentPageIndex = nextPageIndex
-                            chooseLumpersPresenter.fetchLumpersList(currentPageIndex)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     override fun afterTextChanged(p0: Editable?) {}
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -160,8 +135,8 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }
 
-    override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int) {
-        chooseLumpersAdapter.updateLumpersData(employeeDataList, currentPageIndex)
+    override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
+        chooseLumpersAdapter.updateLumpersData(employeeDataList)
         if (employeeDataList.size > 0) {
             textViewEmptyData.visibility = View.GONE
             recyclerViewLumpers.visibility = View.VISIBLE
@@ -169,9 +144,6 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
             recyclerViewLumpers.visibility = View.GONE
             textViewEmptyData.visibility = View.VISIBLE
         }
-
-        this.totalPagesCount = totalPagesCount
-        this.nextPageIndex = nextPageIndex
     }
 
     /** Adapter Listeners */

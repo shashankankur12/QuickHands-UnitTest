@@ -4,8 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
@@ -53,6 +53,7 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
 
         fun bind(employeeData: EmployeeData) {
             UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
+            UIUtils.updateProfileBorder(context, employeeData.isTemporaryAssigned, circleImageViewProfile)
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
             textViewShiftHours.text = UIUtils.getDisplayShiftHours(employeeData)
@@ -108,11 +109,9 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
         notifyDataSetChanged()
     }
 
-    fun updateLumpersData(employeeDataList: java.util.ArrayList<EmployeeData>, currentPageIndex: Int) {
+    fun updateLumpersData(employeeDataList: ArrayList<EmployeeData>) {
         setSearchEnabled(false)
-        if (currentPageIndex == 1) {
-            this.items.clear()
-        }
+        this.items.clear()
         items.addAll(employeeDataList)
         notifyDataSetChanged()
     }

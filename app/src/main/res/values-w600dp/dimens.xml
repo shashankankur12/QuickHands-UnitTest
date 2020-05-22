@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="dialogButtonHeight">@dimen/_35sdp</dimen>
+    <dimen name="circleNormalBorder">2dp</dimen>
+    <dimen name="circleTemporaryBorder">4dp</dimen>
 </resources>

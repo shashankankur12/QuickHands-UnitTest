@@ -51,7 +51,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         initializeUI()
 
         lumperWorkDetailPresenter = LumperWorkDetailPresenter(this, resources)
-        lumperWorkDetailPresenter.getLumperWorkDetails(ValueUtils.getDefaultOrValue(lumpersInfo?.lumperId), Date(selectedTime))
+        lumperWorkDetailPresenter.getLumperWorkDetails(getDefaultOrValue(lumpersInfo?.lumperId), Date(selectedTime))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -67,7 +67,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     private fun initializeUI() {
         lumpersInfo?.let { employeeData ->
             UIUtils.showEmployeeProfileImage(activity, employeeData.lumperImageUrl, circleImageViewProfile)
-            textViewLumperName.text = ValueUtils.getDefaultOrValue(employeeData.lumperName)
+            textViewLumperName.text = getDefaultOrValue(employeeData.lumperName)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData.lumperEmployeeId)
         }
 

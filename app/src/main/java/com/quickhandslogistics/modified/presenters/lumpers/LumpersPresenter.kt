@@ -4,9 +4,9 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.lumpers.LumpersContract
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.modified.models.lumpers.LumpersModel
-import com.quickhandslogistics.utils.ValueUtils
 
 class LumpersPresenter(private var lumpersView: LumpersContract.View?, private val resources: Resources) :
     LumpersContract.Presenter, LumpersContract.Model.OnFinishedListener {
@@ -18,9 +18,9 @@ class LumpersPresenter(private var lumpersView: LumpersContract.View?, private v
         lumpersView = null
     }
 
-    override fun fetchLumpersList(currentPageIndex: Int) {
+    override fun fetchLumpersList() {
         lumpersView?.showProgressDialog(resources.getString(R.string.api_loading_message))
-        lumpersModel.fetchLumpersList(currentPageIndex, this)
+        lumpersModel.fetchLumpersList(this)
     }
 
     /** Model Result Listeners */
@@ -33,12 +33,13 @@ class LumpersPresenter(private var lumpersView: LumpersContract.View?, private v
         }
     }
 
-    override fun onSuccess(response: LumperListAPIResponse, currentPageIndex: Int) {
+    override fun onSuccess(response: LumperListAPIResponse) {
         lumpersView?.hideProgressDialog()
 
-        val totalPagesCount = ValueUtils.getDefaultOrValue(response.data?.pageCount)
-        val nextPageIndex = ValueUtils.getDefaultOrValue(response.data?.next)
+        val allLumpersList = ArrayList<EmployeeData>()
+        allLumpersList.addAll(response.data?.permanentLumpersList!!)
+        allLumpersList.addAll(response.data?.temporaryLumpers!!)
 
-        lumpersView?.showLumpersData(response.data?.employeeDataList!!, totalPagesCount, nextPageIndex, currentPageIndex)
+        lumpersView?.showLumpersData(allLumpersList)
     }
 }

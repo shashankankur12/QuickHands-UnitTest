@@ -17,7 +17,6 @@ import com.quickhandslogistics.modified.adapters.scheduleTime.ScheduleTimeAdapte
 import com.quickhandslogistics.modified.contracts.DashBoardContract
 import com.quickhandslogistics.modified.contracts.scheduleTime.ScheduleTimeContract
 import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeDetail
-import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeNotes
 import com.quickhandslogistics.modified.presenters.scheduleTime.ScheduleTimePresenter
 import com.quickhandslogistics.modified.views.BaseFragment
 import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_LUMPERS_COUNT
@@ -41,7 +40,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     private lateinit var availableDates: List<Date>
     private var scheduleTimeDetailList: ArrayList<ScheduleTimeDetail> = ArrayList()
-    private var scheduleTimeNotes: ScheduleTimeNotes? = null
+    private var scheduleTimeNotes: String? = null
 
     private lateinit var scheduleTimeAdapter: ScheduleTimeAdapter
     private lateinit var scheduleTimePresenter: ScheduleTimePresenter
@@ -129,9 +128,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                     val bundle = Bundle()
                     bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
                     bundle.putParcelableArrayList(ARG_SCHEDULED_TIME_LIST, scheduleTimeDetailList)
-                    scheduleTimeNotes?.let {
-                        bundle.putParcelable(ARG_SCHEDULED_TIME_NOTES, scheduleTimeNotes)
-                    }
+                    bundle.putString(ARG_SCHEDULED_TIME_NOTES, scheduleTimeNotes)
                     startIntent(EditScheduleTimeActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
                 }
                 buttonRequestHelp.id -> {
@@ -182,11 +179,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         }
     }
 
-    override fun showNotesData(notes: ScheduleTimeNotes?) {
+    override fun showNotesData(notes: String?) {
         scheduleTimeNotes = notes
-        scheduleTimeNotes?.also { scheduleTimeNotes ->
-            onFragmentInteractionListener?.invalidateScheduleTimeNotes(if (!scheduleTimeNotes.notesForLead.isNullOrEmpty()) scheduleTimeNotes.notesForLead!! else "")
-        } ?: run {
+        if (!scheduleTimeNotes.isNullOrEmpty()) {
+            onFragmentInteractionListener?.invalidateScheduleTimeNotes(scheduleTimeNotes!!)
+        } else {
             onFragmentInteractionListener?.invalidateScheduleTimeNotes("")
         }
     }

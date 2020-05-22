@@ -6,16 +6,16 @@ import com.quickhandslogistics.modified.data.lumpers.LumperListAPIResponse
 
 class LumpersContract {
     interface Model {
-        fun fetchLumpersList(pageIndex: Int, onFinishedListener: OnFinishedListener)
+        fun fetchLumpersList(onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
-            fun onSuccess(response: LumperListAPIResponse, currentPageIndex: Int)
+            fun onSuccess(response: LumperListAPIResponse)
         }
     }
 
     interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
-        fun showLumpersData(employeeDataList: ArrayList<EmployeeData>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int)
+        fun showLumpersData(employeeDataList: ArrayList<EmployeeData>)
 
         interface OnAdapterItemClickListener {
             fun onItemClick(employeeData: EmployeeData)
@@ -24,6 +24,6 @@ class LumpersContract {
     }
 
     interface Presenter : BaseContract.Presenter {
-        fun fetchLumpersList(currentPageIndex: Int)
+        fun fetchLumpersList()
     }
 }

@@ -56,6 +56,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private fun initializeUI() {
         employeeData?.let { employeeData ->
             UIUtils.showEmployeeProfileImage(activity, employeeData, circleImageViewProfile)
+            UIUtils.updateProfileBorder(activity, employeeData.isTemporaryAssigned, circleImageViewProfile)
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
         }

@@ -12,6 +12,8 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circleImageViewProfile"
         style="@style/circularImageViewTheme"
+        app:civ_border_color="@android:color/holo_orange_light"
+        app:civ_border_width="3dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

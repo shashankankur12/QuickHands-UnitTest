@@ -2,19 +2,23 @@ package com.quickhandslogistics.modified.data.lumpers
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.modified.data.BaseResponse
-import com.quickhandslogistics.modified.data.PaginationResponse
+import com.quickhandslogistics.utils.ScheduleUtils
 
 class LumperListAPIResponse : BaseResponse() {
     @SerializedName("data")
     @Expose
     var data: Data? = null
 
-    inner class Data : PaginationResponse() {
-        @SerializedName("records")
+    inner class Data {
+        @SerializedName("permanentLumpers")
         @Expose
-        var employeeDataList: ArrayList<EmployeeData>? = null
+        var permanentLumpersList: ArrayList<EmployeeData>? = null
             get() = ScheduleUtils.sortEmployeesList(field)
+
+        @SerializedName("tempLumpers")
+        @Expose
+        var temporaryLumpers: ArrayList<EmployeeData>? = null
+            get() = ScheduleUtils.sortEmployeesList(field, isTemporaryLumpers = true)
     }
 }

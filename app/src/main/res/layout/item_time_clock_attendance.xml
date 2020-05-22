@@ -139,6 +139,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_4sdp"
                 android:orientation="vertical"
                 app:layout_flexGrow="1">
 
@@ -162,7 +163,6 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_4sdp"
                 android:orientation="vertical"
                 app:layout_flexGrow="1">
 

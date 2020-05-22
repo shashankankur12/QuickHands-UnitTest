@@ -19,18 +19,14 @@ import com.quickhandslogistics.modified.contracts.lumpers.LumpersContract
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.presenters.lumpers.LumpersPresenter
 import com.quickhandslogistics.modified.views.BaseFragment
+import com.quickhandslogistics.utils.AppUtils
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.utils.AppUtils
 import kotlinx.android.synthetic.main.fragment_lumpers.*
 
 class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.OnClickListener,
     LumpersContract.View.OnAdapterItemClickListener, SwipeRefreshLayout.OnRefreshListener {
-
-    private var currentPageIndex: Int = 1
-    private var nextPageIndex: Int = 1
-    private var totalPagesCount: Int = 1
 
     private lateinit var lumpersAdapter: LumpersAdapter
     private lateinit var lumpersPresenter: LumpersPresenter
@@ -54,7 +50,6 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
             addItemDecoration(dividerItemDecoration)
             lumpersAdapter = LumpersAdapter(this@LumpersFragment)
             adapter = lumpersAdapter
-            addOnScrollListener(onScrollListener)
         }
 
         lumpersAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
@@ -70,19 +65,12 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
 
-        resetPaginationValues()
-        lumpersPresenter.fetchLumpersList(currentPageIndex)
+        lumpersPresenter.fetchLumpersList()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         lumpersPresenter.onDestroy()
-    }
-
-    private fun resetPaginationValues() {
-        currentPageIndex = 1
-        nextPageIndex = 1
-        totalPagesCount = 1
     }
 
     /** Native Views Listeners */
@@ -99,8 +87,7 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
 
     override fun onRefresh() {
         swipeRefreshLayoutLumpers.isRefreshing = false
-        resetPaginationValues()
-        lumpersPresenter.fetchLumpersList(currentPageIndex)
+        lumpersPresenter.fetchLumpersList()
     }
 
     override fun afterTextChanged(p0: Editable?) {}
@@ -114,26 +101,6 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
         }
     }
 
-    private val onScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
-
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            recyclerView.layoutManager?.let { layoutManager ->
-                if (layoutManager is LinearLayoutManager) {
-                    val visibleItemCount: Int = layoutManager.childCount
-                    val totalItemCount: Int = layoutManager.itemCount
-                    val firstVisibleItemPosition: Int = layoutManager.findFirstVisibleItemPosition()
-                    if (currentPageIndex != totalPagesCount) {
-                        if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
-                            currentPageIndex = nextPageIndex
-                            lumpersPresenter.fetchLumpersList(currentPageIndex)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
         recyclerViewLumpers.visibility = View.GONE
@@ -141,8 +108,8 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
-    override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int) {
-        lumpersAdapter.updateLumpersData(employeeDataList, currentPageIndex)
+    override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
+        lumpersAdapter.updateLumpersData(employeeDataList)
         if (employeeDataList.size > 0) {
             textViewEmptyData.visibility = View.GONE
             recyclerViewLumpers.visibility = View.VISIBLE
@@ -150,9 +117,6 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
             recyclerViewLumpers.visibility = View.GONE
             textViewEmptyData.visibility = View.VISIBLE
         }
-
-        this.totalPagesCount = totalPagesCount
-        this.nextPageIndex = nextPageIndex
     }
 
     /** Adapter Listeners */
