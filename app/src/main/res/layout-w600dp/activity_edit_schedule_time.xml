@@ -54,6 +54,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/textViewAddSameTime"
+                style="@style/addTextViewTheme"
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/add_same_start_time_for_all" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

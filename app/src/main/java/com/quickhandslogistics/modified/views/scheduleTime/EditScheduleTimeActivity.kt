@@ -58,7 +58,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_toolbar, menu)
         menu?.findItem(R.id.actionAddLumpers)?.isVisible = true
-        menu?.findItem(R.id.actionAddSameLumperTime)?.isVisible = true
+        menu?.findItem(R.id.actionAddSameLumperTime)?.isVisible = false
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -76,23 +76,8 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.actionAddSameLumperTime -> {
-                val calendar = Calendar.getInstance()
-                calendar.timeInMillis = selectedTime
-                val mHour = calendar.get(Calendar.HOUR_OF_DAY)
-                val mMinute = calendar.get(Calendar.MINUTE)
-
-                TimePickerDialog(
-                    this, OnTimeSetListener { view, hourOfDay, minute ->
-                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
-                        calendar.set(Calendar.MINUTE, minute)
-                        editScheduleTimeAdapter.addStartTimetoAll(calendar.timeInMillis)
-                    }, mHour, mMinute, false
-                ).show()
-            }
-            R.id.actionAddLumpers -> {
-                showChooseLumpersScreen()
-            }
+            R.id.actionAddSameLumperTime -> chooseSameTimeForAllLumpers()
+            R.id.actionAddLumpers -> showChooseLumpersScreen()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -125,10 +110,12 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             override fun onChanged() {
                 super.onChanged()
                 buttonSubmit.isEnabled = editScheduleTimeAdapter.itemCount != 0
+                textViewAddSameTime.visibility = if (editScheduleTimeAdapter.itemCount != 0) View.VISIBLE else View.GONE
                 textViewEmptyData.visibility = if (editScheduleTimeAdapter.itemCount == 0) View.VISIBLE else View.GONE
             }
         })
 
+        textViewAddSameTime.setOnClickListener(this)
         buttonSubmit.setOnClickListener(this)
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
@@ -141,6 +128,21 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         } else {
             buttonSubmit.isEnabled = true
         }
+    }
+
+    private fun chooseSameTimeForAllLumpers() {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = selectedTime
+        val mHour = calendar.get(Calendar.HOUR_OF_DAY)
+        val mMinute = calendar.get(Calendar.MINUTE)
+
+        TimePickerDialog(
+            this, OnTimeSetListener { view, hourOfDay, minute ->
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                calendar.set(Calendar.MINUTE, minute)
+                editScheduleTimeAdapter.addStartTimetoAll(calendar.timeInMillis)
+            }, mHour, mMinute, false
+        ).show()
     }
 
     private fun showChooseLumpersScreen() {
@@ -174,6 +176,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
+                textViewAddSameTime.id -> chooseSameTimeForAllLumpers()
                 buttonSubmit.id -> saveLumperScheduleTimings()
                 imageViewCancel.id -> {
                     editTextSearch.setText("")

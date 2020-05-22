@@ -42,7 +42,7 @@
         android:id="@+id/text_no_record_found"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No Record Found"
+        android:text="@string/string_no_record_found"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
