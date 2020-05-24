@@ -12,7 +12,7 @@ class AllWorkScheduleCancelContract {
         )
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
-            fun onSuccessFetchLumpers(allLumpersResponse: AllLumpersResponse)
+            fun onSuccessFetchLumpers(response: AllLumpersResponse)
             fun onSuccessCancelWorkSchedules()
         }
     }

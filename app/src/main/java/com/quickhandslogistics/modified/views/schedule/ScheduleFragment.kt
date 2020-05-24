@@ -83,7 +83,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         }
 
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarSchedule, availableDates, this)
-        singleRowCalendarSchedule.select(currentDatePosition)
+        singleRowCalendarSchedule.select(if (currentDatePosition != 0) currentDatePosition else availableDates.size - 1)
     }
 
     override fun onDestroy() {

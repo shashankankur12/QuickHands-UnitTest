@@ -6,6 +6,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.attendance.TimeClockAttendanceContract
 import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.attendance.GetAttendanceAPIResponse
+import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.modified.models.attendance.TimeClockAttendanceModel
 import com.quickhandslogistics.utils.ValueUtils
 
@@ -19,9 +20,9 @@ class TimeClockAttendancePresenter(private var timeClockAttendanceView: TimeCloc
         timeClockAttendanceView = null
     }
 
-    override fun fetchAttendanceList(pageIndex: Int) {
+    override fun fetchAttendanceList() {
         timeClockAttendanceView?.showProgressDialog(resources.getString(R.string.api_loading_message))
-        timeClockAttendanceModel.fetchLumpersAttendanceList(pageIndex, this)
+        timeClockAttendanceModel.fetchLumpersAttendanceList(this)
     }
 
     override fun saveAttendanceDetails(attendanceDetailList: List<AttendanceDetail>) {
@@ -39,15 +40,14 @@ class TimeClockAttendancePresenter(private var timeClockAttendanceView: TimeCloc
         }
     }
 
-    override fun onSuccessGetList(response: GetAttendanceAPIResponse, currentPageIndex: Int) {
+    override fun onSuccessGetList(response: GetAttendanceAPIResponse) {
         timeClockAttendanceView?.hideProgressDialog()
 
-        val totalPagesCount = ValueUtils.getDefaultOrValue(response.data?.pageCount)
-        val nextPageIndex = ValueUtils.getDefaultOrValue(response.data?.next)
+        val allLumpersList = ArrayList<LumperAttendanceData>()
+        allLumpersList.addAll(response.data?.permanentLumpersList!!)
+        allLumpersList.addAll(response.data?.temporaryLumpers!!)
 
-        response.data?.employeeDataList?.let { employeeDataList ->
-            timeClockAttendanceView?.showLumpersAttendance(employeeDataList, totalPagesCount, nextPageIndex, currentPageIndex)
-        }
+        timeClockAttendanceView?.showLumpersAttendance(allLumpersList)
     }
 
     override fun onSuccessSaveDate() {

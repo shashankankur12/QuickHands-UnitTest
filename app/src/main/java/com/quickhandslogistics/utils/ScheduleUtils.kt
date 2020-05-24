@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
 import java.util.*
@@ -140,6 +141,28 @@ object ScheduleUtils {
     }
 
     fun sortEmployeesList(employeesList: ArrayList<EmployeeData>?, isTemporaryLumpers: Boolean = false): ArrayList<EmployeeData> {
+        return if (!employeesList.isNullOrEmpty()) {
+            employeesList.sortWith(Comparator { lumper1, lumper2 ->
+                if (!lumper1.firstName.isNullOrEmpty() && !lumper2.firstName.isNullOrEmpty()) {
+                    lumper1.firstName?.toLowerCase(Locale.getDefault())!!.compareTo(lumper2.firstName?.toLowerCase(Locale.getDefault())!!)
+                } else {
+                    0
+                }
+            })
+
+            if (isTemporaryLumpers) {
+                val iterate = employeesList.listIterator()
+                while (iterate.hasNext()) {
+                    val oldValue = iterate.next()
+                    oldValue.isTemporaryAssigned = true
+                    iterate.set(oldValue)
+                }
+            }
+            employeesList
+        } else ArrayList()
+    }
+
+    fun sortEmployeesAttendanceList(employeesList: ArrayList<LumperAttendanceData>?, isTemporaryLumpers: Boolean = false): ArrayList<LumperAttendanceData> {
         return if (!employeesList.isNullOrEmpty()) {
             employeesList.sortWith(Comparator { lumper1, lumper2 ->
                 if (!lumper1.firstName.isNullOrEmpty() && !lumper2.firstName.isNullOrEmpty()) {

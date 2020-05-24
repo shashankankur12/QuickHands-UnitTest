@@ -78,9 +78,7 @@ interface IApiInterface {
 
     // Attendance /////////////////////////////////////////////////
     @GET("employees/lead/attendance")
-    fun getAttendanceList(
-        @Header("Authorization") auth: String, @Query("page") page: Int, @Query("pageSize") pageSize: Int
-    ): Call<GetAttendanceAPIResponse>
+    fun getAttendanceList(@Header("Authorization") auth: String, @Query("day") day: String): Call<GetAttendanceAPIResponse>
 
     @POST("employees/lead/attendance")
     fun saveAttendanceDetails(@Header("Authorization") auth: String, @Body request: List<AttendanceDetail>): Call<BaseResponse>

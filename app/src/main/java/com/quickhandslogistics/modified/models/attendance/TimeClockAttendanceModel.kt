@@ -9,17 +9,21 @@ import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.DataManager.getAuthToken
 import com.quickhandslogistics.network.DataManager.isSuccessResponse
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.DateUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class TimeClockAttendanceModel : TimeClockAttendanceContract.Model {
 
-    override fun fetchLumpersAttendanceList(pageIndex: Int, onFinishedListener: TimeClockAttendanceContract.Model.OnFinishedListener) {
-        DataManager.getService().getAttendanceList(getAuthToken(), pageIndex, AppConstant.API_PAGE_SIZE).enqueue(object : Callback<GetAttendanceAPIResponse> {
+    override fun fetchLumpersAttendanceList(onFinishedListener: TimeClockAttendanceContract.Model.OnFinishedListener) {
+        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, Date())
+
+        DataManager.getService().getAttendanceList(getAuthToken(), dateString).enqueue(object : Callback<GetAttendanceAPIResponse> {
             override fun onResponse(call: Call<GetAttendanceAPIResponse>, response: Response<GetAttendanceAPIResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
-                    onFinishedListener.onSuccessGetList(response.body()!!, pageIndex)
+                    onFinishedListener.onSuccessGetList(response.body()!!)
                 }
             }
 

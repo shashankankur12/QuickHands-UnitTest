@@ -23,10 +23,7 @@ import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companio
 import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_NOTES
 import com.quickhandslogistics.modified.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.AppUtils
-import com.quickhandslogistics.utils.CalendarUtils
-import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.fragment_schedule_time.*
 import java.util.*
 
@@ -94,7 +91,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         buttonRequestHelp.setOnClickListener(this)
 
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarScheduleTime, availableDates, this)
-        singleRowCalendarScheduleTime.select(currentDatePosition)
+        singleRowCalendarScheduleTime.select(if (currentDatePosition != 0) currentDatePosition else availableDates.size - 1)
     }
 
     override fun onDestroy() {
@@ -122,11 +119,19 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             if (scheduleTimeAdapter.isSearchEnabled()) {
                 textViewEmptyData.text = getString(R.string.string_no_record_found)
             } else {
-                textViewEmptyData.text = getString(R.string.empty_schedule_time_list)
+                textViewEmptyData.text = if (isFutureDate) {
+                    getString(R.string.empty_schedule_time_list)
+                } else {
+                    getString(R.string.empty_schedule_time_list_past)
+                }
             }
         } else {
             textViewEmptyData.visibility = View.GONE
-            textViewEmptyData.text = getString(R.string.empty_schedule_time_list)
+            textViewEmptyData.text = if (isFutureDate) {
+                getString(R.string.empty_schedule_time_list)
+            } else {
+                getString(R.string.empty_schedule_time_list_past)
+            }
         }
     }
 
@@ -180,7 +185,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     override fun showScheduleTimeData(selectedDate: Date, scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>) {
         this.scheduleTimeDetailList = scheduleTimeDetailList
         selectedTime = selectedDate.time
-        isFutureDate = com.quickhandslogistics.utils.DateUtils.isFutureDate(selectedDate.time)
+        isFutureDate = DateUtils.isFutureDate(selectedDate.time)
         invalidateScheduleButton()
 
         scheduleTimeAdapter.updateLumpersData(scheduleTimeDetailList)

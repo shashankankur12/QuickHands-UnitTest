@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -32,10 +31,6 @@ import kotlinx.android.synthetic.main.fragment_time_clock_attendance.*
 class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWatcher,
     TimeClockAttendanceContract.View, TimeClockAttendanceContract.View.OnAdapterItemClickListener {
 
-    private var currentPageIndex: Int = 1
-    private var nextPageIndex: Int = 1
-    private var totalPagesCount: Int = 1
-
     private lateinit var timeClockAttendancePresenter: TimeClockAttendancePresenter
     private lateinit var timeClockAttendanceAdapter: TimeClockAttendanceAdapter
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
@@ -54,8 +49,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
         initializeUI()
 
-        resetPaginationValues()
-        timeClockAttendancePresenter.fetchAttendanceList(currentPageIndex)
+        timeClockAttendancePresenter.fetchAttendanceList()
     }
 
     override fun onDestroy() {
@@ -69,7 +63,6 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             addItemDecoration(SpaceDividerItemDecorator(15))
             timeClockAttendanceAdapter = TimeClockAttendanceAdapter(this@TimeClockAttendanceFragment)
             adapter = timeClockAttendanceAdapter
-            addOnScrollListener(onScrollListener)
         }
 
         timeClockAttendanceAdapter.registerAdapterDataObserver(object :
@@ -115,12 +108,6 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     private fun closeBottomSheet() {
         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetBackground.visibility = View.GONE
-    }
-
-    private fun resetPaginationValues() {
-        currentPageIndex = 1
-        nextPageIndex = 1
-        totalPagesCount = 1
     }
 
     private fun showTimePickerLayoutForMultipleLumpers() {
@@ -268,26 +255,6 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         }
     }
 
-    private val onScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
-
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            recyclerView.layoutManager?.let { layoutManager ->
-                if (layoutManager is LinearLayoutManager) {
-                    val visibleItemCount: Int = layoutManager.childCount
-                    val totalItemCount: Int = layoutManager.itemCount
-                    val firstVisibleItemPosition: Int = layoutManager.findFirstVisibleItemPosition()
-                    if (currentPageIndex != totalPagesCount) {
-                        if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
-                            currentPageIndex = nextPageIndex
-                            timeClockAttendancePresenter.fetchAttendanceList(currentPageIndex)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     override fun afterTextChanged(s: Editable?) {
 
     }
@@ -310,8 +277,8 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         textViewEmptyData.visibility = View.VISIBLE
     }
 
-    override fun showLumpersAttendance(lumperAttendanceList: ArrayList<LumperAttendanceData>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int) {
-        timeClockAttendanceAdapter.updateList(lumperAttendanceList, currentPageIndex)
+    override fun showLumpersAttendance(lumperAttendanceList: ArrayList<LumperAttendanceData>) {
+        timeClockAttendanceAdapter.updateList(lumperAttendanceList)
         if (lumperAttendanceList.size > 0) {
             textViewEmptyData.visibility = View.GONE
             recyclerViewLumpers.visibility = View.VISIBLE
@@ -319,17 +286,13 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             recyclerViewLumpers.visibility = View.GONE
             textViewEmptyData.visibility = View.VISIBLE
         }
-
-        this.totalPagesCount = totalPagesCount
-        this.nextPageIndex = nextPageIndex
     }
 
     override fun showDataSavedMessage() {
         CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.attendance_saved_successfully),
             fragmentActivity!!, object : CustomDialogListener {
                 override fun onConfirmClick() {
-                    resetPaginationValues()
-                    timeClockAttendancePresenter.fetchAttendanceList(currentPageIndex)
+                    timeClockAttendancePresenter.fetchAttendanceList()
                 }
             })
     }

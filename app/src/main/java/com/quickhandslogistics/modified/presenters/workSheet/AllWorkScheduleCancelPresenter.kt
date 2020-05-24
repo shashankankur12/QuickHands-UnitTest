@@ -5,6 +5,7 @@ import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.workSheet.AllWorkScheduleCancelContract
 import com.quickhandslogistics.modified.data.common.AllLumpersResponse
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.models.workSheet.AllWorkScheduleCancelModel
 
 class AllWorkScheduleCancelPresenter(
@@ -40,9 +41,14 @@ class AllWorkScheduleCancelPresenter(
         }
     }
 
-    override fun onSuccessFetchLumpers(allLumpersResponse: AllLumpersResponse) {
+    override fun onSuccessFetchLumpers(response: AllLumpersResponse) {
         allWorkScheduleCancelView?.hideProgressDialog()
-        allWorkScheduleCancelView?.showLumpersData(allLumpersResponse.data!!)
+
+        val allLumpersList = ArrayList<EmployeeData>()
+        allLumpersList.addAll(response.data?.permanentLumpersList!!)
+        allLumpersList.addAll(response.data?.temporaryLumpers!!)
+
+        allWorkScheduleCancelView?.showLumpersData(allLumpersList)
     }
 
     override fun onSuccessCancelWorkSchedules() {

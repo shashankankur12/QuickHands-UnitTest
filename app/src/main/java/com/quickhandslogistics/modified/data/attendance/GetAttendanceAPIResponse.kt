@@ -4,25 +4,22 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.quickhandslogistics.modified.data.BaseResponse
 import com.quickhandslogistics.modified.data.PaginationResponse
+import com.quickhandslogistics.utils.ScheduleUtils
 
 class GetAttendanceAPIResponse : BaseResponse() {
     @SerializedName("data")
     @Expose
     var data: Data? = null
 
-    inner class Data : PaginationResponse() {
-        @SerializedName("records")
+    inner class Data {
+        @SerializedName("permanentLumpersAttendances")
         @Expose
-        var employeeDataList: ArrayList<LumperAttendanceData>? = null
-            get() = if (!field.isNullOrEmpty()) {
-                field?.sortWith(Comparator { lumper1, lumper2 ->
-                    if (!lumper1.firstName.isNullOrEmpty() && !lumper2.firstName.isNullOrEmpty()) {
-                        lumper1.firstName?.toLowerCase()!!.compareTo(lumper2.firstName?.toLowerCase()!!)
-                    } else {
-                        0
-                    }
-                })
-                field
-            } else ArrayList()
+        var permanentLumpersList: ArrayList<LumperAttendanceData>? = null
+            get() = ScheduleUtils.sortEmployeesAttendanceList(field)
+
+        @SerializedName("tempLumperAttendances")
+        @Expose
+        var temporaryLumpers: ArrayList<LumperAttendanceData>? = null
+            get() = ScheduleUtils.sortEmployeesAttendanceList(field, isTemporaryLumpers = true)
     }
 }

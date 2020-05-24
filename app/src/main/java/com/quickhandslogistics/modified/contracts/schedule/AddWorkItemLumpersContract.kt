@@ -10,7 +10,7 @@ class AddWorkItemLumpersContract {
         fun assignLumpersList(workItemId: String, workItemType: String, selectedLumperIdsList: ArrayList<String>, onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
-            fun onSuccessFetchLumpers(allLumpersResponse: AllLumpersResponse)
+            fun onSuccessFetchLumpers(response: AllLumpersResponse)
             fun onSuccessAssignLumpers()
         }
     }

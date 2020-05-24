@@ -280,6 +280,7 @@
     <string name="empty_containers_list">This building doesn\'t have any containers scheduled for the selected date.</string>
     <string name="empty_schedules_list">This building doesn\'t have any schedules created for the selected date.</string>
     <string name="empty_schedule_time_list">You haven\'t scheduled any lumpers for the selected date. Click on \'Schedule Lumpers\' to schedule them.</string>
+    <string name="empty_schedule_time_list_past">You haven\'t scheduled any lumpers for the selected date.</string>
     <string name="empty_containers_list_ongoing">You don\'t have any Ongoing containers scheduled for the selected date.</string>
     <string name="empty_containers_list_cancelled">You don\'t have any Cancelled containers scheduled for the selected date.</string>
     <string name="empty_containers_list_completed">You don\'t have any Completed containers scheduled for the selected date.</string>

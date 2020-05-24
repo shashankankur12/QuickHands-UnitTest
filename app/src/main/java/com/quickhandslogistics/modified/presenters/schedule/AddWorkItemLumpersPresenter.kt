@@ -5,6 +5,7 @@ import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.schedule.AddWorkItemLumpersContract
 import com.quickhandslogistics.modified.data.common.AllLumpersResponse
+import com.quickhandslogistics.modified.data.lumpers.EmployeeData
 import com.quickhandslogistics.modified.models.schedule.AddWorkItemLumpersModel
 import com.quickhandslogistics.utils.SharedPref
 
@@ -39,9 +40,14 @@ class AddWorkItemLumpersPresenter(
         }
     }
 
-    override fun onSuccessFetchLumpers(allLumpersResponse: AllLumpersResponse) {
+    override fun onSuccessFetchLumpers(response: AllLumpersResponse) {
         addWorkItemLumpersView?.hideProgressDialog()
-        addWorkItemLumpersView?.showLumpersData(allLumpersResponse.data!!)
+
+        val allLumpersList = ArrayList<EmployeeData>()
+        allLumpersList.addAll(response.data?.permanentLumpersList!!)
+        allLumpersList.addAll(response.data?.temporaryLumpers!!)
+
+        addWorkItemLumpersView?.showLumpersData(allLumpersList)
     }
 
     override fun onSuccessAssignLumpers() {
