@@ -6,7 +6,7 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import de.hdodenhof.circleimageview.CircleImageView
 

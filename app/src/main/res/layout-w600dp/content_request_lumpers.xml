@@ -9,7 +9,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_request_lumpers">
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewDate"
         style="@style/titleBigTextViewTheme"
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewTotalCount"
         style="@style/valuesTextViewTheme"
         android:layout_marginStart="@dimen/_12ssp"

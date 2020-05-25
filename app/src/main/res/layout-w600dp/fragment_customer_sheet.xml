@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".modified.views.customerSheet.CustomerSheetFragment">
+    tools:context=".views.customerSheet.CustomerSheetFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainConstraintLayout"
@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:background="@color/appBackground">
 
-        <com.quickhandslogistics.modified.controls.CustomTextView
+        <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewCompanyName"
             style="@style/titleBigTextViewTheme"
             android:layout_width="0dp"
@@ -22,7 +22,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.quickhandslogistics.modified.controls.CustomTextView
+        <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewWorkItemsDate"
             style="@style/valuesTextViewTheme"
             android:layout_width="0dp"
@@ -35,7 +35,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewCompanyName" />
 
-        <com.quickhandslogistics.modified.controls.CustomTextView
+        <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewTotalCount"
             style="@style/valuesTextViewTheme"
             android:layout_width="0dp"

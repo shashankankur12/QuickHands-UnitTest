@@ -15,76 +15,83 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="LockedOrientationActivity">
+
         <activity
-            android:name=".modified.views.common.FullScreenImageActivity"
+            android:name=".views.buildingOperations.BuildingOperationsActivity"
             android:screenOrientation="portrait" />
+
         <activity
-            android:name=".modified.views.common.ChooseLumpersActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".modified.views.common.BuildingOperationsViewActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".modified.views.common.DisplayLumpersListActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".modified.views.lumpers.LumperDetailActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".modified.views.schedule.ScheduleDetailActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".modified.views.scheduleTime.EditScheduleTimeActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".modified.views.scheduleTime.RequestLumpersActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".modified.views.workSheet.AllWorkScheduleCancelActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".modified.views.workSheet.WorkSheetItemDetailActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".modified.views.workSheet.AddLumperTimeWorkSheetItemActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".modified.views.BaseActivity" />
-        <activity
-            android:name=".modified.views.common.AddSignatureActivity"
+            android:name=".views.common.AddSignatureActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".modified.views.lumperSheet.LumperWorkDetailActivity"
+            android:name=".views.common.BuildingOperationsViewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".modified.views.LeadProfileActivity"
+            android:name=".views.common.ChooseLumpersActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.quickhandslogistics.modified.views.schedule.ScheduledWorkItemDetailActivity"
+            android:name=".views.common.DisplayLumpersListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.quickhandslogistics.modified.views.schedule.AddWorkItemLumpersActivity"
+            android:name=".views.common.FullScreenImageActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".views.lumpers.LumperDetailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".views.lumperSheet.LumperWorkDetailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".views.schedule.AddWorkItemLumpersActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.quickhandslogistics.modified.views.buildingOperations.BuildingOperationsActivity"
+            android:name=".views.schedule.ScheduleDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".modified.views.ForgotPasswordActivity"
+            android:name=".views.schedule.ScheduledWorkItemDetailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".views.scheduleTime.EditScheduleTimeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.scheduleTime.RequestLumpersActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".views.workSheet.AddLumperTimeWorkSheetItemActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.workSheet.AllWorkScheduleCancelActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.workSheet.WorkSheetItemDetailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".views.BaseActivity" />
+        <activity
+            android:name=".views.DashBoardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ForgotPasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".modified.views.LoginActivity"
+            android:name=".views.LeadProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".modified.views.SplashActivity">
+        <activity android:name=".views.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".modified.views.DashBoardActivity"
-            android:screenOrientation="portrait" />
 
         <service
             android:name=".services.NotificationService"
@@ -93,6 +100,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.quickhandslogistics.fileprovider"
@@ -103,5 +111,4 @@
                 android:resource="@xml/file_provider_paths" />
         </provider>
     </application>
-
 </manifest>

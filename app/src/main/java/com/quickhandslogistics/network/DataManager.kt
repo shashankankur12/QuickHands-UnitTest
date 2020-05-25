@@ -2,9 +2,9 @@ package com.quickhandslogistics.network
 
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
-import com.quickhandslogistics.modified.contracts.BaseContract
-import com.quickhandslogistics.modified.data.BaseResponse
-import com.quickhandslogistics.modified.data.ErrorResponse
+import com.quickhandslogistics.contracts.BaseContract
+import com.quickhandslogistics.data.BaseResponse
+import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 import okhttp3.*

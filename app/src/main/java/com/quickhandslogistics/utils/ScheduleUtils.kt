@@ -4,9 +4,9 @@ import android.content.res.Resources
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
-import com.quickhandslogistics.modified.data.lumpers.EmployeeData
-import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
+import com.quickhandslogistics.data.attendance.LumperAttendanceData
+import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.schedule.WorkItemDetail
 import java.util.*
 import kotlin.Comparator
 import kotlin.collections.ArrayList

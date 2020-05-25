@@ -68,7 +68,7 @@
             app:layout_constraintStart_toEndOf="@+id/relativeLayoutImage"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.quickhandslogistics.modified.controls.CustomTextView
+        <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewEmployeeId"
             style="@style/valuesSmallTextViewTheme"
             android:layout_width="0dp"
@@ -99,7 +99,7 @@
                 android:scaleX="1.5"
                 android:scaleY="1.5" />
 
-            <com.quickhandslogistics.modified.controls.CustomTextView
+            <com.quickhandslogistics.controls.CustomTextView
                 android:id="@+id/textViewCheckBoxStatus"
                 style="@style/valuesVerySmallTextViewTheme"
                 android:layout_width="wrap_content"

@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewScheduleDate"
         style="@style/valuesTextViewTheme"
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewBuildingName" />
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewScheduleType"
         style="@style/valuesTextViewTheme"
         android:layout_width="match_parent"
@@ -46,7 +46,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewScheduleDate" />
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewWorkItemsCount"
         style="@style/valuesTextViewTheme"
         android:layout_width="match_parent"

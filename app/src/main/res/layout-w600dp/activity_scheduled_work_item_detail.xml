@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/appBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".modified.views.schedule.ScheduledWorkItemDetailActivity">
+    tools:context=".views.schedule.ScheduledWorkItemDetailActivity">
 
     <include
         android:id="@+id/header"
@@ -23,7 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header" />
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewScheduledDate"
         style="@style/valuesTextViewTheme"
         android:layout_marginStart="@dimen/_12ssp"
@@ -35,7 +35,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewScheduleType"
         style="@style/valuesTextViewTheme"
         android:layout_marginStart="@dimen/_12ssp"
@@ -47,7 +47,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewScheduledDate" />
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewWorkItemsCount"
         style="@style/valuesTextViewTheme"
         android:layout_marginStart="@dimen/_12ssp"

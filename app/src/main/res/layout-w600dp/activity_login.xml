@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".modified.views.LoginActivity">
+    tools:context=".views.LoginActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/appBackground"
-        tools:context=".modified.views.LoginActivity">
+        tools:context=".views.LoginActivity">
 
         <LinearLayout
             android:id="@+id/layoutLogo"

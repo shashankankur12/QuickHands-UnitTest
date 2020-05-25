@@ -27,7 +27,7 @@
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewEmployeeId"
         style="@style/valuesSmallTextViewTheme"
         android:layout_width="0dp"
@@ -41,7 +41,7 @@
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewStatus"
         style="@style/baseChipTheme"
         android:layout_marginTop="@dimen/_4sdp"

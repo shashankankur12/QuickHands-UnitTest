@@ -26,7 +26,7 @@
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewEmployeeId"
         style="@style/valuesSmallTextViewTheme"
         android:layout_width="0dp"

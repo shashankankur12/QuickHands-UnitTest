@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground"
-    tools:context=".modified.views.lumperSheet.LumperWorkDetailActivity">
+    tools:context=".views.lumperSheet.LumperWorkDetailActivity">
 
     <include
         android:id="@+id/header"
@@ -42,7 +42,7 @@
             app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.quickhandslogistics.modified.controls.CustomTextView
+        <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewEmployeeId"
             style="@style/valuesSmallTextViewTheme"
             android:layout_width="0dp"

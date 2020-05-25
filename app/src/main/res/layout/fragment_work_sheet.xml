@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground"
-    tools:context=".modified.views.workSheet.WorkSheetFragment">
+    tools:context=".views.workSheet.WorkSheetFragment">
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewCompanyName"
         style="@style/titleBigTextViewTheme"
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewWorkItemsDate"
         style="@style/valuesTextViewTheme"
         android:layout_marginStart="@dimen/_15ssp"
@@ -31,7 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewCompanyName" />
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewTotalCount"
         style="@style/valuesTextViewTheme"
         android:layout_marginStart="@dimen/_15ssp"
@@ -54,19 +54,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTotalCount">
 
-        <com.quickhandslogistics.modified.controls.CustomTextView
+        <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewDropsCount"
             style="@style/blueChipTheme"
             android:layout_marginTop="@dimen/_8sdp" />
 
-        <com.quickhandslogistics.modified.controls.CustomTextView
+        <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewLiveLoadsCount"
             style="@style/blueChipTheme"
             android:layout_marginStart="@dimen/_4ssp"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginEnd="@dimen/_4ssp" />
 
-        <com.quickhandslogistics.modified.controls.CustomTextView
+        <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewOutBoundsCount"
             style="@style/blueChipTheme"
             android:layout_marginTop="@dimen/_8sdp" />

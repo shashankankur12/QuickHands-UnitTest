@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10ssp"
         android:layout_marginEnd="@dimen/_10ssp"
-        tools:context=".modified.views.customerSheet.CustomerSheetCustomerFragment">
+        tools:context=".views.customerSheet.CustomerSheetCustomerFragment">
 
         <LinearLayout
             android:id="@+id/layoutCustomerName"
