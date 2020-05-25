@@ -18,13 +18,13 @@ import com.quickhandslogistics.contracts.scheduleTime.EditScheduleTimeContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.presenters.scheduleTime.EditScheduleTimePresenter
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.common.ChooseLumpersActivity
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity.Companion.ARG_LUMPERS_LIST
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_NOTES
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
-import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.activity_edit_schedule_time.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -165,6 +165,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     private fun showChooseLumpersScreen() {
         val lumpersList = editScheduleTimeAdapter.getLumpersList()
         val bundle = Bundle()
+        bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
         bundle.putParcelableArrayList(ChooseLumpersActivity.ARG_ASSIGNED_LUMPERS_LIST, lumpersList)
         bundle.putParcelableArrayList(ARG_SCHEDULED_TIME_LIST, scheduleTimeList)
         startIntent(ChooseLumpersActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)

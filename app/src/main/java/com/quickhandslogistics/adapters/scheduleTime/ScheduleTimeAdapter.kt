@@ -53,6 +53,7 @@ class ScheduleTimeAdapter : Adapter<ScheduleTimeAdapter.ViewHolder>() {
             val employeeData = scheduleTimeDetail.lumperInfo
             employeeData?.let {
                 UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
+                UIUtils.updateProfileBorder(context, employeeData.isTemporaryAssigned, circleImageViewProfile)
                 textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
                 textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
             }

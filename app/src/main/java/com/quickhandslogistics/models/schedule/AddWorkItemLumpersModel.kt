@@ -36,9 +36,10 @@ class AddWorkItemLumpersModel(private val sharedPref: SharedPref) : AddWorkItemL
     }
 
     override fun assignLumpersList(
-        workItemId: String, workItemType: String, selectedLumperIdsList: ArrayList<String>, onFinishedListener: AddWorkItemLumpersContract.Model.OnFinishedListener
+        workItemId: String, workItemType: String, selectedLumperIdsList: ArrayList<String>,
+        tempLumperIdsList: ArrayList<String>, onFinishedListener: AddWorkItemLumpersContract.Model.OnFinishedListener
     ) {
-        val request = AssignLumpersRequest(sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID), workItemType, selectedLumperIdsList)
+        val request = AssignLumpersRequest(sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID), workItemType, selectedLumperIdsList, tempLumperIdsList)
 
         DataManager.getService().assignLumpers(getAuthToken(), workItemId, request).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {

@@ -7,6 +7,8 @@ import com.quickhandslogistics.contracts.common.ChooseLumpersContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.models.common.ChooseLumpersModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ChooseLumpersPresenter(private var chooseLumpersView: ChooseLumpersContract.View?, private val resources: Resources) :
     ChooseLumpersContract.Presenter, ChooseLumpersContract.Model.OnFinishedListener {
@@ -18,9 +20,9 @@ class ChooseLumpersPresenter(private var chooseLumpersView: ChooseLumpersContrac
         chooseLumpersView = null
     }
 
-    override fun fetchLumpersList() {
+    override fun fetchLumpersList(selectedDate: Date) {
         chooseLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        chooseLumpersModel.fetchLumpersList(this)
+        chooseLumpersModel.fetchLumpersList(selectedDate, this)
     }
 
     /** Model Result Listeners */

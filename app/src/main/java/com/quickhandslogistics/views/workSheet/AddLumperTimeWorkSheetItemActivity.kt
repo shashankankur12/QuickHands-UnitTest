@@ -9,11 +9,13 @@ import com.quickhandslogistics.contracts.workSheet.AddLumperTimeWorkSheetItemCon
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.presenters.workSheet.AddLumperTimeWorkSheetItemPresenter
+import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
+import com.quickhandslogistics.utils.DateUtils.Companion.isFutureTime
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_DATA
 import com.quickhandslogistics.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_TIMING_DATA
 import com.quickhandslogistics.views.schedule.ScheduleFragment
-import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
 import java.util.*
 
@@ -106,12 +108,12 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private fun updateInitialTime(dateStamp: String?, buttonTime: Button): Long {
         var milliseconds: Long = 0
 
-        val time = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, dateStamp)
+        val time = DateUtils.convertDateStringToTime(PATTERN_API_RESPONSE, dateStamp)
         if (time.isNotEmpty()) {
             buttonTime.text = time
             buttonTime.isEnabled = false
-            val currentDateString = DateUtils.convertUTCDateStringToLocalDateString(DateUtils.PATTERN_API_RESPONSE, dateStamp)
-            milliseconds = DateUtils.getMillisecondsFromDateString(DateUtils.PATTERN_API_RESPONSE, currentDateString)
+            val currentDateString = DateUtils.convertUTCDateStringToLocalDateString(PATTERN_API_RESPONSE, dateStamp)
+            milliseconds = DateUtils.getMillisecondsFromDateString(PATTERN_API_RESPONSE, currentDateString)
         }
 
         return milliseconds
@@ -120,8 +122,8 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private fun onSelectStartTime(calendar: Calendar) {
         val selectedStartTime = calendar.timeInMillis
         if (selectedEndTime > 0) {
-            if (!DateUtils.isFutureTime(selectedStartTime, selectedEndTime)) {
-                showErrorDialog("Work's Start Time should be less than End Time")
+            if (!isFutureTime(selectedStartTime, selectedEndTime)) {
+                showErrorDialog(getString(R.string.work_start_less_work_end_warning_message))
                 return
             }
         }
@@ -132,10 +134,10 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
 
     private fun onSelectEndTime(calendar: Calendar) {
         val selectedEndTime = calendar.timeInMillis
-        if (!DateUtils.isFutureTime(selectedStartTime, selectedEndTime)) {
-            showErrorDialog("Work's End Time should be greater than Work's Start Time")
-        } else if (selectedBreakInTime > 0 && !DateUtils.isFutureTime(selectedBreakInTime, selectedEndTime)) {
-            showErrorDialog("Work's End Time should be greater than Break's Start Time")
+        if (!isFutureTime(selectedStartTime, selectedEndTime)) {
+            showErrorDialog(getString(R.string.work_end_greater_work_start_warning_message))
+        } else if (selectedBreakInTime > 0 && !isFutureTime(selectedBreakInTime, selectedEndTime)) {
+            showErrorDialog(getString(R.string.work_end_greater_break_start_warning_message))
         } else {
             this.selectedEndTime = selectedEndTime
             buttonEndTime.text = DateUtils.convertMillisecondsToTimeString(selectedEndTime)
@@ -146,14 +148,14 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private fun onSelectBreakInTime(calendar: Calendar) {
         val selectedBreakInTime = calendar.timeInMillis
         if (selectedBreakOutTime > 0) {
-            if (!DateUtils.isFutureTime(selectedStartTime, selectedBreakInTime)) {
-                showErrorDialog("Break's Start Time should be greater than Work's Start Time")
+            if (!isFutureTime(selectedStartTime, selectedBreakInTime)) {
+                showErrorDialog(getString(R.string.break_start_greater_work_start_warning_message))
                 return
-            } else if (!DateUtils.isFutureTime(selectedBreakInTime, selectedBreakOutTime)) {
-                showErrorDialog("Break's Start Time should be less than Break's End Time")
+            } else if (!isFutureTime(selectedBreakInTime, selectedBreakOutTime)) {
+                showErrorDialog(getString(R.string.break_start_less_break_end_warning_message))
                 return
-            } else if (selectedEndTime > 0 && !DateUtils.isFutureTime(selectedBreakInTime, selectedEndTime)) {
-                showErrorDialog("Break's Start Time should be less than Work's End Time")
+            } else if (selectedEndTime > 0 && !isFutureTime(selectedBreakInTime, selectedEndTime)) {
+                showErrorDialog(getString(R.string.break_start_less_work_end_warning_message))
                 return
             }
         }
@@ -164,12 +166,12 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
 
     private fun onSelectBreakOutTime(calendar: Calendar) {
         val selectedBreakOutTime = calendar.timeInMillis
-        if (!DateUtils.isFutureTime(selectedStartTime, selectedBreakInTime)) {
-            showErrorDialog("Break's End Time should be greater than Work's Start Time")
-        } else if (!DateUtils.isFutureTime(selectedBreakInTime, selectedBreakOutTime)) {
-            showErrorDialog("Break's End Time should be greater than Break's Start Time")
-        } else if (selectedEndTime > 0 && !DateUtils.isFutureTime(selectedBreakOutTime, selectedEndTime)) {
-            showErrorDialog("Break's End Time should be less than Work's End Time")
+        if (!isFutureTime(selectedStartTime, selectedBreakInTime)) {
+            showErrorDialog(getString(R.string.break_end_greater_work_start_warning_message))
+        } else if (!isFutureTime(selectedBreakInTime, selectedBreakOutTime)) {
+            showErrorDialog(getString(R.string.break_end_greater_break_start_warning_message))
+        } else if (selectedEndTime > 0 && !isFutureTime(selectedBreakOutTime, selectedEndTime)) {
+            showErrorDialog(getString(R.string.break_end_less_work_end_warning_message))
         } else {
             this.selectedBreakOutTime = selectedBreakOutTime
             buttonBreakOutTime.text = DateUtils.convertMillisecondsToTimeString(selectedBreakOutTime)

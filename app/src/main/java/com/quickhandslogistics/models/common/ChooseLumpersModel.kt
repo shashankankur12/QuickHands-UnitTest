@@ -14,8 +14,8 @@ import java.util.*
 
 class ChooseLumpersModel : ChooseLumpersContract.Model {
 
-    override fun fetchLumpersList(onFinishedListener: ChooseLumpersContract.Model.OnFinishedListener) {
-        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, Date())
+    override fun fetchLumpersList(selectedDate: Date, onFinishedListener: ChooseLumpersContract.Model.OnFinishedListener) {
+        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
 
         DataManager.getService().getAllLumpersData(getAuthToken(), dateString).enqueue(object : Callback<LumperListAPIResponse> {
             override fun onResponse(call: Call<LumperListAPIResponse>, response: Response<LumperListAPIResponse>) {

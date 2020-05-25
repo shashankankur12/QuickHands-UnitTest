@@ -5,7 +5,6 @@ import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.schedule.AddWorkItemLumpersContract
 import com.quickhandslogistics.data.common.AllLumpersResponse
-import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.models.schedule.AddWorkItemLumpersModel
 import com.quickhandslogistics.utils.SharedPref
 
@@ -25,9 +24,9 @@ class AddWorkItemLumpersPresenter(
         addWorkItemLumpersModel.fetchLumpersList(this)
     }
 
-    override fun initiateAssigningLumpers(selectedLumperIdsList: ArrayList<String>, workItemId: String, workItemType: String) {
+    override fun initiateAssigningLumpers(selectedLumperIdsList: ArrayList<String>, tempLumperIdsList: ArrayList<String>, workItemId: String, workItemType: String) {
         addWorkItemLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        addWorkItemLumpersModel.assignLumpersList(workItemId, workItemType, selectedLumperIdsList, this)
+        addWorkItemLumpersModel.assignLumpersList(workItemId, workItemType, selectedLumperIdsList, tempLumperIdsList, this)
     }
 
     /** Model Result Listeners */
@@ -42,12 +41,7 @@ class AddWorkItemLumpersPresenter(
 
     override fun onSuccessFetchLumpers(response: AllLumpersResponse) {
         addWorkItemLumpersView?.hideProgressDialog()
-
-        val allLumpersList = ArrayList<EmployeeData>()
-        allLumpersList.addAll(response.data?.permanentLumpersList!!)
-        allLumpersList.addAll(response.data?.temporaryLumpers!!)
-
-        addWorkItemLumpersView?.showLumpersData(allLumpersList)
+        addWorkItemLumpersView?.showLumpersData(response.data?.permanentLumpersList!!, response.data?.temporaryLumpers!!)
     }
 
     override fun onSuccessAssignLumpers() {

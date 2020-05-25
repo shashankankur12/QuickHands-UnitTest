@@ -12,13 +12,13 @@ import com.quickhandslogistics.adapters.schedule.AddWorkItemLumperAdapter
 import com.quickhandslogistics.contracts.schedule.AddWorkItemLumpersContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.presenters.schedule.AddWorkItemLumpersPresenter
-import com.quickhandslogistics.views.BaseActivity
-import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
-import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE
+import com.quickhandslogistics.utils.AppUtils
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.utils.AppUtils
+import com.quickhandslogistics.views.BaseActivity
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE
 import kotlinx.android.synthetic.main.activity_add_work_item_lumpers.*
 
 class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
@@ -27,6 +27,8 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
     private var workItemId = ""
     private var workItemType = ""
     private var assignedLumpersList: ArrayList<EmployeeData> = ArrayList()
+    private var permanentLumpersList: ArrayList<EmployeeData> = ArrayList()
+    private var temporaryLumpersList: ArrayList<EmployeeData> = ArrayList()
 
     private lateinit var addWorkItemLumpersPresenter: AddWorkItemLumpersPresenter
     private lateinit var addWorkItemLumperAdapter: AddWorkItemLumperAdapter
@@ -101,12 +103,12 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
         }
     }
 
-    private fun assignLumpersToWorkItem() {
+    private fun showConfirmationDialog() {
         val selectedLumperIdsList = addWorkItemLumperAdapter.getSelectedLumper()
         if (selectedLumperIdsList.size > 0) {
             CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
                 override fun onConfirmClick() {
-                    addWorkItemLumpersPresenter.initiateAssigningLumpers(selectedLumperIdsList, workItemId, workItemType)
+                    assignLumpersToWorkItem(selectedLumperIdsList)
                 }
 
                 override fun onCancelClick() {
@@ -115,11 +117,22 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
         }
     }
 
+    private fun assignLumpersToWorkItem(selectedLumperIdsList: ArrayList<String>) {
+        val tempLumperIds = ArrayList<String>()
+        for (lumper in temporaryLumpersList) {
+            if (selectedLumperIdsList.contains(lumper.id!!)) {
+                tempLumperIds.add(lumper.id!!)
+                selectedLumperIdsList.remove(lumper.id!!)
+            }
+        }
+        addWorkItemLumpersPresenter.initiateAssigningLumpers(selectedLumperIdsList, tempLumperIds, workItemId, workItemType)
+    }
+
     /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
-                buttonAdd.id -> assignLumpersToWorkItem()
+                buttonAdd.id -> showConfirmationDialog()
                 imageViewCancel.id -> {
                     editTextSearch.setText("")
                     AppUtils.hideSoftKeyboard(activity)
@@ -144,8 +157,15 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }
 
-    override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
-        addWorkItemLumperAdapter.updateLumpersData(employeeDataList)
+    override fun showLumpersData(permanentLumpers: ArrayList<EmployeeData>, temporaryLumpers: ArrayList<EmployeeData>) {
+        this.permanentLumpersList = permanentLumpers
+        this.temporaryLumpersList = temporaryLumpers
+
+        val allLumpersList = ArrayList<EmployeeData>()
+        allLumpersList.addAll(permanentLumpers)
+        allLumpersList.addAll(temporaryLumpers)
+
+        addWorkItemLumperAdapter.updateLumpersData(allLumpersList)
     }
 
     override fun lumperAssignmentFinished() {

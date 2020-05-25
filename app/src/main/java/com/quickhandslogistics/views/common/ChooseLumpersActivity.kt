@@ -21,11 +21,15 @@ import com.quickhandslogistics.utils.AppUtils
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import kotlinx.android.synthetic.main.content_choose_lumper.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
     ChooseLumpersContract.View, ChooseLumpersContract.View.OnAdapterItemClickListener {
 
+    private var selectedTime: Long = 0
     private var assignedLumpersList: ArrayList<EmployeeData> = ArrayList()
     private var scheduleTimeList: ArrayList<ScheduleTimeDetail> = ArrayList()
 
@@ -42,6 +46,7 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
         setupToolbar(getString(R.string.choose_lumpers))
 
         intent.extras?.let { bundle ->
+            selectedTime = bundle.getLong(ARG_SELECTED_DATE_MILLISECONDS, 0)
             assignedLumpersList = bundle.getParcelableArrayList<EmployeeData>(ARG_ASSIGNED_LUMPERS_LIST) as ArrayList<EmployeeData>
             scheduleTimeList = bundle.getParcelableArrayList<ScheduleTimeDetail>(ARG_SCHEDULED_TIME_LIST) as ArrayList<ScheduleTimeDetail>
         }
@@ -49,7 +54,7 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
         initializeUI()
 
         chooseLumpersPresenter = ChooseLumpersPresenter(this, resources)
-        chooseLumpersPresenter.fetchLumpersList()
+        chooseLumpersPresenter.fetchLumpersList(Date(selectedTime))
     }
 
     override fun onDestroy() {
