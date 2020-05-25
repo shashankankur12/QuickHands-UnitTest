@@ -77,13 +77,13 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
         if (lumpersAdapter.itemCount == 0) {
             textViewEmptyData.visibility = View.VISIBLE
             if (lumpersAdapter.isSearchEnabled()) {
-                textViewEmptyData.text = getString(R.string.string_no_record_found)
+                textViewEmptyData.text = getString(R.string.no_record_found_info_message)
             } else {
-                textViewEmptyData.text = getString(R.string.empty_lumpers_list)
+                textViewEmptyData.text = getString(R.string.empty_lumpers_list_info_message)
             }
         } else {
             textViewEmptyData.visibility = View.GONE
-            textViewEmptyData.text = getString(R.string.empty_lumpers_list)
+            textViewEmptyData.text = getString(R.string.empty_lumpers_list_info_message)
         }
     }
 
@@ -134,7 +134,7 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     }
 
     override fun onPhoneViewClick(lumperName: String, phone: String) {
-        CustomProgressBar.getInstance().showWarningDialog(String.format(getString(R.string.call_lumper_dialog_message), lumperName),
+        CustomProgressBar.getInstance().showWarningDialog(String.format(getString(R.string.call_lumper_alert_message), lumperName),
             fragmentActivity!!, object : CustomDialogWarningListener {
                 override fun onConfirmClick() {
                     startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))

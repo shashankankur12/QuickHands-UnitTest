@@ -23,17 +23,17 @@ class RequestLumpersPresenter(private var requestLumpersView: RequestLumpersCont
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
         requestLumpersView?.showHeaderInfo(dateString)
 
-        requestLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        requestLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         requestLumpersModel.fetchAllRequestsByDate(selectedDate, this)
     }
 
     override fun createNewRequestForLumpers(requiredLumperCount: String, notesDM: String, date: Date) {
-        requestLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        requestLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         requestLumpersModel.createNewRequestForLumpers(requiredLumperCount, notesDM, date, this)
     }
 
     override fun updateRequestForLumpers(requestId: String, requiredLumperCount: String, notesDM: String, date: Date) {
-        requestLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        requestLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         requestLumpersModel.updateRequestForLumpers(requestId, requiredLumperCount, notesDM, date, this)
     }
 
@@ -41,7 +41,7 @@ class RequestLumpersPresenter(private var requestLumpersView: RequestLumpersCont
     override fun onFailure(message: String) {
         requestLumpersView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            requestLumpersView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            requestLumpersView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             requestLumpersView?.showAPIErrorMessage(message)
         }

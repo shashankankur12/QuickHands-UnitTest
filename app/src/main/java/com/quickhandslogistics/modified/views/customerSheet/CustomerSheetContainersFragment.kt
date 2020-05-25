@@ -86,7 +86,7 @@ class CustomerSheetContainersFragment : BaseFragment(), CustomerSheetContainersC
 
     override fun onNotesItemClick(notesQHLCustomer: String?) {
         notesQHLCustomer?.let {
-            CustomProgressBar.getInstance().showInfoDialog(getString(R.string.string_note), notesQHLCustomer, fragmentActivity!!)
+            CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), notesQHLCustomer, fragmentActivity!!)
         }
     }
 }

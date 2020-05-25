@@ -127,7 +127,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
                     val requiredLumperCount = editTextLumpersRequired.text.toString()
                     val notesDM = editTextDMNotes.text.toString()
                     if ((requiredLumperCount.isNotEmpty() && notesDM.isEmpty()) || (requiredLumperCount.isEmpty() && notesDM.isNotEmpty())) {
-                        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, getString(R.string.request_help_error_message))
+                        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, getString(R.string.request_help_message))
                     } else {
                         showConfirmationDialog(requiredLumperCount, notesDM)
                     }
@@ -151,7 +151,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     }
 
     override fun showSuccessDialog(date: Date) {
-        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.request_placed_successfully),
+        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.request_placed_success_message),
             activity, object : CustomDialogListener {
                 override fun onConfirmClick() {
                     requestLumpersPresenter.fetchAllRequestsByDate(date)
@@ -162,7 +162,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     /** Adapter Listeners */
     override fun onNotesItemClick(notes: String?) {
         notes?.let {
-            CustomProgressBar.getInstance().showInfoDialog(getString(R.string.string_note), notes, activity)
+            CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), notes, activity)
         }
     }
 

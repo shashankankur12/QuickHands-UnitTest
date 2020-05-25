@@ -21,7 +21,7 @@ class AddLumperTimeWorkSheetItemPresenter(
         id: String, workItemId: String, selectedStartTime: Long, selectedEndTime: Long,
         selectedBreakInTime: Long, selectedBreakOutTime: Long, waitingTime: String
     ) {
-        addLumperTimeWorkSheetItemView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        addLumperTimeWorkSheetItemView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         addLumperTimeWorkSheetItemModel.saveLumperTimings(
             id, workItemId, selectedStartTime, selectedEndTime,
             selectedBreakInTime, selectedBreakOutTime, waitingTime, this
@@ -32,7 +32,7 @@ class AddLumperTimeWorkSheetItemPresenter(
     override fun onFailure(message: String) {
         addLumperTimeWorkSheetItemView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            addLumperTimeWorkSheetItemView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            addLumperTimeWorkSheetItemView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             addLumperTimeWorkSheetItemView?.showAPIErrorMessage(message)
         }

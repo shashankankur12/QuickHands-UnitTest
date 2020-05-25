@@ -44,9 +44,9 @@ object ScheduleUtils {
         var workItemTypeDisplayName = ""
         workItemType?.let {
             workItemTypeDisplayName = when (workItemType) {
-                "live" -> resources.getString(R.string.string_live_loads)
-                "drop" -> resources.getString(R.string.string_drops)
-                else -> resources.getString(R.string.string_out_bounds)
+                "live" -> resources.getString(R.string.live_loads)
+                "drop" -> resources.getString(R.string.drops)
+                else -> resources.getString(R.string.out_bounds)
             }
         }
         return workItemTypeDisplayName

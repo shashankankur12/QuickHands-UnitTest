@@ -204,7 +204,7 @@ public class NavDrawer {
             final BaseActivity activity = navDrawer.activity;
             super.onClick(v);
 
-            if (text.equals(activity.getString(R.string.string_logout))) {
+            if (text.equals(activity.getString(R.string.logout))) {
                 navDrawer.showLogoutDialog();
             } else {
                 toolbar.setTitle(text);

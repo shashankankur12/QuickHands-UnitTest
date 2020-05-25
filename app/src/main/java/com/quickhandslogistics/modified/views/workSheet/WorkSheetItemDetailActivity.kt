@@ -111,13 +111,13 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     }
 
     override fun showWorkItemDetail(workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?) {
-        textViewStartTime.text = String.format(getString(R.string.start_time_container), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
+        textViewStartTime.text = String.format(getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
         textViewWorkItemType.text = workItemTypeDisplayName
 
         when (workItemTypeDisplayName) {
-            getString(R.string.string_drops) -> textViewDropItems.text = String.format(getString(R.string.no_of_drops), workItemDetail.numberOfDrops)
-            getString(R.string.string_live_loads) -> textViewDropItems.text = String.format(getString(R.string.live_load_sequence), workItemDetail.sequence)
-            else -> textViewDropItems.text = String.format(getString(R.string.outbound_sequence), workItemDetail.sequence)
+            getString(R.string.drops) -> textViewDropItems.text = String.format(getString(R.string.no_of_drops_s), workItemDetail.numberOfDrops)
+            getString(R.string.live_loads) -> textViewDropItems.text = String.format(getString(R.string.live_load_s), workItemDetail.sequence)
+            else -> textViewDropItems.text = String.format(getString(R.string.out_bound_s), workItemDetail.sequence)
         }
 
         if (!workItemDetail.status.isNullOrEmpty()) {
@@ -132,14 +132,14 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     }
 
     override fun notesSavedSuccessfully() {
-        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, getString(R.string.notes_saved_successfully))
+        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, getString(R.string.notes_saved_success_alert_message))
     }
 
     /** Adapter Listeners */
     override fun onSelectStatus(status: String) {
-        var message = getString(R.string.string_ask_to_change_status)
+        var message = getString(R.string.change_status_alert_message)
         if (status == AppConstant.WORK_ITEM_STATUS_CANCELLED || status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
-            message = getString(R.string.string_ask_to_change_status_permanently)
+            message = getString(R.string.change_status_permanently_alert_message)
         }
         CustomProgressBar.getInstance().showWarningDialog(message, activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {

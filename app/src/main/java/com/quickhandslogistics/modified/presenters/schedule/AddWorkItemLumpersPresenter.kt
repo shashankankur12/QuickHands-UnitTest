@@ -21,12 +21,12 @@ class AddWorkItemLumpersPresenter(
     }
 
     override fun fetchLumpersList() {
-        addWorkItemLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        addWorkItemLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         addWorkItemLumpersModel.fetchLumpersList(this)
     }
 
     override fun initiateAssigningLumpers(selectedLumperIdsList: ArrayList<String>, workItemId: String, workItemType: String) {
-        addWorkItemLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        addWorkItemLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         addWorkItemLumpersModel.assignLumpersList(workItemId, workItemType, selectedLumperIdsList, this)
     }
 
@@ -34,7 +34,7 @@ class AddWorkItemLumpersPresenter(
     override fun onFailure(message: String) {
         addWorkItemLumpersView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            addWorkItemLumpersView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            addWorkItemLumpersView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             addWorkItemLumpersView?.showAPIErrorMessage(message)
         }

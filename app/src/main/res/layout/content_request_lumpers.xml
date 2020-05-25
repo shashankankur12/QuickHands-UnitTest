@@ -61,7 +61,7 @@
             android:id="@+id/textViewEmptyData"
             style="@style/noRecordTextViewTheme"
             android:gravity="center"
-            android:text="@string/empty_request_lumpers_list"
+            android:text="@string/empty_request_lumpers_list_info_message"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

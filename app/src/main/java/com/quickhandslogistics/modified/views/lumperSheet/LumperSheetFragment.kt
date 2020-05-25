@@ -91,19 +91,19 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         if (lumperSheetAdapter.itemCount == 0) {
             textViewEmptyData.visibility = View.VISIBLE
             if (lumperSheetAdapter.isSearchEnabled()) {
-                textViewEmptyData.text = getString(R.string.string_no_record_found)
+                textViewEmptyData.text = getString(R.string.no_record_found_info_message)
             } else {
-                textViewEmptyData.text = getString(R.string.empty_lumper_sheet)
+                textViewEmptyData.text = getString(R.string.empty_lumper_sheet_info_message)
             }
         } else {
             textViewEmptyData.visibility = View.GONE
-            textViewEmptyData.text = getString(R.string.empty_lumper_sheet)
+            textViewEmptyData.text = getString(R.string.empty_lumper_sheet_info_message)
         }
     }
 
     private fun showConfirmationDialog() {
         CustomProgressBar.getInstance().showWarningDialog(
-            getString(R.string.string_ask_to_submit_lumper_sheet), fragmentActivity!!, object : CustomDialogWarningListener {
+            getString(R.string.submit_lumper_sheet_alert_message), fragmentActivity!!, object : CustomDialogWarningListener {
                 override fun onConfirmClick() {
                     lumperSheetPresenter.initiateSheetSubmission(Date(selectedTime))
                 }
@@ -161,7 +161,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
             if (sheetSubmitted) {
                 buttonSubmit.text = getText(R.string.sheet_submitted)
             } else {
-                buttonSubmit.text = getText(R.string.string_submit)
+                buttonSubmit.text = getText(R.string.submit)
             }
         } else {
             buttonSubmit.visibility = View.GONE
@@ -178,7 +178,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     }
 
     override fun sheetSubmittedSuccessfully() {
-        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.lumper_sheet_submitted_successfully), fragmentActivity!!, object : CustomDialogListener {
+        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.lumper_sheet_success_message), fragmentActivity!!, object : CustomDialogListener {
             override fun onConfirmClick() {
                 lumperSheetPresenter.getLumpersSheetByDate(Date(selectedTime))
             }

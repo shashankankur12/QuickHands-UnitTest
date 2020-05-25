@@ -59,7 +59,7 @@ class LumperPersonalDetailFragment : BaseFragment(), View.OnClickListener {
     private fun showPhoneNumberDialog() {
         val name = UIUtils.getEmployeeFullName(employeeData)
         employeeData?.phone?.let { phone ->
-            CustomProgressBar.getInstance().showWarningDialog(String.format(getString(R.string.call_lumper_dialog_message), name),
+            CustomProgressBar.getInstance().showWarningDialog(String.format(getString(R.string.call_lumper_alert_message), name),
                 fragmentActivity!!, object : CustomDialogWarningListener {
                     override fun onConfirmClick() {
                         startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))
@@ -74,7 +74,7 @@ class LumperPersonalDetailFragment : BaseFragment(), View.OnClickListener {
     private fun showEmailDialog() {
         val name = UIUtils.getEmployeeFullName(employeeData)
         employeeData?.email?.let { email ->
-            CustomProgressBar.getInstance().showWarningDialog(String.format(getString(R.string.email_lumper_dialog_message), name),
+            CustomProgressBar.getInstance().showWarningDialog(String.format(getString(R.string.email_lumper_alert_message), name),
                 fragmentActivity!!, object : CustomDialogWarningListener {
                     override fun onConfirmClick() {
                         val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", email, null))

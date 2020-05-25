@@ -18,7 +18,7 @@ class LumperPagerAdapter(fragmentManager: FragmentManager, private val resources
     private var lumperWorkDetailFragment = LumperWorkDetailFragment.newInstance(employeeData)
     private var lumperJobDetailFragment = LumperJobDetailFragment.newInstance(employeeData)
 
-    private val tabTitles = arrayOf(R.string.contact_info, R.string.shift_details, R.string.string_lumper_details)
+    private val tabTitles = arrayOf(R.string.contact_info, R.string.shift_details, R.string.lumper_details)
 
     override fun getItem(position: Int): Fragment {
         return when (position) {

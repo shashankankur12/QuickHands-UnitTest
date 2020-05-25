@@ -32,7 +32,7 @@ class DisplayLumpersListActivity : BaseActivity(), View.OnClickListener, TextWat
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_display_lumpers_list)
-        setupToolbar(title = getString(R.string.string_lumpers))
+        setupToolbar(title = getString(R.string.lumpers))
 
         intent.extras?.let { bundle ->
             val lumpersList = bundle.getParcelableArrayList<EmployeeData>(ARG_LUMPERS_LIST)
@@ -98,7 +98,7 @@ class DisplayLumpersListActivity : BaseActivity(), View.OnClickListener, TextWat
     }
 
     override fun onPhoneViewClick(lumperName: String, phone: String) {
-        CustomProgressBar.getInstance().showWarningDialog(String.format(getString(R.string.call_lumper_dialog_message), lumperName), activity, object : CustomDialogWarningListener {
+        CustomProgressBar.getInstance().showWarningDialog(String.format(getString(R.string.call_lumper_alert_message), lumperName), activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))
             }

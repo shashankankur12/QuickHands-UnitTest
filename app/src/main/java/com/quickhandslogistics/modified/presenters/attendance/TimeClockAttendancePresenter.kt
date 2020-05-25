@@ -8,7 +8,6 @@ import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
 import com.quickhandslogistics.modified.data.attendance.GetAttendanceAPIResponse
 import com.quickhandslogistics.modified.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.modified.models.attendance.TimeClockAttendanceModel
-import com.quickhandslogistics.utils.ValueUtils
 
 class TimeClockAttendancePresenter(private var timeClockAttendanceView: TimeClockAttendanceContract.View?, private val resources: Resources) :
     TimeClockAttendanceContract.Presenter, TimeClockAttendanceContract.Model.OnFinishedListener {
@@ -21,12 +20,12 @@ class TimeClockAttendancePresenter(private var timeClockAttendanceView: TimeCloc
     }
 
     override fun fetchAttendanceList() {
-        timeClockAttendanceView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        timeClockAttendanceView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         timeClockAttendanceModel.fetchLumpersAttendanceList(this)
     }
 
     override fun saveAttendanceDetails(attendanceDetailList: List<AttendanceDetail>) {
-        timeClockAttendanceView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        timeClockAttendanceView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         timeClockAttendanceModel.saveLumpersAttendanceList(attendanceDetailList, this)
     }
 
@@ -34,7 +33,7 @@ class TimeClockAttendancePresenter(private var timeClockAttendanceView: TimeCloc
     override fun onFailure(message: String) {
         timeClockAttendanceView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            timeClockAttendanceView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            timeClockAttendanceView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             timeClockAttendanceView?.showAPIErrorMessage(message)
         }

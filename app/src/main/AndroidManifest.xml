@@ -56,10 +56,6 @@
             android:name=".modified.views.lumperSheet.LumperWorkDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.LumperListActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
             android:name=".modified.views.LeadProfileActivity"
             android:screenOrientation="portrait" />
         <activity

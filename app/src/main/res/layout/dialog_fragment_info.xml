@@ -46,6 +46,6 @@
             android:layout_width="0dp"
             android:layout_marginEnd="@dimen/_7sdp"
             android:layout_weight="1"
-            android:text="@string/string_okay" />
+            android:text="@string/ok" />
     </LinearLayout>
 </LinearLayout>

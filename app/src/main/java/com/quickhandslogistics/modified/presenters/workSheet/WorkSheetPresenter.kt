@@ -19,7 +19,7 @@ class WorkSheetPresenter(private var workSheetView: WorkSheetContract.View?, pri
     }
 
     override fun fetchWorkSheetList() {
-        workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         workSheetModel.fetchHeaderInfo(this)
         workSheetModel.fetchWorkSheetList(this)
     }
@@ -28,7 +28,7 @@ class WorkSheetPresenter(private var workSheetView: WorkSheetContract.View?, pri
     override fun onFailure(message: String) {
         workSheetView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            workSheetView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            workSheetView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             workSheetView?.showAPIErrorMessage(message)
         }

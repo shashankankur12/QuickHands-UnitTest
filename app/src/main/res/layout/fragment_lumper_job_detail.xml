@@ -23,7 +23,7 @@
                 style="@style/detailTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/string_title" />
+                android:text="@string/title" />
 
             <TextView
                 android:id="@+id/textViewTitle"
@@ -47,7 +47,7 @@
                 style="@style/detailTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/string_hiring_date" />
+                android:text="@string/hiring_date" />
 
             <TextView
                 android:id="@+id/textViewHiringDate"
@@ -79,7 +79,7 @@
                 style="@style/detailTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/string_work_schedule" />
+                android:text="@string/work_schedule" />
 
             <TextView
                 android:id="@+id/textViewWorkSchedule"
@@ -104,7 +104,7 @@
                 style="@style/detailTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/string_last_day_worked" />
+                android:text="@string/last_day_worked" />
 
             <TextView
                 android:id="@+id/textViewLastDayWorked"
@@ -136,7 +136,7 @@
                 style="@style/detailTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/string_job_description" />
+                android:text="@string/job_description" />
 
             <TextView
                 android:id="@+id/textViewJobDescription"

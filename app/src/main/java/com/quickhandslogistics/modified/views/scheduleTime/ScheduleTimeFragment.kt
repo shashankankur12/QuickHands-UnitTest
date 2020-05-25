@@ -117,20 +117,20 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         if (scheduleTimeAdapter.itemCount == 0) {
             textViewEmptyData.visibility = View.VISIBLE
             if (scheduleTimeAdapter.isSearchEnabled()) {
-                textViewEmptyData.text = getString(R.string.string_no_record_found)
+                textViewEmptyData.text = getString(R.string.no_record_found_info_message)
             } else {
                 textViewEmptyData.text = if (isFutureDate) {
-                    getString(R.string.empty_schedule_time_list)
+                    getString(R.string.empty_schedule_time_list_info_message)
                 } else {
-                    getString(R.string.empty_schedule_time_list_past)
+                    getString(R.string.empty_schedule_time_list_past_info_message)
                 }
             }
         } else {
             textViewEmptyData.visibility = View.GONE
             textViewEmptyData.text = if (isFutureDate) {
-                getString(R.string.empty_schedule_time_list)
+                getString(R.string.empty_schedule_time_list_info_message)
             } else {
-                getString(R.string.empty_schedule_time_list_past)
+                getString(R.string.empty_schedule_time_list_past_info_message)
             }
         }
     }

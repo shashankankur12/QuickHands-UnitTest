@@ -19,12 +19,12 @@ class BuildingOperationsPresenter(private var buildingOperationsView: BuildingOp
     }
 
     override fun fetchBuildingOperationDetails(workItemId: String) {
-        buildingOperationsView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        buildingOperationsView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         buildingOperationsModel.fetchBuildingOperationDetails(workItemId, this)
     }
 
     override fun saveBuildingOperationsData(workItemId: String, data: HashMap<String, String>) {
-        buildingOperationsView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        buildingOperationsView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         buildingOperationsModel.saveBuildingOperationDetails(workItemId, data, this)
     }
 
@@ -32,7 +32,7 @@ class BuildingOperationsPresenter(private var buildingOperationsView: BuildingOp
     override fun onFailure(message: String) {
         buildingOperationsView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            buildingOperationsView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            buildingOperationsView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             buildingOperationsView?.showAPIErrorMessage(message)
         }

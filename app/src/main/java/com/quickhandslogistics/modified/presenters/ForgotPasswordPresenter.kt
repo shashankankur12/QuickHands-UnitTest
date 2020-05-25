@@ -25,7 +25,7 @@ class ForgotPasswordPresenter(private var passwordView: ForgotPasswordContract.V
     override fun onFailure(message: String) {
         passwordView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            passwordView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            passwordView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             passwordView?.showAPIErrorMessage(message)
         }
@@ -41,7 +41,7 @@ class ForgotPasswordPresenter(private var passwordView: ForgotPasswordContract.V
     }
 
     override fun processPasswordReset(employeeId: String) {
-        passwordView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        passwordView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         forgotPasswordModel.resetPasswordUsingEmpId(employeeId, this)
     }
 }

@@ -15,7 +15,7 @@ import com.quickhandslogistics.modified.views.workSheet.WorkSheetItemDetailNotes
 class WorkSheetItemDetailPagerAdapter(fragmentManager: FragmentManager, private val resources: Resources) :
     FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    private val tabTitles = arrayOf(R.string.building_operations, R.string.string_lumpers, R.string.notes)
+    private val tabTitles = arrayOf(R.string.building_operations, R.string.lumpers, R.string.notes)
 
     private var buildingOperationsFragment = WorkSheetItemDetailBOFragment.newInstance()
     private var lumpersFragment = WorkSheetItemDetailLumpersFragment.newInstance()

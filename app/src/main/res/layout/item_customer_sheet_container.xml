@@ -35,7 +35,7 @@
             android:layout_marginStart="@dimen/_4sdp"
             android:layout_marginEnd="@dimen/_4sdp"
             android:clickable="false"
-            android:text="@string/string_live_loads"
+            android:text="@string/live_loads"
             app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -85,7 +85,7 @@
 
             <TextView
                 style="@style/titleSmallTextViewTheme"
-                android:text="@string/string_note"
+                android:text="@string/note"
                 android:textColor="@color/scheduleDetail" />
 
             <TextView
@@ -94,7 +94,7 @@
                 android:layout_marginTop="@dimen/_2sdp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@string/request_help_error_message" />
+                android:text="@string/request_help_message" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

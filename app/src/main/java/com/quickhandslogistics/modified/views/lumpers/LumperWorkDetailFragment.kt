@@ -50,8 +50,8 @@ class LumperWorkDetailFragment : BaseFragment() {
             }
 
             employeeData.abilityToTravelBetweenBuildings?.also { abilityToTravelBetweenBuildings ->
-                textViewAbilityTravel.text = if (abilityToTravelBetweenBuildings) getString(R.string.string_yes) else getString(
-                    R.string.string_no
+                textViewAbilityTravel.text = if (abilityToTravelBetweenBuildings) getString(R.string.yes) else getString(
+                    R.string.no
                 )
             } ?: run {
                 textViewAbilityTravel.text = "-"

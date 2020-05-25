@@ -20,12 +20,12 @@ class LumperSheetPresenter(private var lumperSheetView: LumperSheetContract.View
     }
 
     override fun getLumpersSheetByDate(selectedDate: Date) {
-        lumperSheetView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        lumperSheetView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         lumperSheetModel.fetchLumperSheetList(selectedDate, this)
     }
 
     override fun initiateSheetSubmission(selectedDate: Date) {
-        lumperSheetView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        lumperSheetView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         lumperSheetModel.submitLumperSheet(selectedDate, this)
     }
 
@@ -33,7 +33,7 @@ class LumperSheetPresenter(private var lumperSheetView: LumperSheetContract.View
     override fun onFailure(message: String) {
         lumperSheetView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            lumperSheetView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            lumperSheetView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             lumperSheetView?.showAPIErrorMessage(message)
         }

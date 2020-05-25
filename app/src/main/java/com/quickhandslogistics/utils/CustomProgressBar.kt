@@ -40,7 +40,7 @@ class CustomProgressBar {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.NORMAL_TYPE)
         progressDialog.titleText = if (title.isEmpty()) activityContext.getString(R.string.info) else title
         progressDialog.contentText = message
-        progressDialog.confirmText = activityContext.getString(R.string.string_ok)
+        progressDialog.confirmText = activityContext.getString(R.string.ok)
         progressDialog.show()
         progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
         progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
@@ -51,7 +51,7 @@ class CustomProgressBar {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.ERROR_TYPE)
         progressDialog.titleText = activityContext.getString(R.string.error)
         progressDialog.contentText = message
-        progressDialog.confirmText = activityContext.getString(R.string.string_ok)
+        progressDialog.confirmText = activityContext.getString(R.string.ok)
         progressDialog.show()
         progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
         progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
@@ -62,7 +62,7 @@ class CustomProgressBar {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.SUCCESS_TYPE)
         progressDialog.titleText = activityContext.getString(R.string.success)
         progressDialog.contentText = message
-        progressDialog.confirmText = activityContext.getString(R.string.string_ok)
+        progressDialog.confirmText = activityContext.getString(R.string.ok)
         progressDialog.setCancelable(false)
         progressDialog.setConfirmClickListener {
             it.dismiss()
@@ -76,10 +76,10 @@ class CustomProgressBar {
 
     fun showWarningDialog(message: String = "", activityContext: Context, listener: CustomDialogWarningListener) {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.WARNING_TYPE)
-        progressDialog.titleText = activityContext.getString(R.string.are_you_sure)
-        progressDialog.contentText = if (message.isEmpty()) activityContext.getString(R.string.you_want_make_these_changes) else message
-        progressDialog.confirmText = activityContext.getString(R.string.string_yes)
-        progressDialog.cancelText = activityContext.getString(R.string.string_no)
+        progressDialog.titleText = activityContext.getString(R.string.are_you_sure_alert_message)
+        progressDialog.contentText = if (message.isEmpty()) activityContext.getString(R.string.warning_alert_message) else message
+        progressDialog.confirmText = activityContext.getString(R.string.yes)
+        progressDialog.cancelText = activityContext.getString(R.string.no)
         progressDialog.showCancelButton(true)
         progressDialog.setConfirmClickListener {
             it.dismissWithAnimation()

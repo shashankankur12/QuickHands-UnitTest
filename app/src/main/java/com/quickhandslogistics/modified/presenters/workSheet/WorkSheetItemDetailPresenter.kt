@@ -18,17 +18,17 @@ class WorkSheetItemDetailPresenter(private var workSheetItemDetailView: WorkShee
     }
 
     override fun fetchWorkItemDetail(workItemId: String) {
-        workSheetItemDetailView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        workSheetItemDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         workSheetItemDetailModel.fetchWorkItemDetail(workItemId, this)
     }
 
     override fun changeWorkItemStatus(workItemId: String, status: String) {
-        workSheetItemDetailView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        workSheetItemDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         workSheetItemDetailModel.changeWorkItemStatus(workItemId, status, this)
     }
 
     override fun updateWorkItemNotes(workItemId: String, notesQHLCustomer: String, notesQHL: String) {
-        workSheetItemDetailView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        workSheetItemDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         workSheetItemDetailModel.updateWorkItemNotes(workItemId, notesQHLCustomer, notesQHL, this)
     }
 
@@ -36,7 +36,7 @@ class WorkSheetItemDetailPresenter(private var workSheetItemDetailView: WorkShee
     override fun onFailure(message: String) {
         workSheetItemDetailView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            workSheetItemDetailView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            workSheetItemDetailView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             workSheetItemDetailView?.showAPIErrorMessage(message)
         }

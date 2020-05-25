@@ -20,12 +20,12 @@ class AllWorkScheduleCancelPresenter(
     }
 
     override fun fetchLumpersList() {
-        allWorkScheduleCancelView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        allWorkScheduleCancelView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         allWorkScheduleCancelModel.fetchLumpersList(this)
     }
 
     override fun initiateCancellingWorkSchedules(selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String) {
-        allWorkScheduleCancelView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        allWorkScheduleCancelView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         allWorkScheduleCancelModel.cancelAllWorkSchedules(
             selectedLumperIdsList, notesQHL, notesCustomer, this
         )
@@ -35,7 +35,7 @@ class AllWorkScheduleCancelPresenter(
     override fun onFailure(message: String) {
         allWorkScheduleCancelView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            allWorkScheduleCancelView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            allWorkScheduleCancelView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             allWorkScheduleCancelView?.showAPIErrorMessage(message)
         }

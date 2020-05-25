@@ -87,7 +87,7 @@
                     android:id="@+id/textViewEmptyData"
                     style="@style/noRecordTextViewTheme"
                     android:layout_centerInParent="true"
-                    android:text="@string/empty_schedule_time_list"
+                    android:text="@string/empty_schedule_time_list_info_message"
                     android:visibility="gone" />
             </RelativeLayout>
 

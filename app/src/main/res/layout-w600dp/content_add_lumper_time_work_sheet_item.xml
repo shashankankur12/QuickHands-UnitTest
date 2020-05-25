@@ -166,7 +166,7 @@
                 <Button
                     android:id="@+id/buttonBreakInTime"
                     style="@style/positiveButtonTheme"
-                    android:text="@string/string_start" />
+                    android:text="@string/start" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -180,7 +180,7 @@
                 <Button
                     android:id="@+id/buttonBreakOutTime"
                     style="@style/positiveButtonTheme"
-                    android:text="@string/string_end" />
+                    android:text="@string/end" />
 
                 <Space
                     android:layout_width="0dp"
@@ -199,6 +199,6 @@
             style="@style/positiveRoundButtonTheme"
             android:layout_marginTop="@dimen/_10ssp"
             android:layout_marginBottom="@dimen/_10ssp"
-            android:text="@string/string_save" />
+            android:text="@string/save" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

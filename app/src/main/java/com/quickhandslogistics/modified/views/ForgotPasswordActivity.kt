@@ -18,7 +18,7 @@ class ForgotPasswordActivity : BaseActivity(), ForgotPasswordContract.View, View
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_password)
-        setupToolbar(getString(R.string.string_forgot_password_heading))
+        setupToolbar(getString(R.string.forgot_password))
 
         buttonPasswordReset.setOnClickListener(this)
 
@@ -47,7 +47,7 @@ class ForgotPasswordActivity : BaseActivity(), ForgotPasswordContract.View, View
     /** Presenter Listeners */
     override fun showEmptyEmployeeIdError() {
         editTextEmpId.requestFocus()
-        SnackBarFactory.createSnackBar(activity, mainConstraintPasswordLayout, resources.getString(R.string.text_employee_error_msg))
+        SnackBarFactory.createSnackBar(activity, mainConstraintPasswordLayout, resources.getString(R.string.empty_employee_id_message))
     }
 
     override fun showAPIErrorMessage(message: String) {

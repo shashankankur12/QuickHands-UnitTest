@@ -23,7 +23,7 @@ class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.V
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, date)
         scheduleTimeView?.showDateString(dateString)
 
-        scheduleTimeView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        scheduleTimeView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         scheduleTimeModel.fetchSchedulesTimeByDate(date, this)
     }
 
@@ -31,7 +31,7 @@ class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.V
     override fun onFailure(message: String) {
         scheduleTimeView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            scheduleTimeView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            scheduleTimeView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             scheduleTimeView?.showAPIErrorMessage(message)
         }

@@ -38,14 +38,14 @@
                 android:id="@+id/buttonSubmit"
                 style="@style/positiveRoundButtonTheme"
                 android:layout_marginBottom="@dimen/_8ssp"
-                android:text="@string/string_submit" />
+                android:text="@string/submit" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/textViewEmptyData"
             style="@style/noRecordTextViewTheme"
             android:layout_centerInParent="true"
-            android:text="@string/empty_building_operations"
+            android:text="@string/empty_building_operations_info_message"
             android:visibility="gone" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,7 +19,7 @@ class LeadProfilePresenter(private var leadProfileView: LeadProfileContract.View
     }
 
     override fun loadLeadProfileData() {
-        leadProfileView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        leadProfileView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         leadProfileModel.fetchLeadProfileDataAPI(this)
     }
 

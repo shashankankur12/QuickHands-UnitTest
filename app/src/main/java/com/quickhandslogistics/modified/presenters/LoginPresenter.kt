@@ -31,7 +31,7 @@ class LoginPresenter(private var loginView: LoginContract.View?, private val res
     override fun onFailure(message: String) {
         loginView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            loginView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            loginView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             loginView?.showAPIErrorMessage(message)
         }
@@ -70,7 +70,7 @@ class LoginPresenter(private var loginView: LoginContract.View?, private val res
     }
 
     override fun processCredentials(employeeLoginId: String, password: String) {
-        loginView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        loginView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         loginModel.fetchRegistrationToken(employeeLoginId, password, this)
     }
 

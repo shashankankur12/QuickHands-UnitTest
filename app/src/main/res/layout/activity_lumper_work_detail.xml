@@ -151,7 +151,7 @@
             android:id="@+id/buttonSave"
             style="@style/positiveRoundButtonTheme"
             android:layout_margin="@dimen/_10sdp"
-            android:text="@string/string_save"
+            android:text="@string/save"
             android:visibility="gone" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

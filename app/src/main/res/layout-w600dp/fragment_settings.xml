@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_4sdp"
-            android:text="@string/string_change_language"
+            android:text="@string/change_language"
             android:textColor="@color/textBlack"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:padding="@dimen/_2sdp"
-                android:text="@string/string_english"
+                android:text="@string/english"
                 android:textColor="@drawable/radio_button_text_color"
                 android:textSize="@dimen/_10ssp" />
 
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:padding="@dimen/_2sdp"
-                android:text="@string/string_spanish"
+                android:text="@string/spanish"
                 android:textColor="@drawable/radio_button_text_color"
                 android:textSize="@dimen/_10ssp" />
 
@@ -71,7 +71,7 @@
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_12sdp"
-            android:text="@string/string_notification"
+            android:text="@string/notifications"
             android:textColor="@color/textBlack"
             app:layout_constraintEnd_toStartOf="@+id/switchNotification"
             app:layout_constraintStart_toStartOf="parent"
@@ -101,7 +101,7 @@
             android:drawablePadding="@dimen/_4sdp"
             android:paddingTop="@dimen/_4sdp"
             android:paddingBottom="@dimen/_4sdp"
-            android:text="@string/notification_off_info"
+            android:text="@string/notification_off_info_message"
             android:textColor="@drawable/radio_button_text_color"
             android:textSize="@dimen/_10ssp"
             app:layout_constraintEnd_toEndOf="parent"

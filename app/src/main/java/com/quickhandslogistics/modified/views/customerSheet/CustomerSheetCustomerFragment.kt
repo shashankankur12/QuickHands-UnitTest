@@ -82,7 +82,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
             if (signed) {
                 buttonSubmit.text = getText(R.string.sheet_submitted)
             } else {
-                buttonSubmit.text = getText(R.string.string_submit)
+                buttonSubmit.text = getText(R.string.submit)
             }
         } else {
             editTextCustomerName.isEnabled = true
@@ -120,9 +120,9 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
         val customerName = editTextCustomerName.text.toString()
         val notesCustomer = editTextCustomerNotes.text.toString()
         if (customerName.isNotEmpty() && signatureFilePath.isNotEmpty()) {
-            var message = getString(R.string.string_ask_to_submit_customer_sheet)
+            var message = getString(R.string.submit_customer_sheet_alert_message)
             if (notesCustomer.isEmpty()) {
-                message = getString(R.string.string_ask_to_submit_customer_sheet_permanently)
+                message = getString(R.string.submit_customer_sheet_permanently_alert_message)
             }
             showConfirmationDialog(message, customerName, notesCustomer)
         } else {

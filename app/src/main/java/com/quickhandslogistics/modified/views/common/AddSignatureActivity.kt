@@ -48,7 +48,7 @@ class AddSignatureActivity : BaseActivity(), View.OnClickListener, SignaturePad.
             setResult(RESULT_OK, intent)
             onBackPressed()
         } ?: run {
-            CustomProgressBar.getInstance().showErrorDialog(getString(R.string.something_went_wrong), activity)
+            CustomProgressBar.getInstance().showErrorDialog(getString(R.string.something_went_wrong_message), activity)
         }
     }
 

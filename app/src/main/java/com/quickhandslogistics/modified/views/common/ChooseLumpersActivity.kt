@@ -86,19 +86,19 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
         if (chooseLumpersAdapter.itemCount == 0) {
             textViewEmptyData.visibility = View.VISIBLE
             if (chooseLumpersAdapter.isSearchEnabled()) {
-                textViewEmptyData.text = getString(R.string.string_no_record_found)
+                textViewEmptyData.text = getString(R.string.no_record_found_info_message)
             } else {
-                textViewEmptyData.text = getString(R.string.empty_lumpers_list)
+                textViewEmptyData.text = getString(R.string.empty_lumpers_list_info_message)
             }
         } else {
             textViewEmptyData.visibility = View.GONE
-            textViewEmptyData.text = getString(R.string.empty_lumpers_list)
+            textViewEmptyData.text = getString(R.string.empty_lumpers_list_info_message)
         }
     }
 
     private fun showConfirmationDialog(selectedLumpersList: ArrayList<EmployeeData>) {
         CustomProgressBar.getInstance().showWarningDialog(
-            getString(R.string.string_ask_to_choose_lumper), activity, object : CustomDialogWarningListener {
+            getString(R.string.choose_lumper_alert_message), activity, object : CustomDialogWarningListener {
                 override fun onConfirmClick() {
                     val intent = Intent().apply {
                         putExtras(Bundle().apply {

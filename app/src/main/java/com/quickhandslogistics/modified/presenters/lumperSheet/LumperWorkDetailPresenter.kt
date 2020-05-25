@@ -19,12 +19,12 @@ class LumperWorkDetailPresenter(private var lumperWorkDetailView: LumperWorkDeta
     }
 
     override fun getLumperWorkDetails(lumperId: String, selectedDate: Date) {
-        lumperWorkDetailView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        lumperWorkDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         lumperWorkDetailModel.fetchLumperWorkDetails(lumperId, selectedDate, this)
     }
 
     override fun saveLumperSignature(lumperId: String, date: Date, signatureFilePath: String) {
-        lumperWorkDetailView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        lumperWorkDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         lumperWorkDetailModel.saveLumperSignature(lumperId, date, signatureFilePath, this)
     }
 
@@ -32,7 +32,7 @@ class LumperWorkDetailPresenter(private var lumperWorkDetailView: LumperWorkDeta
     override fun onFailure(message: String) {
         lumperWorkDetailView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            lumperWorkDetailView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            lumperWorkDetailView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             lumperWorkDetailView?.showAPIErrorMessage(message)
         }

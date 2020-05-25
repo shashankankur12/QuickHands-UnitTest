@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import com.franmontiel.localechanger.LocaleChanger
-import com.quickhandslogistics.R
+import com.quickhandslogistics.utils.AppConstant
 import java.util.*
 
 class MyApplication : Application() {
@@ -14,7 +14,7 @@ class MyApplication : Application() {
         application = this
         mApp = this
 
-        val supportedLocales = listOf(Locale(getString(R.string.english)), Locale(getString(R.string.spanish)))
+        val supportedLocales = listOf(Locale(AppConstant.LANGUAGE_ENGLISH_CODE), Locale(AppConstant.LANGUAGE_SPANISH_CODE))
         LocaleChanger.initialize(applicationContext, supportedLocales);
     }
 

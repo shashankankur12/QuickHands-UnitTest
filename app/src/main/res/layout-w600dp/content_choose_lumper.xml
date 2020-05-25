@@ -67,7 +67,7 @@
                     android:id="@+id/textViewEmptyData"
                     style="@style/noRecordTextViewTheme"
                     android:layout_centerInParent="true"
-                    android:text="@string/empty_lumpers_list"
+                    android:text="@string/empty_lumpers_list_info_message"
                     android:visibility="gone" />
             </RelativeLayout>
 
@@ -76,7 +76,7 @@
                 style="@style/positiveRoundButtonTheme"
                 android:layout_marginBottom="@dimen/_6sdp"
                 android:enabled="false"
-                android:text="@string/string_submit" />
+                android:text="@string/submit" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout>

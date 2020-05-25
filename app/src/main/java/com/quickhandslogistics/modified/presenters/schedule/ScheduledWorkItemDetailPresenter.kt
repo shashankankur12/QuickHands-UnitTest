@@ -19,7 +19,7 @@ class ScheduledWorkItemDetailPresenter(
     }
 
     override fun fetchWorkItemDetail(workItemId: String) {
-        scheduledWorkItemDetailView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        scheduledWorkItemDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         scheduledWorkItemDetailModel.fetchWorkItemDetail(workItemId, this)
     }
 
@@ -27,7 +27,7 @@ class ScheduledWorkItemDetailPresenter(
     override fun onFailure(message: String) {
         scheduledWorkItemDetailView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            scheduledWorkItemDetailView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            scheduledWorkItemDetailView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             scheduledWorkItemDetailView?.showAPIErrorMessage(message)
         }

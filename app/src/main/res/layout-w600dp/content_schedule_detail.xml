@@ -110,7 +110,7 @@
 
                 <TextView
                     style="@style/titleBigTextViewTheme"
-                    android:text="@string/string_live_loads" />
+                    android:text="@string/live_loads" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -137,7 +137,7 @@
 
                 <TextView
                     style="@style/titleBigTextViewTheme"
-                    android:text="@string/string_drops" />
+                    android:text="@string/drops" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -164,7 +164,7 @@
 
                 <TextView
                     style="@style/titleBigTextViewTheme"
-                    android:text="@string/string_out_bounds" />
+                    android:text="@string/out_bounds" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

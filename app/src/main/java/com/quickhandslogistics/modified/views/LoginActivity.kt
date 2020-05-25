@@ -59,17 +59,17 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
 
     override fun showEmptyEmployeeIdError() {
         editTextEmployeeId.requestFocus()
-        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, resources.getString(R.string.text_employee_error_msg))
+        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, resources.getString(R.string.empty_employee_id_message))
     }
 
     override fun showEmptyPasswordError() {
         editTextPassword.requestFocus()
-        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, resources.getString(R.string.text_password_err_msg))
+        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, resources.getString(R.string.empty_password_message))
     }
 
     override fun showInvalidPasswordError() {
         editTextPassword.requestFocus()
-        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, resources.getString(R.string.text_password_err_length))
+        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, resources.getString(R.string.password_short_length_message))
     }
 
     override fun showAPIErrorMessage(message: String) {

@@ -81,9 +81,9 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
         })
 
         textViewEmptyData.text = when (workItemType) {
-            getString(R.string.ongoing) -> getString(R.string.empty_containers_list_ongoing)
-            getString(R.string.cancelled) -> getString(R.string.empty_containers_list_cancelled)
-            else -> getString(R.string.empty_containers_list_completed)
+            getString(R.string.ongoing) -> getString(R.string.empty_containers_list_ongoing_info_message)
+            getString(R.string.cancelled) -> getString(R.string.empty_containers_list_cancelled_info_message)
+            else -> getString(R.string.empty_containers_list_completed_info_message)
         }
     }
 

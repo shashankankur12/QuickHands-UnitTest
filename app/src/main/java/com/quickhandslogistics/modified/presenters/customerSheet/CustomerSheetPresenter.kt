@@ -21,13 +21,13 @@ class CustomerSheetPresenter(private var workSheetView: CustomerSheetContract.Vi
     }
 
     override fun getCustomerSheetByDate(date: Date) {
-        workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         customerSheetModel.fetchHeaderInfo(date, this)
         customerSheetModel.fetchCustomerSheetList(date, this)
     }
 
     override fun saveCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String) {
-        workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         customerSheetModel.saveCustomerSheet(customerName, notesCustomer, signatureFilePath, this)
     }
 
@@ -35,7 +35,7 @@ class CustomerSheetPresenter(private var workSheetView: CustomerSheetContract.Vi
     override fun onFailure(message: String) {
         workSheetView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            workSheetView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            workSheetView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             workSheetView?.showAPIErrorMessage(message)
         }

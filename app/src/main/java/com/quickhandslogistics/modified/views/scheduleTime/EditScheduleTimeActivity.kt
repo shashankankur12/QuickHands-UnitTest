@@ -135,15 +135,15 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             textViewAddSameTime.visibility = View.GONE
             textViewEmptyData.visibility = View.VISIBLE
             if (editScheduleTimeAdapter.isSearchEnabled()) {
-                textViewEmptyData.text = getString(R.string.string_no_record_found)
+                textViewEmptyData.text = getString(R.string.no_record_found_info_message)
             } else {
-                textViewEmptyData.text = getString(R.string.empty_edit_schedule_time)
+                textViewEmptyData.text = getString(R.string.empty_edit_schedule_time_info_message)
             }
         } else {
             buttonSubmit.isEnabled = true
             textViewAddSameTime.visibility = View.VISIBLE
             textViewEmptyData.visibility = View.GONE
-            textViewEmptyData.text = getString(R.string.empty_edit_schedule_time)
+            textViewEmptyData.text = getString(R.string.empty_edit_schedule_time_info_message)
         }
     }
 

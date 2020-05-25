@@ -25,7 +25,7 @@ class SchedulePresenter(private var scheduleView: ScheduleContract.View?, privat
     }
 
     override fun getScheduledWorkItemsByDate(date: Date, pageIndex: Int) {
-        scheduleView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        scheduleView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         scheduleModel.fetchSchedulesByDate(date, pageIndex, this)
     }
 
@@ -33,7 +33,7 @@ class SchedulePresenter(private var scheduleView: ScheduleContract.View?, privat
     override fun onFailure(message: String) {
         scheduleView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            scheduleView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            scheduleView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             scheduleView?.showAPIErrorMessage(message)
         }
@@ -53,9 +53,9 @@ class SchedulePresenter(private var scheduleView: ScheduleContract.View?, privat
             val oldValue = iterate.next()
             oldValue.scheduleTypes?.let { scheduleTypes ->
                 var scheduleTypeNames = ""
-                scheduleTypeNames = getScheduleTypeName(scheduleTypes.liveLoads, scheduleTypeNames, resources.getString(R.string.string_live_loads))
-                scheduleTypeNames = getScheduleTypeName(scheduleTypes.drops, scheduleTypeNames, resources.getString(R.string.string_drops))
-                scheduleTypeNames = getScheduleTypeName(scheduleTypes.outbounds, scheduleTypeNames, resources.getString(R.string.string_out_bounds))
+                scheduleTypeNames = getScheduleTypeName(scheduleTypes.liveLoads, scheduleTypeNames, resources.getString(R.string.live_loads))
+                scheduleTypeNames = getScheduleTypeName(scheduleTypes.drops, scheduleTypeNames, resources.getString(R.string.drops))
+                scheduleTypeNames = getScheduleTypeName(scheduleTypes.outbounds, scheduleTypeNames, resources.getString(R.string.out_bounds))
 
                 if (scheduleTypeNames.isEmpty()) {
                     // Remove the wrong record returned from API of another date.

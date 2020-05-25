@@ -72,7 +72,7 @@
                     android:layout_height="250dp"
                     android:layout_centerInParent="true"
                     android:gravity="center"
-                    android:text="@string/empty_add_work_item_lumpers"
+                    android:text="@string/empty_add_work_item_lumpers_info_message"
                     android:visibility="gone" />
             </RelativeLayout>
 
@@ -120,7 +120,7 @@
                 android:layout_marginTop="@dimen/_6sdp"
                 android:layout_marginBottom="@dimen/_6sdp"
                 android:enabled="false"
-                android:text="@string/string_submit" />
+                android:text="@string/submit" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

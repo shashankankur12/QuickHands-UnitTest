@@ -176,7 +176,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
 
     override fun onNotesItemClick(notes: String?) {
         notes?.let {
-            CustomProgressBar.getInstance().showInfoDialog(getString(R.string.string_note), notes, activity)
+            CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), notes, activity)
         }
     }
 }

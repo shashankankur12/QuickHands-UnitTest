@@ -38,7 +38,7 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scheduled_work_item_detail)
-        setupToolbar(getString(R.string.scheduled_work_details))
+        setupToolbar(getString(R.string.work_item_detail))
 
         intent.extras?.let { it ->
             allowUpdate = it.getBoolean(ARG_ALLOW_UPDATE, true)
@@ -78,11 +78,11 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
         })
 
         if (allowUpdate) {
-            textViewEmptyData.text = getString(R.string.empty_work_item_lumpers)
+            textViewEmptyData.text = getString(R.string.empty_work_item_lumpers_info_message)
             buttonAddBuildingOperations.text = getString(R.string.update_building_operations)
             buttonUpdateLumpers.visibility = View.VISIBLE
         } else {
-            textViewEmptyData.text = getString(R.string.empty_work_item_lumpers_past_date)
+            textViewEmptyData.text = getString(R.string.empty_work_item_lumpers_past_date_info_message)
             buttonAddBuildingOperations.text = getString(R.string.building_operations)
             buttonUpdateLumpers.visibility = View.GONE
         }
@@ -133,16 +133,16 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
 
     override fun showWorkItemDetail(workItemDetail: WorkItemDetail) {
         this.workItemDetail = workItemDetail
-        textViewStartTime.text = String.format(getString(R.string.start_time_container), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
+        textViewStartTime.text = String.format(getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
         workItemDetail.scheduledFrom?.let {
             textViewScheduledDate.text = DateUtils.changeDateString(PATTERN_API_REQUEST_PARAMETER, PATTERN_NORMAL, it)
         }
         textViewScheduleType.text = workItemTypeDisplayName
 
         when (workItemTypeDisplayName) {
-            getString(R.string.string_drops) -> textViewWorkItemsCount.text = String.format(getString(R.string.no_of_drops), workItemDetail.numberOfDrops)
-            getString(R.string.string_live_loads) -> textViewWorkItemsCount.text = String.format(getString(R.string.live_load_sequence), workItemDetail.sequence)
-            else -> textViewWorkItemsCount.text = String.format(getString(R.string.outbound_sequence), workItemDetail.sequence)
+            getString(R.string.drops) -> textViewWorkItemsCount.text = String.format(getString(R.string.no_of_drops_s), workItemDetail.numberOfDrops)
+            getString(R.string.live_loads) -> textViewWorkItemsCount.text = String.format(getString(R.string.live_load_s), workItemDetail.sequence)
+            else -> textViewWorkItemsCount.text = String.format(getString(R.string.out_bound_s), workItemDetail.sequence)
         }
 
         workItemDetail.assignedLumpersList?.let { assignedLumpersList ->

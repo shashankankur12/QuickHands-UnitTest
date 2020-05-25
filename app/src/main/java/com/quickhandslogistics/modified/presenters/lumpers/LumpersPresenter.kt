@@ -19,7 +19,7 @@ class LumpersPresenter(private var lumpersView: LumpersContract.View?, private v
     }
 
     override fun fetchLumpersList() {
-        lumpersView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        lumpersView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         lumpersModel.fetchLumpersList(this)
     }
 
@@ -27,7 +27,7 @@ class LumpersPresenter(private var lumpersView: LumpersContract.View?, private v
     override fun onFailure(message: String) {
         lumpersView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            lumpersView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            lumpersView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             lumpersView?.showAPIErrorMessage(message)
         }

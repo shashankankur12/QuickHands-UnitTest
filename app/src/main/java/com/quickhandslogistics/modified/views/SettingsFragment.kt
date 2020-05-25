@@ -12,6 +12,9 @@ import com.franmontiel.localechanger.utils.ActivityRecreationHelper
 import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.SettingsContract
 import com.quickhandslogistics.modified.presenters.SettingsPresenter
+import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.AppConstant.Companion.LANGUAGE_ENGLISH_CODE
+import com.quickhandslogistics.utils.AppConstant.Companion.LANGUAGE_SPANISH_CODE
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import kotlinx.android.synthetic.main.fragment_settings.*
@@ -51,13 +54,13 @@ class SettingsFragment : BaseFragment(), SettingsContract.View, View.OnClickList
     }
 
     private fun showConfirmationDialog(language: String) {
-        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.string_language_dialog), fragmentActivity!!, object : CustomDialogWarningListener {
+        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.language_change_alert_message), fragmentActivity!!, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 settingsPresenter?.saveSelectedLanguage(language)
             }
 
             override fun onCancelClick() {
-                if (language == getString(R.string.english)) {
+                if (language == LANGUAGE_ENGLISH_CODE) {
                     radioBtnSpanish.isChecked = true
                 } else {
                     radioBtnEnglish.isChecked = true
@@ -71,11 +74,11 @@ class SettingsFragment : BaseFragment(), SettingsContract.View, View.OnClickList
         view?.let {
             when (view.id) {
                 radioBtnEnglish.id -> {
-                    if (selectedLanguage != getString(R.string.english)) showConfirmationDialog(getString(R.string.english)) else {
+                    if (selectedLanguage != LANGUAGE_ENGLISH_CODE) showConfirmationDialog(LANGUAGE_ENGLISH_CODE) else {
                     }
                 }
                 radioBtnSpanish.id -> {
-                    if (selectedLanguage != getString(R.string.spanish)) showConfirmationDialog(getString(R.string.spanish)) else {
+                    if (selectedLanguage != LANGUAGE_SPANISH_CODE) showConfirmationDialog(LANGUAGE_SPANISH_CODE) else {
                     }
                 }
                 switchNotification.id -> {
@@ -106,7 +109,7 @@ class SettingsFragment : BaseFragment(), SettingsContract.View, View.OnClickList
 
     override fun showSelectedSettings(selectedLanguage: String, notificationEnabled: Boolean) {
         this.selectedLanguage = selectedLanguage
-        if (selectedLanguage == getString(R.string.english))
+        if (selectedLanguage == LANGUAGE_ENGLISH_CODE)
             radioBtnEnglish.isChecked = true
         else
             radioBtnSpanish.isChecked = true

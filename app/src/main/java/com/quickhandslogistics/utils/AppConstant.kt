@@ -47,5 +47,9 @@ interface AppConstant {
         const val REQUEST_CODE_CHANGED = 101
 
         const val API_PAGE_SIZE = 20
+
+        const val LANGUAGE_ENGLISH_CODE = "en-US"
+        const val LANGUAGE_SPANISH_CODE = "es"
+
     }
 }

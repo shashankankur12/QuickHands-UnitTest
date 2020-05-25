@@ -20,7 +20,7 @@ import com.quickhandslogistics.modified.views.scheduleTime.ScheduleTimeFragment
 import com.quickhandslogistics.modified.views.workSheet.AllWorkScheduleCancelActivity
 import com.quickhandslogistics.modified.views.workSheet.WorkSheetFragment
 import com.quickhandslogistics.utils.*
-import com.quickhandslogistics.view.fragments.ReportFragment
+import com.quickhandslogistics.modified.views.reports.ReportFragment
 import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.include_main_nav_drawer.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
@@ -57,7 +57,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         menu?.let {
             when (selectedFragmentTitle) {
-                getString(R.string.todays_work_sheet) -> {
+                getString(R.string.today_s_work_sheet) -> {
                     menu.findItem(R.id.actionCancelAllWork).isVisible = isCancelAllScheduleVisible
                 }
                 getString(R.string.schedule_lumpers_time) -> {
@@ -71,7 +71,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionNotes -> {
-                CustomProgressBar.getInstance().showInfoDialog(getString(R.string.string_note), scheduleTimeNotes, activity)
+                CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), scheduleTimeNotes, activity)
             }
             R.id.actionCancelAllWork -> {
                 startIntent(AllWorkScheduleCancelActivity::class.java, requestCode = AppConstant.REQUEST_CODE_CHANGED)
@@ -95,16 +95,16 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     private fun setUpNavigationBar() {
         navDrawer = NavDrawer(this, toolbar, supportFragmentManager.beginTransaction(), this)
         navDrawer?.let {
-            it.addItem(NavDrawer.ActivityNavDrawerItem(WorkSheetFragment(), getString(R.string.todays_work_sheet), R.drawable.ic_sidemenu_dashboard, R.id.linearLayoutTopItems, true))
+            it.addItem(NavDrawer.ActivityNavDrawerItem(WorkSheetFragment(), getString(R.string.today_s_work_sheet), R.drawable.ic_sidemenu_dashboard, R.id.linearLayoutTopItems, true))
             it.addItem(NavDrawer.ActivityNavDrawerItem(ScheduleTimeFragment(), getString(R.string.schedule_lumpers_time), R.drawable.ic_sidemenu_schedule, R.id.linearLayoutTopItems, false))
-            it.addItem(NavDrawer.ActivityNavDrawerItem(ScheduleFragment(), getString(R.string.string_schedule), R.drawable.ic_sidemenu_lumper_sheet, R.id.linearLayoutTopItems, false))
+            it.addItem(NavDrawer.ActivityNavDrawerItem(ScheduleFragment(), getString(R.string.schedule), R.drawable.ic_sidemenu_lumper_sheet, R.id.linearLayoutTopItems, false))
             it.addItem(NavDrawer.ActivityNavDrawerItem(TimeClockAttendanceFragment(), getString(R.string.time_clock_attendance), R.drawable.ic_sidemenu_schedule, R.id.linearLayoutTopItems, false))
-            it.addItem(NavDrawer.ActivityNavDrawerItem(LumpersFragment(), getString(R.string.string_lumpers), R.drawable.ic_sidemenu_lumpers, R.id.linearLayoutTopItems, false))
-            it.addItem(NavDrawer.ActivityNavDrawerItem(LumperSheetFragment(), getString(R.string.string_lumper_sheet), R.drawable.ic_sidemenu_lumper_sheet, R.id.linearLayoutTopItems, false))
-            it.addItem(NavDrawer.ActivityNavDrawerItem(CustomerSheetFragment(), getString(R.string.string_customer_sheet), R.drawable.ic_sidemenu_customer_sheet, R.id.linearLayoutTopItems, false))
-            it.addItem(NavDrawer.ActivityNavDrawerItem(ReportFragment(), getString(R.string.string_reports), R.drawable.ic_sidemenu_reports, R.id.linearLayoutTopItems, false))
-            it.addItem(NavDrawer.ActivityNavDrawerItem(SettingsFragment(), getString(R.string.string_settings), R.drawable.ic_sidemenu_settings, R.id.linearLayoutBottomItems, false))
-            it.addItem(NavDrawer.ActivityNavDrawerItem(null, getString(R.string.string_logout), R.drawable.ic_sidemenu_logout, R.id.linearLayoutBottomItems, false))
+            it.addItem(NavDrawer.ActivityNavDrawerItem(LumpersFragment(), getString(R.string.lumpers), R.drawable.ic_sidemenu_lumpers, R.id.linearLayoutTopItems, false))
+            it.addItem(NavDrawer.ActivityNavDrawerItem(LumperSheetFragment(), getString(R.string.l_sheet), R.drawable.ic_sidemenu_lumper_sheet, R.id.linearLayoutTopItems, false))
+            it.addItem(NavDrawer.ActivityNavDrawerItem(CustomerSheetFragment(), getString(R.string.customer_sheet), R.drawable.ic_sidemenu_customer_sheet, R.id.linearLayoutTopItems, false))
+            it.addItem(NavDrawer.ActivityNavDrawerItem(ReportFragment(), getString(R.string.reports), R.drawable.ic_sidemenu_reports, R.id.linearLayoutTopItems, false))
+            it.addItem(NavDrawer.ActivityNavDrawerItem(SettingsFragment(), getString(R.string.settings), R.drawable.ic_sidemenu_settings, R.id.linearLayoutBottomItems, false))
+            it.addItem(NavDrawer.ActivityNavDrawerItem(null, getString(R.string.logout), R.drawable.ic_sidemenu_logout, R.id.linearLayoutBottomItems, false))
 
             it.create()
         }
@@ -158,7 +158,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     }
 
     override fun onLogoutOptionSelected() {
-        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.string_logout_dialog), activity, object : CustomDialogWarningListener {
+        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.logout_alert_message), activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 dashBoardPresenter.performLogout()
             }

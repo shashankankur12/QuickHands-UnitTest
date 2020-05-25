@@ -18,7 +18,7 @@ class EditScheduleTimePresenter(private var editScheduleTimeView: EditScheduleTi
     }
 
     override fun initiateScheduleTime(scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, selectedDate: Date) {
-        editScheduleTimeView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        editScheduleTimeView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         editScheduleTimeModel.assignScheduleTime(scheduledLumpersIdsTimeMap, notes, selectedDate, this)
     }
 
@@ -26,7 +26,7 @@ class EditScheduleTimePresenter(private var editScheduleTimeView: EditScheduleTi
     override fun onFailure(message: String) {
         editScheduleTimeView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            editScheduleTimeView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            editScheduleTimeView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             editScheduleTimeView?.showAPIErrorMessage(message)
         }

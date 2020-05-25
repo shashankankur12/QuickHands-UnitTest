@@ -95,13 +95,13 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         if (timeClockAttendanceAdapter.itemCount == 0) {
             textViewEmptyData.visibility = View.VISIBLE
             if (timeClockAttendanceAdapter.isSearchEnabled()) {
-                textViewEmptyData.text = getString(R.string.string_no_record_found)
+                textViewEmptyData.text = getString(R.string.no_record_found_info_message)
             } else {
-                textViewEmptyData.text = getString(R.string.empty_lumpers_list)
+                textViewEmptyData.text = getString(R.string.empty_lumpers_list_info_message)
             }
         } else {
             textViewEmptyData.visibility = View.GONE
-            textViewEmptyData.text = getString(R.string.empty_lumpers_list)
+            textViewEmptyData.text = getString(R.string.empty_lumpers_list_info_message)
         }
     }
 
@@ -224,7 +224,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     }
 
     private fun showConfirmationDialog() {
-        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.string_ask_to_save_attendance_details), fragmentActivity!!, object : CustomDialogWarningListener {
+        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.save_attendance_alert_message), fragmentActivity!!, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 imageViewCancel.performClick()
                 val updatedData = timeClockAttendanceAdapter.getUpdatedData()
@@ -289,7 +289,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     }
 
     override fun showDataSavedMessage() {
-        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.attendance_saved_successfully),
+        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.attendance_saved_success_message),
             fragmentActivity!!, object : CustomDialogListener {
                 override fun onConfirmClick() {
                     timeClockAttendancePresenter.fetchAttendanceList()

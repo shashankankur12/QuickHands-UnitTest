@@ -101,7 +101,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
     }
 
     override fun customerSavedSuccessfully() {
-        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.customer_sheet_submitted_successfully),
+        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.customer_sheet_success_message),
             fragmentActivity!!, object : CustomDialogListener {
                 override fun onConfirmClick() {
                     customerSheetPresenter.getCustomerSheetByDate(Date(selectedTime))

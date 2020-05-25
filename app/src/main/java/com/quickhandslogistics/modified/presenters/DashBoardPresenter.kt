@@ -24,7 +24,7 @@ class DashBoardPresenter(private var dashBoardView: DashBoardContract.View?, pri
     }
 
     override fun performLogout() {
-        dashBoardView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        dashBoardView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         dashBoardModel.performLogout(this)
     }
 
@@ -32,7 +32,7 @@ class DashBoardPresenter(private var dashBoardView: DashBoardContract.View?, pri
     override fun onFailure(message: String) {
         dashBoardView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            dashBoardView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            dashBoardView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             dashBoardView?.showAPIErrorMessage(message)
         }

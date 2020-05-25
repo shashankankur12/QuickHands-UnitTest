@@ -62,7 +62,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="@string/empty_lumpers_list"
+                android:text="@string/empty_lumpers_list_info_message"
                 android:visibility="gone" />
         </RelativeLayout>
 
@@ -76,7 +76,7 @@
                 android:id="@+id/buttonSave"
                 style="@style/positiveRoundButtonTheme"
                 android:enabled="false"
-                android:text="@string/string_save" />
+                android:text="@string/save" />
 
             <Button
                 android:id="@+id/buttonAddTime"

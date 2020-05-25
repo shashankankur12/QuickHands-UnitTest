@@ -19,7 +19,7 @@ class ChooseLumpersPresenter(private var chooseLumpersView: ChooseLumpersContrac
     }
 
     override fun fetchLumpersList() {
-        chooseLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        chooseLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         chooseLumpersModel.fetchLumpersList(this)
     }
 
@@ -27,7 +27,7 @@ class ChooseLumpersPresenter(private var chooseLumpersView: ChooseLumpersContrac
     override fun onFailure(message: String) {
         chooseLumpersView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            chooseLumpersView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            chooseLumpersView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             chooseLumpersView?.showAPIErrorMessage(message)
         }

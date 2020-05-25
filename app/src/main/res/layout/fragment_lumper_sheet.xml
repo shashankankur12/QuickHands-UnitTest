@@ -82,7 +82,7 @@
                 android:id="@+id/textViewEmptyData"
                 style="@style/noRecordTextViewTheme"
                 android:layout_centerInParent="true"
-                android:text="@string/empty_lumper_sheet"
+                android:text="@string/empty_lumper_sheet_info_message"
                 android:visibility="gone" />
         </RelativeLayout>
 
@@ -90,6 +90,6 @@
             android:id="@+id/buttonSubmit"
             style="@style/positiveRoundButtonTheme"
             android:layout_marginBottom="@dimen/_8sdp"
-            android:text="@string/string_submit" />
+            android:text="@string/submit" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

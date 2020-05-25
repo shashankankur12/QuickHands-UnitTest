@@ -56,7 +56,7 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_schedule_detail)
-        setupToolbar(getString(R.string.scheduled_work))
+        setupToolbar(getString(R.string.schedule_detail))
 
 
         intent.extras?.let { bundle ->
@@ -88,7 +88,7 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.actionNotes -> CustomProgressBar.getInstance().showInfoDialog(getString(R.string.string_note), scheduleDetail?.scheduleNote!!, activity)
+            R.id.actionNotes -> CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), scheduleDetail?.scheduleNote!!, activity)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -105,21 +105,21 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
         recyclerViewLiveLoad.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            liveLoadsAdapter = ScheduledWorkItemAdapter(resources, getString(R.string.string_live_loads), isFutureDate, this@ScheduleDetailActivity)
+            liveLoadsAdapter = ScheduledWorkItemAdapter(resources, getString(R.string.live_loads), isFutureDate, this@ScheduleDetailActivity)
             adapter = liveLoadsAdapter
         }
 
         recyclerViewDrops.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            dropsAdapter = ScheduledWorkItemAdapter(resources, getString(R.string.string_drops), isFutureDate, this@ScheduleDetailActivity)
+            dropsAdapter = ScheduledWorkItemAdapter(resources, getString(R.string.drops), isFutureDate, this@ScheduleDetailActivity)
             adapter = dropsAdapter
         }
 
         recyclerViewOutBonds.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            outBondsAdapter = ScheduledWorkItemAdapter(resources, getString(R.string.string_out_bounds), isFutureDate, this@ScheduleDetailActivity)
+            outBondsAdapter = ScheduledWorkItemAdapter(resources, getString(R.string.out_bounds), isFutureDate, this@ScheduleDetailActivity)
             adapter = outBondsAdapter
         }
 
@@ -139,7 +139,7 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
             textViewScheduleDate.text = DateUtils.changeDateString(PATTERN_API_REQUEST_PARAMETER, PATTERN_NORMAL, it)
         }
         textViewScheduleType.text = scheduleDetail.scheduleTypeNames
-        textViewWorkItemsCount.text = String.format(getString(R.string.work_items_count), scheduleDetail.totalNumberOfWorkItems)
+        textViewWorkItemsCount.text = String.format(getString(R.string.work_items_s), scheduleDetail.totalNumberOfWorkItems)
     }
 
     private fun showLiveLoadsList(scheduleTypes: ScheduleDetail.ScheduleTypes): ArrayList<EmployeeData> {

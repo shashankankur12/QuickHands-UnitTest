@@ -2,7 +2,6 @@ package com.quickhandslogistics.modified.models
 
 import android.content.res.Resources
 import com.franmontiel.localechanger.LocaleChanger
-import com.quickhandslogistics.R
 import com.quickhandslogistics.modified.contracts.SettingsContract
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
@@ -21,7 +20,7 @@ class SettingsModel(private val resources: Resources, private val sharedPref: Sh
     }
 
     override fun checkSelectedSettings(listener: SettingsContract.Model.OnFinishedListener) {
-        val selectedLanguage = sharedPref.getString(AppConstant.PREFERENCE_LANGUAGE, defaultValue = resources.getString(R.string.english))
+        val selectedLanguage = sharedPref.getString(AppConstant.PREFERENCE_LANGUAGE, defaultValue = AppConstant.LANGUAGE_ENGLISH_CODE)
         val notificationEnabled = sharedPref.getBoolean(AppConstant.PREFERENCE_NOTIFICATION, defaultValue = true)
         listener.showSelectedSettings(selectedLanguage, notificationEnabled)
     }

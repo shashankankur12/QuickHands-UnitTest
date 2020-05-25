@@ -20,7 +20,7 @@ class ScheduleDetailPresenter(private var scheduleDetailView: ScheduleDetailCont
     }
 
     override fun getScheduleDetail(scheduleIdentityId: String, selectedDate: Date) {
-        scheduleDetailView?.showProgressDialog(resources.getString(R.string.api_loading_message))
+        scheduleDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         scheduleDetailModel.fetchScheduleDetail(scheduleIdentityId, selectedDate, this)
     }
 
@@ -28,7 +28,7 @@ class ScheduleDetailPresenter(private var scheduleDetailView: ScheduleDetailCont
     override fun onFailure(message: String) {
         scheduleDetailView?.hideProgressDialog()
         if (TextUtils.isEmpty(message)) {
-            scheduleDetailView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong))
+            scheduleDetailView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             scheduleDetailView?.showAPIErrorMessage(message)
         }
@@ -38,9 +38,9 @@ class ScheduleDetailPresenter(private var scheduleDetailView: ScheduleDetailCont
         scheduleDetailView?.hideProgressDialog()
         scheduleDetailAPIResponse.data?.schedules?.let { scheduleDetail ->
             var scheduleTypeNames = ""
-            scheduleTypeNames = getScheduleTypeName(scheduleDetail.scheduleTypes?.liveLoads, scheduleTypeNames, resources.getString(R.string.string_live_loads))
-            scheduleTypeNames = getScheduleTypeName(scheduleDetail.scheduleTypes?.drops, scheduleTypeNames, resources.getString(R.string.string_drops))
-            scheduleTypeNames = getScheduleTypeName(scheduleDetail.scheduleTypes?.outbounds, scheduleTypeNames, resources.getString(R.string.string_out_bounds))
+            scheduleTypeNames = getScheduleTypeName(scheduleDetail.scheduleTypes?.liveLoads, scheduleTypeNames, resources.getString(R.string.live_loads))
+            scheduleTypeNames = getScheduleTypeName(scheduleDetail.scheduleTypes?.drops, scheduleTypeNames, resources.getString(R.string.drops))
+            scheduleTypeNames = getScheduleTypeName(scheduleDetail.scheduleTypes?.outbounds, scheduleTypeNames, resources.getString(R.string.out_bounds))
             scheduleDetail.scheduleTypeNames = scheduleTypeNames
             scheduleDetailView?.showScheduleData(scheduleDetail)
         }

@@ -61,15 +61,15 @@ class WorkSheetItemAdapter(private val resources: Resources, var adapterItemClic
         }
 
         fun bind(workItemDetail: WorkItemDetail) {
-            textViewStartTime.text = String.format(resources.getString(R.string.start_time_container), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
+            textViewStartTime.text = String.format(resources.getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
 
             val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.workItemType, resources)
             textViewWorkItemType.text = workItemTypeDisplayName
 
             when (workItemTypeDisplayName) {
-                resources.getString(R.string.string_drops) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.no_of_drops), workItemDetail.numberOfDrops)
-                resources.getString(R.string.string_live_loads) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.live_load_sequence), workItemDetail.sequence)
-                else -> textViewNoOfDrops.text = String.format(resources.getString(R.string.outbound_sequence), workItemDetail.sequence)
+                resources.getString(R.string.drops) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.no_of_drops_s), workItemDetail.numberOfDrops)
+                resources.getString(R.string.live_loads) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.live_load_s), workItemDetail.sequence)
+                else -> textViewNoOfDrops.text = String.format(resources.getString(R.string.out_bound_s), workItemDetail.sequence)
             }
 
             workItemDetail.assignedLumpersList?.let { imagesList ->

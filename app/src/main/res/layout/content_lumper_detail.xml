@@ -16,7 +16,6 @@
             android:id="@+id/circleImageViewProfile"
             android:layout_width="@dimen/_70sdp"
             android:layout_height="@dimen/_70sdp"
-            android:contentDescription="@string/nav_header_desc"
             android:src="@drawable/dummy"
             android:transitionName="@string/transition_name"
             app:civ_border_color="@color/imageBorder"

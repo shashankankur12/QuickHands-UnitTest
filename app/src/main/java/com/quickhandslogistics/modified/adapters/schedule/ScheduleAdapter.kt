@@ -56,7 +56,7 @@ class ScheduleAdapter(private val resources: Resources, var adapterItemClickList
             if (!scheduleDetail.buildingName.isNullOrEmpty())
                 textViewBuildingName.text = scheduleDetail.buildingName?.capitalize()
             textViewScheduleType.text = scheduleDetail.scheduleTypeNames
-            textViewWorkItemsCount.text = String.format(resources.getString(R.string.work_items_count), scheduleDetail.totalNumberOfWorkItems)
+            textViewWorkItemsCount.text = String.format(resources.getString(R.string.work_items_s), scheduleDetail.totalNumberOfWorkItems)
 
             recyclerViewLumpersImagesList.apply {
                 adapter = LumperImagesAdapter(scheduleDetail.allAssignedLumpers, this@ViewHolder)
