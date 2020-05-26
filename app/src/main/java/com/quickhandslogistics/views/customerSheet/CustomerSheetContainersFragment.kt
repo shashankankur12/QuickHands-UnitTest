@@ -77,9 +77,7 @@ class CustomerSheetContainersFragment : BaseFragment(), CustomerSheetContainersC
     /** Adapter Listeners */
     override fun onBOItemClick(workItemDetail: WorkItemDetail) {
         val bundle = Bundle()
-        bundle.putStringArrayList(
-            ARG_BUILDING_PARAMETERS, workItemDetail.buildingDetailData?.parameters
-        )
+        bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, workItemDetail.buildingDetailData?.parameters)
         bundle.putSerializable(ARG_BUILDING_PARAMETER_VALUES, workItemDetail.buildingOps)
         startIntent(BuildingOperationsViewActivity::class.java, bundle = bundle)
     }

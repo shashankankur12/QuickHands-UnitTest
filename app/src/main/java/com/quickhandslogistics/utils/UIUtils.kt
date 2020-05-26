@@ -77,7 +77,7 @@ object UIUtils {
     fun getDisplayPhoneNumber(employeeData: EmployeeData?): String {
         var phoneNumber = ""
         employeeData?.let {
-            phoneNumber = String.format("+1 %s", PhoneNumberUtils.formatNumber(it.phone, "US"))
+            phoneNumber = PhoneNumberUtils.formatNumber(it.phone, "US")
         }
         return phoneNumber
     }

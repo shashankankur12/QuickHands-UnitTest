@@ -43,6 +43,7 @@ class LumperWorkDetailAdapter(private val resources: Resources, private var adap
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         private val textViewWorkItemType: TextView = itemView.textViewWorkItemType
+        private val textViewStartTime: TextView = itemView.textViewStartTime
         private val textViewCustomerNote: TextView = itemView.textViewCustomerNote
         private val textViewQHLNote: TextView = itemView.textViewQHLNote
         private val textViewStatus: TextView = itemView.textViewStatus
@@ -68,6 +69,7 @@ class LumperWorkDetailAdapter(private val resources: Resources, private var adap
             lumperDaySheet.workItemDetail?.let { workItemDetail ->
                 val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.workItemType, resources)
                 textViewWorkItemType.text = workItemTypeDisplayName
+                textViewStartTime.text = String.format(resources.getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
 
                 if (!workItemDetail.notesQHLCustomer.isNullOrEmpty() && workItemDetail.notesQHLCustomer != AppConstant.NOTES_NOT_AVAILABLE) {
                     linearLayoutCustomerNotes.visibility = View.VISIBLE

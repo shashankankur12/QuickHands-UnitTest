@@ -107,12 +107,12 @@
                     android:text="@string/schedule_lumpers" />
 
                 <Button
-                    android:id="@+id/buttonRequestHelp"
+                    android:id="@+id/buttonRequestLumpers"
                     style="@style/negativeRoundButtonTheme"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="@string/request_help" />
+                    android:text="@string/request_lumpers" />
             </LinearLayout>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

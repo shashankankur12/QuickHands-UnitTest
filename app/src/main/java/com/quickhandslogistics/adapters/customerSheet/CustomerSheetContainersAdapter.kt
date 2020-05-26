@@ -12,6 +12,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.customerSheet.CustomerSheetContainersContract
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.ScheduleUtils
 import kotlinx.android.synthetic.main.item_customer_sheet_container.view.*
 
@@ -42,6 +43,7 @@ class CustomerSheetContainersAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         private val textViewWorkItemType: TextView = itemView.textViewWorkItemType
+        private val textViewStartTime: TextView = itemView.textViewStartTime
         private val textViewNote: TextView = itemView.textViewNote
         private val textViewStatus: TextView = itemView.textViewStatus
         private val clickableViewBO: View = itemView.clickableViewBO
@@ -60,6 +62,7 @@ class CustomerSheetContainersAdapter(
         fun bind(workItemDetail: WorkItemDetail) {
             val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.workItemType, resources)
             textViewWorkItemType.text = workItemTypeDisplayName
+            textViewStartTime.text = String.format(resources.getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
 
             if (!workItemDetail.notesQHLCustomer.isNullOrEmpty() && workItemDetail.notesQHLCustomer != AppConstant.NOTES_NOT_AVAILABLE) {
                 linearLayoutNotes.visibility = View.VISIBLE

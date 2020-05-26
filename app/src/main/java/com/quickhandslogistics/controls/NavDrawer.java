@@ -15,11 +15,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.quickhandslogistics.R;
 import com.quickhandslogistics.contracts.DashBoardContract;
+import com.quickhandslogistics.utils.AppUtils;
 import com.quickhandslogistics.views.BaseActivity;
 import com.quickhandslogistics.views.workSheet.WorkSheetFragment;
-import com.quickhandslogistics.utils.AppUtils;
 
 import java.util.ArrayList;
+
+import kotlin.Pair;
 
 public class NavDrawer {
 
@@ -172,17 +174,20 @@ public class NavDrawer {
         }
     }
 
-    public static class ActivityNavDrawerItem extends BasicNavDrawerItem {
+    public static class AppNavDrawerItem extends BasicNavDrawerItem {
         private final Fragment targetFragment;
         private String text;
         boolean showOnLaunch;
 
-        public ActivityNavDrawerItem(Fragment targetFragment, String text, int iconDrawable, int containerId, boolean showOnLaunch) {
-            super(text, iconDrawable, containerId);
+        /**
+         * Pair contains two items. First is 'Tab Title Text' and Second is 'isShowOnLaunch'
+         */
+        public AppNavDrawerItem(Fragment targetFragment, int iconDrawable, int containerId, Pair<String, Boolean> pair) {
+            super(pair.getFirst(), iconDrawable, containerId);
 
             this.targetFragment = targetFragment;
-            this.text = text;
-            this.showOnLaunch = showOnLaunch;
+            this.text = pair.getFirst();
+            this.showOnLaunch = pair.getSecond();
         }
 
         @Override
@@ -192,7 +197,7 @@ public class NavDrawer {
             if (showOnLaunch) {
                 toolbar.setTitle(text);
                 this.navDrawer.setSelectedItem(this);
-                showFragment(this.navDrawer.activity);
+                showFragment(this.navDrawer.activity, false);
                 this.navDrawer.invalidateOptionMenu(text);
             }
         }
@@ -209,12 +214,15 @@ public class NavDrawer {
             } else {
                 toolbar.setTitle(text);
                 navDrawer.setSelectedItem(this);
-                showFragment(activity);
+                showFragment(activity, true);
                 navDrawer.invalidateOptionMenu(text);
             }
         }
 
-        private void showFragment(BaseActivity activity) {
+        private void showFragment(BaseActivity activity, Boolean isClearArguments) {
+            if (isClearArguments) {
+                targetFragment.setArguments(null);
+            }
             FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.frameLayoutMain, targetFragment, targetFragment.getClass().getSimpleName());
             fragmentTransaction.commit();

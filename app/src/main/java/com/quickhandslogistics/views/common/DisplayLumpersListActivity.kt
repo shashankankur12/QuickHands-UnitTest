@@ -12,11 +12,11 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.common.DisplayLumpersListAdapter
 import com.quickhandslogistics.contracts.lumpers.LumpersContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
-import com.quickhandslogistics.views.BaseActivity
-import com.quickhandslogistics.views.lumpers.LumperDetailActivity
+import com.quickhandslogistics.utils.AppUtils
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.AppUtils
+import com.quickhandslogistics.views.BaseActivity
+import com.quickhandslogistics.views.lumpers.LumperDetailActivity
 import kotlinx.android.synthetic.main.content_choose_lumper.*
 import java.util.ArrayList
 import kotlin.Comparator
@@ -61,6 +61,7 @@ class DisplayLumpersListActivity : BaseActivity(), View.OnClickListener, TextWat
             adapter = displayLumpersListAdapter
         }
 
+        buttonAdd.visibility = View.GONE
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
     }

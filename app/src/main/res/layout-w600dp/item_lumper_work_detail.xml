@@ -39,6 +39,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/textViewStartTime"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:drawableStart="@drawable/ic_schedule_calendar"
+            android:drawablePadding="@dimen/_4sdp"
+            android:text="@string/start_time_s"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemType" />
+
         <LinearLayout
             android:id="@+id/linearLayoutLumperTime"
             android:layout_width="0dp"
@@ -50,7 +61,7 @@
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewStatus">
+            app:layout_constraintTop_toBottomOf="@id/textViewStartTime">
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -19,9 +19,15 @@ interface AppConstant {
         const val NOTIFICATION_KEY_TYPE = "NotificationType"
         const val NOTIFICATION_KEY_SCHEDULE_IDENTITY = "ScheduleIdentity"
         const val NOTIFICATION_KEY_SCHEDULE_FROM_DATE = "ScheduledFromDate"
+        const val NOTIFICATION_KEY_DATE = "Date"
 
         //Notification Types
         const val NOTIFICATION_TYPE_SCHEDULE_CREATE = "ScheduleCreate"
+        const val NOTIFICATION_TYPE_LUMPER_CHANGED = "lumper-assignment-update"
+        const val NOTIFICATION_TYPE_LUMPER_REQUEST_APPROVED = "temp-lumpers-req-approved"
+        const val NOTIFICATION_TYPE_LUMPER_REQUEST_REJECTED = "temp-lumpers-req-rejected"
+        const val NOTIFICATION_TYPE_LEAD_BUILDING_ADDED = "lead-building-added"
+        const val NOTIFICATION_TYPE_LEAD_BUILDING_REMOVED = "lead-building-removed"
 
         // API Enums
         const val WORK_ITEM_STATUS_ON_HOLD = "ON-HOLD"

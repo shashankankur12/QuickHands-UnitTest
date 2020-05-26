@@ -12,10 +12,10 @@ import com.quickhandslogistics.contracts.scheduleTime.RequestLumpersContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
 import com.quickhandslogistics.presenters.scheduleTime.RequestLumpersPresenter
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_LUMPERS_COUNT
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
-import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.activity_request_lumpers.*
 import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.*
 import kotlinx.android.synthetic.main.content_request_lumpers.*
@@ -24,6 +24,7 @@ import java.util.*
 class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     RequestLumpersContract.View, RequestLumpersContract.View.OnAdapterItemClickListener {
 
+    private var isFutureDate = false
     private var selectedTime: Long = 0
     private var scheduledLumpersCount: Int = 0
 
@@ -35,11 +36,13 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_request_lumpers)
-        setupToolbar(getString(R.string.request_help))
+        setupToolbar(getString(R.string.request_lumpers))
 
         intent.extras?.let { bundle ->
             selectedTime = bundle.getLong(ARG_SELECTED_DATE_MILLISECONDS, 0)
             scheduledLumpersCount = bundle.getInt(ARG_SCHEDULED_LUMPERS_COUNT, 0)
+
+            isFutureDate = DateUtils.isFutureDate(selectedTime)
         }
 
         initializeUI()
@@ -55,7 +58,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         recyclerViewRequestLumpers.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            requestLumpersAdapter = RequestLumpersAdapter(resources, this@RequestLumpersActivity)
+            requestLumpersAdapter = RequestLumpersAdapter(resources, isFutureDate, this@RequestLumpersActivity)
             adapter = requestLumpersAdapter
         }
 
@@ -65,6 +68,14 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
                 textViewEmptyData.visibility = if (requestLumpersAdapter.itemCount == 0) View.VISIBLE else View.GONE
             }
         })
+
+        if (isFutureDate) {
+            textViewEmptyData.text = getString(R.string.empty_request_lumpers_list_info_message)
+            buttonCreateNewRequest.visibility = View.VISIBLE
+        } else {
+            textViewEmptyData.text = getString(R.string.empty_request_lumpers_list_info_message_past)
+            buttonCreateNewRequest.visibility = View.GONE
+        }
 
         buttonCreateNewRequest.setOnClickListener(this)
         bottomSheetBackgroundRequestLumpers.setOnClickListener(this)

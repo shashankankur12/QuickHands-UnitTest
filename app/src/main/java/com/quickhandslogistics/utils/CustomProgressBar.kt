@@ -96,13 +96,19 @@ class CustomProgressBar {
     }
 
     private fun updateButtonsUI(progressDialog: SweetAlertDialog, activityContext: Context) {
+        val density = activityContext.resources.displayMetrics.density
+        val width: Int = (activityContext.resources.getDimension(R.dimen.dialogButtonWidth) / density).toInt()
+        val height: Int = (activityContext.resources.getDimension(R.dimen.dialogButtonHeight) / density).toInt()
+
         progressDialog.setConfirmTextAppearance(R.style.dialogConfirmButtonTheme)
         progressDialog.setConfirmButtonBackground(R.drawable.round_button_red_selector)
-        progressDialog.setConfirmButtonHeight(((activityContext.resources.getDimension(R.dimen.dialogButtonHeight) / activityContext.resources.displayMetrics.density).toInt()))
+        progressDialog.setConfirmButtonWidth(width)
+        progressDialog.setConfirmButtonHeight(height)
 
         progressDialog.setCancelTextAppearance(R.style.dialogCancelButtonTheme)
         progressDialog.setCancelButtonBackground(R.drawable.round_button_negative_selector)
-        progressDialog.setCancelButtonHeight(((activityContext.resources.getDimension(R.dimen.dialogButtonHeight) / activityContext.resources.displayMetrics.density).toInt()))
+        progressDialog.setCancelButtonWidth(width)
+        progressDialog.setCancelButtonHeight(height)
     }
 }
 
