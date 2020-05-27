@@ -9,36 +9,33 @@
 
     <TextView
         android:id="@+id/textViewBuildingName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/buildingTitle"
-        android:textSize="@dimen/_16ssp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/titleBigTextViewTheme"
+        android:layout_width="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/textViewStatus"
+        style="@style/baseChipTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewScheduleType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/valuesTextViewTheme"
         android:layout_marginTop="@dimen/_4sdp"
         android:drawableStart="@drawable/ic_schedule_type"
         android:drawablePadding="@dimen/_5sdp"
-        android:textColor="@color/scheduleDetail"
-        android:textSize="@dimen/_12ssp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewBuildingName" />
 
-    <TextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewWorkItemsCount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/valuesTextViewTheme"
         android:layout_marginTop="@dimen/_4sdp"
         android:drawableStart="@drawable/ic_schedule_work_items"
         android:drawablePadding="@dimen/_5sdp"
-        android:textColor="@color/scheduleDetail"
-        android:textSize="@dimen/_10ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />

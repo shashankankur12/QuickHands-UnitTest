@@ -19,9 +19,16 @@ interface AppConstant {
         const val NOTIFICATION_KEY_TYPE = "NotificationType"
         const val NOTIFICATION_KEY_SCHEDULE_IDENTITY = "ScheduleIdentity"
         const val NOTIFICATION_KEY_SCHEDULE_FROM_DATE = "ScheduledFromDate"
+        const val NOTIFICATION_KEY_DATE = "Date"
 
         //Notification Types
-        const val NOTIFICATION_TYPE_SCHEDULE_CREATE = "ScheduleCreate"
+        const val NOTIFICATION_TYPE_SCHEDULE_CREATE = "schedule-created"
+        const val NOTIFICATION_TYPE_SCHEDULE_UPDATE = "schedule-updated"
+        const val NOTIFICATION_TYPE_LUMPER_CHANGED = "lumper-assignment-update"
+        const val NOTIFICATION_TYPE_LUMPER_REQUEST_APPROVED = "temp-lumpers-req-approved"
+        const val NOTIFICATION_TYPE_LUMPER_REQUEST_REJECTED = "temp-lumpers-req-rejected"
+        const val NOTIFICATION_TYPE_LEAD_BUILDING_ADDED = "lead-building-added"
+        const val NOTIFICATION_TYPE_LEAD_BUILDING_REMOVED = "lead-building-removed"
 
         // API Enums
         const val WORK_ITEM_STATUS_ON_HOLD = "ON-HOLD"
@@ -30,12 +37,26 @@ interface AppConstant {
         const val WORK_ITEM_STATUS_CANCELLED = "CANCELLED"
         const val WORK_ITEM_STATUS_SCHEDULED = "SCHEDULED"
 
-        const val NOTES_NOT_AVAILABLE = "NA"
+        // REQUEST LUMPERS Enums
+        const val REQUEST_LUMPERS_STATUS_PENDING = "pending"
+        const val REQUEST_LUMPERS_STATUS_APPROVED = "approved"
+        const val REQUEST_LUMPERS_STATUS_REJECTED = "rejected"
 
-        const val EDIT_DIALOG = "edit_dialog"
+        // Attendance
+        const val ATTENDANCE_IS_PRESENT = "ATTENDANCE_IS_PRESENT"
+        const val ATTENDANCE_MORNING_PUNCH_IN = "ATTENDANCE_MORNING_PUNCH_IN"
+        const val ATTENDANCE_EVENING_PUNCH_OUT = "ATTENDANCE_EVENING_PUNCH_OUT"
+        const val ATTENDANCE_LUNCH_PUNCH_IN = "ATTENDANCE_LUNCH_PUNCH_IN"
+        const val ATTENDANCE_LUNCH_PUNCH_OUT = "ATTENDANCE_LUNCH_PUNCH_OUT"
+
+        const val NOTES_NOT_AVAILABLE = "NA"
 
         const val REQUEST_CODE_CHANGED = 101
 
         const val API_PAGE_SIZE = 20
+
+        const val LANGUAGE_ENGLISH_CODE = "en-US"
+        const val LANGUAGE_SPANISH_CODE = "es"
+
     }
 }

@@ -6,32 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground"
-    android:orientation="vertical"
-    tools:context=".modified.views.common.BuildingOperationsViewActivity">
+    tools:context=".views.common.BuildingOperationsViewActivity">
 
     <include
         android:id="@+id/header"
         layout="@layout/layout_toolbar" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@drawable/shadow_effect"
-        android:translationY="-25dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
-
     <RelativeLayout
-        android:id="@+id/relativeLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:background="@drawable/top_left_round_background"
-        android:paddingStart="@dimen/_20ssp"
-        android:paddingTop="@dimen/_15ssp"
-        android:paddingEnd="@dimen/_20ssp"
-        android:paddingBottom="@dimen/_15ssp"
+        android:background="@drawable/white_background"
+        android:paddingStart="@dimen/_16ssp"
+        android:paddingTop="@dimen/_12ssp"
+        android:paddingEnd="@dimen/_16ssp"
+        android:paddingBottom="@dimen/_12ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

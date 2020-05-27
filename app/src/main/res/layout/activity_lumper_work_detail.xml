@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground"
-    tools:context=".modified.views.lumperSheet.LumperWorkDetailActivity">
+    tools:context=".views.lumperSheet.LumperWorkDetailActivity">
 
     <include
         android:id="@+id/header"
@@ -26,60 +26,42 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circleImageViewProfile"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
+            style="@style/circularImageViewTheme"
             android:layout_marginStart="@dimen/_12sdp"
-            android:contentDescription="@string/nav_header_desc"
-            android:src="@drawable/dummy"
-            app:civ_border_color="@color/imageBorder"
-            app:civ_border_width="1dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textViewLumperName"
+            style="@style/titleTextViewTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewEmployeeId"
+            style="@style/valuesSmallTextViewTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:textColor="@color/textWhite"
-            android:textSize="@dimen/_10ssp"
+            android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
             app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@drawable/shadow_effect"
-        android:translationY="-15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
-
     <LinearLayout
-        android:id="@+id/relativeLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:background="@drawable/top_left_round_background"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:background="@drawable/white_background"
         android:orientation="vertical"
-        android:paddingTop="@dimen/_15ssp"
+        android:paddingTop="@dimen/_16ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -99,7 +81,9 @@
                     android:id="@+id/layoutSignature"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
                     android:background="@drawable/schedule_item_background"
                     android:elevation="@dimen/_4sdp"
                     android:orientation="vertical"
@@ -114,14 +98,10 @@
 
                     <TextView
                         android:id="@+id/textViewSignatureHeader"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/titleTextViewTheme"
                         android:paddingTop="@dimen/_5sdp"
                         android:paddingBottom="@dimen/_5sdp"
                         android:text="@string/signature"
-                        android:textColor="@color/buildingTitle"
-                        android:textSize="@dimen/_14ssp"
-                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -139,35 +119,21 @@
 
                     <TextView
                         android:id="@+id/textViewAddSignature"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/addTextViewTheme"
                         android:layout_gravity="end"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:clickable="true"
-                        android:drawableStart="@drawable/ic_add_time_plus"
-                        android:drawablePadding="@dimen/_5sdp"
-                        android:padding="@dimen/_5sdp"
                         android:text="@string/signature"
-                        android:textColor="@color/buttonRed"
-                        android:textSize="@dimen/_12ssp"
-                        android:textStyle="bold"
-                        android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/textViewSignature"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/addTextViewTheme"
                         android:layout_gravity="end"
+                        android:background="@null"
                         android:drawableStart="@drawable/ic_done"
-                        android:drawablePadding="@dimen/_5sdp"
-                        android:padding="@dimen/_5sdp"
                         android:text="@string/signature"
                         android:textColor="@color/online"
-                        android:textSize="@dimen/_12ssp"
-                        android:textStyle="bold"
                         android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -183,14 +149,9 @@
 
         <Button
             android:id="@+id/buttonSave"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/positiveRoundButtonTheme"
             android:layout_margin="@dimen/_10sdp"
-            android:background="@drawable/round_button_selector"
-            android:text="@string/string_save"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_14ssp"
+            android:text="@string/save"
             android:visibility="gone" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,15 +10,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/_20ssp">
+        android:layout_height="wrap_content">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circleImageViewProfile"
             android:layout_width="@dimen/_70sdp"
             android:layout_height="@dimen/_70sdp"
-            android:contentDescription="@string/nav_header_desc"
             android:src="@drawable/dummy"
+            android:transitionName="@string/transition_name"
             app:civ_border_color="@color/imageBorder"
             app:civ_border_width="1dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -38,44 +37,44 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/circleImageViewProfile" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/constraintLayout"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:background="@drawable/white_background"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/_16ssp"
+        android:paddingTop="@dimen/_2ssp"
+        android:paddingEnd="@dimen/_16ssp">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayoutLumperDetail"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textViewLumperName"
             app:tabIndicatorColor="@color/buttonRed"
             app:tabIndicatorFullWidth="false"
             app:tabMode="scrollable"
-            app:tabSelectedTextColor="@android:color/black"
+            app:tabSelectedTextColor="@color/textBlack"
             app:tabTextAppearance="@style/TabTextAppearance"
             app:tabTextColor="@color/detailHeader" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_below="@+id/constraintLayout"
-        android:layout_marginTop="-30dp"
-        android:background="@drawable/shadow_effect" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/constraintLayout"
-        android:layout_marginTop="-12dp"
-        android:background="@drawable/top_left_round_background">
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/greyDivider" />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPagerLumperDetail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/_15ssp"
-            android:layout_marginTop="@dimen/_20ssp"
-            android:layout_marginEnd="@dimen/_15ssp"
+            android:layout_marginTop="@dimen/_10ssp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-    </RelativeLayout>
+    </LinearLayout>
 </RelativeLayout>

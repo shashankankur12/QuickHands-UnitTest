@@ -3,17 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground">
+    android:background="@drawable/schedule_item_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="1dp"
         android:background="@drawable/item_background_selected"
-        android:paddingTop="@dimen/_10ssp"
-        android:paddingBottom="@dimen/_10ssp"
+        android:padding="@dimen/_10ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,12 +25,9 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circleImageViewProfile"
+                style="@style/circularImageViewTheme"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/nav_header_desc"
-                android:src="@drawable/dummy"
-                app:civ_border_color="@color/imageBorder"
-                app:civ_border_width="1dp" />
+                android:layout_height="match_parent" />
 
             <RelativeLayout
                 android:id="@+id/relativeLayoutSelected"
@@ -46,11 +40,11 @@
                     android:src="@drawable/background_selected_image" />
 
                 <ImageView
-                    android:layout_width="25dp"
+                    android:layout_width="@dimen/_22sdp"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:tint="@android:color/white"
-                    android:src="@drawable/ic_done" />
+                    android:src="@drawable/ic_done"
+                    android:tint="@android:color/white" />
             </RelativeLayout>
         </RelativeLayout>
 
@@ -65,161 +59,178 @@
 
         <TextView
             android:id="@+id/textViewLumperName"
+            style="@style/titleTextViewTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:text="John Snow"
-            android:textColor="@color/textBlack"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/checkBoxAttendance"
+            app:layout_constraintEnd_toStartOf="@id/linearLayoutCheckBox"
             app:layout_constraintStart_toEndOf="@+id/relativeLayoutImage"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewEmployeeId"
+            style="@style/valuesSmallTextViewTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:text="(Emp ID: 1001)"
-            android:textColor="@color/textBlack"
-            android:textSize="@dimen/_10ssp"
-            app:layout_constraintEnd_toStartOf="@id/checkBoxAttendance"
+            app:emptyDataVisibility="empty_gone"
+            app:layout_constraintEnd_toStartOf="@id/linearLayoutCheckBox"
             app:layout_constraintStart_toEndOf="@+id/relativeLayoutImage"
             app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
 
-        <CheckBox
-            android:id="@+id/checkBoxAttendance"
+        <LinearLayout
+            android:id="@+id/linearLayoutCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:enabled="true"
+            android:gravity="end"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textViewLumperName" />
+            app:layout_constraintTop_toTopOf="@+id/textViewLumperName">
+
+            <CheckBox
+                android:id="@+id/checkBoxAttendance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:enabled="true"
+                android:textColor="@color/scheduleDetail" />
+
+            <com.quickhandslogistics.controls.CustomTextView
+                android:id="@+id/textViewCheckBoxStatus"
+                style="@style/valuesVerySmallTextViewTheme"
+                android:layout_width="wrap_content"
+                android:text="Mark Present"
+                app:emptyDataVisibility="empty_gone" />
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/layoutCheckBox"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clickable="true"
-            app:layout_constraintBottom_toBottomOf="@+id/checkBoxAttendance"
-            app:layout_constraintEnd_toEndOf="@+id/checkBoxAttendance"
-            app:layout_constraintStart_toStartOf="@+id/checkBoxAttendance"
-            app:layout_constraintTop_toTopOf="@+id/checkBoxAttendance" />
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayoutCheckBox"
+            app:layout_constraintEnd_toEndOf="@+id/linearLayoutCheckBox"
+            app:layout_constraintStart_toStartOf="@+id/linearLayoutCheckBox"
+            app:layout_constraintTop_toTopOf="@+id/linearLayoutCheckBox" />
 
         <TextView
             android:id="@+id/textViewNoTimeLoggedIn"
+            style="@style/valuesSmallTextViewTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10ssp"
-            android:text="No time logged in yet"
+            android:text="@string/no_time_logged_in_yet"
             android:textColor="@color/detailHeader"
-            android:textSize="@dimen/_10ssp"
             android:textStyle="italic"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/editTextNotes"
-            app:layout_constraintEnd_toStartOf="@+id/textViewAddTime"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/relativeLayoutImage"
             app:layout_constraintTop_toBottomOf="@id/textViewEmployeeId" />
 
-        <LinearLayout
-            android:id="@+id/linearLayoutLumperTime"
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/flexboxLayoutLumperTime"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_10ssp"
+            android:layout_marginTop="@dimen/_8ssp"
+            android:background="@drawable/notes_item_background"
             android:orientation="vertical"
+            android:padding="@dimen/_8sdp"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/editTextNotes"
-            app:layout_constraintEnd_toStartOf="@+id/textViewAddTime"
-            app:layout_constraintStart_toEndOf="@id/relativeLayoutImage"
+            app:flexWrap="wrap"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textViewEmployeeId">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:text="@string/shift_time"
-                android:textColor="@color/detailHeader"
-                android:textSize="@dimen/_10ssp" />
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:orientation="vertical"
+                app:layout_flexGrow="1">
 
-            <TextView
-                android:id="@+id/textViewShiftTime"
+                <TextView
+                    style="@style/titleVerySmallTextViewTheme"
+                    android:layout_width="wrap_content"
+                    android:text="@string/shift_time"
+                    android:textColor="@color/scheduleDetail" />
+
+                <TextView
+                    android:id="@+id/textViewShiftTime"
+                    style="@style/valuesSmallTextViewTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:drawableStart="@drawable/ic_lumper_list_clock"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:gravity="center_vertical"
+                    android:text="10:00 pm - 00:00 am" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:drawableStart="@drawable/ic_lumper_list_clock"
-                android:drawablePadding="@dimen/_5sdp"
-                android:gravity="center_vertical"
-                android:text="10:00 pm - 00:00 am"
-                android:textColor="@color/textBlack"
-                android:textSize="@dimen/_10ssp"
-                android:textStyle="bold" />
+                android:orientation="vertical"
+                app:layout_flexGrow="1">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:text="@string/lunch_time"
-                android:textColor="@color/detailHeader"
-                android:textSize="@dimen/_10ssp" />
+                <TextView
+                    style="@style/titleVerySmallTextViewTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lunch_time"
+                    android:textColor="@color/scheduleDetail" />
 
-            <TextView
-                android:id="@+id/textViewLunchTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:drawableStart="@drawable/ic_lumper_list_clock"
-                android:drawablePadding="@dimen/_5sdp"
-                android:gravity="center_vertical"
-                android:text="10:00 pm - 00:00 am"
-                android:textColor="@color/textBlack"
-                android:textSize="@dimen/_10ssp"
-                android:textStyle="bold" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/textViewLunchTime"
+                    style="@style/valuesSmallTextViewTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:drawableStart="@drawable/ic_lumper_list_clock"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:gravity="center_vertical"
+                    android:text="10:00 pm - 00:00 am" />
+            </LinearLayout>
+        </com.google.android.flexbox.FlexboxLayout>
 
-        <TextView
-            android:id="@+id/textViewAddTime"
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/labelBarrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="textViewNoTimeLoggedIn,flexboxLayoutLumperTime" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:drawableStart="@drawable/ic_add_time_plus"
-            android:drawablePadding="@dimen/_5sdp"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/add_time"
-            android:textColor="@color/buttonRed"
-            android:textSize="@dimen/_12ssp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/editTextNotes"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <EditText
-            android:id="@+id/editTextNotes"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edit_normal_bg"
-            android:gravity="top"
-            android:hint="@string/add_notes"
-            android:inputType="textPersonName"
-            android:padding="@dimen/_8sdp"
-            android:textSize="@dimen/_12ssp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelBarrier">
+
+            <TextView
+                android:id="@+id/textViewAddTime"
+                style="@style/addTextViewTheme"
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/add_time"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/editTextNotes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_normal_bg"
+                android:gravity="top"
+                android:hint="@string/add_notes"
+                android:imeOptions="actionDone"
+                android:inputType="textPersonName"
+                android:padding="@dimen/_8sdp"
+                android:textSize="@dimen/_12ssp" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

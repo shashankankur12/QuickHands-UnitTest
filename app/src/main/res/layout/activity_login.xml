@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".modified.views.LoginActivity">
+    tools:context=".views.LoginActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/appBackground"
-        tools:context=".modified.views.LoginActivity">
+        tools:context=".views.LoginActivity">
 
         <LinearLayout
             android:id="@+id/layoutLogo"
@@ -21,39 +21,30 @@
             android:gravity="center"
             android:orientation="vertical"
             android:padding="@dimen/_30sdp"
-            app:layout_constraintBottom_toTopOf="@+id/layout"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_140sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:src="@drawable/ic_splash_logo" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_250sdp"
+                android:layout_height="@dimen/_125sdp"
                 android:layout_marginTop="@dimen/_30sdp"
                 android:src="@drawable/login_illustration" />
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@drawable/shadow_effect"
-            android:translationY="-15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/layout" />
-
         <LinearLayout
-            android:id="@+id/layout"
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/login_form_background"
+            android:background="@drawable/white_background"
             android:orientation="vertical"
-            android:padding="@dimen/_20ssp"
+            android:padding="@dimen/_16ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,26 +53,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/signInCaption"
-                android:textColor="@android:color/black"
+                android:text="@string/sign_in_info_message"
+                android:textColor="@color/textBlack"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/editTextEmployeeId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/loginEditTextTheme"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/edittext_background"
                 android:drawableStart="@drawable/ic_employee_id_deselect"
-                android:drawablePadding="@dimen/_10ssp"
-                android:hint="@string/enter_employee_id"
-                android:inputType="textPersonName|textCapCharacters"
-                android:paddingStart="@dimen/_14ssp"
-                android:paddingTop="@dimen/_10ssp"
-                android:paddingEnd="@dimen/_14ssp"
-                android:paddingBottom="@dimen/_10ssp"
-                android:textSize="@dimen/_12ssp" />
+                android:hint="@string/enter_employee_id_info_message"
+                android:inputType="textPersonName|textCapCharacters" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -92,18 +75,10 @@
 
                 <EditText
                     android:id="@+id/editTextPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edittext_background"
+                    style="@style/loginEditTextTheme"
                     android:drawableStart="@drawable/ic_password_deselect"
-                    android:drawablePadding="@dimen/_10ssp"
-                    android:hint="@string/enter_password"
-                    android:inputType="textPassword"
-                    android:paddingStart="@dimen/_14ssp"
-                    android:paddingTop="@dimen/_10ssp"
-                    android:paddingEnd="@dimen/_14ssp"
-                    android:paddingBottom="@dimen/_10ssp"
-                    android:textSize="@dimen/_12ssp" />
+                    android:hint="@string/enter_password_info_message"
+                    android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -116,19 +91,15 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:padding="@dimen/_10sdp"
-                android:text="@string/string_forgot_password"
+                android:text="@string/forgot_password_question_mark"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold" />
 
             <Button
                 android:id="@+id/buttonLogin"
-                android:layout_width="match_parent"
+                style="@style/positiveRoundButtonTheme"
                 android:layout_height="wrap_content"
-                android:background="@drawable/round_button_red"
-                android:text="@string/string_login"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/_14ssp" />
+                android:text="@string/sign_in" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

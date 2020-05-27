@@ -2,4 +2,5 @@
 <resources>
     <item name="attendancePosition" type="id" />
     <item name="isMultiSelect" type="id" />
+    <item name="requestLumperId" type="id" />
 </resources>

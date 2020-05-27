@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".modified.views.lumpers.LumperWorkDetailFragment">
+    tools:context=".views.lumpers.LumperWorkDetailFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
                 style="@style/detailTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/string_shift" />
+                android:text="@string/shift" />
 
             <TextView
                 android:id="@+id/textViewShift"
@@ -47,7 +47,7 @@
                 style="@style/detailTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/string_shifting_hours" />
+                android:text="@string/shift_hours" />
 
             <TextView
                 android:id="@+id/textViewShiftHours"
@@ -79,7 +79,7 @@
                 style="@style/detailTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/string_availability" />
+                android:text="@string/availability" />
 
             <TextView
                 android:id="@+id/textViewAvailability"
@@ -104,7 +104,7 @@
                 style="@style/detailTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/string_ability_to_travel" />
+                android:text="@string/ability_to_travel" />
 
             <TextView
                 android:id="@+id/textViewAbilityTravel"
@@ -136,7 +136,7 @@
                 style="@style/detailTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/string_primary_building" />
+                android:text="@string/primary_building" />
 
             <TextView
                 android:id="@+id/textViewPrimaryBuilding"
@@ -161,7 +161,7 @@
                 style="@style/detailTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/string_miles_radius" />
+                android:text="@string/miles_radius_from_building" />
 
             <TextView
                 android:id="@+id/textViewMilesRadius"

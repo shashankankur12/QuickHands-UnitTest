@@ -22,11 +22,7 @@ class DateUtils {
             return dateFormat.format(date)
         }
 
-        fun changeDateString(
-            patternFrom: String,
-            patternTo: String,
-            dateString: String = ""
-        ): String {
+        fun changeDateString(patternFrom: String, patternTo: String, dateString: String = ""): String {
             val dateFormatFrom = SimpleDateFormat(patternFrom)
             val dateFormatTo = SimpleDateFormat(patternTo)
             try {
@@ -50,6 +46,17 @@ class DateUtils {
             return 0
         }
 
+        fun getDateFromDateString(pattern: String, dateString: String?): Date {
+            val dateFormatFrom = SimpleDateFormat(pattern)
+            dateString?.let {
+                val date = dateFormatFrom.parse(dateString)
+                date?.let {
+                    return date
+                }
+            }
+            return Date()
+        }
+
         fun isCurrentDate(selectedTime: Long): Boolean {
             val selectedCalendar = Calendar.getInstance()
             selectedCalendar.timeInMillis = selectedTime
@@ -66,10 +73,16 @@ class DateUtils {
             return selectedCalendar.after(currentCalendar)
         }
 
-        fun convertDateStringToTime(
-            patternDate: String,
-            dateString: String? = ""
-        ): String {
+        fun isSameDates(date1: Date, date2: Date): Boolean {
+            val calendar1 = Calendar.getInstance()
+            calendar1.time = date1
+            val calendar2 = Calendar.getInstance()
+            calendar2.time = date2
+
+            return calendar1[Calendar.DAY_OF_YEAR] == calendar2[Calendar.DAY_OF_YEAR] && calendar1[Calendar.YEAR] == calendar2[Calendar.YEAR]
+        }
+
+        fun convertDateStringToTime(patternDate: String, dateString: String? = ""): String {
             val dateStringValue = ValueUtils.getDefaultOrValue(dateString)
 
             val dateFormatFrom = SimpleDateFormat(patternDate)
@@ -85,9 +98,7 @@ class DateUtils {
             return dateStringValue
         }
 
-        fun convertUTCDateStringToLocalDateString(
-            pattern: String, dateString: String? = ""
-        ): String {
+        fun convertUTCDateStringToLocalDateString(pattern: String, dateString: String? = ""): String {
             val dateStringValue = ValueUtils.getDefaultOrValue(dateString)
 
             val dateFormatFrom = SimpleDateFormat(pattern)
@@ -123,9 +134,7 @@ class DateUtils {
             }
         }
 
-        fun convertUTCDateStringToMilliseconds(
-            patternDate: String, dateString: String? = ""
-        ): Long {
+        fun convertUTCDateStringToMilliseconds(patternDate: String, dateString: String? = ""): Long {
             val dateStringValue = ValueUtils.getDefaultOrValue(dateString)
 
             val dateFormatFrom = SimpleDateFormat(patternDate)
@@ -146,13 +155,11 @@ class DateUtils {
             val afterCalendar = Calendar.getInstance()
             afterCalendar.timeInMillis = afterTime
 
-            val isPastHour =
-                beforeCalendar[Calendar.HOUR_OF_DAY] < afterCalendar[Calendar.HOUR_OF_DAY]
+            val isPastHour = beforeCalendar[Calendar.HOUR_OF_DAY] < afterCalendar[Calendar.HOUR_OF_DAY]
             return if (isPastHour) {
                 true
             } else {
-                (beforeCalendar[Calendar.HOUR_OF_DAY] == afterCalendar[Calendar.HOUR_OF_DAY]
-                        && beforeCalendar[Calendar.MINUTE] < afterCalendar[Calendar.MINUTE])
+                (beforeCalendar[Calendar.HOUR_OF_DAY] == afterCalendar[Calendar.HOUR_OF_DAY] && beforeCalendar[Calendar.MINUTE] < afterCalendar[Calendar.MINUTE])
             }
         }
     }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/schedule_item_background"
+    android:orientation="vertical"
+    android:padding="@dimen/_8sdp">
+
+    <TextView
+        android:id="@+id/textViewHeader"
+        style="@style/titleTextViewTheme"
+        android:text="@string/role" />
+
+    <EditText
+        android:id="@+id/editTextValue"
+        style="@style/valueEditTextTheme" />
+</LinearLayout>

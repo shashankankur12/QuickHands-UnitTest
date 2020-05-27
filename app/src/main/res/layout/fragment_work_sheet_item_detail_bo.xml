@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".modified.views.workSheet.WorkSheetItemDetailBOFragment">
+    tools:context=".views.workSheet.WorkSheetItemDetailBOFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewBuildingOperations"
@@ -21,10 +21,8 @@
 
     <TextView
         android:id="@+id/textViewEmptyData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/string_no_record_found"
-        android:textSize="@dimen/_12ssp"
+        style="@style/noRecordTextViewTheme"
+        android:text="@string/empty_building_operations_info_message"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/buttonUpdate"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,16 +31,10 @@
 
     <Button
         android:id="@+id/buttonUpdate"
+        style="@style/positiveRoundButtonTheme"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginBottom="@dimen/_10sdp"
-        android:background="@drawable/round_button_selector"
         android:text="@string/update_building_operations"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/_14ssp"
-        android:textStyle="bold"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayoutBottomSheetRequestLumpers"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:elevation="50dp"
+    android:paddingStart="@dimen/_10ssp"
+    android:paddingEnd="@dimen/_10ssp"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    tools:showIn="@layout/activity_request_lumpers">
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        style="@style/titleBigTextViewTheme"
+        android:layout_width="0dp"
+        android:gravity="center"
+        android:padding="@dimen/_10ssp"
+        android:text="@string/create_new_request"
+        android:textColor="@color/textBlack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutNoOfLumpers"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/schedule_item_background"
+        android:orientation="vertical"
+        android:padding="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle">
+
+        <TextView
+            style="@style/titleTextViewTheme"
+            android:text="@string/no_of_lumpers_needed" />
+
+        <EditText
+            android:id="@+id/editTextLumpersRequired"
+            style="@style/valueEditTextTheme"
+            android:inputType="number"
+            android:maxLength="3" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutNotes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/schedule_item_background"
+        android:orientation="vertical"
+        android:padding="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutNoOfLumpers">
+
+        <TextView
+            style="@style/titleTextViewTheme"
+            android:text="@string/notes_for_qhl_dm" />
+
+        <EditText
+            android:id="@+id/editTextDMNotes"
+            style="@style/valueEditTextTheme"
+            android:inputType="textMultiLine|textCapSentences"
+            android:maxLines="3" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonSubmit"
+        style="@style/positiveRoundButtonTheme"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:text="@string/submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutNotes" />
+</androidx.constraintlayout.widget.ConstraintLayout>

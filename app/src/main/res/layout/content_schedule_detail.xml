@@ -11,59 +11,50 @@
 
     <TextView
         android:id="@+id/textViewBuildingName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/titleBigTextViewTheme"
+        android:layout_width="0dp"
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginTop="@dimen/_5ssp"
         android:layout_marginEnd="@dimen/_10ssp"
-        android:textColor="@color/buildingTitle"
-        android:textSize="@dimen/_16ssp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewScheduleDate"
+        style="@style/valuesTextViewTheme"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginEnd="@dimen/_10ssp"
         android:drawableStart="@drawable/ic_schedule_calendar"
         android:drawablePadding="@dimen/_5sdp"
-        android:textColor="@color/scheduleDetail"
-        android:textSize="@dimen/_12ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewBuildingName" />
 
-    <TextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewScheduleType"
+        style="@style/valuesTextViewTheme"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginEnd="@dimen/_10ssp"
         android:drawableStart="@drawable/ic_schedule_type"
         android:drawablePadding="@dimen/_5sdp"
-        android:textColor="@color/scheduleDetail"
-        android:textSize="@dimen/_12ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewScheduleDate" />
 
-    <TextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewWorkItemsCount"
+        style="@style/valuesTextViewTheme"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginEnd="@dimen/_10ssp"
         android:drawableStart="@drawable/ic_schedule_work_items"
         android:drawablePadding="@dimen/_5sdp"
-        android:textColor="@color/scheduleDetail"
-        android:textSize="@dimen/_10ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />
@@ -79,29 +70,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewWorkItemsCount" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@drawable/shadow_effect"
-        android:translationY="-15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/nestedScrollView" />
-
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:background="@drawable/top_left_round_background"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:background="@drawable/white_background"
         android:orientation="vertical"
-        android:paddingTop="@dimen/_6ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewLumpersImagesList">
 
         <LinearLayout
+            android:id="@+id/layoutAllWorkItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -116,7 +97,8 @@
                 android:layout_marginTop="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="@dimen/_16ssp"
@@ -126,12 +108,8 @@
                     android:tint="@color/buildingTitle" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/string_live_loads"
-                    android:textColor="@color/buildingTitle"
-                    android:textSize="@dimen/_16ssp"
-                    android:textStyle="bold" />
+                    style="@style/titleBigTextViewTheme"
+                    android:text="@string/live_loads" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -146,7 +124,8 @@
                 android:layout_marginTop="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="@dimen/_16ssp"
@@ -156,12 +135,8 @@
                     android:tint="@color/buildingTitle" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/string_drops"
-                    android:textColor="@color/buildingTitle"
-                    android:textSize="@dimen/_16ssp"
-                    android:textStyle="bold" />
+                    style="@style/titleBigTextViewTheme"
+                    android:text="@string/drops" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -176,7 +151,8 @@
                 android:layout_marginTop="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="@dimen/_16ssp"
@@ -186,12 +162,8 @@
                     android:tint="@color/buildingTitle" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/string_out_bounds"
-                    android:textColor="@color/buildingTitle"
-                    android:textSize="@dimen/_16ssp"
-                    android:textStyle="bold" />
+                    style="@style/titleBigTextViewTheme"
+                    android:text="@string/out_bounds" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

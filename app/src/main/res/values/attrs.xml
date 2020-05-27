@@ -3,4 +3,12 @@
     <declare-styleable name="MaxHeightNestedScrollView">
         <attr name="maxHeight" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="CustomTextView">
+        <attr name="emptyDataVisibility">
+            <enum name="empty_invisible" value="0" />
+            <enum name="empty_gone" value="1" />
+        </attr>
+    </declare-styleable>
+
 </resources>

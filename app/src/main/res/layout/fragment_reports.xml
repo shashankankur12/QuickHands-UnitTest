@@ -5,22 +5,12 @@
     android:layout_height="match_parent"
     android:background="@color/appBackground">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@drawable/shadow_effect"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/constraintRoot" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintRoot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/top_left_round_background"
-        android:paddingStart="@dimen/_10ssp"
-        android:paddingTop="@dimen/_10ssp"
-        android:translationY="15dp"
+        android:background="@drawable/white_background"
+        android:padding="@dimen/_10ssp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 

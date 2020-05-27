@@ -15,12 +15,6 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/actionCancelWorkItem"
-        android:title="@string/cancel_work_item"
-        android:visible="false"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/actionAddSameLumperTime"
         android:title="@string/add_same_start_time_for_all"
         android:visible="false"

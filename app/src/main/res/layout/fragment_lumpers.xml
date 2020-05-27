@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".modified.views.lumpers.LumpersFragment">
+    tools:context=".views.lumpers.LumpersFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainConstraintLayout"
@@ -14,21 +14,11 @@
 
         <EditText
             android:id="@+id/editTextSearch"
+            style="@style/searchEditTextTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginEnd="@dimen/_12sdp"
             android:layout_marginBottom="@dimen/_12sdp"
-            android:background="@drawable/edit_search_bg"
-            android:drawableStart="@drawable/ic_search"
-            android:drawablePadding="@dimen/_4sdp"
-            android:hint="@string/search_by_name"
-            android:imeOptions="actionDone"
-            android:inputType="textPersonName"
-            android:paddingStart="@dimen/_5sdp"
-            android:paddingTop="@dimen/_8sdp"
-            android:paddingEnd="@dimen/_30sdp"
-            android:paddingBottom="@dimen/_8sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -45,25 +35,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/editTextSearch" />
 
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@drawable/shadow_effect"
-            android:translationY="-15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
-
         <RelativeLayout
-            android:id="@+id/relativeLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:background="@drawable/top_left_round_background"
-            android:paddingStart="@dimen/_20ssp"
-            android:paddingTop="@dimen/_10ssp"
-            android:paddingEnd="@dimen/_20ssp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:background="@drawable/white_background"
+            android:paddingStart="@dimen/_16ssp"
+            android:paddingTop="@dimen/_8ssp"
+            android:paddingEnd="@dimen/_16ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -82,11 +61,9 @@
 
             <TextView
                 android:id="@+id/textViewEmptyData"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/noRecordTextViewTheme"
                 android:layout_centerInParent="true"
-                android:text="@string/string_no_record_found"
-                android:textSize="@dimen/_12ssp"
+                android:text="@string/empty_lumpers_list_info_message"
                 android:visibility="gone" />
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

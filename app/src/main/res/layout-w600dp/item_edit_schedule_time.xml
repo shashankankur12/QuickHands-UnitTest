@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/_8ssp"
+    android:paddingBottom="@dimen/_8ssp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageViewProfile"
+        style="@style/circularImageViewTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewLumperName"
+        style="@style/titleTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:text="John Snow"
+        android:textColor="@color/textBlack"
+        app:layout_constraintEnd_toStartOf="@id/labelBarrier"
+        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.quickhandslogistics.controls.CustomTextView
+        android:id="@+id/textViewEmployeeId"
+        style="@style/valuesSmallTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:text="(Emp ID: 1001)"
+        android:textColor="@color/textBlack"
+        app:layout_constraintEnd_toStartOf="@id/labelBarrier"
+        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/labelBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="textViewScheduleTime,textViewAddStartTime" />
+
+    <TextView
+        android:id="@+id/textViewScheduleTime"
+        style="@style/valuesTextViewTheme"
+        android:layout_width="wrap_content"
+        android:textColor="@color/textBlack"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewAddStartTime"
+        style="@style/addTextViewTheme"
+        android:text="@string/add_start_time"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

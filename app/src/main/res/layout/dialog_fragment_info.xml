@@ -15,7 +15,7 @@
         android:src="@drawable/ic_alert"
         android:visibility="visible" />
 
-    <com.quickhandslogistics.modified.controls.MaxHeightNestedScrollView
+    <com.quickhandslogistics.controls.MaxHeightNestedScrollView
         android:layout_width="@dimen/_270sdp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -27,14 +27,12 @@
 
         <TextView
             android:id="@+id/textViewMessage"
+            style="@style/titleTextViewTheme"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/_5sdp"
-            android:textColor="@color/textBlack"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold" />
-    </com.quickhandslogistics.modified.controls.MaxHeightNestedScrollView>
+            android:textColor="@color/textBlack" />
+    </com.quickhandslogistics.controls.MaxHeightNestedScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,14 +42,10 @@
 
         <Button
             android:id="@+id/buttonPositive"
+            style="@style/positiveRoundButtonTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_7sdp"
             android:layout_weight="1"
-            android:background="@drawable/round_button_red"
-            android:text="@string/string_okay"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_14ssp" />
+            android:text="@string/ok" />
     </LinearLayout>
 </LinearLayout>

@@ -21,11 +21,9 @@
 
     <TextView
         android:id="@+id/textViewEmptyData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/noRecordTextViewTheme"
         android:layout_centerInParent="true"
-        android:text="@string/string_no_record_found"
-        android:textSize="@dimen/_12ssp"
+        android:text="@string/empty_work_item_lumpers_info_message"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,16 +32,10 @@
 
     <Button
         android:id="@+id/buttonAddLumpers"
+        style="@style/positiveRoundButtonTheme"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginBottom="@dimen/_10sdp"
-        android:background="@drawable/round_button_selector"
         android:text="@string/add_lumpers"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/_14ssp"
-        android:textStyle="bold"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

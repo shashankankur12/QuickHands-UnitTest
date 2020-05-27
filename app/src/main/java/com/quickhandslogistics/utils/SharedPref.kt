@@ -10,8 +10,7 @@ import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_REGISTRATI
 
 class SharedPref private constructor(context: Context) : AppConstant {
 
-    private var sharedPreferences: SharedPreferences =
-        context.getSharedPreferences(PREFERENCE_NAME, 0)
+    private var sharedPreferences: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, 0)
     private var editor: SharedPreferences.Editor
 
     init {

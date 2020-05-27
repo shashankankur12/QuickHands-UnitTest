@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:paddingBottom="@dimen/_6sdp"
+    tools:context=".views.workSheet.WorkSheetItemDetailNotesFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/layoutCustomerNotes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@drawable/schedule_item_background"
+            android:orientation="vertical"
+            android:padding="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                style="@style/titleTextViewTheme"
+                android:text="@string/notes_for_qhl_and_customer" />
+
+            <EditText
+                android:id="@+id/editTextQHLCustomerNotes"
+                style="@style/valueEditTextTheme"
+                android:inputType="textMultiLine|textCapSentences"
+                android:maxLines="4" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutQHLNotes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@drawable/schedule_item_background"
+            android:orientation="vertical"
+            android:padding="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutCustomerNotes">
+
+            <TextView
+                style="@style/titleTextViewTheme"
+                android:text="@string/notes_for_qhl" />
+
+            <EditText
+                android:id="@+id/editTextQHLNotes"
+                style="@style/valueEditTextTheme"
+                android:inputType="textMultiLine|textCapSentences"
+                android:maxLines="4" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonSubmit"
+            style="@style/positiveRoundButtonTheme"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:text="@string/submit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutQHLNotes" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

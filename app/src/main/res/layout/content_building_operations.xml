@@ -9,21 +9,11 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_building_operations">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@drawable/shadow_effect"
-        android:translationY="-15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
-
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:background="@drawable/top_left_round_background"
+        android:background="@drawable/white_background"
         android:paddingStart="@dimen/_10ssp"
         android:paddingTop="@dimen/_10ssp"
         android:paddingEnd="@dimen/_10ssp"
@@ -46,26 +36,16 @@
 
             <Button
                 android:id="@+id/buttonSubmit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:layout_marginBottom="@dimen/_10ssp"
-                android:background="@drawable/round_button_red"
-                android:text="@string/string_submit"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/_14ssp" />
+                style="@style/positiveRoundButtonTheme"
+                android:layout_marginBottom="@dimen/_8ssp"
+                android:text="@string/submit" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/textViewEmptyData"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/noRecordTextViewTheme"
             android:layout_centerInParent="true"
-            android:text="@string/string_no_record_found"
-            android:textSize="@dimen/_12ssp"
+            android:text="@string/empty_building_operations_info_message"
             android:visibility="gone" />
     </RelativeLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

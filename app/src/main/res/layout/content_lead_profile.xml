@@ -18,6 +18,7 @@
             android:layout_width="@dimen/_70sdp"
             android:layout_height="@dimen/_70sdp"
             android:src="@drawable/dummy"
+            android:transitionName="@string/transition_name"
             app:civ_border_color="@color/imageBorder"
             app:civ_border_width="1dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -39,17 +40,12 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <include layout="@layout/layout_top_left_shadow" />
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/constraintLayout"
-        android:background="@drawable/top_left_round_background"
-        android:paddingStart="@dimen/_20ssp"
-        android:paddingTop="@dimen/_25ssp"
-        android:paddingEnd="@dimen/_20ssp"
-        android:paddingBottom="@dimen/_25ssp"
+        android:background="@drawable/white_background"
+        android:padding="@dimen/_16ssp"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical">
 
@@ -70,7 +66,7 @@
                     style="@style/detailTextHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/string_employee_id" />
+                    android:text="@string/employee_id" />
 
                 <TextView
                     android:id="@+id/textViewEmployeeId"
@@ -124,7 +120,7 @@
                     style="@style/detailTextHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/string_email_address" />
+                    android:text="@string/email_address" />
 
                 <TextView
                     android:id="@+id/textViewEmailAddress"
@@ -148,7 +144,7 @@
                     style="@style/detailTextHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/string_phone" />
+                    android:text="@string/phone_number" />
 
                 <TextView
                     android:id="@+id/textViewPhoneNumber"
@@ -172,7 +168,7 @@
                     style="@style/detailTextHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/string_shifting_hours" />
+                    android:text="@string/shift_hours" />
 
                 <TextView
                     android:id="@+id/textViewShiftHours"

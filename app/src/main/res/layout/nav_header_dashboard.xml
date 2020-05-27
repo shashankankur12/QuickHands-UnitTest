@@ -4,7 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/appBackground"
-    android:padding="@dimen/_15sdp"
+    android:paddingStart="@dimen/_15sdp"
+    android:paddingEnd="@dimen/_15sdp"
+    android:paddingTop="@dimen/_15sdp"
+    android:paddingBottom="@dimen/_5sdp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -12,7 +15,6 @@
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_50sdp"
         android:layout_marginTop="@dimen/_5sdp"
-        android:contentDescription="@string/nav_header_desc"
         android:src="@drawable/dummy"
         app:civ_border_color="@color/imageBorder"
         app:civ_border_width="1dp"
@@ -21,36 +23,33 @@
 
     <TextView
         android:id="@+id/textViewLeadName"
+        style="@style/titleBigTextViewTheme"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
         android:drawableEnd="@drawable/ic_arrow_right"
         android:text="Lead Name"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/_13ssp"
-        android:textStyle="bold"
+        android:textColor="@color/textBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/circleImageViewProfile" />
 
     <TextView
         android:id="@+id/textViewEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/valuesTextViewTheme"
         android:layout_marginTop="@dimen/_2sdp"
         android:text="abc@quickhands.com"
-        android:textColor="@color/colorLightGrey"
+        android:textColor="@color/detailHeader"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewLeadName" />
 
     <TextView
         android:id="@+id/textViewEmployeeId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/valuesTextViewTheme"
         android:layout_marginTop="@dimen/_2sdp"
         android:layout_marginBottom="@dimen/_5sdp"
         android:text="Emp ID: 1001"
-        android:textColor="@android:color/black"
+        android:textColor="@color/textBlack"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewEmail" />
