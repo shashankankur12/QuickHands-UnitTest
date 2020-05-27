@@ -44,7 +44,11 @@ class LumperSheetPresenter(private var lumperSheetView: LumperSheetContract.View
 
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
         lumperSheetView?.showDateString(dateString)
-        lumperSheetView?.showLumperSheetData(response.data?.lumpersInfo!!, response.data?.isSheetSubmitted!!, selectedDate)
+
+        response.data?.let { data ->
+            lumperSheetView?.showLumperSheetData(data.lumpersInfo!!, data.isSheetSubmitted!!, selectedDate, data.tempLumperIds!!)
+        }
+
     }
 
     override fun onSuccessSubmitLumperSheet() {

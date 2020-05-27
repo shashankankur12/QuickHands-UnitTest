@@ -19,5 +19,10 @@ class WorkItemDetailAPIResponse : BaseResponse() {
         @SerializedName("lumpersTimeSchedule")
         @Expose
         var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>? = null
+
+        @SerializedName("tempLumperIds")
+        @Expose
+        val tempLumperIds: ArrayList<String>? = null
+            get() = if (!field.isNullOrEmpty()) field else ArrayList()
     }
 }

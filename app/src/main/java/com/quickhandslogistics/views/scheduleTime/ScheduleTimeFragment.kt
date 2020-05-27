@@ -27,6 +27,7 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCH
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import kotlinx.android.synthetic.main.fragment_schedule_time.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, ScheduleTimeContract.View, CalendarUtils.CalendarSelectionListener {
 
@@ -200,13 +201,13 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
-    override fun showScheduleTimeData(selectedDate: Date, scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>) {
+    override fun showScheduleTimeData(selectedDate: Date, scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>, tempLumperIds: ArrayList<String>) {
         this.scheduleTimeDetailList = scheduleTimeDetailList
         selectedTime = selectedDate.time
         isFutureDate = DateUtils.isFutureDate(selectedDate.time)
         invalidateScheduleButton()
 
-        scheduleTimeAdapter.updateLumpersData(scheduleTimeDetailList)
+        scheduleTimeAdapter.updateLumpersData(scheduleTimeDetailList, tempLumperIds)
 
         if (!scheduleTimeSelectedDate.isNullOrEmpty()) {
             scheduleTimeSelectedDate = ""

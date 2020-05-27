@@ -40,9 +40,9 @@ class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.V
     override fun onSuccess(selectedDate: Date, scheduleTimeAPIResponse: GetScheduleTimeAPIResponse) {
         scheduleTimeView?.hideProgressDialog()
 
-        scheduleTimeAPIResponse.data?.scheduledLumpers?.let {
-            scheduleTimeView?.showScheduleTimeData(selectedDate, scheduleTimeAPIResponse.data?.scheduledLumpers!!)
+        scheduleTimeAPIResponse.data?.let { data ->
+            scheduleTimeView?.showScheduleTimeData(selectedDate, data.scheduledLumpers!!, data.tempLumperIds!!)
+            scheduleTimeView?.showNotesData(data.notes)
         }
-        scheduleTimeView?.showNotesData(scheduleTimeAPIResponse.data?.notes)
     }
 }

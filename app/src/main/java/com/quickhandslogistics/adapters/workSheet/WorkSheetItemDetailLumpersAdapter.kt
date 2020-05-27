@@ -24,6 +24,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
     Adapter<WorkSheetItemDetailLumpersAdapter.ViewHolder>() {
 
     private var workItemStatus = ""
+    private var tempLumperIds = ArrayList<String>()
     private var lumperList = ArrayList<EmployeeData>()
     private var timingsData = HashMap<String, LumpersTimeSchedule>()
 
@@ -56,7 +57,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
 
         fun bind(employeeData: EmployeeData) {
             UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
-            UIUtils.updateProfileBorder(context, employeeData.isTemporaryAssigned, circleImageViewProfile)
+            UIUtils.updateProfileBorder(context, tempLumperIds.contains(employeeData.id), circleImageViewProfile)
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
 
@@ -109,7 +110,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
         }
     }
 
-    fun updateList(lumperList: ArrayList<EmployeeData>?, timingsData: LinkedHashMap<String, LumpersTimeSchedule>, status: String? = "") {
+    fun updateList(lumperList: ArrayList<EmployeeData>?, timingsData: LinkedHashMap<String, LumpersTimeSchedule>, status: String? = "", tempLumperIds: ArrayList<String>) {
         this.timingsData.clear()
         this.lumperList.clear()
         lumperList?.let {
@@ -117,6 +118,9 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
             this.timingsData.putAll(timingsData)
         }
         this.workItemStatus = getDefaultOrValue(status)
+
+        this.tempLumperIds.clear()
+        this.tempLumperIds.addAll(tempLumperIds)
         notifyDataSetChanged()
     }
 }

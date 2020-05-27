@@ -4,6 +4,7 @@ import com.quickhandslogistics.contracts.BaseContract
 import com.quickhandslogistics.data.lumperSheet.LumperSheetListAPIResponse
 import com.quickhandslogistics.data.lumperSheet.LumpersInfo
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class LumperSheetContract {
@@ -20,7 +21,7 @@ class LumperSheetContract {
     interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
         fun showDateString(dateString: String)
-        fun showLumperSheetData(lumperInfoList: ArrayList<LumpersInfo>, sheetSubmitted: Boolean, selectedDate: Date)
+        fun showLumperSheetData(lumperInfoList: ArrayList<LumpersInfo>, sheetSubmitted: Boolean, selectedDate: Date, tempLumperIds: ArrayList<String>)
         fun sheetSubmittedSuccessfully()
 
         interface OnAdapterItemClickListener {

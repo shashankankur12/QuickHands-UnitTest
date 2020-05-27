@@ -21,6 +21,7 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment
 import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatcher, View.OnClickListener,
     LumperSheetContract.View.OnAdapterItemClickListener, CalendarUtils.CalendarSelectionListener {
@@ -145,7 +146,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         textViewDate.text = dateString
     }
 
-    override fun showLumperSheetData(lumperInfoList: ArrayList<LumpersInfo>, sheetSubmitted: Boolean, selectedDate: Date) {
+    override fun showLumperSheetData(lumperInfoList: ArrayList<LumpersInfo>, sheetSubmitted: Boolean, selectedDate: Date, tempLumperIds: ArrayList<String>) {
         selectedTime = selectedDate.time
 
         var isSignatureLeft = 0
@@ -167,7 +168,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
             buttonSubmit.visibility = View.GONE
         }
 
-        lumperSheetAdapter.updateLumperSheetData(lumperInfoList)
+        lumperSheetAdapter.updateLumperSheetData(lumperInfoList, tempLumperIds)
         if (lumperInfoList.size > 0) {
             textViewEmptyData.visibility = View.GONE
             recyclerViewLumpersSheet.visibility = View.VISIBLE

@@ -22,6 +22,7 @@ class ScheduleTimeAdapter : Adapter<ScheduleTimeAdapter.ViewHolder>() {
     private var searchEnabled = false
     private var searchTerm = ""
 
+    private var tempLumperIds: ArrayList<String> = ArrayList()
     private var items: ArrayList<ScheduleTimeDetail> = ArrayList()
     private var filteredItems: ArrayList<ScheduleTimeDetail> = ArrayList()
 
@@ -53,7 +54,7 @@ class ScheduleTimeAdapter : Adapter<ScheduleTimeAdapter.ViewHolder>() {
             val employeeData = scheduleTimeDetail.lumperInfo
             employeeData?.let {
                 UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
-                UIUtils.updateProfileBorder(context, employeeData.isTemporaryAssigned, circleImageViewProfile)
+                UIUtils.updateProfileBorder(context, tempLumperIds.contains(employeeData.id), circleImageViewProfile)
                 textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
                 textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
             }
@@ -93,9 +94,12 @@ class ScheduleTimeAdapter : Adapter<ScheduleTimeAdapter.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun updateLumpersData(scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>) {
+    fun updateLumpersData(scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>, tempLumperIds: ArrayList<String>) {
         items.clear()
         items.addAll(scheduleTimeDetailList)
+
+        this.tempLumperIds.clear()
+        this.tempLumperIds.addAll(tempLumperIds)
         notifyDataSetChanged()
     }
 }

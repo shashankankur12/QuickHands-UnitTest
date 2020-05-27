@@ -110,7 +110,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         workSheetItemDetailPagerAdapter.showEmptyData()
     }
 
-    override fun showWorkItemDetail(workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?) {
+    override fun showWorkItemDetail(workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?, tempLumperIds: ArrayList<String>) {
         textViewStartTime.text = String.format(getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
         textViewWorkItemType.text = workItemTypeDisplayName
 
@@ -124,7 +124,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
             updateStatusBackground(workItemDetail.status!!)
         }
 
-        workSheetItemDetailPagerAdapter.showWorkItemData(workItemDetail, lumpersTimeSchedule)
+        workSheetItemDetailPagerAdapter.showWorkItemData(workItemDetail, lumpersTimeSchedule, tempLumperIds)
     }
 
     override fun statusChangedSuccessfully() {

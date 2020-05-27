@@ -25,6 +25,7 @@ class LumperSheetAdapter(private var resources: Resources, var adapterItemClickL
     private var searchEnabled = false
     private var searchTerm = ""
 
+    private var tempLumperIds: ArrayList<String> = ArrayList()
     private var lumperInfoList: ArrayList<LumpersInfo> = ArrayList()
     private var filteredEmployeesList: ArrayList<LumpersInfo> = ArrayList()
 
@@ -54,6 +55,7 @@ class LumperSheetAdapter(private var resources: Resources, var adapterItemClickL
 
         fun bind(employeeData: LumpersInfo) {
             UIUtils.showEmployeeProfileImage(context, employeeData.lumperImageUrl, circleImageViewProfile)
+            UIUtils.updateProfileBorder(context, tempLumperIds.contains(employeeData.lumperId), circleImageViewProfile)
             textViewLumperName.text = ValueUtils.getDefaultOrValue(employeeData.lumperName).capitalize()
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData.lumperEmployeeId)
 
@@ -111,9 +113,12 @@ class LumperSheetAdapter(private var resources: Resources, var adapterItemClickL
         notifyDataSetChanged()
     }
 
-    fun updateLumperSheetData(lumperInfoList: ArrayList<LumpersInfo>) {
+    fun updateLumperSheetData(lumperInfoList: ArrayList<LumpersInfo>, tempLumperIds: ArrayList<String>) {
         this.lumperInfoList.clear()
         this.lumperInfoList.addAll(lumperInfoList)
+
+        this.tempLumperIds.clear()
+        this.tempLumperIds.addAll(tempLumperIds)
         notifyDataSetChanged()
     }
 }

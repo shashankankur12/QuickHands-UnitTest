@@ -17,12 +17,12 @@ import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailLumpersCon
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.lumpers.LumperDetailActivity
 import com.quickhandslogistics.views.schedule.AddWorkItemLumpersActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE
-import com.quickhandslogistics.utils.AppConstant
 import kotlinx.android.synthetic.main.content_work_sheet_item_detail_lumpers.*
 
 class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener, WorkSheetItemDetailLumpersContract.View.OnAdapterItemClickListener {
@@ -78,7 +78,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         }
     }
 
-    fun showLumpersData(workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?) {
+    fun showLumpersData(workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?, tempLumperIds: ArrayList<String>) {
         this.workItemDetail = workItemDetail
 
         val timingsData = LinkedHashMap<String, LumpersTimeSchedule>()
@@ -95,7 +95,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
             }
         }
 
-        workSheetItemDetailLumpersAdapter.updateList(workItemDetail.assignedLumpersList, timingsData, workItemDetail.status)
+        workSheetItemDetailLumpersAdapter.updateList(workItemDetail.assignedLumpersList, timingsData, workItemDetail.status, tempLumperIds)
 
         if (workItemDetail.assignedLumpersList.isNullOrEmpty()) {
             buttonAddLumpers.text = getString(R.string.add_lumpers)
@@ -115,7 +115,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
     }
 
     fun showEmptyData() {
-        workSheetItemDetailLumpersAdapter.updateList(ArrayList(), LinkedHashMap())
+        workSheetItemDetailLumpersAdapter.updateList(ArrayList(), LinkedHashMap(), tempLumperIds = ArrayList())
         buttonAddLumpers.visibility = View.GONE
     }
 

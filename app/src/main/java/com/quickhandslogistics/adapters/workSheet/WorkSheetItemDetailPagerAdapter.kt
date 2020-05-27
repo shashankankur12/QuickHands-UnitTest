@@ -37,9 +37,9 @@ class WorkSheetItemDetailPagerAdapter(fragmentManager: FragmentManager, private 
         return null
     }
 
-    fun showWorkItemData(workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?) {
+    fun showWorkItemData(workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?, tempLumperIds: ArrayList<String>) {
         buildingOperationsFragment.showBuildingOperationsData(workItemDetail)
-        lumpersFragment.showLumpersData(workItemDetail, lumpersTimeSchedule)
+        lumpersFragment.showLumpersData(workItemDetail, lumpersTimeSchedule, tempLumperIds)
         notesFragment.showNotesData(workItemDetail)
     }
 
