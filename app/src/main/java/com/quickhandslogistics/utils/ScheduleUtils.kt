@@ -4,8 +4,10 @@ import android.content.res.Resources
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.data.lumpers.EmployeeData
-import com.quickhandslogistics.modified.data.schedule.WorkItemDetail
+import com.quickhandslogistics.data.attendance.LumperAttendanceData
+import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.schedule.ScheduleDetail
+import com.quickhandslogistics.data.schedule.WorkItemDetail
 import java.util.*
 import kotlin.Comparator
 import kotlin.collections.ArrayList
@@ -28,13 +30,11 @@ object ScheduleUtils {
     fun getScheduleTypeName(workItems: List<WorkItemDetail>?, scheduleTypeNames: String, scheduleType: String): String {
         var scheduleTypes = scheduleTypeNames
 
-        workItems?.let {
-            if (workItems.isNotEmpty()) {
-                if (scheduleTypes.isNotEmpty()) {
-                    scheduleTypes += ", "
-                }
-                scheduleTypes += scheduleType
+        if (!workItems.isNullOrEmpty()) {
+            if (scheduleTypes.isNotEmpty()) {
+                scheduleTypes += ", "
             }
+            scheduleTypes += scheduleType
         }
         return scheduleTypes
     }
@@ -43,9 +43,9 @@ object ScheduleUtils {
         var workItemTypeDisplayName = ""
         workItemType?.let {
             workItemTypeDisplayName = when (workItemType) {
-                "live" -> resources.getString(R.string.string_live_loads)
-                "drop" -> resources.getString(R.string.string_drops)
-                else -> resources.getString(R.string.string_out_bounds)
+                "live" -> resources.getString(R.string.live_loads)
+                "drop" -> resources.getString(R.string.drops)
+                else -> resources.getString(R.string.out_bounds)
             }
         }
         return workItemTypeDisplayName
@@ -139,7 +139,7 @@ object ScheduleUtils {
         return statusList
     }
 
-    fun sortEmployeesList(employeesList: ArrayList<EmployeeData>?): ArrayList<EmployeeData> {
+    fun sortEmployeesList(employeesList: ArrayList<EmployeeData>?, isTemporaryLumpers: Boolean = false): ArrayList<EmployeeData> {
         return if (!employeesList.isNullOrEmpty()) {
             employeesList.sortWith(Comparator { lumper1, lumper2 ->
                 if (!lumper1.firstName.isNullOrEmpty() && !lumper2.firstName.isNullOrEmpty()) {
@@ -148,7 +148,71 @@ object ScheduleUtils {
                     0
                 }
             })
+
+            if (isTemporaryLumpers) {
+                val iterate = employeesList.listIterator()
+                while (iterate.hasNext()) {
+                    val oldValue = iterate.next()
+                    oldValue.isTemporaryAssigned = true
+                    iterate.set(oldValue)
+                }
+            }
             employeesList
         } else ArrayList()
+    }
+
+    fun sortEmployeesAttendanceList(employeesList: ArrayList<LumperAttendanceData>?, isTemporaryLumpers: Boolean = false): ArrayList<LumperAttendanceData> {
+        return if (!employeesList.isNullOrEmpty()) {
+            employeesList.sortWith(Comparator { lumper1, lumper2 ->
+                if (!lumper1.firstName.isNullOrEmpty() && !lumper2.firstName.isNullOrEmpty()) {
+                    lumper1.firstName?.toLowerCase(Locale.getDefault())!!.compareTo(lumper2.firstName?.toLowerCase(Locale.getDefault())!!)
+                } else {
+                    0
+                }
+            })
+
+            if (isTemporaryLumpers) {
+                val iterate = employeesList.listIterator()
+                while (iterate.hasNext()) {
+                    val oldValue = iterate.next()
+                    oldValue.isTemporaryAssigned = true
+                    iterate.set(oldValue)
+                }
+            }
+            employeesList
+        } else ArrayList()
+    }
+
+    fun getWholeScheduleStatus(scheduleTypes: ScheduleDetail.ScheduleTypes): String {
+        var scheduledCount = 0
+        var inProgressCount = 0
+        var onHoldCount = 0
+        var cancelledCount = 0
+        var completedCount = 0
+
+        val allWorkItems = ArrayList<WorkItemDetail>()
+        allWorkItems.addAll(scheduleTypes.liveLoads!!)
+        allWorkItems.addAll(scheduleTypes.outbounds!!)
+        allWorkItems.addAll(scheduleTypes.drops!!)
+
+        for (workItem in allWorkItems) {
+            when (workItem.status) {
+                AppConstant.WORK_ITEM_STATUS_SCHEDULED -> scheduledCount++
+                AppConstant.WORK_ITEM_STATUS_IN_PROGRESS -> inProgressCount++
+                AppConstant.WORK_ITEM_STATUS_ON_HOLD -> onHoldCount++
+                AppConstant.WORK_ITEM_STATUS_CANCELLED -> cancelledCount++
+                AppConstant.WORK_ITEM_STATUS_COMPLETED -> completedCount++
+            }
+        }
+
+        return if (inProgressCount > 0 || onHoldCount > 0) {
+            AppConstant.WORK_ITEM_STATUS_IN_PROGRESS
+        } else if (scheduledCount > 0) {
+            AppConstant.WORK_ITEM_STATUS_SCHEDULED
+        } else if (cancelledCount > 0 && completedCount == 0) {
+            AppConstant.WORK_ITEM_STATUS_CANCELLED
+        } else {
+            AppConstant.WORK_ITEM_STATUS_COMPLETED
+        }
     }
 }

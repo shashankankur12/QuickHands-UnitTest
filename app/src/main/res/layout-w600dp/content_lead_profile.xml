@@ -40,22 +40,12 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_below="@+id/constraintLayout"
-        android:layout_marginTop="-15dp"
-        android:background="@drawable/shadow_effect" />
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/constraintLayout"
-        android:background="@drawable/top_left_round_background"
-        android:paddingStart="@dimen/_16ssp"
-        android:paddingTop="@dimen/_22ssp"
-        android:paddingEnd="@dimen/_16ssp"
-        android:paddingBottom="@dimen/_22ssp"
+        android:background="@drawable/white_background"
+        android:padding="@dimen/_12ssp"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical">
 
@@ -76,7 +66,7 @@
                     style="@style/detailTextHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/string_employee_id" />
+                    android:text="@string/employee_id" />
 
                 <TextView
                     android:id="@+id/textViewEmployeeId"
@@ -130,7 +120,7 @@
                     style="@style/detailTextHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/string_email_address" />
+                    android:text="@string/email_address" />
 
                 <TextView
                     android:id="@+id/textViewEmailAddress"
@@ -154,7 +144,7 @@
                     style="@style/detailTextHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/string_phone" />
+                    android:text="@string/phone_number" />
 
                 <TextView
                     android:id="@+id/textViewPhoneNumber"
@@ -178,7 +168,7 @@
                     style="@style/detailTextHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/string_shifting_hours" />
+                    android:text="@string/shift_hours" />
 
                 <TextView
                     android:id="@+id/textViewShiftHours"

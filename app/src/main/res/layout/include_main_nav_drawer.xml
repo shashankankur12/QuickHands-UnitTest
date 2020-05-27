@@ -16,23 +16,15 @@
             android:id="@+id/headerLayout"
             layout="@layout/nav_header_dashboard" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_below="@+id/headerLayout"
-            android:layout_marginTop="-15dp"
-            android:background="@drawable/shadow_effect" />
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/headerLayout"
-            android:background="@drawable/top_left_round_background">
+            android:background="@drawable/white_background">
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="30dp">
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"

@@ -46,6 +46,17 @@ class DateUtils {
             return 0
         }
 
+        fun getDateFromDateString(pattern: String, dateString: String?): Date {
+            val dateFormatFrom = SimpleDateFormat(pattern)
+            dateString?.let {
+                val date = dateFormatFrom.parse(dateString)
+                date?.let {
+                    return date
+                }
+            }
+            return Date()
+        }
+
         fun isCurrentDate(selectedTime: Long): Boolean {
             val selectedCalendar = Calendar.getInstance()
             selectedCalendar.timeInMillis = selectedTime
@@ -60,6 +71,15 @@ class DateUtils {
             val currentCalendar = Calendar.getInstance()
 
             return selectedCalendar.after(currentCalendar)
+        }
+
+        fun isSameDates(date1: Date, date2: Date): Boolean {
+            val calendar1 = Calendar.getInstance()
+            calendar1.time = date1
+            val calendar2 = Calendar.getInstance()
+            calendar2.time = date2
+
+            return calendar1[Calendar.DAY_OF_YEAR] == calendar2[Calendar.DAY_OF_YEAR] && calendar1[Calendar.YEAR] == calendar2[Calendar.YEAR]
         }
 
         fun convertDateStringToTime(patternDate: String, dateString: String? = ""): String {

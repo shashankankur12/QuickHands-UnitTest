@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/appBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".modified.views.schedule.ScheduledWorkItemDetailActivity">
+    tools:context=".views.schedule.ScheduledWorkItemDetailActivity">
 
     <include
         android:id="@+id/header"
@@ -16,14 +16,21 @@
     <TextView
         android:id="@+id/textViewStartTime"
         style="@style/titleBigTextViewTheme"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginEnd="@dimen/_1ssp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header" />
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <TextView
+        android:id="@+id/textViewStatus"
+        style="@style/baseChipTheme"
+        android:layout_marginEnd="@dimen/_15ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header" />
+
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewScheduledDate"
         style="@style/valuesTextViewTheme"
         android:layout_marginStart="@dimen/_15ssp"
@@ -35,7 +42,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewScheduleType"
         style="@style/valuesTextViewTheme"
         android:layout_marginStart="@dimen/_15ssp"
@@ -47,7 +54,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewScheduledDate" />
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewWorkItemsCount"
         style="@style/valuesTextViewTheme"
         android:layout_marginStart="@dimen/_15ssp"
@@ -59,23 +66,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@drawable/shadow_effect"
-        android:translationY="-15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
-
     <LinearLayout
-        android:id="@+id/relativeLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:background="@drawable/top_left_round_background"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:background="@drawable/white_background"
         android:orientation="vertical"
-        android:padding="@dimen/_10sdp"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_8sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -96,6 +96,7 @@
                 android:id="@+id/textViewEmptyData"
                 style="@style/noRecordTextViewTheme"
                 android:layout_centerInParent="true"
+                android:text="@string/empty_work_item_lumpers_info_message"
                 android:visibility="gone" />
         </RelativeLayout>
 

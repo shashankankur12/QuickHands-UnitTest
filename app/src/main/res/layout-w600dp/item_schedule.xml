@@ -10,12 +10,18 @@
     <TextView
         android:id="@+id/textViewBuildingName"
         style="@style/titleBigTextViewTheme"
-        android:layout_width="match_parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <TextView
+        android:id="@+id/textViewStatus"
+        style="@style/baseChipTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewScheduleType"
         style="@style/valuesTextViewTheme"
         android:layout_marginTop="@dimen/_4sdp"
@@ -24,7 +30,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewBuildingName" />
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewWorkItemsCount"
         style="@style/valuesTextViewTheme"
         android:layout_marginTop="@dimen/_4sdp"

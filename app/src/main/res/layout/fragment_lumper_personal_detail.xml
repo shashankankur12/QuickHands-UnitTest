@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".modified.views.lumpers.LumperPersonalDetailFragment">
+    tools:context=".views.lumpers.LumperPersonalDetailFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
                 style="@style/detailTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/string_first_name" />
+                android:text="@string/first_name" />
 
             <TextView
                 android:id="@+id/textViewFirstName"
@@ -47,7 +47,7 @@
                 style="@style/detailTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/string_last_name" />
+                android:text="@string/last_name" />
 
             <TextView
                 android:id="@+id/textViewLastName"
@@ -79,7 +79,7 @@
                 style="@style/detailTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/string_employee_id" />
+                android:text="@string/employee_id" />
 
             <TextView
                 android:id="@+id/textViewEmployeeId"
@@ -95,16 +95,34 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15ssp"
+            android:background="?android:attr/selectableItemBackground"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/layoutEmployeeId"
             app:layout_constraintTop_toBottomOf="@+id/labelBarrier1">
 
-            <TextView
-                style="@style/detailTextHeader"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/string_phone" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/detailTextHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phone_number" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imageViewCall"
+                    android:layout_width="@dimen/_12ssp"
+                    android:layout_height="@dimen/_12ssp"
+                    android:layout_marginStart="@dimen/_6sdp"
+                    android:src="@drawable/ic_call"
+                    app:civ_border_color="@color/online"
+                    app:civ_border_width="@dimen/_2sdp"
+                    app:civ_fill_color="@color/online" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textViewPhoneNumber"
@@ -112,7 +130,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_2sdp"
-                android:text="+91 - 9876543210"  />
+                android:text="+1 - 9876543210" />
         </LinearLayout>
 
         <androidx.constraintlayout.widget.Barrier
@@ -124,11 +142,11 @@
 
         <LinearLayout
             android:id="@+id/layoutEmailAddress"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15ssp"
+            android:background="?android:attr/selectableItemBackground"
             android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labelBarrier2">
 
@@ -136,7 +154,9 @@
                 style="@style/detailTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/string_email_address" />
+                android:drawableEnd="@drawable/ic_email"
+                android:drawablePadding="@dimen/_6sdp"
+                android:text="@string/email_address" />
 
             <TextView
                 android:id="@+id/textViewEmailAddress"
@@ -144,7 +164,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_2sdp"
-                android:text="connordavidson321@gmail.com"/>
+                android:text="connordavidson321@gmail.com" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

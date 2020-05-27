@@ -35,10 +35,22 @@
             android:layout_marginStart="@dimen/_4sdp"
             android:layout_marginEnd="@dimen/_4sdp"
             android:clickable="false"
-            android:text="@string/string_live_loads"
+            android:text="@string/live_loads"
             app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewStartTime"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:drawableStart="@drawable/ic_schedule_calendar"
+            android:drawablePadding="@dimen/_5sdp"
+            android:text="@string/start_time_s"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemType" />
 
         <RelativeLayout
             android:id="@+id/relativeLayoutBO"
@@ -49,7 +61,7 @@
             android:background="@drawable/notes_item_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewStatus">
+            app:layout_constraintTop_toBottomOf="@id/textViewStartTime">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewBO"
@@ -85,7 +97,7 @@
 
             <TextView
                 style="@style/titleSmallTextViewTheme"
-                android:text="@string/string_note"
+                android:text="@string/note"
                 android:textColor="@color/scheduleDetail" />
 
             <TextView
@@ -94,7 +106,7 @@
                 android:layout_marginTop="@dimen/_2sdp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@string/request_help_error_message" />
+                android:text="@string/request_help_message" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

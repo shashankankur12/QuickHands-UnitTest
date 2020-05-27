@@ -1,24 +1,26 @@
 package com.quickhandslogistics.network
 
-import com.quickhandslogistics.modified.data.BaseResponse
-import com.quickhandslogistics.modified.data.attendance.AttendanceDetail
-import com.quickhandslogistics.modified.data.attendance.GetAttendanceAPIResponse
-import com.quickhandslogistics.modified.data.buildingOperations.BuildingOperationAPIResponse
-import com.quickhandslogistics.modified.data.common.AllLumpersResponse
-import com.quickhandslogistics.modified.data.customerSheet.CustomerSheetListAPIResponse
-import com.quickhandslogistics.modified.data.dashboard.LeadProfileAPIResponse
-import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordRequest
-import com.quickhandslogistics.modified.data.forgotPassword.ForgotPasswordResponse
-import com.quickhandslogistics.modified.data.login.LoginRequest
-import com.quickhandslogistics.modified.data.login.LoginResponse
-import com.quickhandslogistics.modified.data.lumperSheet.LumperSheetListAPIResponse
-import com.quickhandslogistics.modified.data.lumperSheet.LumperWorkDetailAPIResponse
-import com.quickhandslogistics.modified.data.lumperSheet.SubmitLumperSheetRequest
-import com.quickhandslogistics.modified.data.lumpers.LumperListAPIResponse
-import com.quickhandslogistics.modified.data.schedule.*
-import com.quickhandslogistics.modified.data.scheduleTime.GetScheduleTimeAPIResponse
-import com.quickhandslogistics.modified.data.scheduleTime.ScheduleTimeRequest
-import com.quickhandslogistics.modified.data.workSheet.*
+import com.quickhandslogistics.data.BaseResponse
+import com.quickhandslogistics.data.attendance.AttendanceDetail
+import com.quickhandslogistics.data.attendance.GetAttendanceAPIResponse
+import com.quickhandslogistics.data.buildingOperations.BuildingOperationAPIResponse
+import com.quickhandslogistics.data.common.AllLumpersResponse
+import com.quickhandslogistics.data.customerSheet.CustomerSheetListAPIResponse
+import com.quickhandslogistics.data.dashboard.LeadProfileAPIResponse
+import com.quickhandslogistics.data.forgotPassword.ForgotPasswordRequest
+import com.quickhandslogistics.data.forgotPassword.ForgotPasswordResponse
+import com.quickhandslogistics.data.login.LoginRequest
+import com.quickhandslogistics.data.login.LoginResponse
+import com.quickhandslogistics.data.lumperSheet.LumperSheetListAPIResponse
+import com.quickhandslogistics.data.lumperSheet.LumperWorkDetailAPIResponse
+import com.quickhandslogistics.data.lumperSheet.SubmitLumperSheetRequest
+import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
+import com.quickhandslogistics.data.schedule.*
+import com.quickhandslogistics.data.scheduleTime.GetScheduleTimeAPIResponse
+import com.quickhandslogistics.data.scheduleTime.RequestLumpersListAPIResponse
+import com.quickhandslogistics.data.scheduleTime.RequestLumpersRequest
+import com.quickhandslogistics.data.scheduleTime.ScheduleTimeRequest
+import com.quickhandslogistics.data.workSheet.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -29,9 +31,7 @@ interface IApiInterface {
     fun doLogin(@Body request: LoginRequest): Call<LoginResponse>
 
     @GET("employees/lead/lumpers")
-    fun getAllLumpersData(
-        @Header("Authorization") auth: String, @Query("page") page: Int, @Query("pageSize") pageSize: Int
-    ): Call<LumperListAPIResponse>
+    fun getAllLumpersData(@Header("Authorization") auth: String, @Query("day") day: String): Call<LumperListAPIResponse>
 
     @GET("employees/me")
     fun getLeadProfile(@Header("Authorization") auth: String): Call<LeadProfileAPIResponse>
@@ -78,9 +78,7 @@ interface IApiInterface {
 
     // Attendance /////////////////////////////////////////////////
     @GET("employees/lead/attendance")
-    fun getAttendanceList(
-        @Header("Authorization") auth: String, @Query("page") page: Int, @Query("pageSize") pageSize: Int
-    ): Call<GetAttendanceAPIResponse>
+    fun getAttendanceList(@Header("Authorization") auth: String, @Query("day") day: String): Call<GetAttendanceAPIResponse>
 
     @POST("employees/lead/attendance")
     fun saveAttendanceDetails(@Header("Authorization") auth: String, @Body request: List<AttendanceDetail>): Call<BaseResponse>
@@ -95,6 +93,17 @@ interface IApiInterface {
 
     @POST("employees/schedule/lumpers")
     fun saveScheduleTimeDetails(@Header("Authorization") auth: String, @Body request: ScheduleTimeRequest): Call<BaseResponse>
+
+    @GET("employees/lead/lumpers/requests")
+    fun getRequestLumpersList(@Header("Authorization") auth: String, @Query("day") day: String): Call<RequestLumpersListAPIResponse>
+
+    @POST("employees/lead/lumpers/request")
+    fun createRequestLumpers(@Header("Authorization") auth: String, @Body request: RequestLumpersRequest): Call<BaseResponse>
+
+    @PUT("employees/lead/lumpers/request/{requestId}")
+    fun updateRequestLumpers(
+        @Header("Authorization") auth: String, @Path("requestId") requestId: String, @Body request: RequestLumpersRequest
+    ): Call<BaseResponse>
     /////////////////////////////////////////////////////////////
 
     // Work Sheet /////////////////////////////////////////////////

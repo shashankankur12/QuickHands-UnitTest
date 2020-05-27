@@ -5,27 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground"
-    tools:context=".modified.views.common.AddSignatureActivity">
+    tools:context=".views.common.AddSignatureActivity">
 
     <include
         android:id="@+id/header"
         layout="@layout/layout_toolbar" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@drawable/shadow_effect"
-        android:translationY="-15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout" />
-
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_12sdp"
-        android:background="@drawable/top_left_round_background"
+        android:background="@drawable/white_background"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,7 +46,7 @@
                 android:enabled="false"
                 android:paddingStart="@dimen/_25ssp"
                 android:paddingEnd="@dimen/_25ssp"
-                android:text="@string/string_submit" />
+                android:text="@string/submit" />
 
             <Button
                 android:id="@+id/buttonClear"
@@ -66,7 +56,7 @@
                 android:enabled="false"
                 android:paddingStart="@dimen/_25ssp"
                 android:paddingEnd="@dimen/_25ssp"
-                android:text="@string/string_clear" />
+                android:text="@string/clear" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".modified.views.workSheet.WorkSheetItemDetailBOFragment">
+    tools:context=".views.workSheet.WorkSheetItemDetailBOFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewBuildingOperations"
@@ -22,6 +22,7 @@
     <TextView
         android:id="@+id/textViewEmptyData"
         style="@style/noRecordTextViewTheme"
+        android:text="@string/empty_building_operations_info_message"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/buttonUpdate"
         app:layout_constraintEnd_toEndOf="parent"

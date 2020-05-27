@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.lumpers.LumperPersonalDetailFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/layoutFirstName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/layoutLastName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                style="@style/detailTextHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/first_name" />
+
+            <TextView
+                android:id="@+id/textViewFirstName"
+                style="@style/detailTextValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="Connor" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutLastName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/layoutFirstName"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                style="@style/detailTextHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/last_name" />
+
+            <TextView
+                android:id="@+id/textViewLastName"
+                style="@style/detailTextValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="Davidson" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/labelBarrier1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="layoutFirstName,layoutLastName" />
+
+        <LinearLayout
+            android:id="@+id/layoutEmployeeId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15ssp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/layoutPhoneNumber"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelBarrier1">
+
+            <TextView
+                style="@style/detailTextHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/employee_id" />
+
+            <TextView
+                android:id="@+id/textViewEmployeeId"
+                style="@style/detailTextValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="079" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutPhoneNumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15ssp"
+            android:background="?android:attr/selectableItemBackground"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/layoutEmployeeId"
+            app:layout_constraintTop_toBottomOf="@+id/labelBarrier1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/detailTextHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phone_number" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imageViewCall"
+                    android:layout_width="@dimen/_10ssp"
+                    android:layout_height="@dimen/_10ssp"
+                    android:layout_marginStart="@dimen/_6sdp"
+                    android:src="@drawable/ic_call"
+                    app:civ_border_color="@color/online"
+                    app:civ_border_width="@dimen/_2sdp"
+                    app:civ_fill_color="@color/online" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textViewPhoneNumber"
+                style="@style/detailTextValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="+1 - 9876543210" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/labelBarrier2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="layoutEmployeeId,layoutPhoneNumber" />
+
+        <LinearLayout
+            android:id="@+id/layoutEmailAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15ssp"
+            android:background="?android:attr/selectableItemBackground"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelBarrier2">
+
+            <TextView
+                style="@style/detailTextHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_email"
+                android:drawablePadding="@dimen/_6sdp"
+                android:text="@string/email_address" />
+
+            <TextView
+                android:id="@+id/textViewEmailAddress"
+                style="@style/detailTextValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="connordavidson321@gmail.com" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

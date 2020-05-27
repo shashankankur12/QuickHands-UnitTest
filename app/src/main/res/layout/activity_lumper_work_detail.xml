@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground"
-    tools:context=".modified.views.lumperSheet.LumperWorkDetailActivity">
+    tools:context=".views.lumperSheet.LumperWorkDetailActivity">
 
     <include
         android:id="@+id/header"
@@ -42,7 +42,7 @@
             app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.quickhandslogistics.modified.controls.CustomTextView
+        <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewEmployeeId"
             style="@style/valuesSmallTextViewTheme"
             android:layout_width="0dp"
@@ -55,23 +55,13 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@drawable/shadow_effect"
-        android:translationY="-15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
-
     <LinearLayout
-        android:id="@+id/relativeLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:background="@drawable/top_left_round_background"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:background="@drawable/white_background"
         android:orientation="vertical"
-        android:paddingTop="@dimen/_15ssp"
+        android:paddingTop="@dimen/_16ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -91,7 +81,9 @@
                     android:id="@+id/layoutSignature"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
                     android:background="@drawable/schedule_item_background"
                     android:elevation="@dimen/_4sdp"
                     android:orientation="vertical"
@@ -159,7 +151,7 @@
             android:id="@+id/buttonSave"
             style="@style/positiveRoundButtonTheme"
             android:layout_margin="@dimen/_10sdp"
-            android:text="@string/string_save"
+            android:text="@string/save"
             android:visibility="gone" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

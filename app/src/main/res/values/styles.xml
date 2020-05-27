@@ -108,7 +108,7 @@
         <item name="android:background">@drawable/edit_search_bg</item>
         <item name="android:drawableStart">@drawable/ic_search</item>
         <item name="android:drawablePadding">@dimen/_4sdp</item>
-        <item name="android:hint">@string/search_by_name</item>
+        <item name="android:hint">@string/search_info_message</item>
         <item name="android:imeOptions">actionDone</item>
         <item name="android:inputType">textPersonName</item>
         <item name="android:paddingTop">@dimen/_8sdp</item>
@@ -124,7 +124,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/_2sdp</item>
         <item name="android:backgroundTint">@color/buildingTitle</item>
-        <item name="android:inputType">textPersonName|textCapWords</item>
+        <item name="android:inputType">textPersonName|textCapSentences</item>
         <item name="android:textColor">@color/scheduleDetail</item>
         <item name="android:textSize">@dimen/_12ssp</item>
         <item name="android:textCursorDrawable">@drawable/color_cursor</item>
@@ -163,6 +163,10 @@
         <item name="android:textSize">@dimen/_10ssp</item>
     </style>
 
+    <style name="valuesVerySmallTextViewTheme" parent="valuesTextViewTheme">
+        <item name="android:textSize">@dimen/_8ssp</item>
+    </style>
+
     <style name="valuesBigTextViewTheme" parent="valuesTextViewTheme">
         <item name="android:textSize">@dimen/_14ssp</item>
     </style>
@@ -170,9 +174,12 @@
     <style name="noRecordTextViewTheme" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:lineSpacingExtra">@dimen/_2ssp</item>
+        <item name="android:padding">@dimen/_10ssp</item>
         <item name="android:textColor">@color/textBlack</item>
         <item name="android:textSize">@dimen/_12ssp</item>
-        <item name="android:text">@string/string_no_record_found</item>
+        <item name="android:text">@string/no_record_found_info_message</item>
     </style>
 
     <style name="addTextViewTheme" parent="Widget.AppCompat.TextView">
@@ -195,7 +202,7 @@
         <item name="android:layout_height">@dimen/_35sdp</item>
         <item name="android:src">@drawable/dummy</item>
         <item name="civ_border_color">@color/imageBorder</item>
-        <item name="civ_border_width">1dp</item>
+        <item name="civ_border_width">@dimen/circleNormalBorder</item>
     </style>
     <!---->
 

@@ -106,6 +106,21 @@ object CalendarUtils {
         return list
     }
 
+    fun getSelectedDatePosition(dates: List<Date>, selectedDateString: String?): Int {
+        var selectedDatePosition = -1
+
+        if (!selectedDateString.isNullOrEmpty()) {
+            val selectedDate = DateUtils.getDateFromDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDateString)
+            for (date in dates) {
+                if (DateUtils.isSameDates(date, selectedDate)) {
+                    selectedDatePosition = dates.indexOf(date)
+                    break
+                }
+            }
+        }
+        return selectedDatePosition
+    }
+
     interface CalendarSelectionListener {
         fun onSelectCalendarDate(date: Date)
     }

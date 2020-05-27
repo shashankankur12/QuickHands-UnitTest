@@ -1,10 +1,12 @@
 package com.quickhandslogistics.utils
 
 import android.content.Context
+import android.telephony.PhoneNumberUtils
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -60,6 +62,24 @@ object UIUtils {
         } else {
             Glide.with(context).clear(imageView)
         }
+    }
+
+    fun updateProfileBorder(context: Context, isTemporaryAssigned: Boolean?, circleImageView: CircleImageView) {
+        if (getDefaultOrValue(isTemporaryAssigned)) {
+            circleImageView.borderColor = ContextCompat.getColor(context, android.R.color.holo_orange_light)
+            circleImageView.borderWidth = ((context.resources.getDimension(R.dimen.circleTemporaryBorder) / context.resources.displayMetrics.density).toInt())
+        } else {
+            circleImageView.borderColor = ContextCompat.getColor(context, R.color.imageBorder)
+            circleImageView.borderWidth = ((context.resources.getDimension(R.dimen.circleNormalBorder) / context.resources.displayMetrics.density).toInt())
+        }
+    }
+
+    fun getDisplayPhoneNumber(employeeData: EmployeeData?): String {
+        var phoneNumber = ""
+        employeeData?.let {
+            phoneNumber = PhoneNumberUtils.formatNumber(it.phone, "US")
+        }
+        return phoneNumber
     }
 }
 

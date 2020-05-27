@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:paddingBottom="@dimen/_6sdp"
-    tools:context=".modified.views.workSheet.WorkSheetItemDetailNotesFragment">
+    tools:context=".views.workSheet.WorkSheetItemDetailNotesFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainConstraintLayout"
@@ -32,7 +32,7 @@
             <EditText
                 android:id="@+id/editTextQHLCustomerNotes"
                 style="@style/valueEditTextTheme"
-                android:inputType="textMultiLine|textCapWords"
+                android:inputType="textMultiLine|textCapSentences"
                 android:maxLines="4" />
         </LinearLayout>
 
@@ -55,7 +55,7 @@
             <EditText
                 android:id="@+id/editTextQHLNotes"
                 style="@style/valueEditTextTheme"
-                android:inputType="textMultiLine|textCapWords"
+                android:inputType="textMultiLine|textCapSentences"
                 android:maxLines="4" />
         </LinearLayout>
 
@@ -64,7 +64,7 @@
             style="@style/positiveRoundButtonTheme"
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/_12sdp"
-            android:text="@string/string_submit"
+            android:text="@string/submit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layoutQHLNotes" />

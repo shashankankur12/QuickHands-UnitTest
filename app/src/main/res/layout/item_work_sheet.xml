@@ -38,7 +38,7 @@
             android:layout_width="0dp"
             android:layout_marginEnd="@dimen/_4sdp"
             android:clickable="false"
-            android:text="@string/start_time_container"
+            android:text="@string/start_time_s"
             app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

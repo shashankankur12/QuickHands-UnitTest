@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10ssp"
         android:layout_marginEnd="@dimen/_10ssp"
-        tools:context=".modified.views.customerSheet.CustomerSheetCustomerFragment">
+        tools:context=".views.customerSheet.CustomerSheetCustomerFragment">
 
         <LinearLayout
             android:id="@+id/layoutCustomerName"
@@ -54,7 +54,7 @@
             <EditText
                 android:id="@+id/editTextCustomerNotes"
                 style="@style/valueEditTextTheme"
-                android:inputType="textMultiLine|textCapWords"
+                android:inputType="textMultiLine|textCapSentences"
                 android:maxLines="3" />
         </LinearLayout>
 
@@ -125,7 +125,7 @@
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:text="@string/string_submit"
+            android:text="@string/submit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

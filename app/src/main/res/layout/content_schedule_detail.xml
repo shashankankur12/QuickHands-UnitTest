@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewScheduleDate"
         style="@style/valuesTextViewTheme"
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewBuildingName" />
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewScheduleType"
         style="@style/valuesTextViewTheme"
         android:layout_width="match_parent"
@@ -46,7 +46,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewScheduleDate" />
 
-    <com.quickhandslogistics.modified.controls.CustomTextView
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewWorkItemsCount"
         style="@style/valuesTextViewTheme"
         android:layout_width="match_parent"
@@ -70,23 +70,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewWorkItemsCount" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@drawable/shadow_effect"
-        android:translationY="-15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/nestedScrollView" />
-
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:background="@drawable/top_left_round_background"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:background="@drawable/white_background"
         android:orientation="vertical"
-        android:paddingTop="@dimen/_6ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -108,7 +97,8 @@
                 android:layout_marginTop="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="@dimen/_16ssp"
@@ -119,7 +109,7 @@
 
                 <TextView
                     style="@style/titleBigTextViewTheme"
-                    android:text="@string/string_live_loads" />
+                    android:text="@string/live_loads" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -134,7 +124,8 @@
                 android:layout_marginTop="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="@dimen/_16ssp"
@@ -145,7 +136,7 @@
 
                 <TextView
                     style="@style/titleBigTextViewTheme"
-                    android:text="@string/string_drops" />
+                    android:text="@string/drops" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -160,7 +151,8 @@
                 android:layout_marginTop="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="@dimen/_16ssp"
@@ -171,7 +163,7 @@
 
                 <TextView
                     style="@style/titleBigTextViewTheme"
-                    android:text="@string/string_out_bounds" />
+                    android:text="@string/out_bounds" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

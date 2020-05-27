@@ -14,12 +14,18 @@ import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.quickhandslogistics.R
-import com.quickhandslogistics.modified.views.SplashActivity
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_FROM_DATE
-import com.quickhandslogistics.modified.views.schedule.ScheduleMainFragment.Companion.ARG_SCHEDULE_IDENTITY
-import com.quickhandslogistics.modified.views.schedule.UnScheduleDetailActivity
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SharedPref
+import com.quickhandslogistics.views.DashBoardActivity
+import com.quickhandslogistics.views.DashBoardActivity.Companion.ARG_SCHEDULE_TIME_SELECTED_DATE
+import com.quickhandslogistics.views.DashBoardActivity.Companion.ARG_SHOW_TAB_NAME
+import com.quickhandslogistics.views.SplashActivity
+import com.quickhandslogistics.views.schedule.ScheduleDetailActivity
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_ALLOW_UPDATE
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_IS_FUTURE_DATE
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULE_IDENTITY
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 
 class NotificationService : FirebaseMessagingService() {
 
@@ -53,9 +59,7 @@ class NotificationService : FirebaseMessagingService() {
                     if (message.data.containsKey(AppConstant.NOTIFICATION_KEY_TYPE)) {
                         notificationType = message.data[AppConstant.NOTIFICATION_KEY_TYPE].toString()
                     }
-                    createNotification(
-                        notificationTitle, notificationContent, notificationType, message.data
-                    )
+                    createNotification(notificationTitle, notificationContent, notificationType, message.data)
                 }
             }
         }
@@ -76,17 +80,47 @@ class NotificationService : FirebaseMessagingService() {
 
         // Check for different Notification Type and extract relevant data.
         val bundle = Bundle()
-        if (notificationType == AppConstant.NOTIFICATION_TYPE_SCHEDULE_CREATE) {
+        if (notificationType == AppConstant.NOTIFICATION_TYPE_SCHEDULE_CREATE
+            || notificationType == AppConstant.NOTIFICATION_TYPE_SCHEDULE_UPDATE
+        ) {
+
+            // Navigate to Schedule Detail Screen
             if (data.containsKey(AppConstant.NOTIFICATION_KEY_SCHEDULE_IDENTITY) && data.containsKey(AppConstant.NOTIFICATION_KEY_SCHEDULE_FROM_DATE)) {
                 val scheduleIdentity = data[AppConstant.NOTIFICATION_KEY_SCHEDULE_IDENTITY].toString()
                 val scheduleFromDate = data[AppConstant.NOTIFICATION_KEY_SCHEDULE_FROM_DATE].toString()
+                val scheduleTime = DateUtils.getMillisecondsFromDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, scheduleFromDate)
 
+                bundle.putBoolean(ARG_ALLOW_UPDATE, DateUtils.isCurrentDate(scheduleTime))
+                bundle.putBoolean(ARG_IS_FUTURE_DATE, DateUtils.isFutureDate(scheduleTime))
                 bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleIdentity)
-                bundle.putString(ARG_SCHEDULE_FROM_DATE, scheduleFromDate)
-                intent.setClass(applicationContext, UnScheduleDetailActivity::class.java)
+                bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, scheduleTime)
+                intent.setClass(applicationContext, ScheduleDetailActivity::class.java)
             }
-            intent.putExtras(bundle)
+        } else if (notificationType == AppConstant.NOTIFICATION_TYPE_LUMPER_CHANGED) {
+
+            // Navigate to Lumpers List Screen
+            bundle.putString(ARG_SHOW_TAB_NAME, getString(R.string.lumpers))
+            intent.setClass(applicationContext, DashBoardActivity::class.java)
+        } else if (notificationType == AppConstant.NOTIFICATION_TYPE_LUMPER_REQUEST_APPROVED
+            || notificationType == AppConstant.NOTIFICATION_TYPE_LUMPER_REQUEST_REJECTED
+        ) {
+
+            // Navigate to Schedule Lumper Time Screen and then open Request Lumpers Screen
+            if (data.containsKey(AppConstant.NOTIFICATION_KEY_DATE)) {
+                val date = data[AppConstant.NOTIFICATION_KEY_DATE].toString()
+
+                bundle.putString(ARG_SHOW_TAB_NAME, getString(R.string.schedule_lumpers_time))
+                bundle.putString(ARG_SCHEDULE_TIME_SELECTED_DATE, date)
+                intent.setClass(applicationContext, DashBoardActivity::class.java)
+            }
+        } else if (notificationType == AppConstant.NOTIFICATION_TYPE_LEAD_BUILDING_ADDED
+            || notificationType == AppConstant.NOTIFICATION_TYPE_LEAD_BUILDING_REMOVED
+        ) {
+
+            // Navigate to Splash Screen
+            bundle.putBoolean(SplashActivity.ARG_IS_CLEAR_SESSION, true)
         }
+        intent.putExtras(bundle)
 
         val pendingIntent = PendingIntent.getActivity(applicationContext, System.currentTimeMillis().toInt(), intent, 0)
         notification.setContentIntent(pendingIntent)

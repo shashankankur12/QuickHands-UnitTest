@@ -5,21 +5,12 @@
     android:layout_height="match_parent"
     android:background="@color/appBackground">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@drawable/shadow_effect"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/constraintRoot" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintRoot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/top_left_round_background"
-        android:padding="@dimen/_10ssp"
-        android:translationY="15dp"
+        android:background="@drawable/white_background"
+        android:padding="@dimen/_8ssp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -28,8 +19,8 @@
             style="@style/titleTextViewTheme"
             android:layout_width="match_parent"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:text="@string/string_change_language"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:text="@string/change_language"
             android:textColor="@color/textBlack"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -48,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:padding="@dimen/_2sdp"
-                android:text="@string/string_english"
+                android:text="@string/english"
                 android:textColor="@drawable/radio_button_text_color"
                 android:textSize="@dimen/_10ssp" />
 
@@ -58,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:padding="@dimen/_2sdp"
-                android:text="@string/string_spanish"
+                android:text="@string/spanish"
                 android:textColor="@drawable/radio_button_text_color"
                 android:textSize="@dimen/_10ssp" />
 
@@ -80,7 +71,7 @@
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_12sdp"
-            android:text="@string/string_notification"
+            android:text="@string/notifications"
             android:textColor="@color/textBlack"
             app:layout_constraintEnd_toStartOf="@+id/switchNotification"
             app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +101,7 @@
             android:drawablePadding="@dimen/_4sdp"
             android:paddingTop="@dimen/_4sdp"
             android:paddingBottom="@dimen/_4sdp"
-            android:text="@string/notification_off_info"
+            android:text="@string/notification_off_info_message"
             android:textColor="@drawable/radio_button_text_color"
             android:textSize="@dimen/_10ssp"
             app:layout_constraintEnd_toEndOf="parent"
