@@ -14,6 +14,7 @@ import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.controls.OverlapDecoration
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
+import com.quickhandslogistics.utils.ScheduleUtils
 import kotlinx.android.synthetic.main.item_schedule.view.*
 
 class ScheduleAdapter(private val resources: Resources, var adapterItemClickListener: ScheduleContract.View.OnAdapterItemClickListener) :
@@ -41,6 +42,7 @@ class ScheduleAdapter(private val resources: Resources, var adapterItemClickList
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener, LumperImagesContract.OnItemClickListener {
 
         private val textViewBuildingName: TextView = itemView.textViewBuildingName
+        private val textViewStatus: TextView = itemView.textViewStatus
         private val textViewScheduleType: TextView = itemView.textViewScheduleType
         private val textViewWorkItemsCount: TextView = itemView.textViewWorkItemsCount
         private val recyclerViewLumpersImagesList: RecyclerView = itemView.recyclerViewLumpersImagesList
@@ -57,6 +59,7 @@ class ScheduleAdapter(private val resources: Resources, var adapterItemClickList
                 textViewBuildingName.text = scheduleDetail.buildingName?.capitalize()
             textViewScheduleType.text = scheduleDetail.scheduleTypeNames
             textViewWorkItemsCount.text = String.format(resources.getString(R.string.work_items_s), scheduleDetail.totalNumberOfWorkItems)
+            ScheduleUtils.changeStatusUIByValue(resources, scheduleDetail.commonStatus, textViewStatus)
 
             recyclerViewLumpersImagesList.apply {
                 adapter = LumperImagesAdapter(scheduleDetail.allAssignedLumpers, this@ViewHolder)

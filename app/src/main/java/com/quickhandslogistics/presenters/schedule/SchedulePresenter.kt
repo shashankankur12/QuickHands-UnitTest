@@ -7,12 +7,15 @@ import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.data.schedule.ScheduleListAPIResponse
+import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.models.schedule.ScheduleModel
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.ScheduleUtils.getAllAssignedLumpersList
 import com.quickhandslogistics.utils.ScheduleUtils.getScheduleTypeName
+import com.quickhandslogistics.utils.ScheduleUtils.getWholeScheduleStatus
 import com.quickhandslogistics.utils.ValueUtils
 import java.util.*
+import kotlin.collections.ArrayList
 
 class SchedulePresenter(private var scheduleView: ScheduleContract.View?, private val resources: Resources) :
     ScheduleContract.Presenter, ScheduleContract.Model.OnFinishedListener {
@@ -52,6 +55,11 @@ class SchedulePresenter(private var scheduleView: ScheduleContract.View?, privat
         while (iterate.hasNext()) {
             val oldValue = iterate.next()
             oldValue.scheduleTypes?.let { scheduleTypes ->
+                // Find a common status for all work items
+                val commonStatus = getWholeScheduleStatus(scheduleTypes)
+                oldValue.commonStatus = commonStatus
+
+                // Create single name for all types of work items scheduled
                 var scheduleTypeNames = ""
                 scheduleTypeNames = getScheduleTypeName(scheduleTypes.liveLoads, scheduleTypeNames, resources.getString(R.string.live_loads))
                 scheduleTypeNames = getScheduleTypeName(scheduleTypes.drops, scheduleTypeNames, resources.getString(R.string.drops))

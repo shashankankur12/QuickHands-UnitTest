@@ -101,7 +101,6 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
             when (view.id) {
                 buttonUpdate.id -> {
                     val bundle = Bundle()
-                    bundle.putBoolean(ARG_ALLOW_UPDATE, true)
                     bundle.putString(ARG_WORK_ITEM_ID, workItemDetail?.id)
                     bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, workItemDetail?.buildingDetailData?.parameters)
                     startIntent(BuildingOperationsActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)

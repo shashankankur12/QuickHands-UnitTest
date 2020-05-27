@@ -80,7 +80,9 @@ class NotificationService : FirebaseMessagingService() {
 
         // Check for different Notification Type and extract relevant data.
         val bundle = Bundle()
-        if (notificationType == AppConstant.NOTIFICATION_TYPE_SCHEDULE_CREATE) {
+        if (notificationType == AppConstant.NOTIFICATION_TYPE_SCHEDULE_CREATE
+            || notificationType == AppConstant.NOTIFICATION_TYPE_SCHEDULE_UPDATE
+        ) {
 
             // Navigate to Schedule Detail Screen
             if (data.containsKey(AppConstant.NOTIFICATION_KEY_SCHEDULE_IDENTITY) && data.containsKey(AppConstant.NOTIFICATION_KEY_SCHEDULE_FROM_DATE)) {

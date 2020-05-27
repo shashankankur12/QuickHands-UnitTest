@@ -19,7 +19,6 @@ import kotlinx.android.synthetic.main.content_building_operations.*
 
 class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, BuildingOperationsContract.View {
 
-    private var allowUpdate: Boolean = true
     private var workItemId: String = ""
     private var parameters: ArrayList<String> = ArrayList()
 
@@ -29,10 +28,9 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, Buildin
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_building_operations)
-        setupToolbar(getString(R.string.building_operations))
+        setupToolbar(getString(R.string.update_building_operations))
 
         intent.extras?.let { it ->
-            allowUpdate = it.getBoolean(ARG_ALLOW_UPDATE, true)
             workItemId = it.getString(ARG_WORK_ITEM_ID, "")
             parameters = it.getStringArrayList(ARG_BUILDING_PARAMETERS) as ArrayList<String>
         }
@@ -44,13 +42,12 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, Buildin
     }
 
     private fun initializeUI() {
-        buttonSubmit.visibility = if (allowUpdate) View.VISIBLE else View.GONE
         buttonSubmit.setOnClickListener(this)
 
         recyclerViewBuildingOperations.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(20, 20))
-            buildingOperationsAdapter = BuildingOperationsAdapter(allowUpdate, parameters)
+            buildingOperationsAdapter = BuildingOperationsAdapter(parameters)
             adapter = buildingOperationsAdapter
         }
     }

@@ -39,6 +39,7 @@ class ScheduleDetail() : Parcelable {
     @Expose
     var totalNumberOfWorkItems: Int? = null
 
+    var commonStatus: String = ""
     var scheduleTypeNames: String = ""
     var allAssignedLumpers: ArrayList<EmployeeData> = ArrayList()
 
@@ -51,6 +52,7 @@ class ScheduleDetail() : Parcelable {
         scheduleNote = parcel.readString()
         parameters = parcel.createStringArrayList()
         totalNumberOfWorkItems = parcel.readValue(Int::class.java.classLoader) as? Int
+        commonStatus = parcel.readString()!!
         scheduleTypeNames = parcel.readString()!!
         allAssignedLumpers = parcel.createTypedArrayList(EmployeeData)!!
     }
@@ -64,6 +66,7 @@ class ScheduleDetail() : Parcelable {
         parcel.writeString(scheduleNote)
         parcel.writeStringList(parameters)
         parcel.writeValue(totalNumberOfWorkItems)
+        parcel.writeString(commonStatus)
         parcel.writeString(scheduleTypeNames)
         parcel.writeTypedList(allAssignedLumpers)
     }
@@ -86,14 +89,17 @@ class ScheduleDetail() : Parcelable {
         @SerializedName("live")
         @Expose
         var liveLoads: ArrayList<WorkItemDetail>? = null
+            get() = if (field.isNullOrEmpty()) ArrayList() else field
 
         @SerializedName("drop")
         @Expose
         var drops: ArrayList<WorkItemDetail>? = null
+            get() = if (field.isNullOrEmpty()) ArrayList() else field
 
         @SerializedName("outbounds")
         @Expose
         var outbounds: ArrayList<WorkItemDetail>? = null
+            get() = if (field.isNullOrEmpty()) ArrayList() else field
 
         constructor(parcel: Parcel) : this() {
             liveLoads = parcel.createTypedArrayList(WorkItemDetail)

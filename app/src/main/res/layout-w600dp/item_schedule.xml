@@ -10,9 +10,15 @@
     <TextView
         android:id="@+id/textViewBuildingName"
         style="@style/titleBigTextViewTheme"
-        android:layout_width="match_parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewStatus"
+        style="@style/baseChipTheme"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.quickhandslogistics.controls.CustomTextView

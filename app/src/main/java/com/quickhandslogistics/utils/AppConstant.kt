@@ -22,7 +22,8 @@ interface AppConstant {
         const val NOTIFICATION_KEY_DATE = "Date"
 
         //Notification Types
-        const val NOTIFICATION_TYPE_SCHEDULE_CREATE = "ScheduleCreate"
+        const val NOTIFICATION_TYPE_SCHEDULE_CREATE = "schedule-created"
+        const val NOTIFICATION_TYPE_SCHEDULE_UPDATE = "schedule-updated"
         const val NOTIFICATION_TYPE_LUMPER_CHANGED = "lumper-assignment-update"
         const val NOTIFICATION_TYPE_LUMPER_REQUEST_APPROVED = "temp-lumpers-req-approved"
         const val NOTIFICATION_TYPE_LUMPER_REQUEST_REJECTED = "temp-lumpers-req-rejected"

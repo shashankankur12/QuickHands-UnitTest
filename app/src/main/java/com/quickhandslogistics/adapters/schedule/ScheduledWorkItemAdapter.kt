@@ -16,6 +16,7 @@ import com.quickhandslogistics.controls.OverlapDecoration
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.ScheduleUtils
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_scheduled_workitem.view.*
 
@@ -46,6 +47,7 @@ class ScheduledWorkItemAdapter(
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener, LumperImagesContract.OnItemClickListener {
 
         private val textViewStartTime: TextView = view.textViewStartTime
+        private val textViewStatus: TextView = view.textViewStatus
         private val textViewDropItems: TextView = view.textViewDropItems
         private val recyclerViewLumpersImagesList: RecyclerView = view.recyclerViewLumpersImagesList
         private val circleImageViewArrow: CircleImageView = view.circleImageViewArrow
@@ -75,6 +77,8 @@ class ScheduledWorkItemAdapter(
             recyclerViewLumpersImagesList.apply {
                 adapter = LumperImagesAdapter(workItemDetail.assignedLumpersList!!, this@ViewHolder)
             }
+
+            ScheduleUtils.changeStatusUIByValue(resources, workItemDetail.status, textViewStatus)
         }
 
         override fun onClick(view: View?) {

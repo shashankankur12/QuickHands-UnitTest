@@ -17,6 +17,13 @@ import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.presenters.schedule.ScheduleDetailPresenter
+import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.AppConstant.Companion.NOTES_NOT_AVAILABLE
+import com.quickhandslogistics.utils.CustomProgressBar
+import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_REQUEST_PARAMETER
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
+import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity.Companion.ARG_LUMPERS_LIST
@@ -26,13 +33,6 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCH
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.AppConstant.Companion.NOTES_NOT_AVAILABLE
-import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_REQUEST_PARAMETER
-import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
-import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.content_schedule_detail.*
 import java.util.*
 import kotlin.Comparator
@@ -247,8 +247,15 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
     }
 
     override fun onWorkItemClick(workItemDetail: WorkItemDetail, workItemTypeDisplayName: String) {
+        var canUpdate = true
+        //Check is work item is cancelled or completed. If yes, then make is non-editable
+        workItemDetail.status?.let { status ->
+            if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED || status == AppConstant.WORK_ITEM_STATUS_CANCELLED) {
+                canUpdate = false
+            }
+        }
         val bundle = Bundle()
-        bundle.putBoolean(ARG_ALLOW_UPDATE, allowUpdate)
+        bundle.putBoolean(ARG_ALLOW_UPDATE, (allowUpdate && canUpdate))
         bundle.putString(ARG_WORK_ITEM_ID, workItemDetail.id)
         bundle.putString(ARG_WORK_ITEM_TYPE_DISPLAY_NAME, workItemTypeDisplayName)
         startIntent(ScheduledWorkItemDetailActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)

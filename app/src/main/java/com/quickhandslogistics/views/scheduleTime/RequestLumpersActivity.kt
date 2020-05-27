@@ -137,8 +137,8 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
                 buttonSubmit.id -> {
                     val requiredLumperCount = editTextLumpersRequired.text.toString()
                     val notesDM = editTextDMNotes.text.toString()
-                    if ((requiredLumperCount.isNotEmpty() && notesDM.isEmpty()) || (requiredLumperCount.isEmpty() && notesDM.isNotEmpty())) {
-                        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, getString(R.string.request_help_message))
+                    if (requiredLumperCount.isEmpty() || notesDM.isEmpty()) {
+                        CustomProgressBar.getInstance().showErrorDialog(getString(R.string.request_help_message), activity)
                     } else {
                         showConfirmationDialog(requiredLumperCount, notesDM)
                     }

@@ -11,18 +11,21 @@ import com.quickhandslogistics.adapters.schedule.ScheduledWorkItemDetailAdapter
 import com.quickhandslogistics.contracts.schedule.ScheduledWorkItemDetailContract
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.presenters.schedule.ScheduledWorkItemDetailPresenter
-import com.quickhandslogistics.views.BaseActivity
-import com.quickhandslogistics.views.buildingOperations.BuildingOperationsActivity
-import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_ALLOW_UPDATE
-import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETERS
-import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
-import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE
-import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_REQUEST_PARAMETER
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
+import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.views.BaseActivity
+import com.quickhandslogistics.views.buildingOperations.BuildingOperationsActivity
+import com.quickhandslogistics.views.common.BuildingOperationsViewActivity
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_ALLOW_UPDATE
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETERS
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETER_VALUES
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
 import kotlinx.android.synthetic.main.activity_scheduled_work_item_detail.*
 
 class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, ScheduledWorkItemDetailContract.View {
@@ -83,7 +86,7 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
             buttonUpdateLumpers.visibility = View.VISIBLE
         } else {
             textViewEmptyData.text = getString(R.string.empty_work_item_lumpers_past_date_info_message)
-            buttonAddBuildingOperations.text = getString(R.string.building_operations)
+            buttonAddBuildingOperations.text = getString(R.string.view_building_operations)
             buttonUpdateLumpers.visibility = View.GONE
         }
 
@@ -107,12 +110,18 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
     }
 
     private fun showBuildingOperationsScreen() {
-        if (!workItemDetail?.buildingDetailData?.parameters.isNullOrEmpty()) {
-            val bundle = Bundle()
-            bundle.putBoolean(ARG_ALLOW_UPDATE, allowUpdate)
-            bundle.putString(ARG_WORK_ITEM_ID, workItemDetail?.id)
-            bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, workItemDetail?.buildingDetailData?.parameters)
-            startIntent(BuildingOperationsActivity::class.java, bundle = bundle)
+        workItemDetail?.let { workItemDetail ->
+            if (allowUpdate) {
+                val bundle = Bundle()
+                bundle.putString(ARG_WORK_ITEM_ID, workItemDetail.id)
+                bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, workItemDetail.buildingDetailData?.parameters)
+                startIntent(BuildingOperationsActivity::class.java, bundle = bundle)
+            } else {
+                val bundle = Bundle()
+                bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, workItemDetail.buildingDetailData?.parameters)
+                bundle.putSerializable(ARG_BUILDING_PARAMETER_VALUES, workItemDetail.buildingOps)
+                startIntent(BuildingOperationsViewActivity::class.java, bundle = bundle)
+            }
         }
     }
 
@@ -144,6 +153,8 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
             getString(R.string.live_loads) -> textViewWorkItemsCount.text = String.format(getString(R.string.live_load_s), workItemDetail.sequence)
             else -> textViewWorkItemsCount.text = String.format(getString(R.string.out_bound_s), workItemDetail.sequence)
         }
+
+        ScheduleUtils.changeStatusUIByValue(resources, workItemDetail.status, textViewStatus)
 
         workItemDetail.assignedLumpersList?.let { assignedLumpersList ->
             lumpersAdapter.updateData(assignedLumpersList)

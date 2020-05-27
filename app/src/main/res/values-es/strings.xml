@@ -124,6 +124,7 @@
     <string name="update_building_operations">Update Building Operations</string>
     <string name="update_lumpers">Update Lumpers</string>
     <string name="update_request">Update Request</string>
+    <string name="view_building_operations">View Building Operations</string>
     <string name="waiting_time">Waiting Time</string>
     <string name="waiting_time_in_min">Waiting Time (in Min.)</string>
     <string name="work_item_detail">Work Item Detail</string>

@@ -13,7 +13,7 @@ import com.quickhandslogistics.R
 import kotlinx.android.synthetic.main.item_building_operation.view.*
 import java.util.*
 
-class BuildingOperationsAdapter(private val allowUpdate: Boolean, private val parameters: ArrayList<String>) : Adapter<BuildingOperationsAdapter.ViewHolder>() {
+class BuildingOperationsAdapter(private val parameters: ArrayList<String>) : Adapter<BuildingOperationsAdapter.ViewHolder>() {
 
     private var data = HashMap<String, String>()
 
@@ -41,8 +41,6 @@ class BuildingOperationsAdapter(private val allowUpdate: Boolean, private val pa
         private val editTextValue: EditText = view.editTextValue
 
         fun bind() {
-            editTextValue.isEnabled = allowUpdate
-
             val header = parameters[adapterPosition]
             textViewHeader.text = header.capitalize()
             if (data.containsKey(header)) {

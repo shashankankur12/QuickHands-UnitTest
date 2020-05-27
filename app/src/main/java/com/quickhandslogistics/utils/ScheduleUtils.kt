@@ -6,6 +6,7 @@ import android.widget.TextView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import java.util.*
 import kotlin.Comparator
@@ -29,13 +30,11 @@ object ScheduleUtils {
     fun getScheduleTypeName(workItems: List<WorkItemDetail>?, scheduleTypeNames: String, scheduleType: String): String {
         var scheduleTypes = scheduleTypeNames
 
-        workItems?.let {
-            if (workItems.isNotEmpty()) {
-                if (scheduleTypes.isNotEmpty()) {
-                    scheduleTypes += ", "
-                }
-                scheduleTypes += scheduleType
+        if (!workItems.isNullOrEmpty()) {
+            if (scheduleTypes.isNotEmpty()) {
+                scheduleTypes += ", "
             }
+            scheduleTypes += scheduleType
         }
         return scheduleTypes
     }
@@ -182,5 +181,38 @@ object ScheduleUtils {
             }
             employeesList
         } else ArrayList()
+    }
+
+    fun getWholeScheduleStatus(scheduleTypes: ScheduleDetail.ScheduleTypes): String {
+        var scheduledCount = 0
+        var inProgressCount = 0
+        var onHoldCount = 0
+        var cancelledCount = 0
+        var completedCount = 0
+
+        val allWorkItems = ArrayList<WorkItemDetail>()
+        allWorkItems.addAll(scheduleTypes.liveLoads!!)
+        allWorkItems.addAll(scheduleTypes.outbounds!!)
+        allWorkItems.addAll(scheduleTypes.drops!!)
+
+        for (workItem in allWorkItems) {
+            when (workItem.status) {
+                AppConstant.WORK_ITEM_STATUS_SCHEDULED -> scheduledCount++
+                AppConstant.WORK_ITEM_STATUS_IN_PROGRESS -> inProgressCount++
+                AppConstant.WORK_ITEM_STATUS_ON_HOLD -> onHoldCount++
+                AppConstant.WORK_ITEM_STATUS_CANCELLED -> cancelledCount++
+                AppConstant.WORK_ITEM_STATUS_COMPLETED -> completedCount++
+            }
+        }
+
+        return if (inProgressCount > 0 || onHoldCount > 0) {
+            AppConstant.WORK_ITEM_STATUS_IN_PROGRESS
+        } else if (scheduledCount > 0) {
+            AppConstant.WORK_ITEM_STATUS_SCHEDULED
+        } else if (cancelledCount > 0 && completedCount == 0) {
+            AppConstant.WORK_ITEM_STATUS_CANCELLED
+        } else {
+            AppConstant.WORK_ITEM_STATUS_COMPLETED
+        }
     }
 }
