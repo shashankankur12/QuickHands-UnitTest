@@ -15,7 +15,7 @@ import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
 import com.quickhandslogistics.utils.AppConstant
 import kotlinx.android.synthetic.main.item_request_lumpers.view.*
 
-class RequestLumpersAdapter(private val resources: Resources, private val isFutureDate: Boolean, private val onAdapterClick: RequestLumpersContract.View.OnAdapterItemClickListener) :
+class RequestLumpersAdapter(private val resources: Resources, private val isPastDate: Boolean, private val onAdapterClick: RequestLumpersContract.View.OnAdapterItemClickListener) :
     Adapter<RequestLumpersAdapter.ViewHolder>() {
 
     private val requestList: ArrayList<RequestLumpersRecord> = ArrayList()
@@ -53,7 +53,7 @@ class RequestLumpersAdapter(private val resources: Resources, private val isFutu
                 AppConstant.REQUEST_LUMPERS_STATUS_PENDING -> {
                     textViewStatus.text = resources.getString(R.string.pending)
                     textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
-                    textViewUpdateRequest.visibility = if (isFutureDate) View.VISIBLE else View.GONE
+                    textViewUpdateRequest.visibility = if (isPastDate) View.GONE else View.VISIBLE
                 }
                 AppConstant.REQUEST_LUMPERS_STATUS_APPROVED -> {
                     textViewStatus.text = resources.getString(R.string.approved)

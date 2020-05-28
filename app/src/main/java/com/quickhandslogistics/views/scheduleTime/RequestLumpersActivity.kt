@@ -24,7 +24,7 @@ import java.util.*
 class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     RequestLumpersContract.View, RequestLumpersContract.View.OnAdapterItemClickListener {
 
-    private var isFutureDate = false
+    private var isPastDate = false
     private var selectedTime: Long = 0
     private var scheduledLumpersCount: Int = 0
 
@@ -42,7 +42,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
             selectedTime = bundle.getLong(ARG_SELECTED_DATE_MILLISECONDS, 0)
             scheduledLumpersCount = bundle.getInt(ARG_SCHEDULED_LUMPERS_COUNT, 0)
 
-            isFutureDate = DateUtils.isFutureDate(selectedTime)
+            isPastDate = !DateUtils.isFutureDate(selectedTime) && !DateUtils.isCurrentDate(selectedTime)
         }
 
         initializeUI()
@@ -58,7 +58,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         recyclerViewRequestLumpers.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            requestLumpersAdapter = RequestLumpersAdapter(resources, isFutureDate, this@RequestLumpersActivity)
+            requestLumpersAdapter = RequestLumpersAdapter(resources, isPastDate, this@RequestLumpersActivity)
             adapter = requestLumpersAdapter
         }
 
@@ -69,12 +69,12 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
             }
         })
 
-        if (isFutureDate) {
-            textViewEmptyData.text = getString(R.string.empty_request_lumpers_list_info_message)
-            buttonCreateNewRequest.visibility = View.VISIBLE
-        } else {
+        if (isPastDate) {
             textViewEmptyData.text = getString(R.string.empty_request_lumpers_list_info_message_past)
             buttonCreateNewRequest.visibility = View.GONE
+        } else {
+            textViewEmptyData.text = getString(R.string.empty_request_lumpers_list_info_message)
+            buttonCreateNewRequest.visibility = View.VISIBLE
         }
 
         buttonCreateNewRequest.setOnClickListener(this)
