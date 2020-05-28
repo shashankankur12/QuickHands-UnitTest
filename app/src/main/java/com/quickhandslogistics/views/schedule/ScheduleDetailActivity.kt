@@ -22,6 +22,7 @@ import com.quickhandslogistics.utils.AppConstant.Companion.NOTES_NOT_AVAILABLE
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_REQUEST_PARAMETER
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.views.BaseActivity
@@ -135,8 +136,8 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
         if (!scheduleDetail.buildingName.isNullOrEmpty())
             textViewBuildingName.text = scheduleDetail.buildingName?.capitalize()
 
-        scheduleDetail.scheduledFrom?.let {
-            textViewScheduleDate.text = DateUtils.changeDateString(PATTERN_API_REQUEST_PARAMETER, PATTERN_NORMAL, it)
+        scheduleDetail.endDateForCurrentWorkItem?.let {
+            textViewScheduleDate.text = DateUtils.changeDateString(PATTERN_API_RESPONSE, PATTERN_NORMAL, it)
         }
         textViewScheduleType.text = scheduleDetail.scheduleTypeNames
         textViewWorkItemsCount.text = String.format(getString(R.string.work_items_s), scheduleDetail.totalNumberOfWorkItems)
