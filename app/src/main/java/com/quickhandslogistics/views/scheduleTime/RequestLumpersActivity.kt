@@ -77,6 +77,8 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
             buttonCreateNewRequest.visibility = View.VISIBLE
         }
 
+        addNotesTouchListener(editTextDMNotes)
+
         buttonCreateNewRequest.setOnClickListener(this)
         bottomSheetBackgroundRequestLumpers.setOnClickListener(this)
         buttonSubmit.setOnClickListener(this)

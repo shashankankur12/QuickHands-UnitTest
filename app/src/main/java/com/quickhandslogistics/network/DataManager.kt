@@ -34,6 +34,10 @@ object DataManager : AppConstant {
         return retrofitStandard
     }
 
+    fun getOkHttpClient(): OkHttpClient? {
+        return okHttpClient
+    }
+
     fun getService(): IApiInterface {
         return getDataManager()!!.create(IApiInterface::class.java)
     }

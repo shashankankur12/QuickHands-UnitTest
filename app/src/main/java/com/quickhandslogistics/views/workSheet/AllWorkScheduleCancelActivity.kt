@@ -3,6 +3,7 @@ package com.quickhandslogistics.views.workSheet
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.MotionEvent
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,11 +13,11 @@ import com.quickhandslogistics.adapters.workSheet.AllWorkScheduleCancelAdapter
 import com.quickhandslogistics.contracts.workSheet.AllWorkScheduleCancelContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.presenters.workSheet.AllWorkScheduleCancelPresenter
-import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.utils.AppUtils
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.views.BaseActivity
 import kotlinx.android.synthetic.main.activity_all_work_schedule_cancel.*
 
 class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, TextWatcher,
@@ -53,6 +54,9 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
                 invalidateEmptyView()
             }
         })
+
+        addNotesTouchListener(editTextCustomerNotes)
+        addNotesTouchListener(editTextQHLNotes)
 
         buttonSubmit.setOnClickListener(this)
         editTextSearch.addTextChangedListener(this)

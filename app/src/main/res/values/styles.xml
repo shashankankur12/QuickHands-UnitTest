@@ -129,6 +129,14 @@
         <item name="android:textSize">@dimen/_12ssp</item>
         <item name="android:textCursorDrawable">@drawable/color_cursor</item>
     </style>
+
+    <style name="notesEditTextTheme" parent="valueEditTextTheme">
+        <item name="android:overScrollMode">always</item>
+        <item name="android:scrollbarStyle">insideInset</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:inputType">textMultiLine|textCapSentences</item>
+        <item name="android:maxLines">3</item>
+    </style>
     <!---->
 
     <!--TextView Styles-->

@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.data.schedule.WorkItemDetail
-import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
+import com.quickhandslogistics.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_work_sheet_item_detail_notes.*
 
 class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener {
@@ -38,6 +38,9 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        addNotesTouchListener(editTextQHLCustomerNotes)
+        addNotesTouchListener(editTextQHLNotes)
 
         buttonSubmit.setOnClickListener(this)
     }
