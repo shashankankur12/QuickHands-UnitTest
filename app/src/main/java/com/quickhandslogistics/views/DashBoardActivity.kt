@@ -16,7 +16,7 @@ import com.quickhandslogistics.views.attendance.TimeClockAttendanceFragment
 import com.quickhandslogistics.views.customerSheet.CustomerSheetFragment
 import com.quickhandslogistics.views.lumperSheet.LumperSheetFragment
 import com.quickhandslogistics.views.lumpers.LumpersFragment
-import com.quickhandslogistics.views.reports.ReportFragment
+import com.quickhandslogistics.views.reports.ReportsFragment
 import com.quickhandslogistics.views.schedule.ScheduleFragment
 import com.quickhandslogistics.views.scheduleTime.ScheduleTimeFragment
 import com.quickhandslogistics.views.workSheet.AllWorkScheduleCancelActivity
@@ -143,7 +143,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
                     CustomerSheetFragment(), R.drawable.ic_sidemenu_customer_sheet, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.customer_sheet), showTabName)
                 )
             )
-            it.addItem(NavDrawer.AppNavDrawerItem(ReportFragment(), R.drawable.ic_sidemenu_reports, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.reports), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(ReportsFragment(), R.drawable.ic_sidemenu_reports, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.reports), showTabName)))
             it.addItem(NavDrawer.AppNavDrawerItem(SettingsFragment(), R.drawable.ic_sidemenu_settings, R.id.linearLayoutBottomItems, isShowOnLaunch(getString(R.string.settings), showTabName)))
             it.addItem(NavDrawer.AppNavDrawerItem(null, R.drawable.ic_sidemenu_logout, R.id.linearLayoutBottomItems, isShowOnLaunch(getString(R.string.logout), showTabName)))
 

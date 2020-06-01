@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.quickhandslogistics">
 
-    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".application.MyApplication"
@@ -27,7 +27,7 @@
             android:name=".views.common.BuildingOperationsViewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".views.common.ChooseLumpersActivity"
+            android:name=".views.scheduleTime.ChooseLumpersActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.common.DisplayLumpersListActivity"
@@ -42,6 +42,10 @@
 
         <activity
             android:name=".views.lumperSheet.LumperWorkDetailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".views.reports.LumperJobHistoryActivity"
             android:screenOrientation="portrait" />
 
         <activity

@@ -8,7 +8,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_reports.*
 
-class ReportFragment : BaseFragment(), View.OnClickListener {
+class ReportsFragment : BaseFragment(), View.OnClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_reports, container, false)
@@ -17,17 +17,13 @@ class ReportFragment : BaseFragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        textViewJobHistory.setOnClickListener(this)
         textViewLumperJobHistory.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
-                textViewJobHistory.id -> {
-                }
-                textViewLumperJobHistory.id -> {
-                }
+                textViewLumperJobHistory.id -> startIntent(LumperJobHistoryActivity::class.java)
             }
         }
     }

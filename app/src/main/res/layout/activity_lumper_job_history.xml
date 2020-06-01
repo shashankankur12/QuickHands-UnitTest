@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.scheduleTime.ChooseLumpersActivity">
+    tools:context=".views.reports.LumperJobHistoryActivity">
 
     <include layout="@layout/layout_toolbar" />
 
-    <include layout="@layout/content_choose_lumper" />
+    <include layout="@layout/content_lumper_job_history" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

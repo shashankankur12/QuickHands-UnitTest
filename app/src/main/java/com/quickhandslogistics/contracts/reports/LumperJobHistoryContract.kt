@@ -1,14 +1,12 @@
-package com.quickhandslogistics.contracts.common
+package com.quickhandslogistics.contracts.reports
 
 import com.quickhandslogistics.contracts.BaseContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
-import java.util.*
-import kotlin.collections.ArrayList
 
-class ChooseLumpersContract {
+class LumperJobHistoryContract {
     interface Model {
-        fun fetchLumpersList(selectedDate: Date, onFinishedListener: OnFinishedListener)
+        fun fetchLumpersList(onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(response: LumperListAPIResponse)
@@ -20,11 +18,11 @@ class ChooseLumpersContract {
         fun showLumpersData(employeeDataList: ArrayList<EmployeeData>)
 
         interface OnAdapterItemClickListener {
-            fun onSelectLumper(totalSelectedCount: Int)
+            fun onSelectLumper()
         }
     }
 
     interface Presenter : BaseContract.Presenter {
-        fun fetchLumpersList(selectedDate: Date)
+        fun fetchLumpersList()
     }
 }

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_lumper_job_history">
+
+    <TextView
+        android:id="@+id/textViewSelectDates"
+        style="@style/titleTextViewTheme"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="@dimen/_10ssp"
+        android:layout_marginTop="@dimen/_5ssp"
+        android:layout_marginEnd="@dimen/_10ssp"
+        android:text="@string/select_dates"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutDates"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10ssp"
+        android:layout_marginTop="@dimen/_4ssp"
+        android:layout_marginEnd="@dimen/_10ssp"
+        android:layout_marginBottom="@dimen/_6sdp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSelectDates">
+
+        <TextView
+            android:id="@+id/textViewStartDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/background_date"
+            android:drawableEnd="@drawable/ic_schedule_calendar"
+            android:drawablePadding="@dimen/_6ssp"
+            android:hint="@string/start"
+            android:padding="@dimen/_4sdp"
+            android:textColor="@color/scheduleDetail"
+            android:textSize="@dimen/_10ssp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:gravity="center"
+            android:text="@string/to"
+            android:textColor="@color/textBlack"
+            android:textSize="@dimen/_8ssp" />
+
+        <TextView
+            android:id="@+id/textViewEndDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/background_date"
+            android:drawableEnd="@drawable/ic_schedule_calendar"
+            android:drawablePadding="@dimen/_6ssp"
+            android:hint="@string/end"
+            android:padding="@dimen/_6sdp"
+            android:textColor="@color/scheduleDetail"
+            android:textSize="@dimen/_10ssp" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/editTextSearch"
+        style="@style/searchEditTextTheme"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutDates" />
+
+    <ImageView
+        android:id="@+id/imageViewCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_17sdp"
+        android:src="@drawable/ic_cancel"
+        android:tint="@color/colorLightGrey"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextSearch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextSearch" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_10ssp"
+        android:background="@drawable/white_background"
+        android:paddingStart="@dimen/_10ssp"
+        android:paddingTop="@dimen/_10ssp"
+        android:paddingEnd="@dimen/_10ssp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSearch">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewSelectLumpers"
+                style="@style/titleTextViewTheme"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:text="@string/select_lumpers" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewLumpers"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/_10ssp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/buttonGenerateReport"
+                style="@style/positiveRoundButtonTheme"
+                android:layout_marginBottom="@dimen/_8ssp"
+                android:enabled="false"
+                android:text="@string/generate_report" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textViewEmptyData"
+            style="@style/noRecordTextViewTheme"
+            android:layout_centerInParent="true"
+            android:text="@string/empty_lumpers_list_info_message"
+            android:visibility="gone" />
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

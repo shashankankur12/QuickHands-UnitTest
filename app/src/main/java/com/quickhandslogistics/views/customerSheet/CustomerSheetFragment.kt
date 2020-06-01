@@ -42,7 +42,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         super.onCreate(savedInstanceState)
         customerSheetPresenter = CustomerSheetPresenter(this, resources, sharedPref)
 
-        // Setup DatePicker Dates
+        // Setup Calendar Dates
         selectedTime = Date().time
         availableDates = CalendarUtils.getPastCalendarDates()
     }
