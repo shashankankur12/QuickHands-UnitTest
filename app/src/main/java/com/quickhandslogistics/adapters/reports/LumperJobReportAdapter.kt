@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
-import com.quickhandslogistics.contracts.reports.LumperJobHistoryContract
+import com.quickhandslogistics.contracts.reports.LumperJobReportContract
 import com.quickhandslogistics.controls.CustomTextView
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.utils.UIUtils
@@ -19,7 +19,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class LumperJobHistoryAdapter(private val onAdapterClick: LumperJobHistoryContract.View.OnAdapterItemClickListener) : Adapter<LumperJobHistoryAdapter.WorkItemHolder>() {
+class LumperJobReportAdapter(private val onAdapterClick: LumperJobReportContract.View.OnAdapterItemClickListener) : Adapter<LumperJobReportAdapter.ViewHolder>() {
 
     private var employeeDataList: ArrayList<EmployeeData> = ArrayList()
     private var filteredEmployeeDataList: ArrayList<EmployeeData> = ArrayList()
@@ -30,9 +30,9 @@ class LumperJobHistoryAdapter(private val onAdapterClick: LumperJobHistoryContra
     private var searchEnabled = false
     private var searchTerm = ""
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_add_lumpers, parent, false)
-        return WorkItemHolder(view, parent.context)
+        return ViewHolder(view, parent.context)
     }
 
     override fun getItemCount(): Int {
@@ -43,11 +43,11 @@ class LumperJobHistoryAdapter(private val onAdapterClick: LumperJobHistoryContra
         return if (searchEnabled) filteredEmployeeDataList[position] else employeeDataList[position]
     }
 
-    override fun onBindViewHolder(holder: WorkItemHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    inner class WorkItemHolder(view: View, private val context: Context) :
+    inner class ViewHolder(view: View, private val context: Context) :
         RecyclerView.ViewHolder(view), View.OnClickListener {
 
         private val textViewLumperName: TextView = view.textViewLumperName
@@ -84,7 +84,7 @@ class LumperJobHistoryAdapter(private val onAdapterClick: LumperJobHistoryContra
                             selectedLumperIdsList.add(employeeData.id!!)
                             selectedLumpersMap[employeeData.id!!] = employeeData
                         }
-                        onAdapterClick.onSelectLumper()
+                        onAdapterClick.onLumperSelectionChanged()
                         notifyDataSetChanged()
                     }
                 }
@@ -132,6 +132,38 @@ class LumperJobHistoryAdapter(private val onAdapterClick: LumperJobHistoryContra
         setSearchEnabled(false)
         this.employeeDataList.clear()
         this.employeeDataList.addAll(employeeDataList)
+        notifyDataSetChanged()
+    }
+
+    fun clearAllSelection() {
+        setSearchEnabled(false)
+        selectedLumpersMap.clear()
+        selectedLumperIdsList.clear()
+
+        onAdapterClick.onLumperSelectionChanged()
+        notifyDataSetChanged()
+    }
+
+    fun invokeSelectAll() {
+        if (itemCount > 0) {
+            val selectedCount = getSelectedLumpersList().size
+            if (selectedCount == itemCount) {
+                clearAllSelection()
+            } else {
+                selectAllLumpers()
+            }
+        }
+    }
+
+    private fun selectAllLumpers() {
+        setSearchEnabled(false)
+        for (employeeData in employeeDataList) {
+            if (!selectedLumperIdsList.contains(employeeData.id!!)) {
+                selectedLumperIdsList.add(employeeData.id!!)
+                selectedLumpersMap[employeeData.id!!] = employeeData
+            }
+        }
+        onAdapterClick.onLumperSelectionChanged()
         notifyDataSetChanged()
     }
 }

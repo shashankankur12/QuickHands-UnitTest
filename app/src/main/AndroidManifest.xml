@@ -45,7 +45,13 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".views.reports.LumperJobHistoryActivity"
+            android:name=".views.reports.CustomerReportActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.reports.LumperJobReportActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.reports.TimeClockReportActivity"
             android:screenOrientation="portrait" />
 
         <activity

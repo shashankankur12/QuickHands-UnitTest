@@ -1,7 +1,7 @@
 package com.quickhandslogistics.models.reports
 
 import android.util.Log
-import com.quickhandslogistics.contracts.reports.LumperJobHistoryContract
+import com.quickhandslogistics.contracts.reports.LumperJobReportContract
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.DataManager.getAuthToken
@@ -12,9 +12,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 
-class LumperJobHistoryModel : LumperJobHistoryContract.Model {
+class LumperJobReportModel : LumperJobReportContract.Model {
 
-    override fun fetchLumpersList(onFinishedListener: LumperJobHistoryContract.Model.OnFinishedListener) {
+    override fun fetchLumpersList(onFinishedListener: LumperJobReportContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, Date())
 
         DataManager.getService().getAllLumpersData(getAuthToken(), dateString).enqueue(object : Callback<LumperListAPIResponse> {
@@ -25,7 +25,7 @@ class LumperJobHistoryModel : LumperJobHistoryContract.Model {
             }
 
             override fun onFailure(call: Call<LumperListAPIResponse>, t: Throwable) {
-                Log.e(LumperJobHistoryModel::class.simpleName, t.localizedMessage!!)
+                Log.e(LumperJobReportModel::class.simpleName, t.localizedMessage!!)
                 onFinishedListener.onFailure()
             }
         })

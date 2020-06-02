@@ -4,7 +4,7 @@ import com.quickhandslogistics.contracts.BaseContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
 
-class LumperJobHistoryContract {
+class TimeClockReportContract {
     interface Model {
         fun fetchLumpersList(onFinishedListener: OnFinishedListener)
 
@@ -18,7 +18,7 @@ class LumperJobHistoryContract {
         fun showLumpersData(employeeDataList: ArrayList<EmployeeData>)
 
         interface OnAdapterItemClickListener {
-            fun onSelectLumper()
+            fun onLumperSelectionChanged()
         }
     }
 
