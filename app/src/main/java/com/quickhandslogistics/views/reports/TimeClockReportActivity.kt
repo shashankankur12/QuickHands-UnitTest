@@ -120,26 +120,23 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
             radioButtonDaily.id -> {
                 selectedEndDate = calendar.time
                 selectedStartDate = calendar.time
-                updateSelectedDateText()
             }
             radioButtonWeekly.id -> {
                 selectedEndDate = calendar.time
                 calendar.add(Calendar.WEEK_OF_YEAR, -1)
                 selectedStartDate = calendar.time
-                updateSelectedDateText()
             }
             radioButtonMonthly.id -> {
                 selectedEndDate = calendar.time
                 calendar.add(Calendar.MONTH, -1)
                 selectedStartDate = calendar.time
-                updateSelectedDateText()
             }
             radioButtonCustom.id -> {
-                selectedStartDate = null
                 selectedEndDate = null
-                updateSelectedDateText()
+                selectedStartDate = null
             }
         }
+        updateSelectedDateText()
     }
 
     private fun updateSelectedDateText() {
@@ -188,40 +185,21 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
     }
 
     private fun showStartDatePicker() {
-        val calendar = Calendar.getInstance()
-        selectedStartDate?.let { date ->
-            calendar.time = date
-        }
-        val picker = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-            calendar.set(year, month, dayOfMonth)
-            selectedStartDate = calendar.time
-            updateSelectedDateText()
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
-
-        selectedEndDate?.also { date ->
-            picker.datePicker.maxDate = date.time
-        } ?: run {
-            picker.datePicker.maxDate = System.currentTimeMillis()
-        }
-        picker.show()
+        ReportUtils.showStartDatePicker(selectedStartDate, selectedEndDate, activity, object : ReportUtils.OnDateSetListener {
+            override fun onDateSet(selected: Date) {
+                selectedStartDate = selected
+                updateSelectedDateText()
+            }
+        })
     }
 
     private fun showEndDatePicker() {
-        val calendar = Calendar.getInstance()
-        selectedEndDate?.let { date ->
-            calendar.time = date
-        }
-        val picker = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-            calendar.set(year, month, dayOfMonth)
-            selectedEndDate = calendar.time
-            updateSelectedDateText()
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
-
-        selectedStartDate?.let { date ->
-            picker.datePicker.minDate = date.time
-        }
-        picker.datePicker.maxDate = System.currentTimeMillis()
-        picker.show()
+        ReportUtils.showEndDatePicker(selectedStartDate, selectedEndDate, activity, object : ReportUtils.OnDateSetListener {
+            override fun onDateSet(selected: Date) {
+                selectedEndDate = selected
+                updateSelectedDateText()
+            }
+        })
     }
 
     private fun showConfirmationDialog() {
