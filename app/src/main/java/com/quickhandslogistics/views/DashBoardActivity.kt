@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.google.android.material.snackbar.Snackbar
 import com.quickhandslogistics.BuildConfig
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.DashBoardContract
@@ -37,6 +38,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     private lateinit var dashBoardPresenter: DashBoardPresenter
 
     private var navDrawer: NavDrawer? = null
+    private var snackBar: Snackbar? = null
 
     companion object {
         const val ARG_SHOW_TAB_NAME = "ARG_SHOW_TAB_NAME"
@@ -65,6 +67,8 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
 
         dashBoardPresenter = DashBoardPresenter(this, resources, sharedPref)
         dashBoardPresenter.loadLeadProfileData()
+
+        snackBar = SnackBarFactory.createShortSnackBar(activity, frameLayoutMain, getString(R.string.press_back_again_to_exit), isShow = false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -107,6 +111,14 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == RESULT_OK) {
             navDrawer?.updateWorkSheetList()
+        }
+    }
+
+    override fun onBackPressed() {
+        snackBar?.also { snackBar ->
+            if (snackBar.isShown) super.onBackPressed() else snackBar.show()
+        } ?: run {
+            super.onBackPressed()
         }
     }
 

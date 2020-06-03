@@ -91,6 +91,7 @@
     <string name="pending">Pending</string>
     <string name="phone_number">Phone Number</string>
     <string name="present">Present</string>
+    <string name="press_back_again_to_exit">Press back again to exit!</string>
     <string name="primary_building">Primary Building</string>
     <string name="refresh">Refresh</string>
     <string name="rejected">Rejected</string>
