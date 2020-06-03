@@ -1,11 +1,6 @@
 package com.quickhandslogistics.views.reports
 
-import android.app.DatePickerDialog
-import android.app.DownloadManager
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Menu
@@ -230,18 +225,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
         val pdfFileUrl = "https://file-examples.com/wp-content/uploads/2017/10/file-example_PDF_1MB.pdf"
 
         val fileUrl = if (radioGroupReportType.checkedRadioButtonId == radioButtonPdf.id) pdfFileUrl else excelFileUrl
-        var fileName: String = fileUrl.substring(fileUrl.lastIndexOf('/') + 1)
-        fileName = fileName.substring(0, 1).toUpperCase() + fileName.substring(1)
-
-        val request = DownloadManager.Request(Uri.parse(fileUrl))
-            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
-            .setTitle(fileName)
-            .setAllowedOverMetered(true)
-            .setAllowedOverRoaming(true)
-
-        val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        downloadManager.enqueue(request)
+        DownloadUtils.downloadFile(fileUrl, activity)
     }
 
     /** Native Views Listeners */
