@@ -50,6 +50,21 @@ class RequestLumpersModel : RequestLumpersContract.Model {
         })
     }
 
+    override fun cancelRequestForLumpers(requestId: String, date: Date, onFinishedListener: RequestLumpersContract.Model.OnFinishedListener) {
+        DataManager.getService().cancelRequestLumpers(getAuthToken(), requestId).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessCancelRequest(date)
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Log.e(RequestLumpersModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
+    }
+
     override fun updateRequestForLumpers(requestId: String, requiredLumperCount: String, notesDM: String, date: Date, onFinishedListener: RequestLumpersContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, date)
         val request = RequestLumpersRequest(requiredLumperCount.toInt(), notesDM, dateString)

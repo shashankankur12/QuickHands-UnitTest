@@ -104,6 +104,9 @@ interface IApiInterface {
     fun updateRequestLumpers(
         @Header("Authorization") auth: String, @Path("requestId") requestId: String, @Body request: RequestLumpersRequest
     ): Call<BaseResponse>
+
+    @DELETE("employees/lead/lumpers/request/{requestId}")
+    fun cancelRequestLumpers(@Header("Authorization") auth: String, @Path("requestId") requestId: String): Call<BaseResponse>
     /////////////////////////////////////////////////////////////
 
     // Work Sheet /////////////////////////////////////////////////

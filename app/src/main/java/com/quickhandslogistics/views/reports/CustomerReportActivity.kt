@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.RadioGroup
+import androidx.core.content.ContextCompat
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.reports.CustomerReportContract
 import com.quickhandslogistics.presenters.reports.CustomerReportPresenter
@@ -85,26 +86,23 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
             radioButtonDaily.id -> {
                 selectedEndDate = calendar.time
                 selectedStartDate = calendar.time
-                updateSelectedDateText()
             }
             radioButtonWeekly.id -> {
                 selectedEndDate = calendar.time
                 calendar.add(Calendar.WEEK_OF_YEAR, -1)
                 selectedStartDate = calendar.time
-                updateSelectedDateText()
             }
             radioButtonMonthly.id -> {
                 selectedEndDate = calendar.time
                 calendar.add(Calendar.MONTH, -1)
                 selectedStartDate = calendar.time
-                updateSelectedDateText()
             }
             radioButtonCustom.id -> {
                 selectedStartDate = null
                 selectedEndDate = null
-                updateSelectedDateText()
             }
         }
+        updateSelectedDateText()
     }
 
     private fun updateSelectedDateText() {
@@ -146,7 +144,7 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
     }
 
     private fun showConfirmationDialog() {
-        CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
+        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.generate_report_alert_message), activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 showSuccessDialog()
             }

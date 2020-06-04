@@ -43,6 +43,7 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
         private val textViewRequestedLumpersCount: TextView = view.textViewRequestedLumpersCount
         private val textViewNote: TextView = view.textViewNote
         private val textViewUpdateRequest: TextView = view.textViewUpdateRequest
+        private val textViewCancelRequest: TextView = view.textViewCancelRequest
         private val linearLayoutNotes: LinearLayout = view.linearLayoutNotes
 
         fun bind(requestLumpersRecord: RequestLumpersRecord) {
@@ -54,20 +55,24 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
                     textViewStatus.text = resources.getString(R.string.pending)
                     textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
                     textViewUpdateRequest.visibility = if (isPastDate) View.GONE else View.VISIBLE
+                    textViewCancelRequest.visibility = if (isPastDate) View.GONE else View.VISIBLE
                 }
                 AppConstant.REQUEST_LUMPERS_STATUS_APPROVED -> {
                     textViewStatus.text = resources.getString(R.string.approved)
                     textViewStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
                     textViewUpdateRequest.visibility = View.GONE
+                    textViewCancelRequest.visibility = View.GONE
                 }
                 else -> {
                     textViewStatus.text = resources.getString(R.string.rejected)
                     textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
                     textViewUpdateRequest.visibility = View.GONE
+                    textViewCancelRequest.visibility = View.GONE
                 }
             }
 
             textViewUpdateRequest.setOnClickListener(this)
+            textViewCancelRequest.setOnClickListener(this)
             linearLayoutNotes.setOnClickListener(this)
         }
 
@@ -81,6 +86,10 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
                     textViewUpdateRequest.id -> {
                         val record = getItem(adapterPosition)
                         onAdapterClick.onUpdateItemClick(record)
+                    }
+                    textViewCancelRequest.id -> {
+                        val record = getItem(adapterPosition)
+                        onAdapterClick.onCancelItemClick(record)
                     }
                 }
             }
