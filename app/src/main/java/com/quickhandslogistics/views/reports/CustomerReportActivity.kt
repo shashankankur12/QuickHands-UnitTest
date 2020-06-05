@@ -5,7 +5,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.RadioGroup
-import androidx.core.content.ContextCompat
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.reports.CustomerReportContract
 import com.quickhandslogistics.presenters.reports.CustomerReportPresenter
@@ -146,32 +145,13 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
     private fun showConfirmationDialog() {
         CustomProgressBar.getInstance().showWarningDialog(getString(R.string.generate_report_alert_message), activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
-                showSuccessDialog()
+                val reportType = if (radioGroupReportType.checkedRadioButtonId == radioButtonPdf.id) "pdf" else "excel"
+                customerReportPresenter.createTimeClockReport(selectedStartDate!!, selectedEndDate!!, reportType)
             }
 
             override fun onCancelClick() {
             }
         })
-    }
-
-    private fun showSuccessDialog() {
-        CustomProgressBar.getInstance().showSuccessOptionDialog(getString(R.string.reports_generate_success_message),
-            activity, object : CustomDialogWarningListener {
-                override fun onConfirmClick() {
-                    downloadFile()
-                }
-
-                override fun onCancelClick() {
-                }
-            })
-    }
-
-    private fun downloadFile() {
-        val excelFileUrl = "https://file-examples.com/wp-content/uploads/2017/02/file_example_XLSX_5000.xlsx"
-        val pdfFileUrl = "https://file-examples.com/wp-content/uploads/2017/10/file-example_PDF_1MB.pdf"
-
-        val fileUrl = if (radioGroupReportType.checkedRadioButtonId == radioButtonPdf.id) pdfFileUrl else excelFileUrl
-        DownloadUtils.downloadFile(fileUrl, "",  activity)
     }
 
     /** Native Views Listeners */
@@ -198,5 +178,16 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
+    }
+
+    override fun showReportDownloadDialog(reportUrl: String, mimeType: String) {
+        DownloadUtils.downloadFile(reportUrl, mimeType, activity)
+
+        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.reports_generate_success_message),
+            activity, object : CustomDialogListener {
+                override fun onConfirmClick() {
+                    resetAllData()
+                }
+            })
     }
 }

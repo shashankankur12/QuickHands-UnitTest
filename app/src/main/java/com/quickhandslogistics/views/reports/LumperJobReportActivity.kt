@@ -209,14 +209,6 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
         })
     }
 
-    private fun downloadFile(reportUrl: String, mimeType: String) {
-        val excelFileUrl = "https://file-examples.com/wp-content/uploads/2017/02/file_example_XLSX_5000.xlsx"
-        val pdfFileUrl = "https://file-examples.com/wp-content/uploads/2017/10/file-example_PDF_1MB.pdf"
-
-        val fileUrl = if (radioGroupReportType.checkedRadioButtonId == radioButtonPdf.id) pdfFileUrl else excelFileUrl
-        DownloadUtils.downloadFile(reportUrl, mimeType, activity)
-    }
-
     /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
@@ -264,7 +256,8 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     }
 
     override fun showReportDownloadDialog(reportUrl: String, mimeType: String) {
-        downloadFile(reportUrl, mimeType)
+        DownloadUtils.downloadFile(reportUrl, mimeType, activity)
+
         CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.reports_generate_success_message),
             activity, object : CustomDialogListener {
                 override fun onConfirmClick() {

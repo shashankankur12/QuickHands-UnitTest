@@ -48,7 +48,7 @@ class LumperJobReportModel : LumperJobReportContract.Model {
             }
 
             override fun onFailure(call: Call<ReportResponse>, t: Throwable) {
-                Log.e(TimeClockReportModel::class.simpleName, t.localizedMessage!!)
+                Log.e(LumperJobReportModel::class.simpleName, t.localizedMessage!!)
                 onFinishedListener.onFailure()
             }
         })

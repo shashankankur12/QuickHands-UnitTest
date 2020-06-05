@@ -209,14 +209,6 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
         })
     }
 
-    private fun downloadFile(reportUrl: String, mimeType: String) {
-        val excelFileUrl = "https://file-examples.com/wp-content/uploads/2017/02/file_example_XLSX_5000.xlsx"
-        val pdfFileUrl = "https://cartographicperspectives.org/index.php/journal/article/download/cp13-full/pdf/"
-
-        val fileUrl = if (radioGroupReportType.checkedRadioButtonId == radioButtonPdf.id) pdfFileUrl else excelFileUrl
-        DownloadUtils.downloadFile(reportUrl, mimeType, activity)
-    }
-
     /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
@@ -264,7 +256,8 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
     }
 
     override fun showReportDownloadDialog(reportUrl: String, mimeType: String) {
-        downloadFile(reportUrl, mimeType)
+        DownloadUtils.downloadFile(reportUrl, mimeType, activity)
+
         CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.reports_generate_success_message),
             activity, object : CustomDialogListener {
                 override fun onConfirmClick() {
