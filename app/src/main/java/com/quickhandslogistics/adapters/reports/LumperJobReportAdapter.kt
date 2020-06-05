@@ -124,8 +124,8 @@ class LumperJobReportAdapter(private val onAdapterClick: LumperJobReportContract
         notifyDataSetChanged()
     }
 
-    fun getSelectedLumpersList(): ArrayList<EmployeeData> {
-        return ArrayList(selectedLumpersMap.values)
+    fun getSelectedLumperIdsList(): ArrayList<String> {
+        return selectedLumperIdsList
     }
 
     fun updateLumpersData(employeeDataList: ArrayList<EmployeeData>) {
@@ -146,7 +146,7 @@ class LumperJobReportAdapter(private val onAdapterClick: LumperJobReportContract
 
     fun invokeSelectAll() {
         if (itemCount > 0) {
-            val selectedCount = getSelectedLumpersList().size
+            val selectedCount = getSelectedLumperIdsList().size
             if (selectedCount == itemCount) {
                 clearAllSelection()
             } else {

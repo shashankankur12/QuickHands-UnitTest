@@ -151,7 +151,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     }
 
     private fun updateSelectAllSectionUI() {
-        val selectedCount = lumperJobReportAdapter.getSelectedLumpersList().size
+        val selectedCount = lumperJobReportAdapter.getSelectedLumperIdsList().size
         if (selectedCount == lumperJobReportAdapter.itemCount) {
             imageViewSelectAll.setImageResource(R.drawable.ic_add_lumer_tick)
             textViewSelectAll.text = getString(R.string.unselect_all)
@@ -162,7 +162,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     }
 
     private fun updateGenerateButtonUI() {
-        buttonGenerateReport.isEnabled = selectedStartDate != null && selectedEndDate != null && lumperJobReportAdapter.getSelectedLumpersList().size > 0
+        buttonGenerateReport.isEnabled = selectedStartDate != null && selectedEndDate != null && lumperJobReportAdapter.getSelectedLumperIdsList().size > 0
     }
 
     private fun invalidateEmptyView() {
@@ -200,7 +200,8 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     private fun showConfirmationDialog() {
         CustomProgressBar.getInstance().showWarningDialog(getString(R.string.generate_report_alert_message), activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
-                showSuccessDialog()
+                val reportType = if (radioGroupReportType.checkedRadioButtonId == radioButtonPdf.id) "pdf" else "excel"
+                lumperJobReportPresenter.createTimeClockReport(selectedStartDate!!, selectedEndDate!!, reportType, lumperJobReportAdapter.getSelectedLumperIdsList())
             }
 
             override fun onCancelClick() {
@@ -208,24 +209,12 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
         })
     }
 
-    private fun showSuccessDialog() {
-        CustomProgressBar.getInstance().showSuccessOptionDialog(getString(R.string.reports_generate_success_message),
-            activity, object : CustomDialogWarningListener {
-                override fun onConfirmClick() {
-                    downloadFile()
-                }
-
-                override fun onCancelClick() {
-                }
-            })
-    }
-
-    private fun downloadFile() {
+    private fun downloadFile(reportUrl: String, mimeType: String) {
         val excelFileUrl = "https://file-examples.com/wp-content/uploads/2017/02/file_example_XLSX_5000.xlsx"
         val pdfFileUrl = "https://file-examples.com/wp-content/uploads/2017/10/file-example_PDF_1MB.pdf"
 
         val fileUrl = if (radioGroupReportType.checkedRadioButtonId == radioButtonPdf.id) pdfFileUrl else excelFileUrl
-        DownloadUtils.downloadFile(fileUrl, activity)
+        DownloadUtils.downloadFile(reportUrl, mimeType, activity)
     }
 
     /** Native Views Listeners */
@@ -272,6 +261,16 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
         lumperJobReportAdapter.updateLumpersData(employeeDataList)
+    }
+
+    override fun showReportDownloadDialog(reportUrl: String, mimeType: String) {
+        downloadFile(reportUrl, mimeType)
+        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.reports_generate_success_message),
+            activity, object : CustomDialogListener {
+                override fun onConfirmClick() {
+                    resetAllData()
+                }
+            })
     }
 
     /** Adapter Listeners */

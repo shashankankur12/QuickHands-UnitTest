@@ -15,11 +15,10 @@ import com.quickhandslogistics.data.lumperSheet.LumperSheetListAPIResponse
 import com.quickhandslogistics.data.lumperSheet.LumperWorkDetailAPIResponse
 import com.quickhandslogistics.data.lumperSheet.SubmitLumperSheetRequest
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
+import com.quickhandslogistics.data.reports.ReportRequest
+import com.quickhandslogistics.data.reports.ReportResponse
 import com.quickhandslogistics.data.schedule.*
-import com.quickhandslogistics.data.scheduleTime.GetScheduleTimeAPIResponse
-import com.quickhandslogistics.data.scheduleTime.RequestLumpersListAPIResponse
-import com.quickhandslogistics.data.scheduleTime.RequestLumpersRequest
-import com.quickhandslogistics.data.scheduleTime.ScheduleTimeRequest
+import com.quickhandslogistics.data.scheduleTime.*
 import com.quickhandslogistics.data.workSheet.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -105,8 +104,8 @@ interface IApiInterface {
         @Header("Authorization") auth: String, @Path("requestId") requestId: String, @Body request: RequestLumpersRequest
     ): Call<BaseResponse>
 
-    @DELETE("employees/lead/lumpers/request/{requestId}")
-    fun cancelRequestLumpers(@Header("Authorization") auth: String, @Path("requestId") requestId: String): Call<BaseResponse>
+    @POST("employees/requests/cancel")
+    fun cancelRequestLumpers(@Header("Authorization") auth: String, @Body request: CancelRequestLumpersRequest): Call<BaseResponse>
     /////////////////////////////////////////////////////////////
 
     // Work Sheet /////////////////////////////////////////////////
@@ -162,5 +161,19 @@ interface IApiInterface {
 
     @POST("employees/lumpersheet/finalize")
     fun submitLumperSheet(@Header("Authorization") auth: String, @Body request: SubmitLumperSheetRequest): Call<BaseResponse>
+    /////////////////////////////////////////////////////////////
+
+    // Reports /////////////////////////////////////////////////
+    @POST("employees/timeclock/reports")
+    fun createTimeClockReport(
+        @Header("Authorization") auth: String, @Query("start") startDate: String,
+        @Query("end") endDate: String, @Query("type") type: String, @Body request: ReportRequest
+    ): Call<ReportResponse>
+
+    @POST("employees/worksheet/reports")
+    fun createLumperJobReport(
+        @Header("Authorization") auth: String, @Query("start") startDate: String,
+        @Query("end") endDate: String, @Query("type") type: String, @Body request: ReportRequest
+    ): Call<ReportResponse>
     /////////////////////////////////////////////////////////////
 }

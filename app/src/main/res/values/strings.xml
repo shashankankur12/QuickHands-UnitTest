@@ -184,7 +184,7 @@
     <string name="logout_alert_message">You want to logout</string>
     <string name="lumper_sheet_success_message">Lumper Sheet submitted successfully</string>
     <string name="notes_saved_success_alert_message">Notes Saved Successfully</string>
-    <string name="reports_generate_success_message">Report Generated Successfully. Do you want to Download it?</string>
+    <string name="reports_generate_success_message">Report has been generated Successfully. Please check the notification bar to see the downloading.</string>
     <string name="request_cancelled_success_message">Request cancelled successfully</string>
     <string name="request_lumpers_alert_message">You want to submit the lumper request</string>
     <string name="request_placed_success_message">Request placed successfully</string>

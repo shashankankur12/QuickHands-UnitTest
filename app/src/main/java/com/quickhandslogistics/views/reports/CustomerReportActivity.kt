@@ -171,7 +171,7 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
         val pdfFileUrl = "https://file-examples.com/wp-content/uploads/2017/10/file-example_PDF_1MB.pdf"
 
         val fileUrl = if (radioGroupReportType.checkedRadioButtonId == radioButtonPdf.id) pdfFileUrl else excelFileUrl
-        DownloadUtils.downloadFile(fileUrl, activity)
+        DownloadUtils.downloadFile(fileUrl, "",  activity)
     }
 
     /** Native Views Listeners */

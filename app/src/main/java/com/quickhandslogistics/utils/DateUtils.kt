@@ -125,7 +125,7 @@ class DateUtils {
                 val dateFormatFrom = SimpleDateFormat(PATTERN_API_RESPONSE)
                 dateFormatFrom.timeZone = TimeZone.getTimeZone("UTC")
                 val formattedDateString =
-                    dateFormatFrom.format(Date(milliseconds!!.toLong() * 1000L))
+                    dateFormatFrom.format(Date(milliseconds!!.toLong()))
                 val formattedDate = dateFormatFrom.parse(formattedDateString)
 
                 val dateFormatTo = SimpleDateFormat(PATTERN_TIME)

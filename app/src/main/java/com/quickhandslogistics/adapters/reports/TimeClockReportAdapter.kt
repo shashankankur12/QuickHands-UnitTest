@@ -124,8 +124,8 @@ class TimeClockReportAdapter(private val onAdapterClick: TimeClockReportContract
         notifyDataSetChanged()
     }
 
-    fun getSelectedLumpersList(): ArrayList<EmployeeData> {
-        return ArrayList(selectedLumpersMap.values)
+    fun getSelectedLumperIdsList(): ArrayList<String> {
+        return selectedLumperIdsList
     }
 
     fun updateLumpersData(employeeDataList: ArrayList<EmployeeData>) {
@@ -146,7 +146,7 @@ class TimeClockReportAdapter(private val onAdapterClick: TimeClockReportContract
 
     fun invokeSelectAll() {
         if (itemCount > 0) {
-            val selectedCount = getSelectedLumpersList().size
+            val selectedCount = getSelectedLumperIdsList().size
             if (selectedCount == itemCount) {
                 clearAllSelection()
             } else {
