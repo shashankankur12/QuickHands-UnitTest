@@ -41,6 +41,8 @@ interface AppConstant {
         const val REQUEST_LUMPERS_STATUS_PENDING = "pending"
         const val REQUEST_LUMPERS_STATUS_APPROVED = "approved"
         const val REQUEST_LUMPERS_STATUS_REJECTED = "rejected"
+        const val REQUEST_LUMPERS_STATUS_CANCELLED = "cancelled"
+
 
         // Attendance
         const val ATTENDANCE_IS_PRESENT = "ATTENDANCE_IS_PRESENT"

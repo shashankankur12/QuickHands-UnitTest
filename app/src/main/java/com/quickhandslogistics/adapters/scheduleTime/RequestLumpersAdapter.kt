@@ -54,26 +54,33 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
                 AppConstant.REQUEST_LUMPERS_STATUS_PENDING -> {
                     textViewStatus.text = resources.getString(R.string.pending)
                     textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
-                    textViewUpdateRequest.visibility = if (isPastDate) View.GONE else View.VISIBLE
-                    textViewCancelRequest.visibility = if (isPastDate) View.GONE else View.VISIBLE
+                    changeUpdateUIVisibility(!isPastDate)
                 }
                 AppConstant.REQUEST_LUMPERS_STATUS_APPROVED -> {
                     textViewStatus.text = resources.getString(R.string.approved)
                     textViewStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
-                    textViewUpdateRequest.visibility = View.GONE
-                    textViewCancelRequest.visibility = View.GONE
+                    changeUpdateUIVisibility(false)
                 }
-                else -> {
+                AppConstant.REQUEST_LUMPERS_STATUS_REJECTED -> {
                     textViewStatus.text = resources.getString(R.string.rejected)
                     textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
-                    textViewUpdateRequest.visibility = View.GONE
-                    textViewCancelRequest.visibility = View.GONE
+                    changeUpdateUIVisibility(false)
+                }
+                AppConstant.REQUEST_LUMPERS_STATUS_CANCELLED -> {
+                    textViewStatus.text = resources.getString(R.string.cancelled)
+                    textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
+                    changeUpdateUIVisibility(false)
                 }
             }
 
             textViewUpdateRequest.setOnClickListener(this)
             textViewCancelRequest.setOnClickListener(this)
             linearLayoutNotes.setOnClickListener(this)
+        }
+
+        private fun changeUpdateUIVisibility(isShow: Boolean) {
+            textViewUpdateRequest.visibility = if (isShow) View.VISIBLE else View.GONE
+            textViewCancelRequest.visibility = if (isShow) View.VISIBLE else View.GONE
         }
 
         override fun onClick(view: View?) {
