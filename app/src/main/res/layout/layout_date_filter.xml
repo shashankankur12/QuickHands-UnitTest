@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/textViewSelectDateRange"
+        style="@style/titleTextViewTheme"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="@dimen/_10ssp"
+        android:layout_marginTop="@dimen/_5ssp"
+        android:layout_marginEnd="@dimen/_10ssp"
+        android:text="@string/select_date_range"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupDateRange"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_6ssp"
+        android:layout_marginTop="@dimen/_2ssp"
+        android:layout_marginEnd="@dimen/_6ssp"
+        android:checkedButton="@id/radioButtonDaily"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSelectDateRange">
+
+        <RadioButton
+            android:id="@+id/radioButtonDaily"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="wrap_content"
+            android:text="@string/daily" />
+
+        <RadioButton
+            android:id="@+id/radioButtonWeekly"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="wrap_content"
+            android:text="@string/weekly" />
+
+        <RadioButton
+            android:id="@+id/radioButtonMonthly"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="wrap_content"
+            android:text="@string/monthly" />
+
+        <RadioButton
+            android:id="@+id/radioButtonCustom"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="wrap_content"
+            android:text="@string/custom" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutDates"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10ssp"
+        android:layout_marginTop="@dimen/_4ssp"
+        android:layout_marginEnd="@dimen/_10ssp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupDateRange">
+
+        <TextView
+            android:id="@+id/textViewStartDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/background_date_selector"
+            android:drawableEnd="@drawable/ic_schedule_calendar"
+            android:drawablePadding="@dimen/_6ssp"
+            android:hint="@string/start"
+            android:padding="@dimen/_6sdp"
+            android:textColor="@color/scheduleDetail"
+            android:textSize="@dimen/_12ssp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:gravity="center"
+            android:text="@string/to"
+            android:textColor="@color/textBlack"
+            android:textSize="@dimen/_10ssp" />
+
+        <TextView
+            android:id="@+id/textViewEndDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/background_date_selector"
+            android:drawableEnd="@drawable/ic_schedule_calendar"
+            android:drawablePadding="@dimen/_6ssp"
+            android:hint="@string/end"
+            android:padding="@dimen/_6sdp"
+            android:textColor="@color/scheduleDetail"
+            android:textSize="@dimen/_12ssp" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

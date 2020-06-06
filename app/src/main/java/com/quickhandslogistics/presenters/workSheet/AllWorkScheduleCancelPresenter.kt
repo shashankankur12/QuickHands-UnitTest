@@ -26,9 +26,7 @@ class AllWorkScheduleCancelPresenter(
 
     override fun initiateCancellingWorkSchedules(selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String) {
         allWorkScheduleCancelView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        allWorkScheduleCancelModel.cancelAllWorkSchedules(
-            selectedLumperIdsList, notesQHL, notesCustomer, this
-        )
+        allWorkScheduleCancelModel.cancelAllWorkSchedules(selectedLumperIdsList, notesQHL, notesCustomer, this)
     }
 
     /** Model Result Listeners */

@@ -24,7 +24,7 @@ import java.util.*
 class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     RequestLumpersContract.View, RequestLumpersContract.View.OnAdapterItemClickListener {
 
-    private var isFutureDate = false
+    private var isPastDate = false
     private var selectedTime: Long = 0
     private var scheduledLumpersCount: Int = 0
 
@@ -42,13 +42,21 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
             selectedTime = bundle.getLong(ARG_SELECTED_DATE_MILLISECONDS, 0)
             scheduledLumpersCount = bundle.getInt(ARG_SCHEDULED_LUMPERS_COUNT, 0)
 
-            isFutureDate = DateUtils.isFutureDate(selectedTime)
+            isPastDate = !DateUtils.isFutureDate(selectedTime) && !DateUtils.isCurrentDate(selectedTime)
         }
 
         initializeUI()
 
         requestLumpersPresenter = RequestLumpersPresenter(this, resources)
         requestLumpersPresenter.fetchAllRequestsByDate(Date(selectedTime))
+    }
+
+    override fun onBackPressed() {
+        if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+            closeBottomSheet()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     private fun initializeUI() {
@@ -58,7 +66,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         recyclerViewRequestLumpers.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            requestLumpersAdapter = RequestLumpersAdapter(resources, isFutureDate, this@RequestLumpersActivity)
+            requestLumpersAdapter = RequestLumpersAdapter(resources, isPastDate, this@RequestLumpersActivity)
             adapter = requestLumpersAdapter
         }
 
@@ -69,12 +77,12 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
             }
         })
 
-        if (isFutureDate) {
-            textViewEmptyData.text = getString(R.string.empty_request_lumpers_list_info_message)
-            buttonCreateNewRequest.visibility = View.VISIBLE
-        } else {
+        if (isPastDate) {
             textViewEmptyData.text = getString(R.string.empty_request_lumpers_list_info_message_past)
             buttonCreateNewRequest.visibility = View.GONE
+        } else {
+            textViewEmptyData.text = getString(R.string.empty_request_lumpers_list_info_message)
+            buttonCreateNewRequest.visibility = View.VISIBLE
         }
 
         buttonCreateNewRequest.setOnClickListener(this)
@@ -87,8 +95,21 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         bottomSheetBackgroundRequestLumpers.visibility = View.GONE
     }
 
-    private fun showConfirmationDialog(requiredLumperCount: String, notesDM: String) {
-        CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
+    private fun showCancelRequestConfirmationDialog(requestLumperId: String?) {
+        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.cancel_lumper_request_alert_message), activity, object : CustomDialogWarningListener {
+            override fun onConfirmClick() {
+                if (!requestLumperId.isNullOrEmpty()) {
+                    requestLumpersPresenter.cancelRequestForLumpers(requestLumperId, Date(selectedTime))
+                }
+            }
+
+            override fun onCancelClick() {
+            }
+        })
+    }
+
+    private fun showSubmitRequestConfirmationDialog(requiredLumperCount: String, notesDM: String) {
+        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.request_lumpers_alert_message), activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 closeBottomSheet()
                 val requestLumperId = buttonSubmit.getTag(R.id.requestLumperId) as String?
@@ -140,7 +161,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
                     if (requiredLumperCount.isEmpty() || notesDM.isEmpty()) {
                         CustomProgressBar.getInstance().showErrorDialog(getString(R.string.request_help_message), activity)
                     } else {
-                        showConfirmationDialog(requiredLumperCount, notesDM)
+                        showSubmitRequestConfirmationDialog(requiredLumperCount, notesDM)
                     }
                 }
             }
@@ -161,13 +182,12 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         textViewTotalCount.text = String.format(getString(R.string.total_lumpers_assigned_s), scheduledLumpersCount)
     }
 
-    override fun showSuccessDialog(date: Date) {
-        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.request_placed_success_message),
-            activity, object : CustomDialogListener {
-                override fun onConfirmClick() {
-                    requestLumpersPresenter.fetchAllRequestsByDate(date)
-                }
-            })
+    override fun showSuccessDialog(message: String, date: Date) {
+        CustomProgressBar.getInstance().showSuccessDialog(message, activity, object : CustomDialogListener {
+            override fun onConfirmClick() {
+                requestLumpersPresenter.fetchAllRequestsByDate(date)
+            }
+        })
     }
 
     /** Adapter Listeners */
@@ -179,5 +199,9 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
 
     override fun onUpdateItemClick(record: RequestLumpersRecord) {
         showBottomSheetWithData(record)
+    }
+
+    override fun onCancelItemClick(record: RequestLumpersRecord) {
+        showCancelRequestConfirmationDialog(record.id)
     }
 }

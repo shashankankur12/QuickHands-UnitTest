@@ -15,7 +15,7 @@ import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
 import com.quickhandslogistics.utils.AppConstant
 import kotlinx.android.synthetic.main.item_request_lumpers.view.*
 
-class RequestLumpersAdapter(private val resources: Resources, private val isFutureDate: Boolean, private val onAdapterClick: RequestLumpersContract.View.OnAdapterItemClickListener) :
+class RequestLumpersAdapter(private val resources: Resources, private val isPastDate: Boolean, private val onAdapterClick: RequestLumpersContract.View.OnAdapterItemClickListener) :
     Adapter<RequestLumpersAdapter.ViewHolder>() {
 
     private val requestList: ArrayList<RequestLumpersRecord> = ArrayList()
@@ -43,6 +43,7 @@ class RequestLumpersAdapter(private val resources: Resources, private val isFutu
         private val textViewRequestedLumpersCount: TextView = view.textViewRequestedLumpersCount
         private val textViewNote: TextView = view.textViewNote
         private val textViewUpdateRequest: TextView = view.textViewUpdateRequest
+        private val textViewCancelRequest: TextView = view.textViewCancelRequest
         private val linearLayoutNotes: LinearLayout = view.linearLayoutNotes
 
         fun bind(requestLumpersRecord: RequestLumpersRecord) {
@@ -53,22 +54,33 @@ class RequestLumpersAdapter(private val resources: Resources, private val isFutu
                 AppConstant.REQUEST_LUMPERS_STATUS_PENDING -> {
                     textViewStatus.text = resources.getString(R.string.pending)
                     textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
-                    textViewUpdateRequest.visibility = if (isFutureDate) View.VISIBLE else View.GONE
+                    changeUpdateUIVisibility(!isPastDate)
                 }
                 AppConstant.REQUEST_LUMPERS_STATUS_APPROVED -> {
                     textViewStatus.text = resources.getString(R.string.approved)
                     textViewStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
-                    textViewUpdateRequest.visibility = View.GONE
+                    changeUpdateUIVisibility(false)
                 }
-                else -> {
+                AppConstant.REQUEST_LUMPERS_STATUS_REJECTED -> {
                     textViewStatus.text = resources.getString(R.string.rejected)
                     textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
-                    textViewUpdateRequest.visibility = View.GONE
+                    changeUpdateUIVisibility(false)
+                }
+                AppConstant.REQUEST_LUMPERS_STATUS_CANCELLED -> {
+                    textViewStatus.text = resources.getString(R.string.cancelled)
+                    textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
+                    changeUpdateUIVisibility(false)
                 }
             }
 
             textViewUpdateRequest.setOnClickListener(this)
+            textViewCancelRequest.setOnClickListener(this)
             linearLayoutNotes.setOnClickListener(this)
+        }
+
+        private fun changeUpdateUIVisibility(isShow: Boolean) {
+            textViewUpdateRequest.visibility = if (isShow) View.VISIBLE else View.GONE
+            textViewCancelRequest.visibility = if (isShow) View.VISIBLE else View.GONE
         }
 
         override fun onClick(view: View?) {
@@ -81,6 +93,10 @@ class RequestLumpersAdapter(private val resources: Resources, private val isFutu
                     textViewUpdateRequest.id -> {
                         val record = getItem(adapterPosition)
                         onAdapterClick.onUpdateItemClick(record)
+                    }
+                    textViewCancelRequest.id -> {
+                        val record = getItem(adapterPosition)
+                        onAdapterClick.onCancelItemClick(record)
                     }
                 }
             }

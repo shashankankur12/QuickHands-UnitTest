@@ -2,6 +2,7 @@ package com.quickhandslogistics.network
 
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
+import com.quickhandslogistics.BuildConfig
 import com.quickhandslogistics.contracts.BaseContract
 import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.ErrorResponse
@@ -28,7 +29,7 @@ object DataManager : AppConstant {
 
     private fun getDataManager(): Retrofit? {
         if (retrofitStandard == null) {
-            retrofitStandard = Retrofit.Builder().baseUrl(AppConfiguration.API_BASE_URL).client(okHttpClient)
+            retrofitStandard = Retrofit.Builder().baseUrl(BuildConfig.API_BASE_URL).client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create()).build()
         }
         return retrofitStandard

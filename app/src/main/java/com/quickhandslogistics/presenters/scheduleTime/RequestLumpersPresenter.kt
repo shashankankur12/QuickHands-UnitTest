@@ -32,6 +32,11 @@ class RequestLumpersPresenter(private var requestLumpersView: RequestLumpersCont
         requestLumpersModel.createNewRequestForLumpers(requiredLumperCount, notesDM, date, this)
     }
 
+    override fun cancelRequestForLumpers(requestId: String, date: Date) {
+        requestLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        requestLumpersModel.cancelRequestForLumpers(requestId, date, this)
+    }
+
     override fun updateRequestForLumpers(requestId: String, requiredLumperCount: String, notesDM: String, date: Date) {
         requestLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         requestLumpersModel.updateRequestForLumpers(requestId, requiredLumperCount, notesDM, date, this)
@@ -47,6 +52,11 @@ class RequestLumpersPresenter(private var requestLumpersView: RequestLumpersCont
         }
     }
 
+    override fun onSuccessCancelRequest(date: Date) {
+        requestLumpersView?.hideProgressDialog()
+        requestLumpersView?.showSuccessDialog(resources.getString(R.string.request_cancelled_success_message), date)
+    }
+
     override fun onSuccessFetchRequests(response: RequestLumpersListAPIResponse) {
         requestLumpersView?.hideProgressDialog()
 
@@ -57,6 +67,6 @@ class RequestLumpersPresenter(private var requestLumpersView: RequestLumpersCont
 
     override fun onSuccessRequest(date: Date) {
         requestLumpersView?.hideProgressDialog()
-        requestLumpersView?.showSuccessDialog(date)
+        requestLumpersView?.showSuccessDialog(resources.getString(R.string.request_placed_success_message), date)
     }
 }
