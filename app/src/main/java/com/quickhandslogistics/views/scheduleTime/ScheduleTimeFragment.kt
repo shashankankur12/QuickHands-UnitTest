@@ -61,7 +61,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             scheduleTimeSelectedDate = bundle.getString(DashBoardActivity.ARG_SCHEDULE_TIME_SELECTED_DATE)
         }
 
-        // Setup DatePicker Dates
+        // Setup Calendar Dates
         selectedTime = Date().time
         val pair = CalendarUtils.getPastFutureCalendarDates()
         availableDates = pair.first

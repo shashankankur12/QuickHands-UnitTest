@@ -21,10 +21,6 @@ class AllWorkScheduleCancelContract {
         fun showAPIErrorMessage(message: String)
         fun showLumpersData(employeeDataList: ArrayList<EmployeeData>)
         fun cancellingWorkScheduleFinished()
-
-        interface OnAdapterItemClickListener {
-            fun onSelectLumper(totalSelectedCount: Int)
-        }
     }
 
     interface Presenter : BaseContract.Presenter {

@@ -5,9 +5,9 @@ import android.view.View
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.lumpers.LumperPagerAdapter
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.utils.UIUtils
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.common.FullScreenImageActivity
-import com.quickhandslogistics.utils.UIUtils
 import kotlinx.android.synthetic.main.content_lumper_detail.*
 
 class LumperDetailActivity : BaseActivity(), View.OnClickListener {
@@ -44,7 +44,7 @@ class LumperDetailActivity : BaseActivity(), View.OnClickListener {
             viewPagerLumperDetail.adapter = lumperPagerAdapter
             tabLayoutLumperDetail.setupWithViewPager(viewPagerLumperDetail)
 
-         //   circleImageViewProfile.setOnClickListener(this@LumperDetailActivity)
+            //circleImageViewProfile.setOnClickListener(this@LumperDetailActivity)
         }
     }
 

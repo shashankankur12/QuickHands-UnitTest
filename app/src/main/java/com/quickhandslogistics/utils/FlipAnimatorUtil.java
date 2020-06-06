@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.quickhandslogistics.R;
 
-public class FlipAnimator {
+public class FlipAnimatorUtil {
 
     /**
      * Performs flip animation on two views

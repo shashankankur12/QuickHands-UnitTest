@@ -15,7 +15,7 @@ class AppUtils {
                     inputMethodManager.hideSoftInputFromWindow(Objects.requireNonNull<View>(activity.currentFocus).windowToken, 0)
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
+               // e.printStackTrace()
             }
         }
     }

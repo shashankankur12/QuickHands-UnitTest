@@ -14,13 +14,31 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 2
-        versionName "1.0.18.1"
+        versionName "1.0.18.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        staging {
+            storeFile file('../staging_keystore.jks')
+            storePassword STAGING_KEYSTORE_PASSWORD
+            keyAlias STAGING_KEY_ALIAS_NAME
+            keyPassword STAGING_KEY_ALIAS_PASSWORD
+        }
+    }
+
     buildTypes {
+        debug {
+            buildConfigField "String", "API_BASE_URL", DEBUG_API_URL
+        }
+        staging {
+            buildConfigField "String", "API_BASE_URL", STAGING_API_URL
+            signingConfig signingConfigs.staging
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "API_BASE_URL", API_URL
         }
     }
 
