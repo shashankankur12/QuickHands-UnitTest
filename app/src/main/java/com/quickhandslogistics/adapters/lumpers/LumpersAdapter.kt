@@ -115,7 +115,7 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
     fun updateLumpersData(employeeDataList: ArrayList<EmployeeData>) {
         setSearchEnabled(false)
         this.items.clear()
-        items.addAll(employeeDataList)
+        this.items.addAll(employeeDataList)
         notifyDataSetChanged()
     }
 }

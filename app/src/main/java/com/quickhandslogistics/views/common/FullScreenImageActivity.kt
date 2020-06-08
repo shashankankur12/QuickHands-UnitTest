@@ -3,8 +3,8 @@ package com.quickhandslogistics.views.common
 import android.os.Bundle
 import android.view.View
 import com.quickhandslogistics.R
-import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.utils.UIUtils
+import com.quickhandslogistics.views.BaseActivity
 import kotlinx.android.synthetic.main.activity_full_screen_image.*
 
 class FullScreenImageActivity : BaseActivity(), View.OnClickListener {
@@ -36,9 +36,5 @@ class FullScreenImageActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
-    }
-
-    override fun onBackPressed() {
-        finishAfterTransition()
     }
 }

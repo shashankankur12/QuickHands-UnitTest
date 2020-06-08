@@ -10,7 +10,9 @@
         <item name="android:windowContentTransitions">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+<!--    <style name="rangeCalendarTheme" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorPrimary">@color/buildingTitle</item>
+    </style>-->
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
@@ -111,8 +113,8 @@
         <item name="android:hint">@string/search_info_message</item>
         <item name="android:imeOptions">actionDone</item>
         <item name="android:inputType">textPersonName</item>
-        <item name="android:paddingTop">@dimen/_8sdp</item>
-        <item name="android:paddingBottom">@dimen/_8sdp</item>
+        <item name="android:paddingTop">@dimen/_6sdp</item>
+        <item name="android:paddingBottom">@dimen/_6sdp</item>
         <item name="android:paddingEnd">@dimen/_30sdp</item>
         <item name="android:paddingStart">@dimen/_5sdp</item>
         <item name="android:textColor">@color/textBlack</item>

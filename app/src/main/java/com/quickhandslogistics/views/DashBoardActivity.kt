@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.google.android.material.snackbar.Snackbar
 import com.quickhandslogistics.BuildConfig
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.DashBoardContract
@@ -16,7 +17,7 @@ import com.quickhandslogistics.views.attendance.TimeClockAttendanceFragment
 import com.quickhandslogistics.views.customerSheet.CustomerSheetFragment
 import com.quickhandslogistics.views.lumperSheet.LumperSheetFragment
 import com.quickhandslogistics.views.lumpers.LumpersFragment
-import com.quickhandslogistics.views.reports.ReportFragment
+import com.quickhandslogistics.views.reports.ReportsFragment
 import com.quickhandslogistics.views.schedule.ScheduleFragment
 import com.quickhandslogistics.views.scheduleTime.ScheduleTimeFragment
 import com.quickhandslogistics.views.workSheet.AllWorkScheduleCancelActivity
@@ -37,6 +38,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     private lateinit var dashBoardPresenter: DashBoardPresenter
 
     private var navDrawer: NavDrawer? = null
+    private var snackBar: Snackbar? = null
 
     companion object {
         const val ARG_SHOW_TAB_NAME = "ARG_SHOW_TAB_NAME"
@@ -65,6 +67,8 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
 
         dashBoardPresenter = DashBoardPresenter(this, resources, sharedPref)
         dashBoardPresenter.loadLeadProfileData()
+
+        snackBar = SnackBarFactory.createShortSnackBar(activity, frameLayoutMain, getString(R.string.press_back_again_to_exit), isShow = false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -110,6 +114,14 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         }
     }
 
+    override fun onBackPressed() {
+        snackBar?.also { snackBar ->
+            if (snackBar.isShown) super.onBackPressed() else snackBar.show()
+        } ?: run {
+            super.onBackPressed()
+        }
+    }
+
     private fun setUpNavigationBar() {
         navDrawer = NavDrawer(this, toolbar, supportFragmentManager.beginTransaction(), this)
         navDrawer?.let {
@@ -143,7 +155,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
                     CustomerSheetFragment(), R.drawable.ic_sidemenu_customer_sheet, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.customer_sheet), showTabName)
                 )
             )
-            it.addItem(NavDrawer.AppNavDrawerItem(ReportFragment(), R.drawable.ic_sidemenu_reports, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.reports), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(ReportsFragment(), R.drawable.ic_sidemenu_reports, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.reports), showTabName)))
             it.addItem(NavDrawer.AppNavDrawerItem(SettingsFragment(), R.drawable.ic_sidemenu_settings, R.id.linearLayoutBottomItems, isShowOnLaunch(getString(R.string.settings), showTabName)))
             it.addItem(NavDrawer.AppNavDrawerItem(null, R.drawable.ic_sidemenu_logout, R.id.linearLayoutBottomItems, isShowOnLaunch(getString(R.string.logout), showTabName)))
 

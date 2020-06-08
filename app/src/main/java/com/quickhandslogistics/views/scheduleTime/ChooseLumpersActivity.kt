@@ -1,4 +1,4 @@
-package com.quickhandslogistics.views.common
+package com.quickhandslogistics.views.scheduleTime
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
-import com.quickhandslogistics.adapters.common.ChooseLumpersAdapter
-import com.quickhandslogistics.contracts.common.ChooseLumpersContract
+import com.quickhandslogistics.adapters.scheduleTime.ChooseLumpersAdapter
+import com.quickhandslogistics.contracts.scheduleTime.ChooseLumpersContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
-import com.quickhandslogistics.presenters.common.ChooseLumpersPresenter
+import com.quickhandslogistics.presenters.scheduleTime.ChooseLumpersPresenter
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity.Companion.ARG_LUMPERS_LIST
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_LIST

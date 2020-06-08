@@ -1,7 +1,7 @@
-package com.quickhandslogistics.models.common
+package com.quickhandslogistics.models.scheduleTime
 
 import android.util.Log
-import com.quickhandslogistics.contracts.common.ChooseLumpersContract
+import com.quickhandslogistics.contracts.scheduleTime.ChooseLumpersContract
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.DataManager.getAuthToken

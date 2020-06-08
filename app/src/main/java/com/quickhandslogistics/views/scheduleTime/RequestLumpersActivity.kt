@@ -51,6 +51,14 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         requestLumpersPresenter.fetchAllRequestsByDate(Date(selectedTime))
     }
 
+    override fun onBackPressed() {
+        if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+            closeBottomSheet()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     private fun initializeUI() {
         sheetBehavior = BottomSheetBehavior.from(constraintLayoutBottomSheetRequestLumpers)
         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -89,8 +97,21 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         bottomSheetBackgroundRequestLumpers.visibility = View.GONE
     }
 
-    private fun showConfirmationDialog(requiredLumperCount: String, notesDM: String) {
-        CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
+    private fun showCancelRequestConfirmationDialog(requestLumperId: String?) {
+        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.cancel_lumper_request_alert_message), activity, object : CustomDialogWarningListener {
+            override fun onConfirmClick() {
+                if (!requestLumperId.isNullOrEmpty()) {
+                    requestLumpersPresenter.cancelRequestForLumpers(requestLumperId, Date(selectedTime))
+                }
+            }
+
+            override fun onCancelClick() {
+            }
+        })
+    }
+
+    private fun showSubmitRequestConfirmationDialog(requiredLumperCount: String, notesDM: String) {
+        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.request_lumpers_alert_message), activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 closeBottomSheet()
                 val requestLumperId = buttonSubmit.getTag(R.id.requestLumperId) as String?
@@ -142,7 +163,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
                     if (requiredLumperCount.isEmpty() || notesDM.isEmpty()) {
                         CustomProgressBar.getInstance().showErrorDialog(getString(R.string.request_help_message), activity)
                     } else {
-                        showConfirmationDialog(requiredLumperCount, notesDM)
+                        showSubmitRequestConfirmationDialog(requiredLumperCount, notesDM)
                     }
                 }
             }
@@ -163,13 +184,12 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         textViewTotalCount.text = String.format(getString(R.string.total_lumpers_assigned_s), scheduledLumpersCount)
     }
 
-    override fun showSuccessDialog(date: Date) {
-        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.request_placed_success_message),
-            activity, object : CustomDialogListener {
-                override fun onConfirmClick() {
-                    requestLumpersPresenter.fetchAllRequestsByDate(date)
-                }
-            })
+    override fun showSuccessDialog(message: String, date: Date) {
+        CustomProgressBar.getInstance().showSuccessDialog(message, activity, object : CustomDialogListener {
+            override fun onConfirmClick() {
+                requestLumpersPresenter.fetchAllRequestsByDate(date)
+            }
+        })
     }
 
     /** Adapter Listeners */
@@ -181,5 +201,9 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
 
     override fun onUpdateItemClick(record: RequestLumpersRecord) {
         showBottomSheetWithData(record)
+    }
+
+    override fun onCancelItemClick(record: RequestLumpersRecord) {
+        showCancelRequestConfirmationDialog(record.id)
     }
 }

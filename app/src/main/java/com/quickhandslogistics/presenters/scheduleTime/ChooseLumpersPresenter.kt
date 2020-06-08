@@ -1,12 +1,12 @@
-package com.quickhandslogistics.presenters.common
+package com.quickhandslogistics.presenters.scheduleTime
 
 import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
-import com.quickhandslogistics.contracts.common.ChooseLumpersContract
+import com.quickhandslogistics.contracts.scheduleTime.ChooseLumpersContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
-import com.quickhandslogistics.models.common.ChooseLumpersModel
+import com.quickhandslogistics.models.scheduleTime.ChooseLumpersModel
 import java.util.*
 import kotlin.collections.ArrayList
 

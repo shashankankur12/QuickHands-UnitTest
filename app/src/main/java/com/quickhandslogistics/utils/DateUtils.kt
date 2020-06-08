@@ -9,6 +9,7 @@ class DateUtils {
         const val PATTERN_NORMAL = "EEEE MMMM dd, yyyy"
         const val PATTERN_API_REQUEST_PARAMETER = "yyyy-MM-dd"
         const val PATTERN_API_RESPONSE = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        const val PATTERN_DATE_DISPLAY = "dd MMM yyyy"
         private const val PATTERN_TIME = "hh:mm a"
 
         fun getDateString(pattern: String, date: Date): String {
@@ -124,7 +125,7 @@ class DateUtils {
                 val dateFormatFrom = SimpleDateFormat(PATTERN_API_RESPONSE)
                 dateFormatFrom.timeZone = TimeZone.getTimeZone("UTC")
                 val formattedDateString =
-                    dateFormatFrom.format(Date(milliseconds!!.toLong() * 1000L))
+                    dateFormatFrom.format(Date(milliseconds!!.toLong()))
                 val formattedDate = dateFormatFrom.parse(formattedDateString)
 
                 val dateFormatTo = SimpleDateFormat(PATTERN_TIME)

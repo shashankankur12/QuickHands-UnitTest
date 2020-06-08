@@ -40,6 +40,11 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, Buildin
         buildingOperationsPresenter.fetchBuildingOperationDetails(workItemId)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        buildingOperationsPresenter.onDestroy()
+    }
+
     private fun initializeUI() {
         buttonSubmit.setOnClickListener(this)
 

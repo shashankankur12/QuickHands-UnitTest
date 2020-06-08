@@ -24,7 +24,7 @@ class CustomProgressBar {
         //  pDialog.progressHelper.barColor = Color.parseColor("#A5DC86")
         progressDialog?.titleText = if (titleMessage.isEmpty()) activityContext.getString(R.string.loading) else titleMessage
         if (message.isNotEmpty()) {
-            progressDialog?.contentText = message
+            progressDialog?.contentText = message.capitalize()
         }
         progressDialog?.setCancelable(false)
         progressDialog?.show()
@@ -39,7 +39,7 @@ class CustomProgressBar {
     fun showInfoDialog(title: String = "", message: String, activityContext: Context) {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.NORMAL_TYPE)
         progressDialog.titleText = if (title.isEmpty()) activityContext.getString(R.string.info) else title
-        progressDialog.contentText = message
+        progressDialog.contentText = message.capitalize()
         progressDialog.confirmText = activityContext.getString(R.string.ok)
         progressDialog.show()
         progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
@@ -50,7 +50,7 @@ class CustomProgressBar {
     fun showErrorDialog(message: String, activityContext: Context) {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.ERROR_TYPE)
         progressDialog.titleText = activityContext.getString(R.string.error)
-        progressDialog.contentText = message
+        progressDialog.contentText = message.capitalize()
         progressDialog.confirmText = activityContext.getString(R.string.ok)
         progressDialog.show()
         progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
@@ -61,12 +61,33 @@ class CustomProgressBar {
     fun showSuccessDialog(message: String, activityContext: Context, listener: CustomDialogListener) {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.SUCCESS_TYPE)
         progressDialog.titleText = activityContext.getString(R.string.success)
-        progressDialog.contentText = message
+        progressDialog.contentText = message.capitalize()
         progressDialog.confirmText = activityContext.getString(R.string.ok)
         progressDialog.setCancelable(false)
         progressDialog.setConfirmClickListener {
-            it.dismiss()
+            it.dismissWithAnimation()
             listener.onConfirmClick()
+        }
+        progressDialog.show()
+        progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
+        progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
+        updateButtonsUI(progressDialog, activityContext)
+    }
+
+    fun showSuccessOptionDialog(message: String, activityContext: Context, listener: CustomDialogWarningListener) {
+        val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.SUCCESS_TYPE)
+        progressDialog.titleText = activityContext.getString(R.string.success)
+        progressDialog.contentText = message.capitalize()
+        progressDialog.confirmText = activityContext.getString(R.string.yes)
+        progressDialog.cancelText = activityContext.getString(R.string.no)
+        progressDialog.setCancelable(false)
+        progressDialog.setConfirmClickListener {
+            it.dismissWithAnimation()
+            listener.onConfirmClick()
+        }
+        progressDialog.setCancelClickListener {
+            it.dismissWithAnimation()
+            listener.onCancelClick()
         }
         progressDialog.show()
         progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
@@ -77,7 +98,7 @@ class CustomProgressBar {
     fun showWarningDialog(message: String = "", activityContext: Context, listener: CustomDialogWarningListener) {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.WARNING_TYPE)
         progressDialog.titleText = activityContext.getString(R.string.are_you_sure_alert_message)
-        progressDialog.contentText = if (message.isEmpty()) activityContext.getString(R.string.warning_alert_message) else message
+        progressDialog.contentText = if (message.isEmpty()) activityContext.getString(R.string.warning_alert_message) else message.capitalize()
         progressDialog.confirmText = activityContext.getString(R.string.yes)
         progressDialog.cancelText = activityContext.getString(R.string.no)
         progressDialog.showCancelButton(true)

@@ -9,9 +9,11 @@ class RequestLumpersContract {
     interface Model {
         fun fetchAllRequestsByDate(selectedDate: Date, onFinishedListener: OnFinishedListener)
         fun createNewRequestForLumpers(requiredLumperCount: String, notesDM: String, date: Date, onFinishedListener: OnFinishedListener)
+        fun cancelRequestForLumpers(requestId: String, date: Date, onFinishedListener: OnFinishedListener)
         fun updateRequestForLumpers(requestId: String, requiredLumperCount: String, notesDM: String, date: Date, onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
+            fun onSuccessCancelRequest(date: Date)
             fun onSuccessFetchRequests(response: RequestLumpersListAPIResponse)
             fun onSuccessRequest(date: Date)
         }
@@ -21,17 +23,19 @@ class RequestLumpersContract {
         fun showAPIErrorMessage(message: String)
         fun showAllRequests(records: List<RequestLumpersRecord>)
         fun showHeaderInfo(dateString: String)
-        fun showSuccessDialog(date: Date)
+        fun showSuccessDialog(message:String, date: Date)
 
         interface OnAdapterItemClickListener {
             fun onNotesItemClick(notes: String?)
             fun onUpdateItemClick(record: RequestLumpersRecord)
+            fun onCancelItemClick(record: RequestLumpersRecord)
         }
     }
 
     interface Presenter : BaseContract.Presenter {
         fun fetchAllRequestsByDate(selectedDate: Date)
         fun createNewRequestForLumpers(requiredLumperCount: String, notesDM: String, date: Date)
+        fun cancelRequestForLumpers(requestId: String, date: Date)
         fun updateRequestForLumpers(requestId: String, requiredLumperCount: String, notesDM: String, date: Date)
     }
 }

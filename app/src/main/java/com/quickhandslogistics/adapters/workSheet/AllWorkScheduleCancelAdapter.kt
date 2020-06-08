@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
-import com.quickhandslogistics.contracts.workSheet.AllWorkScheduleCancelContract
 import com.quickhandslogistics.controls.CustomTextView
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.utils.UIUtils
@@ -18,8 +17,7 @@ import kotlinx.android.synthetic.main.item_add_lumpers.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AllWorkScheduleCancelAdapter(private val onAdapterClick: AllWorkScheduleCancelContract.View.OnAdapterItemClickListener) :
-    Adapter<AllWorkScheduleCancelAdapter.ViewHolder>() {
+class AllWorkScheduleCancelAdapter : Adapter<AllWorkScheduleCancelAdapter.ViewHolder>() {
 
     private var searchEnabled = false
     private var searchTerm = ""
@@ -80,7 +78,6 @@ class AllWorkScheduleCancelAdapter(private val onAdapterClick: AllWorkScheduleCa
                         } else {
                             selectedLumperIdsList.add(employeeData.id!!)
                         }
-                        onAdapterClick.onSelectLumper(selectedLumperIdsList.size)
                         notifyDataSetChanged()
                     }
                 }

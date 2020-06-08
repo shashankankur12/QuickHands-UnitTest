@@ -88,8 +88,8 @@
         <item name="android:hint">@string/search_info_message</item>
         <item name="android:imeOptions">actionDone</item>
         <item name="android:inputType">textPersonName</item>
-        <item name="android:paddingTop">@dimen/_5sdp</item>
-        <item name="android:paddingBottom">@dimen/_5sdp</item>
+        <item name="android:paddingTop">@dimen/_4sdp</item>
+        <item name="android:paddingBottom">@dimen/_4sdp</item>
         <item name="android:paddingEnd">@dimen/_25sdp</item>
         <item name="android:paddingStart">@dimen/_4sdp</item>
         <item name="android:textColor">@color/textBlack</item>

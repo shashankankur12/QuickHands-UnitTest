@@ -70,7 +70,7 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun saveWorkItemNotes() {
-        CustomProgressBar.getInstance().showWarningDialog(activityContext = fragmentActivity!!, listener = object : CustomDialogWarningListener {
+        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.save_notes_alert_message), fragmentActivity!!, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 workItemDetail?.let {
                     val notesQHLCustomer = editTextQHLCustomerNotes.text.toString()
