@@ -62,7 +62,7 @@
         android:src="@drawable/ic_call"
         app:civ_border_color="@color/online"
         app:civ_border_width="@dimen/_4sdp"
-        app:civ_fill_color="@color/online"
+        app:civ_circle_background_color="@color/online"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
