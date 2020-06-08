@@ -121,7 +121,7 @@
                     android:src="@drawable/ic_call"
                     app:civ_border_color="@color/online"
                     app:civ_border_width="@dimen/_2sdp"
-                    app:civ_fill_color="@color/online" />
+                    app:civ_circle_background_color="@color/online" />
             </LinearLayout>
 
             <TextView

@@ -20,7 +20,6 @@ import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.presenters.scheduleTime.EditScheduleTimePresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
-import com.quickhandslogistics.views.common.ChooseLumpersActivity
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity.Companion.ARG_LUMPERS_LIST
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_NOTES
@@ -180,7 +179,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     }
 
     private fun showConfirmationDialog(scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String) {
-        CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
+        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.schedule_lumpers_alert_message), activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 editScheduleTimePresenter.initiateScheduleTime(scheduledLumpersIdsTimeMap, notes, Date(selectedTime))
             }

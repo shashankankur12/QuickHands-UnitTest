@@ -37,7 +37,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     private var selectedTime: Long = 0
     private var selectedDatePosition: Int = 0
-    private var isFutureDate: Boolean = false
+    private var isPastDate: Boolean = false
 
     private lateinit var availableDates: List<Date>
     private var scheduleTimeDetailList: ArrayList<ScheduleTimeDetail> = ArrayList()
@@ -61,7 +61,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             scheduleTimeSelectedDate = bundle.getString(DashBoardActivity.ARG_SCHEDULE_TIME_SELECTED_DATE)
         }
 
-        // Setup DatePicker Dates
+        // Setup Calendar Dates
         selectedTime = Date().time
         val pair = CalendarUtils.getPastFutureCalendarDates()
         availableDates = pair.first
@@ -129,7 +129,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     }
 
     private fun invalidateScheduleButton() {
-        buttonScheduleLumpers.visibility = if (isFutureDate) View.VISIBLE else View.GONE
+        buttonScheduleLumpers.visibility = if (isPastDate) View.GONE else View.VISIBLE
     }
 
     private fun invalidateEmptyView() {
@@ -138,18 +138,18 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             if (scheduleTimeAdapter.isSearchEnabled()) {
                 textViewEmptyData.text = getString(R.string.no_record_found_info_message)
             } else {
-                textViewEmptyData.text = if (isFutureDate) {
-                    getString(R.string.empty_schedule_time_list_info_message)
-                } else {
+                textViewEmptyData.text = if (isPastDate) {
                     getString(R.string.empty_schedule_time_list_past_info_message)
+                } else {
+                    getString(R.string.empty_schedule_time_list_info_message)
                 }
             }
         } else {
             textViewEmptyData.visibility = View.GONE
-            textViewEmptyData.text = if (isFutureDate) {
-                getString(R.string.empty_schedule_time_list_info_message)
-            } else {
+            textViewEmptyData.text = if (isPastDate) {
                 getString(R.string.empty_schedule_time_list_past_info_message)
+            } else {
+                getString(R.string.empty_schedule_time_list_info_message)
             }
         }
     }
@@ -204,7 +204,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     override fun showScheduleTimeData(selectedDate: Date, scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>, tempLumperIds: ArrayList<String>) {
         this.scheduleTimeDetailList = scheduleTimeDetailList
         selectedTime = selectedDate.time
-        isFutureDate = DateUtils.isFutureDate(selectedDate.time)
+        isPastDate = !DateUtils.isFutureDate(selectedTime) && !DateUtils.isCurrentDate(selectedTime)
         invalidateScheduleButton()
 
         scheduleTimeAdapter.updateLumpersData(scheduleTimeDetailList, tempLumperIds)

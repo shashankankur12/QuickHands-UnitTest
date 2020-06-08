@@ -3,6 +3,7 @@ package com.quickhandslogistics.models.scheduleTime
 import android.util.Log
 import com.quickhandslogistics.contracts.scheduleTime.RequestLumpersContract
 import com.quickhandslogistics.data.BaseResponse
+import com.quickhandslogistics.data.scheduleTime.CancelRequestLumpersRequest
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersListAPIResponse
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersRequest
 import com.quickhandslogistics.network.DataManager
@@ -40,6 +41,23 @@ class RequestLumpersModel : RequestLumpersContract.Model {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onSuccessRequest(date)
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Log.e(RequestLumpersModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
+    }
+
+    override fun cancelRequestForLumpers(requestId: String, date: Date, onFinishedListener: RequestLumpersContract.Model.OnFinishedListener) {
+        val request = CancelRequestLumpersRequest(requestId)
+
+        DataManager.getService().cancelRequestLumpers(getAuthToken(), request).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessCancelRequest(date)
                 }
             }
 

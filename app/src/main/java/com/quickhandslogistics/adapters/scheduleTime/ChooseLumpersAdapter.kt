@@ -1,4 +1,4 @@
-package com.quickhandslogistics.adapters.common
+package com.quickhandslogistics.adapters.scheduleTime
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
-import com.quickhandslogistics.contracts.common.ChooseLumpersContract
+import com.quickhandslogistics.contracts.scheduleTime.ChooseLumpersContract
 import com.quickhandslogistics.controls.CustomTextView
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
@@ -23,7 +23,7 @@ import kotlin.collections.HashMap
 class ChooseLumpersAdapter(
     private val assignedLumpersList: ArrayList<EmployeeData>, scheduleTimeList: ArrayList<ScheduleTimeDetail>,
     private val onAdapterClick: ChooseLumpersContract.View.OnAdapterItemClickListener
-) : Adapter<ChooseLumpersAdapter.WorkItemHolder>() {
+) : Adapter<ChooseLumpersAdapter.ViewHolder>() {
 
     private var employeeDataList: ArrayList<EmployeeData> = ArrayList()
     private var filteredEmployeeDataList: ArrayList<EmployeeData> = ArrayList()
@@ -42,9 +42,9 @@ class ChooseLumpersAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkItemHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_add_lumpers, parent, false)
-        return WorkItemHolder(view, parent.context)
+        return ViewHolder(view, parent.context)
     }
 
     override fun getItemCount(): Int {
@@ -55,11 +55,11 @@ class ChooseLumpersAdapter(
         return if (searchEnabled) filteredEmployeeDataList[position] else employeeDataList[position]
     }
 
-    override fun onBindViewHolder(holder: WorkItemHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    inner class WorkItemHolder(view: View, private val context: Context) :
+    inner class ViewHolder(view: View, private val context: Context) :
         RecyclerView.ViewHolder(view), View.OnClickListener {
 
         private val textViewLumperName: TextView = view.textViewLumperName

@@ -230,7 +230,7 @@
                 android:gravity="top"
                 android:hint="@string/add_notes"
                 android:imeOptions="actionDone"
-                android:inputType="textPersonName"
+                android:inputType="textPersonName|textCapSentences"
                 android:padding="@dimen/_6sdp"
                 android:textSize="@dimen/_10ssp" />
         </LinearLayout>

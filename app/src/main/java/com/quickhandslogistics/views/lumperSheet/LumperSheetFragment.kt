@@ -40,7 +40,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         super.onCreate(savedInstanceState)
         lumperSheetPresenter = LumperSheetPresenter(this, resources)
 
-        // Setup DatePicker Dates
+        // Setup Calendar Dates
         selectedTime = Date().time
         availableDates = CalendarUtils.getPastCalendarDates()
     }

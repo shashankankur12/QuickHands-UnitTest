@@ -60,7 +60,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         super.onCreate(savedInstanceState)
         schedulePresenter = SchedulePresenter(this, resources)
 
-        // Setup DatePicker Dates
+        // Setup Calendar Dates
         selectedTime = Date().time
         val pair = CalendarUtils.getPastFutureCalendarDates()
         availableDates = pair.first

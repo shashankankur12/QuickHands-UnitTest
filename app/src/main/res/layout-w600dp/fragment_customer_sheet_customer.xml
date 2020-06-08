@@ -32,6 +32,7 @@
 
             <EditText
                 android:id="@+id/editTextCustomerName"
+                android:maxLength="50"
                 style="@style/valueEditTextTheme" />
         </LinearLayout>
 
@@ -54,6 +55,7 @@
             <EditText
                 android:id="@+id/editTextCustomerNotes"
                 style="@style/valueEditTextTheme"
+                android:maxLength="300"
                 android:inputType="textMultiLine|textCapSentences"
                 android:maxLines="4" />
         </LinearLayout>

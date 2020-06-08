@@ -27,7 +27,7 @@ import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_MORNING_PU
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.convertDateStringToTime
-import com.quickhandslogistics.utils.FlipAnimator
+import com.quickhandslogistics.utils.FlipAnimatorUtil
 import com.quickhandslogistics.utils.UIUtils
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import de.hdodenhof.circleimageview.CircleImageView
@@ -162,7 +162,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
                 relativeLayoutSelected.visibility = View.VISIBLE
                 relativeLayoutSelected.alpha = 1f
                 if (currentSelectedIndex == position) {
-                    FlipAnimator.flipView(context, relativeLayoutSelected, circleImageViewProfile, true)
+                    FlipAnimatorUtil.flipView(context, relativeLayoutSelected, circleImageViewProfile, true)
                     resetCurrentIndex()
                 }
             } else {
@@ -171,7 +171,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
                 circleImageViewProfile.visibility = View.VISIBLE
                 circleImageViewProfile.alpha = 1f
                 if (reverseAllAnimations && animationItemsIndex[position, false] || currentSelectedIndex == position) {
-                    FlipAnimator.flipView(context, relativeLayoutSelected, circleImageViewProfile, false)
+                    FlipAnimatorUtil.flipView(context, relativeLayoutSelected, circleImageViewProfile, false)
                     resetCurrentIndex()
                 }
             }

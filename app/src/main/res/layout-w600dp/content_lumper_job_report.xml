@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_lumper_job_report">
+
+    <include
+        android:id="@+id/layoutDateFilter"
+        layout="@layout/layout_date_filter" />
+
+    <include
+        android:id="@+id/layoutReportType"
+        layout="@layout/layout_report_type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutDateFilter" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_4ssp"
+        android:background="@drawable/white_background"
+        android:paddingStart="@dimen/_10ssp"
+        android:paddingTop="@dimen/_2ssp"
+        android:paddingEnd="@dimen/_10ssp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutReportType">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp">
+
+                <EditText
+                    android:id="@+id/editTextSearch"
+                    style="@style/searchEditTextTheme"
+                    android:layout_width="match_parent"
+                    android:layout_marginEnd="@dimen/_8ssp"
+                    android:layout_toStartOf="@+id/linearLayoutSelectAll" />
+
+                <ImageView
+                    android:id="@+id/imageViewCancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_6sdp"
+                    android:src="@drawable/ic_cancel"
+                    android:tint="@color/colorLightGrey"
+                    android:visibility="visible" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutSelectAll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:gravity="end"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imageViewSelectAll"
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
+                        android:src="@drawable/ic_add_lumer_tick_blank" />
+
+                    <TextView
+                        android:id="@+id/textViewSelectAll"
+                        style="@style/valuesVerySmallTextViewTheme"
+                        android:layout_width="wrap_content"
+                        android:text="@string/select_all" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewLumpers"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/_10ssp"
+                android:layout_weight="1"
+                tools:listitem="@layout/item_add_lumpers"/>
+
+            <Button
+                android:id="@+id/buttonGenerateReport"
+                style="@style/positiveRoundButtonTheme"
+                android:layout_marginBottom="@dimen/_8ssp"
+                android:enabled="false"
+                android:text="@string/generate_report" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textViewEmptyData"
+            style="@style/noRecordTextViewTheme"
+            android:layout_centerInParent="true"
+            android:text="@string/empty_lumpers_list_info_message"
+            android:visibility="gone" />
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.quickhandslogistics.contracts.common
+package com.quickhandslogistics.contracts.scheduleTime
 
 import com.quickhandslogistics.contracts.BaseContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
