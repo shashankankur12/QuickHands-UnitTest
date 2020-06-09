@@ -138,6 +138,7 @@
         <item name="android:scrollbars">vertical</item>
         <item name="android:inputType">textMultiLine|textCapSentences</item>
         <item name="android:maxLines">3</item>
+        <item name="android:maxLength">300</item>
     </style>
     <!---->
 
