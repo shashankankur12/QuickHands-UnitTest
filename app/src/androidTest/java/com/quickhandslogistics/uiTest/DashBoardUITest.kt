@@ -9,7 +9,6 @@ import com.quickhandslogistics.resources.FetchingIdlingResource
 import com.quickhandslogistics.testModel.DashBoardTestModel
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.DashBoardActivity
-import com.quickhandslogistics.views.ForgotPasswordActivity
 import com.quickhandslogistics.views.workSheet.AllWorkScheduleCancelActivity
 import org.junit.After
 import org.junit.Before

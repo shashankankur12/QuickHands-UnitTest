@@ -1,7 +1,6 @@
 package com.quickhandslogistics.uiTest
 
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -9,7 +8,6 @@ import com.quickhandslogistics.resources.FetchingIdlingResource
 import com.quickhandslogistics.testModel.NavigationDrawerTestModel
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.DashBoardActivity
-import com.quickhandslogistics.views.workSheet.AllWorkScheduleCancelActivity
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

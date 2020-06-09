@@ -2,18 +2,14 @@ package com.quickhandslogistics.testModel
 
 import android.content.Context
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.DrawerActions
 import androidx.test.espresso.contrib.DrawerMatchers.isClosed
 import androidx.test.espresso.matcher.ViewMatchers.*
-import com.quickhandslogistics.BuildConfig
 import com.quickhandslogistics.R
 import com.quickhandslogistics.resources.FetchingIdlingResource
 import com.quickhandslogistics.utils.CustomScrollActions
 import com.quickhandslogistics.utils.ViewUtils.checkViewVisible
-import com.quickhandslogistics.utils.ViewUtils.scroll
-import com.quickhandslogistics.utils.ViewUtils.validateSubText
 import org.hamcrest.Matchers.allOf
 
 class NavigationDrawerTestModel(private val context: Context, private val fetchingIdlingResource: FetchingIdlingResource) {

@@ -1,14 +1,12 @@
 package com.quickhandslogistics.uiTest
 
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.quickhandslogistics.resources.FetchingIdlingResource
 import com.quickhandslogistics.testModel.ForgotPasswordTestModel
 import com.quickhandslogistics.views.BaseActivity
-import com.quickhandslogistics.views.DashBoardActivity
 import com.quickhandslogistics.views.ForgotPasswordActivity
 import org.junit.After
 import org.junit.Before
