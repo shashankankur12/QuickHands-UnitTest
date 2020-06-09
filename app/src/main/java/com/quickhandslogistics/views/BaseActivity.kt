@@ -1,5 +1,6 @@
 package com.quickhandslogistics.views
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Context
@@ -7,15 +8,19 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.franmontiel.localechanger.LocaleChanger
 import com.franmontiel.localechanger.utils.ActivityRecreationHelper
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.BaseContract
+import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SharedPref
 import kotlinx.android.synthetic.main.layout_toolbar.*
+import okhttp3.Dispatcher
 
 open class BaseActivity : AppCompatActivity(), BaseContract.View {
 
@@ -106,6 +111,17 @@ open class BaseActivity : AppCompatActivity(), BaseContract.View {
         CustomProgressBar.getInstance().showErrorDialog(message, activity)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    fun addNotesTouchListener(editText: EditText) {
+        editText.setOnTouchListener { view, event ->
+            view.parent.requestDisallowInterceptTouchEvent(true)
+            if ((event.action and MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP) {
+                view.parent.requestDisallowInterceptTouchEvent(false)
+            }
+            return@setOnTouchListener false
+        }
+    }
+
     /** Presenter Listeners */
     override fun showProgressDialog(message: String) {
         CustomProgressBar.getInstance().show(message = message, activityContext = activity)
@@ -113,5 +129,10 @@ open class BaseActivity : AppCompatActivity(), BaseContract.View {
 
     override fun hideProgressDialog() {
         CustomProgressBar.getInstance().hide()
+    }
+
+    /** Espresso Test Methods */
+    fun getOkHttpClientDispatcher(): Dispatcher? {
+        return DataManager.getOkHttpClient()?.dispatcher
     }
 }

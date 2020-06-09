@@ -1,7 +1,10 @@
 package com.quickhandslogistics.views
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.MotionEvent
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -44,6 +47,17 @@ open class BaseFragment : Fragment(), BaseContract.View {
             }
             if (isFinish) fragmentActivity.finish()
             fragmentActivity.overridePendingTransition(R.anim.anim_next_slide_in, R.anim.anim_next_slide_out)
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    fun addNotesTouchListener(editText: EditText) {
+        editText.setOnTouchListener { view, event ->
+            view.parent.requestDisallowInterceptTouchEvent(true)
+            if ((event.action and MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP) {
+                view.parent.requestDisallowInterceptTouchEvent(false)
+            }
+            return@setOnTouchListener false
         }
     }
 

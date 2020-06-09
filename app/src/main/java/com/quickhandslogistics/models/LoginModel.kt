@@ -37,7 +37,7 @@ class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
             TextUtils.isEmpty(password) -> {
                 onFinishedListener.emptyPassword()
             }
-            password.length < 7 -> {
+            password.length < 8 -> {
                 onFinishedListener.invalidPassword()
             }
             else -> {

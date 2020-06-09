@@ -32,8 +32,8 @@
 
             <EditText
                 android:id="@+id/editTextCustomerName"
-                android:maxLength="50"
-                style="@style/valueEditTextTheme" />
+                style="@style/valueEditTextTheme"
+                android:maxLength="50" />
         </LinearLayout>
 
         <LinearLayout
@@ -54,10 +54,7 @@
 
             <EditText
                 android:id="@+id/editTextCustomerNotes"
-                style="@style/valueEditTextTheme"
-                android:maxLength="300"
-                android:inputType="textMultiLine|textCapSentences"
-                android:maxLines="4" />
+                style="@style/notesEditTextTheme" />
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

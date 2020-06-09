@@ -9,7 +9,6 @@ import com.quickhandslogistics.contracts.buildingOperations.BuildingOperationsCo
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.presenters.buildingOperations.BuildingOperationsPresenter
 import com.quickhandslogistics.views.BaseActivity
-import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_ALLOW_UPDATE
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETERS
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.utils.CustomDialogWarningListener

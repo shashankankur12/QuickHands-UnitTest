@@ -42,6 +42,8 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        addNotesTouchListener(editTextCustomerNotes)
+
         textViewAddSignature.setOnClickListener(this)
         buttonSubmit.setOnClickListener(this)
     }
