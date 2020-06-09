@@ -21,7 +21,6 @@ import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.AppConstant.Companion.NOTES_NOT_AVAILABLE
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_REQUEST_PARAMETER
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
 import com.quickhandslogistics.utils.SnackBarFactory

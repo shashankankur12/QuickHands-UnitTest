@@ -31,9 +31,7 @@
 
             <EditText
                 android:id="@+id/editTextQHLCustomerNotes"
-                style="@style/valueEditTextTheme"
-                android:inputType="textMultiLine|textCapSentences"
-                android:maxLines="3" />
+                style="@style/notesEditTextTheme" />
         </LinearLayout>
 
         <LinearLayout
@@ -54,9 +52,7 @@
 
             <EditText
                 android:id="@+id/editTextQHLNotes"
-                style="@style/valueEditTextTheme"
-                android:inputType="textMultiLine|textCapSentences"
-                android:maxLines="3" />
+                style="@style/notesEditTextTheme" />
         </LinearLayout>
 
         <Button

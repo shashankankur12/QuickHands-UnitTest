@@ -66,9 +66,7 @@
 
         <EditText
             android:id="@+id/editTextDMNotes"
-            style="@style/valueEditTextTheme"
-            android:inputType="textMultiLine|textCapSentences"
-            android:maxLines="4" />
+            style="@style/notesEditTextTheme" />
     </LinearLayout>
 
     <Button

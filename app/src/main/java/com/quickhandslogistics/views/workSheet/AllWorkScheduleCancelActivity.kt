@@ -3,6 +3,7 @@ package com.quickhandslogistics.views.workSheet
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.MotionEvent
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -52,6 +53,9 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
                 invalidateEmptyView()
             }
         })
+
+        addNotesTouchListener(editTextCustomerNotes)
+        addNotesTouchListener(editTextQHLNotes)
 
         buttonSubmit.setOnClickListener(this)
         editTextSearch.addTextChangedListener(this)

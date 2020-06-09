@@ -39,6 +39,9 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        addNotesTouchListener(editTextQHLCustomerNotes)
+        addNotesTouchListener(editTextQHLNotes)
+
         buttonSubmit.setOnClickListener(this)
     }
 

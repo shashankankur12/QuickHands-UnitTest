@@ -97,10 +97,8 @@
 
                 <EditText
                     android:id="@+id/editTextNotes"
-                    style="@style/valueEditTextTheme"
-                    android:hint="@string/notes_for_scheduled_lumpers"
-                    android:inputType="textMultiLine|textCapSentences"
-                    android:maxLines="3" />
+                    style="@style/notesEditTextTheme"
+                    android:hint="@string/notes_for_scheduled_lumpers" />
             </LinearLayout>
 
             <Button

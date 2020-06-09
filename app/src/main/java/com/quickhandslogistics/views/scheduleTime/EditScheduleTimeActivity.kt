@@ -112,6 +112,8 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             }
         })
 
+        addNotesTouchListener(editTextNotes)
+
         textViewAddSameTime.setOnClickListener(this)
         buttonSubmit.setOnClickListener(this)
         editTextSearch.addTextChangedListener(this)
