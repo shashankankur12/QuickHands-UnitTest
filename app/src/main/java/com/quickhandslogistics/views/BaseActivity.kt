@@ -133,6 +133,6 @@ open class BaseActivity : AppCompatActivity(), BaseContract.View {
 
     /** Espresso Test Methods */
     fun getOkHttpClientDispatcher(): Dispatcher? {
-        return DataManager.getOkHttpClient()?.dispatcher()
+        return DataManager.getOkHttpClient()?.dispatcher
     }
 }

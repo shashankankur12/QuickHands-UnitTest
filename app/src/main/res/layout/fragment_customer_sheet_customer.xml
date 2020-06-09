@@ -32,7 +32,8 @@
 
             <EditText
                 android:id="@+id/editTextCustomerName"
-                style="@style/valueEditTextTheme" />
+                style="@style/valueEditTextTheme"
+                android:maxLength="50" />
         </LinearLayout>
 
         <LinearLayout
