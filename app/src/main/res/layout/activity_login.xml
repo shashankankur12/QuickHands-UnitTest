@@ -90,6 +90,7 @@
                     android:id="@+id/editTextPassword"
                     style="@style/loginEditTextTheme"
                     android:hint="@string/enter_password_info_message"
+                    android:paddingStart="@dimen/_50sdp"
                     android:gravity="center"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>

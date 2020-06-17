@@ -142,10 +142,10 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
                 )
             )
 
-            it.addItem(NavDrawer.AppNavDrawerItem(ScheduleFragment(), R.drawable.ic_sidemenu_lumper_sheet, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.schedule), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(ScheduleFragment(), R.drawable.ic_calednar_dr, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.schedule), showTabName)))
             it.addItem(
                 NavDrawer.AppNavDrawerItem(
-                    TimeClockAttendanceFragment(), R.drawable.ic_sidemenu_schedule, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.time_clock_attendance), showTabName)
+                    TimeClockAttendanceFragment(), R.drawable.time_clock_icon, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.time_clock_attendance), showTabName)
                 )
             )
             it.addItem(NavDrawer.AppNavDrawerItem(LumpersFragment(), R.drawable.ic_sidemenu_lumpers, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.lumpers), showTabName)))
@@ -155,7 +155,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
                     CustomerSheetFragment(), R.drawable.ic_sidemenu_customer_sheet, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.customer_sheet), showTabName)
                 )
             )
-            it.addItem(NavDrawer.AppNavDrawerItem(ReportsFragment(), R.drawable.ic_sidemenu_reports, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.reports), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(ReportsFragment(), R.drawable.repot_icon, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.reports), showTabName)))
             it.addItem(NavDrawer.AppNavDrawerItem(SettingsFragment(), R.drawable.ic_sidemenu_settings, R.id.linearLayoutBottomItems, isShowOnLaunch(getString(R.string.settings), showTabName)))
             it.addItem(NavDrawer.AppNavDrawerItem(null, R.drawable.ic_sidemenu_logout, R.id.linearLayoutBottomItems, isShowOnLaunch(getString(R.string.logout), showTabName)))
 
@@ -191,7 +191,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         textViewLeadName.text = UIUtils.getEmployeeFullName(leadProfileData)
         textViewEmail.text = if (!leadProfileData.email.isNullOrEmpty()) leadProfileData.email else "-"
         textViewEmployeeId.text = if (!leadProfileData.employeeId.isNullOrEmpty()) leadProfileData.employeeId else "-"
-        textViewRole.text = if (!leadProfileData.role.isNullOrEmpty()) "QHL "+leadProfileData.role+ " at " +leadProfileData.buildingDetailData?.buildingName else "-"
+        textViewRole.text = if (!leadProfileData.role.isNullOrEmpty()) "QHL "+leadProfileData.role!!.capitalize()+ " at " +leadProfileData.buildingDetailData?.buildingName!!.capitalize() else "-"
 
         textViewVersionName.text = String.format("v%s", BuildConfig.VERSION_NAME)
     }

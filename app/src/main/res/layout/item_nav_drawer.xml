@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/list_item_nav_drawer_text"
-        style="@style/valuesTextViewTheme"
+        style="@style/valuesSmallTextViewThemeHeader"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:text="Menu Item"

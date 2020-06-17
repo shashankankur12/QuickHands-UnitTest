@@ -33,7 +33,7 @@
 
         <TextView
             android:id="@+id/textViewLeadName"
-            style="@style/titleBigTextViewTheme"
+            style="@style/titleBigTextViewThemeHeader"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/_10sdp"
             android:drawableEnd="@drawable/ic_arrow_right"
@@ -56,7 +56,7 @@
         <TextView
             android:id="@+id/textViewEmployeeId"
             android:layout_below="@id/textViewEmail"
-            style="@style/valuesTextViewTheme"
+            style="@style/valuesSmallTextViewThemeHeader"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginBottom="@dimen/_5sdp"
             android:text="Emp ID: 1001"
@@ -65,7 +65,7 @@
         <TextView
             android:id="@+id/textViewRole"
             android:layout_below="@id/textViewEmployeeId"
-            style="@style/valuesTextViewTheme"
+            style="@style/valuesSmallTextViewTheme"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginBottom="@dimen/_5sdp"
             android:text="Role"

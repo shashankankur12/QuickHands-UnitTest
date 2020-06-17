@@ -155,6 +155,10 @@
         <item name="android:textSize">@dimen/_16ssp</item>
     </style>
 
+    <style name="titleBigTextViewThemeHeader" parent="titleTextViewTheme">
+        <item name="android:textSize">@dimen/_15ssp</item>
+    </style>
+
     <style name="titleSmallTextViewTheme" parent="titleTextViewTheme">
         <item name="android:textSize">@dimen/_12ssp</item>
     </style>
@@ -168,6 +172,10 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/scheduleDetail</item>
         <item name="android:textSize">@dimen/_12ssp</item>
+    </style>
+
+    <style name="valuesSmallTextViewThemeHeader" parent="valuesTextViewTheme">
+        <item name="android:textSize">@dimen/_11ssp</item>
     </style>
 
     <style name="valuesSmallTextViewTheme" parent="valuesTextViewTheme">
