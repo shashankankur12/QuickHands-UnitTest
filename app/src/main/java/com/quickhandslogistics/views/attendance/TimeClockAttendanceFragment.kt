@@ -16,7 +16,6 @@ import com.quickhandslogistics.contracts.attendance.TimeClockAttendanceContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.presenters.attendance.TimeClockAttendancePresenter
-import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_EVENING_PUNCH_OUT
 import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_LUNCH_PUNCH_IN
@@ -24,6 +23,7 @@ import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_LUNCH_PUNC
 import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_MORNING_PUNCH_IN
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.convertDateStringToTime
+import com.quickhandslogistics.views.BaseFragment
 import kotlinx.android.synthetic.main.bottom_sheet_add_attendance_time.*
 import kotlinx.android.synthetic.main.content_time_clock_attendance.*
 import kotlinx.android.synthetic.main.fragment_time_clock_attendance.*
@@ -117,37 +117,75 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             var isLunchInEditable = true
             var isLunchOutEditable = true
 
+            var hasAllPreSavedClockInTime = true
+            var hasAllPreSavedClockOutTime = true
+            var hasAllPreSavedLunchInTime = true
+            var hasAllPreSavedLunchOutTime = true
+
             val list = timeClockAttendanceAdapter.getSelectedItems()
             for (lumperAttendanceData in list) {
                 // Check Clock-In Time
                 val clockInTime = convertDateStringToTime(PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.morningPunchIn)
+                if (hasAllPreSavedClockInTime && clockInTime.isEmpty()) {
+                    hasAllPreSavedClockInTime = false
+                }
                 if (isClockInEditable && !(timeClockAttendanceAdapter.checkIfEditable(clockInTime.isNotEmpty(), ATTENDANCE_MORNING_PUNCH_IN, lumperAttendanceData.id!!))) {
                     isClockInEditable = false
                 }
 
                 // Check Clock-Out Time
                 val clockOutTime = convertDateStringToTime(PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.eveningPunchOut)
+                if (hasAllPreSavedClockOutTime && clockOutTime.isEmpty()) {
+                    hasAllPreSavedClockOutTime = false
+                }
                 if (isClockOutEditable && !(timeClockAttendanceAdapter.checkIfEditable(clockOutTime.isNotEmpty(), ATTENDANCE_EVENING_PUNCH_OUT, lumperAttendanceData.id!!))) {
                     isClockOutEditable = false
                 }
 
                 // Check Lunch-In Time
                 val lunchInTime = convertDateStringToTime(PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.lunchPunchIn)
+                if (hasAllPreSavedLunchInTime && lunchInTime.isEmpty()) {
+                    hasAllPreSavedLunchInTime = false
+                }
                 if (isLunchInEditable && !(timeClockAttendanceAdapter.checkIfEditable(lunchInTime.isNotEmpty(), ATTENDANCE_LUNCH_PUNCH_IN, lumperAttendanceData.id!!))) {
                     isLunchInEditable = false
                 }
 
                 // Check Lunch-Out Time
                 val lunchOutTime = convertDateStringToTime(PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.lunchPunchOut)
+                if (hasAllPreSavedLunchOutTime && lunchOutTime.isEmpty()) {
+                    hasAllPreSavedLunchOutTime = false
+                }
                 if (isLunchOutEditable && !(timeClockAttendanceAdapter.checkIfEditable(lunchOutTime.isNotEmpty(), ATTENDANCE_LUNCH_PUNCH_OUT, lumperAttendanceData.id!!))) {
                     isLunchOutEditable = false
                 }
             }
 
+            buttonClockIn.text = getString(R.string.clock_in)
             buttonClockIn.isEnabled = isClockInEditable
-            buttonClockOut.isEnabled = isClockOutEditable
-            buttonLunchIn.isEnabled = isLunchInEditable
-            buttonLunchOut.isEnabled = isLunchOutEditable
+
+            /* ClockOut Button will only be enabled in these cases:
+                1. All the selected items ClockIn Time is Punched
+                2. All the selected items LunchIn Time is Not Punched
+                3. All the selected items LunchIn Time & LunchOut Time are both punched */
+            buttonClockOut.text = getString(R.string.clock_out)
+            val isEnabledClockOut = isClockOutEditable && !isClockInEditable && (isLunchInEditable || !(!isLunchInEditable && isLunchOutEditable))
+            buttonClockOut.isEnabled = isEnabledClockOut && hasAllPreSavedClockInTime &&
+                    ((hasAllPreSavedLunchInTime && hasAllPreSavedLunchOutTime) || (!hasAllPreSavedLunchInTime && !hasAllPreSavedLunchOutTime))
+
+            /* LunchIn Button will only be enabled in these cases:
+                1. All the selected items ClockIn Time is Punched
+                2. All the selected items ClockOut Time is Not Punched */
+            buttonLunchIn.text = getString(R.string.out_to_lunch)
+            val isEnabledLunchIn = isLunchInEditable && !isClockInEditable && isClockOutEditable
+            buttonLunchIn.isEnabled = isEnabledLunchIn && hasAllPreSavedClockInTime
+
+            /* LunchOut Button will only be enabled in these cases:
+                1. All the selected items LunchIn Time is Punched
+                2. All the selected items ClockIn Time is Punched */
+            buttonLunchOut.text = getString(R.string.back_to_work)
+            val isEnabledLunchOut = isLunchOutEditable && !isLunchInEditable && !isClockInEditable
+            buttonLunchOut.isEnabled = isEnabledLunchOut && hasAllPreSavedClockInTime && hasAllPreSavedLunchInTime
 
             sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             bottomSheetBackground.visibility = View.VISIBLE
@@ -308,22 +346,40 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             // Show Clock-In Time
             val clockInTime = convertDateStringToTime(PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.morningPunchIn)
             buttonClockIn.text = if (clockInTime.isNotEmpty()) clockInTime else getString(R.string.clock_in)
-            buttonClockIn.isEnabled = timeClockAttendanceAdapter.checkIfEditable(clockInTime.isNotEmpty(), ATTENDANCE_MORNING_PUNCH_IN, lumperAttendanceData.id!!)
+            val isClockInEditable = timeClockAttendanceAdapter.checkIfEditable(clockInTime.isNotEmpty(), ATTENDANCE_MORNING_PUNCH_IN, lumperAttendanceData.id!!)
 
             // Show Clock-Out Time
             val clockOutTime = convertDateStringToTime(PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.eveningPunchOut)
             buttonClockOut.text = if (clockOutTime.isNotEmpty()) clockOutTime else getString(R.string.clock_out)
-            buttonClockOut.isEnabled = timeClockAttendanceAdapter.checkIfEditable(clockOutTime.isNotEmpty(), ATTENDANCE_EVENING_PUNCH_OUT, lumperAttendanceData.id!!)
+            val isClockOutEditable = timeClockAttendanceAdapter.checkIfEditable(clockOutTime.isNotEmpty(), ATTENDANCE_EVENING_PUNCH_OUT, lumperAttendanceData.id!!)
 
             // Show Lunch-In Time
             val lunchInTime = convertDateStringToTime(PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.lunchPunchIn)
             buttonLunchIn.text = if (lunchInTime.isNotEmpty()) lunchInTime else getString(R.string.out_to_lunch)
-            buttonLunchIn.isEnabled = timeClockAttendanceAdapter.checkIfEditable(lunchInTime.isNotEmpty(), ATTENDANCE_LUNCH_PUNCH_IN, lumperAttendanceData.id!!)
+            val isLunchInEditable = timeClockAttendanceAdapter.checkIfEditable(lunchInTime.isNotEmpty(), ATTENDANCE_LUNCH_PUNCH_IN, lumperAttendanceData.id!!)
 
             // Show Lunch-Out Time
             val lunchOutTime = convertDateStringToTime(PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.lunchPunchOut)
             buttonLunchOut.text = if (lunchOutTime.isNotEmpty()) lunchOutTime else getString(R.string.back_to_work)
-            buttonLunchOut.isEnabled = timeClockAttendanceAdapter.checkIfEditable(lunchOutTime.isNotEmpty(), ATTENDANCE_LUNCH_PUNCH_OUT, lumperAttendanceData.id!!)
+            val isLunchOutEditable = timeClockAttendanceAdapter.checkIfEditable(lunchOutTime.isNotEmpty(), ATTENDANCE_LUNCH_PUNCH_OUT, lumperAttendanceData.id!!)
+
+            buttonClockIn.isEnabled = isClockInEditable
+
+            /* ClockOut Button will only be enabled in these cases:
+                1. ClockIn Time is Punched
+                2. LunchIn Time is Not Punched
+                3. LunchIn Time & LunchOut Time are punched */
+            buttonClockOut.isEnabled = isClockOutEditable && !isClockInEditable && (isLunchInEditable || !(!isLunchInEditable && isLunchOutEditable))
+
+            /* LunchIn Button will only be enabled in these cases:
+                1. ClockIn Time is Punched
+                2. ClockOut Time is Not Punched */
+            buttonLunchIn.isEnabled = isLunchInEditable && !isClockInEditable && isClockOutEditable
+
+            /* LunchOut Button will only be enabled in these cases:
+                1. LunchIn Time is Punched
+                2. ClockIn Time is Punched */
+            buttonLunchOut.isEnabled = isLunchOutEditable && !isLunchInEditable && !isClockInEditable
         } else {
             closeBottomSheet()
         }
