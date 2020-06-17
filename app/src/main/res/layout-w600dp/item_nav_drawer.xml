@@ -5,7 +5,8 @@
     android:background="?android:attr/selectableItemBackground"
     android:gravity="start|center_vertical"
     android:orientation="horizontal"
-    android:padding="@dimen/_8sdp">
+    android:paddingHorizontal="@dimen/_8sdp"
+    android:paddingVertical="@dimen/_4sdp">
 
     <ImageView
         android:id="@+id/list_item_nav_drawer_icon"

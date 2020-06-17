@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_60sdp"
-        android:paddingBottom="@dimen/_20sdp"
+        android:paddingBottom="@dimen/_15sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
         <de.hdodenhof.circleimageview.CircleImageView
@@ -58,7 +58,6 @@
             android:layout_below="@id/textViewEmail"
             style="@style/valuesSmallTextViewThemeHeader"
             android:layout_marginTop="@dimen/_2sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
             android:text="Emp ID: 1001"
             android:textColor="@color/textBlack"
             />

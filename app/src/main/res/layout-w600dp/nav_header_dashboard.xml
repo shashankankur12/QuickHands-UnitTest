@@ -19,7 +19,7 @@
         android:paddingStart="@dimen/_10sdp"
         android:paddingEnd="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_80sdp"
-        android:paddingBottom="@dimen/_20sdp"
+        android:paddingBottom="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
