@@ -73,9 +73,9 @@
             <EditText
                 android:id="@+id/editTextEmployeeId"
                 style="@style/loginEditTextTheme"
+                android:gravity="center"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:hint="@string/enter_employee_id_info_message"
-
                 android:inputType="textPersonName|textCapCharacters" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -90,6 +90,7 @@
                     android:id="@+id/editTextPassword"
                     style="@style/loginEditTextTheme"
                     android:hint="@string/enter_password_info_message"
+                    android:gravity="center"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -74,7 +74,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:background="@drawable/edittext_background"
-                android:paddingEnd="@dimen/_6sdp"
                 app:hintEnabled="false"
                 app:passwordToggleEnabled="true">
 
