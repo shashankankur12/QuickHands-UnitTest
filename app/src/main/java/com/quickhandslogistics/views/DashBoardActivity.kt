@@ -191,6 +191,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         textViewLeadName.text = UIUtils.getEmployeeFullName(leadProfileData)
         textViewEmail.text = if (!leadProfileData.email.isNullOrEmpty()) leadProfileData.email else "-"
         textViewEmployeeId.text = if (!leadProfileData.employeeId.isNullOrEmpty()) leadProfileData.employeeId else "-"
+        textViewRole.text = if (!leadProfileData.role.isNullOrEmpty()) "QHL "+leadProfileData.role+ " at " +leadProfileData.buildingDetailData?.buildingName else "-"
 
         textViewVersionName.text = String.format("v%s", BuildConfig.VERSION_NAME)
     }
@@ -216,7 +217,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     }
 
     override fun onLogoutOptionSelected() {
-        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.logout_alert_message), activity, object : CustomDialogWarningListener {
+        CustomProgressBar.getInstance().showLogoutDialog(getString(R.string.logout_alert_message), activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 dashBoardPresenter.performLogout()
             }

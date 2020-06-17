@@ -11,7 +11,7 @@
         android:id="@+id/mainConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/appBackground"
+        android:background="@android:color/white"
         tools:context=".views.LoginActivity">
 
         <LinearLayout
@@ -23,12 +23,13 @@
             android:padding="@dimen/_25sdp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
+            android:background="@android:color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:layout_width="@dimen/_130sdp"
-                android:layout_height="@dimen/_35sdp"
+                android:layout_width="@dimen/_230sdp"
+                android:layout_height="@dimen/_45sdp"
                 android:src="@drawable/ic_splash_logo" />
 
             <ImageView
@@ -42,9 +43,10 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/white_background"
             android:orientation="vertical"
-            android:padding="@dimen/_12ssp"
+            android:paddingVertical="@dimen/_12ssp"
+            android:paddingHorizontal="@dimen/_40sdp"
+            android:background="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,14 +58,15 @@
                 android:text="@string/sign_in_info_message"
                 android:textColor="@color/textBlack"
                 android:textSize="@dimen/_10ssp"
+                android:visibility="gone"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/editTextEmployeeId"
                 style="@style/loginEditTextTheme"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:drawableStart="@drawable/ic_employee_id_deselect"
                 android:hint="@string/enter_employee_id_info_message"
+                android:gravity="center"
                 android:inputType="textPersonName|textCapCharacters" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -79,16 +82,22 @@
                     android:id="@+id/editTextPassword"
                     style="@style/loginEditTextTheme"
                     android:background="@null"
-                    android:drawableStart="@drawable/ic_password_deselect"
                     android:hint="@string/enter_password_info_message"
+                    android:gravity="center"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/buttonLogin"
+                style="@style/positiveRoundButtonTheme"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:text="@string/sign_in" />
 
             <TextView
                 android:id="@+id/textViewForgotPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
+                android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
                 android:background="?android:attr/selectableItemBackground"
@@ -97,11 +106,6 @@
                 android:text="@string/forgot_password_question_mark"
                 android:textSize="@dimen/_10ssp"
                 android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/buttonLogin"
-                style="@style/positiveRoundButtonTheme"
-                android:text="@string/sign_in" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

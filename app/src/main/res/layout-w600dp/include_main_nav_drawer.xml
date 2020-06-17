@@ -36,6 +36,7 @@
                         android:id="@+id/linearLayoutTopItems"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/_20sdp"
                         android:orientation="vertical" />
 
                     <View

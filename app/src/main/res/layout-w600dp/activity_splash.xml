@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/imageViewSplashLogo"
-        android:layout_width="@dimen/_130sdp"
-        android:layout_height="@dimen/_35sdp"
+        android:layout_width="@dimen/_230sdp"
+        android:layout_height="@dimen/_45sdp"
         android:src="@drawable/ic_splash_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

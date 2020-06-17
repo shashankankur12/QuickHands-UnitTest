@@ -9,14 +9,15 @@
 
     <ImageView
         android:id="@+id/list_item_nav_drawer_icon"
-        android:layout_width="@dimen/_15sdp"
-        android:layout_height="@dimen/_15sdp"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_12ssp"
+        android:tint="@color/textBlack"
         android:src="@drawable/ic_sidemenu_dashboard" />
 
     <TextView
         android:id="@+id/list_item_nav_drawer_text"
-        style="@style/titleSmallTextViewTheme"
+        style="@style/valuesTextViewTheme"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:text="Menu Item"

@@ -50,14 +50,14 @@
     <string name="excel">Excel</string>
     <string name="first_name">First Name</string>
     <string name="forgot_password">Forgot Password</string>
-    <string name="forgot_password_question_mark"><u>Forgot Password?</u></string>
+    <string name="forgot_password_question_mark">Forgot Password?</string>
     <string name="full_time">Full Time</string>
     <string name="generate_report">Generate Report</string>
     <string name="hiring_date">Hiring Date</string>
     <string name="in_progress">In-Progress</string>
     <string name="info">Info</string>
     <string name="job_description">Job Description</string>
-    <string name="l_sheet">L-Sheet</string>
+    <string name="l_sheet">Lumper-Sheet</string>
     <string name="last_day_worked">Last day worked</string>
     <string name="last_name">Last Name</string>
     <string name="live_load_s">Live Load: %s</string>
@@ -103,11 +103,11 @@
     <string name="requested_lumpers_s">Requested Lumpers: %s</string>
     <string name="role">Role</string>
     <string name="save">Save</string>
-    <string name="schedule">Schedule</string>
+    <string name="schedule">Work Schedule</string>
     <string name="scheduled">Scheduled</string>
     <string name="schedule_detail">Schedule Detail</string>
     <string name="schedule_lumpers">Schedule Lumpers</string>
-    <string name="schedule_lumpers_time">Schedule Lumpers Time</string>
+    <string name="schedule_lumpers_time">Schedule Lumpers</string>
     <string name="select_all">Select All</string>
     <string name="select_date_range">Select Date Range</string>
     <string name="select_status">Select Status</string>
@@ -126,11 +126,11 @@
     <string name="start_time_s">Start Time: %s</string>
     <string name="submit">Submit</string>
     <string name="success">Success</string>
-    <string name="time_clock_attendance">Time Clock Attendance</string>
+    <string name="time_clock_attendance">Time Clock </string>
     <string name="time_clock_report">Time Clock Report</string>
     <string name="title">Title</string>
     <string name="to">- to -</string>
-    <string name="today_s_work_sheet">Today\'s Work Sheet</string>
+    <string name="today_s_work_sheet">Work Sheet</string>
     <string name="total_containers_s">Total Containers: %s</string>
     <string name="total_lumpers_assigned_s">Total Lumpers Assigned: %s</string>
     <string name="unfinished_s">Unfinished: %s</string>
@@ -148,6 +148,7 @@
     <string name="work_sheet_detail">Work Sheet Detail</string>
     <string name="work_time">Work Time</string>
     <string name="yes">Yes</string>
+    <string name="logout_buttoon">Log Out</string>
 
     <!--No Record Messages-->
     <string name="empty_add_work_item_lumpers_info_message">This building doesn\'t have any lumpers present for the selected date. Please mark lumpers attendance in \'Time-Clock Attendance\' section for selecting them.</string>
@@ -206,8 +207,8 @@
     <string name="something_went_wrong_message">Something went wrong, Please try again after sometime!!!</string>
 
     <!--Info Messages-->
-    <string name="enter_employee_id_info_message">Enter your employee ID</string>
-    <string name="enter_password_info_message">Enter Password</string>
+    <string name="enter_employee_id_info_message">Employee ID</string>
+    <string name="enter_password_info_message">Password</string>
     <string name="forgot_password_info_message">We just need your registered employee Id  to reset your password.</string>
     <string name="no_of_lumpers_needed">No. of Additional Lumpers Needed</string>
     <string name="no_record_found_info_message">No Record Found</string>
