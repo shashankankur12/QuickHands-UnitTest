@@ -8,7 +8,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_120sdp"
+        android:layout_height="@dimen/_80sdp"
         android:src="@drawable/header_background"
         android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_60sdp"
+        android:layout_marginTop="@dimen/_20sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
         <de.hdodenhof.circleimageview.CircleImageView

@@ -7,7 +7,7 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_120sdp"
+        android:layout_height="@dimen/_80sdp"
         android:src="@drawable/header_background"
         android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/_10sdp"
         android:paddingEnd="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_80sdp"
+        android:layout_marginTop="@dimen/_40sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 

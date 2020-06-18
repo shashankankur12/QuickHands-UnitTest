@@ -22,11 +22,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <include
                         android:id="@+id/headerLayout"
                         layout="@layout/nav_header_dashboard" />
@@ -34,8 +34,8 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="@dimen/_5ssp"
-                        android:layout_marginBottom="@dimen/_10ssp"
+                        android:layout_marginTop="@dimen/_6ssp"
+                        android:layout_marginBottom="@dimen/_6ssp"
                         android:background="#30000000" />
 
                     <LinearLayout
@@ -47,8 +47,8 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="@dimen/_5ssp"
-                        android:layout_marginBottom="@dimen/_10ssp"
+                        android:layout_marginTop="@dimen/_6ssp"
+                        android:layout_marginBottom="@dimen/_6ssp"
                         android:background="#30000000" />
 
                     <LinearLayout
@@ -65,7 +65,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/_10ssp"
                         android:layout_marginBottom="@dimen/_10ssp"
-                        android:textSize="@dimen/_10ssp" />
+                        android:textSize="@dimen/_8ssp" />
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
         </RelativeLayout>

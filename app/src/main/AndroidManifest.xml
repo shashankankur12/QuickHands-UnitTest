@@ -18,84 +18,107 @@
 
         <activity
             android:name=".views.buildingOperations.BuildingOperationsActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
 
         <activity
             android:name=".views.common.AddSignatureActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".views.common.BuildingOperationsViewActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
         <activity
             android:name=".views.scheduleTime.ChooseLumpersActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
         <activity
             android:name=".views.common.DisplayLumpersListActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
         <activity
             android:name=".views.common.FullScreenImageActivity"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".views.lumpers.LumperDetailActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
 
         <activity
             android:name=".views.lumperSheet.LumperWorkDetailActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
 
         <activity
             android:name=".views.reports.CustomerReportActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
         <activity
             android:name=".views.reports.LumperJobReportActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
         <activity
             android:name=".views.reports.TimeClockReportActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
 
         <activity
             android:name=".views.schedule.AddWorkItemLumpersActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
         <activity
             android:name=".views.schedule.ScheduleDetailActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
         <activity
             android:name=".views.schedule.ScheduledWorkItemDetailActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
 
         <activity
             android:name=".views.scheduleTime.EditScheduleTimeActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
         <activity
             android:name=".views.scheduleTime.RequestLumpersActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
 
         <activity
             android:name=".views.workSheet.AddLumperTimeWorkSheetItemActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
         <activity
             android:name=".views.workSheet.AllWorkScheduleCancelActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
         <activity
             android:name=".views.workSheet.WorkSheetItemDetailActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
 
-        <activity android:name=".views.BaseActivity" />
+        <activity android:name=".views.BaseActivity"
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
         <activity
             android:name=".views.DashBoardActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
         <activity
             android:name=".views.ForgotPasswordActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".views.LeadProfileActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
         <activity
             android:name=".views.LoginActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
         <activity android:name=".views.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

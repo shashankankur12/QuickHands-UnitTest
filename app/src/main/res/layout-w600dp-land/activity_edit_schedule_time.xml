@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
+    tools:context=".views.scheduleTime.EditScheduleTimeActivity">
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/layout_toolbar" />
+
+    <EditText
+        android:id="@+id/editTextSearch"
+        style="@style/searchEditTextTheme"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header" />
+
+    <ImageView
+        android:id="@+id/imageViewCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_17sdp"
+        android:src="@drawable/ic_cancel"
+        android:tint="@color/colorLightGrey"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextSearch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextSearch" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/white_background"
+        android:paddingStart="@dimen/_12ssp"
+        android:paddingTop="@dimen/_6ssp"
+        android:paddingEnd="@dimen/_12ssp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSearch">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewAddSameTime"
+                style="@style/addTextViewTheme"
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/add_same_start_time_for_all"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewLumpers"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:nestedScrollingEnabled="false" />
+
+                <TextView
+                    android:id="@+id/textViewEmptyData"
+                    style="@style/noRecordTextViewTheme"
+                    android:layout_height="200dp"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="@string/empty_edit_schedule_time_info_message"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/schedule_item_background"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+                <TextView
+                    style="@style/titleTextViewTheme"
+                    android:text="@string/notes" />
+
+                <EditText
+                    android:id="@+id/editTextNotes"
+                    style="@style/notesEditTextTheme"
+                    android:hint="@string/notes_for_scheduled_lumpers" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/buttonSubmit"
+                style="@style/positiveRoundButtonTheme"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:enabled="false"
+                android:text="@string/submit" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
