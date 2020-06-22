@@ -135,10 +135,12 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             when(fragment){
                 is LumpersFragment ->
                     tabName = getString(R.string.lumpers)
+                //not done yet
                 is WorkSheetFragment->
                     tabName = getString(R.string.today_s_work_sheet)
                 is ScheduleTimeFragment->
                     tabName = getString(R.string.schedule_lumpers_time)
+                //not done yet
                 is ScheduleFragment->
                     tabName = getString(R.string.schedule)
                 is LumperSheetFragment->
@@ -146,7 +148,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
                 is CustomerSheetFragment->
                     tabName = getString(R.string.customer_sheet)
                 is ReportsFragment->
-                    tabName = getString(R.string.customer_sheet)
+                    tabName = getString(R.string.reports)
                 is TimeClockAttendanceFragment->
                     tabName = getString(R.string.time_clock_attendance)
             }

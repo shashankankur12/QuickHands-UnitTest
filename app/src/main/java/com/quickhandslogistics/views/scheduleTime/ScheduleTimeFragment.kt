@@ -159,6 +159,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         outState.putParcelableArrayList(SCHEDULE_TIME_DETAIL, scheduleTimeDetailList)
         outState.putSerializable(DATE, selectedDate)
         outState.putStringArrayList(TEMP_LUMPER,tempLumperIds)
+        if(scheduleTimeNotes != null)
         outState.putString(NOTE,scheduleTimeNotes)
         outState.putString(DATE_SELECTED,dateString)
         super.onSaveInstanceState(outState)

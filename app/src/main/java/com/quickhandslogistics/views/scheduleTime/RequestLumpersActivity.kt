@@ -1,6 +1,7 @@
 package com.quickhandslogistics.views.scheduleTime
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +21,7 @@ import kotlinx.android.synthetic.main.activity_request_lumpers.*
 import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.*
 import kotlinx.android.synthetic.main.content_request_lumpers.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     RequestLumpersContract.View, RequestLumpersContract.View.OnAdapterItemClickListener {
@@ -29,7 +31,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     private var scheduledLumpersCount: Int = 0
 
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
-    private lateinit var records: List<RequestLumpersRecord>
+    private lateinit var records: ArrayList<RequestLumpersRecord>
 
     private lateinit var requestLumpersPresenter: RequestLumpersPresenter
     private lateinit var requestLumpersAdapter: RequestLumpersAdapter
@@ -50,8 +52,21 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
 
         requestLumpersPresenter = RequestLumpersPresenter(this, resources)
         requestLumpersPresenter.fetchAllRequestsByDate(Date(selectedTime))
+
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey("ss")) {
+                records = savedInstanceState.getParcelableArrayList("ss")!!
+                showAllRequests(records)
+            }
+        } ?: run {
+            requestLumpersPresenter.fetchAllRequestsByDate(Date(selectedTime))
+        }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelableArrayList("ss",records)
+        super.onSaveInstanceState(outState)
+    }
 
     override fun onBackPressed() {
         if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
@@ -177,7 +192,8 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }
 
-    override fun showAllRequests(records: List<RequestLumpersRecord>) {
+    override fun showAllRequests(records: ArrayList<RequestLumpersRecord>) {
+        this.records=records
         requestLumpersAdapter.updateList(records)
     }
 

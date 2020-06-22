@@ -25,7 +25,7 @@
         <activity
             android:name=".views.common.BuildingOperationsViewActivity"/>
         <activity
-            android:name=".views.scheduleTime.ChooseLumpersActivity"/>
+            android:name=".views.scheduleTime.ChooseLumpersActivity" />
         <activity
             android:name=".views.common.DisplayLumpersListActivity"
 

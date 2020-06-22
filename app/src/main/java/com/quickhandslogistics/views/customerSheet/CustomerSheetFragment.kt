@@ -75,6 +75,8 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         viewPagerCustomerSheet.adapter = adapter
         tabLayoutCustomerSheet.setupWithViewPager(viewPagerCustomerSheet)
 
+
+
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarCustomerSheet, availableDates, this)
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(NAME)) {

@@ -2,6 +2,7 @@ package com.quickhandslogistics.adapters.customerSheet
 
 import android.content.res.Resources
 import android.os.Parcelable
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -24,12 +25,17 @@ class CustomerSheetPagerAdapter(childFragmentManager: FragmentManager, private v
         return if (position == 0) containersFragment else customerFragment
     }
 
+
     override fun getPageTitle(position: Int): CharSequence? {
         return resources.getString(tabTitles[position])
     }
 
     override fun getCount(): Int {
         return tabTitles.size
+    }
+
+    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+        super.destroyItem(container, position, `object`)
     }
 
     override fun saveState(): Parcelable? {
