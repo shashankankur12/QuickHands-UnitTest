@@ -52,7 +52,19 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
         initializeUI()
 
         scheduledWorkItemDetailPresenter = ScheduledWorkItemDetailPresenter(this, resources)
-        scheduledWorkItemDetailPresenter.fetchWorkItemDetail(workItemId)
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey("workItemDetail")) {
+                workItemDetail = savedInstanceState.getParcelable("workItemDetail")!!
+                showWorkItemDetail(workItemDetail!!)
+            }
+        } ?: run {
+            scheduledWorkItemDetailPresenter.fetchWorkItemDetail(workItemId)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelable("workItemDetail", workItemDetail)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

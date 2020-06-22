@@ -30,6 +30,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
 
     private lateinit var lumperJobReportPresenter: LumperJobReportPresenter
     private lateinit var lumperJobReportAdapter: LumperJobReportAdapter
+    private lateinit var employeeDataList: ArrayList<EmployeeData>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +40,20 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
         initializeUI()
 
         lumperJobReportPresenter = LumperJobReportPresenter(this, resources)
-        lumperJobReportPresenter.fetchLumpersList()
+
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey("ss")) {
+                employeeDataList = savedInstanceState.getParcelableArrayList("ss")!!
+                showLumpersData(employeeDataList!!)
+            }
+        } ?: run {
+            lumperJobReportPresenter.fetchLumpersList()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelableArrayList("ss", employeeDataList)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onDestroy() {
@@ -252,6 +266,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     }
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
+        this.employeeDataList=employeeDataList
         lumperJobReportAdapter.updateLumpersData(employeeDataList)
     }
 

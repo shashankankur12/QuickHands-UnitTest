@@ -21,12 +21,14 @@ import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.activity_work_sheet_item_detail.*
 import kotlinx.android.synthetic.main.bottom_sheet_select_status.*
 import kotlinx.android.synthetic.main.content_work_sheet_item_detail.*
-
 class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSheetItemDetailContract.View,
     WorkSheetItemDetailContract.View.OnAdapterItemClickListener, WorkSheetItemDetailContract.View.OnFragmentInteractionListener {
 
     private var workItemId: String = ""
     private var workItemTypeDisplayName: String = ""
+    private lateinit var workItemDetail: WorkItemDetail
+    private  var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule> = ArrayList<LumpersTimeSchedule>()
+    private lateinit var tempLumperIds: ArrayList<String>
 
     private lateinit var workSheetItemDetailPresenter: WorkSheetItemDetailPresenter
     private lateinit var workSheetItemStatusAdapter: WorkSheetItemStatusAdapter
@@ -47,7 +49,26 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         initializeUI()
 
         workSheetItemDetailPresenter = WorkSheetItemDetailPresenter(this, resources)
-        workSheetItemDetailPresenter.fetchWorkItemDetail(workItemId)
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey("lumpersTimeSchedule")) {
+                lumpersTimeSchedule = savedInstanceState.getParcelableArrayList<LumpersTimeSchedule>("lumpersTimeSchedule")!!
+            }
+            if (savedInstanceState.containsKey("tempLumperIds")) tempLumperIds = savedInstanceState.getStringArrayList("tempLumperIds")!!
+            if (savedInstanceState.containsKey("workDetails")) {
+                workItemDetail = savedInstanceState.getParcelable<WorkItemDetail>("workDetails")!!
+                showWorkItemDetail(workItemDetail, lumpersTimeSchedule, tempLumperIds)
+            }
+        } ?: run {
+            workSheetItemDetailPresenter.fetchWorkItemDetail(workItemId)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelable("workDetails", workItemDetail)
+        if (lumpersTimeSchedule!=null)
+        outState.putParcelableArrayList("lumpersTimeSchedule", lumpersTimeSchedule)
+        outState.putStringArrayList("tempLumperIds", tempLumperIds)
+        super.onSaveInstanceState(outState)
     }
 
     private fun initializeUI() {
@@ -111,6 +132,11 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     }
 
     override fun showWorkItemDetail(workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?, tempLumperIds: ArrayList<String>) {
+        if (lumpersTimeSchedule!=null){
+            this.lumpersTimeSchedule=lumpersTimeSchedule
+        }
+        this.workItemDetail=workItemDetail
+        this.tempLumperIds=tempLumperIds
         textViewStartTime.text = String.format(getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
         textViewWorkItemType.text = workItemTypeDisplayName
 

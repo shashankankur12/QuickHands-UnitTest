@@ -69,12 +69,24 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
         initializeUI()
 
         scheduleDetailPresenter = ScheduleDetailPresenter(this, resources)
-        scheduleDetailPresenter.getScheduleDetail(scheduleIdentity, Date(selectedTime))
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey("scheduleDetail")) {
+                scheduleDetail = savedInstanceState.getParcelable("scheduleDetail")
+                showScheduleData(scheduleDetail!!)
+            }
+        } ?: run {
+            scheduleDetailPresenter.getScheduleDetail(scheduleIdentity, Date(selectedTime))
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_toolbar, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelable("scheduleDetail", scheduleDetail)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {

@@ -32,6 +32,7 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
     private var selectedTime: Long = 0
     private var assignedLumpersList: ArrayList<EmployeeData> = ArrayList()
     private var scheduleTimeList: ArrayList<ScheduleTimeDetail> = ArrayList()
+    private lateinit var employeeDataList: ArrayList<EmployeeData>
 
     private lateinit var chooseLumpersPresenter: ChooseLumpersPresenter
     private lateinit var chooseLumpersAdapter: ChooseLumpersAdapter
@@ -54,7 +55,19 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
         initializeUI()
 
         chooseLumpersPresenter = ChooseLumpersPresenter(this, resources)
-        chooseLumpersPresenter.fetchLumpersList(Date(selectedTime))
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey("employeeDataList")) {
+                employeeDataList = savedInstanceState.getParcelableArrayList("employeeDataList")!!
+                showLumpersData(employeeDataList!!)
+            }
+        } ?: run {
+            chooseLumpersPresenter.fetchLumpersList(Date(selectedTime))
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelableArrayList("employeeDataList", employeeDataList)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onDestroy() {
@@ -155,6 +168,7 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
     }
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
+        this.employeeDataList=employeeDataList
         chooseLumpersAdapter.updateLumpersData(employeeDataList)
     }
 

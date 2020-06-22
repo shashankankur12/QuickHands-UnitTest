@@ -34,6 +34,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     private lateinit var timeClockAttendancePresenter: TimeClockAttendancePresenter
     private lateinit var timeClockAttendanceAdapter: TimeClockAttendanceAdapter
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    private lateinit var lumperAttendanceList: ArrayList<LumperAttendanceData>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,12 +50,24 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
         initializeUI()
 
-        timeClockAttendancePresenter.fetchAttendanceList()
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey("list")) {
+                lumperAttendanceList = savedInstanceState.getParcelableArrayList("list")!!
+                showLumpersAttendance(lumperAttendanceList!!)
+            }
+        } ?: run {
+            timeClockAttendancePresenter.fetchAttendanceList()
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         timeClockAttendancePresenter.onDestroy()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelableArrayList("list", lumperAttendanceList)
+        super.onSaveInstanceState(outState)
     }
 
     private fun initializeUI() {
@@ -316,6 +329,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     }
 
     override fun showLumpersAttendance(lumperAttendanceList: ArrayList<LumperAttendanceData>) {
+        this.lumperAttendanceList=lumperAttendanceList
         timeClockAttendanceAdapter.updateList(lumperAttendanceList)
         if (lumperAttendanceList.size > 0) {
             textViewEmptyData.visibility = View.GONE

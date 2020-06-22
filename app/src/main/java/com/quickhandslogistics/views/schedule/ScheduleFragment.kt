@@ -15,13 +15,18 @@ import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.presenters.schedule.SchedulePresenter
-import com.quickhandslogistics.views.BaseFragment
-import com.quickhandslogistics.views.common.DisplayLumpersListActivity
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.CalendarUtils
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.views.BaseFragment
+import com.quickhandslogistics.views.common.DisplayLumpersListActivity
+import com.quickhandslogistics.views.lumperSheet.LumperSheetFragment
+import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
+import kotlinx.android.synthetic.main.fragment_schedule.mainConstraintLayout
+import kotlinx.android.synthetic.main.fragment_schedule.textViewDate
+import kotlinx.android.synthetic.main.fragment_schedule.textViewEmptyData
 import java.util.*
 
 class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract.View.OnAdapterItemClickListener, CalendarUtils.CalendarSelectionListener {
@@ -33,6 +38,10 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     private var selectedTime: Long = 0
     private var currentDatePosition: Int = 0
     private lateinit var availableDates: List<Date>
+    private lateinit var workItemsList: ArrayList<ScheduleDetail>
+    private lateinit var selectedDate: Date
+    private  var dateString: String ?= null
+
 
     private lateinit var schedulePresenter: SchedulePresenter
     private lateinit var scheduleAdapter: ScheduleAdapter
@@ -54,6 +63,13 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         const val ARG_SCHEDULED_TIME_NOTES = "ARG_SCHEDULED_TIME_NOTES"
         const val ARG_SCHEDULED_TIME_LIST = "ARG_SCHEDULED_TIME_LIST"
         const val ARG_SCHEDULED_LUMPERS_COUNT = "ARG_SCHEDULED_LUMPERS_COUNT"
+
+        const val WORK_ITEM_LIST = "WORK_ITEM_LIST"
+        const val DATE = "DATE"
+        const val DATE_SELECTED = "DATE_SELECTED"
+        const val TOTAL_PAGE_COUNT = "TOTAL_PAGE_COUNT"
+        const val NEXT_PAGE = "NEXT_PAGE"
+        const val CURRENT_PAGE = "CURRENT_PAGE"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,12 +99,53 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         }
 
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarSchedule, availableDates, this)
-        singleRowCalendarSchedule.select(if (currentDatePosition != 0) currentDatePosition else availableDates.size - 1)
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey(CURRENT_PAGE)) {
+                currentPageIndex = savedInstanceState.getInt(CURRENT_PAGE)!!
+            }
+            if (savedInstanceState.containsKey(NEXT_PAGE)) {
+                nextPageIndex = savedInstanceState.getInt(NEXT_PAGE)!!
+            }
+            if (savedInstanceState.containsKey(TOTAL_PAGE_COUNT)) {
+                totalPagesCount = savedInstanceState.getInt(TOTAL_PAGE_COUNT)!!
+            }
+            if(savedInstanceState.containsKey(DATE)) {
+                selectedDate = savedInstanceState.getSerializable(LumperSheetFragment.DATE) as Date
+            }
+            if (savedInstanceState.containsKey(WORK_ITEM_LIST)) {
+                workItemsList = savedInstanceState.getParcelableArrayList(WORK_ITEM_LIST)!!
+                showScheduleData(
+                    selectedDate,
+                    workItemsList,
+                    totalPagesCount,
+                    nextPageIndex,
+                    currentPageIndex
+                )
+            }
+            if (savedInstanceState.containsKey(DATE_SELECTED)) {
+                dateString = savedInstanceState.getString(DATE_SELECTED)!!
+                showDateString(dateString!!)
+            }
+        } ?: run {
+            singleRowCalendarSchedule.select(if (currentDatePosition != 0) currentDatePosition else availableDates.size - 1)
+        }
+
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
         schedulePresenter.onDestroy()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelableArrayList(WORK_ITEM_LIST, workItemsList)
+        outState.putInt(TOTAL_PAGE_COUNT, totalPagesCount)
+        outState.putInt(NEXT_PAGE, nextPageIndex)
+        outState.putInt(CURRENT_PAGE, currentPageIndex)
+        outState.putSerializable(DATE, selectedDate)
+        outState.putString(DATE_SELECTED, dateString)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -134,10 +191,15 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
     /** Presenter Listeners */
     override fun showDateString(dateString: String) {
+        this.dateString=dateString
         textViewDate.text = dateString
     }
 
     override fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<ScheduleDetail>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int) {
+        this.selectedDate=selectedDate
+        this.workItemsList=workItemsList
+        this.currentPageIndex=currentPageIndex
+
         selectedTime = selectedDate.time
         scheduleAdapter.updateList(workItemsList, currentPageIndex)
 

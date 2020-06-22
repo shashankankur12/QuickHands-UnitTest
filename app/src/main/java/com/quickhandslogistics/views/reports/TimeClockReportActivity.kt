@@ -30,6 +30,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
 
     private lateinit var timeClockReportPresenter: TimeClockReportPresenter
     private lateinit var timeClockReportAdapter: TimeClockReportAdapter
+    private lateinit var employeeDataList: ArrayList<EmployeeData>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +40,21 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
         initializeUI()
 
         timeClockReportPresenter = TimeClockReportPresenter(this, resources)
-        timeClockReportPresenter.fetchLumpersList()
+
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey("ss")) {
+                employeeDataList = savedInstanceState.getParcelableArrayList("ss")!!
+                showLumpersData(employeeDataList!!)
+            }
+        } ?: run {
+            timeClockReportPresenter.fetchLumpersList()
+        }
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelableArrayList("ss", employeeDataList)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onDestroy() {
@@ -252,6 +267,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
     }
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
+        this.employeeDataList=employeeDataList
         timeClockReportAdapter.updateLumpersData(employeeDataList)
     }
 

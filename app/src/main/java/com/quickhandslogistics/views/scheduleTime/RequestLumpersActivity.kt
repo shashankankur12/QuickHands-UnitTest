@@ -29,6 +29,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     private var scheduledLumpersCount: Int = 0
 
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    private lateinit var records: List<RequestLumpersRecord>
 
     private lateinit var requestLumpersPresenter: RequestLumpersPresenter
     private lateinit var requestLumpersAdapter: RequestLumpersAdapter
@@ -50,6 +51,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         requestLumpersPresenter = RequestLumpersPresenter(this, resources)
         requestLumpersPresenter.fetchAllRequestsByDate(Date(selectedTime))
     }
+
 
     override fun onBackPressed() {
         if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
@@ -179,7 +181,10 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         requestLumpersAdapter.updateList(records)
     }
 
-    override fun showHeaderInfo(dateString: String) {
+    override fun showHeaderInfo(dateString: String)
+
+
+    {
         textViewDate.text = dateString
         textViewTotalCount.text = String.format(getString(R.string.total_lumpers_assigned_s), scheduledLumpersCount)
     }

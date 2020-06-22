@@ -3,8 +3,9 @@ package com.quickhandslogistics.data.customerSheet
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.quickhandslogistics.data.schedule.WorkItemDetail
+import java.io.Serializable
 
-class CustomerSheetScheduleDetails {
+class CustomerSheetScheduleDetails : Serializable {
     @SerializedName("cancelled")
     @Expose
     var cancelled: ArrayList<WorkItemDetail>? = null

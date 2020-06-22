@@ -18,7 +18,10 @@ import com.quickhandslogistics.utils.CalendarUtils
 import com.quickhandslogistics.utils.CustomDialogListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.views.lumperSheet.LumperSheetFragment
 import kotlinx.android.synthetic.main.fragment_customer_sheet.*
+import kotlinx.android.synthetic.main.fragment_customer_sheet.mainConstraintLayout
+import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
 import java.util.*
 
 class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, CustomerSheetContract.View.OnFragmentInteractionListener, CalendarUtils.CalendarSelectionListener {
@@ -27,9 +30,22 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
 
     private var selectedTime: Long = 0
     private lateinit var availableDates: List<Date>
+    private lateinit var scheduleDetails: CustomerSheetScheduleDetails
+    private  var customerSheet: CustomerSheetData = CustomerSheetData()
+    private lateinit var selectedDate: Date
+    private lateinit var companyName: String
+    private lateinit var date: String
 
     private lateinit var customerSheetPresenter: CustomerSheetPresenter
     private lateinit var adapter: CustomerSheetPagerAdapter
+
+    companion object {
+        const val DATE = "DATE"
+        const val CUSTOMER_SHEET= "CUSTOMER_SHEET"
+        const val SCHEDULE_DETAIL = "SCHEDULE_DETAIL"
+        const val DATE_STRING = "DATE_STRING"
+        const val NAME = "NAME"
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -60,12 +76,44 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         tabLayoutCustomerSheet.setupWithViewPager(viewPagerCustomerSheet)
 
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarCustomerSheet, availableDates, this)
-        singleRowCalendarCustomerSheet.select(availableDates.size - 1)
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey(NAME)) {
+                companyName = savedInstanceState.getString(NAME)!!
+            }
+            if (savedInstanceState.containsKey(DATE_STRING)) {
+                date = savedInstanceState.getString(DATE_STRING)!!
+                showHeaderInfo(companyName, date)
+            }
+            if (savedInstanceState.containsKey(SCHEDULE_DETAIL)) {
+                scheduleDetails = savedInstanceState.getSerializable(SCHEDULE_DETAIL)!!as CustomerSheetScheduleDetails
+            }
+            if(savedInstanceState.containsKey(DATE)) {
+                selectedDate = savedInstanceState.getSerializable(DATE) as Date
+            }
+            if (savedInstanceState.containsKey(CUSTOMER_SHEET)) {
+                customerSheet = savedInstanceState.getSerializable(CUSTOMER_SHEET) as CustomerSheetData
+                showCustomerSheets(scheduleDetails, customerSheet, selectedDate)
+            }
+        } ?: run {
+            singleRowCalendarCustomerSheet.select(availableDates.size - 1)
+        }
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
         customerSheetPresenter.onDestroy()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putSerializable(DATE, selectedDate)
+        if (customerSheet!=null)
+        outState.putSerializable(CUSTOMER_SHEET, customerSheet)
+        outState.putSerializable(SCHEDULE_DETAIL, scheduleDetails)
+        outState.putSerializable(DATE, selectedDate)
+        outState.putSerializable(NAME, companyName)
+        outState.putSerializable(DATE_STRING, date)
+        super.onSaveInstanceState(outState)
     }
 
     /** Presenter Listeners */
@@ -79,6 +127,13 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
     }
 
     override fun showCustomerSheets(scheduleDetails: CustomerSheetScheduleDetails, customerSheet: CustomerSheetData?, selectedDate: Date) {
+        this.selectedDate=selectedDate
+        this.scheduleDetails=scheduleDetails
+        if (customerSheet != null) {
+            this.customerSheet= customerSheet
+        }
+
+
         selectedTime = selectedDate.time
 
         val onGoingWorkItems = ArrayList<WorkItemDetail>()
@@ -96,6 +151,9 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
     }
 
     override fun showHeaderInfo(companyName: String, date: String) {
+        this.companyName=companyName
+        this.date=date
+
         textViewCompanyName.text = companyName.capitalize()
         textViewWorkItemsDate.text = date
     }

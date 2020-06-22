@@ -16,24 +16,33 @@ import com.quickhandslogistics.adapters.lumperSheet.LumperSheetAdapter
 import com.quickhandslogistics.contracts.lumperSheet.LumperSheetContract
 import com.quickhandslogistics.data.lumperSheet.LumpersInfo
 import com.quickhandslogistics.presenters.lumperSheet.LumperSheetPresenter
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.schedule.ScheduleFragment
-import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatcher, View.OnClickListener,
     LumperSheetContract.View.OnAdapterItemClickListener, CalendarUtils.CalendarSelectionListener {
 
     private var selectedTime: Long = 0
     private lateinit var availableDates: List<Date>
+    private lateinit var lumperInfoList: ArrayList<LumpersInfo>
+    private var sheetSubmitted: Boolean= false
+    private lateinit var selectedDate: Date
+    private lateinit var tempLumperIds: ArrayList<String>
+    private  var dateString: String ?=null
 
     private lateinit var lumperSheetAdapter: LumperSheetAdapter
     private lateinit var lumperSheetPresenter: LumperSheetPresenter
 
     companion object {
         const val ARG_LUMPER_INFO = "ARG_LUMPER_INFO"
+        const val LUMPER_INFO_LIST = "LUMPER_INFO_LIST"
+        const val DATE = "DATE"
+        const val DATE_SELECTED = "DATE_SELECTED"
+        const val SHEET_SUBMITTED= "SHEET_SUBMITTED"
+        const val TEMP_LUMPER = "TEMP_LUMPER"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,12 +82,49 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         buttonSubmit.setOnClickListener(this)
 
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarLumperSheet, availableDates, this)
-        singleRowCalendarLumperSheet.select(availableDates.size - 1)
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey(SHEET_SUBMITTED)) {
+                sheetSubmitted = savedInstanceState.getBoolean(SHEET_SUBMITTED)!!
+            }
+            if (savedInstanceState.containsKey(TEMP_LUMPER)) {
+                tempLumperIds = savedInstanceState.getStringArrayList(TEMP_LUMPER)!!
+
+            }
+            if(savedInstanceState.containsKey(DATE)) {
+                selectedDate = savedInstanceState.getSerializable(DATE) as Date
+            }
+            if (savedInstanceState.containsKey(LUMPER_INFO_LIST)) {
+                lumperInfoList = savedInstanceState.getParcelableArrayList(LUMPER_INFO_LIST)!!
+                showLumperSheetData(
+                    lumperInfoList,
+                    sheetSubmitted,
+                    selectedDate,
+                    tempLumperIds
+                )
+            }
+            if (savedInstanceState.containsKey(DATE_SELECTED)) {
+                dateString = savedInstanceState.getString(DATE_SELECTED)!!
+                showDateString(dateString!!)
+            }
+
+        } ?: run {
+            singleRowCalendarLumperSheet.select(availableDates.size - 1)
+        }
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
         lumperSheetPresenter.onDestroy()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelableArrayList(LUMPER_INFO_LIST, lumperInfoList)
+        outState.putBoolean(SHEET_SUBMITTED, sheetSubmitted)
+        outState.putStringArrayList(TEMP_LUMPER, tempLumperIds)
+        outState.putSerializable(DATE, selectedDate)
+        outState.putString(DATE_SELECTED, dateString)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -143,10 +189,16 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     }
 
     override fun showDateString(dateString: String) {
+        this.dateString=dateString
         textViewDate.text = dateString
     }
 
-    override fun showLumperSheetData(lumperInfoList: ArrayList<LumpersInfo>, sheetSubmitted: Boolean, selectedDate: Date, tempLumperIds: ArrayList<String>) {
+    override fun showLumperSheetData(mlumperInfoList: ArrayList<LumpersInfo>, msheetSubmitted: Boolean, mselectedDate: Date, mtempLumperIds: ArrayList<String>) {
+        lumperInfoList=mlumperInfoList
+        sheetSubmitted=msheetSubmitted
+        selectedDate=mselectedDate
+        tempLumperIds=mtempLumperIds
+
         selectedTime = selectedDate.time
 
         var isSignatureLeft = 0

@@ -223,6 +223,10 @@ public class NavDrawer {
             if (isClearArguments) {
                 targetFragment.setArguments(null);
             }
+            Fragment currentFragment = activity.getSupportFragmentManager().findFragmentById(R.id.frameLayoutMain);
+            if (currentFragment != null && currentFragment.getClass().getSimpleName().equals(targetFragment.getClass().getSimpleName())) {
+                return;
+            }
             FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.frameLayoutMain, targetFragment, targetFragment.getClass().getSimpleName());
             fragmentTransaction.commit();

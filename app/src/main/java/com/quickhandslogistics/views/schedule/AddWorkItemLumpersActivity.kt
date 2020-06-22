@@ -61,7 +61,24 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
         initializeUI()
 
         addWorkItemLumpersPresenter = AddWorkItemLumpersPresenter(this, resources, sharedPref)
-        addWorkItemLumpersPresenter.fetchLumpersList()
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey("temporaryLumpersList")) {
+                temporaryLumpersList = savedInstanceState.getParcelableArrayList("temporaryLumpersList")!!
+            }
+            if (savedInstanceState.containsKey("permanentLumpersList")) {
+                permanentLumpersList = savedInstanceState.getParcelableArrayList("permanentLumpersList")!!
+                showLumpersData(permanentLumpersList!!,temporaryLumpersList!!)
+            }
+        } ?: run {
+            addWorkItemLumpersPresenter.fetchLumpersList()
+        }
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelableArrayList("permanentLumpersList", permanentLumpersList)
+        outState.putParcelableArrayList("temporaryLumpersList", temporaryLumpersList)
+        super.onSaveInstanceState(outState)
     }
 
     private fun initializeUI() {

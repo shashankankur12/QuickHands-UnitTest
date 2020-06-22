@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 
-class LumperDaySheet {
+class LumperDaySheet  {
     @SerializedName("lumperWorkTimingInfo")
     @Expose
     var lumpersTimeSchedule: LumpersTimeSchedule? = null

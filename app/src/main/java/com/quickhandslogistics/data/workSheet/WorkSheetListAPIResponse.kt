@@ -4,13 +4,14 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.schedule.WorkItemDetail
+import java.io.Serializable
 
 class WorkSheetListAPIResponse : BaseResponse() {
     @SerializedName("data")
     @Expose
     var data: Data? = null
 
-    class Data {
+    class Data : Serializable {
         @SerializedName("cancelled")
         @Expose
         var cancelled: ArrayList<WorkItemDetail>? = null

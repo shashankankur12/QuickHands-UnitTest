@@ -24,6 +24,9 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
 
     private lateinit var workSheetPresenter: WorkSheetPresenter
     private lateinit var adapter: WorkSheetPagerAdapter
+    private lateinit var data: WorkSheetListAPIResponse.Data
+    private lateinit var date: String
+    private lateinit var companyName: String
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -49,12 +52,33 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         viewPagerWorkSheet.adapter = adapter
         tabLayoutWorkSheet.setupWithViewPager(viewPagerWorkSheet)
 
-        workSheetPresenter.fetchWorkSheetList()
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey("date")) {
+                date = savedInstanceState.getString("date")!!
+            }
+            if (savedInstanceState.containsKey("data")) {
+                companyName = savedInstanceState.getString("name") !!
+                showHeaderInfo(companyName,date)
+            }
+            if (savedInstanceState.containsKey("data")) {
+                data = savedInstanceState.getSerializable("data") as WorkSheetListAPIResponse.Data
+                showWorkSheets(data!!)
+            }
+        } ?: run {
+            workSheetPresenter.fetchWorkSheetList()
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         workSheetPresenter.onDestroy()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putSerializable("data", data)
+        outState.putString("date", date)
+        outState.putSerializable("name", companyName)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onDetach() {
@@ -82,6 +106,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     }
 
     override fun showWorkSheets(data: WorkSheetListAPIResponse.Data) {
+        this.data=data
         // Change the visibility of Cancel All Schedule Option
         if (data.inProgress.isNullOrEmpty() && data.onHold.isNullOrEmpty() && data.cancelled.isNullOrEmpty() && data.completed.isNullOrEmpty() && !data.scheduled.isNullOrEmpty()) {
             onFragmentInteractionListener?.invalidateCancelAllSchedulesOption(true)
@@ -110,6 +135,9 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     }
 
     override fun showHeaderInfo(companyName: String, date: String) {
+        this.companyName=companyName
+        this.date=date
+
         textViewCompanyName.text = companyName.capitalize()
         textViewWorkItemsDate.text = date
     }

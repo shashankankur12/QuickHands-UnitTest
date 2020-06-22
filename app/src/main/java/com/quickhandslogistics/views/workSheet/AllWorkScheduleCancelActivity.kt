@@ -24,6 +24,7 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
 
     private lateinit var allWorkScheduleCancelPresenter: AllWorkScheduleCancelPresenter
     private lateinit var allWorkScheduleCancelAdapter: AllWorkScheduleCancelAdapter
+    private lateinit var employeeDataList: java.util.ArrayList<EmployeeData>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +34,20 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
         initializeUI()
 
         allWorkScheduleCancelPresenter = AllWorkScheduleCancelPresenter(this, resources)
-        allWorkScheduleCancelPresenter.fetchLumpersList()
+
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey("ss")) {
+                employeeDataList = savedInstanceState.getParcelableArrayList("ss")!!
+                showLumpersData(employeeDataList!!)
+            }
+        } ?: run {
+            allWorkScheduleCancelPresenter.fetchLumpersList()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelableArrayList("ss", employeeDataList)
+        super.onSaveInstanceState(outState)
     }
 
     fun initializeUI() {
@@ -123,6 +137,7 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
     }
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
+        this.employeeDataList=employeeDataList
         allWorkScheduleCancelAdapter.updateLumpersData(employeeDataList)
     }
 

@@ -16,6 +16,11 @@
         <item name="android:textSize">@dimen/_11ssp</item>
     </style>
 
+    <style name="TabTextAppearanceHeader" parent="TextAppearance.Design.Tab"> <!--Changed-->
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">@dimen/_16ssp</item>
+    </style>
+
     <style name="ToolbarTitleTextAppearance" parent="TextAppearance.Widget.AppCompat.Toolbar.Title"> <!--Changed-->
         <item name="android:textSize">@dimen/_13ssp</item>
     </style>
