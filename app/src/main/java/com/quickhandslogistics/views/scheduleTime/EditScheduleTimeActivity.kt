@@ -141,7 +141,8 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
                 textViewEmptyData.text = getString(R.string.empty_edit_schedule_time_info_message)
             }
         } else {
-            buttonSubmit.isEnabled = true
+            buttonSubmit.isEnabled =
+                (editScheduleTimeAdapter.getLumpersList().size > 0 && editScheduleTimeAdapter.getScheduledLumpersTimeMap().size > 0) && editScheduleTimeAdapter.getScheduledLumpersTimeMap().size == editScheduleTimeAdapter.getLumpersList().size
             textViewAddSameTime.visibility = View.VISIBLE
             textViewEmptyData.visibility = View.GONE
             textViewEmptyData.text = getString(R.string.empty_edit_schedule_time_info_message)

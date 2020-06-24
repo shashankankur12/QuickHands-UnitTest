@@ -5,18 +5,20 @@
     android:background="?android:attr/selectableItemBackground"
     android:gravity="start|center_vertical"
     android:orientation="horizontal"
-    android:padding="@dimen/_12ssp">
+    android:paddingVertical="@dimen/_6sdp"
+    android:paddingHorizontal="@dimen/_12ssp">
 
     <ImageView
         android:id="@+id/list_item_nav_drawer_icon"
-        android:layout_width="@dimen/_15sdp"
-        android:layout_height="@dimen/_15sdp"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_12ssp"
+        android:tint="@color/textBlack"
         android:src="@drawable/ic_sidemenu_dashboard" />
 
     <TextView
         android:id="@+id/list_item_nav_drawer_text"
-        style="@style/titleSmallTextViewTheme"
+        style="@style/valuesSmallTextViewThemeHeader"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:text="Menu Item"
