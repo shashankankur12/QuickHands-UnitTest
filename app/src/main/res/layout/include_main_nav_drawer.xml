@@ -12,9 +12,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <include
+            android:id="@+id/headerLayout"
+            layout="@layout/nav_header_dashboard" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/headerLayout"
             android:background="@drawable/white_background">
 
             <androidx.core.widget.NestedScrollView
@@ -22,32 +27,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    <include
-                        android:id="@+id/headerLayout"
-                        layout="@layout/nav_header_dashboard" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="@dimen/_5ssp"
-                        android:layout_marginBottom="@dimen/_10ssp"
-                        android:background="#30000000" />
 
                     <LinearLayout
                         android:id="@+id/linearLayoutTopItems"
                         android:layout_width="match_parent"
+                        android:paddingTop="@dimen/_2sdp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="@dimen/_5ssp"
+                        android:layout_marginTop="@dimen/_10ssp"
                         android:layout_marginBottom="@dimen/_10ssp"
                         android:background="#30000000" />
 
