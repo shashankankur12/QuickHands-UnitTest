@@ -42,12 +42,14 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     private var selectedTime: Long = 0
     private var selectedDatePosition: Int = 0
+    private var datePosition: Int = 0
     private var isPastDate: Boolean = false
 
     private lateinit var availableDates: List<Date>
     private var scheduleTimeDetailList: ArrayList<ScheduleTimeDetail> = ArrayList()
     private var scheduleTimeNotes: String? = null
     private var dateString: String? = null
+    private var isSavedState: Boolean = false
     private lateinit var selectedDate: Date
     private lateinit var tempLumperIds: ArrayList<String>
 
@@ -60,6 +62,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         const val TEMP_LUMPER = "TEMP_LUMPER"
         const val NOTE = "NOTE"
         const val DATE_SELECTED = "DATE_SELECTED"
+        const val SELECTED_DATE = "SELECTED_DATE"
     }
 
     override fun onAttach(context: Context) {
@@ -130,9 +133,14 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarScheduleTime, availableDates, this)
 
         savedInstanceState?.also {
+            isSavedState=true
             if (savedInstanceState.containsKey(TEMP_LUMPER)) {
                 tempLumperIds = savedInstanceState.getStringArrayList(TEMP_LUMPER)!!
 
+            }
+            if (savedInstanceState.containsKey(SELECTED_DATE)) {
+                datePosition = savedInstanceState.getInt(SELECTED_DATE)!!
+                singleRowCalendarScheduleTime.select(datePosition)
             }
             if(savedInstanceState.containsKey(DATE)) {
                 selectedDate = savedInstanceState.getSerializable(DATE) as Date
@@ -150,8 +158,10 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                 showNotesData(scheduleTimeNotes!!)
             }
         } ?: run {
+          isSavedState=false
             singleRowCalendarScheduleTime.select(selectedDatePosition)
         }
+
 
     }
 
@@ -162,6 +172,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         if(scheduleTimeNotes != null)
         outState.putString(NOTE,scheduleTimeNotes)
         outState.putString(DATE_SELECTED,dateString)
+        outState.putInt(SELECTED_DATE,datePosition)
         super.onSaveInstanceState(outState)
     }
 
@@ -175,6 +186,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
             if (singleRowCalendarScheduleTime.getSelectedDates().isNotEmpty()) {
                 scheduleTimePresenter.getSchedulesTimeByDate(singleRowCalendarScheduleTime.getSelectedDates()[0])
+
             }
         }
     }
@@ -279,7 +291,14 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     }
 
     /** Calendar Listeners */
-    override fun onSelectCalendarDate(date: Date) {
-        scheduleTimePresenter.getSchedulesTimeByDate(date)
+    override fun onSelectCalendarDate(
+        date: Date,
+        selected: Boolean,
+        position: Int
+    ) {
+        if (!isSavedState)
+            scheduleTimePresenter.getSchedulesTimeByDate(date)
+        isSavedState=false
+        datePosition=position
     }
 }

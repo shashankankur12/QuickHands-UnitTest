@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.customerSheet.CustomerSheetPagerAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
@@ -13,16 +14,14 @@ import com.quickhandslogistics.data.customerSheet.CustomerSheetData
 import com.quickhandslogistics.data.customerSheet.CustomerSheetScheduleDetails
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.presenters.customerSheet.CustomerSheetPresenter
-import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.utils.CalendarUtils
 import com.quickhandslogistics.utils.CustomDialogListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.views.lumperSheet.LumperSheetFragment
+import com.quickhandslogistics.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_customer_sheet.*
-import kotlinx.android.synthetic.main.fragment_customer_sheet.mainConstraintLayout
-import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
 import java.util.*
+
 
 class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, CustomerSheetContract.View.OnFragmentInteractionListener, CalendarUtils.CalendarSelectionListener {
 
@@ -69,7 +68,12 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        if (childFragmentManager.fragments.size>0&&childFragmentManager!=null){
+            var fragment: Fragment = childFragmentManager.fragments[0]
+            var fragment2: Fragment = childFragmentManager.fragments[1]
+            childFragmentManager.beginTransaction().remove(fragment).commit()
+            childFragmentManager.beginTransaction().remove(fragment2).commit()
+        }
         adapter = CustomerSheetPagerAdapter(childFragmentManager, resources)
         viewPagerCustomerSheet.offscreenPageLimit = adapter.count
         viewPagerCustomerSheet.adapter = adapter
@@ -107,6 +111,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         customerSheetPresenter.onDestroy()
     }
 
+
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putSerializable(DATE, selectedDate)
         if (customerSheet!=null)
@@ -115,11 +120,9 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         outState.putSerializable(DATE, selectedDate)
         outState.putSerializable(NAME, companyName)
         outState.putSerializable(DATE_STRING, date)
-        super.onSaveInstanceState(outState)
     }
 
-    /** Presenter Listeners */
-    override fun showAPIErrorMessage(message: String) {
+       override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
 
         // Reset Whole Screen Data
@@ -175,7 +178,11 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
     }
 
     /** Calendar Listeners */
-    override fun onSelectCalendarDate(date: Date) {
+    override fun onSelectCalendarDate(
+        date: Date,
+        selected: Boolean,
+        position: Int
+    ) {
         customerSheetPresenter.getCustomerSheetByDate(date)
     }
 }

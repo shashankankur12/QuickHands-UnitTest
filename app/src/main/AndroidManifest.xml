@@ -61,8 +61,7 @@
 
         <activity
             android:name=".views.scheduleTime.EditScheduleTimeActivity"
-
-            />
+            android:configChanges="orientation"/>
         <activity
             android:name=".views.scheduleTime.RequestLumpersActivity"
 

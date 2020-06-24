@@ -37,7 +37,7 @@ object CalendarUtils {
         val myCalendarChangesObserver = object : CalendarChangesObserver {
             override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
                 if (isSelected) {
-                    listener.onSelectCalendarDate(date)
+                    listener.onSelectCalendarDate(date,isSelected,position)
                 }
                 super.whenSelectionChanged(isSelected, position, date)
             }
@@ -122,6 +122,10 @@ object CalendarUtils {
     }
 
     interface CalendarSelectionListener {
-        fun onSelectCalendarDate(date: Date)
+        fun onSelectCalendarDate(
+            date: Date,
+            selected: Boolean,
+            position: Int
+        )
     }
 }

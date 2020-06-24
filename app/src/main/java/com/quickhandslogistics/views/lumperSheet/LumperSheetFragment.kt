@@ -19,7 +19,14 @@ import com.quickhandslogistics.presenters.lumperSheet.LumperSheetPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.schedule.ScheduleFragment
+import com.quickhandslogistics.views.scheduleTime.ScheduleTimeFragment
 import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
+import kotlinx.android.synthetic.main.fragment_lumper_sheet.editTextSearch
+import kotlinx.android.synthetic.main.fragment_lumper_sheet.imageViewCancel
+import kotlinx.android.synthetic.main.fragment_lumper_sheet.mainConstraintLayout
+import kotlinx.android.synthetic.main.fragment_lumper_sheet.textViewDate
+import kotlinx.android.synthetic.main.fragment_lumper_sheet.textViewEmptyData
+import kotlinx.android.synthetic.main.fragment_schedule_time.*
 import java.util.*
 
 class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatcher, View.OnClickListener,
@@ -32,6 +39,8 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     private lateinit var selectedDate: Date
     private lateinit var tempLumperIds: ArrayList<String>
     private  var dateString: String ?=null
+    private var datePosition: Int = 0
+    private var isSavedState: Boolean = false
 
     private lateinit var lumperSheetAdapter: LumperSheetAdapter
     private lateinit var lumperSheetPresenter: LumperSheetPresenter
@@ -43,6 +52,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         const val DATE_SELECTED = "DATE_SELECTED"
         const val SHEET_SUBMITTED= "SHEET_SUBMITTED"
         const val TEMP_LUMPER = "TEMP_LUMPER"
+        const val SELECTED_DATE = "SELECTED_DATE"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,6 +93,11 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
 
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarLumperSheet, availableDates, this)
         savedInstanceState?.also {
+            isSavedState=true
+            if (savedInstanceState.containsKey(ScheduleTimeFragment.SELECTED_DATE)) {
+                datePosition = savedInstanceState.getInt(ScheduleTimeFragment.SELECTED_DATE)!!
+                singleRowCalendarLumperSheet.select(datePosition)
+            }
             if (savedInstanceState.containsKey(SHEET_SUBMITTED)) {
                 sheetSubmitted = savedInstanceState.getBoolean(SHEET_SUBMITTED)!!
             }
@@ -108,6 +123,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
             }
 
         } ?: run {
+            isSavedState=false
             singleRowCalendarLumperSheet.select(availableDates.size - 1)
         }
 
@@ -124,6 +140,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         outState.putStringArrayList(TEMP_LUMPER, tempLumperIds)
         outState.putSerializable(DATE, selectedDate)
         outState.putString(DATE_SELECTED, dateString)
+        outState.putInt(SELECTED_DATE,datePosition)
         super.onSaveInstanceState(outState)
     }
 
@@ -247,7 +264,14 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     }
 
     /** Calendar Listeners */
-    override fun onSelectCalendarDate(date: Date) {
+    override fun onSelectCalendarDate(
+        date: Date,
+        selected: Boolean,
+        position: Int
+    ) {
+        if (!isSavedState)
         lumperSheetPresenter.getLumpersSheetByDate(date)
+        isSavedState=false
+        datePosition=position
     }
 }

@@ -34,12 +34,12 @@ class CustomerSheetPagerAdapter(childFragmentManager: FragmentManager, private v
         return tabTitles.size
     }
 
-    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        super.destroyItem(container, position, `object`)
-    }
-
     override fun saveState(): Parcelable? {
         return null
+    }
+
+    override fun restoreState(state: Parcelable?, loader: ClassLoader?) {
+        super.restoreState(state, loader)
     }
 
     fun updateCustomerSheetList(

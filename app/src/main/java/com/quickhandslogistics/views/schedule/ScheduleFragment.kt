@@ -22,11 +22,12 @@ import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
 import com.quickhandslogistics.views.lumperSheet.LumperSheetFragment
-import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
+import com.quickhandslogistics.views.scheduleTime.ScheduleTimeFragment
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.android.synthetic.main.fragment_schedule.mainConstraintLayout
 import kotlinx.android.synthetic.main.fragment_schedule.textViewDate
 import kotlinx.android.synthetic.main.fragment_schedule.textViewEmptyData
+import kotlinx.android.synthetic.main.fragment_schedule_time.*
 import java.util.*
 
 class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract.View.OnAdapterItemClickListener, CalendarUtils.CalendarSelectionListener {
@@ -38,9 +39,11 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     private var selectedTime: Long = 0
     private var currentDatePosition: Int = 0
     private lateinit var availableDates: List<Date>
-    private lateinit var workItemsList: ArrayList<ScheduleDetail>
-    private lateinit var selectedDate: Date
+    private var workItemsList: ArrayList<ScheduleDetail> = ArrayList<ScheduleDetail>()
+    private var selectedDate: Date= Date()
     private  var dateString: String ?= null
+    private var isSavedState: Boolean = false
+    private var datePosition: Int = 0
 
 
     private lateinit var schedulePresenter: SchedulePresenter
@@ -70,6 +73,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         const val TOTAL_PAGE_COUNT = "TOTAL_PAGE_COUNT"
         const val NEXT_PAGE = "NEXT_PAGE"
         const val CURRENT_PAGE = "CURRENT_PAGE"
+        const val SELECTED_DATE = "SELECTED_DATE"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,6 +104,11 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarSchedule, availableDates, this)
         savedInstanceState?.also {
+            isSavedState=true
+            if (savedInstanceState.containsKey(SELECTED_DATE)) {
+                datePosition = savedInstanceState.getInt(SELECTED_DATE)!!
+                singleRowCalendarSchedule.select(datePosition)
+            }
             if (savedInstanceState.containsKey(CURRENT_PAGE)) {
                 currentPageIndex = savedInstanceState.getInt(CURRENT_PAGE)!!
             }
@@ -127,6 +136,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
                 showDateString(dateString!!)
             }
         } ?: run {
+            isSavedState=false
             singleRowCalendarSchedule.select(if (currentDatePosition != 0) currentDatePosition else availableDates.size - 1)
         }
 
@@ -145,6 +155,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         outState.putInt(CURRENT_PAGE, currentPageIndex)
         outState.putSerializable(DATE, selectedDate)
         outState.putString(DATE_SELECTED, dateString)
+        outState.putInt(SELECTED_DATE,datePosition)
         super.onSaveInstanceState(outState)
     }
 
@@ -203,9 +214,13 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         selectedTime = selectedDate.time
         scheduleAdapter.updateList(workItemsList, currentPageIndex)
 
-        textViewEmptyData.visibility = View.GONE
-        recyclerViewSchedule.visibility = View.VISIBLE
-        textViewDate.visibility = View.VISIBLE
+        if(!workItemsList.isNullOrEmpty()) {
+            textViewEmptyData.visibility = View.GONE
+            recyclerViewSchedule.visibility = View.VISIBLE
+            textViewDate.visibility = View.VISIBLE
+        }else{
+            showEmptyData()
+        }
 
         this.totalPagesCount = totalPagesCount
         this.nextPageIndex = nextPageIndex
@@ -221,6 +236,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         textViewEmptyData.visibility = View.VISIBLE
         recyclerViewSchedule.visibility = View.GONE
         textViewDate.visibility = View.GONE
+        workItemsList.clear()
     }
 
     /** Adapter Listeners */
@@ -240,8 +256,17 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     }
 
     /** Calendar Listeners */
-    override fun onSelectCalendarDate(date: Date) {
-        resetPaginationValues()
-        schedulePresenter.getScheduledWorkItemsByDate(date, currentPageIndex)
+    override fun onSelectCalendarDate(
+        date: Date,
+        selected: Boolean,
+        position: Int
+    ) {
+
+        if (!isSavedState) {
+            resetPaginationValues()
+            schedulePresenter.getScheduledWorkItemsByDate(date, currentPageIndex)
+        }
+        isSavedState=false
+        datePosition=position
     }
 }

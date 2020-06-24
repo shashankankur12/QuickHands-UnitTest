@@ -35,6 +35,15 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        retainInstance = true
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_customer_sheet_customer, container, false)
     }
@@ -46,6 +55,10 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
 
         textViewAddSignature.setOnClickListener(this)
         buttonSubmit.setOnClickListener(this)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -71,6 +84,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
             updateUIVisibility(false, isCurrentDate, inCompleteWorkItemsCount)
         }
     }
+
 
     private fun updateUIVisibility(signed: Boolean, currentDate: Boolean, inCompleteWorkItemsCount: Int) {
         imageViewSignature.visibility = View.GONE
