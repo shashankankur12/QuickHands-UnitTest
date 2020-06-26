@@ -94,8 +94,8 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarLumperSheet, availableDates, this)
         savedInstanceState?.also {
             isSavedState=true
-            if (savedInstanceState.containsKey(ScheduleTimeFragment.SELECTED_DATE)) {
-                datePosition = savedInstanceState.getInt(ScheduleTimeFragment.SELECTED_DATE)!!
+            if (savedInstanceState.containsKey(SELECTED_DATE)) {
+                datePosition = savedInstanceState.getInt(SELECTED_DATE)!!
                 singleRowCalendarLumperSheet.select(datePosition)
             }
             if (savedInstanceState.containsKey(SHEET_SUBMITTED)) {

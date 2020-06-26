@@ -2,7 +2,6 @@ package com.quickhandslogistics.adapters.customerSheet
 
 import android.content.res.Resources
 import android.os.Parcelable
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -13,18 +12,21 @@ import com.quickhandslogistics.views.customerSheet.CustomerSheetContainersFragme
 import com.quickhandslogistics.views.customerSheet.CustomerSheetCustomerFragment
 import java.util.*
 
-class CustomerSheetPagerAdapter(childFragmentManager: FragmentManager, private val resources: Resources) :
+class CustomerSheetPagerAdapter(
+    childFragmentManager: FragmentManager, private val resources: Resources,
+    allWorkItemLists: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>? = null,
+    customerSheetData: CustomerSheetData? = null, selectedTime: Long? = null
+) :
     FragmentStatePagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private val tabTitles = arrayOf(R.string.containers, R.string.customer_details)
 
-    private var containersFragment = CustomerSheetContainersFragment.newInstance()
-    private var customerFragment = CustomerSheetCustomerFragment.newInstance()
+    private var containersFragment = CustomerSheetContainersFragment.newInstance(allWorkItemLists)
+    private var customerFragment = CustomerSheetCustomerFragment.newInstance(customerSheetData, selectedTime, allWorkItemLists)
 
     override fun getItem(position: Int): Fragment {
         return if (position == 0) containersFragment else customerFragment
     }
-
 
     override fun getPageTitle(position: Int): CharSequence? {
         return resources.getString(tabTitles[position])
@@ -36,10 +38,6 @@ class CustomerSheetPagerAdapter(childFragmentManager: FragmentManager, private v
 
     override fun saveState(): Parcelable? {
         return null
-    }
-
-    override fun restoreState(state: Parcelable?, loader: ClassLoader?) {
-        super.restoreState(state, loader)
     }
 
     fun updateCustomerSheetList(
