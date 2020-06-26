@@ -166,12 +166,17 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        if(scheduleTimeDetailList != null)
         outState.putParcelableArrayList(SCHEDULE_TIME_DETAIL, scheduleTimeDetailList)
+        if(selectedDate != null)
         outState.putSerializable(DATE, selectedDate)
+        if(tempLumperIds != null)
         outState.putStringArrayList(TEMP_LUMPER,tempLumperIds)
         if(scheduleTimeNotes != null)
         outState.putString(NOTE,scheduleTimeNotes)
+        if(dateString != null)
         outState.putString(DATE_SELECTED,dateString)
+        if(datePosition != null)
         outState.putInt(SELECTED_DATE,datePosition)
         super.onSaveInstanceState(outState)
     }

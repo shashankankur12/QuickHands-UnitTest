@@ -63,6 +63,7 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        if(workItemDetail!=null)
         outState.putParcelable("workItemDetail", workItemDetail)
         super.onSaveInstanceState(outState)
     }

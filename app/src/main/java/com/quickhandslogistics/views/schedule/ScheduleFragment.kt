@@ -149,12 +149,19 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        if (workItemsList!=null)
         outState.putParcelableArrayList(WORK_ITEM_LIST, workItemsList)
+        if (totalPagesCount!=null)
         outState.putInt(TOTAL_PAGE_COUNT, totalPagesCount)
+        if (nextPageIndex!=null)
         outState.putInt(NEXT_PAGE, nextPageIndex)
+        if (currentPageIndex!=null)
         outState.putInt(CURRENT_PAGE, currentPageIndex)
+        if (selectedDate!=null)
         outState.putSerializable(DATE, selectedDate)
+        if (dateString!=null)
         outState.putString(DATE_SELECTED, dateString)
+        if (datePosition!=null)
         outState.putInt(SELECTED_DATE,datePosition)
         super.onSaveInstanceState(outState)
     }

@@ -82,6 +82,7 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        if(employeeDataList!=null)
         outState.putParcelableArrayList("ss", employeeDataList)
         super.onSaveInstanceState(outState)
     }

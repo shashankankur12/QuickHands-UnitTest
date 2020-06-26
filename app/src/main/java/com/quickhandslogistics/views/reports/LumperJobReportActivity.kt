@@ -52,6 +52,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        if (employeeDataList!=null)
         outState.putParcelableArrayList("ss", employeeDataList)
         super.onSaveInstanceState(outState)
     }

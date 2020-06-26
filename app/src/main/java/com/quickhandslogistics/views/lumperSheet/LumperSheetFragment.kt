@@ -135,11 +135,17 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        if (lumperInfoList!=null)
         outState.putParcelableArrayList(LUMPER_INFO_LIST, lumperInfoList)
+        if (sheetSubmitted!=null)
         outState.putBoolean(SHEET_SUBMITTED, sheetSubmitted)
+        if (tempLumperIds!=null)
         outState.putStringArrayList(TEMP_LUMPER, tempLumperIds)
+        if (selectedDate!=null)
         outState.putSerializable(DATE, selectedDate)
+        if (dateString!=null)
         outState.putString(DATE_SELECTED, dateString)
+        if (datePosition!=null)
         outState.putInt(SELECTED_DATE,datePosition)
         super.onSaveInstanceState(outState)
     }

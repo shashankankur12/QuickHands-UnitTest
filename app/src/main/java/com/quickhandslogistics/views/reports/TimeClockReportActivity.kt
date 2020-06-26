@@ -53,6 +53,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        if(employeeDataList!=null)
         outState.putParcelableArrayList("ss", employeeDataList)
         super.onSaveInstanceState(outState)
     }

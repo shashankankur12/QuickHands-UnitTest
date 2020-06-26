@@ -76,7 +76,9 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        if (permanentLumpersList!=null)
         outState.putParcelableArrayList("permanentLumpersList", permanentLumpersList)
+        if (temporaryLumpersList!=null)
         outState.putParcelableArrayList("temporaryLumpersList", temporaryLumpersList)
         super.onSaveInstanceState(outState)
     }

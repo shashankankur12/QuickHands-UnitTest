@@ -113,12 +113,17 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
 
 
     override fun onSaveInstanceState(outState: Bundle) {
+        if (selectedDate!=null)
         outState.putSerializable(DATE, selectedDate)
         if (customerSheet!=null)
         outState.putSerializable(CUSTOMER_SHEET, customerSheet)
+        if (scheduleDetails!=null)
         outState.putSerializable(SCHEDULE_DETAIL, scheduleDetails)
+        if (selectedDate!=null)
         outState.putSerializable(DATE, selectedDate)
+        if (companyName!=null)
         outState.putSerializable(NAME, companyName)
+        if (date!=null)
         outState.putSerializable(DATE_STRING, date)
     }
 

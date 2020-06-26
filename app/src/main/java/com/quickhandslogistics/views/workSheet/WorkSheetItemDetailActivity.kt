@@ -64,9 +64,11 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        if (workItemDetail!=null)
         outState.putParcelable("workDetails", workItemDetail)
         if (lumpersTimeSchedule!=null)
         outState.putParcelableArrayList("lumpersTimeSchedule", lumpersTimeSchedule)
+        if (tempLumperIds!=null)
         outState.putStringArrayList("tempLumperIds", tempLumperIds)
         super.onSaveInstanceState(outState)
     }

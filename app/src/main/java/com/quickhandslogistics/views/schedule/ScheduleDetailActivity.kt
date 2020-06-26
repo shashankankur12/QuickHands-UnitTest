@@ -85,6 +85,7 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        if(scheduleDetail!=null)
         outState.putParcelable("scheduleDetail", scheduleDetail)
         super.onSaveInstanceState(outState)
     }

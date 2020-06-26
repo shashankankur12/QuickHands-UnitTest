@@ -66,6 +66,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        if (lumperAttendanceList!=null)
         outState.putParcelableArrayList("list", lumperAttendanceList)
         super.onSaveInstanceState(outState)
     }

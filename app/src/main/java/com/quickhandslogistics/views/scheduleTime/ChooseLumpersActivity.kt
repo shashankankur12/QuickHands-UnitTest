@@ -66,6 +66,7 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        if (employeeDataList!=null)
         outState.putParcelableArrayList("employeeDataList", employeeDataList)
         super.onSaveInstanceState(outState)
     }

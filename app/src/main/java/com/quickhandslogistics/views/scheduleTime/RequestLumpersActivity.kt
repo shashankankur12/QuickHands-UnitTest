@@ -51,8 +51,6 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         initializeUI()
 
         requestLumpersPresenter = RequestLumpersPresenter(this, resources)
-        requestLumpersPresenter.fetchAllRequestsByDate(Date(selectedTime))
-
         savedInstanceState?.also {
             if (savedInstanceState.containsKey("ss")) {
                 records = savedInstanceState.getParcelableArrayList("ss")!!
@@ -64,6 +62,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        if(records!=null)
         outState.putParcelableArrayList("ss",records)
         super.onSaveInstanceState(outState)
     }

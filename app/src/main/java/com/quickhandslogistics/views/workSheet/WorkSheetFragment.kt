@@ -75,8 +75,11 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        if(data!=null)
         outState.putSerializable("data", data)
+        if (!date.isNullOrEmpty())
         outState.putString("date", date)
+        if (!companyName.isNullOrEmpty())
         outState.putSerializable("name", companyName)
         super.onSaveInstanceState(outState)
     }
