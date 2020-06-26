@@ -36,6 +36,10 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var lumperAttendanceList: ArrayList<LumperAttendanceData>
 
+    companion object {
+        const val LUMPER_ATTENDANCE_LIST = "LUMPER_ATTENDANCE_LIST"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         timeClockAttendancePresenter = TimeClockAttendancePresenter(this, resources)
@@ -51,9 +55,10 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         initializeUI()
 
         savedInstanceState?.also {
-            if (savedInstanceState.containsKey("list")) {
-                lumperAttendanceList = savedInstanceState.getParcelableArrayList("list")!!
-                showLumpersAttendance(lumperAttendanceList!!)
+            if (savedInstanceState.containsKey(LUMPER_ATTENDANCE_LIST)) {
+                lumperAttendanceList =
+                    savedInstanceState.getParcelableArrayList(LUMPER_ATTENDANCE_LIST)!!
+                showLumpersAttendance(lumperAttendanceList)
             }
         } ?: run {
             timeClockAttendancePresenter.fetchAttendanceList()
@@ -66,8 +71,8 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if (lumperAttendanceList!=null)
-        outState.putParcelableArrayList("list", lumperAttendanceList)
+        if (lumperAttendanceList != null)
+            outState.putParcelableArrayList(LUMPER_ATTENDANCE_LIST, lumperAttendanceList)
         super.onSaveInstanceState(outState)
     }
 

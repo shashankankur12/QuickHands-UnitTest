@@ -36,6 +36,8 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
     companion object {
         const val ARG_IS_ADD_LUMPER = "ARG_IS_ADD_LUMPER"
         const val ARG_ASSIGNED_LUMPERS_LIST = "ARG_ASSIGNED_LUMPERS_LIST"
+        const val PERMANENT_LUMPERS_LIST = "PERMANENT_LUMPERS_LIST"
+        const val TEMP_LUMPERS_LIST = "TEMP_LUMPERS_LIST"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,12 +64,14 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
 
         addWorkItemLumpersPresenter = AddWorkItemLumpersPresenter(this, resources, sharedPref)
         savedInstanceState?.also {
-            if (savedInstanceState.containsKey("temporaryLumpersList")) {
-                temporaryLumpersList = savedInstanceState.getParcelableArrayList("temporaryLumpersList")!!
+            if (savedInstanceState.containsKey(TEMP_LUMPERS_LIST)) {
+                temporaryLumpersList =
+                    savedInstanceState.getParcelableArrayList(TEMP_LUMPERS_LIST)!!
             }
-            if (savedInstanceState.containsKey("permanentLumpersList")) {
-                permanentLumpersList = savedInstanceState.getParcelableArrayList("permanentLumpersList")!!
-                showLumpersData(permanentLumpersList!!,temporaryLumpersList!!)
+            if (savedInstanceState.containsKey(PERMANENT_LUMPERS_LIST)) {
+                permanentLumpersList =
+                    savedInstanceState.getParcelableArrayList(PERMANENT_LUMPERS_LIST)!!
+                showLumpersData(permanentLumpersList, temporaryLumpersList)
             }
         } ?: run {
             addWorkItemLumpersPresenter.fetchLumpersList()
@@ -76,10 +80,10 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if (permanentLumpersList!=null)
-        outState.putParcelableArrayList("permanentLumpersList", permanentLumpersList)
-        if (temporaryLumpersList!=null)
-        outState.putParcelableArrayList("temporaryLumpersList", temporaryLumpersList)
+        if (permanentLumpersList != null)
+            outState.putParcelableArrayList(PERMANENT_LUMPERS_LIST, permanentLumpersList)
+        if (temporaryLumpersList != null)
+            outState.putParcelableArrayList(TEMP_LUMPERS_LIST, temporaryLumpersList)
         super.onSaveInstanceState(outState)
     }
 

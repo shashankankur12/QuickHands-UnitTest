@@ -3,7 +3,6 @@ package com.quickhandslogistics.views.workSheet
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.MotionEvent
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +25,10 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
     private lateinit var allWorkScheduleCancelAdapter: AllWorkScheduleCancelAdapter
     private lateinit var employeeDataList: java.util.ArrayList<EmployeeData>
 
+    companion object {
+        const val WORK_SCHEDULE_LIST = "WORK_SCHEDULE_LIST"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_all_work_schedule_cancel)
@@ -36,9 +39,9 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
         allWorkScheduleCancelPresenter = AllWorkScheduleCancelPresenter(this, resources)
 
         savedInstanceState?.also {
-            if (savedInstanceState.containsKey("ss")) {
-                employeeDataList = savedInstanceState.getParcelableArrayList("ss")!!
-                showLumpersData(employeeDataList!!)
+            if (savedInstanceState.containsKey(WORK_SCHEDULE_LIST)) {
+                employeeDataList = savedInstanceState.getParcelableArrayList(WORK_SCHEDULE_LIST)!!
+                showLumpersData(employeeDataList)
             }
         } ?: run {
             allWorkScheduleCancelPresenter.fetchLumpersList()
@@ -46,8 +49,8 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if (employeeDataList!=null)
-        outState.putParcelableArrayList("ss", employeeDataList)
+        if (employeeDataList != null)
+            outState.putParcelableArrayList(WORK_SCHEDULE_LIST, employeeDataList)
         super.onSaveInstanceState(outState)
     }
 

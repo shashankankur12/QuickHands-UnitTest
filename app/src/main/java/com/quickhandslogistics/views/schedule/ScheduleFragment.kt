@@ -21,13 +21,7 @@ import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
-import com.quickhandslogistics.views.lumperSheet.LumperSheetFragment
-import com.quickhandslogistics.views.scheduleTime.ScheduleTimeFragment
 import kotlinx.android.synthetic.main.fragment_schedule.*
-import kotlinx.android.synthetic.main.fragment_schedule.mainConstraintLayout
-import kotlinx.android.synthetic.main.fragment_schedule.textViewDate
-import kotlinx.android.synthetic.main.fragment_schedule.textViewEmptyData
-import kotlinx.android.synthetic.main.fragment_schedule_time.*
 import java.util.*
 
 class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract.View.OnAdapterItemClickListener, CalendarUtils.CalendarSelectionListener {
@@ -67,13 +61,13 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         const val ARG_SCHEDULED_TIME_LIST = "ARG_SCHEDULED_TIME_LIST"
         const val ARG_SCHEDULED_LUMPERS_COUNT = "ARG_SCHEDULED_LUMPERS_COUNT"
 
-        const val WORK_ITEM_LIST = "WORK_ITEM_LIST"
-        const val DATE = "DATE"
-        const val DATE_SELECTED = "DATE_SELECTED"
-        const val TOTAL_PAGE_COUNT = "TOTAL_PAGE_COUNT"
-        const val NEXT_PAGE = "NEXT_PAGE"
-        const val CURRENT_PAGE = "CURRENT_PAGE"
-        const val SELECTED_DATE = "SELECTED_DATE"
+        const val SCHEDULED_WORK_ITEM_LIST = "SCHEDULED_WORK_ITEM_LIST"
+        const val SCHEDULED_DATE_SELECTED = "SCHEDULED_DATE_SELECTED"
+        const val SCHEDULED_DATE_HEADER = "SCHEDULED_DATE_HEADER"
+        const val SCHEDULED_TOTAL_PAGE_COUNT = "SCHEDULED_TOTAL_PAGE_COUNT"
+        const val SCHEDULED_NEXT_PAGE = "SCHEDULED_NEXT_PAGE"
+        const val SCHEDULED_CURRENT_PAGE = "SCHEDULED_CURRENT_PAGE"
+        const val SCHEDULED_SELECTED_DATE_POSITION = "SCHEDULED_SELECTED_DATE_POSITION"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,39 +98,34 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarSchedule, availableDates, this)
         savedInstanceState?.also {
-            isSavedState=true
-            if (savedInstanceState.containsKey(SELECTED_DATE)) {
-                datePosition = savedInstanceState.getInt(SELECTED_DATE)!!
+            isSavedState = true
+            if (savedInstanceState.containsKey(SCHEDULED_SELECTED_DATE_POSITION)) {
+                datePosition = savedInstanceState.getInt(SCHEDULED_SELECTED_DATE_POSITION)
                 singleRowCalendarSchedule.select(datePosition)
             }
-            if (savedInstanceState.containsKey(CURRENT_PAGE)) {
-                currentPageIndex = savedInstanceState.getInt(CURRENT_PAGE)!!
+            if (savedInstanceState.containsKey(SCHEDULED_CURRENT_PAGE)) {
+                currentPageIndex = savedInstanceState.getInt(SCHEDULED_CURRENT_PAGE)
             }
-            if (savedInstanceState.containsKey(NEXT_PAGE)) {
-                nextPageIndex = savedInstanceState.getInt(NEXT_PAGE)!!
+            if (savedInstanceState.containsKey(SCHEDULED_NEXT_PAGE)) {
+                nextPageIndex = savedInstanceState.getInt(SCHEDULED_NEXT_PAGE)
             }
-            if (savedInstanceState.containsKey(TOTAL_PAGE_COUNT)) {
-                totalPagesCount = savedInstanceState.getInt(TOTAL_PAGE_COUNT)!!
+            if (savedInstanceState.containsKey(SCHEDULED_TOTAL_PAGE_COUNT)) {
+                totalPagesCount = savedInstanceState.getInt(SCHEDULED_TOTAL_PAGE_COUNT)
             }
-            if(savedInstanceState.containsKey(DATE)) {
-                selectedDate = savedInstanceState.getSerializable(LumperSheetFragment.DATE) as Date
+            if (savedInstanceState.containsKey(SCHEDULED_DATE_SELECTED)) {
+                selectedDate = savedInstanceState.getSerializable(SCHEDULED_DATE_SELECTED) as Date
             }
-            if (savedInstanceState.containsKey(WORK_ITEM_LIST)) {
-                workItemsList = savedInstanceState.getParcelableArrayList(WORK_ITEM_LIST)!!
-                showScheduleData(
-                    selectedDate,
-                    workItemsList,
-                    totalPagesCount,
-                    nextPageIndex,
-                    currentPageIndex
-                )
+            if (savedInstanceState.containsKey(SCHEDULED_WORK_ITEM_LIST)) {
+                workItemsList =
+                    savedInstanceState.getParcelableArrayList(SCHEDULED_WORK_ITEM_LIST)!!
+                showScheduleData(selectedDate, workItemsList, totalPagesCount, nextPageIndex, currentPageIndex)
             }
-            if (savedInstanceState.containsKey(DATE_SELECTED)) {
-                dateString = savedInstanceState.getString(DATE_SELECTED)!!
+            if (savedInstanceState.containsKey(SCHEDULED_DATE_HEADER)) {
+                dateString = savedInstanceState.getString(SCHEDULED_DATE_HEADER)!!
                 showDateString(dateString!!)
             }
         } ?: run {
-            isSavedState=false
+            isSavedState = false
             singleRowCalendarSchedule.select(if (currentDatePosition != 0) currentDatePosition else availableDates.size - 1)
         }
 
@@ -149,20 +138,20 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if (workItemsList!=null)
-        outState.putParcelableArrayList(WORK_ITEM_LIST, workItemsList)
-        if (totalPagesCount!=null)
-        outState.putInt(TOTAL_PAGE_COUNT, totalPagesCount)
-        if (nextPageIndex!=null)
-        outState.putInt(NEXT_PAGE, nextPageIndex)
-        if (currentPageIndex!=null)
-        outState.putInt(CURRENT_PAGE, currentPageIndex)
-        if (selectedDate!=null)
-        outState.putSerializable(DATE, selectedDate)
-        if (dateString!=null)
-        outState.putString(DATE_SELECTED, dateString)
-        if (datePosition!=null)
-        outState.putInt(SELECTED_DATE,datePosition)
+        if (workItemsList != null)
+            outState.putParcelableArrayList(SCHEDULED_WORK_ITEM_LIST, workItemsList)
+        if (totalPagesCount != null)
+            outState.putInt(SCHEDULED_TOTAL_PAGE_COUNT, totalPagesCount)
+        if (nextPageIndex != null)
+            outState.putInt(SCHEDULED_NEXT_PAGE, nextPageIndex)
+        if (currentPageIndex != null)
+            outState.putInt(SCHEDULED_CURRENT_PAGE, currentPageIndex)
+        if (selectedDate != null)
+            outState.putSerializable(SCHEDULED_DATE_SELECTED, selectedDate)
+        if (dateString != null)
+            outState.putString(SCHEDULED_DATE_HEADER, dateString)
+        if (datePosition != null)
+            outState.putInt(SCHEDULED_SELECTED_DATE_POSITION, datePosition)
         super.onSaveInstanceState(outState)
     }
 
@@ -214,9 +203,9 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     }
 
     override fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<ScheduleDetail>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int) {
-        this.selectedDate=selectedDate
-        this.workItemsList=workItemsList
-        this.currentPageIndex=currentPageIndex
+        this.selectedDate = selectedDate
+        this.workItemsList = workItemsList
+        this.currentPageIndex = currentPageIndex
 
         selectedTime = selectedDate.time
         scheduleAdapter.updateList(workItemsList, currentPageIndex)
@@ -263,17 +252,12 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     }
 
     /** Calendar Listeners */
-    override fun onSelectCalendarDate(
-        date: Date,
-        selected: Boolean,
-        position: Int
-    ) {
-
+    override fun onSelectCalendarDate(date: Date, selected: Boolean, position: Int) {
         if (!isSavedState) {
             resetPaginationValues()
             schedulePresenter.getScheduledWorkItemsByDate(date, currentPageIndex)
         }
-        isSavedState=false
-        datePosition=position
+        isSavedState = false
+        datePosition = position
     }
 }

@@ -1,7 +1,6 @@
 package com.quickhandslogistics.views.scheduleTime
 
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +20,6 @@ import kotlinx.android.synthetic.main.activity_request_lumpers.*
 import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.*
 import kotlinx.android.synthetic.main.content_request_lumpers.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     RequestLumpersContract.View, RequestLumpersContract.View.OnAdapterItemClickListener {
@@ -35,6 +33,10 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
 
     private lateinit var requestLumpersPresenter: RequestLumpersPresenter
     private lateinit var requestLumpersAdapter: RequestLumpersAdapter
+
+    companion object {
+        const val LUMPER_REQUEST_LIST = "LUMPER_REQUEST_LIST"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,8 +54,8 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
 
         requestLumpersPresenter = RequestLumpersPresenter(this, resources)
         savedInstanceState?.also {
-            if (savedInstanceState.containsKey("ss")) {
-                records = savedInstanceState.getParcelableArrayList("ss")!!
+            if (savedInstanceState.containsKey(LUMPER_REQUEST_LIST)) {
+                records = savedInstanceState.getParcelableArrayList(LUMPER_REQUEST_LIST)!!
                 showAllRequests(records)
             }
         } ?: run {
@@ -62,8 +64,8 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if(records!=null)
-        outState.putParcelableArrayList("ss",records)
+        if (records != null)
+            outState.putParcelableArrayList(LUMPER_REQUEST_LIST, records)
         super.onSaveInstanceState(outState)
     }
 

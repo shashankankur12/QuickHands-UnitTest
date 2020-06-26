@@ -19,14 +19,7 @@ import com.quickhandslogistics.presenters.lumperSheet.LumperSheetPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.schedule.ScheduleFragment
-import com.quickhandslogistics.views.scheduleTime.ScheduleTimeFragment
 import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
-import kotlinx.android.synthetic.main.fragment_lumper_sheet.editTextSearch
-import kotlinx.android.synthetic.main.fragment_lumper_sheet.imageViewCancel
-import kotlinx.android.synthetic.main.fragment_lumper_sheet.mainConstraintLayout
-import kotlinx.android.synthetic.main.fragment_lumper_sheet.textViewDate
-import kotlinx.android.synthetic.main.fragment_lumper_sheet.textViewEmptyData
-import kotlinx.android.synthetic.main.fragment_schedule_time.*
 import java.util.*
 
 class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatcher, View.OnClickListener,
@@ -48,11 +41,11 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     companion object {
         const val ARG_LUMPER_INFO = "ARG_LUMPER_INFO"
         const val LUMPER_INFO_LIST = "LUMPER_INFO_LIST"
-        const val DATE = "DATE"
-        const val DATE_SELECTED = "DATE_SELECTED"
-        const val SHEET_SUBMITTED= "SHEET_SUBMITTED"
-        const val TEMP_LUMPER = "TEMP_LUMPER"
-        const val SELECTED_DATE = "SELECTED_DATE"
+        const val DATE_LUMPER_SHEET = "DATE_LUMPER_SHEET"
+        const val DATE_STRING_HEADER = "DATE_STRING_HEADER"
+        const val SHEET_SUBMITTED = "SHEET_SUBMITTED"
+        const val TEMP_LUMPER_SHEET = "TEMP_LUMPER_SHEET"
+        const val SELECTED_DATE_POSITION = "SELECTED_DATE_POSITION"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,31 +87,26 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarLumperSheet, availableDates, this)
         savedInstanceState?.also {
             isSavedState=true
-            if (savedInstanceState.containsKey(ScheduleTimeFragment.SELECTED_DATE)) {
-                datePosition = savedInstanceState.getInt(ScheduleTimeFragment.SELECTED_DATE)!!
+            if (savedInstanceState.containsKey(SELECTED_DATE_POSITION)) {
+                datePosition = savedInstanceState.getInt(SELECTED_DATE_POSITION)!!
                 singleRowCalendarLumperSheet.select(datePosition)
             }
             if (savedInstanceState.containsKey(SHEET_SUBMITTED)) {
                 sheetSubmitted = savedInstanceState.getBoolean(SHEET_SUBMITTED)!!
             }
-            if (savedInstanceState.containsKey(TEMP_LUMPER)) {
-                tempLumperIds = savedInstanceState.getStringArrayList(TEMP_LUMPER)!!
+            if (savedInstanceState.containsKey(TEMP_LUMPER_SHEET)) {
+                tempLumperIds = savedInstanceState.getStringArrayList(TEMP_LUMPER_SHEET)!!
 
             }
-            if(savedInstanceState.containsKey(DATE)) {
-                selectedDate = savedInstanceState.getSerializable(DATE) as Date
+            if(savedInstanceState.containsKey(DATE_LUMPER_SHEET)) {
+                selectedDate = savedInstanceState.getSerializable(DATE_LUMPER_SHEET) as Date
             }
             if (savedInstanceState.containsKey(LUMPER_INFO_LIST)) {
                 lumperInfoList = savedInstanceState.getParcelableArrayList(LUMPER_INFO_LIST)!!
-                showLumperSheetData(
-                    lumperInfoList,
-                    sheetSubmitted,
-                    selectedDate,
-                    tempLumperIds
-                )
+                showLumperSheetData(lumperInfoList, sheetSubmitted, selectedDate, tempLumperIds)
             }
-            if (savedInstanceState.containsKey(DATE_SELECTED)) {
-                dateString = savedInstanceState.getString(DATE_SELECTED)!!
+            if (savedInstanceState.containsKey(DATE_STRING_HEADER)) {
+                dateString = savedInstanceState.getString(DATE_STRING_HEADER)!!
                 showDateString(dateString!!)
             }
 
@@ -126,7 +114,6 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
             isSavedState=false
             singleRowCalendarLumperSheet.select(availableDates.size - 1)
         }
-
     }
 
     override fun onDestroy() {
@@ -135,18 +122,18 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if (lumperInfoList!=null)
-        outState.putParcelableArrayList(LUMPER_INFO_LIST, lumperInfoList)
-        if (sheetSubmitted!=null)
-        outState.putBoolean(SHEET_SUBMITTED, sheetSubmitted)
-        if (tempLumperIds!=null)
-        outState.putStringArrayList(TEMP_LUMPER, tempLumperIds)
-        if (selectedDate!=null)
-        outState.putSerializable(DATE, selectedDate)
-        if (dateString!=null)
-        outState.putString(DATE_SELECTED, dateString)
-        if (datePosition!=null)
-        outState.putInt(SELECTED_DATE,datePosition)
+        if (lumperInfoList != null)
+            outState.putParcelableArrayList(LUMPER_INFO_LIST, lumperInfoList)
+        if (sheetSubmitted != null)
+            outState.putBoolean(SHEET_SUBMITTED, sheetSubmitted)
+        if (tempLumperIds != null)
+            outState.putStringArrayList(TEMP_LUMPER_SHEET, tempLumperIds)
+        if (selectedDate != null)
+            outState.putSerializable(DATE_LUMPER_SHEET, selectedDate)
+        if (dateString != null)
+            outState.putString(DATE_STRING_HEADER, dateString)
+        if (datePosition != null)
+            outState.putInt(SELECTED_DATE_POSITION, datePosition)
         super.onSaveInstanceState(outState)
     }
 
@@ -217,10 +204,10 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     }
 
     override fun showLumperSheetData(mlumperInfoList: ArrayList<LumpersInfo>, msheetSubmitted: Boolean, mselectedDate: Date, mtempLumperIds: ArrayList<String>) {
-        lumperInfoList=mlumperInfoList
-        sheetSubmitted=msheetSubmitted
-        selectedDate=mselectedDate
-        tempLumperIds=mtempLumperIds
+        lumperInfoList = mlumperInfoList
+        sheetSubmitted = msheetSubmitted
+        selectedDate = mselectedDate
+        tempLumperIds = mtempLumperIds
 
         selectedTime = selectedDate.time
 
@@ -270,14 +257,10 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     }
 
     /** Calendar Listeners */
-    override fun onSelectCalendarDate(
-        date: Date,
-        selected: Boolean,
-        position: Int
-    ) {
+    override fun onSelectCalendarDate(date: Date, selected: Boolean, position: Int) {
         if (!isSavedState)
-        lumperSheetPresenter.getLumpersSheetByDate(date)
-        isSavedState=false
-        datePosition=position
+            lumperSheetPresenter.getLumpersSheetByDate(date)
+        isSavedState = false
+        datePosition = position
     }
 }

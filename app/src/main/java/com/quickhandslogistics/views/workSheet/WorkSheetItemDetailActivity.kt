@@ -10,17 +10,17 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.workSheet.WorkSheetItemDetailPagerAdapter
 import com.quickhandslogistics.adapters.workSheet.WorkSheetItemStatusAdapter
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
-import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.presenters.workSheet.WorkSheetItemDetailPresenter
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
-import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.activity_work_sheet_item_detail.*
 import kotlinx.android.synthetic.main.bottom_sheet_select_status.*
 import kotlinx.android.synthetic.main.content_work_sheet_item_detail.*
+
 class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSheetItemDetailContract.View,
     WorkSheetItemDetailContract.View.OnAdapterItemClickListener, WorkSheetItemDetailContract.View.OnFragmentInteractionListener {
 
@@ -36,6 +36,12 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
+    companion object {
+        const val WORK_DETAIL_LIST = "WORK_DETAIL_LIST"
+        const val TEMP_LUMPER_ID_LIST = "TEMP_LUMPER_ID_LIST"
+        const val LUMPER_TIME_SCHEDULE = "LUMPER_TIME_SCHEDULE"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_work_sheet_item_detail)
@@ -50,12 +56,17 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
         workSheetItemDetailPresenter = WorkSheetItemDetailPresenter(this, resources)
         savedInstanceState?.also {
-            if (savedInstanceState.containsKey("lumpersTimeSchedule")) {
-                lumpersTimeSchedule = savedInstanceState.getParcelableArrayList<LumpersTimeSchedule>("lumpersTimeSchedule")!!
+            if (savedInstanceState.containsKey(LUMPER_TIME_SCHEDULE)) {
+                lumpersTimeSchedule =
+                    savedInstanceState.getParcelableArrayList<LumpersTimeSchedule>(
+                        LUMPER_TIME_SCHEDULE
+                    )!!
             }
-            if (savedInstanceState.containsKey("tempLumperIds")) tempLumperIds = savedInstanceState.getStringArrayList("tempLumperIds")!!
-            if (savedInstanceState.containsKey("workDetails")) {
-                workItemDetail = savedInstanceState.getParcelable<WorkItemDetail>("workDetails")!!
+            if (savedInstanceState.containsKey(TEMP_LUMPER_ID_LIST)) tempLumperIds =
+                savedInstanceState.getStringArrayList(TEMP_LUMPER_ID_LIST)!!
+            if (savedInstanceState.containsKey(WORK_DETAIL_LIST)) {
+                workItemDetail =
+                    savedInstanceState.getParcelable<WorkItemDetail>(WORK_DETAIL_LIST)!!
                 showWorkItemDetail(workItemDetail, lumpersTimeSchedule, tempLumperIds)
             }
         } ?: run {
@@ -64,12 +75,12 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if (workItemDetail!=null)
-        outState.putParcelable("workDetails", workItemDetail)
-        if (lumpersTimeSchedule!=null)
-        outState.putParcelableArrayList("lumpersTimeSchedule", lumpersTimeSchedule)
-        if (tempLumperIds!=null)
-        outState.putStringArrayList("tempLumperIds", tempLumperIds)
+        if (workItemDetail != null)
+            outState.putParcelable(WORK_DETAIL_LIST, workItemDetail)
+        if (lumpersTimeSchedule != null)
+            outState.putParcelableArrayList(TEMP_LUMPER_ID_LIST, lumpersTimeSchedule)
+        if (tempLumperIds != null)
+            outState.putStringArrayList(LUMPER_TIME_SCHEDULE, tempLumperIds)
         super.onSaveInstanceState(outState)
     }
 

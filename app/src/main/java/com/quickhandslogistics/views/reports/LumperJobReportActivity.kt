@@ -32,6 +32,10 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     private lateinit var lumperJobReportAdapter: LumperJobReportAdapter
     private lateinit var employeeDataList: ArrayList<EmployeeData>
 
+    companion object {
+        const val LUMPER_JOB_REPORT_LIST = "LUMPER_JOB_REPORT_LIST"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lumper_job_report)
@@ -42,9 +46,9 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
         lumperJobReportPresenter = LumperJobReportPresenter(this, resources)
 
         savedInstanceState?.also {
-            if (savedInstanceState.containsKey("ss")) {
-                employeeDataList = savedInstanceState.getParcelableArrayList("ss")!!
-                showLumpersData(employeeDataList!!)
+            if (savedInstanceState.containsKey(LUMPER_JOB_REPORT_LIST)) {
+                employeeDataList = savedInstanceState.getParcelableArrayList(LUMPER_JOB_REPORT_LIST)!!
+                showLumpersData(employeeDataList)
             }
         } ?: run {
             lumperJobReportPresenter.fetchLumpersList()
@@ -52,8 +56,8 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if (employeeDataList!=null)
-        outState.putParcelableArrayList("ss", employeeDataList)
+        if (employeeDataList != null)
+            outState.putParcelableArrayList(LUMPER_JOB_REPORT_LIST, employeeDataList)
         super.onSaveInstanceState(outState)
     }
 

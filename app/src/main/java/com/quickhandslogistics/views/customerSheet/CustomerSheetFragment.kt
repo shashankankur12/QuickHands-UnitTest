@@ -39,11 +39,11 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
     private lateinit var adapter: CustomerSheetPagerAdapter
 
     companion object {
-        const val DATE = "DATE"
-        const val CUSTOMER_SHEET= "CUSTOMER_SHEET"
+        const val DATE_SELECTED_CUSTOMER_SHEET = "DATE_SELECTED_CUSTOMER_SHEET"
+        const val CUSTOMER_SHEET = "CUSTOMER_SHEET"
         const val SCHEDULE_DETAIL = "SCHEDULE_DETAIL"
-        const val DATE_STRING = "DATE_STRING"
-        const val NAME = "NAME"
+        const val DATE_STRING_CUSTOMER_SHEET = "DATE_STRING_CUSTOMER_SHEET"
+        const val NAME_COMPANY_CUSTOMER_SHEET = "NAME_COMPANY_CUSTOMER_SHEET"
     }
 
     override fun onAttach(context: Context) {
@@ -79,25 +79,26 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         viewPagerCustomerSheet.adapter = adapter
         tabLayoutCustomerSheet.setupWithViewPager(viewPagerCustomerSheet)
 
-
-
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarCustomerSheet, availableDates, this)
         savedInstanceState?.also {
-            if (savedInstanceState.containsKey(NAME)) {
-                companyName = savedInstanceState.getString(NAME)!!
+            if (savedInstanceState.containsKey(NAME_COMPANY_CUSTOMER_SHEET)) {
+                companyName = savedInstanceState.getString(NAME_COMPANY_CUSTOMER_SHEET)!!
             }
-            if (savedInstanceState.containsKey(DATE_STRING)) {
-                date = savedInstanceState.getString(DATE_STRING)!!
+            if (savedInstanceState.containsKey(DATE_STRING_CUSTOMER_SHEET)) {
+                date = savedInstanceState.getString(DATE_STRING_CUSTOMER_SHEET)!!
                 showHeaderInfo(companyName, date)
             }
             if (savedInstanceState.containsKey(SCHEDULE_DETAIL)) {
-                scheduleDetails = savedInstanceState.getSerializable(SCHEDULE_DETAIL)!!as CustomerSheetScheduleDetails
+                scheduleDetails =
+                    savedInstanceState.getSerializable(SCHEDULE_DETAIL)!! as CustomerSheetScheduleDetails
             }
-            if(savedInstanceState.containsKey(DATE)) {
-                selectedDate = savedInstanceState.getSerializable(DATE) as Date
+            if (savedInstanceState.containsKey(DATE_SELECTED_CUSTOMER_SHEET)) {
+                selectedDate =
+                    savedInstanceState.getSerializable(DATE_SELECTED_CUSTOMER_SHEET) as Date
             }
             if (savedInstanceState.containsKey(CUSTOMER_SHEET)) {
-                customerSheet = savedInstanceState.getSerializable(CUSTOMER_SHEET) as CustomerSheetData
+                customerSheet =
+                    savedInstanceState.getSerializable(CUSTOMER_SHEET) as CustomerSheetData
                 showCustomerSheets(scheduleDetails, customerSheet, selectedDate)
             }
         } ?: run {
@@ -113,18 +114,16 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
 
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if (selectedDate!=null)
-        outState.putSerializable(DATE, selectedDate)
-        if (customerSheet!=null)
-        outState.putSerializable(CUSTOMER_SHEET, customerSheet)
-        if (scheduleDetails!=null)
-        outState.putSerializable(SCHEDULE_DETAIL, scheduleDetails)
-        if (selectedDate!=null)
-        outState.putSerializable(DATE, selectedDate)
-        if (companyName!=null)
-        outState.putSerializable(NAME, companyName)
-        if (date!=null)
-        outState.putSerializable(DATE_STRING, date)
+        if (selectedDate != null)
+            outState.putSerializable(DATE_SELECTED_CUSTOMER_SHEET, selectedDate)
+        if (customerSheet != null)
+            outState.putSerializable(CUSTOMER_SHEET, customerSheet)
+        if (scheduleDetails != null)
+            outState.putSerializable(SCHEDULE_DETAIL, scheduleDetails)
+        if (companyName != null)
+            outState.putSerializable(NAME_COMPANY_CUSTOMER_SHEET, companyName)
+        if (date != null)
+            outState.putSerializable(DATE_STRING_CUSTOMER_SHEET, date)
     }
 
        override fun showAPIErrorMessage(message: String) {

@@ -26,11 +26,6 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCH
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_NOTES
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import kotlinx.android.synthetic.main.fragment_schedule_time.*
-import kotlinx.android.synthetic.main.fragment_schedule_time.editTextSearch
-import kotlinx.android.synthetic.main.fragment_schedule_time.imageViewCancel
-import kotlinx.android.synthetic.main.fragment_schedule_time.mainConstraintLayout
-import kotlinx.android.synthetic.main.fragment_schedule_time.textViewDate
-import kotlinx.android.synthetic.main.fragment_schedule_time.textViewEmptyData
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -58,11 +53,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     companion object {
         const val SCHEDULE_TIME_DETAIL = "SCHEDULE_TIME_DETAIL"
-        const val DATE = "DATE"
-        const val TEMP_LUMPER = "TEMP_LUMPER"
-        const val NOTE = "NOTE"
-        const val DATE_SELECTED = "DATE_SELECTED"
-        const val SELECTED_DATE = "SELECTED_DATE"
+        const val DATE_SELECTED_SCHEDULE_TIME = "DATE_SELECTED_SCHEDULE_TIME"
+        const val TEMP_LUMPER_SCHEDULE_TIME = "TEMP_LUMPER_SCHEDULE_TIME"
+        const val NOTE_SCHEDULE_TIME = "NOTE_SCHEDULE_TIME"
+        const val DATE_HEADER_SCHEDULE_TIME = "DATE_HEADER_SCHEDULE_TIME"
+        const val SELECTED_DATE_POSITION_SCHEDULE_TIME = "SELECTED_DATE_POSITION_SCHEDULE_TIME"
     }
 
     override fun onAttach(context: Context) {
@@ -131,53 +126,52 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         buttonRequestLumpers.setOnClickListener(this)
 
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarScheduleTime, availableDates, this)
-
         savedInstanceState?.also {
-            isSavedState=true
-            if (savedInstanceState.containsKey(TEMP_LUMPER)) {
-                tempLumperIds = savedInstanceState.getStringArrayList(TEMP_LUMPER)!!
+            isSavedState = true
+            if (savedInstanceState.containsKey(TEMP_LUMPER_SCHEDULE_TIME)) {
+                tempLumperIds = savedInstanceState.getStringArrayList(TEMP_LUMPER_SCHEDULE_TIME)!!
 
             }
-            if (savedInstanceState.containsKey(SELECTED_DATE)) {
-                datePosition = savedInstanceState.getInt(SELECTED_DATE)!!
+            if (savedInstanceState.containsKey(SELECTED_DATE_POSITION_SCHEDULE_TIME)) {
+                datePosition = savedInstanceState.getInt(SELECTED_DATE_POSITION_SCHEDULE_TIME)
                 singleRowCalendarScheduleTime.select(datePosition)
             }
-            if(savedInstanceState.containsKey(DATE)) {
-                selectedDate = savedInstanceState.getSerializable(DATE) as Date
+            if (savedInstanceState.containsKey(DATE_SELECTED_SCHEDULE_TIME)) {
+                selectedDate =
+                    savedInstanceState.getSerializable(DATE_SELECTED_SCHEDULE_TIME) as Date
             }
             if (savedInstanceState.containsKey(SCHEDULE_TIME_DETAIL)) {
-                scheduleTimeDetailList = savedInstanceState.getParcelableArrayList(SCHEDULE_TIME_DETAIL)!!
-                showScheduleTimeData(selectedDate,scheduleTimeDetailList,tempLumperIds)
+                scheduleTimeDetailList =
+                    savedInstanceState.getParcelableArrayList(SCHEDULE_TIME_DETAIL)!!
+                showScheduleTimeData(selectedDate, scheduleTimeDetailList, tempLumperIds)
             }
-            if (savedInstanceState.containsKey(DATE_SELECTED)) {
-                dateString = savedInstanceState.getString(DATE_SELECTED)!!
+            if (savedInstanceState.containsKey(DATE_HEADER_SCHEDULE_TIME)) {
+                dateString = savedInstanceState.getString(DATE_HEADER_SCHEDULE_TIME)!!
                 showDateString(dateString!!)
             }
-            if (savedInstanceState.containsKey(NOTE)) {
-                scheduleTimeNotes = savedInstanceState.getString(NOTE)!!
+            if (savedInstanceState.containsKey(NOTE_SCHEDULE_TIME)) {
+                scheduleTimeNotes = savedInstanceState.getString(NOTE_SCHEDULE_TIME)!!
                 showNotesData(scheduleTimeNotes!!)
             }
         } ?: run {
-          isSavedState=false
+            isSavedState = false
             singleRowCalendarScheduleTime.select(selectedDatePosition)
         }
-
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if(scheduleTimeDetailList != null)
-        outState.putParcelableArrayList(SCHEDULE_TIME_DETAIL, scheduleTimeDetailList)
-        if(selectedDate != null)
-        outState.putSerializable(DATE, selectedDate)
-        if(tempLumperIds != null)
-        outState.putStringArrayList(TEMP_LUMPER,tempLumperIds)
-        if(scheduleTimeNotes != null)
-        outState.putString(NOTE,scheduleTimeNotes)
-        if(dateString != null)
-        outState.putString(DATE_SELECTED,dateString)
-        if(datePosition != null)
-        outState.putInt(SELECTED_DATE,datePosition)
+        if (scheduleTimeDetailList != null)
+            outState.putParcelableArrayList(SCHEDULE_TIME_DETAIL, scheduleTimeDetailList)
+        if (selectedDate != null)
+            outState.putSerializable(DATE_SELECTED_SCHEDULE_TIME, selectedDate)
+        if (tempLumperIds != null)
+            outState.putStringArrayList(TEMP_LUMPER_SCHEDULE_TIME, tempLumperIds)
+        if (scheduleTimeNotes != null)
+            outState.putString(NOTE_SCHEDULE_TIME, scheduleTimeNotes)
+        if (dateString != null)
+            outState.putString(DATE_HEADER_SCHEDULE_TIME, dateString)
+        if (datePosition != null)
+            outState.putInt(SELECTED_DATE_POSITION_SCHEDULE_TIME, datePosition)
         super.onSaveInstanceState(outState)
     }
 
@@ -272,8 +266,8 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     override fun showScheduleTimeData(mSelectedDate: Date, mScheduleTimeDetailList: ArrayList<ScheduleTimeDetail>, mTempLumperIds: ArrayList<String>) {
         this.scheduleTimeDetailList = mScheduleTimeDetailList
-        this.selectedDate=mSelectedDate
-        this.tempLumperIds=mTempLumperIds
+        this.selectedDate = mSelectedDate
+        this.tempLumperIds = mTempLumperIds
         selectedTime = selectedDate.time
         isPastDate = !DateUtils.isFutureDate(selectedTime) && !DateUtils.isCurrentDate(selectedTime)
         invalidateScheduleButton()
@@ -296,14 +290,10 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     }
 
     /** Calendar Listeners */
-    override fun onSelectCalendarDate(
-        date: Date,
-        selected: Boolean,
-        position: Int
-    ) {
+    override fun onSelectCalendarDate(date: Date, selected: Boolean, position: Int) {
         if (!isSavedState)
             scheduleTimePresenter.getSchedulesTimeByDate(date)
-        isSavedState=false
-        datePosition=position
+        isSavedState = false
+        datePosition = position
     }
 }

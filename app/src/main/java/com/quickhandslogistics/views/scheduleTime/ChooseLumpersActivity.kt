@@ -14,13 +14,13 @@ import com.quickhandslogistics.contracts.scheduleTime.ChooseLumpersContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.presenters.scheduleTime.ChooseLumpersPresenter
-import com.quickhandslogistics.views.BaseActivity
-import com.quickhandslogistics.views.common.DisplayLumpersListActivity.Companion.ARG_LUMPERS_LIST
-import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.utils.AppUtils
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.views.BaseActivity
+import com.quickhandslogistics.views.common.DisplayLumpersListActivity.Companion.ARG_LUMPERS_LIST
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import kotlinx.android.synthetic.main.content_choose_lumper.*
 import java.util.*
@@ -39,6 +39,8 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
 
     companion object {
         const val ARG_ASSIGNED_LUMPERS_LIST = "ARG_ASSIGNED_LUMPERS_LIST"
+        const val CHOOSE_LUMPER_LIST = "CHOOSE_LUMPER_LIST"
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,9 +58,9 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
 
         chooseLumpersPresenter = ChooseLumpersPresenter(this, resources)
         savedInstanceState?.also {
-            if (savedInstanceState.containsKey("employeeDataList")) {
-                employeeDataList = savedInstanceState.getParcelableArrayList("employeeDataList")!!
-                showLumpersData(employeeDataList!!)
+            if (savedInstanceState.containsKey(CHOOSE_LUMPER_LIST)) {
+                employeeDataList = savedInstanceState.getParcelableArrayList(CHOOSE_LUMPER_LIST)!!
+                showLumpersData(employeeDataList)
             }
         } ?: run {
             chooseLumpersPresenter.fetchLumpersList(Date(selectedTime))
@@ -66,8 +68,8 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if (employeeDataList!=null)
-        outState.putParcelableArrayList("employeeDataList", employeeDataList)
+        if (employeeDataList != null)
+            outState.putParcelableArrayList(CHOOSE_LUMPER_LIST, employeeDataList)
         super.onSaveInstanceState(outState)
     }
 

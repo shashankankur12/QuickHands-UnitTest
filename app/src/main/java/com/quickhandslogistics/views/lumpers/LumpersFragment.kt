@@ -32,6 +32,10 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     private lateinit var lumpersAdapter: LumpersAdapter
     private lateinit var lumpersPresenter: LumpersPresenter
 
+    companion object {
+        const val LUMPER_DETAIL_LIST = "LUMPER_DETAIL_LIST"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lumpersPresenter = LumpersPresenter(this, resources)
@@ -67,8 +71,8 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
         imageViewCancel.setOnClickListener(this)
 
         savedInstanceState?.also {
-            if (savedInstanceState.containsKey("ss")) {
-                employeeDataList = savedInstanceState.getParcelableArrayList("ss")
+            if (savedInstanceState.containsKey(LUMPER_DETAIL_LIST)) {
+                employeeDataList = savedInstanceState.getParcelableArrayList(LUMPER_DETAIL_LIST)
                 showLumpersData(employeeDataList!!)
             }
         } ?: run {
@@ -82,8 +86,8 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if(employeeDataList!=null)
-        outState.putParcelableArrayList("ss", employeeDataList)
+        if (employeeDataList != null)
+            outState.putParcelableArrayList(LUMPER_DETAIL_LIST, employeeDataList)
         super.onSaveInstanceState(outState)
     }
 

@@ -9,12 +9,12 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.workSheet.WorkSheetPagerAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetContract
-import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.presenters.workSheet.WorkSheetPresenter
-import com.quickhandslogistics.views.BaseFragment
+import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_work_sheet.*
 import java.util.*
 
@@ -27,6 +27,12 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     private lateinit var data: WorkSheetListAPIResponse.Data
     private lateinit var date: String
     private lateinit var companyName: String
+
+    companion object {
+        const val WORKSHEET_DETAIL = "WORKSHEET_DETAIL"
+        const val WORKSHEET_DATE_SELECTED_HEADER = "WORKSHEET_DATE_SELECTED_HEADER"
+        const val WORKSHEET_COMPANY_NAME = "WORKSHEET_COMPANY_NAME"
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -53,16 +59,16 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         tabLayoutWorkSheet.setupWithViewPager(viewPagerWorkSheet)
 
         savedInstanceState?.also {
-            if (savedInstanceState.containsKey("date")) {
-                date = savedInstanceState.getString("date")!!
+            if (savedInstanceState.containsKey(WORKSHEET_DATE_SELECTED_HEADER)) {
+                date = savedInstanceState.getString(WORKSHEET_DATE_SELECTED_HEADER)!!
             }
-            if (savedInstanceState.containsKey("data")) {
-                companyName = savedInstanceState.getString("name") !!
-                showHeaderInfo(companyName,date)
+            if (savedInstanceState.containsKey(WORKSHEET_COMPANY_NAME)) {
+                companyName = savedInstanceState.getString(WORKSHEET_COMPANY_NAME)!!
+                showHeaderInfo(companyName, date)
             }
-            if (savedInstanceState.containsKey("data")) {
-                data = savedInstanceState.getSerializable("data") as WorkSheetListAPIResponse.Data
-                showWorkSheets(data!!)
+            if (savedInstanceState.containsKey(WORKSHEET_DETAIL)) {
+                data = savedInstanceState.getSerializable(WORKSHEET_DETAIL) as WorkSheetListAPIResponse.Data
+                showWorkSheets(data)
             }
         } ?: run {
             workSheetPresenter.fetchWorkSheetList()
@@ -75,12 +81,12 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if(data!=null)
-        outState.putSerializable("data", data)
+        if (data != null)
+            outState.putSerializable(WORKSHEET_DETAIL, data)
         if (!date.isNullOrEmpty())
-        outState.putString("date", date)
+            outState.putString(WORKSHEET_DATE_SELECTED_HEADER, date)
         if (!companyName.isNullOrEmpty())
-        outState.putSerializable("name", companyName)
+            outState.putSerializable(WORKSHEET_COMPANY_NAME, companyName)
         super.onSaveInstanceState(outState)
     }
 
@@ -109,7 +115,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     }
 
     override fun showWorkSheets(data: WorkSheetListAPIResponse.Data) {
-        this.data=data
+        this.data = data
         // Change the visibility of Cancel All Schedule Option
         if (data.inProgress.isNullOrEmpty() && data.onHold.isNullOrEmpty() && data.cancelled.isNullOrEmpty() && data.completed.isNullOrEmpty() && !data.scheduled.isNullOrEmpty()) {
             onFragmentInteractionListener?.invalidateCancelAllSchedulesOption(true)

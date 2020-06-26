@@ -38,6 +38,11 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
     private lateinit var lumpersAdapter: ScheduledWorkItemDetailAdapter
     private lateinit var scheduledWorkItemDetailPresenter: ScheduledWorkItemDetailPresenter
 
+    companion object {
+        const val WORK_ITEM_DETAIL = "WORK_ITEM_DETAIL"
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scheduled_work_item_detail)
@@ -53,8 +58,8 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
 
         scheduledWorkItemDetailPresenter = ScheduledWorkItemDetailPresenter(this, resources)
         savedInstanceState?.also {
-            if (savedInstanceState.containsKey("workItemDetail")) {
-                workItemDetail = savedInstanceState.getParcelable("workItemDetail")!!
+            if (savedInstanceState.containsKey(WORK_ITEM_DETAIL)) {
+                workItemDetail = savedInstanceState.getParcelable(WORK_ITEM_DETAIL)!!
                 showWorkItemDetail(workItemDetail!!)
             }
         } ?: run {
@@ -63,8 +68,8 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if(workItemDetail!=null)
-        outState.putParcelable("workItemDetail", workItemDetail)
+        if (workItemDetail != null)
+            outState.putParcelable(WORK_ITEM_DETAIL, workItemDetail)
         super.onSaveInstanceState(outState)
     }
 
