@@ -7,6 +7,7 @@ import android.util.SparseBooleanArray
 import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -120,6 +121,8 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
                         if (lunchPunchIn.isNotEmpty()) lunchPunchIn else "NA",
                         if (lunchPunchOut.isNotEmpty()) lunchPunchOut else "NA"
                     )
+
+                    textViewAddTime.visibility = /*if( attendanceDetail?.eveningPunchOut == null) View.VISIBLE else*/ View.GONE
                 }
                 editTextNotes.setText(attendanceDetail.attendanceNote)
                 updateTimeUI(isPresent, lumperAttendance.id!!)
@@ -130,7 +133,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
             val isSelected = selectedItems.get(adapterPosition, false)
             constraintLayout.isActivated = isSelected
 
-            textViewAddTime.visibility = if (textViewAddTime.visibility == View.VISIBLE && selectedItems.size() == 0) View.VISIBLE else View.GONE
+            textViewAddTime.visibility = if (textViewAddTime.visibility == View.VISIBLE && selectedItems.size() == 0&& lumperAttendance?.attendanceDetail?.eveningPunchOut == null) View.VISIBLE else View.GONE
             editTextNotes.isEnabled = selectedItems.size() == 0
             layoutCheckBox.visibility = if (isSelected) View.VISIBLE else View.GONE
         }
@@ -341,7 +344,6 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
 
         //Update in Local List Object to show changes on UI
         getItem(itemPosition).attendanceDetail?.eveningPunchOut = DateUtils.getUTCDateString(PATTERN_API_RESPONSE, Date(currentTime))
-
         if (isNotify)
             notifyDataSetChanged()
     }
