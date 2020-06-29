@@ -18,7 +18,6 @@
 
         <activity
             android:name=".views.buildingOperations.BuildingOperationsActivity" />
-
         <activity
             android:name=".views.common.AddSignatureActivity"
             android:screenOrientation="reverseLandscape" />
@@ -28,30 +27,23 @@
             android:name=".views.scheduleTime.ChooseLumpersActivity" />
         <activity
             android:name=".views.common.DisplayLumpersListActivity"
-
             />
         <activity
             android:name=".views.common.FullScreenImageActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".views.lumpers.LumperDetailActivity"
             />
-
         <activity
             android:name=".views.lumperSheet.LumperWorkDetailActivity"
-
             />
-
         <activity
             android:name=".views.reports.CustomerReportActivity"
-
             />
         <activity
             android:name=".views.reports.LumperJobReportActivity"/>
         <activity
             android:name=".views.reports.TimeClockReportActivity"/>
-
         <activity
             android:name=".views.schedule.AddWorkItemLumpersActivity"/>
         <activity
@@ -71,7 +63,6 @@
             android:name=".views.workSheet.AllWorkScheduleCancelActivity"/>
         <activity
             android:name=".views.workSheet.WorkSheetItemDetailActivity"/>
-
         <activity android:name=".views.BaseActivity"/>
         <activity
             android:name=".views.DashBoardActivity"/>

@@ -21,17 +21,18 @@ import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.schedule.ScheduleFragment
 import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatcher, View.OnClickListener,
     LumperSheetContract.View.OnAdapterItemClickListener, CalendarUtils.CalendarSelectionListener {
 
     private var selectedTime: Long = 0
     private lateinit var availableDates: List<Date>
-    private lateinit var lumperInfoList: ArrayList<LumpersInfo>
+    private var lumperInfoList: ArrayList<LumpersInfo> = ArrayList()
     private var sheetSubmitted: Boolean= false
-    private lateinit var selectedDate: Date
-    private lateinit var tempLumperIds: ArrayList<String>
-    private  var dateString: String ?=null
+    private var selectedDate: Date = Date()
+    private var tempLumperIds: ArrayList<String> =ArrayList()
+    private var dateString: String ?=null
     private var datePosition: Int = 0
     private var isSavedState: Boolean = false
 

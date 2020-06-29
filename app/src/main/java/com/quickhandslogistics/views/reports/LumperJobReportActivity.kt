@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.content_lumper_job_report.*
 import kotlinx.android.synthetic.main.layout_date_filter.*
 import kotlinx.android.synthetic.main.layout_report_type.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobReportContract.View,
     LumperJobReportContract.View.OnAdapterItemClickListener, TextWatcher, RadioGroup.OnCheckedChangeListener {
@@ -30,7 +31,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
 
     private lateinit var lumperJobReportPresenter: LumperJobReportPresenter
     private lateinit var lumperJobReportAdapter: LumperJobReportAdapter
-    private lateinit var employeeDataList: ArrayList<EmployeeData>
+    private  var employeeDataList: ArrayList<EmployeeData> = ArrayList()
 
     companion object {
         const val LUMPER_JOB_REPORT_LIST = "LUMPER_JOB_REPORT_LIST"

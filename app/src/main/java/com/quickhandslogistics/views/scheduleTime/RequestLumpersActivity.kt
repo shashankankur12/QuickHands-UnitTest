@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_request_lumpers.*
 import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.*
 import kotlinx.android.synthetic.main.content_request_lumpers.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     RequestLumpersContract.View, RequestLumpersContract.View.OnAdapterItemClickListener {
@@ -29,7 +30,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     private var scheduledLumpersCount: Int = 0
 
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
-    private lateinit var records: ArrayList<RequestLumpersRecord>
+    private var records: ArrayList<RequestLumpersRecord> = ArrayList()
 
     private lateinit var requestLumpersPresenter: RequestLumpersPresenter
     private lateinit var requestLumpersAdapter: RequestLumpersAdapter

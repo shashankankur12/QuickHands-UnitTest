@@ -84,10 +84,10 @@
                 app:tabGravity="fill"
                 app:tabIndicatorColor="@color/buttonRed"
                 app:tabIndicatorFullWidth="false"
-                app:tabMaxWidth="600dp"
+                app:tabMaxWidth="0dp"
                 app:tabPadding="@dimen/_6sdp"
                 app:tabSelectedTextColor="@color/textBlack"
-                app:tabTextAppearance="@style/TabTextAppearance"
+                app:tabTextAppearance="?android:attr/textAppearanceLarge"
                 app:tabTextColor="@color/detailHeader" />
 
             <View

@@ -23,7 +23,7 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
 
     private lateinit var allWorkScheduleCancelPresenter: AllWorkScheduleCancelPresenter
     private lateinit var allWorkScheduleCancelAdapter: AllWorkScheduleCancelAdapter
-    private lateinit var employeeDataList: java.util.ArrayList<EmployeeData>
+    private var employeeDataList: java.util.ArrayList<EmployeeData> =ArrayList()
 
     companion object {
         const val WORK_SCHEDULE_LIST = "WORK_SCHEDULE_LIST"

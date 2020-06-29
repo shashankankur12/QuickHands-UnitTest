@@ -45,8 +45,8 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     private var scheduleTimeNotes: String? = null
     private var dateString: String? = null
     private var isSavedState: Boolean = false
-    private lateinit var selectedDate: Date
-    private lateinit var tempLumperIds: ArrayList<String>
+    private  var selectedDate: Date = Date()
+    private  var tempLumperIds: ArrayList<String> = ArrayList()
 
     private lateinit var scheduleTimeAdapter: ScheduleTimeAdapter
     private lateinit var scheduleTimePresenter: ScheduleTimePresenter

@@ -32,7 +32,7 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
     private var selectedTime: Long = 0
     private var assignedLumpersList: ArrayList<EmployeeData> = ArrayList()
     private var scheduleTimeList: ArrayList<ScheduleTimeDetail> = ArrayList()
-    private lateinit var employeeDataList: ArrayList<EmployeeData>
+    private  var employeeDataList: ArrayList<EmployeeData> =ArrayList()
 
     private lateinit var chooseLumpersPresenter: ChooseLumpersPresenter
     private lateinit var chooseLumpersAdapter: ChooseLumpersAdapter

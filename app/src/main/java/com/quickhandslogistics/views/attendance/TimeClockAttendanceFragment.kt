@@ -34,7 +34,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     private lateinit var timeClockAttendancePresenter: TimeClockAttendancePresenter
     private lateinit var timeClockAttendanceAdapter: TimeClockAttendanceAdapter
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
-    private lateinit var lumperAttendanceList: ArrayList<LumperAttendanceData>
+    private  var lumperAttendanceList: ArrayList<LumperAttendanceData> =ArrayList()
 
     companion object {
         const val LUMPER_ATTENDANCE_LIST = "LUMPER_ATTENDANCE_LIST"

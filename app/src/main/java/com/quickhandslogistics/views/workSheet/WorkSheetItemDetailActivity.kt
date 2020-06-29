@@ -26,9 +26,9 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
     private var workItemId: String = ""
     private var workItemTypeDisplayName: String = ""
-    private lateinit var workItemDetail: WorkItemDetail
+    private  var workItemDetail: WorkItemDetail =WorkItemDetail()
     private  var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule> = ArrayList<LumpersTimeSchedule>()
-    private lateinit var tempLumperIds: ArrayList<String>
+    private var tempLumperIds: ArrayList<String> = ArrayList()
 
     private lateinit var workSheetItemDetailPresenter: WorkSheetItemDetailPresenter
     private lateinit var workSheetItemStatusAdapter: WorkSheetItemStatusAdapter

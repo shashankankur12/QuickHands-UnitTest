@@ -31,7 +31,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
     private lateinit var availableDates: List<Date>
     private var customerSheetScheduleDetails: CustomerSheetScheduleDetails? = null
     private var customerSheetData: CustomerSheetData? = null
-    private lateinit var selectedDate: Date
+    private  var selectedDate: Date=Date()
     private var companyName: String = ""
     private var date: String = ""
     private var isSavedState: Boolean = false
