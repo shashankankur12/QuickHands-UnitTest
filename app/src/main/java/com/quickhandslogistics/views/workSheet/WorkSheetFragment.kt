@@ -6,25 +6,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.quickhandslogistics.R
+import com.quickhandslogistics.adapters.customerSheet.CustomerSheetPagerAdapter
 import com.quickhandslogistics.adapters.workSheet.WorkSheetPagerAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetContract
+import com.quickhandslogistics.data.customerSheet.CustomerSheetData
+import com.quickhandslogistics.data.customerSheet.CustomerSheetScheduleDetails
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.presenters.workSheet.WorkSheetPresenter
 import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.views.BaseFragment
+import kotlinx.android.synthetic.main.fragment_customer_sheet.*
 import kotlinx.android.synthetic.main.fragment_work_sheet.*
+import kotlinx.android.synthetic.main.fragment_work_sheet.mainConstraintLayout
+import kotlinx.android.synthetic.main.fragment_work_sheet.textViewCompanyName
+import kotlinx.android.synthetic.main.fragment_work_sheet.textViewTotalCount
+import kotlinx.android.synthetic.main.fragment_work_sheet.textViewWorkItemsDate
 import java.util.*
+import kotlin.collections.ArrayList
 
 class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContract.View.OnFragmentInteractionListener {
 
     private var onFragmentInteractionListener: DashBoardContract.View.OnFragmentInteractionListener? = null
 
     private lateinit var workSheetPresenter: WorkSheetPresenter
-    private lateinit var adapter: WorkSheetPagerAdapter
-    private lateinit var data: WorkSheetListAPIResponse.Data
+    private var adapter: WorkSheetPagerAdapter?=null
+    private var data: WorkSheetListAPIResponse.Data= WorkSheetListAPIResponse.Data()
     private lateinit var date: String
     private lateinit var companyName: String
 
@@ -53,11 +62,6 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = WorkSheetPagerAdapter(childFragmentManager, resources)
-        viewPagerWorkSheet.offscreenPageLimit = adapter.count
-        viewPagerWorkSheet.adapter = adapter
-        tabLayoutWorkSheet.setupWithViewPager(viewPagerWorkSheet)
-
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(WORKSHEET_DATE_SELECTED_HEADER)) {
                 date = savedInstanceState.getString(WORKSHEET_DATE_SELECTED_HEADER)!!
@@ -69,8 +73,12 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
             if (savedInstanceState.containsKey(WORKSHEET_DETAIL)) {
                 data = savedInstanceState.getSerializable(WORKSHEET_DETAIL) as WorkSheetListAPIResponse.Data
                 showWorkSheets(data)
+
+                val allWorkItemLists = createDifferentListData(data)
+                initializeViewPager(allWorkItemLists)
             }
         } ?: run {
+            initializeViewPager()
             workSheetPresenter.fetchWorkSheetList()
         }
     }
@@ -95,6 +103,41 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         onFragmentInteractionListener = null
     }
 
+    private fun initializeViewPager(
+        allWorkItemLists: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>? = null,
+        customerSheetData: CustomerSheetData? = null, selectedTime: Long? = null
+    ) {
+        adapter = if (allWorkItemLists != null) {
+            WorkSheetPagerAdapter(childFragmentManager, resources, allWorkItemLists)
+        } else {
+            WorkSheetPagerAdapter(childFragmentManager, resources)
+        }
+        viewPagerWorkSheet.offscreenPageLimit = adapter?.count!!
+        viewPagerWorkSheet.adapter = adapter
+        tabLayoutWorkSheet.setupWithViewPager(viewPagerWorkSheet)
+    }
+
+    private fun createDifferentListData(data: WorkSheetListAPIResponse.Data): Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>> {
+        val onGoingWorkItems = ArrayList<WorkItemDetail>()
+        onGoingWorkItems.addAll(data.inProgress!!)
+        onGoingWorkItems.addAll(data.onHold!!)
+        onGoingWorkItems.addAll(data.scheduled!!)
+
+        val allWorkItems = ArrayList<WorkItemDetail>()
+        allWorkItems.addAll(onGoingWorkItems)
+        allWorkItems.addAll(data.cancelled!!)
+        allWorkItems.addAll(data.completed!!)
+        textViewTotalCount.text = String.format(getString(R.string.total_containers_s), allWorkItems.size)
+
+        val workItemTypeCounts = ScheduleUtils.getWorkItemTypeCounts(allWorkItems)
+
+        textViewLiveLoadsCount.text = String.format(getString(R.string.live_loads_s), workItemTypeCounts.first)
+        textViewDropsCount.text = String.format(getString(R.string.drops_s), workItemTypeCounts.second)
+        textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
+
+        return Triple(onGoingWorkItems, data.cancelled!!, data.completed!!)
+    }
+
     private fun resetUI() {
         // Reset Whole Screen Data
         textViewCompanyName.text = ""
@@ -103,7 +146,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         textViewLiveLoadsCount.text = ""
         textViewDropsCount.text = ""
         textViewOutBoundsCount.text = ""
-        adapter.updateWorkItemsList(ArrayList(), ArrayList(), ArrayList())
+        adapter?.updateWorkItemsList(ArrayList(), ArrayList(), ArrayList())
     }
 
     /** Presenter Listeners */
@@ -140,7 +183,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         textViewDropsCount.text = String.format(getString(R.string.drops_s), workItemTypeCounts.second)
         textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
 
-        adapter.updateWorkItemsList(onGoingWorkItems, data.cancelled!!, data.completed!!)
+        adapter?.updateWorkItemsList(onGoingWorkItems, data.cancelled!!, data.completed!!)
     }
 
     override fun showHeaderInfo(companyName: String, date: String) {

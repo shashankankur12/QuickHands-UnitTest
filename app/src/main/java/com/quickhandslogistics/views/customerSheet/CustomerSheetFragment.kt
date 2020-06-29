@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.customerSheet.CustomerSheetPagerAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
@@ -21,6 +20,7 @@ import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_customer_sheet.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, CustomerSheetContract.View.OnFragmentInteractionListener, CalendarUtils.CalendarSelectionListener {
@@ -29,21 +29,24 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
 
     private var selectedTime: Long = 0
     private lateinit var availableDates: List<Date>
-    private lateinit var scheduleDetails: CustomerSheetScheduleDetails
-    private  var customerSheet: CustomerSheetData = CustomerSheetData()
+    private var customerSheetScheduleDetails: CustomerSheetScheduleDetails? = null
+    private var customerSheetData: CustomerSheetData? = null
     private lateinit var selectedDate: Date
-    private lateinit var companyName: String
-    private lateinit var date: String
+    private var companyName: String = ""
+    private var date: String = ""
+    private var isSavedState: Boolean = false
+    private var selectedDatePosition: Int = 0
 
     private lateinit var customerSheetPresenter: CustomerSheetPresenter
     private lateinit var adapter: CustomerSheetPagerAdapter
 
     companion object {
-        const val DATE_SELECTED_CUSTOMER_SHEET = "DATE_SELECTED_CUSTOMER_SHEET"
+        const val DATE = "DATE"
         const val CUSTOMER_SHEET = "CUSTOMER_SHEET"
         const val SCHEDULE_DETAIL = "SCHEDULE_DETAIL"
-        const val DATE_STRING_CUSTOMER_SHEET = "DATE_STRING_CUSTOMER_SHEET"
-        const val NAME_COMPANY_CUSTOMER_SHEET = "NAME_COMPANY_CUSTOMER_SHEET"
+        const val DATE_STRING = "DATE_STRING"
+        const val COMPANY_NAME = "COMPANY_NAME"
+        const val SELECTED_DATE_POSITION = "SELECTED_DATE_POSITION"
     }
 
     override fun onAttach(context: Context) {
@@ -68,43 +71,35 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (childFragmentManager.fragments.size>0&&childFragmentManager!=null){
-            var fragment: Fragment = childFragmentManager.fragments[0]
-            var fragment2: Fragment = childFragmentManager.fragments[1]
-            childFragmentManager.beginTransaction().remove(fragment).commit()
-            childFragmentManager.beginTransaction().remove(fragment2).commit()
-        }
-        adapter = CustomerSheetPagerAdapter(childFragmentManager, resources)
-        viewPagerCustomerSheet.offscreenPageLimit = adapter.count
-        viewPagerCustomerSheet.adapter = adapter
-        tabLayoutCustomerSheet.setupWithViewPager(viewPagerCustomerSheet)
 
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarCustomerSheet, availableDates, this)
         savedInstanceState?.also {
-            if (savedInstanceState.containsKey(NAME_COMPANY_CUSTOMER_SHEET)) {
-                companyName = savedInstanceState.getString(NAME_COMPANY_CUSTOMER_SHEET)!!
+            isSavedState = true
+            if (savedInstanceState.containsKey(SELECTED_DATE_POSITION)) {
+                selectedDatePosition = savedInstanceState.getInt(SELECTED_DATE_POSITION)!!
+                singleRowCalendarCustomerSheet.select(selectedDatePosition)
             }
-            if (savedInstanceState.containsKey(DATE_STRING_CUSTOMER_SHEET)) {
-                date = savedInstanceState.getString(DATE_STRING_CUSTOMER_SHEET)!!
+
+            if (savedInstanceState.containsKey(COMPANY_NAME) && savedInstanceState.containsKey(DATE_STRING)) {
+                companyName = savedInstanceState.getString(COMPANY_NAME)!!
+                date = savedInstanceState.getString(DATE_STRING)!!
                 showHeaderInfo(companyName, date)
             }
-            if (savedInstanceState.containsKey(SCHEDULE_DETAIL)) {
-                scheduleDetails =
-                    savedInstanceState.getSerializable(SCHEDULE_DETAIL)!! as CustomerSheetScheduleDetails
-            }
-            if (savedInstanceState.containsKey(DATE_SELECTED_CUSTOMER_SHEET)) {
-                selectedDate =
-                    savedInstanceState.getSerializable(DATE_SELECTED_CUSTOMER_SHEET) as Date
-            }
-            if (savedInstanceState.containsKey(CUSTOMER_SHEET)) {
-                customerSheet =
-                    savedInstanceState.getSerializable(CUSTOMER_SHEET) as CustomerSheetData
-                showCustomerSheets(scheduleDetails, customerSheet, selectedDate)
+
+            if (savedInstanceState.containsKey(SCHEDULE_DETAIL) && savedInstanceState.containsKey(DATE) && savedInstanceState.containsKey(CUSTOMER_SHEET)) {
+                customerSheetScheduleDetails = savedInstanceState.getParcelable(SCHEDULE_DETAIL)
+                selectedDate = savedInstanceState.getSerializable(DATE) as Date
+                customerSheetData = savedInstanceState.getParcelable(CUSTOMER_SHEET)
+
+                selectedTime = selectedDate.time
+
+                val allWorkItemLists = createDifferentListData(customerSheetScheduleDetails!!)
+                initializeViewPager(allWorkItemLists, customerSheetData, selectedTime)
             }
         } ?: run {
+            initializeViewPager()
             singleRowCalendarCustomerSheet.select(availableDates.size - 1)
         }
-
     }
 
     override fun onDestroy() {
@@ -114,19 +109,48 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
 
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if (selectedDate != null)
-            outState.putSerializable(DATE_SELECTED_CUSTOMER_SHEET, selectedDate)
-        if (customerSheet != null)
-            outState.putSerializable(CUSTOMER_SHEET, customerSheet)
-        if (scheduleDetails != null)
-            outState.putSerializable(SCHEDULE_DETAIL, scheduleDetails)
-        if (companyName != null)
-            outState.putSerializable(NAME_COMPANY_CUSTOMER_SHEET, companyName)
-        if (date != null)
-            outState.putSerializable(DATE_STRING_CUSTOMER_SHEET, date)
+        if (selectedDate != null && customerSheetScheduleDetails != null) {
+            outState.putSerializable(DATE, selectedDate)
+            outState.putParcelable(CUSTOMER_SHEET, customerSheetData)
+            outState.putParcelable(SCHEDULE_DETAIL, customerSheetScheduleDetails)
+        }
+        outState.putSerializable(COMPANY_NAME, companyName)
+        outState.putSerializable(DATE_STRING, date)
+        outState.putInt(SELECTED_DATE_POSITION, selectedDatePosition)
+
+        super.onSaveInstanceState(outState)
     }
 
-       override fun showAPIErrorMessage(message: String) {
+    private fun initializeViewPager(
+        allWorkItemLists: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>? = null,
+        customerSheetData: CustomerSheetData? = null, selectedTime: Long? = null
+    ) {
+        adapter = if (allWorkItemLists != null) {
+            CustomerSheetPagerAdapter(childFragmentManager, resources, allWorkItemLists, customerSheetData, selectedTime)
+        } else {
+            CustomerSheetPagerAdapter(childFragmentManager, resources)
+        }
+        viewPagerCustomerSheet.offscreenPageLimit = adapter.count
+        viewPagerCustomerSheet.adapter = adapter
+        tabLayoutCustomerSheet.setupWithViewPager(viewPagerCustomerSheet)
+    }
+
+    private fun createDifferentListData(scheduleDetails: CustomerSheetScheduleDetails): Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>> {
+        val onGoingWorkItems = ArrayList<WorkItemDetail>()
+        onGoingWorkItems.addAll(scheduleDetails.inProgress!!)
+        onGoingWorkItems.addAll(scheduleDetails.onHold!!)
+        onGoingWorkItems.addAll(scheduleDetails.scheduled!!)
+
+        val allWorkItems = ArrayList<WorkItemDetail>()
+        allWorkItems.addAll(onGoingWorkItems)
+        allWorkItems.addAll(scheduleDetails.cancelled!!)
+        allWorkItems.addAll(scheduleDetails.completed!!)
+        textViewTotalCount.text = String.format(getString(R.string.total_containers_s), allWorkItems.size)
+
+        return Triple(onGoingWorkItems, scheduleDetails.cancelled!!, scheduleDetails.completed!!)
+    }
+
+    override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
 
         // Reset Whole Screen Data
@@ -136,12 +160,9 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
     }
 
     override fun showCustomerSheets(scheduleDetails: CustomerSheetScheduleDetails, customerSheet: CustomerSheetData?, selectedDate: Date) {
-        this.selectedDate=selectedDate
-        this.scheduleDetails=scheduleDetails
-        if (customerSheet != null) {
-            this.customerSheet= customerSheet
-        }
-
+        this.selectedDate = selectedDate
+        this.customerSheetScheduleDetails = scheduleDetails
+        this.customerSheetData = customerSheet
 
         selectedTime = selectedDate.time
 
@@ -160,8 +181,8 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
     }
 
     override fun showHeaderInfo(companyName: String, date: String) {
-        this.companyName=companyName
-        this.date=date
+        this.companyName = companyName
+        this.date = date
 
         textViewCompanyName.text = companyName.capitalize()
         textViewWorkItemsDate.text = date
@@ -182,11 +203,10 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
     }
 
     /** Calendar Listeners */
-    override fun onSelectCalendarDate(
-        date: Date,
-        selected: Boolean,
-        position: Int
-    ) {
-        customerSheetPresenter.getCustomerSheetByDate(date)
+    override fun onSelectCalendarDate(date: Date, selected: Boolean, position: Int) {
+        if (!isSavedState)
+            customerSheetPresenter.getCustomerSheetByDate(date)
+        isSavedState = false
+        selectedDatePosition = position
     }
 }

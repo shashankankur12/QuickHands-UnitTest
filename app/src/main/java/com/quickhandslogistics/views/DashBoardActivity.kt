@@ -226,7 +226,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         textViewLeadName.text = UIUtils.getEmployeeFullName(leadProfileData)
         textViewEmail.text = if (!leadProfileData.email.isNullOrEmpty()) leadProfileData.email else "-"
         textViewEmployeeId.text = if (!leadProfileData.employeeId.isNullOrEmpty()) leadProfileData.employeeId else "-"
-        textViewRole.text = if (!leadProfileData.role.isNullOrEmpty()) "QHL "+leadProfileData.role!!.capitalize()+ " at "+leadProfileData.buildingDetailData!!.buildingName!!.capitalize() else "-"
+//        textViewRole.text = if (!leadProfileData.role.isNullOrEmpty()) "QHL "+leadProfileData.role!!.capitalize()+ " at "+leadProfileData.buildingDetailData!!.buildingName!!.capitalize() else "-"
 
         textViewVersionName.text = String.format("v%s", BuildConfig.VERSION_NAME)
     }
