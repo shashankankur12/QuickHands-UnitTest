@@ -43,6 +43,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     companion object {
         const val ARG_SHOW_TAB_NAME = "ARG_SHOW_TAB_NAME"
         const val ARG_SCHEDULE_TIME_SELECTED_DATE = "ARG_SCHEDULE_TIME_SELECTED_DATE"
+        const val TAB_NAME = "TAB_NAME"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,8 +64,8 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         }
 
         savedInstanceState?.let {
-            if (savedInstanceState.containsKey("tabName")) {
-                showTabName = savedInstanceState.getString("tabName", getString(R.string.today_s_work_sheet))
+            if (savedInstanceState.containsKey(TAB_NAME)) {
+                showTabName = savedInstanceState.getString(TAB_NAME, getString(R.string.today_s_work_sheet))
             }
         }
 
@@ -153,7 +154,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
                     tabName = getString(R.string.time_clock_attendance)
             }
         }
-        outState.putString("tabName", tabName)
+        outState.putString(TAB_NAME, tabName)
         super.onSaveInstanceState(outState)
     }
 

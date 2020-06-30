@@ -34,6 +34,7 @@ android {
         staging {
             buildConfigField "String", "API_BASE_URL", STAGING_API_URL
             signingConfig signingConfigs.staging
+            debuggable true
         }
         release {
             minifyEnabled false

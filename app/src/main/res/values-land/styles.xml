@@ -38,7 +38,7 @@
 
     <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
-        <item name="android:textSize">@dimen/_13ssp</item>
+        <item name="android:textSize">@dimen/_11ssp</item>
     </style>
 
     <style name="ToolbarTitleTextAppearance" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">

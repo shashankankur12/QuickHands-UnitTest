@@ -21,14 +21,29 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener {
     private var workItemDetail: WorkItemDetail? = null
 
     companion object {
+        private const val NOTE_WORK_DETALS = "NOTE_WORK_DETALS"
         @JvmStatic
-        fun newInstance() = WorkSheetItemDetailNotesFragment()
+        fun newInstance(allWorkItem: WorkItemDetail?) = WorkSheetItemDetailNotesFragment()
+            .apply {
+                arguments = Bundle().apply {
+                    if(allWorkItem!=null){
+                        putParcelable(NOTE_WORK_DETALS, allWorkItem)
+                    }
+                }
+            }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (activity is WorkSheetItemDetailContract.View.OnFragmentInteractionListener) {
             onFragmentInteractionListener = activity as WorkSheetItemDetailContract.View.OnFragmentInteractionListener
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            workItemDetail = it.getParcelable<WorkItemDetail>(NOTE_WORK_DETALS)
         }
     }
 

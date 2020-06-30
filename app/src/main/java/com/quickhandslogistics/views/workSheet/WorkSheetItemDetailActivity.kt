@@ -31,8 +31,8 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     private var tempLumperIds: ArrayList<String> = ArrayList()
 
     private lateinit var workSheetItemDetailPresenter: WorkSheetItemDetailPresenter
-    private lateinit var workSheetItemStatusAdapter: WorkSheetItemStatusAdapter
-    private lateinit var workSheetItemDetailPagerAdapter: WorkSheetItemDetailPagerAdapter
+    private  var workSheetItemStatusAdapter: WorkSheetItemStatusAdapter? =null
+    private  var workSheetItemDetailPagerAdapter: WorkSheetItemDetailPagerAdapter? =null
 
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
@@ -52,9 +52,8 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
             workItemTypeDisplayName = it.getString(ARG_WORK_ITEM_TYPE_DISPLAY_NAME, "")
         }
 
-        initializeUI()
-
         workSheetItemDetailPresenter = WorkSheetItemDetailPresenter(this, resources)
+
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(LUMPER_TIME_SCHEDULE)) {
                 lumpersTimeSchedule =
@@ -66,10 +65,12 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
                 savedInstanceState.getStringArrayList(TEMP_LUMPER_ID_LIST)!!
             if (savedInstanceState.containsKey(WORK_DETAIL_LIST)) {
                 workItemDetail =
-                    savedInstanceState.getParcelable<WorkItemDetail>(WORK_DETAIL_LIST)!!
+                    savedInstanceState.getParcelable(WORK_DETAIL_LIST)!!
                 showWorkItemDetail(workItemDetail, lumpersTimeSchedule, tempLumperIds)
+                initializeUI(workItemDetail, tempLumperIds, lumpersTimeSchedule)
             }
         } ?: run {
+            initializeUI()
             workSheetItemDetailPresenter.fetchWorkItemDetail(workItemId)
         }
     }
@@ -84,9 +85,14 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         super.onSaveInstanceState(outState)
     }
 
-    private fun initializeUI() {
-        workSheetItemDetailPagerAdapter = WorkSheetItemDetailPagerAdapter(supportFragmentManager, resources)
-        viewPagerWorkSheetDetail.offscreenPageLimit = workSheetItemDetailPagerAdapter.count
+    private fun initializeUI(allWorkItem:WorkItemDetail?= null,tampLumpId:ArrayList<String>?=null, lumperTimeSchedule : ArrayList<LumpersTimeSchedule>?= null ) {
+
+        workSheetItemDetailPagerAdapter =  if (allWorkItem!=null) WorkSheetItemDetailPagerAdapter(supportFragmentManager, resources, allWorkItem, tempLumperIds, lumperTimeSchedule)
+        else WorkSheetItemDetailPagerAdapter(
+            supportFragmentManager,
+            resources
+        )
+        viewPagerWorkSheetDetail.offscreenPageLimit = workSheetItemDetailPagerAdapter?.count!!
         viewPagerWorkSheetDetail.adapter = workSheetItemDetailPagerAdapter
         tabLayoutWorkSheetDetail.setupWithViewPager(viewPagerWorkSheetDetail)
 
@@ -112,7 +118,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
         ScheduleUtils.changeStatusUIByValue(resources, status, textViewStatus, isEditable = true)
 
-        workSheetItemStatusAdapter.updateStatusList(statusList)
+        workSheetItemStatusAdapter?.updateStatusList(statusList)
     }
 
     private fun closeBottomSheet() {
@@ -126,7 +132,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
                 bottomSheetBackgroundStatus.id -> closeBottomSheet()
                 textViewStatus.id -> {
                     if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-                        workSheetItemStatusAdapter.updateInitialStatus(textViewStatus.text.toString())
+                        workSheetItemStatusAdapter?.updateInitialStatus(textViewStatus.text.toString())
                         sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                         bottomSheetBackgroundStatus.visibility = View.VISIBLE
                     } else {
@@ -141,7 +147,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
 
-        workSheetItemDetailPagerAdapter.showEmptyData()
+        workSheetItemDetailPagerAdapter?.showEmptyData()
     }
 
     override fun showWorkItemDetail(workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?, tempLumperIds: ArrayList<String>) {
@@ -163,7 +169,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
             updateStatusBackground(workItemDetail.status!!)
         }
 
-        workSheetItemDetailPagerAdapter.showWorkItemData(workItemDetail, lumpersTimeSchedule, tempLumperIds)
+        workSheetItemDetailPagerAdapter?.showWorkItemData(workItemDetail, lumpersTimeSchedule, tempLumperIds)
     }
 
     override fun statusChangedSuccessfully() {
@@ -187,7 +193,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
             }
 
             override fun onCancelClick() {
-                workSheetItemStatusAdapter.updateInitialStatus(textViewStatus.text.toString())
+                workSheetItemStatusAdapter?.updateInitialStatus(textViewStatus.text.toString())
             }
         })
     }

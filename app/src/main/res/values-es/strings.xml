@@ -184,6 +184,7 @@
     <string name="language_change_alert_message">You want to change the language</string>
     <string name="logout_alert_message">You want to logout</string>
     <string name="leave_alert_message">You want to leave this page</string>
+    <string name="time_clock">TimeClockAttendanceFragment</string>
     <string name="lumper_sheet_success_message">Lumper Sheet submitted successfully</string>
     <string name="notes_saved_success_alert_message">Notes Saved Successfully</string>
     <string name="reports_generate_success_message">Report Generated Successfully. Do you want to Download it?</string>

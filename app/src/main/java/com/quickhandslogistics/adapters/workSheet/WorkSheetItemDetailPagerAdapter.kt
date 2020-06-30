@@ -12,14 +12,20 @@ import com.quickhandslogistics.views.workSheet.WorkSheetItemDetailBOFragment
 import com.quickhandslogistics.views.workSheet.WorkSheetItemDetailLumpersFragment
 import com.quickhandslogistics.views.workSheet.WorkSheetItemDetailNotesFragment
 
-class WorkSheetItemDetailPagerAdapter(fragmentManager: FragmentManager, private val resources: Resources) :
+class WorkSheetItemDetailPagerAdapter(
+    fragmentManager: FragmentManager,
+    private val resources: Resources,
+    allWorkItem: WorkItemDetail?=null,
+    tempLumperIds: ArrayList<String>?= null,
+    lumperTimeSchedule: ArrayList<LumpersTimeSchedule>?= null
+) :
     FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private val tabTitles = arrayOf(R.string.building_operations, R.string.lumpers, R.string.notes)
 
-    private var buildingOperationsFragment = WorkSheetItemDetailBOFragment.newInstance()
-    private var lumpersFragment = WorkSheetItemDetailLumpersFragment.newInstance()
-    private var notesFragment = WorkSheetItemDetailNotesFragment.newInstance()
+    private var buildingOperationsFragment = WorkSheetItemDetailBOFragment.newInstance(allWorkItem)
+    private var lumpersFragment = WorkSheetItemDetailLumpersFragment.newInstance(allWorkItem, lumperTimeSchedule,tempLumperIds)
+    private var notesFragment = WorkSheetItemDetailNotesFragment.newInstance(allWorkItem)
 
     override fun getItem(position: Int): Fragment {
         return if (position == 0) buildingOperationsFragment else if (position == 1) lumpersFragment else notesFragment

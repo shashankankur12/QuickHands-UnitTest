@@ -16,6 +16,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.quickhandslogistics.R;
 import com.quickhandslogistics.contracts.DashBoardContract;
 import com.quickhandslogistics.utils.AppUtils;
+import com.quickhandslogistics.utils.CustomDialogWarningListener;
+import com.quickhandslogistics.utils.CustomProgressBar;
 import com.quickhandslogistics.views.BaseActivity;
 import com.quickhandslogistics.views.workSheet.WorkSheetFragment;
 
@@ -92,10 +94,6 @@ public class NavDrawer {
 
     private void showLogoutDialog() {
         onFragmentInteractionListener.onLogoutOptionSelected();
-    }
-
-    private void showLeavePageAlert(String text) {
-        onFragmentInteractionListener.leavePageDialoge(text);
     }
 
     public void create() {
@@ -219,11 +217,10 @@ public class NavDrawer {
                 navDrawer.showLogoutDialog();
             } else {
                 Fragment currentFragment = activity.getSupportFragmentManager().findFragmentById(R.id.frameLayoutMain);
-                if (currentFragment != null && currentFragment.getClass().getSimpleName().equals("TimeClockAttendanceFragment") && !targetFragment.getClass().getSimpleName().equals("TimeClockAttendanceFragment")){
-                    navDrawer.showLeavePageAlert(text);
-
-                }else{
-                    setFragment( activity, text);
+                if (currentFragment != null && currentFragment.getClass().getSimpleName().equals(activity.getString(R.string.time_clock)) && !targetFragment.getClass().getSimpleName().equals(activity.getString(R.string.time_clock))) {
+                    showLeavePageAlert(activity, text);
+                } else {
+                    setFragment(activity, text);
                 }
             }
         }
@@ -247,5 +244,22 @@ public class NavDrawer {
             fragmentTransaction.replace(R.id.frameLayoutMain, targetFragment, targetFragment.getClass().getSimpleName());
             fragmentTransaction.commit();
         }
+
+
+        private void showLeavePageAlert(BaseActivity activity, String text) {
+            CustomProgressBar.Companion.getInstance().showWarningDialog(activity.getString(R.string.leave_alert_message), activity, new CustomDialogWarningListener() {
+                @Override
+                public void onConfirmClick() {
+                    setFragment(activity,text);
+                }
+
+                @Override
+                public void onCancelClick() {
+
+                }
+            });
+        }
     }
+
+
 }

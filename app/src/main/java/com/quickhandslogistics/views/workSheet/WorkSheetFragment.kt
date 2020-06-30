@@ -71,7 +71,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
                 showHeaderInfo(companyName, date)
             }
             if (savedInstanceState.containsKey(WORKSHEET_DETAIL)) {
-                data = savedInstanceState.getSerializable(WORKSHEET_DETAIL) as WorkSheetListAPIResponse.Data
+                data = savedInstanceState.getParcelable<WorkSheetListAPIResponse.Data>(WORKSHEET_DETAIL) as WorkSheetListAPIResponse.Data
                 showWorkSheets(data)
 
                 val allWorkItemLists = createDifferentListData(data)
@@ -90,7 +90,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
 
     override fun onSaveInstanceState(outState: Bundle) {
         if (data != null)
-            outState.putSerializable(WORKSHEET_DETAIL, data)
+            outState.putParcelable(WORKSHEET_DETAIL, data)
         if (!date.isNullOrEmpty())
             outState.putString(WORKSHEET_DATE_SELECTED_HEADER, date)
         if (!companyName.isNullOrEmpty())
