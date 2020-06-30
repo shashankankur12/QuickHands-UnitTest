@@ -216,7 +216,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             if (!leadProfileData.employeeId.isNullOrEmpty()) leadProfileData.employeeId else "-"
         if (!leadProfileData.buildingDetailData?.buildingName.isNullOrEmpty())
             textViewRole.text =
-                if (!leadProfileData.role.isNullOrEmpty()) "QHL " + leadProfileData.role!!.capitalize() + " at " + leadProfileData.buildingDetailData?.buildingName?.capitalize() else "-"
+                if (!leadProfileData.role.isNullOrEmpty()) "QHL " + leadProfileData.role!!.capitalize() + " at " + leadProfileData?.buildingDetailData?.buildingName?.capitalize() else "-"
         else textViewRole.text =
             if (!leadProfileData.role.isNullOrEmpty()) "QHL " + leadProfileData.role!!.capitalize() else "-"
 
@@ -249,6 +249,15 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
                 dashBoardPresenter.performLogout()
             }
 
+            override fun onCancelClick() {
+            }
+        })
+    }
+
+    override fun leavePageDialoge(text: String) {
+        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.leave_alert_message), activity, object : CustomDialogWarningListener {
+            override fun onConfirmClick() {
+            }
             override fun onCancelClick() {
             }
         })

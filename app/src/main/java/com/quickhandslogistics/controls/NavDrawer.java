@@ -94,6 +94,10 @@ public class NavDrawer {
         onFragmentInteractionListener.onLogoutOptionSelected();
     }
 
+    private void showLeavePageAlert(String text) {
+        onFragmentInteractionListener.leavePageDialoge(text);
+    }
+
     public void create() {
         LayoutInflater inflater = activity.getLayoutInflater();
 
@@ -108,6 +112,8 @@ public class NavDrawer {
             ((WorkSheetFragment) fragment).fetchWorkSheetList();
         }
     }
+
+
 
     public static abstract class NavDrawerItem {
         Toolbar toolbar;
@@ -212,11 +218,21 @@ public class NavDrawer {
             if (text.equals(activity.getString(R.string.logout))) {
                 navDrawer.showLogoutDialog();
             } else {
-                toolbar.setTitle(text);
-                navDrawer.setSelectedItem(this);
-                showFragment(activity, true);
-                navDrawer.invalidateOptionMenu(text);
+                Fragment currentFragment = activity.getSupportFragmentManager().findFragmentById(R.id.frameLayoutMain);
+                if (currentFragment != null && currentFragment.getClass().getSimpleName().equals("TimeClockAttendanceFragment") && !targetFragment.getClass().getSimpleName().equals("TimeClockAttendanceFragment")){
+                    navDrawer.showLeavePageAlert(text);
+
+                }else{
+                    setFragment( activity, text);
+                }
             }
+        }
+
+        public void setFragment(BaseActivity activity, String text) {
+            toolbar.setTitle(text);
+            navDrawer.setSelectedItem(this);
+            showFragment(activity, true);
+            navDrawer.invalidateOptionMenu(text);
         }
 
         private void showFragment(BaseActivity activity, Boolean isClearArguments) {
