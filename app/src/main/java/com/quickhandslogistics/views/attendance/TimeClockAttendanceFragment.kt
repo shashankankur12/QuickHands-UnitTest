@@ -425,8 +425,8 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         }
     }
 
-    override fun ondataChanges() {
-
-
+    override fun onDataChanges(): Boolean {
+        val updatedData = timeClockAttendanceAdapter.getUpdatedData()
+        return updatedData.size > 0
     }
 }

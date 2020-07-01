@@ -27,7 +27,6 @@ class DashBoardContract {
             fun invalidateScheduleTimeNotes(notes: String)
             fun invalidateCancelAllSchedulesOption(isShown: Boolean)
             fun onLogoutOptionSelected()
-            fun leavePageDialoge(text: String)
         }
     }
 

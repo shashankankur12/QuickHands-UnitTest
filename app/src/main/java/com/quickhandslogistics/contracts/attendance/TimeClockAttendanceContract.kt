@@ -28,7 +28,7 @@ class TimeClockAttendanceContract {
             fun onRowClicked(itemPosition: Int)
         }
         interface fragmentDataListener {
-            fun ondataChanges()
+            fun onDataChanges(): Boolean
         }
     }
 

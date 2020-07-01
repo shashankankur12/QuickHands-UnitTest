@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.quickhandslogistics.BuildConfig
 import com.quickhandslogistics.R
@@ -197,12 +197,35 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         view?.let {
             when (view.id) {
                 headerLayout.id -> {
-                    navDrawer?.setOpen(false)
-                    startIntent(LeadProfileActivity::class.java)
+                    val currentFragment: Fragment? =
+                        supportFragmentManager.findFragmentById(R.id.frameLayoutMain)
+                    if (currentFragment is TimeClockAttendanceFragment) {
+                        if (currentFragment.onDataChanges()) showLeavePopup()
+                        else openLeadActivity()
+                    } else openLeadActivity()
                 }
             }
         }
     }
+
+    private fun showLeavePopup() {
+        CustomProgressBar.getInstance().showWarningDialog(
+            getString(R.string.leave_alert_message),
+            activity,
+            object : CustomDialogWarningListener {
+                override fun onConfirmClick() {
+                    openLeadActivity()
+                }
+                override fun onCancelClick() {
+                }
+            })
+    }
+
+    private fun openLeadActivity() {
+        navDrawer?.setOpen(false)
+        startIntent(LeadProfileActivity::class.java)
+    }
+
 
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
@@ -257,18 +280,4 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         })
     }
 
-    override fun leavePageDialoge(text: String) {
-        if (isShowLeavePopup) {
-            CustomProgressBar.getInstance().showWarningDialog(getString(R.string.leave_alert_message), activity, object : CustomDialogWarningListener {
-                    override fun onConfirmClick() {
-
-                    }
-
-                    override fun onCancelClick() {
-                    }
-                })
-        }else {
-
-        }
-    }
 }
