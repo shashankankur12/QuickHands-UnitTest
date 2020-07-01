@@ -35,7 +35,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     private var selectedFragmentTitle: String = ""
     private var scheduleTimeNotes: String = ""
     private var isCancelAllScheduleVisible: Boolean = false
-    public var isShowLeavePopup: Boolean = false
+     var isShowLeavePopup: Boolean = false
 
     private lateinit var dashBoardPresenter: DashBoardPresenter
 
@@ -261,6 +261,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         if (isShowLeavePopup) {
             CustomProgressBar.getInstance().showWarningDialog(getString(R.string.leave_alert_message), activity, object : CustomDialogWarningListener {
                     override fun onConfirmClick() {
+
                     }
 
                     override fun onCancelClick() {

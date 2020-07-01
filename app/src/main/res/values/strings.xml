@@ -75,7 +75,7 @@
     <string name="monthly">Monthly</string>
     <string name="my_profile">My Profile</string>
     <string name="no">No</string>
-    <string name="no_of_drops_s">No. of Drops: %s</string>
+    <string name="no_of_drops_s">Drop: %s</string>
     <string name="no_time_logged_in_yet">No time logged in yet</string>
     <string name="note">Note</string>
     <string name="notes">Notes</string>

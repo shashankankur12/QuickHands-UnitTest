@@ -58,6 +58,7 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener {
         addNotesTouchListener(editTextQHLNotes)
 
         buttonSubmit.setOnClickListener(this)
+        workItemDetail?.let { showNotesData(it) }
     }
 
     fun showNotesData(workItemDetail: WorkItemDetail) {

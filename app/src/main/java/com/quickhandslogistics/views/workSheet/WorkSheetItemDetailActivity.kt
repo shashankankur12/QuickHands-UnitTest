@@ -12,6 +12,7 @@ import com.quickhandslogistics.adapters.workSheet.WorkSheetItemStatusAdapter
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
+import com.quickhandslogistics.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.presenters.workSheet.WorkSheetItemDetailPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
@@ -20,6 +21,8 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WOR
 import kotlinx.android.synthetic.main.activity_work_sheet_item_detail.*
 import kotlinx.android.synthetic.main.bottom_sheet_select_status.*
 import kotlinx.android.synthetic.main.content_work_sheet_item_detail.*
+import kotlinx.android.synthetic.main.content_work_sheet_item_detail.mainConstraintLayout
+import kotlinx.android.synthetic.main.fragment_work_sheet.*
 
 class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSheetItemDetailContract.View,
     WorkSheetItemDetailContract.View.OnAdapterItemClickListener, WorkSheetItemDetailContract.View.OnFragmentInteractionListener {
@@ -67,8 +70,8 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
                 workItemDetail =
                     savedInstanceState.getParcelable(WORK_DETAIL_LIST)!!
                 showWorkItemDetail(workItemDetail, lumpersTimeSchedule, tempLumperIds)
-
-                initializeUI(workItemDetail, tempLumperIds, lumpersTimeSchedule)
+                val allWorkItemLists = createDifferentListData(workItemDetail)
+                initializeUI(allWorkItemLists, tempLumperIds, lumpersTimeSchedule)
             }
         } ?: run {
             initializeUI()
@@ -86,9 +89,25 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         super.onSaveInstanceState(outState)
     }
 
+    private fun createDifferentListData(workItemDetail: WorkItemDetail): WorkItemDetail {
+        textViewStartTime.text = String.format(getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
+        textViewWorkItemType.text = workItemTypeDisplayName
+
+        when (workItemTypeDisplayName) {
+            getString(R.string.drops) -> textViewDropItems.text = String.format(getString(R.string.no_of_drops_s), workItemDetail.sequence)
+            getString(R.string.live_loads) -> textViewDropItems.text = String.format(getString(R.string.live_load_s), workItemDetail.sequence)
+            else -> textViewDropItems.text = String.format(getString(R.string.out_bound_s), workItemDetail.sequence)
+        }
+
+        if (!workItemDetail.status.isNullOrEmpty()) {
+            updateStatusBackground(workItemDetail.status!!)
+        }
+        return workItemDetail
+    }
+
     private fun initializeUI(allWorkItem:WorkItemDetail?= null,tampLumpId:ArrayList<String>?=null, lumperTimeSchedule : ArrayList<LumpersTimeSchedule>?= null ) {
 
-        workSheetItemDetailPagerAdapter =  if (allWorkItem!=null) WorkSheetItemDetailPagerAdapter(supportFragmentManager, resources, allWorkItem, tempLumperIds, lumperTimeSchedule)
+        workSheetItemDetailPagerAdapter =  if (allWorkItem!=null) WorkSheetItemDetailPagerAdapter(supportFragmentManager, resources, allWorkItem, tampLumpId, lumperTimeSchedule)
         else WorkSheetItemDetailPagerAdapter(
             supportFragmentManager,
             resources
@@ -152,16 +171,15 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     }
 
     override fun showWorkItemDetail(workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?, tempLumperIds: ArrayList<String>) {
-        if (lumpersTimeSchedule!=null){
-            this.lumpersTimeSchedule=lumpersTimeSchedule
-        }
+        this.lumpersTimeSchedule= lumpersTimeSchedule!!
+
         this.workItemDetail=workItemDetail
         this.tempLumperIds=tempLumperIds
         textViewStartTime.text = String.format(getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
         textViewWorkItemType.text = workItemTypeDisplayName
 
         when (workItemTypeDisplayName) {
-            getString(R.string.drops) -> textViewDropItems.text = String.format(getString(R.string.no_of_drops_s), workItemDetail.numberOfDrops)
+            getString(R.string.drops) -> textViewDropItems.text = String.format(getString(R.string.no_of_drops_s), workItemDetail.sequence)
             getString(R.string.live_loads) -> textViewDropItems.text = String.format(getString(R.string.live_load_s), workItemDetail.sequence)
             else -> textViewDropItems.text = String.format(getString(R.string.out_bound_s), workItemDetail.sequence)
         }

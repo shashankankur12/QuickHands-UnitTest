@@ -30,7 +30,7 @@ import kotlinx.android.synthetic.main.content_time_clock_attendance.*
 import kotlinx.android.synthetic.main.fragment_time_clock_attendance.*
 
 class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWatcher,
-    TimeClockAttendanceContract.View, TimeClockAttendanceContract.View.OnAdapterItemClickListener {
+    TimeClockAttendanceContract.View, TimeClockAttendanceContract.View.OnAdapterItemClickListener, TimeClockAttendanceContract.View.fragmentDataListener{
 
     private lateinit var timeClockAttendancePresenter: TimeClockAttendancePresenter
     private lateinit var timeClockAttendanceAdapter: TimeClockAttendanceAdapter
@@ -423,5 +423,10 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         if (timeClockAttendanceAdapter.getSelectedItemCount() > 0) {
             onRowLongClicked(itemPosition)
         }
+    }
+
+    override fun ondataChanges() {
+
+
     }
 }

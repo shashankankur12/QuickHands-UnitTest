@@ -98,7 +98,6 @@ public class NavDrawer {
 
     private void showLeaveDialog(String text) {
         onFragmentInteractionListener.leavePageDialoge(text);
-
     }
 
     public void create() {
@@ -223,8 +222,9 @@ public class NavDrawer {
             } else {
                 Fragment currentFragment = activity.getSupportFragmentManager().findFragmentById(R.id.frameLayoutMain);
                 if (currentFragment != null && currentFragment.getClass().getSimpleName().equals(activity.getString(R.string.time_clock)) && !targetFragment.getClass().getSimpleName().equals(activity.getString(R.string.time_clock))) {
+                    setFragment(activity, text);
 //                    showLeavePageAlert(activity, text);
-                    navDrawer.showLeaveDialog(text);
+//                    navDrawer.showLeaveDialog(text);
                 } else {
                     setFragment(activity, text);
                 }

@@ -82,6 +82,7 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
         })
 
         buttonUpdate.setOnClickListener(this)
+        workItemDetail?.let { showBuildingOperationsData(it) }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

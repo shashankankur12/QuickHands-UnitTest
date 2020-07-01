@@ -67,7 +67,7 @@ class WorkSheetItemAdapter(private val resources: Resources, var adapterItemClic
             textViewWorkItemType.text = workItemTypeDisplayName
 
             when (workItemTypeDisplayName) {
-                resources.getString(R.string.drops) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.no_of_drops_s), workItemDetail.numberOfDrops)
+                resources.getString(R.string.drops) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.no_of_drops_s), workItemDetail.sequence)
                 resources.getString(R.string.live_loads) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.live_load_s), workItemDetail.sequence)
                 else -> textViewNoOfDrops.text = String.format(resources.getString(R.string.out_bound_s), workItemDetail.sequence)
             }

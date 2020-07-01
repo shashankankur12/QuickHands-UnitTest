@@ -167,7 +167,7 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
         textViewScheduleType.text = workItemTypeDisplayName
 
         when (workItemTypeDisplayName) {
-            getString(R.string.drops) -> textViewWorkItemsCount.text = String.format(getString(R.string.no_of_drops_s), workItemDetail.numberOfDrops)
+            getString(R.string.drops) -> textViewWorkItemsCount.text = String.format(getString(R.string.no_of_drops_s), workItemDetail.sequence)
             getString(R.string.live_loads) -> textViewWorkItemsCount.text = String.format(getString(R.string.live_load_s), workItemDetail.sequence)
             else -> textViewWorkItemsCount.text = String.format(getString(R.string.out_bound_s), workItemDetail.sequence)
         }

@@ -32,6 +32,8 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
     private lateinit var workSheetItemDetailLumpersAdapter: WorkSheetItemDetailLumpersAdapter
 
     private var workItemDetail: WorkItemDetail? = null
+    private  var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule> = ArrayList<LumpersTimeSchedule>()
+    private var tempLumperIds: ArrayList<String> = ArrayList()
 
     companion object {
         private const val LUMPER_WORK_DETALS = "LUMPER_WORK_DETALS"
@@ -66,6 +68,10 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         arguments?.let {
             if (it.containsKey(LUMPER_WORK_DETALS))
             workItemDetail = it.getParcelable<WorkItemDetail>(LUMPER_WORK_DETALS)
+            if (it.containsKey(LUMPER_SCHEDULE))
+                lumpersTimeSchedule = it.getParcelableArrayList(LUMPER_SCHEDULE)!!
+            if (it.containsKey(LUMPER_WORK_DETALS))
+                tempLumperIds = it.getStringArrayList(TEMP_LUMPER_IDS)!!
         }
     }
 
@@ -93,6 +99,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         })
 
         buttonAddLumpers.setOnClickListener(this)
+        workItemDetail?.let { showLumpersData(it, lumpersTimeSchedule,tempLumperIds) }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
