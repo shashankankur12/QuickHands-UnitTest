@@ -96,6 +96,11 @@ public class NavDrawer {
         onFragmentInteractionListener.onLogoutOptionSelected();
     }
 
+    private void showLeaveDialog(String text) {
+        onFragmentInteractionListener.leavePageDialoge(text);
+
+    }
+
     public void create() {
         LayoutInflater inflater = activity.getLayoutInflater();
 
@@ -218,7 +223,8 @@ public class NavDrawer {
             } else {
                 Fragment currentFragment = activity.getSupportFragmentManager().findFragmentById(R.id.frameLayoutMain);
                 if (currentFragment != null && currentFragment.getClass().getSimpleName().equals(activity.getString(R.string.time_clock)) && !targetFragment.getClass().getSimpleName().equals(activity.getString(R.string.time_clock))) {
-                    showLeavePageAlert(activity, text);
+//                    showLeavePageAlert(activity, text);
+                    navDrawer.showLeaveDialog(text);
                 } else {
                     setFragment(activity, text);
                 }
@@ -243,21 +249,6 @@ public class NavDrawer {
             FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.frameLayoutMain, targetFragment, targetFragment.getClass().getSimpleName());
             fragmentTransaction.commit();
-        }
-
-
-        private void showLeavePageAlert(BaseActivity activity, String text) {
-            CustomProgressBar.Companion.getInstance().showWarningDialog(activity.getString(R.string.leave_alert_message), activity, new CustomDialogWarningListener() {
-                @Override
-                public void onConfirmClick() {
-                    setFragment(activity,text);
-                }
-
-                @Override
-                public void onCancelClick() {
-
-                }
-            });
         }
     }
 

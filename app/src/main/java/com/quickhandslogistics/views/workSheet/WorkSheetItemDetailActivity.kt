@@ -67,6 +67,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
                 workItemDetail =
                     savedInstanceState.getParcelable(WORK_DETAIL_LIST)!!
                 showWorkItemDetail(workItemDetail, lumpersTimeSchedule, tempLumperIds)
+
                 initializeUI(workItemDetail, tempLumperIds, lumpersTimeSchedule)
             }
         } ?: run {

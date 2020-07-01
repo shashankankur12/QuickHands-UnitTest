@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import com.quickhandslogistics.BuildConfig
 import com.quickhandslogistics.R
@@ -34,6 +35,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     private var selectedFragmentTitle: String = ""
     private var scheduleTimeNotes: String = ""
     private var isCancelAllScheduleVisible: Boolean = false
+    public var isShowLeavePopup: Boolean = false
 
     private lateinit var dashBoardPresenter: DashBoardPresenter
 
@@ -256,11 +258,16 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     }
 
     override fun leavePageDialoge(text: String) {
-        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.leave_alert_message), activity, object : CustomDialogWarningListener {
-            override fun onConfirmClick() {
-            }
-            override fun onCancelClick() {
-            }
-        })
+        if (isShowLeavePopup) {
+            CustomProgressBar.getInstance().showWarningDialog(getString(R.string.leave_alert_message), activity, object : CustomDialogWarningListener {
+                    override fun onConfirmClick() {
+                    }
+
+                    override fun onCancelClick() {
+                    }
+                })
+        }else {
+
+        }
     }
 }

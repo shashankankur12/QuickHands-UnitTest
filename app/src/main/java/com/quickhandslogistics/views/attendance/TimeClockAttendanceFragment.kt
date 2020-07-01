@@ -24,6 +24,7 @@ import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_MORNING_PU
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.convertDateStringToTime
 import com.quickhandslogistics.views.BaseFragment
+import com.quickhandslogistics.views.DashBoardActivity
 import kotlinx.android.synthetic.main.bottom_sheet_add_attendance_time.*
 import kotlinx.android.synthetic.main.content_time_clock_attendance.*
 import kotlinx.android.synthetic.main.fragment_time_clock_attendance.*
@@ -90,6 +91,8 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
                 super.onChanged()
                 val updatedData = timeClockAttendanceAdapter.getUpdatedData()
                 buttonSave.isEnabled = updatedData.size > 0
+                var dashboardInstance = activity as DashBoardActivity?
+                dashboardInstance?.isShowLeavePopup = updatedData.size > 0
 
                 invalidateEmptyView()
             }
