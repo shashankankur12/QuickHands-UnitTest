@@ -112,8 +112,6 @@ public class NavDrawer {
         }
     }
 
-
-
     public static abstract class NavDrawerItem {
         Toolbar toolbar;
         NavDrawer navDrawer;
@@ -265,6 +263,4 @@ public class NavDrawer {
             fragmentTransaction.commit();
         }
     }
-
-
 }

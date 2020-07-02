@@ -225,7 +225,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_2sdp" />
             </LinearLayout>
-
             <LinearLayout
                 android:id="@+id/layoutDepartment"
                 android:layout_width="0dp"

@@ -80,7 +80,9 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
         val phoneNumber = UIUtils.getDisplayPhoneNumber(employeeData)
         textViewPhoneNumber.text = if (phoneNumber.isNotEmpty()) phoneNumber else "-"
 
-        textViewShiftHours.text = if (!employeeData.shiftHours.isNullOrEmpty()) employeeData.shiftHours else "-"
+        textViewShiftHours.text = if (!employeeData.shiftHours.isNullOrEmpty()) employeeData?.shiftHours else "-"
+        textViewShift.text = if (!employeeData.shift.isNullOrEmpty()) employeeData?.shift?.capitalize() else "-"
         textViewBuildingName.text = if (!employeeData.buildingDetailData?.buildingName.isNullOrEmpty()) employeeData.buildingDetailData?.buildingName!!.capitalize() else "-"
+        textViewDepartment.text = if (!employeeData.department.isNullOrEmpty()) employeeData?.department else "-"
     }
 }
