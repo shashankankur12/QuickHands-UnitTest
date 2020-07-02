@@ -18,9 +18,9 @@ class WorkSheetPagerAdapter(
     FragmentStatePagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private val tabTitles = arrayOf(R.string.ongoing, R.string.cancelled, R.string.completed)
-    private var onGoingWorkItemsCount = 0
-    private var cancelledWorkItemsCount = 0
-    private var completedWorkItemsCount = 0
+    private var onGoingWorkItemsCount = if (!allWorkItemLists?.first.isNullOrEmpty())allWorkItemLists?.first?.size else 0
+    private var cancelledWorkItemsCount = if (!allWorkItemLists?.second.isNullOrEmpty())allWorkItemLists?.second?.size else 0
+    private var completedWorkItemsCount = if (!allWorkItemLists?.third.isNullOrEmpty())allWorkItemLists?.third?.size else 0
 
     private var ongoingFragment = WorkSheetItemFragment.newInstance(resources.getString(tabTitles[0]), allWorkItemLists)
     private var cancelledFragment = WorkSheetItemFragment.newInstance(resources.getString(tabTitles[1]), allWorkItemLists)

@@ -135,6 +135,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         textViewDropsCount.text = String.format(getString(R.string.drops_s), workItemTypeCounts.second)
         textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
 
+
         return Triple(onGoingWorkItems, data.cancelled!!, data.completed!!)
     }
 
