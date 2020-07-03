@@ -9,15 +9,20 @@ import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.DataManager.getAuthToken
 import com.quickhandslogistics.network.DataManager.isSuccessResponse
 import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.SharedPref
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
-class TimeClockAttendanceModel : TimeClockAttendanceContract.Model {
+class TimeClockAttendanceModel(private val sharedPref: SharedPref) : TimeClockAttendanceContract.Model {
+
+    override fun fetchHeaderInfo(onFinishedListener: TimeClockAttendanceContract.Model.OnFinishedListener) {
+        val date = DateUtils.getCurrentDateStringByEmployeeShift(sharedPref, pattern = DateUtils.PATTERN_NORMAL)
+        onFinishedListener.onSuccessGetHeaderInfo(date)
+    }
 
     override fun fetchLumpersAttendanceList(onFinishedListener: TimeClockAttendanceContract.Model.OnFinishedListener) {
-        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, Date())
+        val dateString = DateUtils.getCurrentDateStringByEmployeeShift(sharedPref)
 
         DataManager.getService().getAttendanceList(getAuthToken(), dateString).enqueue(object : Callback<GetAttendanceAPIResponse> {
             override fun onResponse(call: Call<GetAttendanceAPIResponse>, response: Response<GetAttendanceAPIResponse>) {

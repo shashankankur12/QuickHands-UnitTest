@@ -53,6 +53,10 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
     private lateinit var outBondsAdapter: ScheduledWorkItemAdapter
     private lateinit var scheduleDetailPresenter: ScheduleDetailPresenter
 
+    companion object {
+        const val SCHEDULE_DETAIL = "SCHEDULE_DETAIL"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_schedule_detail)
@@ -69,12 +73,25 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
         initializeUI()
 
         scheduleDetailPresenter = ScheduleDetailPresenter(this, resources)
-        scheduleDetailPresenter.getScheduleDetail(scheduleIdentity, Date(selectedTime))
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey(SCHEDULE_DETAIL)) {
+                scheduleDetail = savedInstanceState.getParcelable(SCHEDULE_DETAIL)
+                showScheduleData(scheduleDetail!!)
+            }
+        } ?: run {
+            scheduleDetailPresenter.getScheduleDetail(scheduleIdentity, Date(selectedTime))
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_toolbar, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (scheduleDetail != null)
+            outState.putParcelable(SCHEDULE_DETAIL, scheduleDetail)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {

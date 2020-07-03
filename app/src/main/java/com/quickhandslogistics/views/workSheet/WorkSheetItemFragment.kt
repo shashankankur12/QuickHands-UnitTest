@@ -16,30 +16,44 @@ import com.quickhandslogistics.contracts.workSheet.WorkSheetItemContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
+import com.quickhandslogistics.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.views.customerSheet.CustomerSheetContainersFragment
 import kotlinx.android.synthetic.main.fragment_work_sheet_item.*
-import java.util.*
+import kotlin.collections.ArrayList
 
 class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapterItemClickListener {
 
     private var onFragmentInteractionListener: WorkSheetContract.View.OnFragmentInteractionListener? = null
 
     private var workItemType: String = ""
+    private var onGoingWorkItems = java.util.ArrayList<WorkItemDetail>()
+    private var cancelledWorkItems = java.util.ArrayList<WorkItemDetail>()
+    private var completedWorkItems = java.util.ArrayList<WorkItemDetail>()
 
     private lateinit var workSheetItemAdapter: WorkSheetItemAdapter
 
     companion object {
         private const val ARG_WORK_ITEM_TYPE = "ARG_WORK_ITEM_TYPE"
+        private const val ARG_ONGOING_ITEMS = "ARG_ONGOING_ITEMS"
+        private const val ARG_CANCELLED_ITEMS = "ARG_CANCELLED_ITEMS"
+        private const val ARG_COMPLETED_ITEMS = "ARG_COMPLETED_ITEMS"
 
         @JvmStatic
-        fun newInstance(workItemType: String) = WorkSheetItemFragment()
+        fun newInstance(
+            workItemType: String, allWorkItemLists: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>?) = WorkSheetItemFragment()
             .apply {
                 arguments = Bundle().apply {
                     putString(ARG_WORK_ITEM_TYPE, workItemType)
+                    if(allWorkItemLists!=null){
+                        putParcelableArrayList(ARG_ONGOING_ITEMS, allWorkItemLists.first)
+                        putParcelableArrayList(ARG_CANCELLED_ITEMS, allWorkItemLists.second)
+                        putParcelableArrayList(ARG_COMPLETED_ITEMS, allWorkItemLists.third)
+                    }
                 }
             }
     }
@@ -55,6 +69,13 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
         super.onCreate(savedInstanceState)
         arguments?.let {
             workItemType = it.getString(ARG_WORK_ITEM_TYPE, "")
+            if (it.containsKey(ARG_ONGOING_ITEMS))
+            onGoingWorkItems = it.getParcelableArrayList(ARG_ONGOING_ITEMS)!!
+            if (it.containsKey(ARG_CANCELLED_ITEMS))
+            cancelledWorkItems = it.getParcelableArrayList(ARG_CANCELLED_ITEMS)!!
+            if (it.containsKey(ARG_COMPLETED_ITEMS))
+
+            completedWorkItems = it.getParcelableArrayList(ARG_COMPLETED_ITEMS)!!
         }
     }
 
@@ -84,6 +105,12 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
             getString(R.string.ongoing) -> getString(R.string.empty_containers_list_ongoing_info_message)
             getString(R.string.cancelled) -> getString(R.string.empty_containers_list_cancelled_info_message)
             else -> getString(R.string.empty_containers_list_completed_info_message)
+        }
+        when(workItemType){
+            getString(R.string.ongoing) ->  updateWorkItemsList(onGoingWorkItems)
+            getString(R.string.cancelled) ->  updateWorkItemsList(cancelledWorkItems)
+            else ->updateWorkItemsList(completedWorkItems)
+
         }
     }
 

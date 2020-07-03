@@ -13,6 +13,6 @@ class RequestLumpersListAPIResponse : BaseResponse() {
     class Data : PaginationResponse() {
         @SerializedName("records")
         @Expose
-        var records: List<RequestLumpersRecord>? = null
+        var records: ArrayList<RequestLumpersRecord>? = null
     }
 }

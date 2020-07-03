@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.quickhandslogistics.R
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.utils.UIUtils
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_DATA
 import kotlinx.android.synthetic.main.fragment_lumper_work_detail.*
@@ -48,6 +49,7 @@ class LumperWorkDetailFragment : BaseFragment() {
             } ?: run {
                 textViewAvailability.text = "-"
             }
+            textViewDepartment.text = if (!employeeData.department.isNullOrEmpty()) UIUtils.getDisplayEmployeeDepartment(employeeData) else "-"
 
             employeeData.abilityToTravelBetweenBuildings?.also { abilityToTravelBetweenBuildings ->
                 textViewAbilityTravel.text = if (abilityToTravelBetweenBuildings) getString(R.string.yes) else getString(
@@ -56,10 +58,10 @@ class LumperWorkDetailFragment : BaseFragment() {
             } ?: run {
                 textViewAbilityTravel.text = "-"
             }
-
-            textViewPrimaryBuilding.text = if (!employeeData.primaryBuilding.isNullOrEmpty()) employeeData.primaryBuilding else "-"
             textViewMilesRadius.text = if (!employeeData.milesRadiusFromPrimaryBuilding.isNullOrEmpty())
                 String.format("%s Miles", employeeData.milesRadiusFromPrimaryBuilding) else "-"
+
+            textViewPrimaryBuilding.text = if (!employeeData.primaryBuilding.isNullOrEmpty()) employeeData.primaryBuilding else "-"
         }
     }
 }

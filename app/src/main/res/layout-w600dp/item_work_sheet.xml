@@ -33,37 +33,24 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewStartTime"
+            android:id="@+id/textViewNoOfDrops"
             style="@style/titleBigTextViewTheme"
             android:layout_width="0dp"
             android:layout_marginEnd="@dimen/_4sdp"
             android:clickable="false"
-            android:text="@string/start_time_s"
+            android:text="Container Number :"
             app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewWorkItemType"
-            style="@style/valuesTextViewTheme"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:drawableStart="@drawable/ic_schedule_type"
-            android:drawablePadding="@dimen/_4sdp"
-            android:text="@string/live_loads"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
-
-        <TextView
-            android:id="@+id/textViewNoOfDrops"
+            android:id="@+id/textViewStartTime"
             style="@style/valuesTextViewTheme"
             android:layout_marginTop="@dimen/_4sdp"
-            android:drawableStart="@drawable/ic_schedule_work_items"
-            android:drawablePadding="@dimen/_4sdp"
-            android:text="Container Number :"
+            android:text="@string/start_time_s"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemType" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewNoOfDrops" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circleImageViewArrow"
@@ -83,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_6sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewNoOfDrops" />
+            app:layout_constraintTop_toBottomOf="@id/textViewStartTime" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

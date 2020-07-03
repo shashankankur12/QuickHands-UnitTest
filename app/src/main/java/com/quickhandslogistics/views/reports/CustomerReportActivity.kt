@@ -32,6 +32,7 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
         customerReportPresenter = CustomerReportPresenter(this, resources)
     }
 
+
     override fun onDestroy() {
         super.onDestroy()
         customerReportPresenter.onDestroy()

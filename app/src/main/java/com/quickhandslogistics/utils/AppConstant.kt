@@ -37,6 +37,16 @@ interface AppConstant {
         const val WORK_ITEM_STATUS_CANCELLED = "CANCELLED"
         const val WORK_ITEM_STATUS_SCHEDULED = "SCHEDULED"
 
+        // Employee Department Enums
+        const val EMPLOYEE_DEPARTMENT_INBOUND = "INBOUND"
+        const val EMPLOYEE_DEPARTMENT_OUTBOUND = "OUTBOUND"
+        const val EMPLOYEE_DEPARTMENT_BOTH = "BOTH"
+
+        // Employee Swift Enums
+        const val EMPLOYEE_SHIFT_MORNING = "morning"
+        const val EMPLOYEE_SHIFT_SWING = "swing"
+        const val EMPLOYEE_SHIFT_NIGHT = "night"
+
         // REQUEST LUMPERS Enums
         const val REQUEST_LUMPERS_STATUS_PENDING = "pending"
         const val REQUEST_LUMPERS_STATUS_APPROVED = "approved"

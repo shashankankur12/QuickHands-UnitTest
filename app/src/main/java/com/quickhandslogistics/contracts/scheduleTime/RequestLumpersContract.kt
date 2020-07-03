@@ -4,6 +4,7 @@ import com.quickhandslogistics.contracts.BaseContract
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersListAPIResponse
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
 import java.util.*
+import kotlin.collections.ArrayList
 
 class RequestLumpersContract {
     interface Model {
@@ -21,7 +22,7 @@ class RequestLumpersContract {
 
     interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
-        fun showAllRequests(records: List<RequestLumpersRecord>)
+        fun showAllRequests(records: ArrayList<RequestLumpersRecord>)
         fun showHeaderInfo(dateString: String)
         fun showSuccessDialog(message:String, date: Date)
 

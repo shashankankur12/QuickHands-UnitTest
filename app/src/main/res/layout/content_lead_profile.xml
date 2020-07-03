@@ -160,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15ssp"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/layoutShift"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layoutPhoneNumber">
 
@@ -179,12 +179,36 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layoutBuildingName"
+                android:id="@+id/layoutShift"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15ssp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/layoutShiftHours"
+                app:layout_constraintTop_toBottomOf="@+id/layoutPhoneNumber">
+
+                <TextView
+                    style="@style/detailTextHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shift" />
+
+                <TextView
+                    android:id="@+id/textViewShift"
+                    style="@style/detailTextValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutBuildingName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15ssp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toStartOf="@+id/layoutDepartment"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layoutShiftHours">
 
@@ -196,6 +220,30 @@
 
                 <TextView
                     android:id="@+id/textViewBuildingName"
+                    style="@style/detailTextValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutDepartment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15ssp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/layoutBuildingName"
+                app:layout_constraintTop_toBottomOf="@+id/layoutShift">
+
+                <TextView
+                    style="@style/detailTextHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/departmant" />
+
+                <TextView
+                    android:id="@+id/textViewDepartment"
                     style="@style/detailTextValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

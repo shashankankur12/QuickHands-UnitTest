@@ -30,6 +30,7 @@
     <string name="completed">Completed</string>
     <string name="completed_s">Completed: %s</string>
     <string name="contact_info">Contact Info</string>
+    <string name="container_details">Container Detail</string>
     <string name="containers">Containers</string>
     <string name="create_new_request">Create New Request</string>
     <string name="current_time">Current Time: </string>
@@ -41,6 +42,7 @@
     <string name="daily">Daily</string>
     <string name="drops">Drops</string>
     <string name="drops_s">Drops: %s</string>
+    <string name="edit_parameters">Edit Parameters</string>
     <string name="email_address">Email Address</string>
     <string name="employee_id">Employee ID</string>
     <string name="end">End</string>
@@ -57,14 +59,14 @@
     <string name="in_progress">In-Progress</string>
     <string name="info">Info</string>
     <string name="job_description">Job Description</string>
-    <string name="l_sheet">Lumper-Sheet</string>
+    <string name="l_sheet">Lumper Sheet</string>
     <string name="last_day_worked">Last day worked</string>
     <string name="last_name">Last Name</string>
     <string name="live_load_s">Live Load: %s</string>
     <string name="live_loads">Live Loads</string>
     <string name="live_loads_s">Live Loads: %s</string>
     <string name="loading">Loading</string>
-    <string name="logout">Log-Out</string>
+    <string name="logout">Log Out</string>
     <string name="lumper_details">Lumper Details</string>
     <string name="lumper_job_report">Lumper Job Report</string>
     <string name="lumper_work_detail">Lumper Work Detail</string>
@@ -75,7 +77,7 @@
     <string name="monthly">Monthly</string>
     <string name="my_profile">My Profile</string>
     <string name="no">No</string>
-    <string name="no_of_drops_s">No. of Drops: %s</string>
+    <string name="no_of_drops_s">Drop: %s</string>
     <string name="no_time_logged_in_yet">No time logged in yet</string>
     <string name="note">Note</string>
     <string name="notes">Notes</string>
@@ -87,6 +89,7 @@
     <string name="out_bounds">Out Bounds</string>
     <string name="out_bounds_s">Out Bounds: %s</string>
     <string name="out_to_lunch">Out to Lunch</string>
+    <string name="parameters">Parameters</string>
     <string name="part_time">Part Time</string>
     <string name="pdf">PDF</string>
     <string name="pending">Pending</string>
@@ -105,6 +108,7 @@
     <string name="save">Save</string>
     <string name="schedule">Work Schedule</string>
     <string name="scheduled">Scheduled</string>
+    <string name="scheduled_time_s">Scheduled Time: %s</string>
     <string name="schedule_detail">Schedule Detail</string>
     <string name="schedule_lumpers">Schedule Lumpers</string>
     <string name="schedule_lumpers_time">Schedule Lumpers</string>
@@ -183,6 +187,8 @@
     <string name="generate_report_alert_message">You want to generate report</string>
     <string name="language_change_alert_message">You want to change the language</string>
     <string name="logout_alert_message">You want to logout</string>
+    <string name="leave_alert_message">You want to leave this page</string>
+    <string name="time_clock">TimeClockAttendanceFragment</string>
     <string name="lumper_sheet_success_message">Lumper Sheet submitted successfully</string>
     <string name="notes_saved_success_alert_message">Notes Saved Successfully</string>
     <string name="reports_generate_success_message">Report has been generated Successfully. Please check the notification bar to see the downloading.</string>
@@ -232,4 +238,5 @@
     <string name="break_end_greater_work_start_warning_message">Break\'s End Time should be greater than Work\'s Start Time</string>
     <string name="break_end_greater_break_start_warning_message">Break\'s End Time should be greater than Break\'s Start Time</string>
     <string name="break_end_less_work_end_warning_message">Break\'s End Time should be less than Work\'s End Time</string>
+    <string name="departmant">Department</string>
 </resources>

@@ -38,6 +38,11 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
     private lateinit var lumpersAdapter: ScheduledWorkItemDetailAdapter
     private lateinit var scheduledWorkItemDetailPresenter: ScheduledWorkItemDetailPresenter
 
+    companion object {
+        const val WORK_ITEM_DETAIL = "WORK_ITEM_DETAIL"
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scheduled_work_item_detail)
@@ -52,7 +57,20 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
         initializeUI()
 
         scheduledWorkItemDetailPresenter = ScheduledWorkItemDetailPresenter(this, resources)
-        scheduledWorkItemDetailPresenter.fetchWorkItemDetail(workItemId)
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey(WORK_ITEM_DETAIL)) {
+                workItemDetail = savedInstanceState.getParcelable(WORK_ITEM_DETAIL)!!
+                showWorkItemDetail(workItemDetail!!)
+            }
+        } ?: run {
+            scheduledWorkItemDetailPresenter.fetchWorkItemDetail(workItemId)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (workItemDetail != null)
+            outState.putParcelable(WORK_ITEM_DETAIL, workItemDetail)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -149,7 +167,7 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
         textViewScheduleType.text = workItemTypeDisplayName
 
         when (workItemTypeDisplayName) {
-            getString(R.string.drops) -> textViewWorkItemsCount.text = String.format(getString(R.string.no_of_drops_s), workItemDetail.numberOfDrops)
+            getString(R.string.drops) -> textViewWorkItemsCount.text = String.format(getString(R.string.no_of_drops_s), workItemDetail.sequence)
             getString(R.string.live_loads) -> textViewWorkItemsCount.text = String.format(getString(R.string.live_load_s), workItemDetail.sequence)
             else -> textViewWorkItemsCount.text = String.format(getString(R.string.out_bound_s), workItemDetail.sequence)
         }

@@ -37,7 +37,7 @@ object CalendarUtils {
         val myCalendarChangesObserver = object : CalendarChangesObserver {
             override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
                 if (isSelected) {
-                    listener.onSelectCalendarDate(date)
+                    listener.onSelectCalendarDate(date,isSelected,position)
                 }
                 super.whenSelectionChanged(isSelected, position, date)
             }
@@ -77,12 +77,12 @@ object CalendarUtils {
 
         while (lastDate != calendar[Calendar.DATE]) {
             calendar.add(Calendar.DATE, 1)
-            if (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+            //if (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
                 list.add(calendar.time)
                 if (currentDate == calendar[Calendar.DATE]) {
                     currentDatePosition = list.size - 1
                 }
-            }
+            //}
         }
         return Pair(list, currentDatePosition)
     }
@@ -99,9 +99,9 @@ object CalendarUtils {
 
         while (currentDate != calendar[Calendar.DATE]) {
             calendar.add(Calendar.DATE, 1)
-            if (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+            //if (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
                 list.add(calendar.time)
-            }
+            //}
         }
         return list
     }
@@ -122,6 +122,10 @@ object CalendarUtils {
     }
 
     interface CalendarSelectionListener {
-        fun onSelectCalendarDate(date: Date)
+        fun onSelectCalendarDate(
+            date: Date,
+            selected: Boolean,
+            position: Int
+        )
     }
 }

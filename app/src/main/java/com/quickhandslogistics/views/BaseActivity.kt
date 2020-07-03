@@ -34,6 +34,7 @@ open class BaseActivity : AppCompatActivity(), BaseContract.View {
         sharedPref = SharedPref.getInstance()
     }
 
+
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(R.anim.anim_prev_slide_in, R.anim.anim_prev_slide_out)

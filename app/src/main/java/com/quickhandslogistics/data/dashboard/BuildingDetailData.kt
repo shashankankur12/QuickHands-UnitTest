@@ -50,6 +50,26 @@ class BuildingDetailData() : Parcelable {
     @Expose
     var isBuildingVerified: Boolean? = null
 
+    @SerializedName("morningShift")
+    @Expose
+    var morningShift: ShiftDetail? = null
+
+    @SerializedName("swingShift")
+    @Expose
+    var swingShift: ShiftDetail? = null
+
+    @SerializedName("nightShift")
+    @Expose
+    var nightShift: ShiftDetail? = null
+
+    @SerializedName("leadIds")
+    @Expose
+    var leadIds: ArrayList<String>? = null
+
+    @SerializedName("lumperIds")
+    @Expose
+    var lumperIds: ArrayList<String>? = null
+
     @SerializedName("isActive")
     @Expose
     var isActive: Boolean? = null
@@ -78,6 +98,11 @@ class BuildingDetailData() : Parcelable {
         parameters = parcel.createStringArrayList()
         addedBy = parcel.readString()
         isBuildingVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        morningShift = parcel.readParcelable(ShiftDetail::class.java.classLoader)
+        swingShift = parcel.readParcelable(ShiftDetail::class.java.classLoader)
+        nightShift = parcel.readParcelable(ShiftDetail::class.java.classLoader)
+        leadIds = parcel.createStringArrayList()
+        lumperIds = parcel.createStringArrayList()
         isActive = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         createdAt = parcel.readString()
         updatedAt = parcel.readString()
@@ -96,6 +121,11 @@ class BuildingDetailData() : Parcelable {
         parcel.writeStringList(parameters)
         parcel.writeString(addedBy)
         parcel.writeValue(isBuildingVerified)
+        parcel.writeParcelable(morningShift, flags)
+        parcel.writeParcelable(swingShift, flags)
+        parcel.writeParcelable(nightShift, flags)
+        parcel.writeStringList(leadIds)
+        parcel.writeStringList(lumperIds)
         parcel.writeValue(isActive)
         parcel.writeString(createdAt)
         parcel.writeString(updatedAt)

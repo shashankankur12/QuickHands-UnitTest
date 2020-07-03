@@ -62,14 +62,6 @@
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold" />
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                app:hintEnabled="false"
-                app:passwordToggleEnabled="false">
-
             <EditText
                 android:id="@+id/editTextEmployeeId"
                 style="@style/loginEditTextTheme"
@@ -77,7 +69,6 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:hint="@string/enter_employee_id_info_message"
                 android:inputType="textPersonName|textCapCharacters" />
-            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"

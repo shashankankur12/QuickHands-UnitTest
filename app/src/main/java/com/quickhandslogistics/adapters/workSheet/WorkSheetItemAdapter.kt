@@ -45,7 +45,6 @@ class WorkSheetItemAdapter(private val resources: Resources, var adapterItemClic
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener, LumperImagesContract.OnItemClickListener {
 
         private val textViewStartTime: TextView = itemView.textViewStartTime
-        private val textViewWorkItemType: TextView = itemView.textViewWorkItemType
         private val textViewNoOfDrops: TextView = itemView.textViewNoOfDrops
         private val textViewStatus: TextView = itemView.textViewStatus
         private val relativeLayoutSide: RelativeLayout = itemView.relativeLayoutSide
@@ -64,10 +63,8 @@ class WorkSheetItemAdapter(private val resources: Resources, var adapterItemClic
             textViewStartTime.text = String.format(resources.getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
 
             val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.workItemType, resources)
-            textViewWorkItemType.text = workItemTypeDisplayName
-
             when (workItemTypeDisplayName) {
-                resources.getString(R.string.drops) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.no_of_drops_s), workItemDetail.numberOfDrops)
+                resources.getString(R.string.drops) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.no_of_drops_s), workItemDetail.sequence)
                 resources.getString(R.string.live_loads) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.live_load_s), workItemDetail.sequence)
                 else -> textViewNoOfDrops.text = String.format(resources.getString(R.string.out_bound_s), workItemDetail.sequence)
             }

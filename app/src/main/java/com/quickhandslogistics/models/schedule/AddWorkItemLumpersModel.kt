@@ -19,7 +19,7 @@ import java.util.*
 class AddWorkItemLumpersModel(private val sharedPref: SharedPref) : AddWorkItemLumpersContract.Model {
 
     override fun fetchLumpersList(onFinishedListener: AddWorkItemLumpersContract.Model.OnFinishedListener) {
-        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, Date())
+        val dateString = DateUtils.getCurrentDateStringByEmployeeShift(sharedPref)
 
         DataManager.getService().getPresentLumpersList(getAuthToken(), dateString).enqueue(object : Callback<AllLumpersResponse> {
             override fun onResponse(call: Call<AllLumpersResponse>, response: Response<AllLumpersResponse>) {

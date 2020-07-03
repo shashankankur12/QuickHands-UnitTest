@@ -15,7 +15,6 @@ import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.buildingOperations.BuildingOperationsActivity
-import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_ALLOW_UPDATE
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETERS
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.utils.AppConstant
@@ -30,8 +29,23 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
     private var workItemDetail: WorkItemDetail? = null
 
     companion object {
+        private const val WORK_DETALS = "WORK_DETALS"
         @JvmStatic
-        fun newInstance() = WorkSheetItemDetailBOFragment()
+        fun newInstance(allWorkItem: WorkItemDetail?) = WorkSheetItemDetailBOFragment()
+            .apply {
+                arguments = Bundle().apply {
+                    if(allWorkItem!=null){
+                        putParcelable(WORK_DETALS, allWorkItem)
+                    }
+                }
+            }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            workItemDetail = it.getParcelable<WorkItemDetail>(WORK_DETALS)
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -68,6 +82,7 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
         })
 
         buttonUpdate.setOnClickListener(this)
+        workItemDetail?.let { showBuildingOperationsData(it) }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

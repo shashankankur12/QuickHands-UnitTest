@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_request_lumpers.*
 import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.*
 import kotlinx.android.synthetic.main.content_request_lumpers.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     RequestLumpersContract.View, RequestLumpersContract.View.OnAdapterItemClickListener {
@@ -27,11 +28,19 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     private var isPastDate = false
     private var selectedTime: Long = 0
     private var scheduledLumpersCount: Int = 0
+    private var dateString: String = ""
 
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    private var records: ArrayList<RequestLumpersRecord> = ArrayList()
 
     private lateinit var requestLumpersPresenter: RequestLumpersPresenter
     private lateinit var requestLumpersAdapter: RequestLumpersAdapter
+
+    companion object {
+        const val LUMPER_REQUEST_LIST = "LUMPER_REQUEST_LIST"
+        const val LUMPER_DATE_HEADER = "LUMPER_DATE_HEADER"
+        const val LUMPER_COUNT = "LUMPER_COUNT"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +57,28 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         initializeUI()
 
         requestLumpersPresenter = RequestLumpersPresenter(this, resources)
-        requestLumpersPresenter.fetchAllRequestsByDate(Date(selectedTime))
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey(LUMPER_DATE_HEADER)) {
+                dateString = savedInstanceState.getString(LUMPER_DATE_HEADER)!!
+                scheduledLumpersCount = savedInstanceState.getInt(LUMPER_COUNT)!!
+                showHeaderInfo(dateString)
+            }
+            if (savedInstanceState.containsKey(LUMPER_REQUEST_LIST)) {
+                records = savedInstanceState.getParcelableArrayList(LUMPER_REQUEST_LIST)!!
+                showAllRequests(records)
+            }
+        } ?: run {
+            requestLumpersPresenter.fetchAllRequestsByDate(Date(selectedTime))
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (records != null)
+            outState.putParcelableArrayList(LUMPER_REQUEST_LIST, records)
+            outState.putString(LUMPER_DATE_HEADER, dateString)
+            outState.putInt(LUMPER_COUNT, scheduledLumpersCount)
+
+        super.onSaveInstanceState(outState)
     }
 
     override fun onBackPressed() {
@@ -175,11 +205,14 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }
 
-    override fun showAllRequests(records: List<RequestLumpersRecord>) {
+    override fun showAllRequests(records: ArrayList<RequestLumpersRecord>) {
+        this.records=records
         requestLumpersAdapter.updateList(records)
     }
 
-    override fun showHeaderInfo(dateString: String) {
+    override fun showHeaderInfo(dateString: String)
+    {
+        this.dateString=dateString
         textViewDate.text = dateString
         textViewTotalCount.text = String.format(getString(R.string.total_lumpers_assigned_s), scheduledLumpersCount)
     }

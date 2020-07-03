@@ -18,22 +18,27 @@ import com.quickhandslogistics.adapters.lumpers.LumpersAdapter
 import com.quickhandslogistics.contracts.lumpers.LumpersContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.presenters.lumpers.LumpersPresenter
-import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.utils.AppUtils
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_lumpers.*
 
 class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.OnClickListener,
     LumpersContract.View.OnAdapterItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
+    private var employeeDataList: ArrayList<EmployeeData>? = null
     private lateinit var lumpersAdapter: LumpersAdapter
     private lateinit var lumpersPresenter: LumpersPresenter
 
+    companion object {
+        const val LUMPER_DETAIL_LIST = "LUMPER_DETAIL_LIST"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lumpersPresenter = LumpersPresenter(this, resources)
+        lumpersPresenter = LumpersPresenter(this, resources, sharedPref)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -65,12 +70,25 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
 
-        lumpersPresenter.fetchLumpersList()
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey(LUMPER_DETAIL_LIST)) {
+                employeeDataList = savedInstanceState.getParcelableArrayList(LUMPER_DETAIL_LIST)
+                showLumpersData(employeeDataList!!)
+            }
+        } ?: run {
+            lumpersPresenter.fetchLumpersList()
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         lumpersPresenter.onDestroy()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (employeeDataList != null)
+            outState.putParcelableArrayList(LUMPER_DETAIL_LIST, employeeDataList)
+        super.onSaveInstanceState(outState)
     }
 
     private fun invalidateEmptyView() {
@@ -123,6 +141,7 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     }
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
+        this.employeeDataList = employeeDataList
         lumpersAdapter.updateLumpersData(employeeDataList)
     }
 

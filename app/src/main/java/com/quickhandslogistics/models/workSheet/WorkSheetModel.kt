@@ -13,7 +13,6 @@ import com.quickhandslogistics.utils.SharedPref
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 class WorkSheetModel(private val sharedPref: SharedPref) : WorkSheetContract.Model {
 
@@ -24,12 +23,12 @@ class WorkSheetModel(private val sharedPref: SharedPref) : WorkSheetContract.Mod
         leadProfile?.buildingDetailData?.customerDetail?.companyName?.let { name ->
             companyName = name
         }
-        val date = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, Date())
+        val date = DateUtils.getCurrentDateStringByEmployeeShift(sharedPref, pattern = DateUtils.PATTERN_NORMAL)
         onFinishedListener.onSuccessGetHeaderInfo(companyName, date)
     }
 
     override fun fetchWorkSheetList(onFinishedListener: WorkSheetContract.Model.OnFinishedListener) {
-        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, Date())
+        val dateString = DateUtils.getCurrentDateStringByEmployeeShift(sharedPref)
 
         DataManager.getService().getWorkSheetList(getAuthToken(), dateString).enqueue(object : Callback<WorkSheetListAPIResponse> {
             override fun onResponse(call: Call<WorkSheetListAPIResponse>, response: Response<WorkSheetListAPIResponse>) {
