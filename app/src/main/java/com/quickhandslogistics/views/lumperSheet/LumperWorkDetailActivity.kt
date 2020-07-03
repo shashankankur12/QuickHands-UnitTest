@@ -26,7 +26,6 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SEL
 import kotlinx.android.synthetic.main.activity_lumper_work_detail.*
 import java.io.File
 import java.util.*
-import kotlin.collections.ArrayList
 
 class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWorkDetailContract.View,
     LumperWorkDetailContract.View.OnAdapterItemClickListener {
@@ -98,9 +97,16 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         }
     }
 
-    private fun updateUIVisibility(signed: Boolean, currentDate: Boolean, inCompleteWorkItemsCount: Int) {
-        imageViewSignature.visibility = View.GONE
-        textViewSignature.visibility = if (signed) View.VISIBLE else View.GONE
+    private fun updateUIVisibility(signed: Boolean, currentDate: Boolean, inCompleteWorkItemsCount: Int, signatureUrl: String? = "") {
+        textViewSignature.visibility = View.GONE
+
+        if (signed) {
+            imageViewSignature.visibility = View.VISIBLE
+            Glide.with(activity).load(signatureUrl).into(imageViewSignature)
+        } else {
+            imageViewSignature.visibility = View.GONE
+            Glide.with(activity).clear(imageViewSignature)
+        }
 
         if (!signed && currentDate && inCompleteWorkItemsCount == 0) {
             textViewAddSignature.visibility = View.VISIBLE
@@ -157,7 +163,10 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         }
 
         if (lumperDaySheetList.size > 0) {
-            updateUIVisibility(getDefaultOrValue(lumperDaySheetList[0].lumpersTimeSchedule?.sheetSigned), isCurrentDate, inCompleteWorkItemsCount)
+            updateUIVisibility(
+                getDefaultOrValue(lumperDaySheetList[0].lumpersTimeSchedule?.sheetSigned), isCurrentDate, inCompleteWorkItemsCount,
+                lumperDaySheetList[0].lumpersTimeSchedule?.lumperSignatureInfo?.lumperSignatureUrl
+            )
         } else {
             updateUIVisibility(false, isCurrentDate, inCompleteWorkItemsCount)
         }

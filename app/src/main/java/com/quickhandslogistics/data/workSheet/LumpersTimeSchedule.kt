@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.quickhandslogistics.data.dashboard.BuildingDetailData
 
 class LumpersTimeSchedule() : Parcelable {
     @SerializedName("id")
@@ -50,6 +51,10 @@ class LumpersTimeSchedule() : Parcelable {
     @Expose
     var sheetSigned: Boolean? = null
 
+    @SerializedName("lumperSignatureInfo")
+    @Expose
+    var lumperSignatureInfo: LumperSignatureInfo? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         lumperId = parcel.readString()
@@ -62,6 +67,7 @@ class LumpersTimeSchedule() : Parcelable {
         createdAt = parcel.readString()
         updatedAt = parcel.readString()
         sheetSigned = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        lumperSignatureInfo = parcel.readParcelable(LumperSignatureInfo::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -76,6 +82,7 @@ class LumpersTimeSchedule() : Parcelable {
         parcel.writeString(createdAt)
         parcel.writeString(updatedAt)
         parcel.writeValue(sheetSigned)
+        parcel.writeParcelable(lumperSignatureInfo, flags)
     }
 
     override fun describeContents(): Int {

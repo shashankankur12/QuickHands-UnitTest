@@ -4,8 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -125,7 +123,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
         customerSheet?.also {
             editTextCustomerName.setText(customerSheet.customerRepresentativeName)
             editTextCustomerNotes.setText(customerSheet.note)
-            updateUIVisibility(ValueUtils.getDefaultOrValue(customerSheet.isSigned), isCurrentDate, inCompleteWorkItemsCount)
+            updateUIVisibility(ValueUtils.getDefaultOrValue(customerSheet.isSigned), isCurrentDate, inCompleteWorkItemsCount, customerSheet.signatureUrl)
         } ?: run {
             editTextCustomerName.setText("")
             editTextCustomerNotes.setText("")
@@ -137,10 +135,17 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
         onFragmentInteractionListener?.saveSateCustomerSheet(editTextCustomerName.text.toString(), editTextCustomerNotes.text.toString(), signatureFilePath)
     }
 
-    private fun updateUIVisibility(signed: Boolean, currentDate: Boolean, inCompleteWorkItemsCount: Int) {
-        imageViewSignature.visibility = View.GONE
+    private fun updateUIVisibility(signed: Boolean, currentDate: Boolean, inCompleteWorkItemsCount: Int, signatureUrl: String? = "") {
         buttonSubmit.visibility = if (currentDate) View.VISIBLE else View.GONE
-        textViewSignature.visibility = if (signed) View.VISIBLE else View.GONE
+        textViewSignature.visibility = View.GONE
+
+        if (signed) {
+            imageViewSignature.visibility = View.VISIBLE
+            Glide.with(fragmentActivity!!).load(signatureUrl).into(imageViewSignature)
+        } else {
+            imageViewSignature.visibility = View.GONE
+            Glide.with(fragmentActivity!!).clear(imageViewSignature)
+        }
 
         if (!currentDate || signed || inCompleteWorkItemsCount > 0) {
             editTextCustomerName.isEnabled = false
