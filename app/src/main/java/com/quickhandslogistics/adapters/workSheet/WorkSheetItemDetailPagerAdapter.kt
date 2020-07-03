@@ -21,7 +21,7 @@ class WorkSheetItemDetailPagerAdapter(
 ) :
     FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    private val tabTitles = arrayOf(R.string.building_operations, R.string.lumpers, R.string.notes)
+    private val tabTitles = arrayOf(R.string.parameters, R.string.lumpers, R.string.notes)
 
     private var buildingOperationsFragment = WorkSheetItemDetailBOFragment.newInstance(allWorkItem)
     private var lumpersFragment = WorkSheetItemDetailLumpersFragment.newInstance(allWorkItem, lumperTimeSchedule,tempLumperIds)

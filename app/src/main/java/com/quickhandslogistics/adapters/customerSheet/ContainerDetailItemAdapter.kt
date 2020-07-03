@@ -53,7 +53,7 @@ class ContainerDetailItemAdapter(buildingOps: HashMap<String, String>?, paramete
 
         fun bind(pair: Pair<String, String?>) {
             textViewHeader.text = pair.first.capitalize()
-            textViewValue.text = if (!pair.second.isNullOrEmpty()) pair.second else "NA"
+            textViewValue.text = if (!pair.second.isNullOrEmpty()) pair.second else "---"
         }
     }
 }

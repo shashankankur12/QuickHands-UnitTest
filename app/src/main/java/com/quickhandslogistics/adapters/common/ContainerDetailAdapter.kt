@@ -40,7 +40,7 @@ class ContainerDetailAdapter : RecyclerView.Adapter<ContainerDetailAdapter.ViewH
 
         fun bind(pair: Pair<String, String?>) {
             textViewHeader.text = pair.first.capitalize()
-            textViewValue.text = if (!pair.second.isNullOrEmpty()) pair.second else "NA"
+            textViewValue.text = if (!pair.second.isNullOrEmpty()) pair.second else "---"
         }
     }
 

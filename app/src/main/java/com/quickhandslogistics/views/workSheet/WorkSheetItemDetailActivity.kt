@@ -12,7 +12,6 @@ import com.quickhandslogistics.adapters.workSheet.WorkSheetItemStatusAdapter
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
-import com.quickhandslogistics.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.presenters.workSheet.WorkSheetItemDetailPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
@@ -21,21 +20,19 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WOR
 import kotlinx.android.synthetic.main.activity_work_sheet_item_detail.*
 import kotlinx.android.synthetic.main.bottom_sheet_select_status.*
 import kotlinx.android.synthetic.main.content_work_sheet_item_detail.*
-import kotlinx.android.synthetic.main.content_work_sheet_item_detail.mainConstraintLayout
-import kotlinx.android.synthetic.main.fragment_work_sheet.*
 
 class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSheetItemDetailContract.View,
     WorkSheetItemDetailContract.View.OnAdapterItemClickListener, WorkSheetItemDetailContract.View.OnFragmentInteractionListener {
 
     private var workItemId: String = ""
     private var workItemTypeDisplayName: String = ""
-    private  var workItemDetail: WorkItemDetail =WorkItemDetail()
-    private  var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule> = ArrayList<LumpersTimeSchedule>()
+    private var workItemDetail: WorkItemDetail = WorkItemDetail()
+    private var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule> = ArrayList<LumpersTimeSchedule>()
     private var tempLumperIds: ArrayList<String> = ArrayList()
 
     private lateinit var workSheetItemDetailPresenter: WorkSheetItemDetailPresenter
-    private  var workSheetItemStatusAdapter: WorkSheetItemStatusAdapter? =null
-    private  var workSheetItemDetailPagerAdapter: WorkSheetItemDetailPagerAdapter? =null
+    private var workSheetItemStatusAdapter: WorkSheetItemStatusAdapter? = null
+    private var workSheetItemDetailPagerAdapter: WorkSheetItemDetailPagerAdapter? = null
 
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
@@ -48,7 +45,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_work_sheet_item_detail)
-        setupToolbar(getString(R.string.work_sheet_detail))
+        setupToolbar(getString(R.string.container_details))
 
         intent.extras?.let { it ->
             workItemId = it.getString(ARG_WORK_ITEM_ID, "")
@@ -91,7 +88,6 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
     private fun createDifferentListData(workItemDetail: WorkItemDetail): WorkItemDetail {
         textViewStartTime.text = String.format(getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
-        textViewWorkItemType.text = workItemTypeDisplayName
 
         when (workItemTypeDisplayName) {
             getString(R.string.drops) -> textViewDropItems.text = String.format(getString(R.string.no_of_drops_s), workItemDetail.sequence)
@@ -105,13 +101,12 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         return workItemDetail
     }
 
-    private fun initializeUI(allWorkItem:WorkItemDetail?= null,tampLumpId:ArrayList<String>?=null, lumperTimeSchedule : ArrayList<LumpersTimeSchedule>?= null ) {
+    private fun initializeUI(allWorkItem: WorkItemDetail? = null, tampLumpId: ArrayList<String>? = null, lumperTimeSchedule: ArrayList<LumpersTimeSchedule>? = null) {
 
-        workSheetItemDetailPagerAdapter =  if (allWorkItem!=null) WorkSheetItemDetailPagerAdapter(supportFragmentManager, resources, allWorkItem, tampLumpId, lumperTimeSchedule)
-        else WorkSheetItemDetailPagerAdapter(
-            supportFragmentManager,
-            resources
-        )
+        workSheetItemDetailPagerAdapter = if (allWorkItem != null)
+            WorkSheetItemDetailPagerAdapter(supportFragmentManager, resources, allWorkItem, tampLumpId, lumperTimeSchedule)
+        else
+            WorkSheetItemDetailPagerAdapter(supportFragmentManager, resources)
         viewPagerWorkSheetDetail.offscreenPageLimit = workSheetItemDetailPagerAdapter?.count!!
         viewPagerWorkSheetDetail.adapter = workSheetItemDetailPagerAdapter
         tabLayoutWorkSheetDetail.setupWithViewPager(viewPagerWorkSheetDetail)
@@ -171,12 +166,11 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     }
 
     override fun showWorkItemDetail(workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?, tempLumperIds: ArrayList<String>) {
-        this.lumpersTimeSchedule= lumpersTimeSchedule!!
+        this.lumpersTimeSchedule = lumpersTimeSchedule!!
 
-        this.workItemDetail=workItemDetail
-        this.tempLumperIds=tempLumperIds
+        this.workItemDetail = workItemDetail
+        this.tempLumperIds = tempLumperIds
         textViewStartTime.text = String.format(getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
-        textViewWorkItemType.text = workItemTypeDisplayName
 
         when (workItemTypeDisplayName) {
             getString(R.string.drops) -> textViewDropItems.text = String.format(getString(R.string.no_of_drops_s), workItemDetail.sequence)
