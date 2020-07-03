@@ -27,7 +27,7 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
         setContentView(R.layout.activity_lead_profile)
         setupToolbar(title = getString(R.string.my_profile))
 
-      //  circleImageViewProfile.setOnClickListener(this)
+        //  circleImageViewProfile.setOnClickListener(this)
 
         leadProfilePresenter = LeadProfilePresenter(this, resources, sharedPref)
 
@@ -80,9 +80,9 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
         val phoneNumber = UIUtils.getDisplayPhoneNumber(employeeData)
         textViewPhoneNumber.text = if (phoneNumber.isNotEmpty()) phoneNumber else "-"
 
-        textViewShiftHours.text = if (!employeeData.shiftHours.isNullOrEmpty()) employeeData?.shiftHours else "-"
-        textViewShift.text = if (!employeeData.shift.isNullOrEmpty()) employeeData?.shift?.capitalize() else "-"
+        textViewShiftHours.text = if (!employeeData.shiftHours.isNullOrEmpty()) employeeData.shiftHours else "-"
+        textViewShift.text = if (!employeeData.shift.isNullOrEmpty()) employeeData.shift?.capitalize() else "-"
         textViewBuildingName.text = if (!employeeData.buildingDetailData?.buildingName.isNullOrEmpty()) employeeData.buildingDetailData?.buildingName!!.capitalize() else "-"
-        textViewDepartment.text = if (!employeeData.department.isNullOrEmpty()) employeeData?.department else "-"
+        textViewDepartment.text = if (!employeeData.department.isNullOrEmpty()) UIUtils.getDisplayEmployeeDepartment(employeeData) else "-"
     }
 }

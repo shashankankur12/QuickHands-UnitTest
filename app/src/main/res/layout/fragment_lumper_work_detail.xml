@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15ssp"
             android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/layoutAbilityTravel"
+            app:layout_constraintEnd_toStartOf="@+id/layoutDepartment"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labelBarrier1">
 
@@ -91,7 +91,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layoutAbilityTravel"
+            android:id="@+id/layoutDepartment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15ssp"
@@ -99,6 +99,38 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/layoutAvailability"
             app:layout_constraintTop_toBottomOf="@+id/labelBarrier1">
+
+            <TextView
+                style="@style/detailTextHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/departmant" />
+
+            <TextView
+                android:id="@+id/textViewDepartment"
+                style="@style/detailTextValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="BOTH" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/labelBarrier2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="layoutAvailability,layoutDepartment" />
+
+        <LinearLayout
+            android:id="@+id/layoutAbilityTravel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15ssp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/layoutMilesRadius"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelBarrier2">
 
             <TextView
                 style="@style/detailTextHeader"
@@ -115,38 +147,6 @@
                 android:text="Yes" />
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/labelBarrier2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="layoutAvailability,layoutAbilityTravel" />
-
-        <LinearLayout
-            android:id="@+id/layoutPrimaryBuilding"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15ssp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/layoutMilesRadius"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/labelBarrier2">
-
-            <TextView
-                style="@style/detailTextHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/primary_building" />
-
-            <TextView
-                android:id="@+id/textViewPrimaryBuilding"
-                style="@style/detailTextValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:text="Building Num-32, AIHP Tower" />
-        </LinearLayout>
-
         <LinearLayout
             android:id="@+id/layoutMilesRadius"
             android:layout_width="0dp"
@@ -154,7 +154,7 @@
             android:layout_marginTop="@dimen/_15ssp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/layoutPrimaryBuilding"
+            app:layout_constraintStart_toEndOf="@+id/layoutAbilityTravel"
             app:layout_constraintTop_toBottomOf="@+id/labelBarrier2">
 
             <TextView
@@ -170,6 +170,38 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:text="0.23 Miles" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/labelBarrier3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="layoutAbilityTravel,layoutMilesRadius" />
+
+        <LinearLayout
+            android:id="@+id/layoutPrimaryBuilding"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15ssp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelBarrier3">
+
+            <TextView
+                style="@style/detailTextHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/primary_building" />
+
+            <TextView
+                android:id="@+id/textViewPrimaryBuilding"
+                style="@style/detailTextValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="Building Num-32, AIHP Tower" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

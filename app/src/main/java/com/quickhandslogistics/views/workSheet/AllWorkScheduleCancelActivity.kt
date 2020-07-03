@@ -36,7 +36,7 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
 
         initializeUI()
 
-        allWorkScheduleCancelPresenter = AllWorkScheduleCancelPresenter(this, resources)
+        allWorkScheduleCancelPresenter = AllWorkScheduleCancelPresenter(this, resources, sharedPref)
 
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(WORK_SCHEDULE_LIST)) {

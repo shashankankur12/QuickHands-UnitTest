@@ -11,15 +11,16 @@ import com.quickhandslogistics.network.DataManager.isSuccessResponse
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.FetchMimeType
 import com.quickhandslogistics.utils.OnFetchCompleteListener
+import com.quickhandslogistics.utils.SharedPref
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 
-class TimeClockReportModel : TimeClockReportContract.Model {
+class TimeClockReportModel(private val sharedPref: SharedPref) : TimeClockReportContract.Model {
 
     override fun fetchLumpersList(onFinishedListener: TimeClockReportContract.Model.OnFinishedListener) {
-        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, Date())
+        val dateString = DateUtils.getCurrentDateStringByEmployeeShift(sharedPref)
 
         DataManager.getService().getAllLumpersData(getAuthToken(), dateString).enqueue(object : Callback<LumperListAPIResponse> {
             override fun onResponse(call: Call<LumperListAPIResponse>, response: Response<LumperListAPIResponse>) {

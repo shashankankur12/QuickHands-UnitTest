@@ -81,5 +81,20 @@ object UIUtils {
         }
         return phoneNumber
     }
+
+    fun getDisplayEmployeeDepartment(employeeData: EmployeeData?): String {
+        var displayDepartment = ""
+        employeeData?.let {
+            if (!employeeData.department.isNullOrEmpty()) {
+                displayDepartment = when (employeeData.department) {
+                    AppConstant.EMPLOYEE_DEPARTMENT_BOTH -> "Both (InBound & OutBound)"
+                    AppConstant.EMPLOYEE_DEPARTMENT_INBOUND -> "InBound"
+                    AppConstant.EMPLOYEE_DEPARTMENT_OUTBOUND -> "OutBound"
+                    else -> employeeData.department!!
+                }
+            }
+        }
+        return displayDepartment
+    }
 }
 

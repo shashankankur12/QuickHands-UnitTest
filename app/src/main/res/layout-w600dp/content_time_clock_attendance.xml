@@ -8,15 +8,28 @@
     android:background="@color/appBackground"
     tools:showIn="@layout/fragment_time_clock_attendance">
 
+    <com.quickhandslogistics.controls.CustomTextView
+        android:id="@+id/textViewTimeClockDate"
+        style="@style/valuesTextViewTheme"
+        android:layout_marginStart="@dimen/_10ssp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_10ssp"
+        android:drawableStart="@drawable/ic_schedule_calendar"
+        android:drawablePadding="@dimen/_4sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/editTextSearch"
         style="@style/searchEditTextTheme"
         android:layout_width="0dp"
         android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTimeClockDate" />
 
     <ImageView
         android:id="@+id/imageViewCancel"
