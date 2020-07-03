@@ -34,6 +34,9 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
     private  var selectedDate: Date=Date()
     private var companyName: String = ""
     private var date: String = ""
+    private var customerName: String = ""
+    private var customerNote: String = ""
+    private var customerSignature: String = ""
     private var isSavedState: Boolean = false
     private var selectedDatePosition: Int = 0
 
@@ -47,6 +50,9 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         const val DATE_STRING = "DATE_STRING"
         const val COMPANY_NAME = "COMPANY_NAME"
         const val SELECTED_DATE_POSITION = "SELECTED_DATE_POSITION"
+        const val CUSTOMER_NAME = "CUSTOMER_NAME"
+        const val CUSTOMER_NOTE = "CUSTOMER_NOTE"
+        const val CUSTOMER_SING = "CUSTOMER_SING"
     }
 
     override fun onAttach(context: Context) {
@@ -86,6 +92,15 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
                 showHeaderInfo(companyName, date)
             }
 
+            if (savedInstanceState.containsKey(CUSTOMER_NAME) && savedInstanceState.containsKey(CUSTOMER_NOTE)) {
+                customerName = savedInstanceState.getString(CUSTOMER_NAME)!!
+                customerNote = savedInstanceState.getString(CUSTOMER_NOTE)!!
+            }
+
+            if (savedInstanceState.containsKey(CUSTOMER_SING) ) {
+                customerSignature = savedInstanceState.getString(CUSTOMER_SING)!!
+            }
+
             if (savedInstanceState.containsKey(SCHEDULE_DETAIL) && savedInstanceState.containsKey(DATE) && savedInstanceState.containsKey(CUSTOMER_SHEET)) {
                 customerSheetScheduleDetails = savedInstanceState.getParcelable(SCHEDULE_DETAIL)
                 selectedDate = savedInstanceState.getSerializable(DATE) as Date
@@ -117,6 +132,9 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         outState.putSerializable(COMPANY_NAME, companyName)
         outState.putSerializable(DATE_STRING, date)
         outState.putInt(SELECTED_DATE_POSITION, selectedDatePosition)
+        outState.putString(CUSTOMER_NAME, customerName)
+        outState.putString(CUSTOMER_NOTE, customerNote)
+        outState.putString(CUSTOMER_SING, customerSignature)
 
         super.onSaveInstanceState(outState)
     }
@@ -126,7 +144,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         customerSheetData: CustomerSheetData? = null, selectedTime: Long? = null
     ) {
         adapter = if (allWorkItemLists != null) {
-            CustomerSheetPagerAdapter(childFragmentManager, resources, allWorkItemLists, customerSheetData, selectedTime)
+            CustomerSheetPagerAdapter(childFragmentManager, resources, allWorkItemLists, customerSheetData, selectedTime, customerName,customerNote,customerSignature)
         } else {
             CustomerSheetPagerAdapter(childFragmentManager, resources)
         }
@@ -200,6 +218,12 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
     /** Fragment Interaction Listeners */
     override fun saveCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String) {
         customerSheetPresenter.saveCustomerSheet(customerName, notesCustomer, signatureFilePath)
+    }
+
+    override fun saveSateCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String) {
+        this.customerName=customerName
+        this.customerNote=notesCustomer
+        this.customerSignature=signatureFilePath
     }
 
     /** Calendar Listeners */
