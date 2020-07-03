@@ -103,6 +103,7 @@
     <string name="reports">Reports</string>
     <string name="reset_password">Reset Password</string>
     <string name="request_lumpers">Request Lumpers</string>
+    <string name="requested_at_s">Requested At: %s</string>
     <string name="requested_lumpers_s">Requested Lumpers: %s</string>
     <string name="role">Role</string>
     <string name="save">Save</string>

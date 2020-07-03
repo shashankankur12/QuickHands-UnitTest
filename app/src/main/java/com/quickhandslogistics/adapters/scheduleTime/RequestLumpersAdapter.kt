@@ -13,6 +13,10 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.scheduleTime.RequestLumpersContract
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_DATE_TIME_DISPLAY
+import com.quickhandslogistics.utils.DateUtils.Companion.changeUTCDateStringToLocalDateString
 import kotlinx.android.synthetic.main.item_request_lumpers.view.*
 
 class RequestLumpersAdapter(private val resources: Resources, private val isPastDate: Boolean, private val onAdapterClick: RequestLumpersContract.View.OnAdapterItemClickListener) :
@@ -41,6 +45,7 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
 
         private val textViewStatus: TextView = view.textViewStatus
         private val textViewRequestedLumpersCount: TextView = view.textViewRequestedLumpersCount
+        private val textViewRequestedAt: TextView = view.textViewRequestedAt
         private val textViewNote: TextView = view.textViewNote
         private val textViewUpdateRequest: TextView = view.textViewUpdateRequest
         private val textViewCancelRequest: TextView = view.textViewCancelRequest
@@ -48,6 +53,10 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
 
         fun bind(requestLumpersRecord: RequestLumpersRecord) {
             textViewRequestedLumpersCount.text = String.format(resources.getString(R.string.requested_lumpers_s), requestLumpersRecord.requestedLumpersCount)
+            textViewRequestedAt.text = String.format(
+                resources.getString(R.string.requested_at_s),
+                changeUTCDateStringToLocalDateString(PATTERN_API_RESPONSE, PATTERN_DATE_TIME_DISPLAY, requestLumpersRecord.createdAt!!)
+            )
             textViewNote.text = requestLumpersRecord.notesForDM
 
             when (requestLumpersRecord.requestStatus) {

@@ -12,6 +12,7 @@ class DateUtils {
         const val PATTERN_API_REQUEST_PARAMETER = "yyyy-MM-dd"
         const val PATTERN_API_RESPONSE = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         const val PATTERN_DATE_DISPLAY = "dd MMM yyyy"
+        const val PATTERN_DATE_TIME_DISPLAY = "dd MMM yyyy, HH:mm a"
         private const val PATTERN_TIME = "hh:mm a"
 
         fun getDateString(pattern: String, date: Date): String {
@@ -27,6 +28,20 @@ class DateUtils {
 
         fun changeDateString(patternFrom: String, patternTo: String, dateString: String = ""): String {
             val dateFormatFrom = SimpleDateFormat(patternFrom)
+            val dateFormatTo = SimpleDateFormat(patternTo)
+            try {
+                val date = dateFormatFrom.parse(dateString)
+                date?.let {
+                    return dateFormatTo.format(date)
+                }
+            } catch (e: ParseException) {
+            }
+            return dateString
+        }
+
+        fun changeUTCDateStringToLocalDateString(patternFrom: String, patternTo: String, dateString: String = ""): String {
+            val dateFormatFrom = SimpleDateFormat(patternFrom)
+            dateFormatFrom.timeZone = TimeZone.getTimeZone("UTC")
             val dateFormatTo = SimpleDateFormat(patternTo)
             try {
                 val date = dateFormatFrom.parse(dateString)

@@ -213,7 +213,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
     }
 
     override fun saveSateCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String) {
-        if (localCustomerSheetData != null) {
+        if (localCustomerSheetData == null) {
             localCustomerSheetData = LocalCustomerSheetData()
         }
         localCustomerSheetData?.customerRepresentativeName = customerName

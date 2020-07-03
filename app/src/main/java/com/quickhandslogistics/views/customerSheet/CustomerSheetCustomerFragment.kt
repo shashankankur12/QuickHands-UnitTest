@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.fragment_customer_sheet_customer.*
 import java.io.File
 import java.util.*
 
-class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener, TextWatcher {
+class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
 
     private var onFragmentInteractionListener: CustomerSheetContract.View.OnFragmentInteractionListener? = null
     private var signatureFilePath = ""
@@ -83,8 +83,6 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener, Text
 
         addNotesTouchListener(editTextCustomerNotes)
 
-        editTextCustomerName.addTextChangedListener(this)
-        editTextCustomerNotes.addTextChangedListener(this)
         textViewAddSignature.setOnClickListener(this)
         buttonSubmit.setOnClickListener(this)
 
@@ -92,7 +90,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener, Text
             updateCustomerDetails(customerSheet, selectedTime!!, inCompleteWorkItemsCount)
         }
 
-        if (/*(customerSheet != null && localCustomerSheet != null) || */localCustomerSheet != null) {
+        if (localCustomerSheet != null) {
             //Show Local Data
             editTextCustomerName.setText(localCustomerSheet?.customerRepresentativeName)
             editTextCustomerNotes.setText(localCustomerSheet?.note)
@@ -108,9 +106,13 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener, Text
             data?.let {
                 val signatureFilePath = data.getStringExtra(AddSignatureActivity.ARG_SIGNATURE_FILE_PATH)
                 showLocalSignatureOnUI(signatureFilePath)
-                saveLocalDataInState()
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveLocalDataInState()
     }
 
     fun updateCustomerDetails(customerSheet: CustomerSheetData?, selectedTime: Long, inCompleteWorkItemsCount: Int) {
@@ -215,15 +217,5 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener, Text
                 buttonSubmit.id -> submitCustomerSheet()
             }
         }
-    }
-
-    override fun afterTextChanged(s: Editable?) {
-        saveLocalDataInState()
-    }
-
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-    }
-
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
     }
 }
