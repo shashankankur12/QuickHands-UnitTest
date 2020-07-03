@@ -1,6 +1,7 @@
 package com.quickhandslogistics.utils
 
 import android.content.Context
+import android.view.Gravity
 import com.quickhandslogistics.R
 import com.sahilgarg.forks.cn.pedant.SweetAlert.SweetAlertDialog
 
@@ -45,6 +46,7 @@ class CustomProgressBar {
         progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
         progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
         updateButtonsUI(progressDialog, activityContext)
+        progressDialog.setContentTextGravity(Gravity.START)
     }
 
     fun showErrorDialog(message: String, activityContext: Context) {

@@ -13,16 +13,21 @@ import com.quickhandslogistics.views.customerSheet.CustomerSheetCustomerFragment
 import java.util.*
 
 class CustomerSheetPagerAdapter(
-    childFragmentManager: FragmentManager, private val resources: Resources,
+    childFragmentManager: FragmentManager,
+    private val resources: Resources,
     allWorkItemLists: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>? = null,
-    customerSheetData: CustomerSheetData? = null, selectedTime: Long? = null
+    customerSheetData: CustomerSheetData? = null,
+    selectedTime: Long? = null,
+    customerName: String?= null,
+    customerNote: String? =null,
+    customerSignature: String? =null
 ) :
     FragmentStatePagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private val tabTitles = arrayOf(R.string.containers, R.string.customer_details)
 
     private var containersFragment = CustomerSheetContainersFragment.newInstance(allWorkItemLists)
-    private var customerFragment = CustomerSheetCustomerFragment.newInstance(customerSheetData, selectedTime, allWorkItemLists)
+    private var customerFragment = CustomerSheetCustomerFragment.newInstance(customerSheetData, selectedTime, allWorkItemLists, customerName, customerNote, customerSignature)
 
     override fun getItem(position: Int): Fragment {
         return if (position == 0) containersFragment else customerFragment

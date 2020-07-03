@@ -8,11 +8,12 @@ import com.quickhandslogistics.data.attendance.AttendanceDetail
 import com.quickhandslogistics.data.attendance.GetAttendanceAPIResponse
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.models.attendance.TimeClockAttendanceModel
+import com.quickhandslogistics.utils.SharedPref
 
-class TimeClockAttendancePresenter(private var timeClockAttendanceView: TimeClockAttendanceContract.View?, private val resources: Resources) :
+class TimeClockAttendancePresenter(private var timeClockAttendanceView: TimeClockAttendanceContract.View?, private val resources: Resources, sharedPref: SharedPref) :
     TimeClockAttendanceContract.Presenter, TimeClockAttendanceContract.Model.OnFinishedListener {
 
-    private val timeClockAttendanceModel = TimeClockAttendanceModel()
+    private val timeClockAttendanceModel = TimeClockAttendanceModel(sharedPref)
 
     /** View Listeners */
     override fun onDestroy() {
@@ -21,6 +22,7 @@ class TimeClockAttendancePresenter(private var timeClockAttendanceView: TimeCloc
 
     override fun fetchAttendanceList() {
         timeClockAttendanceView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        timeClockAttendanceModel.fetchHeaderInfo(this)
         timeClockAttendanceModel.fetchLumpersAttendanceList(this)
     }
 
@@ -37,6 +39,10 @@ class TimeClockAttendancePresenter(private var timeClockAttendanceView: TimeCloc
         } else {
             timeClockAttendanceView?.showAPIErrorMessage(message)
         }
+    }
+
+    override fun onSuccessGetHeaderInfo(date: String) {
+        timeClockAttendanceView?.showHeaderInfo(date)
     }
 
     override fun onSuccessGetList(response: GetAttendanceAPIResponse) {

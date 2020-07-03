@@ -16,7 +16,10 @@ import androidx.fragment.app.FragmentTransaction;
 import com.quickhandslogistics.R;
 import com.quickhandslogistics.contracts.DashBoardContract;
 import com.quickhandslogistics.utils.AppUtils;
+import com.quickhandslogistics.utils.CustomDialogWarningListener;
+import com.quickhandslogistics.utils.CustomProgressBar;
 import com.quickhandslogistics.views.BaseActivity;
+import com.quickhandslogistics.views.attendance.TimeClockAttendanceFragment;
 import com.quickhandslogistics.views.workSheet.WorkSheetFragment;
 
 import java.util.ArrayList;
@@ -212,11 +215,39 @@ public class NavDrawer {
             if (text.equals(activity.getString(R.string.logout))) {
                 navDrawer.showLogoutDialog();
             } else {
-                toolbar.setTitle(text);
-                navDrawer.setSelectedItem(this);
-                showFragment(activity, true);
-                navDrawer.invalidateOptionMenu(text);
+                Fragment currentFragment = activity.getSupportFragmentManager().findFragmentById(R.id.frameLayoutMain);
+                if (currentFragment != null && currentFragment.getClass().getSimpleName().equals(activity.getString(R.string.time_clock)) && !targetFragment.getClass().getSimpleName().equals(activity.getString(R.string.time_clock))) {
+                    if (currentFragment instanceof TimeClockAttendanceFragment) {
+                        if (((TimeClockAttendanceFragment) currentFragment).onDataChanges()) {
+                            showLeavePageAlert(activity, text);
+                        } else {
+                            setFragment(activity, text);
+                        }
+                    }
+                } else {
+                    setFragment(activity, text);
+                }
             }
+        }
+
+        private void showLeavePageAlert(BaseActivity activity, String text) {
+            CustomProgressBar.Companion.getInstance().showWarningDialog(activity.getString(R.string.leave_alert_message), activity, new CustomDialogWarningListener() {
+                @Override
+                public void onConfirmClick() {
+                    setFragment(activity, text);
+                }
+
+                @Override
+                public void onCancelClick() {
+                }
+            });
+        }
+
+        public void setFragment(BaseActivity activity, String text) {
+            toolbar.setTitle(text);
+            navDrawer.setSelectedItem(this);
+            showFragment(activity, true);
+            navDrawer.invalidateOptionMenu(text);
         }
 
         private void showFragment(BaseActivity activity, Boolean isClearArguments) {

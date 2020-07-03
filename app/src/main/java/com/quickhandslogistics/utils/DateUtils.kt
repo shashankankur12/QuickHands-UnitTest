@@ -1,5 +1,7 @@
 package com.quickhandslogistics.utils
 
+import com.quickhandslogistics.data.dashboard.LeadProfileData
+import com.quickhandslogistics.data.dashboard.ShiftDetail
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -162,6 +164,58 @@ class DateUtils {
             } else {
                 (beforeCalendar[Calendar.HOUR_OF_DAY] == afterCalendar[Calendar.HOUR_OF_DAY] && beforeCalendar[Calendar.MINUTE] < afterCalendar[Calendar.MINUTE])
             }
+        }
+
+        fun getCurrentDateStringByEmployeeShift(sharedPref: SharedPref, pattern: String = PATTERN_API_REQUEST_PARAMETER, originalDate: Date = Date()): String {
+            var dateString = ""
+            val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+            leadProfile?.let {
+                when (leadProfile.shift) {
+                    AppConstant.EMPLOYEE_SHIFT_MORNING -> {
+                        val shiftDetail = leadProfile.buildingDetailData?.morningShift
+                        dateString = calculateDateByShiftStartTime(shiftDetail, pattern, originalDate)
+                    }
+                    AppConstant.EMPLOYEE_SHIFT_SWING -> {
+                        val shiftDetail = leadProfile.buildingDetailData?.swingShift
+                        dateString = calculateDateByShiftStartTime(shiftDetail, pattern, originalDate)
+                    }
+                    AppConstant.EMPLOYEE_SHIFT_NIGHT -> {
+                        val shiftDetail = leadProfile.buildingDetailData?.nightShift
+                        dateString = calculateDateByShiftStartTime(shiftDetail, pattern, originalDate)
+                    }
+                }
+            }
+
+            if (dateString.isEmpty()) {
+                dateString = getDateString(pattern, originalDate)
+            }
+            return dateString
+        }
+
+        private fun calculateDateByShiftStartTime(shiftDetail: ShiftDetail?, pattern: String, originalDate: Date): String {
+            var dateString = ""
+
+            //Create original date calendar instance
+            val calendar = Calendar.getInstance()
+            calendar.time = originalDate
+
+            shiftDetail?.let {
+                val startTime = shiftDetail.startTime
+                startTime?.let {
+
+                    //Create shift start time calendar instance with original date
+                    val startTimeCalendar = Calendar.getInstance();
+                    startTimeCalendar.time = Date(startTime)
+                    startTimeCalendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE))
+
+                    // Check if shift start or not. If not then show pass previous date
+                    if (startTimeCalendar.timeInMillis > calendar.timeInMillis) {
+                        calendar.add(Calendar.DATE, -1)
+                    }
+                    dateString = getDateString(pattern, calendar.time)
+                }
+            }
+            return dateString
         }
     }
 }

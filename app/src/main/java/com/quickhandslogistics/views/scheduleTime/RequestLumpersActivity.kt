@@ -28,6 +28,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     private var isPastDate = false
     private var selectedTime: Long = 0
     private var scheduledLumpersCount: Int = 0
+    private var dateString: String = ""
 
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private var records: ArrayList<RequestLumpersRecord> = ArrayList()
@@ -37,6 +38,8 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
 
     companion object {
         const val LUMPER_REQUEST_LIST = "LUMPER_REQUEST_LIST"
+        const val LUMPER_DATE_HEADER = "LUMPER_DATE_HEADER"
+        const val LUMPER_COUNT = "LUMPER_COUNT"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +58,11 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
 
         requestLumpersPresenter = RequestLumpersPresenter(this, resources)
         savedInstanceState?.also {
+            if (savedInstanceState.containsKey(LUMPER_DATE_HEADER)) {
+                dateString = savedInstanceState.getString(LUMPER_DATE_HEADER)!!
+                scheduledLumpersCount = savedInstanceState.getInt(LUMPER_COUNT)!!
+                showHeaderInfo(dateString)
+            }
             if (savedInstanceState.containsKey(LUMPER_REQUEST_LIST)) {
                 records = savedInstanceState.getParcelableArrayList(LUMPER_REQUEST_LIST)!!
                 showAllRequests(records)
@@ -67,6 +75,9 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     override fun onSaveInstanceState(outState: Bundle) {
         if (records != null)
             outState.putParcelableArrayList(LUMPER_REQUEST_LIST, records)
+            outState.putString(LUMPER_DATE_HEADER, dateString)
+            outState.putInt(LUMPER_COUNT, scheduledLumpersCount)
+
         super.onSaveInstanceState(outState)
     }
 
@@ -200,9 +211,8 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     }
 
     override fun showHeaderInfo(dateString: String)
-
-
     {
+        this.dateString=dateString
         textViewDate.text = dateString
         textViewTotalCount.text = String.format(getString(R.string.total_lumpers_assigned_s), scheduledLumpersCount)
     }

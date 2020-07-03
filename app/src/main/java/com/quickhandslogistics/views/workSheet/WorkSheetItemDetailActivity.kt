@@ -26,13 +26,13 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
     private var workItemId: String = ""
     private var workItemTypeDisplayName: String = ""
-    private  var workItemDetail: WorkItemDetail =WorkItemDetail()
-    private  var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule> = ArrayList<LumpersTimeSchedule>()
+    private var workItemDetail: WorkItemDetail = WorkItemDetail()
+    private var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule> = ArrayList<LumpersTimeSchedule>()
     private var tempLumperIds: ArrayList<String> = ArrayList()
 
     private lateinit var workSheetItemDetailPresenter: WorkSheetItemDetailPresenter
-    private lateinit var workSheetItemStatusAdapter: WorkSheetItemStatusAdapter
-    private lateinit var workSheetItemDetailPagerAdapter: WorkSheetItemDetailPagerAdapter
+    private var workSheetItemStatusAdapter: WorkSheetItemStatusAdapter? = null
+    private var workSheetItemDetailPagerAdapter: WorkSheetItemDetailPagerAdapter? = null
 
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
@@ -45,16 +45,15 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_work_sheet_item_detail)
-        setupToolbar(getString(R.string.work_sheet_detail))
+        setupToolbar(getString(R.string.container_details))
 
         intent.extras?.let { it ->
             workItemId = it.getString(ARG_WORK_ITEM_ID, "")
             workItemTypeDisplayName = it.getString(ARG_WORK_ITEM_TYPE_DISPLAY_NAME, "")
         }
 
-        initializeUI()
-
         workSheetItemDetailPresenter = WorkSheetItemDetailPresenter(this, resources)
+
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(LUMPER_TIME_SCHEDULE)) {
                 lumpersTimeSchedule =
@@ -66,10 +65,13 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
                 savedInstanceState.getStringArrayList(TEMP_LUMPER_ID_LIST)!!
             if (savedInstanceState.containsKey(WORK_DETAIL_LIST)) {
                 workItemDetail =
-                    savedInstanceState.getParcelable<WorkItemDetail>(WORK_DETAIL_LIST)!!
+                    savedInstanceState.getParcelable(WORK_DETAIL_LIST)!!
                 showWorkItemDetail(workItemDetail, lumpersTimeSchedule, tempLumperIds)
+                val allWorkItemLists = createDifferentListData(workItemDetail)
+                initializeUI(allWorkItemLists, tempLumperIds, lumpersTimeSchedule)
             }
         } ?: run {
+            initializeUI()
             workSheetItemDetailPresenter.fetchWorkItemDetail(workItemId)
         }
     }
@@ -84,9 +86,28 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         super.onSaveInstanceState(outState)
     }
 
-    private fun initializeUI() {
-        workSheetItemDetailPagerAdapter = WorkSheetItemDetailPagerAdapter(supportFragmentManager, resources)
-        viewPagerWorkSheetDetail.offscreenPageLimit = workSheetItemDetailPagerAdapter.count
+    private fun createDifferentListData(workItemDetail: WorkItemDetail): WorkItemDetail {
+        textViewStartTime.text = String.format(getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
+
+        when (workItemTypeDisplayName) {
+            getString(R.string.drops) -> textViewDropItems.text = String.format(getString(R.string.no_of_drops_s), workItemDetail.sequence)
+            getString(R.string.live_loads) -> textViewDropItems.text = String.format(getString(R.string.live_load_s), workItemDetail.sequence)
+            else -> textViewDropItems.text = String.format(getString(R.string.out_bound_s), workItemDetail.sequence)
+        }
+
+        if (!workItemDetail.status.isNullOrEmpty()) {
+            updateStatusBackground(workItemDetail.status!!)
+        }
+        return workItemDetail
+    }
+
+    private fun initializeUI(allWorkItem: WorkItemDetail? = null, tampLumpId: ArrayList<String>? = null, lumperTimeSchedule: ArrayList<LumpersTimeSchedule>? = null) {
+
+        workSheetItemDetailPagerAdapter = if (allWorkItem != null)
+            WorkSheetItemDetailPagerAdapter(supportFragmentManager, resources, allWorkItem, tampLumpId, lumperTimeSchedule)
+        else
+            WorkSheetItemDetailPagerAdapter(supportFragmentManager, resources)
+        viewPagerWorkSheetDetail.offscreenPageLimit = workSheetItemDetailPagerAdapter?.count!!
         viewPagerWorkSheetDetail.adapter = workSheetItemDetailPagerAdapter
         tabLayoutWorkSheetDetail.setupWithViewPager(viewPagerWorkSheetDetail)
 
@@ -112,7 +133,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
         ScheduleUtils.changeStatusUIByValue(resources, status, textViewStatus, isEditable = true)
 
-        workSheetItemStatusAdapter.updateStatusList(statusList)
+        workSheetItemStatusAdapter?.updateStatusList(statusList)
     }
 
     private fun closeBottomSheet() {
@@ -126,7 +147,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
                 bottomSheetBackgroundStatus.id -> closeBottomSheet()
                 textViewStatus.id -> {
                     if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-                        workSheetItemStatusAdapter.updateInitialStatus(textViewStatus.text.toString())
+                        workSheetItemStatusAdapter?.updateInitialStatus(textViewStatus.text.toString())
                         sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                         bottomSheetBackgroundStatus.visibility = View.VISIBLE
                     } else {
@@ -141,20 +162,18 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
 
-        workSheetItemDetailPagerAdapter.showEmptyData()
+        workSheetItemDetailPagerAdapter?.showEmptyData()
     }
 
     override fun showWorkItemDetail(workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?, tempLumperIds: ArrayList<String>) {
-        if (lumpersTimeSchedule!=null){
-            this.lumpersTimeSchedule=lumpersTimeSchedule
-        }
-        this.workItemDetail=workItemDetail
-        this.tempLumperIds=tempLumperIds
+        this.lumpersTimeSchedule = lumpersTimeSchedule!!
+
+        this.workItemDetail = workItemDetail
+        this.tempLumperIds = tempLumperIds
         textViewStartTime.text = String.format(getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
-        textViewWorkItemType.text = workItemTypeDisplayName
 
         when (workItemTypeDisplayName) {
-            getString(R.string.drops) -> textViewDropItems.text = String.format(getString(R.string.no_of_drops_s), workItemDetail.numberOfDrops)
+            getString(R.string.drops) -> textViewDropItems.text = String.format(getString(R.string.no_of_drops_s), workItemDetail.sequence)
             getString(R.string.live_loads) -> textViewDropItems.text = String.format(getString(R.string.live_load_s), workItemDetail.sequence)
             else -> textViewDropItems.text = String.format(getString(R.string.out_bound_s), workItemDetail.sequence)
         }
@@ -163,7 +182,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
             updateStatusBackground(workItemDetail.status!!)
         }
 
-        workSheetItemDetailPagerAdapter.showWorkItemData(workItemDetail, lumpersTimeSchedule, tempLumperIds)
+        workSheetItemDetailPagerAdapter?.showWorkItemData(workItemDetail, lumpersTimeSchedule, tempLumperIds)
     }
 
     override fun statusChangedSuccessfully() {
@@ -187,7 +206,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
             }
 
             override fun onCancelClick() {
-                workSheetItemStatusAdapter.updateInitialStatus(textViewStatus.text.toString())
+                workSheetItemStatusAdapter?.updateInitialStatus(textViewStatus.text.toString())
             }
         })
     }

@@ -38,7 +38,7 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lumpersPresenter = LumpersPresenter(this, resources)
+        lumpersPresenter = LumpersPresenter(this, resources, sharedPref)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

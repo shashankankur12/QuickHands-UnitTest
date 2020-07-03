@@ -44,7 +44,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
 
         initializeUI()
 
-        lumperJobReportPresenter = LumperJobReportPresenter(this, resources)
+        lumperJobReportPresenter = LumperJobReportPresenter(this, resources, sharedPref)
 
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(LUMPER_JOB_REPORT_LIST)) {

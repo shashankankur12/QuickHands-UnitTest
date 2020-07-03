@@ -7,12 +7,13 @@ import com.quickhandslogistics.contracts.reports.TimeClockReportContract
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.data.reports.ReportResponse
 import com.quickhandslogistics.models.reports.TimeClockReportModel
+import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 
-class TimeClockReportPresenter(private var timeClockReportView: TimeClockReportContract.View?, private val resources: Resources) :
+class TimeClockReportPresenter(private var timeClockReportView: TimeClockReportContract.View?, private val resources: Resources, sharedPref: SharedPref) :
     TimeClockReportContract.Presenter, TimeClockReportContract.Model.OnFinishedListener {
 
-    private val timeClockReportModel = TimeClockReportModel()
+    private val timeClockReportModel = TimeClockReportModel(sharedPref)
 
     /** View Listeners */
     override fun onDestroy() {

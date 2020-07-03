@@ -24,25 +24,30 @@ import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_MORNING_PU
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.convertDateStringToTime
 import com.quickhandslogistics.views.BaseFragment
+import com.quickhandslogistics.views.DashBoardActivity
+import com.quickhandslogistics.views.workSheet.WorkSheetFragment
 import kotlinx.android.synthetic.main.bottom_sheet_add_attendance_time.*
 import kotlinx.android.synthetic.main.content_time_clock_attendance.*
 import kotlinx.android.synthetic.main.fragment_time_clock_attendance.*
 
 class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWatcher,
-    TimeClockAttendanceContract.View, TimeClockAttendanceContract.View.OnAdapterItemClickListener {
+    TimeClockAttendanceContract.View, TimeClockAttendanceContract.View.OnAdapterItemClickListener, TimeClockAttendanceContract.View.fragmentDataListener{
 
     private lateinit var timeClockAttendancePresenter: TimeClockAttendancePresenter
     private lateinit var timeClockAttendanceAdapter: TimeClockAttendanceAdapter
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private  var lumperAttendanceList: ArrayList<LumperAttendanceData> =ArrayList()
 
+    private lateinit var date: String
+
     companion object {
         const val LUMPER_ATTENDANCE_LIST = "LUMPER_ATTENDANCE_LIST"
+        const val TIME_CLOCK_DATE_SELECTED_HEADER = "TIME_CLOCK_DATE_SELECTED_HEADER"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        timeClockAttendancePresenter = TimeClockAttendancePresenter(this, resources)
+        timeClockAttendancePresenter = TimeClockAttendancePresenter(this, resources, sharedPref)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -55,6 +60,10 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         initializeUI()
 
         savedInstanceState?.also {
+            if (savedInstanceState.containsKey(TIME_CLOCK_DATE_SELECTED_HEADER)) {
+                date = savedInstanceState.getString(TIME_CLOCK_DATE_SELECTED_HEADER)!!
+                showHeaderInfo(date)
+            }
             if (savedInstanceState.containsKey(LUMPER_ATTENDANCE_LIST)) {
                 lumperAttendanceList =
                     savedInstanceState.getParcelableArrayList(LUMPER_ATTENDANCE_LIST)!!
@@ -73,6 +82,8 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     override fun onSaveInstanceState(outState: Bundle) {
         if (lumperAttendanceList != null)
             outState.putParcelableArrayList(LUMPER_ATTENDANCE_LIST, lumperAttendanceList)
+        if (!date.isNullOrEmpty())
+            outState.putString(TIME_CLOCK_DATE_SELECTED_HEADER, date)
         super.onSaveInstanceState(outState)
     }
 
@@ -90,6 +101,8 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
                 super.onChanged()
                 val updatedData = timeClockAttendanceAdapter.getUpdatedData()
                 buttonSave.isEnabled = updatedData.size > 0
+                var dashboardInstance = activity as DashBoardActivity?
+                dashboardInstance?.isShowLeavePopup = updatedData.size > 0
 
                 invalidateEmptyView()
             }
@@ -355,6 +368,12 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             })
     }
 
+    override fun showHeaderInfo(date: String) {
+        this.date = date
+
+        textViewTimeClockDate.text = date
+    }
+
     /** Adapter Listeners */
     override fun onAddTimeClick(lumperAttendanceData: LumperAttendanceData, itemPosition: Int) {
         if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
@@ -420,5 +439,10 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         if (timeClockAttendanceAdapter.getSelectedItemCount() > 0) {
             onRowLongClicked(itemPosition)
         }
+    }
+
+    override fun onDataChanges(): Boolean {
+        val updatedData = timeClockAttendanceAdapter.getUpdatedData()
+        return updatedData.size > 0
     }
 }
