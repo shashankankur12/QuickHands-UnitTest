@@ -40,10 +40,19 @@ class WorkSheetListAPIResponse : BaseResponse() {
             get() = if (!field.isNullOrEmpty()) field else ArrayList()
 
         constructor(parcel: Parcel) : this() {
+            cancelled = parcel.createTypedArrayList(WorkItemDetail)
+            onHold = parcel.createTypedArrayList(WorkItemDetail)
+            inProgress = parcel.createTypedArrayList(WorkItemDetail)
+            scheduled = parcel.createTypedArrayList(WorkItemDetail)
+            completed = parcel.createTypedArrayList(WorkItemDetail)
         }
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
-
+            parcel.writeTypedList(cancelled)
+            parcel.writeTypedList(onHold)
+            parcel.writeTypedList(inProgress)
+            parcel.writeTypedList(scheduled)
+            parcel.writeTypedList(completed)
         }
 
         override fun describeContents(): Int {
