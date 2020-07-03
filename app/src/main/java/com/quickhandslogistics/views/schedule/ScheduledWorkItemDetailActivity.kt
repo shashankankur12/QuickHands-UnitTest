@@ -164,7 +164,6 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
         workItemDetail.scheduledFrom?.let {
             textViewScheduledDate.text = DateUtils.changeDateString(PATTERN_API_REQUEST_PARAMETER, PATTERN_NORMAL, it)
         }
-        textViewScheduleType.text = workItemTypeDisplayName
 
         when (workItemTypeDisplayName) {
             getString(R.string.drops) -> textViewWorkItemsCount.text = String.format(getString(R.string.no_of_drops_s), workItemDetail.sequence)

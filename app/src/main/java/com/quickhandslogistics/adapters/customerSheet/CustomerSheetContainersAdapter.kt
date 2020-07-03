@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -47,6 +48,7 @@ class CustomerSheetContainersAdapter(
         private val textViewNote: TextView = itemView.textViewNote
         private val textViewStatus: TextView = itemView.textViewStatus
         private val clickableViewBO: View = itemView.clickableViewBO
+        private val relativeLayoutBO: RelativeLayout = itemView.relativeLayoutBO
         private val recyclerViewBO: RecyclerView = itemView.recyclerViewBO
         private val linearLayoutNotes: LinearLayout = itemView.linearLayoutNotes
 
@@ -73,7 +75,12 @@ class CustomerSheetContainersAdapter(
 
             ScheduleUtils.changeStatusUIByValue(resources, workItemDetail.status, textViewStatus)
 
-            recyclerViewBO.adapter = ContainerDetailItemAdapter(workItemDetail.buildingOps, workItemDetail.buildingDetailData?.parameters)
+            if (workItemDetail.buildingDetailData != null && !workItemDetail.buildingDetailData?.parameters.isNullOrEmpty()) {
+                relativeLayoutBO.visibility = View.VISIBLE
+                recyclerViewBO.adapter = ContainerDetailItemAdapter(workItemDetail.buildingOps, workItemDetail.buildingDetailData?.parameters)
+            } else {
+                relativeLayoutBO.visibility = View.GONE
+            }
         }
 
         override fun onClick(view: View?) {

@@ -27,9 +27,7 @@ class CustomerSheetContract {
 
         interface OnFragmentInteractionListener {
             fun saveCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String)
-            fun saveSateCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String) {
-
-            }
+            fun saveSateCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String)
         }
     }
 

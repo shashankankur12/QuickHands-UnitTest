@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.customerSheet.CustomerSheetContract
 import com.quickhandslogistics.data.customerSheet.CustomerSheetData
+import com.quickhandslogistics.data.customerSheet.LocalCustomerSheetData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
@@ -19,13 +22,12 @@ import kotlinx.android.synthetic.main.fragment_customer_sheet_customer.*
 import java.io.File
 import java.util.*
 
-class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
+class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener, TextWatcher {
 
     private var onFragmentInteractionListener: CustomerSheetContract.View.OnFragmentInteractionListener? = null
     private var signatureFilePath = ""
     private var customerSheet: CustomerSheetData? = null
-    private var customerName: String = ""
-    private var customerNote: String = ""
+    private var localCustomerSheet: LocalCustomerSheetData? = null
 
     private var selectedTime: Long? = null
     private var inCompleteWorkItemsCount: Int = 0
@@ -34,18 +36,14 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
         private const val ARG_CUSTOMER_SHEET_DATA = "ARG_CUSTOMER_SHEET_DATA"
         private const val ARG_SELECTED_TIME = "ARG_SELECTED_TIME"
         private const val ARG_ONGOING_WORK_ITEMS_COUNT = "ARG_ONGOING_WORK_ITEMS_COUNT"
-        private const val CUSTOMER_NAME = "CUSTOMER_NAME"
-        private const val CUSTOMER_NOTE = "CUSTOMER_NOTE"
-        private const val CUSTOMER_SING = "CUSTOMER_SING"
+        private const val ARG_LOCAL_CUSTOMER_SHEET_DATA = "ARG_LOCAL_CUSTOMER_SHEET_DATA"
 
         @JvmStatic
         fun newInstance(
             customerSheetData: CustomerSheetData?,
             selectedTime: Long?,
             listData: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>?,
-            customerName: String?,
-            customerNote: String?,
-            customerSignature: String?
+            localCustomerSheet: LocalCustomerSheetData?
         ) =
             CustomerSheetCustomerFragment().apply {
                 if (selectedTime != null && listData != null) {
@@ -53,9 +51,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
                         putParcelable(ARG_CUSTOMER_SHEET_DATA, customerSheetData)
                         putLong(ARG_SELECTED_TIME, selectedTime)
                         putInt(ARG_ONGOING_WORK_ITEMS_COUNT, listData.first.size)
-                        putString(CUSTOMER_NAME, customerName)
-                        putString(CUSTOMER_NOTE, customerNote)
-                        putString(CUSTOMER_SING, customerSignature)
+                        putParcelable(ARG_LOCAL_CUSTOMER_SHEET_DATA, localCustomerSheet)
                     }
                 }
             }
@@ -74,9 +70,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
             customerSheet = it.getParcelable(ARG_CUSTOMER_SHEET_DATA)
             selectedTime = it.getLong(ARG_SELECTED_TIME)
             inCompleteWorkItemsCount = it.getInt(ARG_ONGOING_WORK_ITEMS_COUNT)
-            customerName = it.getString(CUSTOMER_NAME)!!
-            customerNote = it.getString(CUSTOMER_NOTE)!!
-            signatureFilePath = it.getString(CUSTOMER_SING)!!
+            localCustomerSheet = it.getParcelable(ARG_LOCAL_CUSTOMER_SHEET_DATA)
         }
     }
 
@@ -89,11 +83,22 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
 
         addNotesTouchListener(editTextCustomerNotes)
 
+        editTextCustomerName.addTextChangedListener(this)
+        editTextCustomerNotes.addTextChangedListener(this)
         textViewAddSignature.setOnClickListener(this)
         buttonSubmit.setOnClickListener(this)
 
         if (selectedTime != null) {
             updateCustomerDetails(customerSheet, selectedTime!!, inCompleteWorkItemsCount)
+        }
+
+        if (/*(customerSheet != null && localCustomerSheet != null) || */localCustomerSheet != null) {
+            //Show Local Data
+            editTextCustomerName.setText(localCustomerSheet?.customerRepresentativeName)
+            editTextCustomerNotes.setText(localCustomerSheet?.note)
+            if (!localCustomerSheet?.signatureFilePath.isNullOrEmpty()) {
+                showLocalSignatureOnUI(localCustomerSheet?.signatureFilePath)
+            }
         }
     }
 
@@ -103,6 +108,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
             data?.let {
                 val signatureFilePath = data.getStringExtra(AddSignatureActivity.ARG_SIGNATURE_FILE_PATH)
                 showLocalSignatureOnUI(signatureFilePath)
+                saveLocalDataInState()
             }
         }
     }
@@ -119,22 +125,15 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
             editTextCustomerNotes.setText(customerSheet.note)
             updateUIVisibility(ValueUtils.getDefaultOrValue(customerSheet.isSigned), isCurrentDate, inCompleteWorkItemsCount)
         } ?: run {
-            if (!customerName.isNullOrEmpty()|| !customerNote.isNullOrEmpty() || !signatureFilePath.isNullOrEmpty()){
-                editTextCustomerName.setText("")
-                editTextCustomerNotes.setText("")
-            }else {
-                editTextCustomerName.setText("")
-                editTextCustomerNotes.setText("")
-                updateUIVisibility(false, isCurrentDate, inCompleteWorkItemsCount)
-            }
+            editTextCustomerName.setText("")
+            editTextCustomerNotes.setText("")
+            updateUIVisibility(false, isCurrentDate, inCompleteWorkItemsCount)
         }
-        saveSteteCustmoreDetails()
     }
 
-    private fun saveSteteCustmoreDetails() {
+    private fun saveLocalDataInState() {
         onFragmentInteractionListener?.saveSateCustomerSheet(editTextCustomerName.text.toString(), editTextCustomerNotes.text.toString(), signatureFilePath)
     }
-
 
     private fun updateUIVisibility(signed: Boolean, currentDate: Boolean, inCompleteWorkItemsCount: Int) {
         imageViewSignature.visibility = View.GONE
@@ -199,6 +198,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
     private fun showConfirmationDialog(message: String, customerName: String, notesCustomer: String) {
         CustomProgressBar.getInstance().showWarningDialog(message, fragmentActivity!!, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
+                localCustomerSheet = null
                 onFragmentInteractionListener?.saveCustomerSheet(customerName, notesCustomer, signatureFilePath)
             }
 
@@ -215,5 +215,15 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
                 buttonSubmit.id -> submitCustomerSheet()
             }
         }
+    }
+
+    override fun afterTextChanged(s: Editable?) {
+        saveLocalDataInState()
+    }
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+    }
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
     }
 }

@@ -26,8 +26,6 @@
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginEnd="@dimen/_10ssp"
-        android:drawableStart="@drawable/ic_schedule_type"
-        android:drawablePadding="@dimen/_5sdp"
         android:text="@string/total_lumpers_assigned_s"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

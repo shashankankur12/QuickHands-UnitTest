@@ -44,8 +44,6 @@
             style="@style/valuesTextViewTheme"
             android:layout_width="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
-            android:drawableStart="@drawable/ic_schedule_calendar"
-            android:drawablePadding="@dimen/_5sdp"
             android:text="@string/start_time_s"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemType" />

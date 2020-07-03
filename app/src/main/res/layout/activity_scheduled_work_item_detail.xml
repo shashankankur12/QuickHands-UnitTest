@@ -36,23 +36,9 @@
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginEnd="@dimen/_1ssp"
-        android:drawableStart="@drawable/ic_schedule_calendar"
-        android:drawablePadding="@dimen/_5sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
-
-    <com.quickhandslogistics.controls.CustomTextView
-        android:id="@+id/textViewScheduleType"
-        style="@style/valuesTextViewTheme"
-        android:layout_marginStart="@dimen/_15ssp"
-        android:layout_marginTop="@dimen/_4sdp"
-        android:layout_marginEnd="@dimen/_1ssp"
-        android:drawableStart="@drawable/ic_schedule_type"
-        android:drawablePadding="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewScheduledDate" />
 
     <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewWorkItemsCount"
@@ -60,11 +46,9 @@
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginEnd="@dimen/_1ssp"
-        android:drawableStart="@drawable/ic_schedule_work_items"
-        android:drawablePadding="@dimen/_5sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewScheduledDate" />
 
     <LinearLayout
         android:layout_width="0dp"

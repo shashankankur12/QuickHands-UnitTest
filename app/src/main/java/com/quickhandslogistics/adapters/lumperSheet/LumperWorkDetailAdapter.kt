@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -48,6 +49,7 @@ class LumperWorkDetailAdapter(private val resources: Resources, private var adap
         private val textViewQHLNote: TextView = itemView.textViewQHLNote
         private val textViewStatus: TextView = itemView.textViewStatus
         private val clickableViewBO: View = itemView.clickableViewBO
+        private val relativeLayoutBO: RelativeLayout = itemView.relativeLayoutBO
         private val recyclerViewBO: RecyclerView = itemView.recyclerViewBO
         private val linearLayoutCustomerNotes: LinearLayout = itemView.linearLayoutCustomerNotes
         private val linearLayoutQHLNotes: LinearLayout = itemView.linearLayoutQHLNotes
@@ -87,10 +89,15 @@ class LumperWorkDetailAdapter(private val resources: Resources, private var adap
 
                 ScheduleUtils.changeStatusUIByValue(resources, workItemDetail.status, textViewStatus)
 
-                recyclerViewBO.adapter = ContainerDetailItemAdapter(
-                    workItemDetail.buildingOps,
-                    workItemDetail.buildingDetailData?.parameters
-                )
+                if (workItemDetail.buildingDetailData != null && !workItemDetail.buildingDetailData?.parameters.isNullOrEmpty()) {
+                    relativeLayoutBO.visibility = View.VISIBLE
+                    recyclerViewBO.adapter = ContainerDetailItemAdapter(
+                        workItemDetail.buildingOps, workItemDetail.buildingDetailData?.parameters
+                    )
+                } else {
+                    relativeLayoutBO.visibility = View.GONE
+                }
+
             }
 
             lumperDaySheet.lumpersTimeSchedule?.let { timingDetail ->

@@ -11,6 +11,7 @@ import com.quickhandslogistics.contracts.DashBoardContract
 import com.quickhandslogistics.contracts.customerSheet.CustomerSheetContract
 import com.quickhandslogistics.data.customerSheet.CustomerSheetData
 import com.quickhandslogistics.data.customerSheet.CustomerSheetScheduleDetails
+import com.quickhandslogistics.data.customerSheet.LocalCustomerSheetData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.presenters.customerSheet.CustomerSheetPresenter
 import com.quickhandslogistics.utils.CalendarUtils
@@ -31,12 +32,11 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
     private lateinit var availableDates: List<Date>
     private var customerSheetScheduleDetails: CustomerSheetScheduleDetails? = null
     private var customerSheetData: CustomerSheetData? = null
-    private  var selectedDate: Date=Date()
+    private var selectedDate: Date = Date()
     private var companyName: String = ""
     private var date: String = ""
-    private var customerName: String = ""
-    private var customerNote: String = ""
-    private var customerSignature: String = ""
+    private var localCustomerSheetData: LocalCustomerSheetData? = null
+
     private var isSavedState: Boolean = false
     private var selectedDatePosition: Int = 0
 
@@ -50,9 +50,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         const val DATE_STRING = "DATE_STRING"
         const val COMPANY_NAME = "COMPANY_NAME"
         const val SELECTED_DATE_POSITION = "SELECTED_DATE_POSITION"
-        const val CUSTOMER_NAME = "CUSTOMER_NAME"
-        const val CUSTOMER_NOTE = "CUSTOMER_NOTE"
-        const val CUSTOMER_SING = "CUSTOMER_SING"
+        const val LOCAL_CUSTOMER_SHEET_DATA = "LOCAL_CUSTOMER_SHEET_DATA"
     }
 
     override fun onAttach(context: Context) {
@@ -92,13 +90,8 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
                 showHeaderInfo(companyName, date)
             }
 
-            if (savedInstanceState.containsKey(CUSTOMER_NAME) && savedInstanceState.containsKey(CUSTOMER_NOTE)) {
-                customerName = savedInstanceState.getString(CUSTOMER_NAME)!!
-                customerNote = savedInstanceState.getString(CUSTOMER_NOTE)!!
-            }
-
-            if (savedInstanceState.containsKey(CUSTOMER_SING) ) {
-                customerSignature = savedInstanceState.getString(CUSTOMER_SING)!!
+            if (savedInstanceState.containsKey(LOCAL_CUSTOMER_SHEET_DATA)) {
+                localCustomerSheetData = savedInstanceState.getParcelable(LOCAL_CUSTOMER_SHEET_DATA)
             }
 
             if (savedInstanceState.containsKey(SCHEDULE_DETAIL) && savedInstanceState.containsKey(DATE) && savedInstanceState.containsKey(CUSTOMER_SHEET)) {
@@ -109,7 +102,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
                 selectedTime = selectedDate.time
 
                 val allWorkItemLists = createDifferentListData(customerSheetScheduleDetails!!)
-                initializeViewPager(allWorkItemLists, customerSheetData, selectedTime)
+                initializeViewPager(allWorkItemLists, customerSheetData, selectedTime, localCustomerSheetData)
             }
         } ?: run {
             initializeViewPager()
@@ -132,19 +125,17 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         outState.putSerializable(COMPANY_NAME, companyName)
         outState.putSerializable(DATE_STRING, date)
         outState.putInt(SELECTED_DATE_POSITION, selectedDatePosition)
-        outState.putString(CUSTOMER_NAME, customerName)
-        outState.putString(CUSTOMER_NOTE, customerNote)
-        outState.putString(CUSTOMER_SING, customerSignature)
+        outState.putParcelable(LOCAL_CUSTOMER_SHEET_DATA, localCustomerSheetData)
 
         super.onSaveInstanceState(outState)
     }
 
     private fun initializeViewPager(
         allWorkItemLists: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>? = null,
-        customerSheetData: CustomerSheetData? = null, selectedTime: Long? = null
+        customerSheetData: CustomerSheetData? = null, selectedTime: Long? = null, localCustomerSheetData: LocalCustomerSheetData? = null
     ) {
         adapter = if (allWorkItemLists != null) {
-            CustomerSheetPagerAdapter(childFragmentManager, resources, allWorkItemLists, customerSheetData, selectedTime, customerName,customerNote,customerSignature)
+            CustomerSheetPagerAdapter(childFragmentManager, resources, allWorkItemLists, customerSheetData, selectedTime, localCustomerSheetData)
         } else {
             CustomerSheetPagerAdapter(childFragmentManager, resources)
         }
@@ -181,6 +172,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         this.selectedDate = selectedDate
         this.customerSheetScheduleDetails = scheduleDetails
         this.customerSheetData = customerSheet
+        this.localCustomerSheetData = null
 
         selectedTime = selectedDate.time
 
@@ -221,9 +213,12 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
     }
 
     override fun saveSateCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String) {
-        this.customerName=customerName
-        this.customerNote=notesCustomer
-        this.customerSignature=signatureFilePath
+        if (localCustomerSheetData != null) {
+            localCustomerSheetData = LocalCustomerSheetData()
+        }
+        localCustomerSheetData?.customerRepresentativeName = customerName
+        localCustomerSheetData?.note = notesCustomer
+        localCustomerSheetData?.signatureFilePath = signatureFilePath
     }
 
     /** Calendar Listeners */
