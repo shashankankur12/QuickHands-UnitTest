@@ -153,7 +153,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
                 is ReportsFragment->
                     tabName = getString(R.string.reports)
                 is TimeClockAttendanceFragment->
-                    tabName = getString(R.string.time_clock_attendance)
+                    tabName = getString(R.string.time_clock)
             }
         }
         outState.putString(TAB_NAME, tabName)
@@ -170,7 +170,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
                 }
             }
 
-            it.addItem(NavDrawer.AppNavDrawerItem(TimeClockAttendanceFragment(), R.drawable.ic_sidemenu_schedule, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.time_clock_attendance), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(TimeClockAttendanceFragment(), R.drawable.ic_sidemenu_schedule, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.time_clock), showTabName)))
             it.addItem(NavDrawer.AppNavDrawerItem(CustomerSheetFragment(), R.drawable.ic_sidemenu_customer_sheet, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.customer_sheet), showTabName)))
             it.addItem(NavDrawer.AppNavDrawerItem(LumperSheetFragment(), R.drawable.ic_sidemenu_lumper_sheet, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.l_sheet), showTabName)))
 

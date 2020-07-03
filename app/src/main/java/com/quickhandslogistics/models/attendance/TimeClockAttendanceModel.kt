@@ -41,7 +41,9 @@ class TimeClockAttendanceModel(private val sharedPref: SharedPref) : TimeClockAt
     override fun saveLumpersAttendanceList(
         attendanceDetailList: List<AttendanceDetail>, onFinishedListener: TimeClockAttendanceContract.Model.OnFinishedListener
     ) {
-        DataManager.getService().saveAttendanceDetails(getAuthToken(), attendanceDetailList).enqueue(object : Callback<BaseResponse> {
+        val dateString = DateUtils.getCurrentDateStringByEmployeeShift(sharedPref)
+
+        DataManager.getService().saveAttendanceDetails(getAuthToken(), dateString, attendanceDetailList).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onSuccessSaveDate()

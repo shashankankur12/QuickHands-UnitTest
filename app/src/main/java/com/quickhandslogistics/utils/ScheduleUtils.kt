@@ -5,6 +5,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
+import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.data.schedule.WorkItemDetail
@@ -93,13 +94,13 @@ object ScheduleUtils {
                 textViewStatus.text = resources.getString(R.string.cancelled)
                 textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
                 relativeLayoutSide?.setBackgroundResource(R.drawable.schedule_item_stroke_cancelled)
-                setStatusViewEditable(false, textViewStatus)
+                setStatusViewEditable(isEditable, textViewStatus)
             }
             AppConstant.WORK_ITEM_STATUS_COMPLETED -> {
                 textViewStatus.text = resources.getString(R.string.completed)
                 textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
                 relativeLayoutSide?.setBackgroundResource(R.drawable.schedule_item_stroke_completed)
-                setStatusViewEditable(false, textViewStatus)
+                setStatusViewEditable(isEditable, textViewStatus)
             }
         }
     }
@@ -214,5 +215,32 @@ object ScheduleUtils {
         } else {
             AppConstant.WORK_ITEM_STATUS_COMPLETED
         }
+    }
+
+    fun getFilledBuildingParametersCount(buildingOps: HashMap<String, String>?): Int {
+        var count = 0
+
+        buildingOps?.let {
+            for (key in buildingOps.keys) {
+                val value = buildingOps[key]
+                if (!value.isNullOrEmpty()) {
+                    count++
+                }
+            }
+        }
+
+        return count
+    }
+
+    fun getBuildingParametersList(sharedPref: SharedPref): ArrayList<String> {
+        val parameters = ArrayList<String>()
+        val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+
+        leadProfile?.buildingDetailData?.let { buildingDetailData ->
+            if (!buildingDetailData.parameters.isNullOrEmpty()) {
+                parameters.addAll(buildingDetailData.parameters!!)
+            }
+        }
+        return parameters
     }
 }

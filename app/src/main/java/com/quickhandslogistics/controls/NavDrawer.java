@@ -216,7 +216,8 @@ public class NavDrawer {
                 navDrawer.showLogoutDialog();
             } else {
                 Fragment currentFragment = activity.getSupportFragmentManager().findFragmentById(R.id.frameLayoutMain);
-                if (currentFragment != null && currentFragment.getClass().getSimpleName().equals(activity.getString(R.string.time_clock)) && !targetFragment.getClass().getSimpleName().equals(activity.getString(R.string.time_clock))) {
+                if (currentFragment != null && currentFragment.getClass().getSimpleName().equals(TimeClockAttendanceFragment.class.getSimpleName())
+                        && !targetFragment.getClass().getSimpleName().equals(TimeClockAttendanceFragment.class.getSimpleName())) {
                     if (currentFragment instanceof TimeClockAttendanceFragment) {
                         if (((TimeClockAttendanceFragment) currentFragment).onDataChanges()) {
                             showLeavePageAlert(activity, text);

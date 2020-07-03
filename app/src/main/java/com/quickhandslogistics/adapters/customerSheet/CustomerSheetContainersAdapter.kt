@@ -15,10 +15,11 @@ import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.ScheduleUtils
+import com.quickhandslogistics.utils.SharedPref
 import kotlinx.android.synthetic.main.item_customer_sheet_container.view.*
 
 class CustomerSheetContainersAdapter(
-    private val resources: Resources, var adapterItemClickListener: CustomerSheetContainersContract.View.OnAdapterItemClickListener
+    private val resources: Resources, private val sharedPref: SharedPref, var adapterItemClickListener: CustomerSheetContainersContract.View.OnAdapterItemClickListener
 ) : RecyclerView.Adapter<CustomerSheetContainersAdapter.ViewHolder>() {
 
     private var workItemsList: ArrayList<WorkItemDetail> = ArrayList()
@@ -52,10 +53,14 @@ class CustomerSheetContainersAdapter(
         private val recyclerViewBO: RecyclerView = itemView.recyclerViewBO
         private val linearLayoutNotes: LinearLayout = itemView.linearLayoutNotes
 
+        var parameters = ArrayList<String>()
+
         init {
             recyclerViewBO.apply {
                 layoutManager = LinearLayoutManager(context)
             }
+
+            parameters = ScheduleUtils.getBuildingParametersList(sharedPref)
 
             clickableViewBO.setOnClickListener(this)
             linearLayoutNotes.setOnClickListener(this)
@@ -75,9 +80,9 @@ class CustomerSheetContainersAdapter(
 
             ScheduleUtils.changeStatusUIByValue(resources, workItemDetail.status, textViewStatus)
 
-            if (workItemDetail.buildingDetailData != null && !workItemDetail.buildingDetailData?.parameters.isNullOrEmpty()) {
+            if (!parameters.isNullOrEmpty()) {
                 relativeLayoutBO.visibility = View.VISIBLE
-                recyclerViewBO.adapter = ContainerDetailItemAdapter(workItemDetail.buildingOps, workItemDetail.buildingDetailData?.parameters)
+                recyclerViewBO.adapter = ContainerDetailItemAdapter(workItemDetail.buildingOps, parameters)
             } else {
                 relativeLayoutBO.visibility = View.GONE
             }
@@ -88,7 +93,7 @@ class CustomerSheetContainersAdapter(
                 when (view.id) {
                     clickableViewBO.id -> {
                         val workItemDetail = getItem(adapterPosition)
-                        adapterItemClickListener.onBOItemClick(workItemDetail)
+                        adapterItemClickListener.onBOItemClick(workItemDetail, parameters)
                     }
                     linearLayoutNotes.id -> {
                         val workItemDetail = getItem(adapterPosition)

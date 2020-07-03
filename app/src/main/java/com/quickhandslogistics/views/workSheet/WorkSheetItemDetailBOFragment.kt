@@ -88,7 +88,7 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
-            onFragmentInteractionListener?.fetchWorkItemDetail(changeResultCode = false)
+            onFragmentInteractionListener?.fetchWorkItemDetail(changeResultCode = true)
         }
     }
 

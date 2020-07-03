@@ -13,11 +13,8 @@ import com.quickhandslogistics.views.workSheet.WorkSheetItemDetailLumpersFragmen
 import com.quickhandslogistics.views.workSheet.WorkSheetItemDetailNotesFragment
 
 class WorkSheetItemDetailPagerAdapter(
-    fragmentManager: FragmentManager,
-    private val resources: Resources,
-    allWorkItem: WorkItemDetail?=null,
-    tempLumperIds: ArrayList<String>?= null,
-    lumperTimeSchedule: ArrayList<LumpersTimeSchedule>?= null
+    fragmentManager: FragmentManager, private val resources: Resources, allWorkItem: WorkItemDetail?=null,
+    tempLumperIds: ArrayList<String>?= null, lumperTimeSchedule: ArrayList<LumpersTimeSchedule>?= null
 ) :
     FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 

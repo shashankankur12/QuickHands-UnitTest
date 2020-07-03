@@ -52,6 +52,35 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewNoOfDrops" />
 
+        <TextView
+            android:id="@+id/textViewDoor"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:text="@string/door_s"
+            app:layout_constraintEnd_toStartOf="@+id/textViewContainer"
+            app:layout_constraintHorizontal_weight="0.25"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
+
+        <TextView
+            android:id="@+id/textViewContainer"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:text="@string/container_no_s"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="0.75"
+            app:layout_constraintStart_toEndOf="@+id/textViewDoor"
+            app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/labelBarrier1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="textViewDoor,textViewContainer" />
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circleImageViewArrow"
             android:layout_width="@dimen/_18sdp"
@@ -62,7 +91,9 @@
             app:civ_border_width="@dimen/_1sdp"
             app:civ_circle_background_color="@color/circleBackground"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelBarrier1"
+            app:layout_constraintVertical_bias="1"  />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewLumpersImagesList"
@@ -70,7 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_6sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewStartTime" />
+            app:layout_constraintTop_toBottomOf="@id/labelBarrier1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

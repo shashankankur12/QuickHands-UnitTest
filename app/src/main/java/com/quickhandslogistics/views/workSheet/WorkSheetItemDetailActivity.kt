@@ -128,12 +128,12 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     }
 
     private fun updateStatusBackground(status: String) {
-        val statusList: LinkedHashMap<String, String> = LinkedHashMap()
-        statusList.putAll(ScheduleUtils.createStatusList(resources, status))
+        //val statusList: LinkedHashMap<String, String> = LinkedHashMap()
+        //statusList.putAll(ScheduleUtils.createStatusList(resources, status))
 
         ScheduleUtils.changeStatusUIByValue(resources, status, textViewStatus, isEditable = true)
 
-        workSheetItemStatusAdapter?.updateStatusList(statusList)
+        //workSheetItemStatusAdapter?.updateStatusList(statusList)
     }
 
     private fun closeBottomSheet() {
@@ -195,6 +195,21 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
     /** Adapter Listeners */
     override fun onSelectStatus(status: String) {
+        if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
+            val filledParameterCount = ScheduleUtils.getFilledBuildingParametersCount(workItemDetail.buildingOps)
+            val parameters = ScheduleUtils.getBuildingParametersList(sharedPref)
+
+            if (workItemDetail.buildingOps.isNullOrEmpty() || filledParameterCount != parameters.size) {
+                CustomProgressBar.getInstance().showErrorDialog(getString(R.string.fill_building_parameters_message), activity)
+                closeBottomSheet()
+                return
+            } else if (workItemDetail.assignedLumpersList.isNullOrEmpty()) {
+                CustomProgressBar.getInstance().showErrorDialog(getString(R.string.assign_lumpers_message), activity)
+                closeBottomSheet()
+                return
+            }
+        }
+
         var message = getString(R.string.change_status_alert_message)
         if (status == AppConstant.WORK_ITEM_STATUS_CANCELLED || status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
             message = getString(R.string.change_status_permanently_alert_message)

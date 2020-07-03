@@ -143,7 +143,7 @@ class NotificationService : FirebaseMessagingService() {
     }
 
     companion object {
-        private const val NOTIFICATION_CHANNEL_ID = "QuickHandsChannelId"
-        private const val NOTIFICATION_CHANNEL_NAME = "Schedule Changes"
+        private const val NOTIFICATION_CHANNEL_ID = "QuickHandsServer"
+        private const val NOTIFICATION_CHANNEL_NAME = "Server Updates"
     }
 }

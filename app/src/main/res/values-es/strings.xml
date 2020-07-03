@@ -30,16 +30,19 @@
     <string name="completed">Completed</string>
     <string name="completed_s">Completed: %s</string>
     <string name="contact_info">Contact Info</string>
+    <string name="container_no_s">Container No: %s</string>
     <string name="container_details">Container Detail</string>
     <string name="containers">Containers</string>
     <string name="create_new_request">Create New Request</string>
     <string name="current_time">Current Time: </string>
     <string name="custom">Custom</string>
     <string name="customer_details">Customer Details</string>
+    <string name="customer_note">Customer Note</string>
     <string name="customer_report">Customer Report</string>
     <string name="customer_representative_name">Customer Representative Name</string>
     <string name="customer_sheet">Customer Sheet</string>
     <string name="daily">Daily</string>
+    <string name="door_s">Door: %s</string>
     <string name="drops">Drops</string>
     <string name="drops_s">Drops: %s</string>
     <string name="edit_parameters">Edit Parameters</string>
@@ -85,6 +88,7 @@
     <string name="ok">OK</string>
     <string name="on_hold">On-Hold</string>
     <string name="ongoing">Ongoing</string>
+    <string name="ongoing_s">Ongoing: %s</string>
     <string name="out_bound_s">Out Bound: %s</string>
     <string name="out_bounds">Out Bounds</string>
     <string name="out_bounds_s">Out Bounds: %s</string>
@@ -131,7 +135,7 @@
     <string name="start_time_s">Start Time: %s</string>
     <string name="submit">Submit</string>
     <string name="success">Success</string>
-    <string name="time_clock_attendance">Time Clock</string>
+    <string name="time_clock">Time Clock</string>
     <string name="time_clock_report">Time Clock Report</string>
     <string name="title">Title</string>
     <string name="to">- to -</string>
@@ -189,10 +193,9 @@
     <string name="language_change_alert_message">You want to change the language</string>
     <string name="logout_alert_message">You want to logout</string>
     <string name="leave_alert_message">You want to leave this page</string>
-    <string name="time_clock">TimeClockAttendanceFragment</string>
     <string name="lumper_sheet_success_message">Lumper Sheet submitted successfully</string>
     <string name="notes_saved_success_alert_message">Notes Saved Successfully</string>
-    <string name="reports_generate_success_message">Report Generated Successfully. Do you want to Download it?</string>
+    <string name="reports_generate_success_message">Report has been generated Successfully. Please check the notification bar to see the downloading.</string>
     <string name="request_cancelled_success_message">Request cancelled successfully</string>
     <string name="request_lumpers_alert_message">You want to submit the lumper request</string>
     <string name="request_placed_success_message">Request placed successfully</string>
@@ -202,6 +205,8 @@
     <string name="submit_customer_sheet_alert_message">You want to submit the customer sheet</string>
     <string name="submit_customer_sheet_permanently_alert_message">You want to submit the customer sheet. Consider adding notes before changing permanently</string>
     <string name="submit_lumper_sheet_alert_message">You want to submit the lumper sheet.</string>
+    <string name="time_clock_fill_alert_title">Quick Hands | Alert</string>
+    <string name="time_clock_fill_alert_message">Don\'t forget to Clock Out all the lumpers in \'Time-Clock\' before submitting Lumper Sheet.</string>
     <string name="use_external_storage_alert_message">Please allow storage permission in the app settings, so that you could download \'Reports\'</string>
     <string name="warning_alert_message">You want to make these changes</string>
 
@@ -209,6 +214,8 @@
     <string name="customer_sheet_warning_message"><![CDATA[Please provide both Customer Representative Name & his Signature.]]></string>
     <string name="empty_employee_id_message">Please enter Employee Id</string>
     <string name="empty_password_message">Please enter Password</string>
+    <string name="fill_building_parameters_message">You haven\'t filled all building parameters values. Please fill them, before changing the container status to complete.</string>
+    <string name="assign_lumpers_message">You haven\'t assigned any lumper to the container. Please assign one or more lumper, before changing the container status to complete.</string>
     <string name="password_short_length_message">Please enter Password of at-least 8 characters</string>
     <string name="request_help_message"><![CDATA[You will have to enter both Required Lumper Count & DM Notes]]></string>
     <string name="something_went_wrong_message">Something went wrong, Please try again after sometime!!!</string>

@@ -13,13 +13,13 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.customerSheet.ContainerDetailItemAdapter
 import com.quickhandslogistics.contracts.lumperSheet.LumperWorkDetailContract
 import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.utils.ScheduleUtils
-import com.quickhandslogistics.utils.ValueUtils
+import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.item_lumper_work_detail.view.*
 
-class LumperWorkDetailAdapter(private val resources: Resources, private var adapterItemClickListener: LumperWorkDetailContract.View.OnAdapterItemClickListener) :
+class LumperWorkDetailAdapter(
+    private val resources: Resources, private val sharedPref: SharedPref,
+    private var adapterItemClickListener: LumperWorkDetailContract.View.OnAdapterItemClickListener
+) :
     RecyclerView.Adapter<LumperWorkDetailAdapter.ViewHolder>() {
 
     private val lumperDaySheetList: ArrayList<LumperDaySheet> = ArrayList()
@@ -57,10 +57,14 @@ class LumperWorkDetailAdapter(private val resources: Resources, private var adap
         private val textViewWaitingTime: TextView = itemView.textViewWaitingTime
         private val textViewBreakTime: TextView = itemView.textViewBreakTime
 
+        var parameters = ArrayList<String>()
+
         init {
             recyclerViewBO.apply {
                 layoutManager = LinearLayoutManager(context)
             }
+
+            parameters = ScheduleUtils.getBuildingParametersList(sharedPref)
 
             clickableViewBO.setOnClickListener(this)
             linearLayoutCustomerNotes.setOnClickListener(this)
@@ -89,11 +93,9 @@ class LumperWorkDetailAdapter(private val resources: Resources, private var adap
 
                 ScheduleUtils.changeStatusUIByValue(resources, workItemDetail.status, textViewStatus)
 
-                if (workItemDetail.buildingDetailData != null && !workItemDetail.buildingDetailData?.parameters.isNullOrEmpty()) {
+                if (!parameters.isNullOrEmpty()) {
                     relativeLayoutBO.visibility = View.VISIBLE
-                    recyclerViewBO.adapter = ContainerDetailItemAdapter(
-                        workItemDetail.buildingOps, workItemDetail.buildingDetailData?.parameters
-                    )
+                    recyclerViewBO.adapter = ContainerDetailItemAdapter(workItemDetail.buildingOps, parameters)
                 } else {
                     relativeLayoutBO.visibility = View.GONE
                 }
@@ -124,7 +126,7 @@ class LumperWorkDetailAdapter(private val resources: Resources, private var adap
                     clickableViewBO.id -> {
                         val lumperDaySheet = getItem(adapterPosition)
                         lumperDaySheet.workItemDetail?.let { workItemDetail ->
-                            adapterItemClickListener.onBOItemClick(workItemDetail)
+                            adapterItemClickListener.onBOItemClick(workItemDetail, parameters)
                         }
                     }
                     linearLayoutCustomerNotes.id -> {

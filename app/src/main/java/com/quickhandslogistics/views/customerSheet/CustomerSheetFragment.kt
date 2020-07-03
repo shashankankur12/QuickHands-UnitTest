@@ -14,10 +14,7 @@ import com.quickhandslogistics.data.customerSheet.CustomerSheetScheduleDetails
 import com.quickhandslogistics.data.customerSheet.LocalCustomerSheetData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.presenters.customerSheet.CustomerSheetPresenter
-import com.quickhandslogistics.utils.CalendarUtils
-import com.quickhandslogistics.utils.CustomDialogListener
-import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_customer_sheet.*
 import java.util.*
@@ -199,6 +196,8 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
     }
 
     override fun customerSavedSuccessfully() {
+        LocalNotificationUtils.showTimeClockNotification(fragmentActivity!!)
+
         CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.customer_sheet_success_message),
             fragmentActivity!!, object : CustomDialogListener {
                 override fun onConfirmClick() {

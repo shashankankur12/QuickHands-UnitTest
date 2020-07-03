@@ -17,9 +17,10 @@ import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.ScheduleUtils
+import com.quickhandslogistics.utils.SharedPref
 import kotlinx.android.synthetic.main.item_work_sheet.view.*
 
-class WorkSheetItemAdapter(private val resources: Resources, var adapterItemClickListener: WorkSheetItemContract.View.OnAdapterItemClickListener) :
+class WorkSheetItemAdapter(private val resources: Resources, private val sharedPref: SharedPref, var adapterItemClickListener: WorkSheetItemContract.View.OnAdapterItemClickListener) :
     RecyclerView.Adapter<WorkSheetItemAdapter.ViewHolder>() {
 
     private var workItemsList: ArrayList<WorkItemDetail> = ArrayList()
@@ -46,6 +47,8 @@ class WorkSheetItemAdapter(private val resources: Resources, var adapterItemClic
 
         private val textViewStartTime: TextView = itemView.textViewStartTime
         private val textViewNoOfDrops: TextView = itemView.textViewNoOfDrops
+        private val textViewDoor: TextView = itemView.textViewDoor
+        private val textViewContainer: TextView = itemView.textViewContainer
         private val textViewStatus: TextView = itemView.textViewStatus
         private val relativeLayoutSide: RelativeLayout = itemView.relativeLayoutSide
         private val recyclerViewLumpersImagesList: RecyclerView = itemView.recyclerViewLumpersImagesList
@@ -68,6 +71,16 @@ class WorkSheetItemAdapter(private val resources: Resources, var adapterItemClic
                 resources.getString(R.string.live_loads) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.live_load_s), workItemDetail.sequence)
                 else -> textViewNoOfDrops.text = String.format(resources.getString(R.string.out_bound_s), workItemDetail.sequence)
             }
+
+            var doorValue: String? = null
+            var containerNumberValue: String? = null
+            if (!workItemDetail.buildingOps.isNullOrEmpty()) {
+                doorValue = workItemDetail.buildingOps!!["Door"]
+                containerNumberValue = workItemDetail.buildingOps!!["Container Number"]
+            }
+
+            textViewDoor.text = String.format(resources.getString(R.string.door_s), if (!doorValue.isNullOrEmpty()) doorValue else "---")
+            textViewContainer.text = String.format(resources.getString(R.string.container_no_s), if (!containerNumberValue.isNullOrEmpty()) containerNumberValue else "---")
 
             workItemDetail.assignedLumpersList?.let { imagesList ->
                 recyclerViewLumpersImagesList.adapter = LumperImagesAdapter(imagesList, this@ViewHolder)

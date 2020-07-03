@@ -105,7 +105,7 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.actionNotes -> CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), scheduleDetail?.scheduleNote!!, activity)
+            R.id.actionNotes -> CustomProgressBar.getInstance().showInfoDialog(getString(R.string.customer_note), scheduleDetail?.scheduleNote!!, activity)
         }
         return super.onOptionsItemSelected(item)
     }

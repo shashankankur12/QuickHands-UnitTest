@@ -89,7 +89,7 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
         recyclerViewWorkSheet.apply {
             layoutManager = LinearLayoutManager(fragmentActivity!!)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            workSheetItemAdapter = WorkSheetItemAdapter(resources, this@WorkSheetItemFragment)
+            workSheetItemAdapter = WorkSheetItemAdapter(resources, sharedPref, this@WorkSheetItemFragment)
             adapter = workSheetItemAdapter
         }
 

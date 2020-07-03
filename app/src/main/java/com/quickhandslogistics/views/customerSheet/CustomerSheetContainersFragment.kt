@@ -19,7 +19,7 @@ import com.quickhandslogistics.views.common.BuildingOperationsViewActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETERS
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETER_VALUES
 import kotlinx.android.synthetic.main.fragment_customer_sheet_containers.*
-import java.util.*
+import kotlin.collections.ArrayList
 
 class CustomerSheetContainersFragment : BaseFragment(), CustomerSheetContainersContract.View.OnAdapterItemClickListener {
 
@@ -75,7 +75,7 @@ class CustomerSheetContainersFragment : BaseFragment(), CustomerSheetContainersC
         recyclerViewContainers.apply {
             layoutManager = LinearLayoutManager(fragmentActivity!!)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            customerSheetContainersAdapter = CustomerSheetContainersAdapter(resources, this@CustomerSheetContainersFragment)
+            customerSheetContainersAdapter = CustomerSheetContainersAdapter(resources, sharedPref, this@CustomerSheetContainersFragment)
             adapter = customerSheetContainersAdapter
         }
 
@@ -99,13 +99,13 @@ class CustomerSheetContainersFragment : BaseFragment(), CustomerSheetContainersC
 
         textViewCompletedCount.text = String.format(getString(R.string.completed_s), completedWorkItems.size)
         textViewCancelledCount.text = String.format(getString(R.string.cancelled_s), cancelledWorkItems.size)
-        textViewUnfinishedCount.text = String.format(getString(R.string.unfinished_s), onGoingWorkItems.size)
+        textViewUnfinishedCount.text = String.format(getString(R.string.ongoing_s), onGoingWorkItems.size)
     }
 
     /** Adapter Listeners */
-    override fun onBOItemClick(workItemDetail: WorkItemDetail) {
+    override fun onBOItemClick(workItemDetail: WorkItemDetail, parameters: ArrayList<String>) {
         val bundle = Bundle()
-        bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, workItemDetail.buildingDetailData?.parameters)
+        bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, parameters)
         bundle.putSerializable(ARG_BUILDING_PARAMETER_VALUES, workItemDetail.buildingOps)
         startIntent(BuildingOperationsViewActivity::class.java, bundle = bundle)
     }

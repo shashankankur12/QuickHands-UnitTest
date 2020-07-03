@@ -14,6 +14,8 @@ import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
 import com.quickhandslogistics.data.lumperSheet.LumpersInfo
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.presenters.lumperSheet.LumperWorkDetailPresenter
+import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.common.AddSignatureActivity
 import com.quickhandslogistics.views.common.BuildingOperationsViewActivity
@@ -21,11 +23,10 @@ import com.quickhandslogistics.views.lumperSheet.LumperSheetFragment.Companion.A
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETERS
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETER_VALUES
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
-import com.quickhandslogistics.utils.*
-import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import kotlinx.android.synthetic.main.activity_lumper_work_detail.*
 import java.io.File
 import java.util.*
+import kotlin.collections.ArrayList
 
 class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWorkDetailContract.View,
     LumperWorkDetailContract.View.OnAdapterItemClickListener {
@@ -74,7 +75,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         recyclerViewLumperWork.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            lumperWorkDetailAdapter = LumperWorkDetailAdapter(resources, this@LumperWorkDetailActivity)
+            lumperWorkDetailAdapter = LumperWorkDetailAdapter(resources, sharedPref, this@LumperWorkDetailActivity)
             adapter = lumperWorkDetailAdapter
         }
 
@@ -167,9 +168,9 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     }
 
     /** Adapter Listeners */
-    override fun onBOItemClick(workItemDetail: WorkItemDetail) {
+    override fun onBOItemClick(workItemDetail: WorkItemDetail, parameters: ArrayList<String>) {
         val bundle = Bundle()
-        bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, workItemDetail.buildingDetailData?.parameters)
+        bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, parameters)
         bundle.putSerializable(ARG_BUILDING_PARAMETER_VALUES, workItemDetail.buildingOps)
         startIntent(BuildingOperationsViewActivity::class.java, bundle = bundle)
     }
