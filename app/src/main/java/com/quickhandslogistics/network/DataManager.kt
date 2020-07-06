@@ -8,7 +8,13 @@ import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
-import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -35,6 +41,10 @@ object DataManager : AppConstant {
         return retrofitStandard
     }
 
+    fun getOkHttpClient(): OkHttpClient? {
+        return okHttpClient
+    }
+
     fun getService(): IApiInterface {
         return getDataManager()!!.create(IApiInterface::class.java)
     }
@@ -44,11 +54,11 @@ object DataManager : AppConstant {
     }
 
     fun createRequestBody(value: String): RequestBody {
-        return RequestBody.create(MediaType.parse("multipart/form-data"), value)
+        return value.toRequestBody("multipart/form-data".toMediaTypeOrNull())
     }
 
     fun createMultiPartBody(file: File, variableName: String): MultipartBody.Part {
-        val requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
         return MultipartBody.Part.createFormData(variableName, file.name, requestBody)
     }
 

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,13 +13,13 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.customerSheet.ContainerDetailItemAdapter
 import com.quickhandslogistics.contracts.lumperSheet.LumperWorkDetailContract
 import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.utils.ScheduleUtils
-import com.quickhandslogistics.utils.ValueUtils
+import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.item_lumper_work_detail.view.*
 
-class LumperWorkDetailAdapter(private val resources: Resources, private var adapterItemClickListener: LumperWorkDetailContract.View.OnAdapterItemClickListener) :
+class LumperWorkDetailAdapter(
+    private val resources: Resources, private val sharedPref: SharedPref,
+    private var adapterItemClickListener: LumperWorkDetailContract.View.OnAdapterItemClickListener
+) :
     RecyclerView.Adapter<LumperWorkDetailAdapter.ViewHolder>() {
 
     private val lumperDaySheetList: ArrayList<LumperDaySheet> = ArrayList()
@@ -48,6 +49,7 @@ class LumperWorkDetailAdapter(private val resources: Resources, private var adap
         private val textViewQHLNote: TextView = itemView.textViewQHLNote
         private val textViewStatus: TextView = itemView.textViewStatus
         private val clickableViewBO: View = itemView.clickableViewBO
+        private val relativeLayoutBO: RelativeLayout = itemView.relativeLayoutBO
         private val recyclerViewBO: RecyclerView = itemView.recyclerViewBO
         private val linearLayoutCustomerNotes: LinearLayout = itemView.linearLayoutCustomerNotes
         private val linearLayoutQHLNotes: LinearLayout = itemView.linearLayoutQHLNotes
@@ -55,10 +57,14 @@ class LumperWorkDetailAdapter(private val resources: Resources, private var adap
         private val textViewWaitingTime: TextView = itemView.textViewWaitingTime
         private val textViewBreakTime: TextView = itemView.textViewBreakTime
 
+        var parameters = ArrayList<String>()
+
         init {
             recyclerViewBO.apply {
                 layoutManager = LinearLayoutManager(context)
             }
+
+            parameters = ScheduleUtils.getBuildingParametersList(sharedPref)
 
             clickableViewBO.setOnClickListener(this)
             linearLayoutCustomerNotes.setOnClickListener(this)
@@ -87,10 +93,13 @@ class LumperWorkDetailAdapter(private val resources: Resources, private var adap
 
                 ScheduleUtils.changeStatusUIByValue(resources, workItemDetail.status, textViewStatus)
 
-                recyclerViewBO.adapter = ContainerDetailItemAdapter(
-                    workItemDetail.buildingOps,
-                    workItemDetail.buildingDetailData?.parameters
-                )
+                if (!parameters.isNullOrEmpty()) {
+                    relativeLayoutBO.visibility = View.VISIBLE
+                    recyclerViewBO.adapter = ContainerDetailItemAdapter(workItemDetail.buildingOps, parameters)
+                } else {
+                    relativeLayoutBO.visibility = View.GONE
+                }
+
             }
 
             lumperDaySheet.lumpersTimeSchedule?.let { timingDetail ->
@@ -117,7 +126,7 @@ class LumperWorkDetailAdapter(private val resources: Resources, private var adap
                     clickableViewBO.id -> {
                         val lumperDaySheet = getItem(adapterPosition)
                         lumperDaySheet.workItemDetail?.let { workItemDetail ->
-                            adapterItemClickListener.onBOItemClick(workItemDetail)
+                            adapterItemClickListener.onBOItemClick(workItemDetail, parameters)
                         }
                     }
                     linearLayoutCustomerNotes.id -> {

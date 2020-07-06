@@ -27,6 +27,8 @@ class DisplayLumpersListActivity : BaseActivity(), View.OnClickListener, TextWat
 
     companion object {
         const val ARG_LUMPERS_LIST = "ARG_LUMPERS_LIST"
+        const val LUMPER_DISPLAY_LIST = "LUMPER_DISPLAY_LIST"
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

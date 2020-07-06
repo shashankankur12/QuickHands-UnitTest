@@ -23,6 +23,11 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
 
     private lateinit var allWorkScheduleCancelPresenter: AllWorkScheduleCancelPresenter
     private lateinit var allWorkScheduleCancelAdapter: AllWorkScheduleCancelAdapter
+    private var employeeDataList: java.util.ArrayList<EmployeeData> =ArrayList()
+
+    companion object {
+        const val WORK_SCHEDULE_LIST = "WORK_SCHEDULE_LIST"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +37,21 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
         initializeUI()
 
         allWorkScheduleCancelPresenter = AllWorkScheduleCancelPresenter(this, resources)
-        allWorkScheduleCancelPresenter.fetchLumpersList()
+
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey(WORK_SCHEDULE_LIST)) {
+                employeeDataList = savedInstanceState.getParcelableArrayList(WORK_SCHEDULE_LIST)!!
+                showLumpersData(employeeDataList)
+            }
+        } ?: run {
+            allWorkScheduleCancelPresenter.fetchLumpersList()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (employeeDataList != null)
+            outState.putParcelableArrayList(WORK_SCHEDULE_LIST, employeeDataList)
+        super.onSaveInstanceState(outState)
     }
 
     fun initializeUI() {
@@ -52,6 +71,9 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
                 invalidateEmptyView()
             }
         })
+
+        addNotesTouchListener(editTextCustomerNotes)
+        addNotesTouchListener(editTextQHLNotes)
 
         buttonSubmit.setOnClickListener(this)
         editTextSearch.addTextChangedListener(this)
@@ -119,6 +141,7 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
     }
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
+        this.employeeDataList=employeeDataList
         allWorkScheduleCancelAdapter.updateLumpersData(employeeDataList)
     }
 

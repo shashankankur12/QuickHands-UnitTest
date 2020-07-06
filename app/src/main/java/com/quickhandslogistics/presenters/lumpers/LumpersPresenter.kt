@@ -7,11 +7,12 @@ import com.quickhandslogistics.contracts.lumpers.LumpersContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.models.lumpers.LumpersModel
+import com.quickhandslogistics.utils.SharedPref
 
-class LumpersPresenter(private var lumpersView: LumpersContract.View?, private val resources: Resources) :
+class LumpersPresenter(private var lumpersView: LumpersContract.View?, private val resources: Resources, sharedPref: SharedPref) :
     LumpersContract.Presenter, LumpersContract.Model.OnFinishedListener {
 
-    private val lumpersModel = LumpersModel()
+    private val lumpersModel = LumpersModel(sharedPref)
 
     /** View Listeners */
     override fun onDestroy() {
@@ -20,6 +21,7 @@ class LumpersPresenter(private var lumpersView: LumpersContract.View?, private v
 
     override fun fetchLumpersList() {
         lumpersView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        lumpersModel.fetchHeaderInfo(this)
         lumpersModel.fetchLumpersList(this)
     }
 
@@ -41,5 +43,9 @@ class LumpersPresenter(private var lumpersView: LumpersContract.View?, private v
         allLumpersList.addAll(response.data?.temporaryLumpers!!)
 
         lumpersView?.showLumpersData(allLumpersList)
+    }
+
+    override fun onSuccessGetHeaderInfo(dateString: String) {
+        lumpersView?.showDateString(dateString)
     }
 }

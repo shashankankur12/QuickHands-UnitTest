@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.quickhandslogistics.BuildConfig
 import com.quickhandslogistics.R
@@ -34,6 +35,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     private var selectedFragmentTitle: String = ""
     private var scheduleTimeNotes: String = ""
     private var isCancelAllScheduleVisible: Boolean = false
+     var isShowLeavePopup: Boolean = false
 
     private lateinit var dashBoardPresenter: DashBoardPresenter
 
@@ -43,6 +45,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     companion object {
         const val ARG_SHOW_TAB_NAME = "ARG_SHOW_TAB_NAME"
         const val ARG_SCHEDULE_TIME_SELECTED_DATE = "ARG_SCHEDULE_TIME_SELECTED_DATE"
+        const val TAB_NAME = "TAB_NAME"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +63,12 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             }
         } ?: run {
             showTabName = getString(R.string.today_s_work_sheet)
+        }
+
+        savedInstanceState?.let {
+            if (savedInstanceState.containsKey(TAB_NAME)) {
+                showTabName = savedInstanceState.getString(TAB_NAME, getString(R.string.today_s_work_sheet))
+            }
         }
 
         setUpNavigationBar()
@@ -122,40 +131,55 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        var tabName = ""
+        val fragment = supportFragmentManager.findFragmentById(R.id.frameLayoutMain)
+        fragment?.let {
+            when(fragment){
+                is LumpersFragment ->
+                    tabName = getString(R.string.lumpers)
+                //not done yet
+                is WorkSheetFragment->
+                    tabName = getString(R.string.today_s_work_sheet)
+                is ScheduleTimeFragment->
+                    tabName = getString(R.string.schedule_lumpers_time)
+                //not done yet
+                is ScheduleFragment->
+                    tabName = getString(R.string.schedule)
+                is LumperSheetFragment->
+                    tabName = getString(R.string.l_sheet)
+                is CustomerSheetFragment->
+                    tabName = getString(R.string.customer_sheet)
+                is ReportsFragment->
+                    tabName = getString(R.string.reports)
+                is TimeClockAttendanceFragment->
+                    tabName = getString(R.string.time_clock)
+            }
+        }
+        outState.putString(TAB_NAME, tabName)
+        super.onSaveInstanceState(outState)
+    }
+
     private fun setUpNavigationBar() {
         navDrawer = NavDrawer(this, toolbar, supportFragmentManager.beginTransaction(), this)
         navDrawer?.let {
-            it.addItem(
-                NavDrawer.AppNavDrawerItem(
-                    WorkSheetFragment(), R.drawable.ic_sidemenu_dashboard, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.today_s_work_sheet), showTabName)
-                )
-            )
-
+            it.addItem(NavDrawer.AppNavDrawerItem(WorkSheetFragment(), R.drawable.ic_sidemenu_dashboard, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.today_s_work_sheet), showTabName)))
             val scheduleTimeFragment = ScheduleTimeFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_SCHEDULE_TIME_SELECTED_DATE, scheduleTimeSelectedDate)
                 }
             }
-            it.addItem(
-                NavDrawer.AppNavDrawerItem(
-                    scheduleTimeFragment, R.drawable.ic_sidemenu_schedule, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.schedule_lumpers_time), showTabName)
-                )
-            )
 
-            it.addItem(NavDrawer.AppNavDrawerItem(ScheduleFragment(), R.drawable.ic_sidemenu_lumper_sheet, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.schedule), showTabName)))
-            it.addItem(
-                NavDrawer.AppNavDrawerItem(
-                    TimeClockAttendanceFragment(), R.drawable.ic_sidemenu_schedule, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.time_clock_attendance), showTabName)
-                )
-            )
-            it.addItem(NavDrawer.AppNavDrawerItem(LumpersFragment(), R.drawable.ic_sidemenu_lumpers, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.lumpers), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(TimeClockAttendanceFragment(), R.drawable.ic_sidemenu_schedule, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.time_clock), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(CustomerSheetFragment(), R.drawable.ic_sidemenu_customer_sheet, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.customer_sheet), showTabName)))
             it.addItem(NavDrawer.AppNavDrawerItem(LumperSheetFragment(), R.drawable.ic_sidemenu_lumper_sheet, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.l_sheet), showTabName)))
-            it.addItem(
-                NavDrawer.AppNavDrawerItem(
-                    CustomerSheetFragment(), R.drawable.ic_sidemenu_customer_sheet, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.customer_sheet), showTabName)
-                )
-            )
-            it.addItem(NavDrawer.AppNavDrawerItem(ReportsFragment(), R.drawable.ic_sidemenu_reports, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.reports), showTabName)))
+
+            it.addItem(NavDrawer.AppNavDrawerItem(ScheduleFragment(), R.drawable.ic_sidemenu_lumper_sheet, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.schedule), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(scheduleTimeFragment, R.drawable.ic_sidemenu_schedule, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.schedule_lumpers_time), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(ReportsFragment(), R.drawable.ic_sidemenu_reports, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.reports), showTabName)))
+
+            it.addItem(NavDrawer.AppNavDrawerItem(LumpersFragment(), R.drawable.ic_sidemenu_lumpers, R.id.linearLayoutThirdItems, isShowOnLaunch(getString(R.string.lumpers), showTabName)))
+
             it.addItem(NavDrawer.AppNavDrawerItem(SettingsFragment(), R.drawable.ic_sidemenu_settings, R.id.linearLayoutBottomItems, isShowOnLaunch(getString(R.string.settings), showTabName)))
             it.addItem(NavDrawer.AppNavDrawerItem(null, R.drawable.ic_sidemenu_logout, R.id.linearLayoutBottomItems, isShowOnLaunch(getString(R.string.logout), showTabName)))
 
@@ -173,12 +197,35 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         view?.let {
             when (view.id) {
                 headerLayout.id -> {
-                    navDrawer?.setOpen(false)
-                    startIntent(LeadProfileActivity::class.java)
+                    val currentFragment: Fragment? =
+                        supportFragmentManager.findFragmentById(R.id.frameLayoutMain)
+                    if (currentFragment is TimeClockAttendanceFragment) {
+                        if (currentFragment.onDataChanges()) showLeavePopup()
+                        else openLeadActivity()
+                    } else openLeadActivity()
                 }
             }
         }
     }
+
+    private fun showLeavePopup() {
+        CustomProgressBar.getInstance().showWarningDialog(
+            getString(R.string.leave_alert_message),
+            activity,
+            object : CustomDialogWarningListener {
+                override fun onConfirmClick() {
+                    openLeadActivity()
+                }
+                override fun onCancelClick() {
+                }
+            })
+    }
+
+    private fun openLeadActivity() {
+        navDrawer?.setOpen(false)
+        startIntent(LeadProfileActivity::class.java)
+    }
+
 
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
@@ -189,8 +236,15 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         UIUtils.showEmployeeProfileImage(activity, leadProfileData, circleImageViewProfile)
 
         textViewLeadName.text = UIUtils.getEmployeeFullName(leadProfileData)
-        textViewEmail.text = if (!leadProfileData.email.isNullOrEmpty()) leadProfileData.email else "-"
-        textViewEmployeeId.text = if (!leadProfileData.employeeId.isNullOrEmpty()) leadProfileData.employeeId else "-"
+        textViewEmail.text =
+            if (!leadProfileData.email.isNullOrEmpty()) leadProfileData.email else "-"
+        textViewEmployeeId.text =
+            if (!leadProfileData.employeeId.isNullOrEmpty()) leadProfileData.employeeId else "-"
+        if (!leadProfileData.buildingDetailData?.buildingName.isNullOrEmpty())
+            textViewRole.text =
+                if (!leadProfileData.role.isNullOrEmpty()) "QHL " + leadProfileData.role!!.capitalize() + " at " + leadProfileData?.buildingDetailData?.buildingName?.capitalize() else "-"
+        else textViewRole.text =
+            if (!leadProfileData.role.isNullOrEmpty()) "QHL " + leadProfileData.role!!.capitalize() else "-"
 
         textViewVersionName.text = String.format("v%s", BuildConfig.VERSION_NAME)
     }
@@ -225,4 +279,5 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             }
         })
     }
+
 }

@@ -9,21 +9,30 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.workSheet.WorkSheetPagerAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetContract
-import com.quickhandslogistics.utils.ScheduleUtils
+import com.quickhandslogistics.data.customerSheet.CustomerSheetData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.presenters.workSheet.WorkSheetPresenter
-import com.quickhandslogistics.views.BaseFragment
+import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_work_sheet.*
-import java.util.*
 
 class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContract.View.OnFragmentInteractionListener {
 
     private var onFragmentInteractionListener: DashBoardContract.View.OnFragmentInteractionListener? = null
 
     private lateinit var workSheetPresenter: WorkSheetPresenter
-    private lateinit var adapter: WorkSheetPagerAdapter
+    private var adapter: WorkSheetPagerAdapter? = null
+    private var data: WorkSheetListAPIResponse.Data = WorkSheetListAPIResponse.Data()
+    private lateinit var date: String
+    private lateinit var companyName: String
+
+    companion object {
+        const val WORKSHEET_DETAIL = "WORKSHEET_DETAIL"
+        const val WORKSHEET_DATE_SELECTED_HEADER = "WORKSHEET_DATE_SELECTED_HEADER"
+        const val WORKSHEET_COMPANY_NAME = "WORKSHEET_COMPANY_NAME"
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -44,12 +53,25 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = WorkSheetPagerAdapter(childFragmentManager, resources)
-        viewPagerWorkSheet.offscreenPageLimit = adapter.count
-        viewPagerWorkSheet.adapter = adapter
-        tabLayoutWorkSheet.setupWithViewPager(viewPagerWorkSheet)
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey(WORKSHEET_DATE_SELECTED_HEADER)) {
+                date = savedInstanceState.getString(WORKSHEET_DATE_SELECTED_HEADER)!!
+            }
+            if (savedInstanceState.containsKey(WORKSHEET_COMPANY_NAME)) {
+                companyName = savedInstanceState.getString(WORKSHEET_COMPANY_NAME)!!
+                showHeaderInfo(companyName, date)
+            }
+            if (savedInstanceState.containsKey(WORKSHEET_DETAIL)) {
+                data = savedInstanceState.getParcelable<WorkSheetListAPIResponse.Data>(WORKSHEET_DETAIL) as WorkSheetListAPIResponse.Data
+                showWorkSheets(data)
 
-        workSheetPresenter.fetchWorkSheetList()
+                val allWorkItemLists = createDifferentListData(data)
+                initializeViewPager(allWorkItemLists)
+            }
+        } ?: run {
+            initializeViewPager()
+            workSheetPresenter.fetchWorkSheetList()
+        }
     }
 
     override fun onDestroy() {
@@ -57,9 +79,55 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         workSheetPresenter.onDestroy()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (data != null)
+            outState.putParcelable(WORKSHEET_DETAIL, data)
+        if (!date.isNullOrEmpty())
+            outState.putString(WORKSHEET_DATE_SELECTED_HEADER, date)
+        if (!companyName.isNullOrEmpty())
+            outState.putSerializable(WORKSHEET_COMPANY_NAME, companyName)
+        super.onSaveInstanceState(outState)
+    }
+
     override fun onDetach() {
         super.onDetach()
         onFragmentInteractionListener = null
+    }
+
+    private fun initializeViewPager(
+        allWorkItemLists: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>? = null,
+        customerSheetData: CustomerSheetData? = null, selectedTime: Long? = null
+    ) {
+        adapter = if (allWorkItemLists != null) {
+            WorkSheetPagerAdapter(childFragmentManager, resources, allWorkItemLists)
+        } else {
+            WorkSheetPagerAdapter(childFragmentManager, resources)
+        }
+        viewPagerWorkSheet.offscreenPageLimit = adapter?.count!!
+        viewPagerWorkSheet.adapter = adapter
+        tabLayoutWorkSheet.setupWithViewPager(viewPagerWorkSheet)
+    }
+
+    private fun createDifferentListData(data: WorkSheetListAPIResponse.Data): Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>> {
+        val onGoingWorkItems = ArrayList<WorkItemDetail>()
+        onGoingWorkItems.addAll(data.inProgress!!)
+        onGoingWorkItems.addAll(data.onHold!!)
+        onGoingWorkItems.addAll(data.scheduled!!)
+
+        val allWorkItems = ArrayList<WorkItemDetail>()
+        allWorkItems.addAll(onGoingWorkItems)
+        allWorkItems.addAll(data.cancelled!!)
+        allWorkItems.addAll(data.completed!!)
+        textViewTotalCount.text = String.format(getString(R.string.total_containers_s), allWorkItems.size)
+
+        val workItemTypeCounts = ScheduleUtils.getWorkItemTypeCounts(allWorkItems)
+
+        textViewLiveLoadsCount.text = String.format(getString(R.string.live_loads_s), workItemTypeCounts.first)
+        textViewDropsCount.text = String.format(getString(R.string.drops_s), workItemTypeCounts.second)
+        textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
+
+
+        return Triple(onGoingWorkItems, data.cancelled!!, data.completed!!)
     }
 
     private fun resetUI() {
@@ -70,7 +138,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         textViewLiveLoadsCount.text = ""
         textViewDropsCount.text = ""
         textViewOutBoundsCount.text = ""
-        adapter.updateWorkItemsList(ArrayList(), ArrayList(), ArrayList())
+        adapter?.updateWorkItemsList(ArrayList(), ArrayList(), ArrayList())
     }
 
     /** Presenter Listeners */
@@ -82,6 +150,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     }
 
     override fun showWorkSheets(data: WorkSheetListAPIResponse.Data) {
+        this.data = data
         // Change the visibility of Cancel All Schedule Option
         if (data.inProgress.isNullOrEmpty() && data.onHold.isNullOrEmpty() && data.cancelled.isNullOrEmpty() && data.completed.isNullOrEmpty() && !data.scheduled.isNullOrEmpty()) {
             onFragmentInteractionListener?.invalidateCancelAllSchedulesOption(true)
@@ -106,10 +175,13 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         textViewDropsCount.text = String.format(getString(R.string.drops_s), workItemTypeCounts.second)
         textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
 
-        adapter.updateWorkItemsList(onGoingWorkItems, data.cancelled!!, data.completed!!)
+        adapter?.updateWorkItemsList(onGoingWorkItems, data.cancelled!!, data.completed!!)
     }
 
     override fun showHeaderInfo(companyName: String, date: String) {
+        this.companyName = companyName
+        this.date = date
+
         textViewCompanyName.text = companyName.capitalize()
         textViewWorkItemsDate.text = date
     }

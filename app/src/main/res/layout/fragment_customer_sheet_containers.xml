@@ -32,7 +32,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.quickhandslogistics.controls.CustomTextView
-                    android:id="@+id/textViewCompletedCount"
+                    android:id="@+id/textViewUnfinishedCount"
                     style="@style/blueChipTheme"
                     android:layout_marginTop="@dimen/_4sdp" />
 
@@ -44,7 +44,7 @@
                     android:layout_marginEnd="@dimen/_4ssp" />
 
                 <com.quickhandslogistics.controls.CustomTextView
-                    android:id="@+id/textViewUnfinishedCount"
+                    android:id="@+id/textViewCompletedCount"
                     style="@style/blueChipTheme"
                     android:layout_marginTop="@dimen/_4sdp" />
             </com.google.android.flexbox.FlexboxLayout>

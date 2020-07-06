@@ -160,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_12ssp"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/layoutShift"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layoutPhoneNumber">
 
@@ -177,6 +177,29 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_2sdp" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layoutShift"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12ssp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/layoutShiftHours"
+                app:layout_constraintTop_toBottomOf="@+id/layoutPhoneNumber">
+
+                <TextView
+                    style="@style/detailTextHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shift" />
+
+                <TextView
+                    android:id="@+id/textViewShift"
+                    style="@style/detailTextValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/layoutBuildingName"
@@ -184,7 +207,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_12ssp"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/layoutDepartment"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layoutShiftHours">
 
@@ -201,7 +224,87 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_2sdp" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layoutDepartment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12ssp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/layoutBuildingName"
+                app:layout_constraintTop_toBottomOf="@+id/layoutShift">
 
+                <TextView
+                    style="@style/detailTextHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/departmant" />
+
+                <TextView
+                    android:id="@+id/textViewDepartment"
+                    style="@style/detailTextValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/labelBarrier2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="layoutBuildingName,layoutDepartment" />
+
+            <LinearLayout
+                android:id="@+id/layoutDMName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12ssp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toStartOf="@+id/layoutDMEmail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/labelBarrier2">
+
+                <TextView
+                    style="@style/detailTextHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/district_manager_name" />
+
+                <TextView
+                    android:id="@+id/textViewDMName"
+                    style="@style/detailTextValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutDMEmail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12ssp"
+                android:background="?android:attr/selectableItemBackground"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/layoutDMName"
+                app:layout_constraintTop_toBottomOf="@+id/labelBarrier2">
+
+                <TextView
+                    style="@style/detailTextHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_email"
+                    android:drawablePadding="@dimen/_6sdp"
+                    android:text="@string/district_manager_email" />
+
+                <TextView
+                    android:id="@+id/textViewDMEmail"
+                    style="@style/detailTextValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp" />
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

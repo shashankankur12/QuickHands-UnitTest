@@ -21,7 +21,6 @@ import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.AppConstant.Companion.NOTES_NOT_AVAILABLE
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_REQUEST_PARAMETER
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
 import com.quickhandslogistics.utils.SnackBarFactory
@@ -54,6 +53,10 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
     private lateinit var outBondsAdapter: ScheduledWorkItemAdapter
     private lateinit var scheduleDetailPresenter: ScheduleDetailPresenter
 
+    companion object {
+        const val SCHEDULE_DETAIL = "SCHEDULE_DETAIL"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_schedule_detail)
@@ -70,12 +73,25 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
         initializeUI()
 
         scheduleDetailPresenter = ScheduleDetailPresenter(this, resources)
-        scheduleDetailPresenter.getScheduleDetail(scheduleIdentity, Date(selectedTime))
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey(SCHEDULE_DETAIL)) {
+                scheduleDetail = savedInstanceState.getParcelable(SCHEDULE_DETAIL)
+                showScheduleData(scheduleDetail!!)
+            }
+        } ?: run {
+            scheduleDetailPresenter.getScheduleDetail(scheduleIdentity, Date(selectedTime))
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_toolbar, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (scheduleDetail != null)
+            outState.putParcelable(SCHEDULE_DETAIL, scheduleDetail)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
@@ -89,7 +105,7 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.actionNotes -> CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), scheduleDetail?.scheduleNote!!, activity)
+            R.id.actionNotes -> CustomProgressBar.getInstance().showInfoDialog(getString(R.string.customer_note), scheduleDetail?.scheduleNote!!, activity)
         }
         return super.onOptionsItemSelected(item)
     }

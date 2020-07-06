@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.content_lumper_job_report.*
 import kotlinx.android.synthetic.main.layout_date_filter.*
 import kotlinx.android.synthetic.main.layout_report_type.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobReportContract.View,
     LumperJobReportContract.View.OnAdapterItemClickListener, TextWatcher, RadioGroup.OnCheckedChangeListener {
@@ -30,6 +31,11 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
 
     private lateinit var lumperJobReportPresenter: LumperJobReportPresenter
     private lateinit var lumperJobReportAdapter: LumperJobReportAdapter
+    private  var employeeDataList: ArrayList<EmployeeData> = ArrayList()
+
+    companion object {
+        const val LUMPER_JOB_REPORT_LIST = "LUMPER_JOB_REPORT_LIST"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +45,21 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
         initializeUI()
 
         lumperJobReportPresenter = LumperJobReportPresenter(this, resources)
-        lumperJobReportPresenter.fetchLumpersList()
+
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey(LUMPER_JOB_REPORT_LIST)) {
+                employeeDataList = savedInstanceState.getParcelableArrayList(LUMPER_JOB_REPORT_LIST)!!
+                showLumpersData(employeeDataList)
+            }
+        } ?: run {
+            lumperJobReportPresenter.fetchLumpersList()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (employeeDataList != null)
+            outState.putParcelableArrayList(LUMPER_JOB_REPORT_LIST, employeeDataList)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onDestroy() {
@@ -252,6 +272,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     }
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
+        this.employeeDataList=employeeDataList
         lumperJobReportAdapter.updateLumpersData(employeeDataList)
     }
 

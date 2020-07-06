@@ -13,13 +13,13 @@ import com.quickhandslogistics.contracts.customerSheet.CustomerSheetContainersCo
 import com.quickhandslogistics.contracts.customerSheet.CustomerSheetContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.schedule.WorkItemDetail
+import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.common.BuildingOperationsViewActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETERS
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETER_VALUES
-import com.quickhandslogistics.utils.CustomProgressBar
 import kotlinx.android.synthetic.main.fragment_customer_sheet_containers.*
-import java.util.*
+import kotlin.collections.ArrayList
 
 class CustomerSheetContainersFragment : BaseFragment(), CustomerSheetContainersContract.View.OnAdapterItemClickListener {
 
@@ -27,15 +27,41 @@ class CustomerSheetContainersFragment : BaseFragment(), CustomerSheetContainersC
 
     private lateinit var customerSheetContainersAdapter: CustomerSheetContainersAdapter
 
+    private var onGoingWorkItems = ArrayList<WorkItemDetail>()
+    private var cancelledWorkItems = ArrayList<WorkItemDetail>()
+    private var completedWorkItems = ArrayList<WorkItemDetail>()
+
     companion object {
+        private const val ARG_ONGOING_ITEMS = "ARG_ONGOING_ITEMS"
+        private const val ARG_CANCELLED_ITEMS = "ARG_CANCELLED_ITEMS"
+        private const val ARG_COMPLETED_ITEMS = "ARG_COMPLETED_ITEMS"
+
         @JvmStatic
-        fun newInstance() = CustomerSheetContainersFragment()
+        fun newInstance(allWorkItemLists: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>?) =
+            CustomerSheetContainersFragment().apply {
+                if (allWorkItemLists != null) {
+                    arguments = Bundle().apply {
+                        putParcelableArrayList(ARG_ONGOING_ITEMS, allWorkItemLists.first)
+                        putParcelableArrayList(ARG_CANCELLED_ITEMS, allWorkItemLists.second)
+                        putParcelableArrayList(ARG_COMPLETED_ITEMS, allWorkItemLists.third)
+                    }
+                }
+            }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (parentFragment is CustomerSheetContract.View.OnFragmentInteractionListener) {
             onFragmentInteractionListener = parentFragment as CustomerSheetContract.View.OnFragmentInteractionListener
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            onGoingWorkItems = it.getParcelableArrayList(ARG_ONGOING_ITEMS)!!
+            cancelledWorkItems = it.getParcelableArrayList(ARG_CANCELLED_ITEMS)!!
+            completedWorkItems = it.getParcelableArrayList(ARG_COMPLETED_ITEMS)!!
         }
     }
 
@@ -49,7 +75,7 @@ class CustomerSheetContainersFragment : BaseFragment(), CustomerSheetContainersC
         recyclerViewContainers.apply {
             layoutManager = LinearLayoutManager(fragmentActivity!!)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            customerSheetContainersAdapter = CustomerSheetContainersAdapter(resources, this@CustomerSheetContainersFragment)
+            customerSheetContainersAdapter = CustomerSheetContainersAdapter(resources, sharedPref, this@CustomerSheetContainersFragment)
             adapter = customerSheetContainersAdapter
         }
 
@@ -59,6 +85,8 @@ class CustomerSheetContainersFragment : BaseFragment(), CustomerSheetContainersC
                 textViewEmptyData.visibility = if (customerSheetContainersAdapter.itemCount == 0) View.VISIBLE else View.GONE
             }
         })
+
+        updateWorkItemsList(onGoingWorkItems, cancelledWorkItems, completedWorkItems)
     }
 
     fun updateWorkItemsList(onGoingWorkItems: ArrayList<WorkItemDetail>, cancelledWorkItems: ArrayList<WorkItemDetail>, completedWorkItems: ArrayList<WorkItemDetail>) {
@@ -71,13 +99,13 @@ class CustomerSheetContainersFragment : BaseFragment(), CustomerSheetContainersC
 
         textViewCompletedCount.text = String.format(getString(R.string.completed_s), completedWorkItems.size)
         textViewCancelledCount.text = String.format(getString(R.string.cancelled_s), cancelledWorkItems.size)
-        textViewUnfinishedCount.text = String.format(getString(R.string.unfinished_s), onGoingWorkItems.size)
+        textViewUnfinishedCount.text = String.format(getString(R.string.ongoing_s), onGoingWorkItems.size)
     }
 
     /** Adapter Listeners */
-    override fun onBOItemClick(workItemDetail: WorkItemDetail) {
+    override fun onBOItemClick(workItemDetail: WorkItemDetail, parameters: ArrayList<String>) {
         val bundle = Bundle()
-        bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, workItemDetail.buildingDetailData?.parameters)
+        bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, parameters)
         bundle.putSerializable(ARG_BUILDING_PARAMETER_VALUES, workItemDetail.buildingOps)
         startIntent(BuildingOperationsViewActivity::class.java, bundle = bundle)
     }

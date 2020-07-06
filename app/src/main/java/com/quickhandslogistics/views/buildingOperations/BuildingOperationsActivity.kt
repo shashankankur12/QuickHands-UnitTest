@@ -9,7 +9,6 @@ import com.quickhandslogistics.contracts.buildingOperations.BuildingOperationsCo
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.presenters.buildingOperations.BuildingOperationsPresenter
 import com.quickhandslogistics.views.BaseActivity
-import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_ALLOW_UPDATE
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETERS
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.utils.CustomDialogWarningListener
@@ -28,7 +27,7 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, Buildin
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_building_operations)
-        setupToolbar(getString(R.string.update_building_operations))
+        setupToolbar(getString(R.string.edit_parameters))
 
         intent.extras?.let { it ->
             workItemId = it.getString(ARG_WORK_ITEM_ID, "")

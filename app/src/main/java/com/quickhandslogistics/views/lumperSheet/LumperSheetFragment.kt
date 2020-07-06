@@ -16,9 +16,9 @@ import com.quickhandslogistics.adapters.lumperSheet.LumperSheetAdapter
 import com.quickhandslogistics.contracts.lumperSheet.LumperSheetContract
 import com.quickhandslogistics.data.lumperSheet.LumpersInfo
 import com.quickhandslogistics.presenters.lumperSheet.LumperSheetPresenter
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.schedule.ScheduleFragment
-import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -28,17 +28,30 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
 
     private var selectedTime: Long = 0
     private lateinit var availableDates: List<Date>
+    private var lumperInfoList: ArrayList<LumpersInfo> = ArrayList()
+    private var sheetSubmitted: Boolean= false
+    private var selectedDate: Date = Date()
+    private var tempLumperIds: ArrayList<String> =ArrayList()
+    private var dateString: String ?=null
+    private var datePosition: Int = 0
+    private var isSavedState: Boolean = false
 
     private lateinit var lumperSheetAdapter: LumperSheetAdapter
     private lateinit var lumperSheetPresenter: LumperSheetPresenter
 
     companion object {
         const val ARG_LUMPER_INFO = "ARG_LUMPER_INFO"
+        const val LUMPER_INFO_LIST = "LUMPER_INFO_LIST"
+        const val DATE_LUMPER_SHEET = "DATE_LUMPER_SHEET"
+        const val DATE_STRING_HEADER = "DATE_STRING_HEADER"
+        const val SHEET_SUBMITTED = "SHEET_SUBMITTED"
+        const val TEMP_LUMPER_SHEET = "TEMP_LUMPER_SHEET"
+        const val SELECTED_DATE_POSITION = "SELECTED_DATE_POSITION"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lumperSheetPresenter = LumperSheetPresenter(this, resources)
+        lumperSheetPresenter = LumperSheetPresenter(this, resources, sharedPref)
 
         // Setup Calendar Dates
         selectedTime = Date().time
@@ -73,12 +86,56 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         buttonSubmit.setOnClickListener(this)
 
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarLumperSheet, availableDates, this)
-        singleRowCalendarLumperSheet.select(availableDates.size - 1)
+        savedInstanceState?.also {
+            isSavedState=true
+            if (savedInstanceState.containsKey(SELECTED_DATE_POSITION)) {
+                datePosition = savedInstanceState.getInt(SELECTED_DATE_POSITION)!!
+                singleRowCalendarLumperSheet.select(datePosition)
+            }
+            if (savedInstanceState.containsKey(SHEET_SUBMITTED)) {
+                sheetSubmitted = savedInstanceState.getBoolean(SHEET_SUBMITTED)!!
+            }
+            if (savedInstanceState.containsKey(TEMP_LUMPER_SHEET)) {
+                tempLumperIds = savedInstanceState.getStringArrayList(TEMP_LUMPER_SHEET)!!
+
+            }
+            if(savedInstanceState.containsKey(DATE_LUMPER_SHEET)) {
+                selectedDate = savedInstanceState.getSerializable(DATE_LUMPER_SHEET) as Date
+            }
+            if (savedInstanceState.containsKey(LUMPER_INFO_LIST)) {
+                lumperInfoList = savedInstanceState.getParcelableArrayList(LUMPER_INFO_LIST)!!
+                showLumperSheetData(lumperInfoList, sheetSubmitted, selectedDate, tempLumperIds)
+            }
+            if (savedInstanceState.containsKey(DATE_STRING_HEADER)) {
+                dateString = savedInstanceState.getString(DATE_STRING_HEADER)!!
+                showDateString(dateString!!)
+            }
+
+        } ?: run {
+            isSavedState=false
+            singleRowCalendarLumperSheet.select(availableDates.size - 1)
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         lumperSheetPresenter.onDestroy()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (lumperInfoList != null)
+            outState.putParcelableArrayList(LUMPER_INFO_LIST, lumperInfoList)
+        if (sheetSubmitted != null)
+            outState.putBoolean(SHEET_SUBMITTED, sheetSubmitted)
+        if (tempLumperIds != null)
+            outState.putStringArrayList(TEMP_LUMPER_SHEET, tempLumperIds)
+        if (selectedDate != null)
+            outState.putSerializable(DATE_LUMPER_SHEET, selectedDate)
+        if (dateString != null)
+            outState.putString(DATE_STRING_HEADER, dateString)
+        if (datePosition != null)
+            outState.putInt(SELECTED_DATE_POSITION, datePosition)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -143,10 +200,16 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     }
 
     override fun showDateString(dateString: String) {
+        this.dateString=dateString
         textViewDate.text = dateString
     }
 
-    override fun showLumperSheetData(lumperInfoList: ArrayList<LumpersInfo>, sheetSubmitted: Boolean, selectedDate: Date, tempLumperIds: ArrayList<String>) {
+    override fun showLumperSheetData(mlumperInfoList: ArrayList<LumpersInfo>, msheetSubmitted: Boolean, mselectedDate: Date, mtempLumperIds: ArrayList<String>) {
+        lumperInfoList = mlumperInfoList
+        sheetSubmitted = msheetSubmitted
+        selectedDate = mselectedDate
+        tempLumperIds = mtempLumperIds
+
         selectedTime = selectedDate.time
 
         var isSignatureLeft = 0
@@ -195,7 +258,10 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     }
 
     /** Calendar Listeners */
-    override fun onSelectCalendarDate(date: Date) {
-        lumperSheetPresenter.getLumpersSheetByDate(date)
+    override fun onSelectCalendarDate(date: Date, selected: Boolean, position: Int) {
+        if (!isSavedState)
+            lumperSheetPresenter.getLumpersSheetByDate(date)
+        isSavedState = false
+        datePosition = position
     }
 }

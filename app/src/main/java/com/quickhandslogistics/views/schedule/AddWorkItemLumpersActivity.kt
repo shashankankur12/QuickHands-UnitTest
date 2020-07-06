@@ -36,6 +36,8 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
     companion object {
         const val ARG_IS_ADD_LUMPER = "ARG_IS_ADD_LUMPER"
         const val ARG_ASSIGNED_LUMPERS_LIST = "ARG_ASSIGNED_LUMPERS_LIST"
+        const val PERMANENT_LUMPERS_LIST = "PERMANENT_LUMPERS_LIST"
+        const val TEMP_LUMPERS_LIST = "TEMP_LUMPERS_LIST"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +63,28 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
         initializeUI()
 
         addWorkItemLumpersPresenter = AddWorkItemLumpersPresenter(this, resources, sharedPref)
-        addWorkItemLumpersPresenter.fetchLumpersList()
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey(TEMP_LUMPERS_LIST)) {
+                temporaryLumpersList =
+                    savedInstanceState.getParcelableArrayList(TEMP_LUMPERS_LIST)!!
+            }
+            if (savedInstanceState.containsKey(PERMANENT_LUMPERS_LIST)) {
+                permanentLumpersList =
+                    savedInstanceState.getParcelableArrayList(PERMANENT_LUMPERS_LIST)!!
+                showLumpersData(permanentLumpersList, temporaryLumpersList)
+            }
+        } ?: run {
+            addWorkItemLumpersPresenter.fetchLumpersList()
+        }
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (permanentLumpersList != null)
+            outState.putParcelableArrayList(PERMANENT_LUMPERS_LIST, permanentLumpersList)
+        if (temporaryLumpersList != null)
+            outState.putParcelableArrayList(TEMP_LUMPERS_LIST, temporaryLumpersList)
+        super.onSaveInstanceState(outState)
     }
 
     private fun initializeUI() {

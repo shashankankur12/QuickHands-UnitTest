@@ -1,5 +1,7 @@
 package com.quickhandslogistics.utils
 
+import com.quickhandslogistics.data.dashboard.LeadProfileData
+import com.quickhandslogistics.data.dashboard.ShiftDetail
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -10,7 +12,10 @@ class DateUtils {
         const val PATTERN_API_REQUEST_PARAMETER = "yyyy-MM-dd"
         const val PATTERN_API_RESPONSE = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         const val PATTERN_DATE_DISPLAY = "dd MMM yyyy"
+        const val PATTERN_DATE_TIME_DISPLAY = "dd MMM yyyy, HH:mm a"
         private const val PATTERN_TIME = "hh:mm a"
+
+        var sharedPref: SharedPref = SharedPref.getInstance()
 
         fun getDateString(pattern: String, date: Date): String {
             val dateFormat = SimpleDateFormat(pattern)
@@ -25,6 +30,20 @@ class DateUtils {
 
         fun changeDateString(patternFrom: String, patternTo: String, dateString: String = ""): String {
             val dateFormatFrom = SimpleDateFormat(patternFrom)
+            val dateFormatTo = SimpleDateFormat(patternTo)
+            try {
+                val date = dateFormatFrom.parse(dateString)
+                date?.let {
+                    return dateFormatTo.format(date)
+                }
+            } catch (e: ParseException) {
+            }
+            return dateString
+        }
+
+        fun changeUTCDateStringToLocalDateString(patternFrom: String, patternTo: String, dateString: String = ""): String {
+            val dateFormatFrom = SimpleDateFormat(patternFrom)
+            dateFormatFrom.timeZone = TimeZone.getTimeZone("UTC")
             val dateFormatTo = SimpleDateFormat(patternTo)
             try {
                 val date = dateFormatFrom.parse(dateString)
@@ -62,6 +81,7 @@ class DateUtils {
             val selectedCalendar = Calendar.getInstance()
             selectedCalendar.timeInMillis = selectedTime
             val currentCalendar = Calendar.getInstance()
+            currentCalendar.time = getCurrentDateByEmployeeShift()
 
             return selectedCalendar[Calendar.DAY_OF_YEAR] == currentCalendar[Calendar.DAY_OF_YEAR] && selectedCalendar[Calendar.YEAR] == currentCalendar[Calendar.YEAR]
         }
@@ -70,6 +90,7 @@ class DateUtils {
             val selectedCalendar = Calendar.getInstance()
             selectedCalendar.timeInMillis = selectedTime
             val currentCalendar = Calendar.getInstance()
+            currentCalendar.time = getCurrentDateByEmployeeShift()
 
             return selectedCalendar.after(currentCalendar)
         }
@@ -150,6 +171,22 @@ class DateUtils {
             return 0
         }
 
+        fun convertMillisecondsToUTCDateString(patternDate: String, milliseconds: Long?): String {
+            var dateString = ""
+            try {
+              /*  val dateFormatFrom = SimpleDateFormat(PATTERN_API_RESPONSE)
+                val formattedDateString = dateFormatFrom.format(Date(milliseconds!!.toLong()))
+                val formattedDate = dateFormatFrom.parse(formattedDateString)
+*/
+                val dateFormatTo = SimpleDateFormat(patternDate)
+                dateFormatTo.timeZone = TimeZone.getTimeZone("UTC")
+                dateString = dateFormatTo.format(Date(milliseconds!!))
+            } catch (e: Exception) {
+
+            }
+            return dateString
+        }
+
         fun isFutureTime(beforeTime: Long, afterTime: Long): Boolean {
             val beforeCalendar = Calendar.getInstance()
             beforeCalendar.timeInMillis = beforeTime
@@ -162,6 +199,84 @@ class DateUtils {
             } else {
                 (beforeCalendar[Calendar.HOUR_OF_DAY] == afterCalendar[Calendar.HOUR_OF_DAY] && beforeCalendar[Calendar.MINUTE] < afterCalendar[Calendar.MINUTE])
             }
+        }
+
+        fun getCurrentDateStringByEmployeeShift(pattern: String = PATTERN_API_REQUEST_PARAMETER, originalDate: Date = Date()): String {
+            var dateString = ""
+            val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+            leadProfile?.let {
+                var shiftDetail: ShiftDetail? = null
+                when (leadProfile.shift) {
+                    AppConstant.EMPLOYEE_SHIFT_MORNING -> {
+                        shiftDetail = leadProfile.buildingDetailData?.morningShift
+                    }
+                    AppConstant.EMPLOYEE_SHIFT_SWING -> {
+                        shiftDetail = leadProfile.buildingDetailData?.swingShift
+                    }
+                    AppConstant.EMPLOYEE_SHIFT_NIGHT -> {
+                        shiftDetail = leadProfile.buildingDetailData?.nightShift
+                    }
+                }
+                val date = calculateDateByShiftStartTime(shiftDetail, originalDate)
+                dateString = getDateString(pattern, date)
+            }
+
+            if (dateString.isEmpty()) {
+                dateString = getDateString(pattern, originalDate)
+            }
+            return dateString
+        }
+
+        fun getCurrentDateByEmployeeShift(originalDate: Date = Date()): Date {
+            var date: Date? = null
+            val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+            leadProfile?.let {
+                var shiftDetail: ShiftDetail? = null
+                when (leadProfile.shift) {
+                    AppConstant.EMPLOYEE_SHIFT_MORNING -> {
+                        shiftDetail = leadProfile.buildingDetailData?.morningShift
+                    }
+                    AppConstant.EMPLOYEE_SHIFT_SWING -> {
+                        shiftDetail = leadProfile.buildingDetailData?.swingShift
+                    }
+                    AppConstant.EMPLOYEE_SHIFT_NIGHT -> {
+                        shiftDetail = leadProfile.buildingDetailData?.nightShift
+                    }
+                }
+                date = calculateDateByShiftStartTime(shiftDetail, originalDate)
+            }
+
+            return date!!
+        }
+
+        private fun calculateDateByShiftStartTime(shiftDetail: ShiftDetail?, originalDate: Date): Date {
+            var date: Date? = null
+
+            //Create original date calendar instance
+            val calendar = Calendar.getInstance()
+            calendar.time = originalDate
+
+            shiftDetail?.let {
+                val startTime = shiftDetail.startTime
+                startTime?.let {
+
+                    //Create shift start time calendar instance with original date
+                    val startTimeCalendar = Calendar.getInstance();
+                    startTimeCalendar.time = Date(startTime)
+                    startTimeCalendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE))
+
+                    // Check if shift start or not. If not then show pass previous date
+                    if (startTimeCalendar.timeInMillis > calendar.timeInMillis) {
+                        calendar.add(Calendar.DATE, -1)
+                    }
+                    date = calendar.time
+                }
+            }
+            if (date == null) {
+                date = originalDate
+            }
+
+            return date!!
         }
     }
 }

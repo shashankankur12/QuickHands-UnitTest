@@ -7,6 +7,7 @@ import com.quickhandslogistics.contracts.reports.LumperJobReportContract
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.data.reports.ReportResponse
 import com.quickhandslogistics.models.reports.LumperJobReportModel
+import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 
 class LumperJobReportPresenter(private var lumperJobReportView: LumperJobReportContract.View?, private val resources: Resources) :

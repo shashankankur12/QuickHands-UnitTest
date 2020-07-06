@@ -18,22 +18,30 @@ import com.quickhandslogistics.adapters.lumpers.LumpersAdapter
 import com.quickhandslogistics.contracts.lumpers.LumpersContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.presenters.lumpers.LumpersPresenter
-import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.utils.AppUtils
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_lumpers.*
 
 class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.OnClickListener,
     LumpersContract.View.OnAdapterItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
+    private var employeeDataList: ArrayList<EmployeeData>? = null
     private lateinit var lumpersAdapter: LumpersAdapter
     private lateinit var lumpersPresenter: LumpersPresenter
 
+    private var dateString: String? = null
+
+    companion object {
+        const val LUMPER_DETAIL_LIST = "LUMPER_DETAIL_LIST"
+        const val DATE_SELECTED = "DATE_SELECTED"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lumpersPresenter = LumpersPresenter(this, resources)
+        lumpersPresenter = LumpersPresenter(this, resources, sharedPref)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -65,12 +73,32 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
 
-        lumpersPresenter.fetchLumpersList()
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey(LUMPER_DETAIL_LIST)) {
+                employeeDataList = savedInstanceState.getParcelableArrayList(LUMPER_DETAIL_LIST)
+                showLumpersData(employeeDataList!!)
+            }
+
+            if (savedInstanceState.containsKey(DATE_SELECTED)) {
+                dateString = savedInstanceState.getString(DATE_SELECTED)!!
+                showDateString(dateString!!)
+            }
+        } ?: run {
+            lumpersPresenter.fetchLumpersList()
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         lumpersPresenter.onDestroy()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (employeeDataList != null)
+            outState.putParcelableArrayList(LUMPER_DETAIL_LIST, employeeDataList)
+        if (dateString != null)
+            outState.putString(DATE_SELECTED, dateString)
+        super.onSaveInstanceState(outState)
     }
 
     private fun invalidateEmptyView() {
@@ -116,6 +144,11 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     }
 
     /** Presenter Listeners */
+    override fun showDateString(dateString: String) {
+        this.dateString = dateString
+        textViewDate.text = dateString
+    }
+
     override fun showAPIErrorMessage(message: String) {
         recyclerViewLumpers.visibility = View.GONE
         textViewEmptyData.visibility = View.VISIBLE
@@ -123,6 +156,7 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     }
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
+        this.employeeDataList = employeeDataList
         lumpersAdapter.updateLumpersData(employeeDataList)
     }
 

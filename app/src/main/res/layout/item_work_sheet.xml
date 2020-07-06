@@ -33,37 +33,53 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewStartTime"
+            android:id="@+id/textViewNoOfDrops"
             style="@style/titleBigTextViewTheme"
             android:layout_width="0dp"
             android:layout_marginEnd="@dimen/_4sdp"
             android:clickable="false"
-            android:text="@string/start_time_s"
+            android:text="Container Number :"
             app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewWorkItemType"
+            android:id="@+id/textViewStartTime"
             style="@style/valuesTextViewTheme"
-            android:layout_width="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
-            android:drawableStart="@drawable/ic_schedule_type"
-            android:drawablePadding="@dimen/_5sdp"
-            android:text="Live Loads"
+            android:text="@string/start_time_s"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewNoOfDrops" />
+
+        <TextView
+            android:id="@+id/textViewDoor"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:text="@string/door_s"
+            app:layout_constraintEnd_toStartOf="@+id/textViewContainer"
+            app:layout_constraintHorizontal_weight="0.25"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
 
         <TextView
-            android:id="@+id/textViewNoOfDrops"
+            android:id="@+id/textViewContainer"
             style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
             android:layout_marginTop="@dimen/_4sdp"
-            android:drawableStart="@drawable/ic_schedule_work_items"
-            android:drawablePadding="@dimen/_5sdp"
-            android:text="Container Number :"
+            android:text="@string/container_no_s"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemType" />
+            app:layout_constraintHorizontal_weight="0.75"
+            app:layout_constraintStart_toEndOf="@+id/textViewDoor"
+            app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/labelBarrier1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="textViewDoor,textViewContainer" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circleImageViewArrow"
@@ -75,7 +91,9 @@
             app:civ_border_width="@dimen/_1sdp"
             app:civ_circle_background_color="@color/circleBackground"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelBarrier1"
+            app:layout_constraintVertical_bias="1" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewLumpersImagesList"
@@ -83,7 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewNoOfDrops" />
+            app:layout_constraintTop_toBottomOf="@id/labelBarrier1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

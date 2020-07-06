@@ -7,20 +7,19 @@ import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.data.schedule.ScheduleListAPIResponse
-import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.models.schedule.ScheduleModel
-import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.ScheduleUtils.getAllAssignedLumpersList
 import com.quickhandslogistics.utils.ScheduleUtils.getScheduleTypeName
 import com.quickhandslogistics.utils.ScheduleUtils.getWholeScheduleStatus
+import com.quickhandslogistics.utils.SharedPref
 import com.quickhandslogistics.utils.ValueUtils
 import java.util.*
 import kotlin.collections.ArrayList
 
-class SchedulePresenter(private var scheduleView: ScheduleContract.View?, private val resources: Resources) :
+class SchedulePresenter(private var scheduleView: ScheduleContract.View?, private val resources: Resources, sharedPref: SharedPref) :
     ScheduleContract.Presenter, ScheduleContract.Model.OnFinishedListener {
 
-    private val scheduleModel = ScheduleModel()
+    private val scheduleModel = ScheduleModel(sharedPref)
 
     /** View Listeners */
     override fun onDestroy() {
@@ -29,6 +28,7 @@ class SchedulePresenter(private var scheduleView: ScheduleContract.View?, privat
 
     override fun getScheduledWorkItemsByDate(date: Date, pageIndex: Int) {
         scheduleView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        scheduleModel.fetchHeaderInfo(date, this)
         scheduleModel.fetchSchedulesByDate(date, pageIndex, this)
     }
 
@@ -43,9 +43,6 @@ class SchedulePresenter(private var scheduleView: ScheduleContract.View?, privat
     }
 
     override fun onSuccess(selectedDate: Date, scheduleListAPIResponse: ScheduleListAPIResponse, currentPageIndex: Int) {
-        val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
-        scheduleView?.showDateString(dateString)
-
         val workItemsList = ArrayList<ScheduleDetail>()
         scheduleListAPIResponse.data?.scheduleDetailsList?.let {
             workItemsList.addAll(it)
@@ -89,5 +86,9 @@ class SchedulePresenter(private var scheduleView: ScheduleContract.View?, privat
         }
 
         scheduleView?.hideProgressDialog()
+    }
+
+    override fun onSuccessGetHeaderInfo(dateString: String) {
+        scheduleView?.showDateString(dateString)
     }
 }

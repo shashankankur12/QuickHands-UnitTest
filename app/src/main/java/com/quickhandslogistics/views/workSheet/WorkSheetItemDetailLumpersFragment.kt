@@ -32,16 +32,46 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
     private lateinit var workSheetItemDetailLumpersAdapter: WorkSheetItemDetailLumpersAdapter
 
     private var workItemDetail: WorkItemDetail? = null
+    private  var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule> = ArrayList<LumpersTimeSchedule>()
+    private var tempLumperIds: ArrayList<String> = ArrayList()
 
     companion object {
+        private const val LUMPER_WORK_DETALS = "LUMPER_WORK_DETALS"
+        private const val LUMPER_SCHEDULE = "LUMPER_SCHEDULE"
+        private const val TEMP_LUMPER_IDS = "TEMP_LUMPER_IDS"
         @JvmStatic
-        fun newInstance() = WorkSheetItemDetailLumpersFragment()
+        fun newInstance(
+            allWorkItem: WorkItemDetail?,
+            lumperTimeSchedule: ArrayList<LumpersTimeSchedule>?,
+            tempLumperIds: ArrayList<String>?
+        ) = WorkSheetItemDetailLumpersFragment()
+            .apply {
+                arguments = Bundle().apply {
+                    if(allWorkItem!=null){
+                        putParcelable(LUMPER_WORK_DETALS, allWorkItem)
+                        putParcelableArrayList(LUMPER_SCHEDULE, lumperTimeSchedule)
+                        putStringArrayList(TEMP_LUMPER_IDS, tempLumperIds)
+                    }
+                }
+            }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (activity is WorkSheetItemDetailContract.View.OnFragmentInteractionListener) {
             onFragmentInteractionListener = activity as WorkSheetItemDetailContract.View.OnFragmentInteractionListener
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            if (it.containsKey(LUMPER_WORK_DETALS))
+            workItemDetail = it.getParcelable<WorkItemDetail>(LUMPER_WORK_DETALS)
+            if (it.containsKey(LUMPER_SCHEDULE))
+                lumpersTimeSchedule = it.getParcelableArrayList(LUMPER_SCHEDULE)!!
+            if (it.containsKey(LUMPER_WORK_DETALS))
+                tempLumperIds = it.getStringArrayList(TEMP_LUMPER_IDS)!!
         }
     }
 
@@ -69,6 +99,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         })
 
         buttonAddLumpers.setOnClickListener(this)
+        workItemDetail?.let { showLumpersData(it, lumpersTimeSchedule,tempLumperIds) }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

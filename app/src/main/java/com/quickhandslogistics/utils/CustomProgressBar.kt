@@ -1,6 +1,7 @@
 package com.quickhandslogistics.utils
 
 import android.content.Context
+import android.view.Gravity
 import com.quickhandslogistics.R
 import com.sahilgarg.forks.cn.pedant.SweetAlert.SweetAlertDialog
 
@@ -45,6 +46,7 @@ class CustomProgressBar {
         progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
         progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
         updateButtonsUI(progressDialog, activityContext)
+        progressDialog.setContentTextGravity(Gravity.START)
     }
 
     fun showErrorDialog(message: String, activityContext: Context) {
@@ -101,6 +103,27 @@ class CustomProgressBar {
         progressDialog.contentText = if (message.isEmpty()) activityContext.getString(R.string.warning_alert_message) else message.capitalize()
         progressDialog.confirmText = activityContext.getString(R.string.yes)
         progressDialog.cancelText = activityContext.getString(R.string.no)
+        progressDialog.showCancelButton(true)
+        progressDialog.setConfirmClickListener {
+            it.dismissWithAnimation()
+            listener.onConfirmClick()
+        }
+        progressDialog.setCancelClickListener {
+            it.dismissWithAnimation()
+            listener.onCancelClick()
+        }
+        progressDialog.show()
+        progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
+        progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
+        updateButtonsUI(progressDialog, activityContext)
+    }
+
+    fun showLogoutDialog(message: String = "", activityContext: Context, listener: CustomDialogWarningListener) {
+        val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.WARNING_TYPE)
+        progressDialog.titleText = activityContext.getString(R.string.are_you_sure_alert_message)
+        progressDialog.contentText = if (message.isEmpty()) activityContext.getString(R.string.warning_alert_message) else message.capitalize()
+        progressDialog.confirmText = activityContext.getString(R.string.logout_buttoon)
+        progressDialog.cancelText = activityContext.getString(R.string.cancel)
         progressDialog.showCancelButton(true)
         progressDialog.setConfirmClickListener {
             it.dismissWithAnimation()

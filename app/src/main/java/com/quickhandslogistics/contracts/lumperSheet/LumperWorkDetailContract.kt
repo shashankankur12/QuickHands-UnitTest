@@ -5,6 +5,7 @@ import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
 import com.quickhandslogistics.data.lumperSheet.LumperWorkDetailAPIResponse
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import java.util.*
+import kotlin.collections.ArrayList
 
 class LumperWorkDetailContract {
     interface Model {
@@ -23,7 +24,7 @@ class LumperWorkDetailContract {
         fun lumperSignatureSaved()
 
         interface OnAdapterItemClickListener {
-            fun onBOItemClick(workItemDetail: WorkItemDetail)
+            fun onBOItemClick(workItemDetail: WorkItemDetail, parameters: ArrayList<String>)
             fun onNotesItemClick(notes: String?)
         }
     }

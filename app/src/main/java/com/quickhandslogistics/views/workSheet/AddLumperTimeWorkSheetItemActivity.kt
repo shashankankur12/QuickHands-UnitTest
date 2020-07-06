@@ -96,9 +96,15 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
 
     private fun updateButtonsUI() {
         buttonStartTime.isEnabled = initialStartTime <= 0
-        buttonEndTime.isEnabled = initialEndTime <= 0 && selectedStartTime > 0
+        buttonEndTime.isEnabled = initialEndTime <= 0 && selectedStartTime > 0 && checkBrackout()
         buttonBreakInTime.isEnabled = initialBreakInTime <= 0 && selectedStartTime > 0
         buttonBreakOutTime.isEnabled = initialBreakOutTime <= 0 && selectedBreakInTime > 0
+    }
+
+    private fun checkBrackout(): Boolean {
+        if (selectedBreakInTime>0&& selectedBreakOutTime<=0)
+            return false
+        return true
     }
 
     private fun toggleSaveButtonVisibility() {

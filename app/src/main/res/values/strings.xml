@@ -30,17 +30,22 @@
     <string name="completed">Completed</string>
     <string name="completed_s">Completed: %s</string>
     <string name="contact_info">Contact Info</string>
+    <string name="container_no_s">Container No: %s</string>
+    <string name="container_details">Container Detail</string>
     <string name="containers">Containers</string>
     <string name="create_new_request">Create New Request</string>
     <string name="current_time">Current Time: </string>
     <string name="custom">Custom</string>
     <string name="customer_details">Customer Details</string>
+    <string name="customer_note">Customer Note</string>
     <string name="customer_report">Customer Report</string>
     <string name="customer_representative_name">Customer Representative Name</string>
     <string name="customer_sheet">Customer Sheet</string>
     <string name="daily">Daily</string>
+    <string name="door_s">Door: %s</string>
     <string name="drops">Drops</string>
     <string name="drops_s">Drops: %s</string>
+    <string name="edit_parameters">Edit Parameters</string>
     <string name="email_address">Email Address</string>
     <string name="employee_id">Employee ID</string>
     <string name="end">End</string>
@@ -50,21 +55,21 @@
     <string name="excel">Excel</string>
     <string name="first_name">First Name</string>
     <string name="forgot_password">Forgot Password</string>
-    <string name="forgot_password_question_mark"><u>Forgot Password?</u></string>
+    <string name="forgot_password_question_mark">Forgot Password?</string>
     <string name="full_time">Full Time</string>
     <string name="generate_report">Generate Report</string>
     <string name="hiring_date">Hiring Date</string>
     <string name="in_progress">In-Progress</string>
     <string name="info">Info</string>
     <string name="job_description">Job Description</string>
-    <string name="l_sheet">L-Sheet</string>
+    <string name="l_sheet">Lumper Sheet</string>
     <string name="last_day_worked">Last day worked</string>
     <string name="last_name">Last Name</string>
     <string name="live_load_s">Live Load: %s</string>
     <string name="live_loads">Live Loads</string>
     <string name="live_loads_s">Live Loads: %s</string>
     <string name="loading">Loading</string>
-    <string name="logout">Logout</string>
+    <string name="logout">Log Out</string>
     <string name="lumper_details">Lumper Details</string>
     <string name="lumper_job_report">Lumper Job Report</string>
     <string name="lumper_work_detail">Lumper Work Detail</string>
@@ -75,7 +80,7 @@
     <string name="monthly">Monthly</string>
     <string name="my_profile">My Profile</string>
     <string name="no">No</string>
-    <string name="no_of_drops_s">No. of Drops: %s</string>
+    <string name="no_of_drops_s">Drop: %s</string>
     <string name="no_time_logged_in_yet">No time logged in yet</string>
     <string name="note">Note</string>
     <string name="notes">Notes</string>
@@ -83,10 +88,12 @@
     <string name="ok">OK</string>
     <string name="on_hold">On-Hold</string>
     <string name="ongoing">Ongoing</string>
+    <string name="ongoing_s">Ongoing: %s</string>
     <string name="out_bound_s">Out Bound: %s</string>
     <string name="out_bounds">Out Bounds</string>
     <string name="out_bounds_s">Out Bounds: %s</string>
     <string name="out_to_lunch">Out to Lunch</string>
+    <string name="parameters">Parameters</string>
     <string name="part_time">Part Time</string>
     <string name="pdf">PDF</string>
     <string name="pending">Pending</string>
@@ -100,14 +107,16 @@
     <string name="reports">Reports</string>
     <string name="reset_password">Reset Password</string>
     <string name="request_lumpers">Request Lumpers</string>
+    <string name="requested_at_s">Requested At: %s</string>
     <string name="requested_lumpers_s">Requested Lumpers: %s</string>
     <string name="role">Role</string>
     <string name="save">Save</string>
-    <string name="schedule">Schedule</string>
+    <string name="schedule">Work Schedule</string>
     <string name="scheduled">Scheduled</string>
+    <string name="scheduled_time_s">Scheduled Time: %s</string>
     <string name="schedule_detail">Schedule Detail</string>
     <string name="schedule_lumpers">Schedule Lumpers</string>
-    <string name="schedule_lumpers_time">Schedule Lumpers Time</string>
+    <string name="schedule_lumpers_time">Schedule Lumpers</string>
     <string name="select_all">Select All</string>
     <string name="select_date_range">Select Date Range</string>
     <string name="select_status">Select Status</string>
@@ -126,11 +135,11 @@
     <string name="start_time_s">Start Time: %s</string>
     <string name="submit">Submit</string>
     <string name="success">Success</string>
-    <string name="time_clock_attendance">Time Clock Attendance</string>
+    <string name="time_clock">Time Clock</string>
     <string name="time_clock_report">Time Clock Report</string>
     <string name="title">Title</string>
     <string name="to">- to -</string>
-    <string name="today_s_work_sheet">Today\'s Work Sheet</string>
+    <string name="today_s_work_sheet">Work Sheet</string>
     <string name="total_containers_s">Total Containers: %s</string>
     <string name="total_lumpers_assigned_s">Total Lumpers Assigned: %s</string>
     <string name="unfinished_s">Unfinished: %s</string>
@@ -148,6 +157,7 @@
     <string name="work_sheet_detail">Work Sheet Detail</string>
     <string name="work_time">Work Time</string>
     <string name="yes">Yes</string>
+    <string name="logout_buttoon">Log Out</string>
 
     <!--No Record Messages-->
     <string name="empty_add_work_item_lumpers_info_message">This building doesn\'t have any lumpers present for the selected date. Please mark lumpers attendance in \'Time-Clock Attendance\' section for selecting them.</string>
@@ -182,6 +192,7 @@
     <string name="generate_report_alert_message">You want to generate report</string>
     <string name="language_change_alert_message">You want to change the language</string>
     <string name="logout_alert_message">You want to logout</string>
+    <string name="leave_alert_message">You want to leave this page</string>
     <string name="lumper_sheet_success_message">Lumper Sheet submitted successfully</string>
     <string name="notes_saved_success_alert_message">Notes Saved Successfully</string>
     <string name="reports_generate_success_message">Report has been generated Successfully. Please check the notification bar to see the downloading.</string>
@@ -194,6 +205,8 @@
     <string name="submit_customer_sheet_alert_message">You want to submit the customer sheet</string>
     <string name="submit_customer_sheet_permanently_alert_message">You want to submit the customer sheet. Consider adding notes before changing permanently</string>
     <string name="submit_lumper_sheet_alert_message">You want to submit the lumper sheet.</string>
+    <string name="time_clock_fill_alert_title">Quick Hands | Alert</string>
+    <string name="time_clock_fill_alert_message">Don\'t forget to Clock Out all the lumpers in \'Time-Clock\' before submitting Lumper Sheet.</string>
     <string name="use_external_storage_alert_message">Please allow storage permission in the app settings, so that you could download \'Reports\'</string>
     <string name="warning_alert_message">You want to make these changes</string>
 
@@ -201,13 +214,15 @@
     <string name="customer_sheet_warning_message"><![CDATA[Please provide both Customer Representative Name & his Signature.]]></string>
     <string name="empty_employee_id_message">Please enter Employee Id</string>
     <string name="empty_password_message">Please enter Password</string>
+    <string name="fill_building_parameters_message">You haven\'t filled all building parameters values. Please fill them, before changing the container status to complete.</string>
+    <string name="assign_lumpers_message">You haven\'t assigned any lumper to the container. Please assign one or more lumper, before changing the container status to complete.</string>
     <string name="password_short_length_message">Please enter Password of at-least 8 characters</string>
     <string name="request_help_message"><![CDATA[You will have to enter both Required Lumper Count & DM Notes]]></string>
     <string name="something_went_wrong_message">Something went wrong, Please try again after sometime!!!</string>
 
     <!--Info Messages-->
-    <string name="enter_employee_id_info_message">Enter your employee ID</string>
-    <string name="enter_password_info_message">Enter Password</string>
+    <string name="enter_employee_id_info_message">Employee ID</string>
+    <string name="enter_password_info_message">Password</string>
     <string name="forgot_password_info_message">We just need your registered employee Id  to reset your password.</string>
     <string name="no_of_lumpers_needed">No. of Additional Lumpers Needed</string>
     <string name="no_record_found_info_message">No Record Found</string>
@@ -231,4 +246,7 @@
     <string name="break_end_greater_work_start_warning_message">Break\'s End Time should be greater than Work\'s Start Time</string>
     <string name="break_end_greater_break_start_warning_message">Break\'s End Time should be greater than Break\'s Start Time</string>
     <string name="break_end_less_work_end_warning_message">Break\'s End Time should be less than Work\'s End Time</string>
+    <string name="departmant">Department</string>
+    <string name="district_manager_name">DM Name</string>
+    <string name="district_manager_email">DM Email</string>
 </resources>

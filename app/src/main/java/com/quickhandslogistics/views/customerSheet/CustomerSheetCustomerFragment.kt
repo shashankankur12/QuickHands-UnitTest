@@ -11,27 +11,64 @@ import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.customerSheet.CustomerSheetContract
 import com.quickhandslogistics.data.customerSheet.CustomerSheetData
+import com.quickhandslogistics.data.customerSheet.LocalCustomerSheetData
+import com.quickhandslogistics.data.schedule.WorkItemDetail
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.common.AddSignatureActivity
-import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.fragment_customer_sheet_customer.*
 import java.io.File
+import java.util.*
 
 class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
 
     private var onFragmentInteractionListener: CustomerSheetContract.View.OnFragmentInteractionListener? = null
-
     private var signatureFilePath = ""
+    private var customerSheet: CustomerSheetData? = null
+    private var localCustomerSheet: LocalCustomerSheetData? = null
+
+    private var selectedTime: Long? = null
+    private var inCompleteWorkItemsCount: Int = 0
 
     companion object {
+        private const val ARG_CUSTOMER_SHEET_DATA = "ARG_CUSTOMER_SHEET_DATA"
+        private const val ARG_SELECTED_TIME = "ARG_SELECTED_TIME"
+        private const val ARG_ONGOING_WORK_ITEMS_COUNT = "ARG_ONGOING_WORK_ITEMS_COUNT"
+        private const val ARG_LOCAL_CUSTOMER_SHEET_DATA = "ARG_LOCAL_CUSTOMER_SHEET_DATA"
+
         @JvmStatic
-        fun newInstance() = CustomerSheetCustomerFragment()
+        fun newInstance(
+            customerSheetData: CustomerSheetData?,
+            selectedTime: Long?,
+            listData: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>?,
+            localCustomerSheet: LocalCustomerSheetData?
+        ) =
+            CustomerSheetCustomerFragment().apply {
+                if (selectedTime != null && listData != null) {
+                    arguments = Bundle().apply {
+                        putParcelable(ARG_CUSTOMER_SHEET_DATA, customerSheetData)
+                        putLong(ARG_SELECTED_TIME, selectedTime)
+                        putInt(ARG_ONGOING_WORK_ITEMS_COUNT, listData.first.size)
+                        putParcelable(ARG_LOCAL_CUSTOMER_SHEET_DATA, localCustomerSheet)
+                    }
+                }
+            }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (parentFragment is CustomerSheetContract.View.OnFragmentInteractionListener) {
             onFragmentInteractionListener = parentFragment as CustomerSheetContract.View.OnFragmentInteractionListener
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            customerSheet = it.getParcelable(ARG_CUSTOMER_SHEET_DATA)
+            selectedTime = it.getLong(ARG_SELECTED_TIME)
+            inCompleteWorkItemsCount = it.getInt(ARG_ONGOING_WORK_ITEMS_COUNT)
+            localCustomerSheet = it.getParcelable(ARG_LOCAL_CUSTOMER_SHEET_DATA)
         }
     }
 
@@ -42,8 +79,23 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        addNotesTouchListener(editTextCustomerNotes)
+
         textViewAddSignature.setOnClickListener(this)
         buttonSubmit.setOnClickListener(this)
+
+        if (selectedTime != null) {
+            updateCustomerDetails(customerSheet, selectedTime!!, inCompleteWorkItemsCount)
+        }
+
+        if (localCustomerSheet != null) {
+            //Show Local Data
+            editTextCustomerName.setText(localCustomerSheet?.customerRepresentativeName)
+            editTextCustomerNotes.setText(localCustomerSheet?.note)
+            if (!localCustomerSheet?.signatureFilePath.isNullOrEmpty()) {
+                showLocalSignatureOnUI(localCustomerSheet?.signatureFilePath)
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -56,13 +108,22 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        saveLocalDataInState()
+    }
+
     fun updateCustomerDetails(customerSheet: CustomerSheetData?, selectedTime: Long, inCompleteWorkItemsCount: Int) {
+        this.customerSheet = customerSheet
+        this.selectedTime = selectedTime
+        this.inCompleteWorkItemsCount = inCompleteWorkItemsCount
+
         val isCurrentDate = DateUtils.isCurrentDate(selectedTime)
 
         customerSheet?.also {
             editTextCustomerName.setText(customerSheet.customerRepresentativeName)
             editTextCustomerNotes.setText(customerSheet.note)
-            updateUIVisibility(ValueUtils.getDefaultOrValue(customerSheet.isSigned), isCurrentDate, inCompleteWorkItemsCount)
+            updateUIVisibility(ValueUtils.getDefaultOrValue(customerSheet.isSigned), isCurrentDate, inCompleteWorkItemsCount, customerSheet.signatureUrl)
         } ?: run {
             editTextCustomerName.setText("")
             editTextCustomerNotes.setText("")
@@ -70,10 +131,21 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-    private fun updateUIVisibility(signed: Boolean, currentDate: Boolean, inCompleteWorkItemsCount: Int) {
-        imageViewSignature.visibility = View.GONE
+    private fun saveLocalDataInState() {
+        onFragmentInteractionListener?.saveSateCustomerSheet(editTextCustomerName.text.toString(), editTextCustomerNotes.text.toString(), signatureFilePath)
+    }
+
+    private fun updateUIVisibility(signed: Boolean, currentDate: Boolean, inCompleteWorkItemsCount: Int, signatureUrl: String? = "") {
         buttonSubmit.visibility = if (currentDate) View.VISIBLE else View.GONE
-        textViewSignature.visibility = if (signed) View.VISIBLE else View.GONE
+        textViewSignature.visibility = View.GONE
+
+        if (signed) {
+            imageViewSignature.visibility = View.VISIBLE
+            Glide.with(fragmentActivity!!).load(signatureUrl).into(imageViewSignature)
+        } else {
+            imageViewSignature.visibility = View.GONE
+            Glide.with(fragmentActivity!!).clear(imageViewSignature)
+        }
 
         if (!currentDate || signed || inCompleteWorkItemsCount > 0) {
             editTextCustomerName.isEnabled = false
@@ -133,6 +205,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
     private fun showConfirmationDialog(message: String, customerName: String, notesCustomer: String) {
         CustomProgressBar.getInstance().showWarningDialog(message, fragmentActivity!!, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
+                localCustomerSheet = null
                 onFragmentInteractionListener?.saveCustomerSheet(customerName, notesCustomer, signatureFilePath)
             }
 

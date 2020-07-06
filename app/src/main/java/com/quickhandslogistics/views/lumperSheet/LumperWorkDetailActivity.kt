@@ -14,6 +14,8 @@ import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
 import com.quickhandslogistics.data.lumperSheet.LumpersInfo
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.presenters.lumperSheet.LumperWorkDetailPresenter
+import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.common.AddSignatureActivity
 import com.quickhandslogistics.views.common.BuildingOperationsViewActivity
@@ -21,8 +23,6 @@ import com.quickhandslogistics.views.lumperSheet.LumperSheetFragment.Companion.A
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETERS
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETER_VALUES
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
-import com.quickhandslogistics.utils.*
-import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import kotlinx.android.synthetic.main.activity_lumper_work_detail.*
 import java.io.File
 import java.util.*
@@ -74,7 +74,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         recyclerViewLumperWork.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            lumperWorkDetailAdapter = LumperWorkDetailAdapter(resources, this@LumperWorkDetailActivity)
+            lumperWorkDetailAdapter = LumperWorkDetailAdapter(resources, sharedPref, this@LumperWorkDetailActivity)
             adapter = lumperWorkDetailAdapter
         }
 
@@ -97,9 +97,16 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         }
     }
 
-    private fun updateUIVisibility(signed: Boolean, currentDate: Boolean, inCompleteWorkItemsCount: Int) {
-        imageViewSignature.visibility = View.GONE
-        textViewSignature.visibility = if (signed) View.VISIBLE else View.GONE
+    private fun updateUIVisibility(signed: Boolean, currentDate: Boolean, inCompleteWorkItemsCount: Int, signatureUrl: String? = "") {
+        textViewSignature.visibility = View.GONE
+
+        if (signed) {
+            imageViewSignature.visibility = View.VISIBLE
+            Glide.with(activity).load(signatureUrl).into(imageViewSignature)
+        } else {
+            imageViewSignature.visibility = View.GONE
+            Glide.with(activity).clear(imageViewSignature)
+        }
 
         if (!signed && currentDate && inCompleteWorkItemsCount == 0) {
             textViewAddSignature.visibility = View.VISIBLE
@@ -156,7 +163,10 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         }
 
         if (lumperDaySheetList.size > 0) {
-            updateUIVisibility(getDefaultOrValue(lumperDaySheetList[0].lumpersTimeSchedule?.sheetSigned), isCurrentDate, inCompleteWorkItemsCount)
+            updateUIVisibility(
+                getDefaultOrValue(lumperDaySheetList[0].lumpersTimeSchedule?.sheetSigned), isCurrentDate, inCompleteWorkItemsCount,
+                lumperDaySheetList[0].lumpersTimeSchedule?.lumperSignatureInfo?.lumperSignatureUrl
+            )
         } else {
             updateUIVisibility(false, isCurrentDate, inCompleteWorkItemsCount)
         }
@@ -167,9 +177,9 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     }
 
     /** Adapter Listeners */
-    override fun onBOItemClick(workItemDetail: WorkItemDetail) {
+    override fun onBOItemClick(workItemDetail: WorkItemDetail, parameters: ArrayList<String>) {
         val bundle = Bundle()
-        bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, workItemDetail.buildingDetailData?.parameters)
+        bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, parameters)
         bundle.putSerializable(ARG_BUILDING_PARAMETER_VALUES, workItemDetail.buildingOps)
         startIntent(BuildingOperationsViewActivity::class.java, bundle = bundle)
     }

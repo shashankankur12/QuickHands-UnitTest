@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.content_lumper_job_report.*
 import kotlinx.android.synthetic.main.layout_date_filter.*
 import kotlinx.android.synthetic.main.layout_report_type.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockReportContract.View,
     TimeClockReportContract.View.OnAdapterItemClickListener, TextWatcher, RadioGroup.OnCheckedChangeListener {
@@ -30,6 +31,12 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
 
     private lateinit var timeClockReportPresenter: TimeClockReportPresenter
     private lateinit var timeClockReportAdapter: TimeClockReportAdapter
+    private var employeeDataList: ArrayList<EmployeeData> = ArrayList()
+
+    companion object {
+        const val LUMPER_REPORT_LIST = "LUMPER_REPORT_LIST"
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +46,22 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
         initializeUI()
 
         timeClockReportPresenter = TimeClockReportPresenter(this, resources)
-        timeClockReportPresenter.fetchLumpersList()
+
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey(LUMPER_REPORT_LIST)) {
+                employeeDataList = savedInstanceState.getParcelableArrayList(LUMPER_REPORT_LIST)!!
+                showLumpersData(employeeDataList)
+            }
+        } ?: run {
+            timeClockReportPresenter.fetchLumpersList()
+        }
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (employeeDataList != null)
+            outState.putParcelableArrayList(LUMPER_REPORT_LIST, employeeDataList)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onDestroy() {
@@ -252,6 +274,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
     }
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
+        this.employeeDataList=employeeDataList
         timeClockReportAdapter.updateLumpersData(employeeDataList)
     }
 

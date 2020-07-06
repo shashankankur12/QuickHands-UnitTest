@@ -8,19 +8,23 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.views.workSheet.WorkSheetItemFragment
-import java.util.*
+import kotlin.collections.ArrayList
 
-class WorkSheetPagerAdapter(childFragmentManager: FragmentManager, private val resources: Resources) :
+class WorkSheetPagerAdapter(
+    childFragmentManager: FragmentManager,
+    private val resources: Resources,
+    allWorkItemLists: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>? =null
+) :
     FragmentStatePagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private val tabTitles = arrayOf(R.string.ongoing, R.string.cancelled, R.string.completed)
-    private var onGoingWorkItemsCount = 0
-    private var cancelledWorkItemsCount = 0
-    private var completedWorkItemsCount = 0
+    private var onGoingWorkItemsCount = if (!allWorkItemLists?.first.isNullOrEmpty())allWorkItemLists?.first?.size else 0
+    private var cancelledWorkItemsCount = if (!allWorkItemLists?.second.isNullOrEmpty())allWorkItemLists?.second?.size else 0
+    private var completedWorkItemsCount = if (!allWorkItemLists?.third.isNullOrEmpty())allWorkItemLists?.third?.size else 0
 
-    private var ongoingFragment = WorkSheetItemFragment.newInstance(resources.getString(tabTitles[0]))
-    private var cancelledFragment = WorkSheetItemFragment.newInstance(resources.getString(tabTitles[1]))
-    private var completedFragment = WorkSheetItemFragment.newInstance(resources.getString(tabTitles[2]))
+    private var ongoingFragment = WorkSheetItemFragment.newInstance(resources.getString(tabTitles[0]), allWorkItemLists)
+    private var cancelledFragment = WorkSheetItemFragment.newInstance(resources.getString(tabTitles[1]), allWorkItemLists)
+    private var completedFragment = WorkSheetItemFragment.newInstance(resources.getString(tabTitles[2]), allWorkItemLists)
 
     override fun getItem(position: Int): Fragment {
         return if (position == 0) ongoingFragment else if (position == 1) cancelledFragment else completedFragment

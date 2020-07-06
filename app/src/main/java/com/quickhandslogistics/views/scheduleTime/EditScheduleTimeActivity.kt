@@ -38,6 +38,13 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     private lateinit var editScheduleTimePresenter: EditScheduleTimePresenter
     private lateinit var editScheduleTimeAdapter: EditScheduleTimeAdapter
 
+    private var dateString: String? = null
+
+    companion object {
+        const val SELECTED_DATE_STRING = "SELECTED_DATE_STRING"
+        const val SCHEDULED_TIME_LIST = "SCHEDULED_TIME_LIST"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_schedule_time)
@@ -49,9 +56,22 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             scheduleTimeNotes = bundle.getString(ARG_SCHEDULED_TIME_NOTES, "")
         }
 
-        initializeUI()
+        editScheduleTimePresenter = EditScheduleTimePresenter(this, resources, sharedPref)
 
-        editScheduleTimePresenter = EditScheduleTimePresenter(this, resources)
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey(SELECTED_DATE_STRING)) {
+                dateString = savedInstanceState.getString(SELECTED_DATE_STRING)!!
+                showDateString(dateString!!)
+            }
+
+            if (savedInstanceState.containsKey(SCHEDULED_TIME_LIST)) {
+                val tempScheduleTimeList = savedInstanceState.getParcelableArrayList<ScheduleTimeDetail>(SCHEDULED_TIME_LIST) as ArrayList<ScheduleTimeDetail>
+                initializeUI(tempScheduleTimeList)
+            }
+        } ?: run {
+            editScheduleTimePresenter.getHeaderDateString(Date(selectedTime))
+            initializeUI(scheduleTimeList)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -93,7 +113,15 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         }
     }
 
-    private fun initializeUI() {
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (dateString != null)
+            outState.putString(SELECTED_DATE_STRING, dateString)
+        if (editScheduleTimeAdapter != null)
+            outState.putParcelableArrayList(SCHEDULED_TIME_LIST, editScheduleTimeAdapter.getScheduledTimeList())
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun initializeUI(scheduleTimeList: ArrayList<ScheduleTimeDetail>) {
         editTextNotes.setText(scheduleTimeNotes)
 
         recyclerViewLumpers.apply {
@@ -111,6 +139,8 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
                 invalidateEmptyView()
             }
         })
+
+        addNotesTouchListener(editTextNotes)
 
         textViewAddSameTime.setOnClickListener(this)
         buttonSubmit.setOnClickListener(this)
@@ -139,7 +169,8 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
                 textViewEmptyData.text = getString(R.string.empty_edit_schedule_time_info_message)
             }
         } else {
-            buttonSubmit.isEnabled = true
+            buttonSubmit.isEnabled =
+                (editScheduleTimeAdapter.getLumpersList().size > 0 && editScheduleTimeAdapter.getScheduledLumpersTimeMap().size > 0) && editScheduleTimeAdapter.getScheduledLumpersTimeMap().size == editScheduleTimeAdapter.getLumpersList().size
             textViewAddSameTime.visibility = View.VISIBLE
             textViewEmptyData.visibility = View.GONE
             textViewEmptyData.text = getString(R.string.empty_edit_schedule_time_info_message)
@@ -215,6 +246,11 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     }
 
     /** Presenter Listeners */
+    override fun showDateString(dateString: String) {
+        this.dateString = dateString
+        textViewDate.text = dateString
+    }
+
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }
