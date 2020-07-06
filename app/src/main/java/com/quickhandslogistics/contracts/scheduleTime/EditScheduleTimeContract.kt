@@ -5,16 +5,19 @@ import java.util.*
 
 class EditScheduleTimeContract {
     interface Model {
+        fun fetchHeaderInfo(selectedDate: Date, onFinishedListener: OnFinishedListener)
         fun assignScheduleTime(
             scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, selectedDate: Date, onFinishedListener: OnFinishedListener
         )
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccessScheduleTime()
+            fun onSuccessGetHeaderInfo(dateString: String)
         }
     }
 
     interface View : BaseContract.View {
+        fun showDateString(dateString: String)
         fun showAPIErrorMessage(message: String)
         fun scheduleTimeFinished()
 
@@ -24,6 +27,7 @@ class EditScheduleTimeContract {
     }
 
     interface Presenter : BaseContract.Presenter {
+        fun getHeaderDateString(date: Date)
         fun initiateScheduleTime(scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, selectedDate: Date)
     }
 }

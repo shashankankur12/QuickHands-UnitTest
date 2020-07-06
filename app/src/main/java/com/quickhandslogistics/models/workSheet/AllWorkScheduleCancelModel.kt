@@ -15,10 +15,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 
-class AllWorkScheduleCancelModel(private val sharedPref: SharedPref) : AllWorkScheduleCancelContract.Model {
+class AllWorkScheduleCancelModel : AllWorkScheduleCancelContract.Model {
 
     override fun fetchLumpersList(onFinishedListener: AllWorkScheduleCancelContract.Model.OnFinishedListener) {
-        val dateString = DateUtils.getCurrentDateStringByEmployeeShift(sharedPref)
+        val dateString = DateUtils.getCurrentDateStringByEmployeeShift()
 
         DataManager.getService().getPresentLumpersList(getAuthToken(), dateString).enqueue(object : Callback<AllLumpersResponse> {
             override fun onResponse(call: Call<AllLumpersResponse>, response: Response<AllLumpersResponse>) {
@@ -38,7 +38,7 @@ class AllWorkScheduleCancelModel(private val sharedPref: SharedPref) : AllWorkSc
         selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String, onFinishedListener: AllWorkScheduleCancelContract.Model.OnFinishedListener
     ) {
         val request = CancelAllSchedulesRequest(selectedLumperIdsList, notesQHL, notesCustomer)
-        val day = DateUtils.getCurrentDateStringByEmployeeShift(sharedPref)
+        val day = DateUtils.getCurrentDateStringByEmployeeShift()
 
         DataManager.getService().cancelAllSchedules(getAuthToken(), day, request).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {

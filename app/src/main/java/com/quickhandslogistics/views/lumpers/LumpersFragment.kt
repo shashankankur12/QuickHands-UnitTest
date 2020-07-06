@@ -32,8 +32,11 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     private lateinit var lumpersAdapter: LumpersAdapter
     private lateinit var lumpersPresenter: LumpersPresenter
 
+    private var dateString: String? = null
+
     companion object {
         const val LUMPER_DETAIL_LIST = "LUMPER_DETAIL_LIST"
+        const val DATE_SELECTED = "DATE_SELECTED"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,6 +78,11 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
                 employeeDataList = savedInstanceState.getParcelableArrayList(LUMPER_DETAIL_LIST)
                 showLumpersData(employeeDataList!!)
             }
+
+            if (savedInstanceState.containsKey(DATE_SELECTED)) {
+                dateString = savedInstanceState.getString(DATE_SELECTED)!!
+                showDateString(dateString!!)
+            }
         } ?: run {
             lumpersPresenter.fetchLumpersList()
         }
@@ -88,6 +96,8 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     override fun onSaveInstanceState(outState: Bundle) {
         if (employeeDataList != null)
             outState.putParcelableArrayList(LUMPER_DETAIL_LIST, employeeDataList)
+        if (dateString != null)
+            outState.putString(DATE_SELECTED, dateString)
         super.onSaveInstanceState(outState)
     }
 
@@ -134,6 +144,11 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     }
 
     /** Presenter Listeners */
+    override fun showDateString(dateString: String) {
+        this.dateString = dateString
+        textViewDate.text = dateString
+    }
+
     override fun showAPIErrorMessage(message: String) {
         recyclerViewLumpers.visibility = View.GONE
         textViewEmptyData.visibility = View.VISIBLE

@@ -5,16 +5,21 @@ import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.scheduleTime.EditScheduleTimeContract
 import com.quickhandslogistics.models.scheduleTime.EditScheduleTimeModel
+import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 
-class EditScheduleTimePresenter(private var editScheduleTimeView: EditScheduleTimeContract.View?, private val resources: Resources) :
+class EditScheduleTimePresenter(private var editScheduleTimeView: EditScheduleTimeContract.View?, private val resources: Resources, sharedPref: SharedPref) :
     EditScheduleTimeContract.Presenter, EditScheduleTimeContract.Model.OnFinishedListener {
 
-    private val editScheduleTimeModel = EditScheduleTimeModel()
+    private val editScheduleTimeModel = EditScheduleTimeModel(sharedPref)
 
     /** View Listeners */
     override fun onDestroy() {
         editScheduleTimeView = null
+    }
+
+    override fun getHeaderDateString(date: Date) {
+        editScheduleTimeModel.fetchHeaderInfo(date, this)
     }
 
     override fun initiateScheduleTime(scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, selectedDate: Date) {
@@ -35,5 +40,9 @@ class EditScheduleTimePresenter(private var editScheduleTimeView: EditScheduleTi
     override fun onSuccessScheduleTime() {
         editScheduleTimeView?.hideProgressDialog()
         editScheduleTimeView?.scheduleTimeFinished()
+    }
+
+    override fun onSuccessGetHeaderInfo(dateString: String) {
+        editScheduleTimeView?.showDateString(dateString)
     }
 }

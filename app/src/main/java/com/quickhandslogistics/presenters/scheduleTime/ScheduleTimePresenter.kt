@@ -7,12 +7,13 @@ import com.quickhandslogistics.contracts.scheduleTime.ScheduleTimeContract
 import com.quickhandslogistics.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.models.scheduleTime.ScheduleTimeModel
 import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 
-class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.View?, private val resources: Resources) :
+class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.View?, private val resources: Resources, sharedPref: SharedPref) :
     ScheduleTimeContract.Presenter, ScheduleTimeContract.Model.OnFinishedListener {
 
-    private val scheduleTimeModel = ScheduleTimeModel()
+    private val scheduleTimeModel = ScheduleTimeModel(sharedPref)
 
     /** View Listeners */
     override fun onDestroy() {
@@ -20,10 +21,8 @@ class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.V
     }
 
     override fun getSchedulesTimeByDate(date: Date) {
-        val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, date)
-        scheduleTimeView?.showDateString(dateString)
-
         scheduleTimeView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        scheduleTimeModel.fetchHeaderInfo(date, this)
         scheduleTimeModel.fetchSchedulesTimeByDate(date, this)
     }
 
@@ -44,5 +43,10 @@ class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.V
             scheduleTimeView?.showScheduleTimeData(selectedDate, data.scheduledLumpers!!, data.tempLumperIds!!)
             scheduleTimeView?.showNotesData(data.notes)
         }
+    }
+
+
+    override fun onSuccessGetHeaderInfo(dateString: String) {
+        scheduleTimeView?.showDateString(dateString)
     }
 }

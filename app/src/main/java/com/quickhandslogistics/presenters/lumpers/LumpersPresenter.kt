@@ -21,6 +21,7 @@ class LumpersPresenter(private var lumpersView: LumpersContract.View?, private v
 
     override fun fetchLumpersList() {
         lumpersView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        lumpersModel.fetchHeaderInfo(this)
         lumpersModel.fetchLumpersList(this)
     }
 
@@ -42,5 +43,9 @@ class LumpersPresenter(private var lumpersView: LumpersContract.View?, private v
         allLumpersList.addAll(response.data?.temporaryLumpers!!)
 
         lumpersView?.showLumpersData(allLumpersList)
+    }
+
+    override fun onSuccessGetHeaderInfo(dateString: String) {
+        lumpersView?.showDateString(dateString)
     }
 }

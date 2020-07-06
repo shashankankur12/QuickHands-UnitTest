@@ -243,4 +243,30 @@ object ScheduleUtils {
         }
         return parameters
     }
+
+    fun getShiftDetailString(leadProfile: LeadProfileData?): String {
+        var shiftName = ""
+        var shiftStartTime = ""
+        var shiftEndTime = ""
+        leadProfile?.shift?.let { name ->
+            shiftName = name.capitalize()
+            val shiftDetail = when (leadProfile.shift) {
+                AppConstant.EMPLOYEE_SHIFT_MORNING -> {
+                    leadProfile.buildingDetailData?.morningShift
+                }
+                AppConstant.EMPLOYEE_SHIFT_SWING -> {
+                    leadProfile.buildingDetailData?.swingShift
+                }
+                AppConstant.EMPLOYEE_SHIFT_NIGHT -> {
+                    leadProfile.buildingDetailData?.nightShift
+                }
+                else -> null
+            }
+            shiftDetail?.let {
+                shiftStartTime = DateUtils.convertMillisecondsToTimeString(shiftDetail.startTime!!)
+                shiftEndTime = DateUtils.convertMillisecondsToTimeString(shiftDetail.endTime!!)
+            }
+        }
+        return "$shiftName ($shiftStartTime - $shiftEndTime)"
+    }
 }
