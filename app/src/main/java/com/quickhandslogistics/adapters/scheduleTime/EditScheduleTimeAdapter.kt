@@ -34,7 +34,9 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
 
     init {
         for (scheduleTime in scheduleTimeList) {
-            scheduledLumpersIdsTimeMap[scheduleTime.lumperInfo?.id!!] = convertUTCDateStringToMilliseconds(PATTERN_API_RESPONSE, scheduleTime.reportingTimeAndDay)
+            if (!scheduleTime.reportingTimeAndDay.isNullOrEmpty()) {
+                scheduledLumpersIdsTimeMap[scheduleTime.lumperInfo?.id!!] = convertUTCDateStringToMilliseconds(PATTERN_API_RESPONSE, scheduleTime.reportingTimeAndDay)
+            }
         }
         this.scheduleTimeList.addAll(scheduleTimeList)
     }
@@ -140,6 +142,7 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
     fun addStartTime(adapterPosition: Int, timeInMillis: Long) {
         val scheduleTimeDetail = getItem(adapterPosition)
         scheduledLumpersIdsTimeMap[scheduleTimeDetail.lumperInfo?.id!!] = timeInMillis
+        scheduleTimeList[adapterPosition].reportingTimeAndDay = DateUtils.convertMillisecondsToUTCDateString(PATTERN_API_RESPONSE, timeInMillis)
         notifyDataSetChanged()
     }
 
@@ -147,12 +150,17 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
         setSearchEnabled(false)
         for (scheduleTimeDetail in scheduleTimeList) {
             scheduledLumpersIdsTimeMap[scheduleTimeDetail.lumperInfo?.id!!] = timeInMillis
+            scheduleTimeDetail.reportingTimeAndDay = DateUtils.convertMillisecondsToUTCDateString(PATTERN_API_RESPONSE, timeInMillis)
         }
         notifyDataSetChanged()
     }
 
     fun getScheduledLumpersTimeMap(): HashMap<String, Long> {
         return scheduledLumpersIdsTimeMap
+    }
+
+    fun getScheduledTimeList(): ArrayList<ScheduleTimeDetail> {
+        return scheduleTimeList
     }
 
     fun getLumpersList(): ArrayList<EmployeeData> {

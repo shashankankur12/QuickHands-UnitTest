@@ -45,7 +45,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
 
         initializeUI()
 
-        timeClockReportPresenter = TimeClockReportPresenter(this, resources, sharedPref)
+        timeClockReportPresenter = TimeClockReportPresenter(this, resources)
 
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(LUMPER_REPORT_LIST)) {

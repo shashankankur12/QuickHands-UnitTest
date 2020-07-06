@@ -9,6 +9,7 @@ import com.quickhandslogistics.network.DataManager.getAuthToken
 import com.quickhandslogistics.network.DataManager.isSuccessResponse
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.SharedPref
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,12 +24,13 @@ class WorkSheetModel(private val sharedPref: SharedPref) : WorkSheetContract.Mod
         leadProfile?.buildingDetailData?.customerDetail?.companyName?.let { name ->
             companyName = name
         }
-        val date = DateUtils.getCurrentDateStringByEmployeeShift(sharedPref, pattern = DateUtils.PATTERN_NORMAL)
-        onFinishedListener.onSuccessGetHeaderInfo(companyName, date)
+        val date = DateUtils.getCurrentDateStringByEmployeeShift(pattern = DateUtils.PATTERN_NORMAL)
+        val dateShiftDetail = "$date - ${ScheduleUtils.getShiftDetailString(leadProfile)}"
+        onFinishedListener.onSuccessGetHeaderInfo(companyName, dateShiftDetail)
     }
 
     override fun fetchWorkSheetList(onFinishedListener: WorkSheetContract.Model.OnFinishedListener) {
-        val dateString = DateUtils.getCurrentDateStringByEmployeeShift(sharedPref)
+        val dateString = DateUtils.getCurrentDateStringByEmployeeShift()
 
         DataManager.getService().getWorkSheetList(getAuthToken(), dateString).enqueue(object : Callback<WorkSheetListAPIResponse> {
             override fun onResponse(call: Call<WorkSheetListAPIResponse>, response: Response<WorkSheetListAPIResponse>) {

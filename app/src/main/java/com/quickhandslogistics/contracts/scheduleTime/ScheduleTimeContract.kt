@@ -1,6 +1,7 @@
 package com.quickhandslogistics.contracts.scheduleTime
 
 import com.quickhandslogistics.contracts.BaseContract
+import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
 import java.util.*
@@ -8,10 +9,12 @@ import kotlin.collections.ArrayList
 
 class ScheduleTimeContract {
     interface Model {
+        fun fetchHeaderInfo(selectedDate: Date, onFinishedListener: OnFinishedListener)
         fun fetchSchedulesTimeByDate(selectedDate: Date, onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(selectedDate: Date, scheduleTimeAPIResponse: GetScheduleTimeAPIResponse)
+            fun onSuccessGetHeaderInfo(dateString: String)
         }
     }
 

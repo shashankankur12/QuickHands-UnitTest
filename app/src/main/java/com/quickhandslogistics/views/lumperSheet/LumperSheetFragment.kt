@@ -51,7 +51,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lumperSheetPresenter = LumperSheetPresenter(this, resources)
+        lumperSheetPresenter = LumperSheetPresenter(this, resources, sharedPref)
 
         // Setup Calendar Dates
         selectedTime = Date().time

@@ -247,4 +247,6 @@
     <string name="break_end_greater_break_start_warning_message">Break\'s End Time should be greater than Break\'s Start Time</string>
     <string name="break_end_less_work_end_warning_message">Break\'s End Time should be less than Work\'s End Time</string>
     <string name="departmant">Department</string>
+    <string name="district_manager_name">DM Name</string>
+    <string name="district_manager_email">DM Email</string>
 </resources>

@@ -17,10 +17,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 
-class LumperJobReportModel(private val sharedPref: SharedPref) : LumperJobReportContract.Model {
+class LumperJobReportModel : LumperJobReportContract.Model {
 
     override fun fetchLumpersList(onFinishedListener: LumperJobReportContract.Model.OnFinishedListener) {
-        val dateString = DateUtils.getCurrentDateStringByEmployeeShift(sharedPref)
+        val dateString = DateUtils.getCurrentDateStringByEmployeeShift()
 
         DataManager.getService().getAllLumpersData(getAuthToken(), dateString).enqueue(object : Callback<LumperListAPIResponse> {
             override fun onResponse(call: Call<LumperListAPIResponse>, response: Response<LumperListAPIResponse>) {

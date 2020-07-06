@@ -10,10 +10,10 @@ import com.quickhandslogistics.models.workSheet.AllWorkScheduleCancelModel
 import com.quickhandslogistics.utils.SharedPref
 
 class AllWorkScheduleCancelPresenter(
-    private var allWorkScheduleCancelView: AllWorkScheduleCancelContract.View?, private val resources: Resources, sharedPref: SharedPref
+    private var allWorkScheduleCancelView: AllWorkScheduleCancelContract.View?, private val resources: Resources
 ) : AllWorkScheduleCancelContract.Presenter, AllWorkScheduleCancelContract.Model.OnFinishedListener {
 
-    private val allWorkScheduleCancelModel = AllWorkScheduleCancelModel(sharedPref)
+    private val allWorkScheduleCancelModel = AllWorkScheduleCancelModel()
 
     /** View Listeners */
     override fun onDestroy() {

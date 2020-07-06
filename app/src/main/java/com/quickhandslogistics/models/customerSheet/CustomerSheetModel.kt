@@ -12,6 +12,7 @@ import com.quickhandslogistics.network.DataManager.getAuthToken
 import com.quickhandslogistics.network.DataManager.isSuccessResponse
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.SharedPref
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,7 +30,8 @@ class CustomerSheetModel(private val sharedPref: SharedPref) : CustomerSheetCont
             companyName = name
         }
         val date = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
-        onFinishedListener.onSuccessGetHeaderInfo(companyName, date)
+        val dateShiftDetail = "$date - ${ScheduleUtils.getShiftDetailString(leadProfile)}"
+        onFinishedListener.onSuccessGetHeaderInfo(companyName, dateShiftDetail)
     }
 
     override fun fetchCustomerSheetList(selectedDate: Date, onFinishedListener: CustomerSheetContract.Model.OnFinishedListener) {

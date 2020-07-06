@@ -7,12 +7,14 @@ import com.quickhandslogistics.contracts.lumperSheet.LumperSheetContract
 import com.quickhandslogistics.data.lumperSheet.LumperSheetListAPIResponse
 import com.quickhandslogistics.models.lumperSheet.LumperSheetModel
 import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.ScheduleUtils
+import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 
-class LumperSheetPresenter(private var lumperSheetView: LumperSheetContract.View?, private val resources: Resources) :
+class LumperSheetPresenter(private var lumperSheetView: LumperSheetContract.View?, private val resources: Resources, sharedPref: SharedPref) :
     LumperSheetContract.Presenter, LumperSheetContract.Model.OnFinishedListener {
 
-    private val lumperSheetModel = LumperSheetModel()
+    private val lumperSheetModel = LumperSheetModel(sharedPref)
 
     /** View Listeners */
     override fun onDestroy() {
@@ -21,6 +23,7 @@ class LumperSheetPresenter(private var lumperSheetView: LumperSheetContract.View
 
     override fun getLumpersSheetByDate(selectedDate: Date) {
         lumperSheetView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        lumperSheetModel.fetchHeaderInfo(selectedDate, this)
         lumperSheetModel.fetchLumperSheetList(selectedDate, this)
     }
 
@@ -42,9 +45,6 @@ class LumperSheetPresenter(private var lumperSheetView: LumperSheetContract.View
     override fun onSuccess(response: LumperSheetListAPIResponse, selectedDate: Date) {
         lumperSheetView?.hideProgressDialog()
 
-        val dateString = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
-        lumperSheetView?.showDateString(dateString)
-
         response.data?.let { data ->
             lumperSheetView?.showLumperSheetData(data.lumpersInfo!!, data.isSheetSubmitted!!, selectedDate, data.tempLumperIds!!)
         }
@@ -54,5 +54,9 @@ class LumperSheetPresenter(private var lumperSheetView: LumperSheetContract.View
     override fun onSuccessSubmitLumperSheet() {
         lumperSheetView?.hideProgressDialog()
         lumperSheetView?.sheetSubmittedSuccessfully()
+    }
+
+    override fun onSuccessGetHeaderInfo(dateString: String) {
+        lumperSheetView?.showDateString(dateString)
     }
 }

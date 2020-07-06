@@ -69,7 +69,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        scheduleTimePresenter = ScheduleTimePresenter(this, resources)
+        scheduleTimePresenter = ScheduleTimePresenter(this, resources, sharedPref)
 
         arguments?.let { bundle ->
             scheduleTimeSelectedDate = bundle.getString(DashBoardActivity.ARG_SCHEDULE_TIME_SELECTED_DATE)
@@ -185,7 +185,6 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
             if (singleRowCalendarScheduleTime.getSelectedDates().isNotEmpty()) {
                 scheduleTimePresenter.getSchedulesTimeByDate(singleRowCalendarScheduleTime.getSelectedDates()[0])
-
             }
         }
     }

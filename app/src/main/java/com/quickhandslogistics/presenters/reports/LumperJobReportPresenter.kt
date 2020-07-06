@@ -10,10 +10,10 @@ import com.quickhandslogistics.models.reports.LumperJobReportModel
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 
-class LumperJobReportPresenter(private var lumperJobReportView: LumperJobReportContract.View?, private val resources: Resources, sharedPref: SharedPref) :
+class LumperJobReportPresenter(private var lumperJobReportView: LumperJobReportContract.View?, private val resources: Resources) :
     LumperJobReportContract.Presenter, LumperJobReportContract.Model.OnFinishedListener {
 
-    private val lumperJobHistoryModel = LumperJobReportModel(sharedPref)
+    private val lumperJobHistoryModel = LumperJobReportModel()
 
     /** View Listeners */
     override fun onDestroy() {

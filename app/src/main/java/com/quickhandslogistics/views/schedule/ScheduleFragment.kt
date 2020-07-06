@@ -34,8 +34,8 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     private var currentDatePosition: Int = 0
     private lateinit var availableDates: List<Date>
     private var workItemsList: ArrayList<ScheduleDetail> = ArrayList<ScheduleDetail>()
-    private var selectedDate: Date= Date()
-    private  var dateString: String ?= null
+    private var selectedDate: Date = Date()
+    private var dateString: String? = null
     private var isSavedState: Boolean = false
     private var datePosition: Int = 0
 
@@ -72,7 +72,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        schedulePresenter = SchedulePresenter(this, resources)
+        schedulePresenter = SchedulePresenter(this, resources, sharedPref)
 
         // Setup Calendar Dates
         selectedTime = Date().time
@@ -198,7 +198,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
     /** Presenter Listeners */
     override fun showDateString(dateString: String) {
-        this.dateString=dateString
+        this.dateString = dateString
         textViewDate.text = dateString
     }
 
@@ -210,11 +210,10 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         selectedTime = selectedDate.time
         scheduleAdapter.updateList(workItemsList, currentPageIndex)
 
-        if(!workItemsList.isNullOrEmpty()) {
+        if (!workItemsList.isNullOrEmpty()) {
             textViewEmptyData.visibility = View.GONE
             recyclerViewSchedule.visibility = View.VISIBLE
-            textViewDate.visibility = View.VISIBLE
-        }else{
+        } else {
             showEmptyData()
         }
 
@@ -231,7 +230,6 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     override fun showEmptyData() {
         textViewEmptyData.visibility = View.VISIBLE
         recyclerViewSchedule.visibility = View.GONE
-        textViewDate.visibility = View.GONE
         workItemsList.clear()
     }
 

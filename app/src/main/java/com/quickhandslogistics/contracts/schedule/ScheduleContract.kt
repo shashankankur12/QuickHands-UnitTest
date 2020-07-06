@@ -1,6 +1,7 @@
 package com.quickhandslogistics.contracts.schedule
 
 import com.quickhandslogistics.contracts.BaseContract
+import com.quickhandslogistics.contracts.lumperSheet.LumperSheetContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.data.schedule.ScheduleListAPIResponse
@@ -8,10 +9,12 @@ import java.util.*
 
 class ScheduleContract {
     interface Model {
+        fun fetchHeaderInfo(selectedDate: Date, onFinishedListener: OnFinishedListener)
         fun fetchSchedulesByDate(selectedDate: Date, pageIndex: Int, onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(selectedDate: Date, scheduleListAPIResponse: ScheduleListAPIResponse, currentPageIndex: Int)
+            fun onSuccessGetHeaderInfo(dateString: String)
         }
     }
 

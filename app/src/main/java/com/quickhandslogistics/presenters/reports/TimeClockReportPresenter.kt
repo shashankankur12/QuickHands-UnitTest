@@ -10,10 +10,10 @@ import com.quickhandslogistics.models.reports.TimeClockReportModel
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 
-class TimeClockReportPresenter(private var timeClockReportView: TimeClockReportContract.View?, private val resources: Resources, sharedPref: SharedPref) :
+class TimeClockReportPresenter(private var timeClockReportView: TimeClockReportContract.View?, private val resources: Resources) :
     TimeClockReportContract.Presenter, TimeClockReportContract.Model.OnFinishedListener {
 
-    private val timeClockReportModel = TimeClockReportModel(sharedPref)
+    private val timeClockReportModel = TimeClockReportModel()
 
     /** View Listeners */
     override fun onDestroy() {
