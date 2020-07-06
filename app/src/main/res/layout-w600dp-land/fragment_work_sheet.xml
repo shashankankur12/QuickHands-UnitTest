@@ -13,7 +13,6 @@
         style="@style/titleBigTextViewTheme"
         android:layout_width="match_parent"
         android:layout_marginStart="@dimen/_12ssp"
-        android:layout_marginTop="@dimen/_3ssp"
         android:layout_marginEnd="@dimen/_12ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,16 +28,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewCompanyName" />
 
-    <com.quickhandslogistics.controls.CustomTextView
-        android:id="@+id/textViewTotalCount"
-        style="@style/valuesTextViewTheme"
-        android:layout_marginStart="@dimen/_12ssp"
-        android:layout_marginTop="@dimen/_4sdp"
-        android:layout_marginEnd="@dimen/_12ssp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemsDate" />
-
     <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/flexboxLayoutCounts"
         android:layout_width="0dp"
@@ -48,12 +37,19 @@
         app:flexWrap="wrap"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTotalCount">
+        app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemsDate">
+
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewTotalCount"
+            style="@style/darkBlueChipTheme"
+            android:layout_marginTop="@dimen/_6sdp" />
 
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewDropsCount"
             style="@style/blueChipTheme"
-            android:layout_marginTop="@dimen/_6sdp" />
+            android:layout_marginStart="@dimen/_4ssp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginEnd="@dimen/_4ssp" />
 
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewLiveLoadsCount"
@@ -94,7 +90,7 @@
             app:tabIndicatorFullWidth="false"
             app:tabPadding="@dimen/_6sdp"
             app:tabSelectedTextColor="@color/textBlack"
-            app:tabTextAppearance="?android:attr/textAppearanceLarge"
+            app:tabTextAppearance="@style/TabTextAppearance"
             app:tabTextColor="@color/detailHeader" />
 
         <View

@@ -13,7 +13,6 @@
         style="@style/titleBigTextViewTheme"
         android:layout_width="match_parent"
         android:layout_marginStart="@dimen/_15ssp"
-        android:layout_marginTop="@dimen/_5ssp"
         android:layout_marginEnd="@dimen/_10ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

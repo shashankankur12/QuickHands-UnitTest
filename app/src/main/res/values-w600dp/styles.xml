@@ -64,6 +64,11 @@
         <item name="android:textSize">@dimen/_10ssp</item>
         <item name="android:background">@drawable/chip_background</item>
     </style>
+
+    <style name="darkBlueChipTheme" parent="baseChipTheme">
+        <item name="android:textSize">@dimen/_10ssp</item>
+        <item name="android:background">@drawable/chip_background_dark</item>
+    </style>
     <!---->
 
     <!--EditText Styles-->
