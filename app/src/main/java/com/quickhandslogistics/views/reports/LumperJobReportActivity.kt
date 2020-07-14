@@ -1,5 +1,6 @@
 package com.quickhandslogistics.views.reports
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,6 +18,7 @@ import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.presenters.reports.LumperJobReportPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
+import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.content_lumper_job_report.*
 import kotlinx.android.synthetic.main.layout_date_filter.*
 import kotlinx.android.synthetic.main.layout_report_type.*
@@ -227,6 +229,10 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
             override fun onCancelClick() {
             }
         })
+    }
+
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
     /** Native Views Listeners */

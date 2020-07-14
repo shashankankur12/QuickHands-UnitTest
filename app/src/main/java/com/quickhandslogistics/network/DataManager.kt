@@ -76,7 +76,12 @@ object DataManager : AppConstant {
                 onFinishedListener.onFailure()
             }
         } else {
-            onFinishedListener.onFailure(getErrorMessage(errorBody))
+            var errorResponse=getErrorCode(errorBody)
+            if (errorResponse.errCode == 777) {
+                onFinishedListener.onErrorCode(errorResponse)
+            } else {
+                onFinishedListener.onFailure(errorResponse.message)
+            }
         }
         return isSuccessResponse
     }
@@ -94,4 +99,28 @@ object DataManager : AppConstant {
         }
         return errorMessage
     }
+
+    private fun getErrorCode(errorBody: ResponseBody?): ErrorResponse {
+        var errorCode :ErrorResponse= ErrorResponse()
+        errorBody?.let {
+            val errorBodyString = String(it.bytes())
+            errorCode = try {
+                 Gson().fromJson(errorBodyString, ErrorResponse::class.java)
+            } catch (e: JsonSyntaxException) {
+                errorBodyString
+            } as ErrorResponse
+        }
+        return errorCode
+    }
+
+    /*private fun logout() {
+         var sharedPref = SharedPref.getInstance()
+        sharedPref.performLogout()
+        val intent = Intent(activity, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        activity.startActivity(intent)
+        activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+        activity.finish()
+        Toast.makeText(activity, "Logout", Toast.LENGTH_SHORT).show()
+    }*/
 }

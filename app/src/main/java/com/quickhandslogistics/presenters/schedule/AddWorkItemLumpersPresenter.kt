@@ -4,8 +4,10 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.schedule.AddWorkItemLumpersContract
+import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.common.AllLumpersResponse
 import com.quickhandslogistics.models.schedule.AddWorkItemLumpersModel
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 
 class AddWorkItemLumpersPresenter(
@@ -36,6 +38,15 @@ class AddWorkItemLumpersPresenter(
             addWorkItemLumpersView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             addWorkItemLumpersView?.showAPIErrorMessage(message)
+        }
+    }
+
+    override fun onErrorCode(errorCode: ErrorResponse) {
+        addWorkItemLumpersView?.hideProgressDialog()
+        var sharedPref = SharedPref.getInstance()
+        if (!TextUtils.isEmpty(sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN, ""))) {
+            sharedPref.performLogout()
+            addWorkItemLumpersView?.showLoginScreen()
         }
     }
 

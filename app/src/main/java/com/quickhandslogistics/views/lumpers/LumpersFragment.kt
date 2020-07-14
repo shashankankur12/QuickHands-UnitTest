@@ -23,6 +23,7 @@ import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.views.BaseFragment
+import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.fragment_lumpers.*
 
 class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.OnClickListener,
@@ -158,6 +159,10 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
         this.employeeDataList = employeeDataList
         lumpersAdapter.updateLumpersData(employeeDataList)
+    }
+
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
     /** Adapter Listeners */

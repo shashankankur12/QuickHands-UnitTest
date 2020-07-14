@@ -24,6 +24,7 @@ class CustomerSheetContract {
         fun showCustomerSheets(scheduleDetails: CustomerSheetScheduleDetails, customerSheet: CustomerSheetData?, selectedDate: Date)
         fun showHeaderInfo(companyName: String, date: String)
         fun customerSavedSuccessfully()
+        fun showLoginScreen()
 
         interface OnFragmentInteractionListener {
             fun saveCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String)

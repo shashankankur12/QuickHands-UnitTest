@@ -1,5 +1,6 @@
 package com.quickhandslogistics.views.workSheet
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,6 +18,7 @@ import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.views.BaseActivity
+import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.activity_all_work_schedule_cancel.*
 
 class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, TextWatcher, AllWorkScheduleCancelContract.View {
@@ -148,5 +150,9 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Text
     override fun cancellingWorkScheduleFinished() {
         setResult(RESULT_OK)
         onBackPressed()
+    }
+
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 }

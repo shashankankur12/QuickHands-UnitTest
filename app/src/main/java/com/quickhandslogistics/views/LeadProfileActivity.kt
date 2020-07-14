@@ -73,6 +73,10 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
         }
     }
 
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
+    }
+
     /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {

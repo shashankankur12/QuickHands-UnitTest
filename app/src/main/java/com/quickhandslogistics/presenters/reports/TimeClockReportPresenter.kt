@@ -4,9 +4,11 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.reports.TimeClockReportContract
+import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.data.reports.ReportResponse
 import com.quickhandslogistics.models.reports.TimeClockReportModel
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 
@@ -37,6 +39,15 @@ class TimeClockReportPresenter(private var timeClockReportView: TimeClockReportC
             timeClockReportView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             timeClockReportView?.showAPIErrorMessage(message)
+        }
+    }
+
+    override fun onErrorCode(errorCode: ErrorResponse) {
+        timeClockReportView?.hideProgressDialog()
+        var sharedPref = SharedPref.getInstance()
+        if (!TextUtils.isEmpty(sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN, ""))) {
+            sharedPref.performLogout()
+            timeClockReportView?.showLoginScreen()
         }
     }
 

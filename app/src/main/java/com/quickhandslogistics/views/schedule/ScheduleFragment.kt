@@ -20,6 +20,7 @@ import com.quickhandslogistics.utils.CalendarUtils
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.views.BaseFragment
+import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.util.*
@@ -231,6 +232,10 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         textViewEmptyData.visibility = View.VISIBLE
         recyclerViewSchedule.visibility = View.GONE
         workItemsList.clear()
+    }
+
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
     /** Adapter Listeners */

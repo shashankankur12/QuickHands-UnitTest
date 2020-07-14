@@ -4,8 +4,10 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.workSheet.WorkSheetContract
+import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.models.workSheet.WorkSheetModel
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 
 class WorkSheetPresenter(private var workSheetView: WorkSheetContract.View?, private val resources: Resources, sharedPref: SharedPref) :
@@ -31,6 +33,15 @@ class WorkSheetPresenter(private var workSheetView: WorkSheetContract.View?, pri
             workSheetView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             workSheetView?.showAPIErrorMessage(message)
+        }
+    }
+
+    override fun onErrorCode(errorCode: ErrorResponse) {
+        workSheetView?.hideProgressDialog()
+        var sharedPref = SharedPref.getInstance()
+        if (!TextUtils.isEmpty(sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN, ""))) {
+            sharedPref.performLogout()
+            workSheetView?.showLoginScreen()
         }
     }
 

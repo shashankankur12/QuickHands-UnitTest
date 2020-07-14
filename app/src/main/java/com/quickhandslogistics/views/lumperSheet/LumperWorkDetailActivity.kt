@@ -17,6 +17,7 @@ import com.quickhandslogistics.presenters.lumperSheet.LumperWorkDetailPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import com.quickhandslogistics.views.BaseActivity
+import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.common.AddSignatureActivity
 import com.quickhandslogistics.views.common.BuildingOperationsViewActivity
 import com.quickhandslogistics.views.lumperSheet.LumperSheetFragment.Companion.ARG_LUMPER_INFO
@@ -130,6 +131,10 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
             override fun onCancelClick() {
             }
         })
+    }
+
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
     /** Native Views Listeners */

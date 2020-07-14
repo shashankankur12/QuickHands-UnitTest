@@ -4,8 +4,11 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.lumperSheet.LumperWorkDetailContract
+import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.lumperSheet.LumperWorkDetailAPIResponse
 import com.quickhandslogistics.models.lumperSheet.LumperWorkDetailModel
+import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 
 class LumperWorkDetailPresenter(private var lumperWorkDetailView: LumperWorkDetailContract.View?, private val resources: Resources) :
@@ -35,6 +38,15 @@ class LumperWorkDetailPresenter(private var lumperWorkDetailView: LumperWorkDeta
             lumperWorkDetailView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             lumperWorkDetailView?.showAPIErrorMessage(message)
+        }
+    }
+
+    override fun onErrorCode(errorCode: ErrorResponse) {
+        lumperWorkDetailView?.hideProgressDialog()
+        var sharedPref = SharedPref.getInstance()
+        if (!TextUtils.isEmpty(sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN, ""))) {
+            sharedPref.performLogout()
+            lumperWorkDetailView?.showLoginScreen()
         }
     }
 

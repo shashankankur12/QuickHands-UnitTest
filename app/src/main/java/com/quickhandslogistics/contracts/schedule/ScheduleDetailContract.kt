@@ -19,6 +19,7 @@ class ScheduleDetailContract {
     interface View : BaseContract.View {
         fun showScheduleData(scheduleDetail: ScheduleDetail)
         fun showAPIErrorMessage(message: String)
+        fun showLoginScreen()
 
         interface OnAdapterItemClickListener {
             fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>)

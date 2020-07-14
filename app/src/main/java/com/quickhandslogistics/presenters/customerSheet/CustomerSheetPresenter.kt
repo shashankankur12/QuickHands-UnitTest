@@ -4,8 +4,10 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.customerSheet.CustomerSheetContract
+import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.customerSheet.CustomerSheetListAPIResponse
 import com.quickhandslogistics.models.customerSheet.CustomerSheetModel
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 import kotlin.Comparator
@@ -38,6 +40,15 @@ class CustomerSheetPresenter(private var workSheetView: CustomerSheetContract.Vi
             workSheetView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             workSheetView?.showAPIErrorMessage(message)
+        }
+    }
+
+    override fun onErrorCode(errorCode: ErrorResponse) {
+        workSheetView?.hideProgressDialog()
+        var sharedPref = SharedPref.getInstance()
+        if (!TextUtils.isEmpty(sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN, ""))) {
+            sharedPref.performLogout()
+            workSheetView?.showLoginScreen()
         }
     }
 

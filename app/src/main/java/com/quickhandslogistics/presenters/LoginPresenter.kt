@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.LoginContract
+import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.dashboard.LeadProfileAPIResponse
 import com.quickhandslogistics.data.login.LoginResponse
 import com.quickhandslogistics.models.LoginModel
@@ -35,6 +36,10 @@ class LoginPresenter(private var loginView: LoginContract.View?, private val res
         } else {
             loginView?.showAPIErrorMessage(message)
         }
+    }
+
+    override fun onErrorCode(errorCode: ErrorResponse) {
+        onFailure(errorCode.message)
     }
 
     override fun emptyEmployeeId() {

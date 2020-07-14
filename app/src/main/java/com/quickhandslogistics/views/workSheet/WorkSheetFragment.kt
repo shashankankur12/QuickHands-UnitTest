@@ -1,6 +1,7 @@
 package com.quickhandslogistics.views.workSheet
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import com.quickhandslogistics.presenters.workSheet.WorkSheetPresenter
 import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.views.BaseFragment
+import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.fragment_work_sheet.*
 
 class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContract.View.OnFragmentInteractionListener {
@@ -184,6 +186,10 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
 
         textViewCompanyName.text = companyName.capitalize()
         textViewWorkItemsDate.text = date
+    }
+
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
     /** Child Fragment Interaction Listeners */

@@ -1,6 +1,7 @@
 package com.quickhandslogistics.views.workSheet
 
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -13,6 +14,7 @@ import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.isFutureTime
 import com.quickhandslogistics.views.BaseActivity
+import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_DATA
 import com.quickhandslogistics.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_TIMING_DATA
 import com.quickhandslogistics.views.schedule.ScheduleFragment
@@ -262,6 +264,10 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     override fun lumpersTimingSaved() {
         setResult(RESULT_OK)
         onBackPressed()
+    }
+
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
     interface OnTimeSetListener {

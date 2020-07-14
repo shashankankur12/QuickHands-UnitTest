@@ -18,6 +18,7 @@ class ChooseLumpersContract {
     interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
         fun showLumpersData(employeeDataList: ArrayList<EmployeeData>)
+        fun showLoginScreen()
 
         interface OnAdapterItemClickListener {
             fun onSelectLumper(totalSelectedCount: Int)

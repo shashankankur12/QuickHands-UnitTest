@@ -23,6 +23,7 @@ class TimeClockReportContract {
         fun showAPIErrorMessage(message: String)
         fun showLumpersData(employeeDataList: ArrayList<EmployeeData>)
         fun showReportDownloadDialog(reportUrl: String, mimeType: String)
+        fun showLoginScreen()
 
         interface OnAdapterItemClickListener {
             fun onLumperSelectionChanged()

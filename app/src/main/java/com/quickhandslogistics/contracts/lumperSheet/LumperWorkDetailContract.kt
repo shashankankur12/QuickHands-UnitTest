@@ -22,6 +22,7 @@ class LumperWorkDetailContract {
         fun showAPIErrorMessage(message: String)
         fun showLumperWorkDetails(lumperDaySheetList: ArrayList<LumperDaySheet>)
         fun lumperSignatureSaved()
+        fun showLoginScreen()
 
         interface OnAdapterItemClickListener {
             fun onBOItemClick(workItemDetail: WorkItemDetail, parameters: ArrayList<String>)

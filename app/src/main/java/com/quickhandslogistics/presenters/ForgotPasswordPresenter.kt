@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.ForgotPasswordContract
+import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.forgotPassword.ForgotPasswordResponse
 import com.quickhandslogistics.models.ForgotPasswordModel
 
@@ -29,6 +30,10 @@ class ForgotPasswordPresenter(private var passwordView: ForgotPasswordContract.V
         } else {
             passwordView?.showAPIErrorMessage(message)
         }
+    }
+
+    override fun onErrorCode(errorCode: ErrorResponse) {
+        onFailure(errorCode.message)
     }
 
     override fun emptyEmployeeId() {

@@ -17,6 +17,7 @@ class AddLumperTimeWorkSheetItemContract {
     interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
         fun lumpersTimingSaved()
+        fun showLoginScreen()
 
         interface OnAdapterItemClickListener {
             fun onSelectLumper(totalSelectedCount: Int)

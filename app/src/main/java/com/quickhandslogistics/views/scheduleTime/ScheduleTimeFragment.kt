@@ -21,6 +21,7 @@ import com.quickhandslogistics.presenters.scheduleTime.ScheduleTimePresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.DashBoardActivity
+import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_LUMPERS_COUNT
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_NOTES
@@ -286,6 +287,10 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         } else {
             onFragmentInteractionListener?.invalidateScheduleTimeNotes("")
         }
+    }
+
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
     /** Calendar Listeners */

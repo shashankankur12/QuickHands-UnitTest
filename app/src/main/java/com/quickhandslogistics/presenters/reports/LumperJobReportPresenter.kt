@@ -4,9 +4,11 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.reports.LumperJobReportContract
+import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.data.reports.ReportResponse
 import com.quickhandslogistics.models.reports.LumperJobReportModel
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 
@@ -37,6 +39,15 @@ class LumperJobReportPresenter(private var lumperJobReportView: LumperJobReportC
             lumperJobReportView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             lumperJobReportView?.showAPIErrorMessage(message)
+        }
+    }
+
+    override fun onErrorCode(errorCode: ErrorResponse) {
+        lumperJobReportView?.hideProgressDialog()
+        var sharedPref = SharedPref.getInstance()
+        if (!TextUtils.isEmpty(sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN, ""))) {
+            sharedPref.performLogout()
+            lumperJobReportView?.showLoginScreen()
         }
     }
 
