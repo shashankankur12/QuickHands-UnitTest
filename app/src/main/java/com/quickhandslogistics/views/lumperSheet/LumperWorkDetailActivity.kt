@@ -3,6 +3,7 @@ package com.quickhandslogistics.views.lumperSheet
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -27,6 +28,7 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SEL
 import kotlinx.android.synthetic.main.activity_lumper_work_detail.*
 import java.io.File
 import java.util.*
+import kotlin.collections.ArrayList
 
 class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWorkDetailContract.View,
     LumperWorkDetailContract.View.OnAdapterItemClickListener {
@@ -37,6 +39,12 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
 
     private lateinit var lumperWorkDetailPresenter: LumperWorkDetailPresenter
     private lateinit var lumperWorkDetailAdapter: LumperWorkDetailAdapter
+    private  var lumperDaySheetList: ArrayList<LumperDaySheet> = ArrayList()
+
+    companion object {
+        const val LUMPER_WORK_DETAIL = "LUMPER_WORK_DETAIL"
+        const val LUMPER_SIGNATURE = "LUMPER_SIGNATURE"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +60,20 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         initializeUI()
 
         lumperWorkDetailPresenter = LumperWorkDetailPresenter(this, resources)
-        lumperWorkDetailPresenter.getLumperWorkDetails(getDefaultOrValue(lumpersInfo?.lumperId), Date(selectedTime))
+
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey(LUMPER_WORK_DETAIL)) {
+                lumperDaySheetList= savedInstanceState.getParcelableArrayList(LUMPER_WORK_DETAIL)!!
+                showLumperWorkDetails(lumperDaySheetList)
+            }
+            if (savedInstanceState.containsKey(LUMPER_SIGNATURE)) {
+                signatureFilePath= savedInstanceState.getString(LUMPER_SIGNATURE)!!
+                showLocalSignatureOnUI(signatureFilePath)
+            }
+        } ?: run {
+            lumperWorkDetailPresenter.getLumperWorkDetails(getDefaultOrValue(lumpersInfo?.lumperId), Date(selectedTime))
+        }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -63,6 +84,14 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
                 showLocalSignatureOnUI(signatureFilePath)
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (lumperDaySheetList != null)
+            outState.putParcelableArrayList(LUMPER_WORK_DETAIL, lumperDaySheetList)
+        if (!TextUtils.isEmpty(signatureFilePath))
+            outState.putString(LUMPER_SIGNATURE, signatureFilePath)
+        super.onSaveInstanceState(outState)
     }
 
     private fun initializeUI() {
@@ -153,6 +182,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     }
 
     override fun showLumperWorkDetails(lumperDaySheetList: ArrayList<LumperDaySheet>) {
+        this.lumperDaySheetList=lumperDaySheetList
         val isCurrentDate = DateUtils.isCurrentDate(selectedTime)
         buttonSave.visibility = View.GONE
 
@@ -178,6 +208,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     }
 
     override fun lumperSignatureSaved() {
+        signatureFilePath=""
         setResult(RESULT_OK)
     }
 
