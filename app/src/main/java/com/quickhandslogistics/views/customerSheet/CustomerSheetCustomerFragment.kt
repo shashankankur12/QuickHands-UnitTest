@@ -147,7 +147,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
             Glide.with(fragmentActivity!!).clear(imageViewSignature)
         }
 
-        if (!currentDate || signed || inCompleteWorkItemsCount > 0) {
+        if (!currentDate || signed /*|| inCompleteWorkItemsCount > 0*/) {
             editTextCustomerName.isEnabled = false
             editTextCustomerNotes.isEnabled = false
             buttonSubmit.isEnabled = false
@@ -160,15 +160,16 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
             editTextCustomerName.isEnabled = true
             editTextCustomerNotes.isEnabled = true
             buttonSubmit.isEnabled = true
+
         }
 
-        if (!signed && currentDate && inCompleteWorkItemsCount == 0) {
+        if (!signed && currentDate /*&& inCompleteWorkItemsCount == 0*/) {
             textViewAddSignature.visibility = View.VISIBLE
         } else {
             textViewAddSignature.visibility = View.GONE
         }
 
-        if (signed || (currentDate && inCompleteWorkItemsCount == 0)) {
+        if (signed || (currentDate /*&& inCompleteWorkItemsCount == 0*/)) {
             layoutSignature.visibility = View.VISIBLE
         } else {
             layoutSignature.visibility = View.GONE

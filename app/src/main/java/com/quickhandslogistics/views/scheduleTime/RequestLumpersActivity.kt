@@ -6,6 +6,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.scheduleTime.RequestLumpersAdapter
@@ -72,6 +73,13 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         } ?: run {
             requestLumpersPresenter.fetchAllRequestsByDate(Date(selectedTime))
         }
+        refreshData()
+    }
+
+    private fun refreshData() {
+        swipe_pull_refresh.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            requestLumpersPresenter.fetchAllRequestsByDate(Date(selectedTime))
+        })
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -213,6 +221,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
 
     override fun showAllRequests(records: ArrayList<RequestLumpersRecord>) {
         this.records=records
+        swipe_pull_refresh?.isRefreshing = false
         requestLumpersAdapter.updateList(records)
     }
 
