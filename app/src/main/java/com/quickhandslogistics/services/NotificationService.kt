@@ -109,7 +109,7 @@ class NotificationService : FirebaseMessagingService() {
             if (data.containsKey(AppConstant.NOTIFICATION_KEY_DATE)) {
                 val date = data[AppConstant.NOTIFICATION_KEY_DATE].toString()
 
-                bundle.putString(ARG_SHOW_TAB_NAME, getString(R.string.schedule_lumpers_time))
+                bundle.putString(ARG_SHOW_TAB_NAME, getString(R.string.scheduled_lumpers))
                 bundle.putString(ARG_SCHEDULE_TIME_SELECTED_DATE, date)
                 intent.setClass(applicationContext, DashBoardActivity::class.java)
             }

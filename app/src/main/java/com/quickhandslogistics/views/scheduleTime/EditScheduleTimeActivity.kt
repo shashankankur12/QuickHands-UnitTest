@@ -6,8 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -74,33 +72,6 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_toolbar, menu)
-        menu?.findItem(R.id.actionAddLumpers)?.isVisible = true
-        menu?.findItem(R.id.actionAddSameLumperTime)?.isVisible = false
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        menu?.let {
-            val menuItem = menu.findItem(R.id.actionAddLumpers)
-            if (editScheduleTimeAdapter.itemCount > 0) {
-                menuItem.title = getString(R.string.update_lumpers)
-            } else {
-                menuItem.title = getString(R.string.add_lumpers)
-            }
-        }
-        return super.onPrepareOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.actionAddSameLumperTime -> chooseSameTimeForAllLumpers()
-            R.id.actionAddLumpers -> showChooseLumpersScreen()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == RESULT_OK) {
@@ -142,6 +113,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
 
         addNotesTouchListener(editTextNotes)
 
+        imageViewAddLumpers.setOnClickListener(this)
         textViewAddSameTime.setOnClickListener(this)
         buttonSubmit.setOnClickListener(this)
         editTextSearch.addTextChangedListener(this)
@@ -224,6 +196,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
+                imageViewAddLumpers.id -> showChooseLumpersScreen()
                 textViewAddSameTime.id -> chooseSameTimeForAllLumpers()
                 buttonSubmit.id -> saveLumperScheduleTimings()
                 imageViewCancel.id -> {

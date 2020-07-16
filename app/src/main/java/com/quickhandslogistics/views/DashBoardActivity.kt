@@ -58,7 +58,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             showTabName = bundle.getString(ARG_SHOW_TAB_NAME, getString(R.string.today_s_work_sheet))
 
             //if Tab is Schedule Lumper Time, then check for date
-            if (showTabName == getString(R.string.schedule_lumpers_time)) {
+            if (showTabName == getString(R.string.scheduled_lumpers)) {
                 scheduleTimeSelectedDate = bundle.getString(ARG_SCHEDULE_TIME_SELECTED_DATE, "")
             }
         } ?: run {
@@ -91,7 +91,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
                 getString(R.string.today_s_work_sheet) -> {
                     menu.findItem(R.id.actionCancelAllWork).isVisible = isCancelAllScheduleVisible
                 }
-                getString(R.string.schedule_lumpers_time) -> {
+                getString(R.string.scheduled_lumpers) -> {
                     menu.findItem(R.id.actionNotes).isVisible = scheduleTimeNotes.isNotEmpty()
                 }
             }
@@ -142,7 +142,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
                 is WorkSheetFragment->
                     tabName = getString(R.string.today_s_work_sheet)
                 is ScheduleTimeFragment->
-                    tabName = getString(R.string.schedule_lumpers_time)
+                    tabName = getString(R.string.scheduled_lumpers)
                 //not done yet
                 is ScheduleFragment->
                     tabName = getString(R.string.schedule)
@@ -175,7 +175,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             it.addItem(NavDrawer.AppNavDrawerItem(LumperSheetFragment(), R.drawable.ic_sidemenu_lumper_sheet, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.l_sheet), showTabName)))
 
             it.addItem(NavDrawer.AppNavDrawerItem(ScheduleFragment(), R.drawable.ic_calednar_dr, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.schedule), showTabName)))
-            it.addItem(NavDrawer.AppNavDrawerItem(scheduleTimeFragment, R.drawable.ic_sidemenu_schedule, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.schedule_lumpers_time), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(scheduleTimeFragment, R.drawable.ic_sidemenu_schedule, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.scheduled_lumpers), showTabName)))
             it.addItem(NavDrawer.AppNavDrawerItem(ReportsFragment(), R.drawable.report_icon, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.reports), showTabName)))
 
             it.addItem(NavDrawer.AppNavDrawerItem(LumpersFragment(), R.drawable.ic_sidemenu_lumpers, R.id.linearLayoutThirdItems, isShowOnLaunch(getString(R.string.lumper_contact), showTabName)))
