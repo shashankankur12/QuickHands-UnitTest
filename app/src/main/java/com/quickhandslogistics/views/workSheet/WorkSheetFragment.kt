@@ -14,6 +14,7 @@ import com.quickhandslogistics.data.customerSheet.CustomerSheetData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.presenters.workSheet.WorkSheetPresenter
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.views.BaseFragment
@@ -129,7 +130,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
 
 
-        return Triple(onGoingWorkItems, data.cancelled!!, data.completed!!)
+        return Triple(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!))
     }
 
     private fun resetUI() {
@@ -177,7 +178,32 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         textViewDropsCount.text = String.format(getString(R.string.drops_s), workItemTypeCounts.second)
         textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
 
-        adapter?.updateWorkItemsList(onGoingWorkItems, data.cancelled!!, data.completed!!)
+        adapter?.updateWorkItemsList(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!))
+    }
+
+    private fun getSortList(workItemsList: ArrayList<WorkItemDetail>): ArrayList<WorkItemDetail> {
+        var inboundList: ArrayList<WorkItemDetail> = ArrayList()
+        var outBoundList: ArrayList<WorkItemDetail> = ArrayList()
+        var liveList: ArrayList<WorkItemDetail> = ArrayList()
+        var sortedList: ArrayList<WorkItemDetail> = ArrayList()
+
+        workItemsList.forEach {
+            when {
+                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> {
+                    liveList.add(it)
+                }
+                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> {
+                    inboundList.add(it)
+                }
+                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> {
+                    outBoundList.add(it)
+                }
+            }
+        }
+        sortedList.addAll(outBoundList)
+        sortedList.addAll(liveList)
+        sortedList.addAll(inboundList)
+        return sortedList
     }
 
     override fun showHeaderInfo(companyName: String, date: String) {
