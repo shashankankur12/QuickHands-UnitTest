@@ -99,7 +99,7 @@ class NotificationService : FirebaseMessagingService() {
         } else if (notificationType == AppConstant.NOTIFICATION_TYPE_LUMPER_CHANGED) {
 
             // Navigate to Lumpers List Screen
-            bundle.putString(ARG_SHOW_TAB_NAME, getString(R.string.lumpers))
+            bundle.putString(ARG_SHOW_TAB_NAME, getString(R.string.lumper_contact))
             intent.setClass(applicationContext, DashBoardActivity::class.java)
         } else if (notificationType == AppConstant.NOTIFICATION_TYPE_LUMPER_REQUEST_APPROVED
             || notificationType == AppConstant.NOTIFICATION_TYPE_LUMPER_REQUEST_REJECTED

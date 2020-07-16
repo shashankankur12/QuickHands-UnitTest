@@ -19,7 +19,7 @@ class NavigationDrawerTestModel(private val context: Context, private val fetchi
     private var textViewWorkSheet = onView(allOf(withId(R.id.list_item_nav_drawer_text), hasSibling(withText(context.getString(R.string.today_s_work_sheet)))))
     private var textViewScheduleLumperTime = onView(allOf(withId(R.id.list_item_nav_drawer_text), hasSibling(withText(context.getString(R.string.schedule_lumpers_time)))))
     private var textViewSchedule = onView(allOf(withId(R.id.list_item_nav_drawer_text), hasSibling(withText(context.getString(R.string.schedule)))))
-    private var textViewLumpers = onView(allOf(withId(R.id.list_item_nav_drawer_text), hasSibling(withText(context.getString(R.string.lumpers)))))
+    private var textViewLumpers = onView(allOf(withId(R.id.list_item_nav_drawer_text), hasSibling(withText(context.getString(R.string.lumper_contact)))))
     private var textViewLumperSheet = onView(allOf(withId(R.id.list_item_nav_drawer_text), hasSibling(withText(context.getString(R.string.l_sheet)))))
     private var textViewCustomerSheet = onView(allOf(withId(R.id.list_item_nav_drawer_text), hasSibling(withText(context.getString(R.string.customer_sheet)))))
     private var textViewReports = onView(allOf(withId(R.id.list_item_nav_drawer_text), hasSibling(withText(context.getString(R.string.reports)))))

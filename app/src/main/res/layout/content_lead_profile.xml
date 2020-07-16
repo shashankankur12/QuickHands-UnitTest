@@ -240,7 +240,7 @@
                     style="@style/detailTextHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/departmant" />
+                    android:text="@string/department" />
 
                 <TextView
                     android:id="@+id/textViewDepartment"
