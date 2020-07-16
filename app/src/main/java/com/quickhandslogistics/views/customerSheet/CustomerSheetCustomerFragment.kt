@@ -207,6 +207,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
             override fun onConfirmClick() {
                 localCustomerSheet = null
                 onFragmentInteractionListener?.saveCustomerSheet(customerName, notesCustomer, signatureFilePath)
+//                signatureFilePath=""
             }
 
             override fun onCancelClick() {

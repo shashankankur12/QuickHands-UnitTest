@@ -112,15 +112,4 @@ object DataManager : AppConstant {
         }
         return errorCode
     }
-
-    /*private fun logout() {
-         var sharedPref = SharedPref.getInstance()
-        sharedPref.performLogout()
-        val intent = Intent(activity, LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        activity.startActivity(intent)
-        activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
-        activity.finish()
-        Toast.makeText(activity, "Logout", Toast.LENGTH_SHORT).show()
-    }*/
 }
