@@ -66,11 +66,11 @@ object UIUtils {
 
     fun updateProfileBorder(context: Context, isTemporaryAssigned: Boolean?, circleImageView: CircleImageView) {
         if (getDefaultOrValue(isTemporaryAssigned)) {
-            circleImageView.borderColor = ContextCompat.getColor(context, android.R.color.holo_orange_light)
+            circleImageView.borderColor = ContextCompat.getColor(context, R.color.temp_lumper_background)
             circleImageView.borderWidth = ((context.resources.getDimension(R.dimen.circleTemporaryBorder) / context.resources.displayMetrics.density).toInt())
         } else {
             circleImageView.borderColor = ContextCompat.getColor(context, R.color.imageBorder)
-            circleImageView.borderWidth = ((context.resources.getDimension(R.dimen.circleNormalBorder) / context.resources.displayMetrics.density).toInt())
+            circleImageView.borderWidth = ((context.resources.getDimension(R.dimen.circleTemporaryBorder) / context.resources.displayMetrics.density).toInt())
         }
     }
 

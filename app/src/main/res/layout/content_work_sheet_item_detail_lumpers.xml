@@ -23,7 +23,7 @@
         android:id="@+id/textViewEmptyData"
         style="@style/noRecordTextViewTheme"
         android:layout_centerInParent="true"
-        android:text="@string/empty_work_item_lumpers_info_message"
+        android:text="@string/empty_work_item_detail_page_lumpers_info_message"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
