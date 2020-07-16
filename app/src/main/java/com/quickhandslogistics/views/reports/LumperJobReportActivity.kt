@@ -40,7 +40,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lumper_job_report)
-        setupToolbar(getString(R.string.lumper_job_report))
+        setupToolbar(getString(R.string.lumper_sheet_report))
 
         initializeUI()
 
@@ -75,21 +75,6 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
                 }
             }
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_toolbar, menu)
-        menu?.findItem(R.id.actionRefresh)?.isVisible = true
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.actionRefresh -> {
-                resetAllData()
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun initializeUI() {
@@ -174,7 +159,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
         val selectedCount = lumperJobReportAdapter.getSelectedLumperIdsList().size
         if (selectedCount == lumperJobReportAdapter.itemCount) {
             imageViewSelectAll.setImageResource(R.drawable.ic_add_lumer_tick)
-            textViewSelectAll.text = getString(R.string.unselect_all)
+        //    textViewSelectAll.text = getString(R.string.unselect_all)
         } else {
             imageViewSelectAll.setImageResource(R.drawable.ic_add_lumer_tick_blank)
             textViewSelectAll.text = getString(R.string.select_all)

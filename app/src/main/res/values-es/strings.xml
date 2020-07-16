@@ -41,7 +41,7 @@
     <string name="customer_report">Customer Report</string>
     <string name="customer_representative_name">Customer Representative Name</string>
     <string name="customer_sheet">Customer Sheet</string>
-    <string name="daily">Daily</string>
+    <string name="day">Day</string>
     <string name="department">Department</string>
     <string name="district_manager_email">DM Email</string>
     <string name="district_manager_name">DM Name</string>
@@ -75,13 +75,13 @@
     <string name="logout">Log Out</string>
     <string name="lumper_contact">Lumper Contact</string>
     <string name="lumper_details">Lumper Details</string>
-    <string name="lumper_job_report">Lumper Job Report</string>
+    <string name="lumper_sheet_report">Lumper Sheet Report</string>
     <string name="lumper_work_detail">Lumper Work Detail</string>
     <string name="lumpers">Lumpers</string>
     <string name="lunch_time">Lunch Time</string>
     <string name="mark_present">Mark Present</string>
     <string name="miles_radius_from_building">Miles radius from primary building</string>
-    <string name="monthly">Monthly</string>
+    <string name="month">Month</string>
     <string name="my_profile">My Profile</string>
     <string name="no">No</string>
     <string name="no_of_drops_s">Drop: %s</string>
@@ -155,7 +155,7 @@
     <string name="view_building_operations">View Building Operations</string>
     <string name="waiting_time">Waiting Time</string>
     <string name="waiting_time_in_min">Waiting Time (in Min.)</string>
-    <string name="weekly">Weekly</string>
+    <string name="week">Week</string>
     <string name="work_item_detail">Work Item Detail</string>
     <string name="work_items_s">Work Items: %s</string>
     <string name="work_schedule">Work Schedule</string>
