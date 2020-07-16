@@ -87,9 +87,9 @@ object UIUtils {
         employeeData?.let {
             if (!employeeData.department.isNullOrEmpty()) {
                 displayDepartment = when (employeeData.department) {
-                    AppConstant.EMPLOYEE_DEPARTMENT_BOTH -> "Both (InBound & OutBound)"
-                    AppConstant.EMPLOYEE_DEPARTMENT_INBOUND -> "InBound"
-                    AppConstant.EMPLOYEE_DEPARTMENT_OUTBOUND -> "OutBound"
+                    AppConstant.EMPLOYEE_DEPARTMENT_BOTH -> "Both (Inbound & Outbound)"
+                    AppConstant.EMPLOYEE_DEPARTMENT_INBOUND -> "Inbound"
+                    AppConstant.EMPLOYEE_DEPARTMENT_OUTBOUND -> "Outbound"
                     else -> employeeData.department!!
                 }
             }

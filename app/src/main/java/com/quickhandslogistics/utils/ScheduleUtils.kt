@@ -9,6 +9,10 @@ import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.data.schedule.WorkItemDetail
+import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.Comparator
 import kotlin.collections.ArrayList
@@ -269,4 +273,43 @@ object ScheduleUtils {
         }
         return "$shiftName ($shiftStartTime - $shiftEndTime)"
     }
+
+     fun getSortRequestLumper(records: ArrayList<RequestLumpersRecord>): ArrayList<RequestLumpersRecord> {
+        var pendingRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        var completedRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        var rejectedRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        var cancelRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        var sortedlRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        records.forEach {
+            when {
+                it.requestStatus.equals(AppConstant.REQUEST_LUMPERS_STATUS_PENDING) -> {
+                    pendingRecords.add(it)
+                }
+                it.requestStatus.equals(AppConstant.REQUEST_LUMPERS_STATUS_APPROVED) -> {
+                    completedRecords.add(it)
+                }
+                it.requestStatus.equals(AppConstant.REQUEST_LUMPERS_STATUS_REJECTED) -> {
+                    rejectedRecords.add(it)
+                }
+                it.requestStatus.equals(AppConstant.REQUEST_LUMPERS_STATUS_CANCELLED) -> {
+                    cancelRecords.add(it)
+                }
+            }
+        }
+
+        sortedlRecords.addAll(getSortedDate(pendingRecords))
+        sortedlRecords.addAll(getSortedDate(completedRecords))
+        sortedlRecords.addAll(getSortedDate(rejectedRecords))
+        sortedlRecords.addAll(getSortedDate(cancelRecords))
+        return sortedlRecords
+    }
+
+    private fun getSortedDate(records: ArrayList<RequestLumpersRecord>): ArrayList<RequestLumpersRecord> {
+        records.sortWith(Comparator { data: RequestLumpersRecord, t1: RequestLumpersRecord ->
+            (data.createdAt)?.compareTo(t1.createdAt!!)!!
+        })
+        return records
+    }
+
+
 }
