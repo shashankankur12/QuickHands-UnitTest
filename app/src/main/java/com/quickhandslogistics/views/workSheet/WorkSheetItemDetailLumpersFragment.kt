@@ -136,7 +136,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
 
         workItemDetail.status?.let { status ->
             if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED || status == AppConstant.WORK_ITEM_STATUS_CANCELLED) {
-                buttonAddLumpers.visibility = View.GONE
+                buttonAddLumpers.visibility = View.VISIBLE
                 textViewEmptyData.text = getString(R.string.empty_work_item_lumpers_past_date_info_message)
             } else {
                 buttonAddLumpers.visibility = View.VISIBLE

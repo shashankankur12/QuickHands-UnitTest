@@ -160,16 +160,15 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
             editTextCustomerName.isEnabled = true
             editTextCustomerNotes.isEnabled = true
             buttonSubmit.isEnabled = true
-
         }
 
-        if (!signed && currentDate /*&& inCompleteWorkItemsCount == 0*/) {
+        if (!signed && currentDate && inCompleteWorkItemsCount == 0) {
             textViewAddSignature.visibility = View.VISIBLE
         } else {
             textViewAddSignature.visibility = View.GONE
         }
 
-        if (signed || (currentDate /*&& inCompleteWorkItemsCount == 0*/)) {
+        if (signed || (currentDate && inCompleteWorkItemsCount == 0)) {
             layoutSignature.visibility = View.VISIBLE
         } else {
             layoutSignature.visibility = View.GONE
@@ -208,7 +207,6 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
             override fun onConfirmClick() {
                 localCustomerSheet = null
                 onFragmentInteractionListener?.saveCustomerSheet(customerName, notesCustomer, signatureFilePath)
-//                signatureFilePath=""
             }
 
             override fun onCancelClick() {
