@@ -16,11 +16,8 @@ class LumperSheetListAPIResponse : BaseResponse() {
         val lumpersInfo: ArrayList<LumpersInfo>? = null
             get() = if (!field.isNullOrEmpty()) {
                 field.sortWith(Comparator { lumper1, lumper2 ->
-                    if (!lumper1.lumperName.isNullOrEmpty() && !lumper2.lumperName.isNullOrEmpty()) {
-                        lumper1.lumperName?.toLowerCase()!!.compareTo(lumper2.lumperName?.toLowerCase()!!)
-                    } else {
-                        0
-                    }
+                    // Sort the list by Pending and Signed signature.
+                    (!ValueUtils.getDefaultOrValue(lumper1.sheetSigned)).compareTo((!ValueUtils.getDefaultOrValue(lumper2.sheetSigned)))
                 })
                 field
             } else ArrayList()
