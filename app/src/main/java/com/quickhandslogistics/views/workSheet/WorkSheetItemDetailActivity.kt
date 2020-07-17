@@ -213,6 +213,21 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
                 CustomProgressBar.getInstance().showErrorDialog(getString(R.string.assign_lumpers_message), activity)
                 closeBottomSheet()
                 return
+            }else {
+                if (lumpersTimeSchedule.isNullOrEmpty()|| lumpersTimeSchedule.size< workItemDetail!!.assignedLumpersList!!.size ){
+                   var message =getString(R.string.assign_lumpers_endtime_starttime_message)
+                    CustomProgressBar.getInstance().showErrorDialog(message, this.activity)
+                    closeBottomSheet()
+                    return
+                }else if(!lumpersTimeSchedule.isNullOrEmpty()) {
+                    var message =getStartTimeCount(lumpersTimeSchedule)
+                    if (!message.isNullOrEmpty()) {
+                        CustomProgressBar.getInstance().showErrorDialog(message, this.activity)
+                        closeBottomSheet()
+                        return
+                    }
+                }
+
             }
         }
 
@@ -230,6 +245,18 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
                 workSheetItemStatusAdapter?.updateInitialStatus(textViewStatus.text.toString())
             }
         })
+    }
+
+    private fun getStartTimeCount(lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>): String {
+        var message = ""
+        lumpersTimeSchedule.forEach {
+            if (it.startTime.isNullOrEmpty() || it.endTime.isNullOrEmpty()) {
+                message =getString(R.string.assign_lumpers_endtime_starttime_message)
+            }else if (!it.breakTimeStart.isNullOrEmpty()&& it.breakTimeEnd.isNullOrEmpty()){
+                message =getString(R.string.assign_lumpers_bracktime_message)
+            }
+        }
+        return message;
     }
 
     /** Child Fragment Interaction Listeners */
