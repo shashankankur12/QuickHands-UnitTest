@@ -17,7 +17,7 @@ class LumperSheetListAPIResponse : BaseResponse() {
             get() = if (!field.isNullOrEmpty()) {
                 field.sortWith(Comparator { lumper1, lumper2 ->
                     // Sort the list by Pending and Signed signature.
-                    (!ValueUtils.getDefaultOrValue(lumper1.sheetSigned)).compareTo((!ValueUtils.getDefaultOrValue(lumper2.sheetSigned)))
+                    (ValueUtils.getDefaultOrValue(lumper1.sheetSigned)).compareTo((ValueUtils.getDefaultOrValue(lumper2.sheetSigned)))
                 })
                 field
             } else ArrayList()
