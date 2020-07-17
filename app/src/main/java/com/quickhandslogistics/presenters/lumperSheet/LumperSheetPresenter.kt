@@ -6,6 +6,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.lumperSheet.LumperSheetContract
 import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.lumperSheet.LumperSheetListAPIResponse
+import com.quickhandslogistics.data.lumperSheet.LumpersInfo
 import com.quickhandslogistics.models.lumperSheet.LumperSheetModel
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
@@ -55,7 +56,15 @@ class LumperSheetPresenter(private var lumperSheetView: LumperSheetContract.View
         lumperSheetView?.hideProgressDialog()
 
         response.data?.let { data ->
-            lumperSheetView?.showLumperSheetData(data.lumpersInfo!!, data.isSheetSubmitted!!, selectedDate, data.tempLumperIds!!)
+            var lumperInfoList: ArrayList<LumpersInfo> = ArrayList()
+            var tempLumperIds: ArrayList<String> =ArrayList()
+            lumperInfoList.addAll(data.lumpersInfo!!)
+            lumperInfoList.addAll(data.tempLumperIds!!)
+
+            data.tempLumperIds?.forEach {
+                tempLumperIds.add(it.lumperId!!)
+            }
+            lumperSheetView?.showLumperSheetData(lumperInfoList, data.isSheetSubmitted!!, selectedDate, tempLumperIds)
         }
 
     }
