@@ -22,7 +22,7 @@ class TimeClockAttendanceModel(private val sharedPref: SharedPref) : TimeClockAt
     override fun fetchHeaderInfo(onFinishedListener: TimeClockAttendanceContract.Model.OnFinishedListener) {
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
         val date = DateUtils.getCurrentDateStringByEmployeeShift(pattern = DateUtils.PATTERN_NORMAL)
-        val dateShiftDetail = "$date - ${ScheduleUtils.getShiftDetailString(leadProfile)}"
+        val dateShiftDetail = "$date  ${ScheduleUtils.getShiftDetailString(leadProfile)}"
         onFinishedListener.onSuccessGetHeaderInfo(dateShiftDetail)
     }
 

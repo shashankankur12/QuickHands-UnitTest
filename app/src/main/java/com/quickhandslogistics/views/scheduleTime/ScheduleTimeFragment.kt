@@ -246,7 +246,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     /** Presenter Listeners */
     override fun showDateString(dateString: String) {
         this.dateString = dateString
-        textViewDate.text = dateString
+        textViewDate.text = UIUtils.getSpannedText(dateString)
     }
 
     override fun showAPIErrorMessage(message: String) {

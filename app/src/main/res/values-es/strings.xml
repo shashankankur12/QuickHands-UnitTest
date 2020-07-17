@@ -43,6 +43,7 @@
     <string name="customer_sheet">Customer Sheet</string>
     <string name="day">Day</string>
     <string name="department">Department</string>
+    <string name="dept_bold"><![CDATA[<b>Dept: </b>]]></string>
     <string name="district_manager_email">DM Email</string>
     <string name="district_manager_name">DM Name</string>
     <string name="door_s">Door: %s</string>
@@ -127,6 +128,7 @@
     <string name="settings">Settings</string>
     <string name="sheet_submitted">Sheet Submitted</string>
     <string name="shift">Shift</string>
+    <string name="shift_bold"><![CDATA[<b>Shift: </b>]]></string>
     <string name="shift_details">Shift Details</string>
     <string name="shift_hours">Shift Hours</string>
     <string name="shift_time">Shift Time</string>

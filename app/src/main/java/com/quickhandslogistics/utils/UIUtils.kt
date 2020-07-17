@@ -1,7 +1,10 @@
 package com.quickhandslogistics.utils
 
 import android.content.Context
+import android.os.Build
 import android.telephony.PhoneNumberUtils
+import android.text.Html
+import android.text.Spanned
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -95,6 +98,14 @@ object UIUtils {
             }
         }
         return displayDepartment
+    }
+
+    fun getSpannedText(text: String): Spanned? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT)
+        } else {
+            Html.fromHtml(text)
+        }
     }
 }
 

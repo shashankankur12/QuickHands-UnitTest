@@ -25,7 +25,7 @@ class WorkSheetModel(private val sharedPref: SharedPref) : WorkSheetContract.Mod
             companyName = name
         }
         val date = DateUtils.getCurrentDateStringByEmployeeShift(pattern = DateUtils.PATTERN_NORMAL)
-        val dateShiftDetail = "$date - ${ScheduleUtils.getShiftDetailString(leadProfile)}"
+        val dateShiftDetail = "$date  ${ScheduleUtils.getShiftDetailString(leadProfile)}"
         onFinishedListener.onSuccessGetHeaderInfo(companyName, dateShiftDetail)
     }
 

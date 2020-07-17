@@ -30,7 +30,7 @@ class CustomerSheetModel(private val sharedPref: SharedPref) : CustomerSheetCont
             companyName = name
         }
         val date = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
-        val dateShiftDetail = "$date - ${ScheduleUtils.getShiftDetailString(leadProfile)}"
+        val dateShiftDetail = "$date  ${ScheduleUtils.getShiftDetailString(leadProfile)}"
         onFinishedListener.onSuccessGetHeaderInfo(companyName, dateShiftDetail)
     }
 
