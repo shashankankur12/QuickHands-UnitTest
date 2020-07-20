@@ -72,15 +72,16 @@ object CalendarUtils {
         calendar.time = DateUtils.getCurrentDateByEmployeeShift()
 
         // Add Last Date to be displayed for the Picker
-        calendar.add(Calendar.DAY_OF_YEAR, 5)
+        calendar.add(Calendar.DAY_OF_YEAR, 10)
         val lastDate = calendar[Calendar.DATE]
 
         // Add Current Date to be displayed for the Picker
-        calendar.add(Calendar.DAY_OF_YEAR, -5)
+        calendar.add(Calendar.DAY_OF_YEAR, -10)
         val currentDate = calendar[Calendar.DATE]
 
         // Add First Date to be displayed for the Picker
-        calendar.add(Calendar.WEEK_OF_YEAR, -2)
+        calendar.add(Calendar.DAY_OF_YEAR, -10)
+        //calendar.add(Calendar.WEEK_OF_YEAR, -2)
 
         while (lastDate != calendar[Calendar.DATE]) {
             calendar.add(Calendar.DATE, 1)
@@ -107,7 +108,8 @@ object CalendarUtils {
         val currentDate = calendar[Calendar.DATE]
 
         // Add First Date to be displayed for the Picker
-        calendar.add(Calendar.WEEK_OF_YEAR, -2)
+        calendar.add(Calendar.DAY_OF_YEAR, -10)
+        //calendar.add(Calendar.WEEK_OF_YEAR, -2)
 
         while (currentDate != calendar[Calendar.DATE]) {
             calendar.add(Calendar.DATE, 1)

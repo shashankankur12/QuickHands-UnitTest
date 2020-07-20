@@ -17,6 +17,7 @@ import com.quickhandslogistics.presenters.workSheet.WorkSheetPresenter
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.UIUtils
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.fragment_work_sheet.*
@@ -211,7 +212,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         this.date = date
 
         textViewCompanyName.text = companyName.capitalize()
-        textViewWorkItemsDate.text = date
+        textViewWorkItemsDate.text = UIUtils.getSpannedText(date)
     }
 
     override fun showLoginScreen() {

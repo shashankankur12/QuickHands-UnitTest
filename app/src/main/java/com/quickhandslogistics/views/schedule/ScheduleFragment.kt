@@ -15,10 +15,7 @@ import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.presenters.schedule.SchedulePresenter
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.CalendarUtils
-import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
@@ -200,7 +197,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     /** Presenter Listeners */
     override fun showDateString(dateString: String) {
         this.dateString = dateString
-        textViewDate.text = dateString
+        textViewDate.text = UIUtils.getSpannedText(dateString)
     }
 
     override fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<ScheduleDetail>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int) {

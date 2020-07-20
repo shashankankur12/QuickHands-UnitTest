@@ -1,7 +1,10 @@
 package com.quickhandslogistics.utils
 
 import android.content.Context
+import android.os.Build
 import android.telephony.PhoneNumberUtils
+import android.text.Html
+import android.text.Spanned
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -66,11 +69,11 @@ object UIUtils {
 
     fun updateProfileBorder(context: Context, isTemporaryAssigned: Boolean?, circleImageView: CircleImageView) {
         if (getDefaultOrValue(isTemporaryAssigned)) {
-            circleImageView.borderColor = ContextCompat.getColor(context, android.R.color.holo_orange_light)
+            circleImageView.borderColor = ContextCompat.getColor(context, R.color.temp_lumper_background)
             circleImageView.borderWidth = ((context.resources.getDimension(R.dimen.circleTemporaryBorder) / context.resources.displayMetrics.density).toInt())
         } else {
             circleImageView.borderColor = ContextCompat.getColor(context, R.color.imageBorder)
-            circleImageView.borderWidth = ((context.resources.getDimension(R.dimen.circleNormalBorder) / context.resources.displayMetrics.density).toInt())
+            circleImageView.borderWidth = ((context.resources.getDimension(R.dimen.circleTemporaryBorder) / context.resources.displayMetrics.density).toInt())
         }
     }
 
@@ -95,6 +98,14 @@ object UIUtils {
             }
         }
         return displayDepartment
+    }
+
+    fun getSpannedText(text: String): Spanned? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT)
+        } else {
+            Html.fromHtml(text)
+        }
     }
 }
 

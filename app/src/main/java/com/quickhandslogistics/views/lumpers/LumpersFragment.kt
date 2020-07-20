@@ -18,10 +18,7 @@ import com.quickhandslogistics.adapters.lumpers.LumpersAdapter
 import com.quickhandslogistics.contracts.lumpers.LumpersContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.presenters.lumpers.LumpersPresenter
-import com.quickhandslogistics.utils.AppUtils
-import com.quickhandslogistics.utils.CustomDialogWarningListener
-import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.fragment_lumpers.*
@@ -147,7 +144,7 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     /** Presenter Listeners */
     override fun showDateString(dateString: String) {
         this.dateString = dateString
-        textViewDate.text = dateString
+        textViewDate.text = UIUtils.getSpannedText(dateString)
     }
 
     override fun showAPIErrorMessage(message: String) {

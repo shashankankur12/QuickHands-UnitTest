@@ -60,7 +60,7 @@ class LumperSheetAdapter(private var resources: Resources, var adapterItemClickL
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData.lumperEmployeeId)
 
             if (ValueUtils.getDefaultOrValue(employeeData.sheetSigned)) {
-                textViewStatus.text = resources.getString(R.string.complete)
+                textViewStatus.text = resources.getString(R.string.signed)
                 textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
             } else {
                 textViewStatus.text = resources.getString(R.string.pending)

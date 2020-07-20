@@ -81,21 +81,6 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_toolbar, menu)
-        menu?.findItem(R.id.actionRefresh)?.isVisible = true
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.actionRefresh -> {
-                resetAllData()
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun initializeUI() {
         recyclerViewLumpers.apply {
             val linearLayoutManager = LinearLayoutManager(activity)
@@ -178,7 +163,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
         val selectedCount = timeClockReportAdapter.getSelectedLumperIdsList().size
         if (selectedCount == timeClockReportAdapter.itemCount) {
             imageViewSelectAll.setImageResource(R.drawable.ic_add_lumer_tick)
-            textViewSelectAll.text = getString(R.string.unselect_all)
+          //  textViewSelectAll.text = getString(R.string.unselect_all)
         } else {
             imageViewSelectAll.setImageResource(R.drawable.ic_add_lumer_tick_blank)
             textViewSelectAll.text = getString(R.string.select_all)

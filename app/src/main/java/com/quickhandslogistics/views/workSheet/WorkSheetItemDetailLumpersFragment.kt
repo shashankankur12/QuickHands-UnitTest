@@ -141,7 +141,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
                 textViewEmptyData.text = getString(R.string.empty_work_item_lumpers_past_date_info_message)
             } else {
                 buttonAddLumpers.visibility = View.VISIBLE
-                textViewEmptyData.text = getString(R.string.empty_work_item_lumpers_info_message)
+                textViewEmptyData.text = getString(R.string.empty_work_item_detail_page_lumpers_info_message)
             }
         }
     }

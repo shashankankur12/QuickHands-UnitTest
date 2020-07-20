@@ -3,5 +3,5 @@
     <dimen name="dialogButtonWidth">@dimen/_140sdp</dimen>
     <dimen name="dialogButtonHeight">@dimen/_35sdp</dimen>
     <dimen name="circleNormalBorder">2dp</dimen>
-    <dimen name="circleTemporaryBorder">4dp</dimen>
+    <dimen name="circleTemporaryBorder">6dp</dimen>
 </resources>

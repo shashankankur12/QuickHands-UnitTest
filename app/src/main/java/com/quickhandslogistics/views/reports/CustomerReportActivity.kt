@@ -50,21 +50,6 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_toolbar, menu)
-        menu?.findItem(R.id.actionRefresh)?.isVisible = true
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.actionRefresh -> {
-                resetAllData()
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun initializeUI() {
         updateTimeByRangeOptionSelected()
 

@@ -373,7 +373,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     override fun showHeaderInfo(date: String) {
         this.date = date
 
-        textViewTimeClockDate.text = date
+        textViewTimeClockDate.text = UIUtils.getSpannedText(date)
     }
 
     override fun showLoginScreen() {

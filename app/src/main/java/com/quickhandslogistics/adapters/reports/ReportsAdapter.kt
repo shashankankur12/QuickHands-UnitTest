@@ -18,8 +18,8 @@ class ReportsAdapter(private val resources: Resources, private val onAdapterClic
     private var reportsList: ArrayList<String> = ArrayList()
 
     init {
-        reportsList.add(resources.getString(R.string.lumper_job_report))
         reportsList.add(resources.getString(R.string.time_clock_report))
+        reportsList.add(resources.getString(R.string.lumper_sheet_report))
         reportsList.add(resources.getString(R.string.customer_report))
     }
 
@@ -63,7 +63,7 @@ class ReportsAdapter(private val resources: Resources, private val onAdapterClic
 
     private fun openReportScreen(reportName: String) {
         when (reportName) {
-            resources.getString(R.string.lumper_job_report) -> {
+            resources.getString(R.string.lumper_sheet_report) -> {
                 onAdapterClick.showLumperJobReport()
             }
             resources.getString(R.string.time_clock_report) -> {

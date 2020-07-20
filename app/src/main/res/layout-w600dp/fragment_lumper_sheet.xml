@@ -8,10 +8,9 @@
 
     <TextView
         android:id="@+id/textViewDate"
-        style="@style/titleSmallTextViewTheme"
+        style="@style/valuesTextViewTheme"
         android:layout_width="0dp"
         android:layout_marginStart="@dimen/_8sdp"
-        android:textColor="@color/textBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
