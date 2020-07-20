@@ -201,7 +201,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
 
     override fun showDateString(dateString: String) {
         this.dateString=dateString
-        textViewDate.text = dateString
+        textViewDate.text = UIUtils.getSpannedText(dateString)
     }
 
     override fun showLumperSheetData(mlumperInfoList: ArrayList<LumpersInfo>, msheetSubmitted: Boolean, mselectedDate: Date, mtempLumperIds: ArrayList<String>) {

@@ -45,8 +45,8 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     private var scheduleTimeNotes: String? = null
     private var dateString: String? = null
     private var isSavedState: Boolean = false
-    private  var selectedDate: Date = Date()
-    private  var tempLumperIds: ArrayList<String> = ArrayList()
+    private var selectedDate: Date = Date()
+    private var tempLumperIds: ArrayList<String> = ArrayList()
 
     private lateinit var scheduleTimeAdapter: ScheduleTimeAdapter
     private lateinit var scheduleTimePresenter: ScheduleTimePresenter
@@ -199,19 +199,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             if (scheduleTimeAdapter.isSearchEnabled()) {
                 textViewEmptyData.text = getString(R.string.no_record_found_info_message)
             } else {
-                textViewEmptyData.text = if (isPastDate) {
-                    getString(R.string.empty_schedule_time_list_past_info_message)
-                } else {
-                    getString(R.string.empty_schedule_time_list_info_message)
-                }
+                getString(R.string.empty_schedule_time_list_info_message)
             }
         } else {
             textViewEmptyData.visibility = View.GONE
-            textViewEmptyData.text = if (isPastDate) {
-                getString(R.string.empty_schedule_time_list_past_info_message)
-            } else {
-                getString(R.string.empty_schedule_time_list_info_message)
-            }
+            textViewEmptyData.text = getString(R.string.empty_schedule_time_list_info_message)
         }
     }
 
@@ -253,8 +245,8 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     /** Presenter Listeners */
     override fun showDateString(dateString: String) {
-        this.dateString=dateString
-        textViewDate.text = dateString
+        this.dateString = dateString
+        textViewDate.text = UIUtils.getSpannedText(dateString)
     }
 
     override fun showAPIErrorMessage(message: String) {

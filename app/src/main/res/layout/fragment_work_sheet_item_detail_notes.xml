@@ -27,7 +27,7 @@
 
             <TextView
                 style="@style/titleTextViewTheme"
-                android:text="@string/notes_for_qhl_and_customer" />
+                android:text="@string/notes_for_customer" />
 
             <EditText
                 android:id="@+id/editTextQHLCustomerNotes"

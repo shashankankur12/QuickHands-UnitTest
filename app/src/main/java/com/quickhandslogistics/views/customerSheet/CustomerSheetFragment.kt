@@ -192,7 +192,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         this.date = date
 
         textViewCompanyName.text = companyName.capitalize()
-        textViewWorkItemsDate.text = date
+        textViewWorkItemsDate.text = UIUtils.getSpannedText(date)
     }
 
     override fun customerSavedSuccessfully() {
