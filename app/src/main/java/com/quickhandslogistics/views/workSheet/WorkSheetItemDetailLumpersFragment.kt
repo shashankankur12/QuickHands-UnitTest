@@ -127,7 +127,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
             }
         }
 
-        workSheetItemDetailLumpersAdapter.updateList(workItemDetail.assignedLumpersList, timingsData, workItemDetail.status, tempLumperIds)
+        workSheetItemDetailLumpersAdapter.updateList(workItemDetail.assignedLumpersList, timingsData, workItemDetail.status, tempLumperIds, getTotalCases(workItemDetail?.buildingOps))
 
         if (workItemDetail.assignedLumpersList.isNullOrEmpty()) {
             buttonAddLumpers.text = getString(R.string.add_lumpers)
@@ -147,7 +147,12 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
     }
 
     fun showEmptyData() {
-        workSheetItemDetailLumpersAdapter.updateList(ArrayList(), LinkedHashMap(), tempLumperIds = ArrayList())
+        workSheetItemDetailLumpersAdapter.updateList(
+            ArrayList(),
+            LinkedHashMap(),
+            tempLumperIds = ArrayList(),
+            totalCases = getTotalCases(workItemDetail?.buildingOps)
+        )
         buttonAddLumpers.visibility = View.GONE
     }
 

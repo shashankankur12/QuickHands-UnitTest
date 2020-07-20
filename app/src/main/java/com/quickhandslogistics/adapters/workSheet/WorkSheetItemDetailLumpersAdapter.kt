@@ -15,8 +15,10 @@ import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.convertDateStringToTime
+import com.quickhandslogistics.utils.ScheduleUtils.calculatePercent
 import com.quickhandslogistics.utils.UIUtils
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
+import com.quickhandslogistics.utils.ValueUtils.isNumeric
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_work_item_detail_lumper_time.view.*
 
@@ -24,6 +26,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
     Adapter<WorkSheetItemDetailLumpersAdapter.ViewHolder>() {
 
     private var workItemStatus = ""
+    private var totalCases = ""
     private var tempLumperIds = ArrayList<String>()
     private var lumperList = ArrayList<EmployeeData>()
     private var timingsData = HashMap<String, LumpersTimeSchedule>()
@@ -54,6 +57,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
         private val textViewWorkTime: TextView = view.textViewWorkTime
         private val textViewWaitingTime: TextView = view.textViewWaitingTime
         private val textViewBreakTime: TextView = view.textViewBreakTime
+        private val textViewWorkDone: TextView = view.textViewWorkDone
 
         fun bind(employeeData: EmployeeData) {
             UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
@@ -78,10 +82,20 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
                     val breakTimeStart = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeStart)
                     val breakTimeEnd = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeEnd)
                     textViewBreakTime.text = String.format("%s - %s", if (breakTimeStart.isNotEmpty()) breakTimeStart else "NA", if (breakTimeEnd.isNotEmpty()) breakTimeEnd else "NA")
+
+                    if(!timingDetail.partWorkDone.isNullOrEmpty()&& isNumeric(timingDetail.partWorkDone!!)){
+                        if(!totalCases.isNullOrEmpty()&& isNumeric(totalCases)){
+                           val parcetage= String.format("%.2f",calculatePercent(timingDetail.partWorkDone!!, totalCases))+"%"
+                            textViewWorkDone.text= String.format( "%s / %s : %s", timingDetail.partWorkDone,totalCases,parcetage )
+                        }
+                    }else{
+                        textViewWorkDone.text=  "0.00 % "
+                    }
                 }
             } else {
                 textViewWorkTime.text = "NA - NA"
                 textViewWaitingTime.text = "NA"
+                textViewWorkDone.text = "NA"
                 textViewBreakTime.text = "NA - NA"
             }
 
@@ -110,7 +124,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
         }
     }
 
-    fun updateList(lumperList: ArrayList<EmployeeData>?, timingsData: LinkedHashMap<String, LumpersTimeSchedule>, status: String? = "", tempLumperIds: ArrayList<String>) {
+    fun updateList(lumperList: ArrayList<EmployeeData>?, timingsData: LinkedHashMap<String, LumpersTimeSchedule>, status: String? = "", tempLumperIds: ArrayList<String>, totalCases: String?) {
         this.timingsData.clear()
         this.lumperList.clear()
         lumperList?.let {
@@ -118,6 +132,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
             this.timingsData.putAll(timingsData)
         }
         this.workItemStatus = getDefaultOrValue(status)
+        this.totalCases=getDefaultOrValue(totalCases)
 
         this.tempLumperIds.clear()
         this.tempLumperIds.addAll(tempLumperIds)

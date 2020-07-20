@@ -11,6 +11,7 @@ import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
+import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -310,7 +311,8 @@ object ScheduleUtils {
         })
         return records
     }
-
-
+    fun calculatePercent(lumperCase: String, totalCases: String): Double {
+        return (lumperCase.toDouble() / totalCases.toDouble()) * 100
+    }
 
 }

@@ -25,5 +25,18 @@ object ValueUtils {
         }
         return ret
     }
+
+    fun isNumeric(value: String): Boolean {
+        return try {
+            if (value.equals("NaN")) {
+                return false
+            } else {
+                value.toDouble()
+                true
+            }
+        } catch (e: NumberFormatException) {
+            false
+        }
+    }
 }
 

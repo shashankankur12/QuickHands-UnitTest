@@ -15,14 +15,14 @@ import com.quickhandslogistics.presenters.workSheet.AddLumperTimeWorkSheetItemPr
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.isFutureTime
+import com.quickhandslogistics.utils.ScheduleUtils.calculatePercent
+import com.quickhandslogistics.utils.ValueUtils.isNumeric
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_DATA
 import com.quickhandslogistics.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_TIMING_DATA
 import com.quickhandslogistics.views.schedule.ScheduleFragment
 import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
-import java.text.DecimalFormat
-import java.text.NumberFormat
 import java.util.*
 
 class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener, AddLumperTimeWorkSheetItemContract.View,
@@ -76,19 +76,24 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
 
         employeeTimingData?.let { timingDetail ->
             val waitingTime = ValueUtils.getDefaultOrValue(timingDetail.waitingTime)
-            val partWorkDone = ValueUtils.getDefaultOrValue(timingDetail.partWorkDone)
             if (waitingTime.isNotEmpty() && waitingTime.toInt() != 0) {
                 editTextWaitingTime.setText(waitingTime)
-//                editTextCasesLumpers.setText(partWorkDone)
                 editTextWaitingTime.isEnabled = false
+            }
+            if(!timingDetail.partWorkDone.isNullOrEmpty() && isNumeric(timingDetail.partWorkDone!!)){
+                partWorkDone= timingDetail.partWorkDone!!.toInt()
+                editTextCasesLumpers.setText(partWorkDone.toString())
             }
 
             updateTimingsDetails(timingDetail)
         }
-        if (!totalCases.isNullOrEmpty()&& totalCasesIsNumeric()){
+        if (!totalCases.isNullOrEmpty()&& isNumeric(totalCases)){
             editTextTotalCases.setText(totalCases)
             editTextTotalCases.isEnabled=false
             editTextCasesLumpers.addTextChangedListener(this)
+            if (partWorkDone>0){
+                calculatePercent(partWorkDone.toString(), totalCases)
+            }
 
         }else{
             editTextTotalCases.isEnabled=false
@@ -102,15 +107,6 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         buttonBreakInTime.setOnClickListener(this)
         buttonBreakOutTime.setOnClickListener(this)
         buttonSave.setOnClickListener(this)
-    }
-
-    private fun totalCasesIsNumeric(): Boolean {
-        return try {
-            totalCases.toLong()
-            true
-        } catch (e: NumberFormatException) {
-            false
-        }
     }
 
     private fun updateTimingsDetails(timingDetail: LumpersTimeSchedule) {
@@ -313,17 +309,16 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         text?.let {
             if (!text.isNullOrEmpty()) {
                 partWorkDone = (text.toString()).toInt()
-                calculatePercent(text.toString(), totalCases)
+                getPercent(text.toString(), totalCases)
             } else {
                 percentWorkDone.text = "0.0 %"
             }
         }
     }
 
-    private fun calculatePercent(lumperCase: String, totalCases: String) {
-        val formatter: NumberFormat = DecimalFormat("#0.0")
+    private fun getPercent(lumperCase: String, totalCases: String) {
         if (!lumperCase.isNullOrEmpty()) {
-            percentageTime = (lumperCase.toDouble() / totalCases.toDouble()) * 100
+            percentageTime = calculatePercent(lumperCase, totalCases)
             percentWorkDone.text = String.format("%.2f", percentageTime) + " %"
         }
     }

@@ -255,6 +255,9 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
             }else if (!it.breakTimeStart.isNullOrEmpty()&& it.breakTimeEnd.isNullOrEmpty()){
                 message =getString(R.string.assign_lumpers_bracktime_message)
             }
+            else if (it.partWorkDone.isNullOrEmpty()){
+                message =getString(R.string.assign_work_done_message)
+            }
         }
         return message;
     }
