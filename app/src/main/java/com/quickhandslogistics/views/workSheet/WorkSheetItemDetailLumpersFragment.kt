@@ -171,6 +171,14 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         }
     }
 
+    private fun getTotalCases(permeters: HashMap<String, String>?): String? {
+        var cases: String = ""
+        if (!permeters.isNullOrEmpty() && permeters.size > 0) {
+            cases = permeters.get("Cases").toString()
+        }
+        return cases
+    }
+
     /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
@@ -188,13 +196,5 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_TIMING_DATA, timingData)
         startIntent(AddLumperTimeWorkSheetItemActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
-    }
-
-    private fun getTotalCases(permeters: HashMap<String, String>?): String? {
-        var cases: String = ""
-        if (!permeters.isNullOrEmpty() && permeters.size > 0) {
-            cases = permeters.get("Cases").toString()
-        }
-        return cases
     }
 }

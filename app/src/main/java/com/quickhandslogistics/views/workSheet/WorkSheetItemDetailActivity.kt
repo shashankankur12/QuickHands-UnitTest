@@ -15,6 +15,7 @@ import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.presenters.workSheet.WorkSheetItemDetailPresenter
 import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.ValueUtils.isNumeric
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
@@ -255,7 +256,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
             }else if (!it.breakTimeStart.isNullOrEmpty()&& it.breakTimeEnd.isNullOrEmpty()){
                 message =getString(R.string.assign_lumpers_bracktime_message)
             }
-            else if (it.partWorkDone.isNullOrEmpty()){
+            else if (it.partWorkDone.isNullOrEmpty() || it.partWorkDone!!.toInt()==0){
                 message =getString(R.string.assign_work_done_message)
             }
         }

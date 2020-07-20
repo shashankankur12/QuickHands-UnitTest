@@ -83,13 +83,13 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
                     val breakTimeEnd = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeEnd)
                     textViewBreakTime.text = String.format("%s - %s", if (breakTimeStart.isNotEmpty()) breakTimeStart else "NA", if (breakTimeEnd.isNotEmpty()) breakTimeEnd else "NA")
 
-                    if(!timingDetail.partWorkDone.isNullOrEmpty()&& isNumeric(timingDetail.partWorkDone!!)){
-                        if(!totalCases.isNullOrEmpty()&& isNumeric(totalCases)){
-                           val parcetage= String.format("%.2f",calculatePercent(timingDetail.partWorkDone!!, totalCases))+"%"
-                            textViewWorkDone.text= String.format( "%s / %s : %s", timingDetail.partWorkDone,totalCases,parcetage )
+                    if (!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt() != 0) {
+                        if (!totalCases.isNullOrEmpty() && isNumeric(totalCases)) {
+                            val parcetage = String.format("%.2f", calculatePercent(timingDetail.partWorkDone!!, totalCases)) + "%"
+                            textViewWorkDone.text = String.format("%s / %s : %s", timingDetail.partWorkDone, totalCases, parcetage)
                         }
-                    }else{
-                        textViewWorkDone.text=  "0.00 % "
+                    } else {
+                        textViewWorkDone.text = "NA"
                     }
                 }
             } else {

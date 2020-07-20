@@ -80,7 +80,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
                 editTextWaitingTime.setText(waitingTime)
                 editTextWaitingTime.isEnabled = false
             }
-            if(!timingDetail.partWorkDone.isNullOrEmpty() && isNumeric(timingDetail.partWorkDone!!)){
+            if(!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt()!=0){
                 partWorkDone= timingDetail.partWorkDone!!.toInt()
                 editTextCasesLumpers.setText(partWorkDone.toString())
             }
