@@ -9,6 +9,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_add_lumper_time_work_sheet_item">
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
@@ -52,157 +53,236 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:fillViewport="true"
         android:layout_marginTop="@dimen/_12sdp"
-        android:background="@drawable/white_background"
-        android:orientation="vertical"
-        android:paddingStart="@dimen/_15ssp"
-        android:paddingTop="@dimen/_15ssp"
-        android:paddingEnd="@dimen/_15ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
-
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/schedule_item_background"
+            android:background="@drawable/white_background"
             android:orientation="vertical"
-            android:padding="@dimen/_10sdp">
+            android:paddingStart="@dimen/_15ssp"
+            android:paddingTop="@dimen/_15ssp"
+            android:paddingEnd="@dimen/_15ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
-            <TextView
-                style="@style/titleTextViewTheme"
-                android:text="@string/waiting_time_in_min" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/schedule_item_background"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
 
-            <EditText
-                android:id="@+id/editTextWaitingTime"
-                style="@style/valueEditTextTheme"
-                android:inputType="number"
-                android:maxLength="3" />
-        </LinearLayout>
+                <TextView
+                    style="@style/titleTextViewTheme"
+                    android:text="@string/waiting_time_in_min" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/schedule_item_background"
-            android:orientation="vertical"
-            android:padding="@dimen/_10sdp">
-
-            <TextView
-                style="@style/titleTextViewTheme"
-                android:text="@string/work_time" />
+                <EditText
+                    android:id="@+id/editTextWaitingTime"
+                    style="@style/valueEditTextTheme"
+                    android:inputType="number"
+                    android:maxLength="3" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewShiftTime">
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:id="@+id/buttonStartTime"
-                    style="@style/positiveButtonTheme"
-                    android:layout_height="wrap_content"
-                    android:text="@string/start_time" />
+                android:background="@drawable/schedule_item_background"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:gravity="center"
-                    android:text="- to -"
-                    android:textColor="@color/textBlack"
-                    android:textSize="@dimen/_12ssp" />
+                    style="@style/titleTextViewTheme"
+                    android:text="@string/work_time" />
 
-                <Button
-                    android:id="@+id/buttonEndTime"
-                    style="@style/positiveButtonTheme"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/end_time" />
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewShiftTime">
 
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/buttonStartTime"
+                        style="@style/positiveButtonTheme"
+                        android:layout_height="wrap_content"
+                        android:text="@string/start_time" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="center"
+                        android:text="- to -"
+                        android:textColor="@color/textBlack"
+                        android:textSize="@dimen/_12ssp" />
+
+                    <Button
+                        android:id="@+id/buttonEndTime"
+                        style="@style/positiveButtonTheme"
+                        android:layout_height="wrap_content"
+                        android:text="@string/end_time" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/schedule_item_background"
-            android:orientation="vertical"
-            android:padding="@dimen/_10sdp">
-
-            <TextView
-                style="@style/titleTextViewTheme"
-                android:text="@string/break_time" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewShiftTime">
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:id="@+id/buttonBreakInTime"
-                    style="@style/positiveButtonTheme"
-                    android:layout_height="wrap_content"
-                    android:text="@string/start" />
+                android:background="@drawable/schedule_item_background"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:gravity="center"
-                    android:text="- to -"
-                    android:textColor="@color/textBlack"
-                    android:textSize="@dimen/_12ssp" />
+                    style="@style/titleTextViewTheme"
+                    android:text="@string/break_time" />
 
-                <Button
-                    android:id="@+id/buttonBreakOutTime"
-                    style="@style/positiveButtonTheme"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/end" />
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewShiftTime">
 
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/buttonBreakInTime"
+                        style="@style/positiveButtonTheme"
+                        android:layout_height="wrap_content"
+                        android:text="@string/start" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="center"
+                        android:text="- to -"
+                        android:textColor="@color/textBlack"
+                        android:textSize="@dimen/_12ssp" />
+
+                    <Button
+                        android:id="@+id/buttonBreakOutTime"
+                        style="@style/positiveButtonTheme"
+                        android:layout_height="wrap_content"
+                        android:text="@string/end" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/schedule_item_background"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+                <TextView
+                    style="@style/titleTextViewTheme"
+                    android:text="@string/work_done" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewShiftTime">
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <EditText
+                        android:layout_width="@dimen/_80sdp"
+                        android:id="@+id/editTextCasesLumpers"
+                        style="@style/valueEditTextTheme"
+                        android:maxLength="6"
+                        android:inputType="number" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_weight="0.5"
+                        android:gravity="center"
+                        android:text="/"
+                        android:textColor="@color/textBlack"
+                        android:textSize="@dimen/_25sdp" />
+
+                    <EditText
+                        android:layout_width="@dimen/_80sdp"
+                        android:id="@+id/editTextTotalCases"
+                        style="@style/valueEditTextTheme"
+                        android:inputType="number" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/percentWorkDone"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_weight="0.5"
+                        android:gravity="center"
+                        android:text="0.0%"
+                        android:textColor="@color/textBlack"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/buttonSave"
+                style="@style/positiveRoundButtonTheme"
+                android:layout_marginTop="@dimen/_10ssp"
+                android:layout_marginBottom="@dimen/_10ssp"
+                android:text="@string/save" />
         </LinearLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+    </androidx.core.widget.NestedScrollView>
 
-        <Button
-            android:id="@+id/buttonSave"
-            style="@style/positiveRoundButtonTheme"
-            android:layout_marginTop="@dimen/_10ssp"
-            android:layout_marginBottom="@dimen/_10ssp"
-            android:text="@string/save" />
-    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,13 +21,19 @@ class AddLumperTimeWorkSheetItemPresenter(
     }
 
     override fun saveLumperTimings(
-        id: String, workItemId: String, selectedStartTime: Long, selectedEndTime: Long,
-        selectedBreakInTime: Long, selectedBreakOutTime: Long, waitingTime: String
+        id: String,
+        workItemId: String,
+        selectedStartTime: Long,
+        selectedEndTime: Long,
+        selectedBreakInTime: Long,
+        selectedBreakOutTime: Long,
+        waitingTime: String,
+        partWorkDone: Int
     ) {
         addLumperTimeWorkSheetItemView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         addLumperTimeWorkSheetItemModel.saveLumperTimings(
             id, workItemId, selectedStartTime, selectedEndTime,
-            selectedBreakInTime, selectedBreakOutTime, waitingTime, this
+            selectedBreakInTime, selectedBreakOutTime, waitingTime, partWorkDone, this
         )
     }
 

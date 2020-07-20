@@ -8,4 +8,5 @@ class TimingDetails {
     var breakTimeStart: Long? = null
     var breakTimeEnd: Long? = null
     var waitingTime: Int? = null
+    var partWork : Int? = null
 }

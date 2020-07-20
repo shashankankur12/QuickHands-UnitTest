@@ -3,6 +3,8 @@ package com.quickhandslogistics.views.workSheet
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import com.quickhandslogistics.R
@@ -19,11 +21,15 @@ import com.quickhandslogistics.views.lumpers.LumperDetailActivity.Companion.ARG_
 import com.quickhandslogistics.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_TIMING_DATA
 import com.quickhandslogistics.views.schedule.ScheduleFragment
 import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.util.*
 
-class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener, AddLumperTimeWorkSheetItemContract.View {
+class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener, AddLumperTimeWorkSheetItemContract.View,
+    TextWatcher {
 
     private var workItemId = ""
+    private var totalCases :String = ""
     private var employeeData: EmployeeData? = null
     private var employeeTimingData: LumpersTimeSchedule? = null
 
@@ -36,6 +42,8 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private var selectedEndTime: Long = 0
     private var selectedBreakInTime: Long = 0
     private var selectedBreakOutTime: Long = 0
+    private var percentageTime: Double = 0.0
+    private var partWorkDone: Int = 0
 
     private lateinit var addLumperTimeWorkSheetItemPresenter: AddLumperTimeWorkSheetItemPresenter
 
@@ -47,6 +55,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         intent.extras?.let { it ->
             if (it.containsKey(ARG_LUMPER_DATA)) {
                 workItemId = it.getString(ScheduleFragment.ARG_WORK_ITEM_ID, "")
+                totalCases = it.getString(WorkSheetItemDetailLumpersFragment.TOTAL_CASES, "")
                 employeeData = it.getParcelable(ARG_LUMPER_DATA) as EmployeeData?
                 employeeTimingData = it.getParcelable(ARG_LUMPER_TIMING_DATA) as LumpersTimeSchedule?
             }
@@ -67,12 +76,23 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
 
         employeeTimingData?.let { timingDetail ->
             val waitingTime = ValueUtils.getDefaultOrValue(timingDetail.waitingTime)
+            val partWorkDone = ValueUtils.getDefaultOrValue(timingDetail.partWorkDone)
             if (waitingTime.isNotEmpty() && waitingTime.toInt() != 0) {
                 editTextWaitingTime.setText(waitingTime)
+//                editTextCasesLumpers.setText(partWorkDone)
                 editTextWaitingTime.isEnabled = false
             }
 
             updateTimingsDetails(timingDetail)
+        }
+        if (!totalCases.isNullOrEmpty()&& totalCasesIsNumeric()){
+            editTextTotalCases.setText(totalCases)
+            editTextTotalCases.isEnabled=false
+            editTextCasesLumpers.addTextChangedListener(this)
+
+        }else{
+            editTextTotalCases.isEnabled=false
+            editTextCasesLumpers.isEnabled=false
         }
         updateButtonsUI()
         toggleSaveButtonVisibility()
@@ -82,6 +102,15 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         buttonBreakInTime.setOnClickListener(this)
         buttonBreakOutTime.setOnClickListener(this)
         buttonSave.setOnClickListener(this)
+    }
+
+    private fun totalCasesIsNumeric(): Boolean {
+        return try {
+            totalCases.toLong()
+            true
+        } catch (e: NumberFormatException) {
+            false
+        }
     }
 
     private fun updateTimingsDetails(timingDetail: LumpersTimeSchedule) {
@@ -208,7 +237,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
 
                 addLumperTimeWorkSheetItemPresenter.saveLumperTimings(
                     employeeData?.id!!, workItemId, selectedStartTime, selectedEndTime,
-                    selectedBreakInTime, selectedBreakOutTime, waitingTime
+                    selectedBreakInTime, selectedBreakOutTime, waitingTime,partWorkDone
                 )
             }
 
@@ -272,5 +301,30 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
 
     interface OnTimeSetListener {
         fun onSelectTime(calendar: Calendar)
+    }
+
+    override fun afterTextChanged(s: Editable?) {    }
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+    }
+
+    override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+        text?.let {
+            if (!text.isNullOrEmpty()) {
+                partWorkDone = (text.toString()).toInt()
+                calculatePercent(text.toString(), totalCases)
+            } else {
+                percentWorkDone.text = "0.0 %"
+            }
+        }
+    }
+
+    private fun calculatePercent(lumperCase: String, totalCases: String) {
+        val formatter: NumberFormat = DecimalFormat("#0.0")
+        if (!lumperCase.isNullOrEmpty()) {
+            percentageTime = (lumperCase.toDouble() / totalCases.toDouble()) * 100
+            percentWorkDone.text = String.format("%.2f", percentageTime) + " %"
+        }
     }
 }

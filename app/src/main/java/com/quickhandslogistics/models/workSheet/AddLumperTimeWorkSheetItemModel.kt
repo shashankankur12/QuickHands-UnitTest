@@ -15,8 +15,15 @@ import retrofit2.Response
 class AddLumperTimeWorkSheetItemModel : AddLumperTimeWorkSheetItemContract.Model {
 
     override fun saveLumperTimings(
-        id: String, workItemId: String, selectedStartTime: Long, selectedEndTime: Long, selectedBreakInTime: Long,
-        selectedBreakOutTime: Long, waitingTime: String, onFinishedListener: AddLumperTimeWorkSheetItemContract.Model.OnFinishedListener
+        id: String,
+        workItemId: String,
+        selectedStartTime: Long,
+        selectedEndTime: Long,
+        selectedBreakInTime: Long,
+        selectedBreakOutTime: Long,
+        waitingTime: String,
+        partWorkDone: Int,
+        onFinishedListener: AddLumperTimeWorkSheetItemContract.Model.OnFinishedListener
     ) {
         val waitingTimeInt = if (waitingTime.isNotEmpty()) waitingTime.toInt() else 0
         val timingDetail = TimingDetails()
@@ -25,6 +32,8 @@ class AddLumperTimeWorkSheetItemModel : AddLumperTimeWorkSheetItemContract.Model
         if (selectedBreakInTime > 0) timingDetail.breakTimeStart = selectedBreakInTime
         if (selectedBreakOutTime > 0) timingDetail.breakTimeEnd = selectedBreakOutTime
         if (waitingTimeInt > 0) timingDetail.waitingTime = waitingTimeInt
+        if (partWorkDone > 0) timingDetail.partWork = partWorkDone
+
 
         val request = UpdateLumperTimeRequest(id, workItemId, timingDetail)
         DataManager.getService().updateLumperTimeInWorkItem(getAuthToken(), request).enqueue(object : Callback<BaseResponse> {

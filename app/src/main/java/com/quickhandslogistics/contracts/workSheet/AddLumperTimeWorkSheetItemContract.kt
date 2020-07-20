@@ -5,8 +5,15 @@ import com.quickhandslogistics.contracts.BaseContract
 class AddLumperTimeWorkSheetItemContract {
     interface Model {
         fun saveLumperTimings(
-            id: String, workItemId: String, selectedStartTime: Long, selectedEndTime: Long, selectedBreakInTime: Long,
-            selectedBreakOutTime: Long, waitingTime: String, onFinishedListener: OnFinishedListener
+            id: String,
+            workItemId: String,
+            selectedStartTime: Long,
+            selectedEndTime: Long,
+            selectedBreakInTime: Long,
+            selectedBreakOutTime: Long,
+            waitingTime: String,
+            onFinishedListener1: Int,
+            onFinishedListener: OnFinishedListener
         )
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
@@ -26,8 +33,14 @@ class AddLumperTimeWorkSheetItemContract {
 
     interface Presenter : BaseContract.Presenter {
         fun saveLumperTimings(
-            id: String, workItemId: String, selectedStartTime: Long, selectedEndTime: Long,
-            selectedBreakInTime: Long, selectedBreakOutTime: Long, waitingTime: String
+            id: String,
+            workItemId: String,
+            selectedStartTime: Long,
+            selectedEndTime: Long,
+            selectedBreakInTime: Long,
+            selectedBreakOutTime: Long,
+            waitingTime: String,
+            percentageTime: Int
         )
     }
 }
