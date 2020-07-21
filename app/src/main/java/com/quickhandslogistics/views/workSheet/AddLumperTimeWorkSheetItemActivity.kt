@@ -82,6 +82,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             }
             if(!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt()!=0){
                 partWorkDone= timingDetail.partWorkDone!!.toInt()
+                lumpercaseVisibility()
                 editTextCasesLumpers.setText(partWorkDone.toString())
             }
 
@@ -100,7 +101,9 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             editTextCasesLumpers.isEnabled=false
         }
         updateButtonsUI()
+        if(!totalCases.isNullOrEmpty() && partWorkDone!=0) lumpercaseVisibility()
         toggleSaveButtonVisibility()
+
 
         buttonStartTime.setOnClickListener(this)
         buttonEndTime.setOnClickListener(this)
@@ -135,7 +138,11 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun toggleSaveButtonVisibility() {
-        buttonSave.isEnabled = editTextWaitingTime.isEnabled || buttonStartTime.isEnabled || buttonEndTime.isEnabled || buttonBreakInTime.isEnabled || buttonBreakOutTime.isEnabled
+        buttonSave.isEnabled = editTextWaitingTime.isEnabled || buttonStartTime.isEnabled || buttonEndTime.isEnabled || buttonBreakInTime.isEnabled || buttonBreakOutTime.isEnabled || editTextCasesLumpers.isEnabled
+    }
+
+    private fun lumpercaseVisibility() {
+        editTextCasesLumpers.isEnabled = editTextWaitingTime.isEnabled || buttonStartTime.isEnabled || buttonEndTime.isEnabled || buttonBreakInTime.isEnabled || buttonBreakOutTime.isEnabled
     }
 
     private fun updateInitialTime(dateStamp: String?, buttonTime: Button): Long {
