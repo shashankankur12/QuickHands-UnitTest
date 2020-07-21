@@ -228,33 +228,67 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
 
-                    <EditText
+                    <LinearLayout
                         android:layout_width="@dimen/_80sdp"
-                        android:id="@+id/editTextCasesLumpers"
-                        style="@style/valueEditTextTheme"
-                        android:maxLength="6"
-                        android:inputType="number" />
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/editTextCasesLumpers"
+                            style="@style/valueEditTextTheme"
+                            android:layout_width="match_parent"
+                            android:textAlignment="center"
+                            android:inputType="number"
+                            android:maxLength="6" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/lumper_cases_text"
+                            android:textColor="@color/material_blue_grey_80"
+                            android:textSize="@dimen/_9sdp" />
+
+                    </LinearLayout>
+
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_7sdp"
                         android:layout_weight="0.5"
                         android:gravity="center"
                         android:text="/"
                         android:textColor="@color/textBlack"
-                        android:textSize="@dimen/_25sdp" />
+                        android:textSize="@dimen/_22sdp" />
 
-                    <EditText
+                    <LinearLayout
                         android:layout_width="@dimen/_80sdp"
-                        android:id="@+id/editTextTotalCases"
-                        style="@style/valueEditTextTheme"
-                        android:inputType="number" />
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/editTextTotalCases"
+                            style="@style/valueEditTextTheme"
+                            android:textAlignment="center"
+                            android:layout_width="@dimen/_80sdp"
+                            android:inputType="number" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/total_cases_text"
+                            android:textColor="@color/material_blue_grey_80"
+                            android:textSize="@dimen/_9sdp" />
+                    </LinearLayout>
 
                     <TextView
+                        android:id="@+id/percentWorkDone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/percentWorkDone"
+                        android:layout_marginTop="@dimen/_3sdp"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_weight="0.5"
                         android:gravity="center"

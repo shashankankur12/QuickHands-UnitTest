@@ -60,7 +60,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(LUMPER_TIME_SCHEDULE)) {
                 lumpersTimeSchedule =
-                    savedInstanceState.getParcelableArrayList<LumpersTimeSchedule>(
+                    savedInstanceState.getParcelableArrayList(
                         LUMPER_TIME_SCHEDULE
                     )!!
             }
@@ -83,9 +83,9 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         if (workItemDetail != null)
             outState.putParcelable(WORK_DETAIL_LIST, workItemDetail)
         if (lumpersTimeSchedule != null)
-            outState.putParcelableArrayList(TEMP_LUMPER_ID_LIST, lumpersTimeSchedule)
+            outState.putParcelableArrayList(LUMPER_TIME_SCHEDULE, lumpersTimeSchedule)
         if (tempLumperIds != null)
-            outState.putStringArrayList(LUMPER_TIME_SCHEDULE, tempLumperIds)
+            outState.putStringArrayList(TEMP_LUMPER_ID_LIST, tempLumperIds)
         super.onSaveInstanceState(outState)
     }
 

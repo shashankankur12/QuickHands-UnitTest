@@ -31,7 +31,7 @@ object ValueUtils {
             if (value.equals("NaN")) {
                 return false
             } else {
-                value.toDouble()
+                value.toInt()
                 true
             }
         } catch (e: NumberFormatException) {

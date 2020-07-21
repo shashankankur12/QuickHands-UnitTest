@@ -318,12 +318,12 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
 
     private fun getPercent(lumperCase: String, totalCases: String) {
         partWorkDone = lumperCase.toInt()
-        if (partWorkDone <= totalCases.toInt()) {
+        if (partWorkDone <= totalCases.toDouble()) {
             percentageTime = calculatePercent(lumperCase, totalCases)
             percentWorkDone.text = String.format("%.2f", percentageTime) + " %"
         } else {
             partWorkDone=0
-            showErrorDialog("Lumper cases should be less then total cases")
+            showErrorDialog(getString(R.string.lumper_cases_error))
             percentWorkDone.text = "0.0 %"
         }
 

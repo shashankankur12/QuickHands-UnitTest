@@ -154,72 +154,6 @@
 
                 <TextView
                     style="@style/titleTextViewTheme"
-                    android:text="@string/work_done" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textViewShiftTime">
-
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-
-                    <EditText
-                        android:layout_width="@dimen/_80sdp"
-                        android:id="@+id/editTextCasesLumpers"
-                        style="@style/valueEditTextTheme"
-                        android:inputType="number" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:layout_marginTop="@dimen/_3sdp"
-                        android:text="/"
-                        android:textColor="@color/textBlack"
-                        android:textSize="@dimen/_20sdp" />
-
-                    <EditText
-                        android:layout_width="@dimen/_80sdp"
-                        android:id="@+id/editTextTotalCases"
-                        style="@style/valueEditTextTheme"
-                        android:inputType="number" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/percentWorkDone"
-                        android:layout_marginStart="@dimen/_15sdp"
-                        android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:text="0.0%"
-                        android:textColor="@color/textBlack"
-                        android:textSize="@dimen/_12sdp" />
-
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:background="@drawable/schedule_item_background"
-                android:orientation="vertical"
-                android:padding="@dimen/_8sdp">
-
-                <TextView
-                    style="@style/titleTextViewTheme"
                     android:text="@string/break_time" />
 
                 <LinearLayout
@@ -254,6 +188,104 @@
                         android:id="@+id/buttonBreakOutTime"
                         style="@style/positiveButtonTheme"
                         android:text="@string/end" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/schedule_item_background"
+                android:orientation="vertical"
+                android:padding="@dimen/_8sdp">
+
+                <TextView
+                    style="@style/titleTextViewTheme"
+                    android:text="@string/work_done" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewShiftTime">
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <LinearLayout
+                        android:layout_width="@dimen/_80sdp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/editTextCasesLumpers"
+                            style="@style/valueEditTextTheme"
+                            android:textAlignment="center"
+                            android:layout_width="match_parent"
+                            android:inputType="number" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/lumper_cases_text"
+                            android:textColor="@color/material_blue_grey_80"
+                            android:textSize="@dimen/_9sdp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_weight="0.5"
+                        android:gravity="center"
+                        android:text="/"
+                        android:textColor="@color/textBlack"
+                        android:textSize="@dimen/_20sdp" />
+
+                    <LinearLayout
+                        android:layout_width="@dimen/_80sdp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/editTextTotalCases"
+                            style="@style/valueEditTextTheme"
+                            android:textAlignment="center"
+                            android:layout_width="match_parent"
+                            android:inputType="number" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/total_cases_text"
+                            android:textColor="@color/material_blue_grey_80"
+                            android:textSize="@dimen/_9sdp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/percentWorkDone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_3ssp"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_weight="0.5"
+                        android:gravity="center"
+                        android:text="0.0%"
+                        android:textColor="@color/textBlack"
+                        android:textSize="@dimen/_12sdp" />
 
                     <Space
                         android:layout_width="0dp"
