@@ -93,7 +93,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             editTextTotalCases.isEnabled=false
             editTextCasesLumpers.addTextChangedListener(this)
             if (partWorkDone>0){
-                calculatePercent(partWorkDone.toString(), totalCases)
+                getPercent(partWorkDone.toString(), totalCases)
             }
 
         }else{
@@ -314,10 +314,10 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
 
     override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
         text?.let {
-            if (!text.isNullOrEmpty()) {
+            if (!text.isNullOrEmpty() && (text.toString()).toInt() != 0) {
                 getPercent(text.toString(), totalCases)
             } else {
-                percentWorkDone.text = "0.0 %"
+                percentWorkDone.text = "0.0%"
                 partWorkDone=0
             }
         }
@@ -327,11 +327,11 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         partWorkDone = lumperCase.toInt()
         if (partWorkDone <= totalCases.toDouble()) {
             percentageTime = calculatePercent(lumperCase, totalCases)
-            percentWorkDone.text = String.format("%.2f", percentageTime) + " %"
+            percentWorkDone.text = String.format("%.2f", percentageTime) + "%"
         } else {
             partWorkDone=0
-            showErrorDialog(getString(R.string.lumper_cases_error))
-            percentWorkDone.text = "0.0 %"
+            CustomProgressBar.getInstance().showMessageDialog(getString(R.string.lumper_cases_error) , activity)
+            percentWorkDone.text = "0.0%"
         }
 
     }
