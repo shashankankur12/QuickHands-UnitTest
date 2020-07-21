@@ -34,8 +34,7 @@ class AddLumperTimeWorkSheetItemModel : AddLumperTimeWorkSheetItemContract.Model
         if (waitingTimeInt > 0) timingDetail.waitingTime = waitingTimeInt
 
 
-        val request = UpdateLumperTimeRequest(id, workItemId, timingDetail)
-        if (partWorkDone > 0) request.partWork = partWorkDone
+        val request = UpdateLumperTimeRequest(id, workItemId, timingDetail, partWorkDone)
         DataManager.getService().updateLumperTimeInWorkItem(getAuthToken(), request).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {

@@ -308,18 +308,24 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
         text?.let {
             if (!text.isNullOrEmpty()) {
-                partWorkDone = (text.toString()).toInt()
                 getPercent(text.toString(), totalCases)
             } else {
                 percentWorkDone.text = "0.0 %"
+                partWorkDone=0
             }
         }
     }
 
     private fun getPercent(lumperCase: String, totalCases: String) {
-        if (!lumperCase.isNullOrEmpty()) {
+        partWorkDone = lumperCase.toInt()
+        if (partWorkDone <= totalCases.toInt()) {
             percentageTime = calculatePercent(lumperCase, totalCases)
             percentWorkDone.text = String.format("%.2f", percentageTime) + " %"
+        } else {
+            partWorkDone=0
+            showErrorDialog("Lumper cases should be less then total cases")
+            percentWorkDone.text = "0.0 %"
         }
+
     }
 }
