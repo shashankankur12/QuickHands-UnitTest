@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.workSheet.WorkSheetPagerAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
@@ -20,7 +21,13 @@ import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.UIUtils
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
+import kotlinx.android.synthetic.main.content_request_lumpers.*
 import kotlinx.android.synthetic.main.fragment_work_sheet.*
+import kotlinx.android.synthetic.main.fragment_work_sheet.mainConstraintLayout
+import kotlinx.android.synthetic.main.fragment_work_sheet.swipe_pull_refresh
+import kotlinx.android.synthetic.main.fragment_work_sheet.textViewTotalCount
+import java.util.*
+import kotlin.collections.ArrayList
 
 class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContract.View.OnFragmentInteractionListener {
 
@@ -76,6 +83,15 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
             initializeViewPager()
             workSheetPresenter.fetchWorkSheetList()
         }
+        refreshData()
+    }
+
+
+    private fun refreshData() {
+        swipe_pull_refresh.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            initializeViewPager()
+            workSheetPresenter.fetchWorkSheetList()
+        })
     }
 
     override fun onDestroy() {
@@ -155,6 +171,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
 
     override fun showWorkSheets(data: WorkSheetListAPIResponse.Data) {
         this.data = data
+        swipe_pull_refresh?.isRefreshing = false
         // Change the visibility of Cancel All Schedule Option
         if (data.inProgress.isNullOrEmpty() && data.onHold.isNullOrEmpty() && data.cancelled.isNullOrEmpty() && data.completed.isNullOrEmpty() && !data.scheduled.isNullOrEmpty()) {
             onFragmentInteractionListener?.invalidateCancelAllSchedulesOption(true)
