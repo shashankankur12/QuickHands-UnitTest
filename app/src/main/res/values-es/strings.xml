@@ -15,7 +15,7 @@
     <string name="break_time">Break Time</string>
     <string name="work_done">Amount of Work Done</string>
     <string name="lumper_cases_text">Portion of cases for this lumper</string>
-    <string name="lumper_cases_error">Portion of cases for this lumper should be less then total cases</string>
+    <string name="lumper_cases_error">Portion of cases for the lumper should be less than or equal to total cases</string>
     <string name="total_cases_text">Total cases</string>
     <string name="building_name">Building Name</string>
     <string name="building_operations">Building Operations</string>
@@ -233,7 +233,7 @@
     <string name="assign_work_done_message">You haven\'t enter work done. Please enter work done, before changing the container status to complete.</string>
     <string name="password_short_length_message">Please enter Password of at-least 8 characters</string>
     <string name="request_help_message"><![CDATA[You will have to enter both Required Lumper Count & DM Notes]]></string>
-    <string name="request_valid_message"><![CDATA[You should have enter valid Required Lumper Count.]]></string>
+    <string name="request_valid_message"><![CDATA[Please enter valid number of additional lumpers needed.]]></string>
     <string name="something_went_wrong_message">Something went wrong, Please try again after sometime!!!</string>
 
     <!--Info Messages-->

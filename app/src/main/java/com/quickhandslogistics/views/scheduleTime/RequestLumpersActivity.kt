@@ -207,7 +207,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
                     if (requiredLumperCount.isEmpty() || notesDM.isEmpty()) {
                         CustomProgressBar.getInstance().showErrorDialog(getString(R.string.request_help_message), activity)
                     }else if(requiredLumperCount.toInt()==0) {
-                        CustomProgressBar.getInstance().showErrorDialog(getString(R.string.request_valid_message), activity)
+                        CustomProgressBar.getInstance().showMessageDialog(getString(R.string.request_valid_message), activity)
                     }else {
                         showSubmitRequestConfirmationDialog(requiredLumperCount, notesDM)
                     }

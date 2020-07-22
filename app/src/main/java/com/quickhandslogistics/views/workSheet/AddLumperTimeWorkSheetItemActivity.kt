@@ -44,6 +44,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private var selectedBreakOutTime: Long = 0
     private var percentageTime: Double = 0.0
     private var partWorkDone: Int = 0
+    private var isPartWorkDoneValid: Boolean = true
 
     private lateinit var addLumperTimeWorkSheetItemPresenter: AddLumperTimeWorkSheetItemPresenter
 
@@ -282,11 +283,15 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
                     })
                 }
                 buttonSave.id -> {
-                    saveSelectedTimings()
+                    if (!isPartWorkDoneValid){
+                        CustomProgressBar.getInstance().showMessageDialog(getString(R.string.lumper_cases_error) , activity)
+                    }else saveSelectedTimings()
                 }
             }
         }
     }
+
+
 
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
@@ -324,12 +329,13 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun getPercent(lumperCase: String, totalCases: String) {
-        partWorkDone = lumperCase.toInt()
-        if (partWorkDone <= totalCases.toDouble()) {
+        if (lumperCase.toDouble() <= totalCases.toDouble()) {
+            partWorkDone = lumperCase.toInt()
             percentageTime = calculatePercent(lumperCase, totalCases)
             percentWorkDone.text = String.format("%.2f", percentageTime) + "%"
+            isPartWorkDoneValid= true
         } else {
-            partWorkDone=0
+            isPartWorkDoneValid= false
             CustomProgressBar.getInstance().showMessageDialog(getString(R.string.lumper_cases_error) , activity)
             percentWorkDone.text = "0.0%"
         }
