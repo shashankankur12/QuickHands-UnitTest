@@ -36,6 +36,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     private var scheduleTimeNotes: String = ""
     private var isCancelAllScheduleVisible: Boolean = false
      var isShowLeavePopup: Boolean = false
+     var isPerformLogout: Boolean = false
 
     private lateinit var dashBoardPresenter: DashBoardPresenter
 
@@ -253,6 +254,10 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
+    override fun showPreformLogout(): Boolean {
+        return isPerformLogout
+    }
+
     /** Child Fragment Interaction Listeners */
     override fun onNewFragmentReplaced(title: String) {
         selectedFragmentTitle = title
@@ -272,6 +277,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     override fun onLogoutOptionSelected() {
         CustomProgressBar.getInstance().showWarningDialog(getString(R.string.logout_alert_message), activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
+                isPerformLogout=true
                 dashBoardPresenter.performLogout()
             }
 
@@ -279,5 +285,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             }
         })
     }
+
+
 
 }

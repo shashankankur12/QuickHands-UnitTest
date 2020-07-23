@@ -42,6 +42,13 @@ class DashBoardPresenter(private var dashBoardView: DashBoardContract.View?, pri
 
     override fun onErrorCode(errorCode: ErrorResponse) {
         dashBoardView?.hideProgressDialog()
+        if(dashBoardView?.showPreformLogout()!!){
+            var sharedPref = SharedPref.getInstance()
+            if (!TextUtils.isEmpty(sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN, ""))) {
+                sharedPref.performLogout()
+                dashBoardView?.showLoginScreen()
+            }
+        }
     }
 
     override fun onLoadLeadProfile(leadProfileData: LeadProfileData) {

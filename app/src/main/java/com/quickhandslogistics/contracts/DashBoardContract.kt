@@ -21,6 +21,7 @@ class DashBoardContract {
         fun showAPIErrorMessage(message: String)
         fun showLeadProfile(leadProfileData: LeadProfileData)
         fun showLoginScreen()
+        fun showPreformLogout(): Boolean
 
         interface OnFragmentInteractionListener {
             fun onNewFragmentReplaced(title: String)
