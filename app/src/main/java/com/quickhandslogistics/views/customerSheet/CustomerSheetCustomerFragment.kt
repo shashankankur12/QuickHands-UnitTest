@@ -29,6 +29,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
 
     private var selectedTime: Long? = null
     private var inCompleteWorkItemsCount: Int = 0
+    private var customerId: String = ""
 
     companion object {
         private const val ARG_CUSTOMER_SHEET_DATA = "ARG_CUSTOMER_SHEET_DATA"
@@ -123,6 +124,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
         customerSheet?.also {
             editTextCustomerName.setText(customerSheet.customerRepresentativeName)
             editTextCustomerNotes.setText(customerSheet.note)
+            customerId= customerSheet.id!!
             updateUIVisibility(ValueUtils.getDefaultOrValue(customerSheet.isSigned), isCurrentDate, inCompleteWorkItemsCount, customerSheet.signatureUrl)
         } ?: run {
             editTextCustomerName.setText("")
@@ -162,13 +164,13 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
             buttonSubmit.isEnabled = true
         }
 
-        if (!signed && currentDate /*&& inCompleteWorkItemsCount == 0*/) {
+        if (!signed && currentDate && inCompleteWorkItemsCount == 0) {
             textViewAddSignature.visibility = View.VISIBLE
         } else {
             textViewAddSignature.visibility = View.GONE
         }
 
-        if (signed || (currentDate /*&& inCompleteWorkItemsCount == 0*/)) {
+        if (signed || (currentDate && inCompleteWorkItemsCount == 0)) {
             layoutSignature.visibility = View.VISIBLE
         } else {
             layoutSignature.visibility = View.GONE
@@ -191,7 +193,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
     private fun submitCustomerSheet() {
         val customerName = editTextCustomerName.text.toString()
         val notesCustomer = editTextCustomerNotes.text.toString()
-        if (customerName.isNotEmpty() && signatureFilePath.isNotEmpty()) {
+        if (customerName.isNotEmpty()  && (signatureFilePath.isNotEmpty()|| inCompleteWorkItemsCount > 0)) {
             var message = getString(R.string.submit_customer_sheet_alert_message)
             if (notesCustomer.isEmpty()) {
                 message = getString(R.string.submit_customer_sheet_permanently_alert_message)
@@ -206,7 +208,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
         CustomProgressBar.getInstance().showWarningDialog(message, fragmentActivity!!, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 localCustomerSheet = null
-                onFragmentInteractionListener?.saveCustomerSheet(customerName, notesCustomer, signatureFilePath)
+                onFragmentInteractionListener?.saveCustomerSheet(customerName, notesCustomer, signatureFilePath, customerId)
             }
 
             override fun onCancelClick() {

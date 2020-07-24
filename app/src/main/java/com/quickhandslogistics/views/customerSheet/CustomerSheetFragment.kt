@@ -213,8 +213,13 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
     }
 
     /** Fragment Interaction Listeners */
-    override fun saveCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String) {
-        customerSheetPresenter.saveCustomerSheet(customerName, notesCustomer, signatureFilePath)
+    override fun saveCustomerSheet(
+        customerName: String,
+        notesCustomer: String,
+        signatureFilePath: String,
+        customerId: String
+    ) {
+        customerSheetPresenter.saveCustomerSheet(customerName, notesCustomer, signatureFilePath, customerId)
     }
 
     override fun saveSateCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String) {

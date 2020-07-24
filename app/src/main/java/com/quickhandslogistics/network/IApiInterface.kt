@@ -138,8 +138,11 @@ interface IApiInterface {
     @Multipart
     @POST("customers/sheet")
     fun saveCustomerSheet(
-        @Header("Authorization") auth: String, @Part("customerRepresentativeName") customerRepresentativeName: RequestBody,
-        @Part("note") note: RequestBody, @Part signature: MultipartBody.Part
+        @Header("Authorization") auth: String,
+        @Part("customerRepresentativeName") customerRepresentativeName: RequestBody,
+        @Part("note") note: RequestBody,
+        @Part signature: MultipartBody.Part? = null,
+        @Part("customerSheetId") customerIdBody: RequestBody
     ): Call<BaseResponse>
     /////////////////////////////////////////////////////////////
 
