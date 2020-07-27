@@ -23,6 +23,7 @@ class ScheduleTimeContract {
         fun showAPIErrorMessage(message: String)
         fun showNotesData(notes: String?)
         fun showScheduleTimeData(selectedDate: Date, scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>, tempLumperIds: ArrayList<String>)
+        fun showLoginScreen()
     }
 
     interface Presenter : BaseContract.Presenter {

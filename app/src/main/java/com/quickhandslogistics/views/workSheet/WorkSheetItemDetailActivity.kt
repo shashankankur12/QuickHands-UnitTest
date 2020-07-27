@@ -1,5 +1,6 @@
 package com.quickhandslogistics.views.workSheet
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -14,7 +15,9 @@ import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.presenters.workSheet.WorkSheetItemDetailPresenter
 import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.ValueUtils.isNumeric
 import com.quickhandslogistics.views.BaseActivity
+import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
 import kotlinx.android.synthetic.main.activity_work_sheet_item_detail.*
@@ -57,7 +60,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(LUMPER_TIME_SCHEDULE)) {
                 lumpersTimeSchedule =
-                    savedInstanceState.getParcelableArrayList<LumpersTimeSchedule>(
+                    savedInstanceState.getParcelableArrayList(
                         LUMPER_TIME_SCHEDULE
                     )!!
             }
@@ -80,9 +83,9 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         if (workItemDetail != null)
             outState.putParcelable(WORK_DETAIL_LIST, workItemDetail)
         if (lumpersTimeSchedule != null)
-            outState.putParcelableArrayList(TEMP_LUMPER_ID_LIST, lumpersTimeSchedule)
+            outState.putParcelableArrayList(LUMPER_TIME_SCHEDULE, lumpersTimeSchedule)
         if (tempLumperIds != null)
-            outState.putStringArrayList(LUMPER_TIME_SCHEDULE, tempLumperIds)
+            outState.putStringArrayList(TEMP_LUMPER_ID_LIST, tempLumperIds)
         super.onSaveInstanceState(outState)
     }
 
@@ -193,6 +196,10 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, getString(R.string.notes_saved_success_alert_message))
     }
 
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
+    }
+
     /** Adapter Listeners */
     override fun onSelectStatus(status: String) {
         if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
@@ -207,6 +214,21 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
                 CustomProgressBar.getInstance().showErrorDialog(getString(R.string.assign_lumpers_message), activity)
                 closeBottomSheet()
                 return
+            }else {
+                if (lumpersTimeSchedule.isNullOrEmpty()|| lumpersTimeSchedule.size< workItemDetail!!.assignedLumpersList!!.size ){
+                   var message =getString(R.string.assign_lumpers_endtime_starttime_message)
+                    CustomProgressBar.getInstance().showErrorDialog(message, this.activity)
+                    closeBottomSheet()
+                    return
+                }else if(!lumpersTimeSchedule.isNullOrEmpty()) {
+                    var message =getStartTimeCount(lumpersTimeSchedule)
+                    if (!message.isNullOrEmpty()) {
+                        CustomProgressBar.getInstance().showErrorDialog(message, this.activity)
+                        closeBottomSheet()
+                        return
+                    }
+                }
+
             }
         }
 
@@ -224,6 +246,21 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
                 workSheetItemStatusAdapter?.updateInitialStatus(textViewStatus.text.toString())
             }
         })
+    }
+
+    private fun getStartTimeCount(lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>): String {
+        var message = ""
+        lumpersTimeSchedule.forEach {
+            if (it.startTime.isNullOrEmpty() || it.endTime.isNullOrEmpty()) {
+                message =getString(R.string.assign_lumpers_endtime_starttime_message)
+            }else if (!it.breakTimeStart.isNullOrEmpty()&& it.breakTimeEnd.isNullOrEmpty()){
+                message =getString(R.string.assign_lumpers_bracktime_message)
+            }
+            else if (it.partWorkDone.isNullOrEmpty() || it.partWorkDone!!.toInt()==0){
+                message =getString(R.string.assign_work_done_message)
+            }
+        }
+        return message;
     }
 
     /** Child Fragment Interaction Listeners */

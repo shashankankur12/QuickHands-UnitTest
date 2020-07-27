@@ -16,6 +16,7 @@ class ScheduledWorkItemDetailContract {
     interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
         fun showWorkItemDetail(workItemDetail: WorkItemDetail)
+        fun showLoginScreen()
     }
 
     interface Presenter : BaseContract.Presenter {

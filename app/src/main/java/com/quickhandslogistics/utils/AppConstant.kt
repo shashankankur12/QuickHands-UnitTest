@@ -53,6 +53,11 @@ interface AppConstant {
         const val REQUEST_LUMPERS_STATUS_REJECTED = "rejected"
         const val REQUEST_LUMPERS_STATUS_CANCELLED = "cancelled"
 
+        //Worksheet
+        const val WORKSHEET_WORK_ITEM_LIVE = "live"
+        const val WORKSHEET_WORK_ITEM_OUTBOUND = "outbound"
+        const val WORKSHEET_WORK_ITEM_INBOUND = "drop"
+
 
         // Attendance
         const val ATTENDANCE_IS_PRESENT = "ATTENDANCE_IS_PRESENT"

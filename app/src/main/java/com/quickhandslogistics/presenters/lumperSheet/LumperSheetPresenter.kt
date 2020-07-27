@@ -4,10 +4,11 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.lumperSheet.LumperSheetContract
+import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.lumperSheet.LumperSheetListAPIResponse
+import com.quickhandslogistics.data.lumperSheet.LumpersInfo
 import com.quickhandslogistics.models.lumperSheet.LumperSheetModel
-import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.utils.ScheduleUtils
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 
@@ -42,11 +43,28 @@ class LumperSheetPresenter(private var lumperSheetView: LumperSheetContract.View
         }
     }
 
+    override fun onErrorCode(errorCode: ErrorResponse) {
+        lumperSheetView?.hideProgressDialog()
+        var sharedPref = SharedPref.getInstance()
+        if (!TextUtils.isEmpty(sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN, ""))) {
+            sharedPref.performLogout()
+            lumperSheetView?.showLoginScreen()
+        }
+    }
+
     override fun onSuccess(response: LumperSheetListAPIResponse, selectedDate: Date) {
         lumperSheetView?.hideProgressDialog()
 
         response.data?.let { data ->
-            lumperSheetView?.showLumperSheetData(data.lumpersInfo!!, data.isSheetSubmitted!!, selectedDate, data.tempLumperIds!!)
+            var lumperInfoList: ArrayList<LumpersInfo> = ArrayList()
+            var tempLumperIds: ArrayList<String> =ArrayList()
+            lumperInfoList.addAll(data.lumpersInfo!!)
+            lumperInfoList.addAll(data.tempLumperIds!!)
+
+            data.tempLumperIds?.forEach {
+                tempLumperIds.add(it.lumperId!!)
+            }
+            lumperSheetView?.showLumperSheetData(lumperInfoList, data.isSheetSubmitted!!, selectedDate, tempLumperIds)
         }
 
     }

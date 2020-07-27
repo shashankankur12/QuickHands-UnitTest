@@ -17,7 +17,8 @@ object ReportUtils {
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
 
         val startCalendar = Calendar.getInstance()
-        startCalendar.set(2017, Calendar.JANUARY, 1)
+//        startCalendar.set(2017, Calendar.JANUARY, 1)
+        startCalendar.add(Calendar.MONTH, -1)
         picker.datePicker.minDate = startCalendar.timeInMillis
 
         endDate?.also { date ->
@@ -42,7 +43,8 @@ object ReportUtils {
             picker.datePicker.minDate = date.time
         } ?: run {
             val startCalendar = Calendar.getInstance()
-            startCalendar.set(2017, Calendar.JANUARY, 1)
+            startCalendar.add(Calendar.MONTH, -1)
+            //startCalendar.set(2017, Calendar.JANUARY, 1)
             picker.datePicker.minDate = startCalendar.timeInMillis
         }
         picker.datePicker.maxDate = System.currentTimeMillis()

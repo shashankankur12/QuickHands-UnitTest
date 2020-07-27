@@ -17,6 +17,7 @@ class LeadProfileContract {
 
     interface View : BaseContract.View {
         fun loadLeadProfile(employeeData: LeadProfileData)
+        fun showLoginScreen()
     }
 
     interface Presenter : BaseContract.Presenter {

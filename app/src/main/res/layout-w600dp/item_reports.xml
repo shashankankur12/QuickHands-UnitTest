@@ -12,7 +12,7 @@
         style="@style/titleTextViewTheme"
         android:layout_width="0dp"
         android:drawableEnd="@drawable/ic_arrow_right"
-        android:text="@string/lumper_job_report"
+        android:text="@string/lumper_sheet_report"
         android:textColor="@color/textBlack"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

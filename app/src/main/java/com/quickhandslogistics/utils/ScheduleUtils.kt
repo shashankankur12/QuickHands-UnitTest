@@ -9,6 +9,11 @@ import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.data.schedule.WorkItemDetail
+import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
+import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.Comparator
 import kotlin.collections.ArrayList
@@ -246,6 +251,15 @@ object ScheduleUtils {
 
     fun getShiftDetailString(leadProfile: LeadProfileData?): String {
         var shiftName = ""
+        leadProfile?.shift?.let { name ->
+            shiftName = name.capitalize()
+        }
+
+        return " ${ResourceManager.getInstance().getString(R.string.dept_bold)} ${UIUtils.getDisplayEmployeeDepartment(leadProfile)}  ${ResourceManager.getInstance().getString(R.string.shift_bold)} $shiftName"
+    }
+
+    fun getOldShiftDetailString(leadProfile: LeadProfileData?): String {
+        var shiftName = ""
         var shiftStartTime = ""
         var shiftEndTime = ""
         leadProfile?.shift?.let { name ->
@@ -269,4 +283,45 @@ object ScheduleUtils {
         }
         return "$shiftName ($shiftStartTime - $shiftEndTime)"
     }
+
+     fun getSortRequestLumper(records: ArrayList<RequestLumpersRecord>): ArrayList<RequestLumpersRecord> {
+        var pendingRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        var completedRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        var rejectedRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        var cancelRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        var sortedlRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        records.forEach {
+            when {
+                it.requestStatus.equals(AppConstant.REQUEST_LUMPERS_STATUS_PENDING) -> {
+                    pendingRecords.add(it)
+                }
+                it.requestStatus.equals(AppConstant.REQUEST_LUMPERS_STATUS_APPROVED) -> {
+                    completedRecords.add(it)
+                }
+                it.requestStatus.equals(AppConstant.REQUEST_LUMPERS_STATUS_REJECTED) -> {
+                    rejectedRecords.add(it)
+                }
+                it.requestStatus.equals(AppConstant.REQUEST_LUMPERS_STATUS_CANCELLED) -> {
+                    cancelRecords.add(it)
+                }
+            }
+        }
+
+        sortedlRecords.addAll(getSortedDate(pendingRecords))
+        sortedlRecords.addAll(getSortedDate(completedRecords))
+        sortedlRecords.addAll(getSortedDate(rejectedRecords))
+        sortedlRecords.addAll(getSortedDate(cancelRecords))
+        return sortedlRecords
+    }
+
+    private fun getSortedDate(records: ArrayList<RequestLumpersRecord>): ArrayList<RequestLumpersRecord> {
+        records.sortWith(Comparator { data: RequestLumpersRecord, t1: RequestLumpersRecord ->
+            (data.createdAt)?.compareTo(t1.createdAt!!)!!
+        })
+        return records
+    }
+    fun calculatePercent(lumperCase: String, totalCases: String): Double {
+        return (lumperCase.toDouble() / totalCases.toDouble()) * 100
+    }
+
 }

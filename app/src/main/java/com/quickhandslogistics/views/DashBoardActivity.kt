@@ -36,6 +36,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     private var scheduleTimeNotes: String = ""
     private var isCancelAllScheduleVisible: Boolean = false
      var isShowLeavePopup: Boolean = false
+     var isPerformLogout: Boolean = false
 
     private lateinit var dashBoardPresenter: DashBoardPresenter
 
@@ -58,7 +59,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             showTabName = bundle.getString(ARG_SHOW_TAB_NAME, getString(R.string.today_s_work_sheet))
 
             //if Tab is Schedule Lumper Time, then check for date
-            if (showTabName == getString(R.string.schedule_lumpers_time)) {
+            if (showTabName == getString(R.string.scheduled_lumpers)) {
                 scheduleTimeSelectedDate = bundle.getString(ARG_SCHEDULE_TIME_SELECTED_DATE, "")
             }
         } ?: run {
@@ -91,7 +92,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
                 getString(R.string.today_s_work_sheet) -> {
                     menu.findItem(R.id.actionCancelAllWork).isVisible = isCancelAllScheduleVisible
                 }
-                getString(R.string.schedule_lumpers_time) -> {
+                getString(R.string.scheduled_lumpers) -> {
                     menu.findItem(R.id.actionNotes).isVisible = scheduleTimeNotes.isNotEmpty()
                 }
             }
@@ -137,12 +138,12 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         fragment?.let {
             when(fragment){
                 is LumpersFragment ->
-                    tabName = getString(R.string.lumpers)
+                    tabName = getString(R.string.lumper_contact)
                 //not done yet
                 is WorkSheetFragment->
                     tabName = getString(R.string.today_s_work_sheet)
                 is ScheduleTimeFragment->
-                    tabName = getString(R.string.schedule_lumpers_time)
+                    tabName = getString(R.string.scheduled_lumpers)
                 //not done yet
                 is ScheduleFragment->
                     tabName = getString(R.string.schedule)
@@ -170,15 +171,15 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
                 }
             }
 
-            it.addItem(NavDrawer.AppNavDrawerItem(TimeClockAttendanceFragment(), R.drawable.ic_sidemenu_schedule, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.time_clock), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(TimeClockAttendanceFragment(), R.drawable.time_clock_icon, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.time_clock), showTabName)))
             it.addItem(NavDrawer.AppNavDrawerItem(CustomerSheetFragment(), R.drawable.ic_sidemenu_customer_sheet, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.customer_sheet), showTabName)))
             it.addItem(NavDrawer.AppNavDrawerItem(LumperSheetFragment(), R.drawable.ic_sidemenu_lumper_sheet, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.l_sheet), showTabName)))
 
-            it.addItem(NavDrawer.AppNavDrawerItem(ScheduleFragment(), R.drawable.ic_sidemenu_lumper_sheet, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.schedule), showTabName)))
-            it.addItem(NavDrawer.AppNavDrawerItem(scheduleTimeFragment, R.drawable.ic_sidemenu_schedule, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.schedule_lumpers_time), showTabName)))
-            it.addItem(NavDrawer.AppNavDrawerItem(ReportsFragment(), R.drawable.ic_sidemenu_reports, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.reports), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(ScheduleFragment(), R.drawable.ic_calednar_dr, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.schedule), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(scheduleTimeFragment, R.drawable.ic_sidemenu_schedule, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.scheduled_lumpers), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(ReportsFragment(), R.drawable.report_icon, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.reports), showTabName)))
 
-            it.addItem(NavDrawer.AppNavDrawerItem(LumpersFragment(), R.drawable.ic_sidemenu_lumpers, R.id.linearLayoutThirdItems, isShowOnLaunch(getString(R.string.lumpers), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(LumpersFragment(), R.drawable.ic_sidemenu_lumpers, R.id.linearLayoutThirdItems, isShowOnLaunch(getString(R.string.lumper_contact), showTabName)))
 
             it.addItem(NavDrawer.AppNavDrawerItem(SettingsFragment(), R.drawable.ic_sidemenu_settings, R.id.linearLayoutBottomItems, isShowOnLaunch(getString(R.string.settings), showTabName)))
             it.addItem(NavDrawer.AppNavDrawerItem(null, R.drawable.ic_sidemenu_logout, R.id.linearLayoutBottomItems, isShowOnLaunch(getString(R.string.logout), showTabName)))
@@ -253,6 +254,10 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
+    override fun showPreformLogout(): Boolean {
+        return isPerformLogout
+    }
+
     /** Child Fragment Interaction Listeners */
     override fun onNewFragmentReplaced(title: String) {
         selectedFragmentTitle = title
@@ -272,6 +277,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     override fun onLogoutOptionSelected() {
         CustomProgressBar.getInstance().showWarningDialog(getString(R.string.logout_alert_message), activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
+                isPerformLogout=true
                 dashBoardPresenter.performLogout()
             }
 
@@ -279,5 +285,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             }
         })
     }
+
+
 
 }

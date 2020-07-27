@@ -1,10 +1,12 @@
 package com.quickhandslogistics.views.workSheet
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.workSheet.WorkSheetPagerAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
@@ -13,10 +15,19 @@ import com.quickhandslogistics.data.customerSheet.CustomerSheetData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.presenters.workSheet.WorkSheetPresenter
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.UIUtils
 import com.quickhandslogistics.views.BaseFragment
+import com.quickhandslogistics.views.LoginActivity
+import kotlinx.android.synthetic.main.content_request_lumpers.*
 import kotlinx.android.synthetic.main.fragment_work_sheet.*
+import kotlinx.android.synthetic.main.fragment_work_sheet.mainConstraintLayout
+import kotlinx.android.synthetic.main.fragment_work_sheet.swipe_pull_refresh
+import kotlinx.android.synthetic.main.fragment_work_sheet.textViewTotalCount
+import java.util.*
+import kotlin.collections.ArrayList
 
 class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContract.View.OnFragmentInteractionListener {
 
@@ -72,6 +83,15 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
             initializeViewPager()
             workSheetPresenter.fetchWorkSheetList()
         }
+        refreshData()
+    }
+
+
+    private fun refreshData() {
+        swipe_pull_refresh.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            initializeViewPager()
+            workSheetPresenter.fetchWorkSheetList()
+        })
     }
 
     override fun onDestroy() {
@@ -127,7 +147,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
 
 
-        return Triple(onGoingWorkItems, data.cancelled!!, data.completed!!)
+        return Triple(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!))
     }
 
     private fun resetUI() {
@@ -151,6 +171,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
 
     override fun showWorkSheets(data: WorkSheetListAPIResponse.Data) {
         this.data = data
+        swipe_pull_refresh?.isRefreshing = false
         // Change the visibility of Cancel All Schedule Option
         if (data.inProgress.isNullOrEmpty() && data.onHold.isNullOrEmpty() && data.cancelled.isNullOrEmpty() && data.completed.isNullOrEmpty() && !data.scheduled.isNullOrEmpty()) {
             onFragmentInteractionListener?.invalidateCancelAllSchedulesOption(true)
@@ -175,7 +196,32 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         textViewDropsCount.text = String.format(getString(R.string.drops_s), workItemTypeCounts.second)
         textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
 
-        adapter?.updateWorkItemsList(onGoingWorkItems, data.cancelled!!, data.completed!!)
+        adapter?.updateWorkItemsList(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!))
+    }
+
+    private fun getSortList(workItemsList: ArrayList<WorkItemDetail>): ArrayList<WorkItemDetail> {
+        var inboundList: ArrayList<WorkItemDetail> = ArrayList()
+        var outBoundList: ArrayList<WorkItemDetail> = ArrayList()
+        var liveList: ArrayList<WorkItemDetail> = ArrayList()
+        var sortedList: ArrayList<WorkItemDetail> = ArrayList()
+
+        workItemsList.forEach {
+            when {
+                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> {
+                    liveList.add(it)
+                }
+                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> {
+                    inboundList.add(it)
+                }
+                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> {
+                    outBoundList.add(it)
+                }
+            }
+        }
+        sortedList.addAll(outBoundList)
+        sortedList.addAll(liveList)
+        sortedList.addAll(inboundList)
+        return sortedList
     }
 
     override fun showHeaderInfo(companyName: String, date: String) {
@@ -183,7 +229,11 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         this.date = date
 
         textViewCompanyName.text = companyName.capitalize()
-        textViewWorkItemsDate.text = date
+        textViewWorkItemsDate.text = UIUtils.getSpannedText(date)
+    }
+
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
     /** Child Fragment Interaction Listeners */

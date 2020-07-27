@@ -20,6 +20,7 @@ class EditScheduleTimeContract {
         fun showDateString(dateString: String)
         fun showAPIErrorMessage(message: String)
         fun scheduleTimeFinished()
+        fun showLoginScreen()
 
         interface OnAdapterItemClickListener {
             fun onAddStartTimeClick(adapterPosition: Int, timeInMillis: Long)

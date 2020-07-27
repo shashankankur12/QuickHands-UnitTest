@@ -18,6 +18,7 @@ class WorkSheetContract {
         fun showAPIErrorMessage(message: String)
         fun showWorkSheets(data: WorkSheetListAPIResponse.Data)
         fun showHeaderInfo(companyName: String, date: String)
+        fun showLoginScreen()
 
         interface OnAdapterItemClickListener {
             fun onSelectLumper(totalSelectedCount: Int)

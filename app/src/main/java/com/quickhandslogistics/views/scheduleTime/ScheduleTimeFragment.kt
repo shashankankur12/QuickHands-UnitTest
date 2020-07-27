@@ -21,6 +21,7 @@ import com.quickhandslogistics.presenters.scheduleTime.ScheduleTimePresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.DashBoardActivity
+import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_LUMPERS_COUNT
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_NOTES
@@ -45,8 +46,8 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     private var scheduleTimeNotes: String? = null
     private var dateString: String? = null
     private var isSavedState: Boolean = false
-    private  var selectedDate: Date = Date()
-    private  var tempLumperIds: ArrayList<String> = ArrayList()
+    private var selectedDate: Date = Date()
+    private var tempLumperIds: ArrayList<String> = ArrayList()
 
     private lateinit var scheduleTimeAdapter: ScheduleTimeAdapter
     private lateinit var scheduleTimePresenter: ScheduleTimePresenter
@@ -199,19 +200,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             if (scheduleTimeAdapter.isSearchEnabled()) {
                 textViewEmptyData.text = getString(R.string.no_record_found_info_message)
             } else {
-                textViewEmptyData.text = if (isPastDate) {
-                    getString(R.string.empty_schedule_time_list_past_info_message)
-                } else {
-                    getString(R.string.empty_schedule_time_list_info_message)
-                }
+                getString(R.string.empty_schedule_time_list_info_message)
             }
         } else {
             textViewEmptyData.visibility = View.GONE
-            textViewEmptyData.text = if (isPastDate) {
-                getString(R.string.empty_schedule_time_list_past_info_message)
-            } else {
-                getString(R.string.empty_schedule_time_list_info_message)
-            }
+            textViewEmptyData.text = getString(R.string.empty_schedule_time_list_info_message)
         }
     }
 
@@ -253,8 +246,8 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     /** Presenter Listeners */
     override fun showDateString(dateString: String) {
-        this.dateString=dateString
-        textViewDate.text = dateString
+        this.dateString = dateString
+        textViewDate.text = UIUtils.getSpannedText(dateString)
     }
 
     override fun showAPIErrorMessage(message: String) {
@@ -286,6 +279,10 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         } else {
             onFragmentInteractionListener?.invalidateScheduleTimeNotes("")
         }
+    }
+
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
     /** Calendar Listeners */

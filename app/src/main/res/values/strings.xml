@@ -13,6 +13,10 @@
     <string name="availability">Availability</string>
     <string name="back_to_work">Back to Work</string>
     <string name="break_time">Break Time</string>
+    <string name="work_done">Amount of Work Done</string>
+    <string name="lumper_cases_text">Portion of cases for this lumper</string>
+    <string name="lumper_cases_error">Portion of cases for the lumper should be less than or equal to total cases</string>
+    <string name="total_cases_text">Total cases</string>
     <string name="building_name">Building Name</string>
     <string name="building_operations">Building Operations</string>
     <string name="cancel">Cancel</string>
@@ -41,7 +45,11 @@
     <string name="customer_report">Customer Report</string>
     <string name="customer_representative_name">Customer Representative Name</string>
     <string name="customer_sheet">Customer Sheet</string>
-    <string name="daily">Daily</string>
+    <string name="day">Day</string>
+    <string name="department">Department</string>
+    <string name="dept_bold"><![CDATA[<b>Dept: </b>]]></string>
+    <string name="district_manager_email">DM Email</string>
+    <string name="district_manager_name">DM Name</string>
     <string name="door_s">Door: %s</string>
     <string name="drops">Drops</string>
     <string name="drops_s">Drops: %s</string>
@@ -70,14 +78,15 @@
     <string name="live_loads_s">Live Loads: %s</string>
     <string name="loading">Loading</string>
     <string name="logout">Log Out</string>
+    <string name="lumper_contact">Lumper Contact</string>
     <string name="lumper_details">Lumper Details</string>
-    <string name="lumper_job_report">Lumper Job Report</string>
+    <string name="lumper_sheet_report">Lumper Sheet Report</string>
     <string name="lumper_work_detail">Lumper Work Detail</string>
     <string name="lumpers">Lumpers</string>
     <string name="lunch_time">Lunch Time</string>
     <string name="mark_present">Mark Present</string>
     <string name="miles_radius_from_building">Miles radius from primary building</string>
-    <string name="monthly">Monthly</string>
+    <string name="month">Month</string>
     <string name="my_profile">My Profile</string>
     <string name="no">No</string>
     <string name="no_of_drops_s">Drop: %s</string>
@@ -89,9 +98,9 @@
     <string name="on_hold">On-Hold</string>
     <string name="ongoing">Ongoing</string>
     <string name="ongoing_s">Ongoing: %s</string>
-    <string name="out_bound_s">Out Bound: %s</string>
-    <string name="out_bounds">Out Bounds</string>
-    <string name="out_bounds_s">Out Bounds: %s</string>
+    <string name="out_bound_s">Outbound: %s</string>
+    <string name="out_bounds">Outbounds</string>
+    <string name="out_bounds_s">Outbounds: %s</string>
     <string name="out_to_lunch">Out to Lunch</string>
     <string name="parameters">Parameters</string>
     <string name="part_time">Part Time</string>
@@ -107,7 +116,7 @@
     <string name="reports">Reports</string>
     <string name="reset_password">Reset Password</string>
     <string name="request_lumpers">Request Lumpers</string>
-    <string name="requested_at_s">Requested At: %s</string>
+    <string name="requested_maded_s">Requested Maded: %s</string>
     <string name="requested_lumpers_s">Requested Lumpers: %s</string>
     <string name="role">Role</string>
     <string name="save">Save</string>
@@ -116,18 +125,20 @@
     <string name="scheduled_time_s">Scheduled Time: %s</string>
     <string name="schedule_detail">Schedule Detail</string>
     <string name="schedule_lumpers">Schedule Lumpers</string>
-    <string name="schedule_lumpers_time">Schedule Lumpers</string>
+    <string name="scheduled_lumpers">Scheduled Lumpers</string>
     <string name="select_all">Select All</string>
     <string name="select_date_range">Select Date Range</string>
     <string name="select_status">Select Status</string>
     <string name="settings">Settings</string>
     <string name="sheet_submitted">Sheet Submitted</string>
     <string name="shift">Shift</string>
+    <string name="shift_bold"><![CDATA[<b>Shift: </b>]]></string>
     <string name="shift_details">Shift Details</string>
     <string name="shift_hours">Shift Hours</string>
     <string name="shift_time">Shift Time</string>
     <string name="sign_in">Sign In</string>
     <string name="signature">Signature</string>
+    <string name="signed">Signed</string>
     <string name="spanish">Spanish</string>
     <string name="start">Start</string>
     <string name="start_and_end_time"><![CDATA[Start & End Time]]></string>
@@ -149,8 +160,9 @@
     <string name="update_request">Update Request</string>
     <string name="view_building_operations">View Building Operations</string>
     <string name="waiting_time">Waiting Time</string>
+    <string name="works_done">Work Done</string>
     <string name="waiting_time_in_min">Waiting Time (in Min.)</string>
-    <string name="weekly">Weekly</string>
+    <string name="week">Week</string>
     <string name="work_item_detail">Work Item Detail</string>
     <string name="work_items_s">Work Items: %s</string>
     <string name="work_schedule">Work Schedule</string>
@@ -161,18 +173,18 @@
 
     <!--No Record Messages-->
     <string name="empty_add_work_item_lumpers_info_message">This building doesn\'t have any lumpers present for the selected date. Please mark lumpers attendance in \'Time-Clock Attendance\' section for selecting them.</string>
-    <string name="empty_edit_schedule_time_info_message">You haven\'t select any lumpers for the selected date. Click on + icon on top right side of the screen to choose lumpers.</string>
+    <string name="empty_edit_schedule_time_info_message">Add the lumpers you wish to schedule</string>
+    <string name="empty_work_item_detail_page_lumpers_info_message">Press \'Add Lumpers\' to assign.</string>
     <string name="empty_work_item_lumpers_info_message">You haven\'t assigned any lumpers to this container. Click on \'Add Lumpers\' to assign.</string>
     <string name="empty_work_item_lumpers_past_date_info_message">You haven\'t assigned any lumpers to this container.</string>
     <string name="empty_building_operations_info_message">This building doesn\'t have any parameters assigned. Please contact the admin to add new parameters.</string>
     <string name="empty_lumpers_list_info_message">This building doesn\'t have any lumpers assigned. Please contact the admin to assign new lumpers.</string>
     <string name="empty_request_lumpers_list_info_message">You haven\'t placed any request for the selected date. Click on \'Create New Request\' to create an new request fo additional lumpers.</string>
     <string name="empty_request_lumpers_list_info_message_past">You haven\'t placed any request for the selected date.</string>
-    <string name="empty_lumper_sheet_info_message">You didn\'t record any lumper\'s work timing details for any container. Please fill there timings in the \'Work Sheet\' section to fill there sheet.</string>
+    <string name="empty_lumper_sheet_info_message">Lumpers have not been assigned to containers in the \'Work Sheet\' section on this date.</string>
     <string name="empty_containers_list_info_message">This building doesn\'t have any containers scheduled for the selected date.</string>
-    <string name="empty_schedules_list_info_message">This building doesn\'t have any schedules created for the selected date.</string>
-    <string name="empty_schedule_time_list_info_message">You haven\'t scheduled any lumpers for the selected date. Click on \'Schedule Lumpers\' to schedule them.</string>
-    <string name="empty_schedule_time_list_past_info_message">You haven\'t scheduled any lumpers for the selected date.</string>
+    <string name="empty_schedules_list_info_message">No Work Scheduled</string>
+    <string name="empty_schedule_time_list_info_message">No Lumpers Scheduled</string>
     <string name="empty_containers_list_ongoing_info_message">You don\'t have any Ongoing containers scheduled for the selected date.</string>
     <string name="empty_containers_list_cancelled_info_message">You don\'t have any Cancelled containers scheduled for the selected date.</string>
     <string name="empty_containers_list_completed_info_message">You don\'t have any Completed containers scheduled for the selected date.</string>
@@ -216,8 +228,12 @@
     <string name="empty_password_message">Please enter Password</string>
     <string name="fill_building_parameters_message">You haven\'t filled all building parameters values. Please fill them, before changing the container status to complete.</string>
     <string name="assign_lumpers_message">You haven\'t assigned any lumper to the container. Please assign one or more lumper, before changing the container status to complete.</string>
+    <string name="assign_lumpers_endtime_starttime_message">You haven\'t finish lumper start and end time. Please finish start and end time for lumper, before changing the container status to complete.</string>
+    <string name="assign_lumpers_bracktime_message">You haven\'t finish break time for lumper . Please finish break time for lumper, before changing the container status to complete.</string>
+    <string name="assign_work_done_message">You haven\'t enter work done. Please enter work done, before changing the container status to complete.</string>
     <string name="password_short_length_message">Please enter Password of at-least 8 characters</string>
     <string name="request_help_message"><![CDATA[You will have to enter both Required Lumper Count & DM Notes]]></string>
+    <string name="request_valid_message"><![CDATA[Please enter valid number of additional lumpers needed.]]></string>
     <string name="something_went_wrong_message">Something went wrong, Please try again after sometime!!!</string>
 
     <!--Info Messages-->
@@ -230,7 +246,6 @@
     <string name="notes_for_customer">Notes for Customer</string>
     <string name="notes_for_scheduled_lumpers">Notes for Scheduled Lumpers…</string>
     <string name="notes_for_qhl">Notes for QHL</string>
-    <string name="notes_for_qhl_and_customer"><![CDATA[Notes for QHL & Customer]]></string>
     <string name="notes_for_qhl_dm">Notes for QHL District Manager</string>
     <string name="notification_off_info_message">Notification are turned off from the app Settings. Click to update.</string>
     <string name="search_info_message">Search by Name…</string>
@@ -246,7 +261,4 @@
     <string name="break_end_greater_work_start_warning_message">Break\'s End Time should be greater than Work\'s Start Time</string>
     <string name="break_end_greater_break_start_warning_message">Break\'s End Time should be greater than Break\'s Start Time</string>
     <string name="break_end_less_work_end_warning_message">Break\'s End Time should be less than Work\'s End Time</string>
-    <string name="departmant">Department</string>
-    <string name="district_manager_name">DM Name</string>
-    <string name="district_manager_email">DM Email</string>
 </resources>

@@ -146,12 +146,12 @@ class TimeClockReportAdapter(private val onAdapterClick: TimeClockReportContract
 
     fun invokeSelectAll() {
         if (itemCount > 0) {
-            val selectedCount = getSelectedLumperIdsList().size
-            if (selectedCount == itemCount) {
-                clearAllSelection()
-            } else {
+//            val selectedCount = getSelectedLumperIdsList().size
+//            if (selectedCount == itemCount) {
+//                clearAllSelection()
+//            } else {
                 selectAllLumpers()
-            }
+//            }
         }
     }
 

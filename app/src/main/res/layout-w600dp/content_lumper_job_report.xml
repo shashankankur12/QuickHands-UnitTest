@@ -72,20 +72,21 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:background="?android:attr/selectableItemBackground"
-                    android:gravity="end"
-                    android:orientation="vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textViewSelectAll"
+                        style="@style/valuesTextViewTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_marginEnd="@dimen/_4sdp"
+                        android:text="@string/select_all" />
 
                     <ImageView
                         android:id="@+id/imageViewSelectAll"
                         android:layout_width="@dimen/_18sdp"
                         android:layout_height="@dimen/_18sdp"
                         android:src="@drawable/ic_add_lumer_tick_blank" />
-
-                    <TextView
-                        android:id="@+id/textViewSelectAll"
-                        style="@style/valuesVerySmallTextViewTheme"
-                        android:layout_width="wrap_content"
-                        android:text="@string/select_all" />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -95,7 +96,7 @@
                 android:layout_height="0dp"
                 android:layout_marginBottom="@dimen/_10ssp"
                 android:layout_weight="1"
-                tools:listitem="@layout/item_add_lumpers"/>
+                tools:listitem="@layout/item_add_lumpers" />
 
             <Button
                 android:id="@+id/buttonGenerateReport"

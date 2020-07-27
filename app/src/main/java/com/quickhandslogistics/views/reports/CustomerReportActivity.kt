@@ -1,5 +1,6 @@
 package com.quickhandslogistics.views.reports
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -10,6 +11,7 @@ import com.quickhandslogistics.contracts.reports.CustomerReportContract
 import com.quickhandslogistics.presenters.reports.CustomerReportPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
+import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.content_customer_report.*
 import kotlinx.android.synthetic.main.layout_date_filter.*
 import kotlinx.android.synthetic.main.layout_report_type.*
@@ -46,21 +48,6 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
                 }
             }
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_toolbar, menu)
-        menu?.findItem(R.id.actionRefresh)?.isVisible = true
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.actionRefresh -> {
-                resetAllData()
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun initializeUI() {
@@ -190,5 +177,9 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
                     resetAllData()
                 }
             })
+    }
+
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 }

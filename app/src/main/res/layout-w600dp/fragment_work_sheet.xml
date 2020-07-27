@@ -100,13 +100,19 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/greyDivider" />
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewPagerWorkSheet"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_pull_refresh"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
             android:layout_marginTop="@dimen/_4sdp"
             android:layout_weight="1"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            android:layout_height="0dp">
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPagerWorkSheet"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

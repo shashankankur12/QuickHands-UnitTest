@@ -20,7 +20,7 @@ class LumpersModel(private val sharedPref: SharedPref) : LumpersContract.Model {
     override fun fetchHeaderInfo(onFinishedListener: LumpersContract.Model.OnFinishedListener) {
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
         val date = DateUtils.getCurrentDateStringByEmployeeShift(pattern = DateUtils.PATTERN_NORMAL)
-        val dateShiftDetail = "$date - ${ScheduleUtils.getShiftDetailString(leadProfile)}"
+        val dateShiftDetail = "$date  ${ScheduleUtils.getShiftDetailString(leadProfile)}"
         onFinishedListener.onSuccessGetHeaderInfo(dateShiftDetail)
     }
 

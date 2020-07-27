@@ -1,7 +1,10 @@
 package com.quickhandslogistics.views.workSheet
 
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import com.quickhandslogistics.R
@@ -12,16 +15,21 @@ import com.quickhandslogistics.presenters.workSheet.AddLumperTimeWorkSheetItemPr
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.isFutureTime
+import com.quickhandslogistics.utils.ScheduleUtils.calculatePercent
+import com.quickhandslogistics.utils.ValueUtils.isNumeric
 import com.quickhandslogistics.views.BaseActivity
+import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_DATA
 import com.quickhandslogistics.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_TIMING_DATA
 import com.quickhandslogistics.views.schedule.ScheduleFragment
 import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
 import java.util.*
 
-class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener, AddLumperTimeWorkSheetItemContract.View {
+class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener, AddLumperTimeWorkSheetItemContract.View,
+    TextWatcher {
 
     private var workItemId = ""
+    private var totalCases :String = ""
     private var employeeData: EmployeeData? = null
     private var employeeTimingData: LumpersTimeSchedule? = null
 
@@ -34,6 +42,9 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private var selectedEndTime: Long = 0
     private var selectedBreakInTime: Long = 0
     private var selectedBreakOutTime: Long = 0
+    private var percentageTime: Double = 0.0
+    private var partWorkDone: Int = 0
+    private var isPartWorkDoneValid: Boolean = true
 
     private lateinit var addLumperTimeWorkSheetItemPresenter: AddLumperTimeWorkSheetItemPresenter
 
@@ -45,6 +56,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         intent.extras?.let { it ->
             if (it.containsKey(ARG_LUMPER_DATA)) {
                 workItemId = it.getString(ScheduleFragment.ARG_WORK_ITEM_ID, "")
+                totalCases = it.getString(WorkSheetItemDetailLumpersFragment.TOTAL_CASES, "")
                 employeeData = it.getParcelable(ARG_LUMPER_DATA) as EmployeeData?
                 employeeTimingData = it.getParcelable(ARG_LUMPER_TIMING_DATA) as LumpersTimeSchedule?
             }
@@ -69,11 +81,30 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
                 editTextWaitingTime.setText(waitingTime)
                 editTextWaitingTime.isEnabled = false
             }
+            if(!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt()!=0){
+                partWorkDone= timingDetail.partWorkDone!!.toInt()
+                lumpercaseVisibility()
+                editTextCasesLumpers.setText(partWorkDone.toString())
+            }
 
             updateTimingsDetails(timingDetail)
         }
+        if (!totalCases.isNullOrEmpty()&& isNumeric(totalCases)){
+            editTextTotalCases.setText(totalCases)
+            editTextTotalCases.isEnabled=false
+            editTextCasesLumpers.addTextChangedListener(this)
+            if (partWorkDone>0){
+                getPercent(partWorkDone.toString(), totalCases)
+            }
+
+        }else{
+            editTextTotalCases.isEnabled=false
+            editTextCasesLumpers.isEnabled=false
+        }
         updateButtonsUI()
+        if(!totalCases.isNullOrEmpty() && partWorkDone!=0) lumpercaseVisibility()
         toggleSaveButtonVisibility()
+
 
         buttonStartTime.setOnClickListener(this)
         buttonEndTime.setOnClickListener(this)
@@ -108,7 +139,11 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun toggleSaveButtonVisibility() {
-        buttonSave.isEnabled = editTextWaitingTime.isEnabled || buttonStartTime.isEnabled || buttonEndTime.isEnabled || buttonBreakInTime.isEnabled || buttonBreakOutTime.isEnabled
+        buttonSave.isEnabled = editTextWaitingTime.isEnabled || buttonStartTime.isEnabled || buttonEndTime.isEnabled || buttonBreakInTime.isEnabled || buttonBreakOutTime.isEnabled || editTextCasesLumpers.isEnabled
+    }
+
+    private fun lumpercaseVisibility() {
+        editTextCasesLumpers.isEnabled = editTextWaitingTime.isEnabled || buttonStartTime.isEnabled || buttonEndTime.isEnabled || buttonBreakInTime.isEnabled || buttonBreakOutTime.isEnabled
     }
 
     private fun updateInitialTime(dateStamp: String?, buttonTime: Button): Long {
@@ -206,7 +241,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
 
                 addLumperTimeWorkSheetItemPresenter.saveLumperTimings(
                     employeeData?.id!!, workItemId, selectedStartTime, selectedEndTime,
-                    selectedBreakInTime, selectedBreakOutTime, waitingTime
+                    selectedBreakInTime, selectedBreakOutTime, waitingTime,partWorkDone
                 )
             }
 
@@ -248,11 +283,15 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
                     })
                 }
                 buttonSave.id -> {
-                    saveSelectedTimings()
+                    if (!isPartWorkDoneValid){
+                        CustomProgressBar.getInstance().showMessageDialog(getString(R.string.lumper_cases_error) , activity)
+                    }else saveSelectedTimings()
                 }
             }
         }
     }
+
+
 
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
@@ -264,7 +303,42 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         onBackPressed()
     }
 
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
+    }
+
     interface OnTimeSetListener {
         fun onSelectTime(calendar: Calendar)
+    }
+
+    override fun afterTextChanged(s: Editable?) {    }
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+    }
+
+    override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+        text?.let {
+            if (!text.isNullOrEmpty() && (text.toString()).toInt() != 0) {
+                getPercent(text.toString(), totalCases)
+            } else {
+                percentWorkDone.text = "0.0%"
+                partWorkDone=0
+            }
+        }
+    }
+
+    private fun getPercent(lumperCase: String, totalCases: String) {
+        if (lumperCase.toDouble() <= totalCases.toDouble()) {
+            partWorkDone = lumperCase.toInt()
+            percentageTime = calculatePercent(lumperCase, totalCases)
+            percentWorkDone.text = String.format("%.2f", percentageTime) + "%"
+            isPartWorkDoneValid= true
+        } else {
+            isPartWorkDoneValid= false
+            CustomProgressBar.getInstance().showMessageDialog(getString(R.string.lumper_cases_error) , activity)
+            percentWorkDone.text = "0.0%"
+        }
+
     }
 }

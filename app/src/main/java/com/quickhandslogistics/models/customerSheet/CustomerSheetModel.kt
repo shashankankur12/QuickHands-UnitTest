@@ -14,6 +14,7 @@ import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.SharedPref
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,7 +31,7 @@ class CustomerSheetModel(private val sharedPref: SharedPref) : CustomerSheetCont
             companyName = name
         }
         val date = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
-        val dateShiftDetail = "$date - ${ScheduleUtils.getShiftDetailString(leadProfile)}"
+        val dateShiftDetail = "$date  ${ScheduleUtils.getShiftDetailString(leadProfile)}"
         onFinishedListener.onSuccessGetHeaderInfo(companyName, dateShiftDetail)
     }
 
@@ -51,21 +52,24 @@ class CustomerSheetModel(private val sharedPref: SharedPref) : CustomerSheetCont
         })
     }
 
-    override fun saveCustomerSheet(
-        customerName: String, notesCustomer: String, signatureFilePath: String, onFinishedListener: CustomerSheetContract.Model.OnFinishedListener
-    ) {
+    override fun saveCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String, customerId: String, onFinishedListener: CustomerSheetContract.Model.OnFinishedListener) {
         val nameRequestBody = createRequestBody(customerName)
         val notesRequestBody = createRequestBody(notesCustomer)
+        val customerIdBody = createRequestBody(customerId)
+        var signatureFile :File? =null
+        var signatureMultiPartBody :MultipartBody.Part?=null
+        if (signatureFilePath.isNotEmpty()) {
+            signatureFile = File(signatureFilePath)
+             signatureMultiPartBody = createMultiPartBody(signatureFile, "signature")
+        }
 
-        val signatureFile = File(signatureFilePath)
-        val signatureMultiPartBody = createMultiPartBody(signatureFile, "signature")
-
-        DataManager.getService().saveCustomerSheet(getAuthToken(), nameRequestBody, notesRequestBody, signatureMultiPartBody)
+        DataManager.getService().saveCustomerSheet(getAuthToken(), nameRequestBody, notesRequestBody, signatureMultiPartBody, customerIdBody)
             .enqueue(object : Callback<BaseResponse> {
                 override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                     if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                         // Delete the temporary saved file
-                        signatureFile.delete()
+                        if (!signatureFilePath.isNullOrEmpty())
+                        signatureFile?.delete()
 
                         onFinishedListener.onSuccessSaveCustomerSheet()
                     }

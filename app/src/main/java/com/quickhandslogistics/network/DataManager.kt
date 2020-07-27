@@ -76,7 +76,12 @@ object DataManager : AppConstant {
                 onFinishedListener.onFailure()
             }
         } else {
-            onFinishedListener.onFailure(getErrorMessage(errorBody))
+            var errorResponse=getErrorCode(errorBody)
+            if (errorResponse.errCode == 777) {
+                onFinishedListener.onErrorCode(errorResponse)
+            } else {
+                onFinishedListener.onFailure(errorResponse.message)
+            }
         }
         return isSuccessResponse
     }
@@ -93,5 +98,18 @@ object DataManager : AppConstant {
             }
         }
         return errorMessage
+    }
+
+    private fun getErrorCode(errorBody: ResponseBody?): ErrorResponse {
+        var errorCode :ErrorResponse= ErrorResponse()
+        errorBody?.let {
+            val errorBodyString = String(it.bytes())
+            errorCode = try {
+                 Gson().fromJson(errorBodyString, ErrorResponse::class.java)
+            } catch (e: JsonSyntaxException) {
+                errorBodyString
+            } as ErrorResponse
+        }
+        return errorCode
     }
 }

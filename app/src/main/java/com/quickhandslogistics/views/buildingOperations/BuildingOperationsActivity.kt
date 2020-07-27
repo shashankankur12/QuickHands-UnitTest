@@ -1,5 +1,6 @@
 package com.quickhandslogistics.views.buildingOperations
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WOR
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.content_building_operations.*
 
 class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, BuildingOperationsContract.View {
@@ -93,5 +95,9 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, Buildin
     override fun buildingOperationsDataSaved() {
         setResult(RESULT_OK)
         onBackPressed()
+    }
+
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 }

@@ -23,6 +23,7 @@ class ScheduleContract {
         fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<ScheduleDetail>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int)
         fun showAPIErrorMessage(message: String)
         fun showEmptyData()
+        fun showLoginScreen()
 
         interface OnAdapterItemClickListener {
             fun onScheduleItemClick(scheduleDetail: ScheduleDetail)

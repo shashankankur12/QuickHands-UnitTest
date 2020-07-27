@@ -4,9 +4,11 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.DashBoardContract
+import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.dashboard.LeadProfileAPIResponse
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.models.DashBoardModel
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 
 class DashBoardPresenter(private var dashBoardView: DashBoardContract.View?, private val resources: Resources, sharedPref: SharedPref) :
@@ -35,6 +37,17 @@ class DashBoardPresenter(private var dashBoardView: DashBoardContract.View?, pri
             dashBoardView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             dashBoardView?.showAPIErrorMessage(message)
+        }
+    }
+
+    override fun onErrorCode(errorCode: ErrorResponse) {
+        dashBoardView?.hideProgressDialog()
+        if(dashBoardView?.showPreformLogout()!!){
+            var sharedPref = SharedPref.getInstance()
+            if (!TextUtils.isEmpty(sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN, ""))) {
+                sharedPref.performLogout()
+                dashBoardView?.showLoginScreen()
+            }
         }
     }
 

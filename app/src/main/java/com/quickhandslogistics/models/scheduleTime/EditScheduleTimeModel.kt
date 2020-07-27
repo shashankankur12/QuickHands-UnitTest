@@ -25,7 +25,7 @@ class EditScheduleTimeModel(private val sharedPref: SharedPref) : EditScheduleTi
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
 
         val date = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
-        val dateShiftDetail = "$date - ${ScheduleUtils.getShiftDetailString(leadProfile)}"
+        val dateShiftDetail = "$date  ${ScheduleUtils.getShiftDetailString(leadProfile)}"
         onFinishedListener.onSuccessGetHeaderInfo(dateShiftDetail)
     }
 

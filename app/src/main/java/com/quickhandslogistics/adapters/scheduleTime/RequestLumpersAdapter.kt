@@ -13,7 +13,6 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.scheduleTime.RequestLumpersContract
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
 import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_DATE_TIME_DISPLAY
 import com.quickhandslogistics.utils.DateUtils.Companion.changeUTCDateStringToLocalDateString
@@ -54,7 +53,7 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
         fun bind(requestLumpersRecord: RequestLumpersRecord) {
             textViewRequestedLumpersCount.text = String.format(resources.getString(R.string.requested_lumpers_s), requestLumpersRecord.requestedLumpersCount)
             textViewRequestedAt.text = String.format(
-                resources.getString(R.string.requested_at_s),
+                resources.getString(R.string.requested_maded_s),
                 changeUTCDateStringToLocalDateString(PATTERN_API_RESPONSE, PATTERN_DATE_TIME_DISPLAY, requestLumpersRecord.createdAt!!)
             )
             textViewNote.text = requestLumpersRecord.notesForDM

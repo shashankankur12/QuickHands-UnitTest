@@ -18,6 +18,7 @@ class BuildingOperationsContract {
         fun showAPIErrorMessage(message: String)
         fun showBuildingOperationsData(data: HashMap<String, String>?)
         fun buildingOperationsDataSaved()
+        fun showLoginScreen()
     }
 
     interface Presenter : BaseContract.Presenter {

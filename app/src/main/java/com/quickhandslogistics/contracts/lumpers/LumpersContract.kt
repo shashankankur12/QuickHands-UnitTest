@@ -22,6 +22,7 @@ class LumpersContract {
         fun showDateString(dateString: String)
         fun showAPIErrorMessage(message: String)
         fun showLumpersData(employeeDataList: ArrayList<EmployeeData>)
+        fun showLoginScreen()
 
         interface OnAdapterItemClickListener {
             fun onItemClick(employeeData: EmployeeData)

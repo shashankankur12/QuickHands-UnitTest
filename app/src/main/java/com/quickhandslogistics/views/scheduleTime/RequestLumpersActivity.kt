@@ -1,10 +1,12 @@
 package com.quickhandslogistics.views.scheduleTime
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.scheduleTime.RequestLumpersAdapter
@@ -14,6 +16,7 @@ import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
 import com.quickhandslogistics.presenters.scheduleTime.RequestLumpersPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
+import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_LUMPERS_COUNT
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import kotlinx.android.synthetic.main.activity_request_lumpers.*
@@ -70,6 +73,13 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         } ?: run {
             requestLumpersPresenter.fetchAllRequestsByDate(Date(selectedTime))
         }
+        refreshData()
+    }
+
+    private fun refreshData() {
+        swipe_pull_refresh.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            requestLumpersPresenter.fetchAllRequestsByDate(Date(selectedTime))
+        })
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -179,6 +189,10 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         }
     }
 
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
+    }
+
     /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
@@ -192,7 +206,9 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
                     val notesDM = editTextDMNotes.text.toString()
                     if (requiredLumperCount.isEmpty() || notesDM.isEmpty()) {
                         CustomProgressBar.getInstance().showErrorDialog(getString(R.string.request_help_message), activity)
-                    } else {
+                    }else if(requiredLumperCount.toInt()==0) {
+                        CustomProgressBar.getInstance().showMessageDialog(getString(R.string.request_valid_message), activity)
+                    }else {
                         showSubmitRequestConfirmationDialog(requiredLumperCount, notesDM)
                     }
                 }
@@ -207,6 +223,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
 
     override fun showAllRequests(records: ArrayList<RequestLumpersRecord>) {
         this.records=records
+        swipe_pull_refresh?.isRefreshing = false
         requestLumpersAdapter.updateList(records)
     }
 

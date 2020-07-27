@@ -22,6 +22,7 @@ class AddWorkItemLumpersContract {
         fun showAPIErrorMessage(message: String)
         fun showLumpersData(permanentLumpers: ArrayList<EmployeeData>, temporaryLumpers: ArrayList<EmployeeData>)
         fun lumperAssignmentFinished()
+        fun showLoginScreen()
 
         interface OnAdapterItemClickListener {
             fun onSelectLumper(totalSelectedCount: Int)

@@ -26,6 +26,7 @@ class LumperSheetContract {
         fun showDateString(dateString: String)
         fun showLumperSheetData(lumperInfoList: ArrayList<LumpersInfo>, sheetSubmitted: Boolean, selectedDate: Date, tempLumperIds: ArrayList<String>)
         fun sheetSubmittedSuccessfully()
+        fun showLoginScreen()
 
         interface OnAdapterItemClickListener {
             fun onItemClick(lumperInfo: LumpersInfo)

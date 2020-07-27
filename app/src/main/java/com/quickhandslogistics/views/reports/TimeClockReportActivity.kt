@@ -1,5 +1,6 @@
 package com.quickhandslogistics.views.reports
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,6 +18,7 @@ import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.presenters.reports.TimeClockReportPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
+import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.content_lumper_job_report.*
 import kotlinx.android.synthetic.main.layout_date_filter.*
 import kotlinx.android.synthetic.main.layout_report_type.*
@@ -77,21 +79,6 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
                 }
             }
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_toolbar, menu)
-        menu?.findItem(R.id.actionRefresh)?.isVisible = true
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.actionRefresh -> {
-                resetAllData()
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun initializeUI() {
@@ -176,7 +163,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
         val selectedCount = timeClockReportAdapter.getSelectedLumperIdsList().size
         if (selectedCount == timeClockReportAdapter.itemCount) {
             imageViewSelectAll.setImageResource(R.drawable.ic_add_lumer_tick)
-            textViewSelectAll.text = getString(R.string.unselect_all)
+          //  textViewSelectAll.text = getString(R.string.unselect_all)
         } else {
             imageViewSelectAll.setImageResource(R.drawable.ic_add_lumer_tick_blank)
             textViewSelectAll.text = getString(R.string.select_all)
@@ -266,6 +253,10 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
 
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
         updateTimeByRangeOptionSelected()
+    }
+
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
     /** Presenter Listeners */
