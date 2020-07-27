@@ -10,7 +10,13 @@ class CustomerSheetContract {
     interface Model {
         fun fetchHeaderInfo(selectedDate: Date, onFinishedListener: OnFinishedListener)
         fun fetchCustomerSheetList(selectedDate: Date, onFinishedListener: OnFinishedListener)
-        fun saveCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String, onFinishedListener: OnFinishedListener)
+        fun saveCustomerSheet(
+            customerName: String,
+            notesCustomer: String,
+            signatureFilePath: String,
+            customerId: String,
+            onFinishedListener: OnFinishedListener
+        )
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccessFetchCustomerSheet(customerSheetListAPIResponse: CustomerSheetListAPIResponse, selectedDate: Date)
@@ -24,15 +30,26 @@ class CustomerSheetContract {
         fun showCustomerSheets(scheduleDetails: CustomerSheetScheduleDetails, customerSheet: CustomerSheetData?, selectedDate: Date)
         fun showHeaderInfo(companyName: String, date: String)
         fun customerSavedSuccessfully()
+        fun showLoginScreen()
 
         interface OnFragmentInteractionListener {
-            fun saveCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String)
+            fun saveCustomerSheet(
+                customerName: String,
+                notesCustomer: String,
+                signatureFilePath: String,
+                customerId: String
+            )
             fun saveSateCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String)
         }
     }
 
     interface Presenter : BaseContract.Presenter {
         fun getCustomerSheetByDate(date: Date)
-        fun saveCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String)
+        fun saveCustomerSheet(
+            customerName: String,
+            notesCustomer: String,
+            signatureFilePath: String,
+            customerId: String
+        )
     }
 }

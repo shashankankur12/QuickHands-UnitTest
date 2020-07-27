@@ -18,6 +18,7 @@ import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
 import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.views.BaseActivity
+import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.buildingOperations.BuildingOperationsActivity
 import com.quickhandslogistics.views.common.BuildingOperationsViewActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_ALLOW_UPDATE
@@ -141,6 +142,10 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
                 startIntent(BuildingOperationsViewActivity::class.java, bundle = bundle)
             }
         }
+    }
+
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
     /** Native Views Listeners */

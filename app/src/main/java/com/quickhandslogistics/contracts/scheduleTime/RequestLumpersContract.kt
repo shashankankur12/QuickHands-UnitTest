@@ -25,6 +25,7 @@ class RequestLumpersContract {
         fun showAllRequests(records: ArrayList<RequestLumpersRecord>)
         fun showHeaderInfo(dateString: String)
         fun showSuccessDialog(message:String, date: Date)
+        fun showLoginScreen()
 
         interface OnAdapterItemClickListener {
             fun onNotesItemClick(notes: String?)

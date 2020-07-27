@@ -23,6 +23,7 @@ class TimeClockAttendanceContract {
         fun showLumpersAttendance(lumperAttendanceList: ArrayList<LumperAttendanceData>)
         fun showDataSavedMessage()
         fun showHeaderInfo(date: String)
+        fun showLoginScreen()
 
         interface OnAdapterItemClickListener {
             fun onAddTimeClick(lumperAttendanceData: LumperAttendanceData, itemPosition: Int)

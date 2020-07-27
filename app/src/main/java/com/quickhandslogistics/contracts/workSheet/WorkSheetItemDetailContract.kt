@@ -23,6 +23,7 @@ class WorkSheetItemDetailContract {
         fun showWorkItemDetail(workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?, tempLumperIds: ArrayList<String>)
         fun statusChangedSuccessfully()
         fun notesSavedSuccessfully()
+        fun showLoginScreen()
 
         interface OnAdapterItemClickListener {
             fun onSelectStatus(status: String)

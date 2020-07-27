@@ -1,6 +1,7 @@
 package com.quickhandslogistics.views.customerSheet
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.presenters.customerSheet.CustomerSheetPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
+import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.fragment_customer_sheet.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -206,9 +208,18 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
             })
     }
 
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
+    }
+
     /** Fragment Interaction Listeners */
-    override fun saveCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String) {
-        customerSheetPresenter.saveCustomerSheet(customerName, notesCustomer, signatureFilePath)
+    override fun saveCustomerSheet(
+        customerName: String,
+        notesCustomer: String,
+        signatureFilePath: String,
+        customerId: String
+    ) {
+        customerSheetPresenter.saveCustomerSheet(customerName, notesCustomer, signatureFilePath, customerId)
     }
 
     override fun saveSateCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String) {

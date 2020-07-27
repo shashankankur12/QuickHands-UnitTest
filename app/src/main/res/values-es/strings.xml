@@ -13,6 +13,10 @@
     <string name="availability">Availability</string>
     <string name="back_to_work">Back to Work</string>
     <string name="break_time">Break Time</string>
+    <string name="work_done">Amount of Work Done</string>
+    <string name="lumper_cases_text">Portion of cases for this lumper</string>
+    <string name="lumper_cases_error">Portion of cases for the lumper should be less than or equal to total cases</string>
+    <string name="total_cases_text">Total cases</string>
     <string name="building_name">Building Name</string>
     <string name="building_operations">Building Operations</string>
     <string name="cancel">Cancel</string>
@@ -94,9 +98,9 @@
     <string name="on_hold">On-Hold</string>
     <string name="ongoing">Ongoing</string>
     <string name="ongoing_s">Ongoing: %s</string>
-    <string name="out_bound_s">Out Bound: %s</string>
-    <string name="out_bounds">Out Bounds</string>
-    <string name="out_bounds_s">Out Bounds: %s</string>
+    <string name="out_bound_s">Outbound: %s</string>
+    <string name="out_bounds">Outbounds</string>
+    <string name="out_bounds_s">Outbounds: %s</string>
     <string name="out_to_lunch">Out to Lunch</string>
     <string name="parameters">Parameters</string>
     <string name="part_time">Part Time</string>
@@ -156,6 +160,7 @@
     <string name="update_request">Update Request</string>
     <string name="view_building_operations">View Building Operations</string>
     <string name="waiting_time">Waiting Time</string>
+    <string name="works_done">Work Done</string>
     <string name="waiting_time_in_min">Waiting Time (in Min.)</string>
     <string name="week">Week</string>
     <string name="work_item_detail">Work Item Detail</string>
@@ -223,8 +228,12 @@
     <string name="empty_password_message">Please enter Password</string>
     <string name="fill_building_parameters_message">You haven\'t filled all building parameters values. Please fill them, before changing the container status to complete.</string>
     <string name="assign_lumpers_message">You haven\'t assigned any lumper to the container. Please assign one or more lumper, before changing the container status to complete.</string>
+    <string name="assign_lumpers_endtime_starttime_message">You haven\'t finish lumper start and end time. Please finish start and end time for lumper, before changing the container status to complete.</string>
+    <string name="assign_lumpers_bracktime_message">You haven\'t finish break time for lumper . Please finish break time for lumper, before changing the container status to complete.</string>
+    <string name="assign_work_done_message">You haven\'t enter work done. Please enter work done, before changing the container status to complete.</string>
     <string name="password_short_length_message">Please enter Password of at-least 8 characters</string>
     <string name="request_help_message"><![CDATA[You will have to enter both Required Lumper Count & DM Notes]]></string>
+    <string name="request_valid_message"><![CDATA[Please enter valid number of additional lumpers needed.]]></string>
     <string name="something_went_wrong_message">Something went wrong, Please try again after sometime!!!</string>
 
     <!--Info Messages-->

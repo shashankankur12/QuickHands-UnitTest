@@ -14,7 +14,12 @@ import com.quickhandslogistics.adapters.customerSheet.ContainerDetailItemAdapter
 import com.quickhandslogistics.contracts.lumperSheet.LumperWorkDetailContract
 import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
 import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.ScheduleUtils.calculatePercent
+import com.quickhandslogistics.utils.ValueUtils.isNumeric
 import kotlinx.android.synthetic.main.item_lumper_work_detail.view.*
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.isNullOrEmpty
 
 class LumperWorkDetailAdapter(
     private val resources: Resources, private val sharedPref: SharedPref,
@@ -56,6 +61,7 @@ class LumperWorkDetailAdapter(
         private val textViewWorkTime: TextView = itemView.textViewWorkTime
         private val textViewWaitingTime: TextView = itemView.textViewWaitingTime
         private val textViewBreakTime: TextView = itemView.textViewBreakTime
+        private val textViewWorkDone: TextView = itemView.textViewWorkDone
 
         var parameters = ArrayList<String>()
 
@@ -72,6 +78,7 @@ class LumperWorkDetailAdapter(
         }
 
         fun bind(lumperDaySheet: LumperDaySheet) {
+            var totalcase =""
             lumperDaySheet.workItemDetail?.let { workItemDetail ->
                 val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.workItemType, resources)
                 textViewWorkItemType.text = workItemTypeDisplayName
@@ -99,6 +106,8 @@ class LumperWorkDetailAdapter(
                 } else {
                     relativeLayoutBO.visibility = View.GONE
                 }
+                var cases=getTotalCases(workItemDetail.buildingOps)
+                totalcase = if (!cases.isNullOrEmpty() && isNumeric(cases!!)) cases else ""
 
             }
 
@@ -117,6 +126,15 @@ class LumperWorkDetailAdapter(
                 val breakTimeStart = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeStart)
                 val breakTimeEnd = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeEnd)
                 textViewBreakTime.text = String.format("%s - %s", if (breakTimeStart.isNotEmpty()) breakTimeStart else "NA", if (breakTimeEnd.isNotEmpty()) breakTimeEnd else "NA")
+                if (!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt()!=0) {
+                    if (!totalcase.isNullOrEmpty()) {
+                        val percent = String.format("%.2f", calculatePercent(timingDetail.partWorkDone!!, totalcase)) + "%"
+                        textViewWorkDone.text = String.format("%s / %s : %s", timingDetail.partWorkDone, totalcase, percent)
+                    }
+                } else {
+                    textViewWorkDone.text ="NA"
+                }
+
             }
         }
 
@@ -147,7 +165,13 @@ class LumperWorkDetailAdapter(
             }
         }
     }
-
+    private fun getTotalCases(permeters: HashMap<String, String>?): String? {
+        var cases: String = ""
+        if (!permeters.isNullOrEmpty() && permeters.size > 0) {
+            cases = permeters.get("Cases").toString()
+        }
+        return cases
+    }
     fun updateWorkDetails(lumperDaySheetList: ArrayList<LumperDaySheet>) {
         this.lumperDaySheetList.clear()
         this.lumperDaySheetList.addAll(lumperDaySheetList)

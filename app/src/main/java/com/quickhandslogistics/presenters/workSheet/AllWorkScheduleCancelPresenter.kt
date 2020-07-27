@@ -4,9 +4,11 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.workSheet.AllWorkScheduleCancelContract
+import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.common.AllLumpersResponse
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.models.workSheet.AllWorkScheduleCancelModel
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 
 class AllWorkScheduleCancelPresenter(
@@ -37,6 +39,15 @@ class AllWorkScheduleCancelPresenter(
             allWorkScheduleCancelView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             allWorkScheduleCancelView?.showAPIErrorMessage(message)
+        }
+    }
+
+    override fun onErrorCode(errorCode: ErrorResponse) {
+        allWorkScheduleCancelView?.hideProgressDialog()
+        var sharedPref = SharedPref.getInstance()
+        if (!TextUtils.isEmpty(sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN, ""))) {
+            sharedPref.performLogout()
+            allWorkScheduleCancelView?.showLoginScreen()
         }
     }
 

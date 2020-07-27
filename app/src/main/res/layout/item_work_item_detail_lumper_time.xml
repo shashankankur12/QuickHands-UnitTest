@@ -103,6 +103,16 @@
             </LinearLayout>
         </LinearLayout>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:orientation="vertical">
         <TextView
             style="@style/valuesSmallTextViewTheme"
             android:layout_width="wrap_content"
@@ -118,6 +128,29 @@
             android:drawablePadding="@dimen/_5sdp"
             android:text="NA - NA"
             android:textColor="@color/textBlack" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/valuesSmallTextViewTheme"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:text="@string/works_done"
+                android:textColor="@color/detailHeader" />
+
+            <TextView
+                android:id="@+id/textViewWorkDone"
+                style="@style/titleVerySmallTextViewTheme"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:drawablePadding="@dimen/_5sdp"
+                android:text="NA"
+                android:textColor="@color/textBlack" />
+        </LinearLayout>
+    </LinearLayout>
     </LinearLayout>
 
     <TextView

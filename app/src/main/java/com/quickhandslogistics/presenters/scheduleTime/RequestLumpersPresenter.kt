@@ -4,10 +4,16 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.scheduleTime.RequestLumpersContract
+import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersListAPIResponse
+import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
 import com.quickhandslogistics.models.scheduleTime.RequestLumpersModel
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.ScheduleUtils.getSortRequestLumper
+import com.quickhandslogistics.utils.SharedPref
 import java.util.*
+import kotlin.collections.ArrayList
 
 class RequestLumpersPresenter(private var requestLumpersView: RequestLumpersContract.View?, private val resources: Resources) :
     RequestLumpersContract.Presenter, RequestLumpersContract.Model.OnFinishedListener {
@@ -52,6 +58,15 @@ class RequestLumpersPresenter(private var requestLumpersView: RequestLumpersCont
         }
     }
 
+    override fun onErrorCode(errorCode: ErrorResponse) {
+        requestLumpersView?.hideProgressDialog()
+        var sharedPref = SharedPref.getInstance()
+        if (!TextUtils.isEmpty(sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN, ""))) {
+            sharedPref.performLogout()
+            requestLumpersView?.showLoginScreen()
+        }
+    }
+
     override fun onSuccessCancelRequest(date: Date) {
         requestLumpersView?.hideProgressDialog()
         requestLumpersView?.showSuccessDialog(resources.getString(R.string.request_cancelled_success_message), date)
@@ -61,7 +76,7 @@ class RequestLumpersPresenter(private var requestLumpersView: RequestLumpersCont
         requestLumpersView?.hideProgressDialog()
 
         response.data?.records?.let { records ->
-            requestLumpersView?.showAllRequests(records)
+            requestLumpersView?.showAllRequests(getSortRequestLumper(records))
         }
     }
 

@@ -4,7 +4,9 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.scheduleTime.EditScheduleTimeContract
+import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.models.scheduleTime.EditScheduleTimeModel
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 
@@ -34,6 +36,15 @@ class EditScheduleTimePresenter(private var editScheduleTimeView: EditScheduleTi
             editScheduleTimeView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             editScheduleTimeView?.showAPIErrorMessage(message)
+        }
+    }
+
+    override fun onErrorCode(errorCode: ErrorResponse) {
+        editScheduleTimeView?.hideProgressDialog()
+        var sharedPref = SharedPref.getInstance()
+        if (!TextUtils.isEmpty(sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN, ""))) {
+            sharedPref.performLogout()
+            editScheduleTimeView?.showLoginScreen()
         }
     }
 

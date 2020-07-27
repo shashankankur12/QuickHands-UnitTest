@@ -18,6 +18,7 @@ import com.quickhandslogistics.data.lumperSheet.LumpersInfo
 import com.quickhandslogistics.presenters.lumperSheet.LumperSheetPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
+import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment
 import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
 import java.util.*
@@ -247,6 +248,10 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
                 lumperSheetPresenter.getLumpersSheetByDate(Date(selectedTime))
             }
         })
+    }
+
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
     /** Adapter Listeners */

@@ -4,10 +4,12 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.attendance.TimeClockAttendanceContract
+import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.attendance.AttendanceDetail
 import com.quickhandslogistics.data.attendance.GetAttendanceAPIResponse
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.models.attendance.TimeClockAttendanceModel
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 
 class TimeClockAttendancePresenter(private var timeClockAttendanceView: TimeClockAttendanceContract.View?, private val resources: Resources, sharedPref: SharedPref) :
@@ -38,6 +40,15 @@ class TimeClockAttendancePresenter(private var timeClockAttendanceView: TimeCloc
             timeClockAttendanceView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             timeClockAttendanceView?.showAPIErrorMessage(message)
+        }
+    }
+
+    override fun onErrorCode(errorCode: ErrorResponse) {
+        timeClockAttendanceView?.hideProgressDialog()
+        var sharedPref = SharedPref.getInstance()
+        if (!TextUtils.isEmpty(sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN, ""))) {
+            sharedPref.performLogout()
+            timeClockAttendanceView?.showLoginScreen()
         }
     }
 

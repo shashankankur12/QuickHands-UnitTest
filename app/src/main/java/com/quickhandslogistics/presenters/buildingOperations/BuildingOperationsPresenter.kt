@@ -4,8 +4,10 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.buildingOperations.BuildingOperationsContract
+import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.buildingOperations.BuildingOperationAPIResponse
 import com.quickhandslogistics.models.buildingOperations.BuildingOperationsModel
+import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 
 class BuildingOperationsPresenter(private var buildingOperationsView: BuildingOperationsContract.View?, private val resources: Resources) :
@@ -36,6 +38,13 @@ class BuildingOperationsPresenter(private var buildingOperationsView: BuildingOp
         } else {
             buildingOperationsView?.showAPIErrorMessage(message)
         }
+    }
+
+    override fun onErrorCode(errorCode: ErrorResponse) {
+        buildingOperationsView?.hideProgressDialog()
+        var sharedPref = SharedPref.getInstance()
+        sharedPref.performLogout()
+        buildingOperationsView?.showLoginScreen()
     }
 
     override fun onSuccessGetBuildingOperations(buildingOperationAPIResponse: BuildingOperationAPIResponse) {

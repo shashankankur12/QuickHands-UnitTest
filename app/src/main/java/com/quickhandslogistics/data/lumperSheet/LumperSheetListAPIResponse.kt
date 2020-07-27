@@ -27,9 +27,9 @@ class LumperSheetListAPIResponse : BaseResponse() {
         var isSheetSubmitted: Boolean? = null
             get() = ValueUtils.getDefaultOrValue(field)
 
-        @SerializedName("tempLumperIds")
+        @SerializedName("tempLumpers")
         @Expose
-        val tempLumperIds: ArrayList<String>? = null
+        val tempLumperIds: ArrayList<LumpersInfo>? = null
             get() = if (!field.isNullOrEmpty()) field else ArrayList()
     }
 }

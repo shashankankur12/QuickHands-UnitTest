@@ -4,10 +4,12 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.schedule.ScheduleContract
+import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.models.schedule.ScheduleModel
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.ScheduleUtils.getAllAssignedLumpersList
 import com.quickhandslogistics.utils.ScheduleUtils.getScheduleTypeName
 import com.quickhandslogistics.utils.ScheduleUtils.getWholeScheduleStatus
@@ -39,6 +41,15 @@ class SchedulePresenter(private var scheduleView: ScheduleContract.View?, privat
             scheduleView?.showAPIErrorMessage(resources.getString(R.string.something_went_wrong_message))
         } else {
             scheduleView?.showAPIErrorMessage(message)
+        }
+    }
+
+    override fun onErrorCode(errorCode: ErrorResponse) {
+        scheduleView?.hideProgressDialog()
+        var sharedPref = SharedPref.getInstance()
+        if (!TextUtils.isEmpty(sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN, ""))) {
+            sharedPref.performLogout()
+            scheduleView?.showLoginScreen()
         }
     }
 

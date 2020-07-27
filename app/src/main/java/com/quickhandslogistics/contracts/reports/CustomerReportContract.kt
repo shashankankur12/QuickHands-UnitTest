@@ -18,6 +18,7 @@ class CustomerReportContract {
     interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
         fun showReportDownloadDialog(reportUrl: String, mimeType: String)
+        fun showLoginScreen()
     }
 
     interface Presenter : BaseContract.Presenter {

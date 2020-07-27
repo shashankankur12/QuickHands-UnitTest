@@ -21,6 +21,7 @@ class AllWorkScheduleCancelContract {
         fun showAPIErrorMessage(message: String)
         fun showLumpersData(employeeDataList: ArrayList<EmployeeData>)
         fun cancellingWorkScheduleFinished()
+        fun showLoginScreen()
     }
 
     interface Presenter : BaseContract.Presenter {

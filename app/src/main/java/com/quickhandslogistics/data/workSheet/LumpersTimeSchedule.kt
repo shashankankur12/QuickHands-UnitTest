@@ -39,6 +39,10 @@ class LumpersTimeSchedule() : Parcelable {
     @Expose
     var breakTimeEnd: String? = null
 
+    @SerializedName("partWork")
+    @Expose
+    var partWorkDone: String? = null
+
     @SerializedName("created_at")
     @Expose
     var createdAt: String? = null
@@ -64,6 +68,7 @@ class LumpersTimeSchedule() : Parcelable {
         endTime = parcel.readString()
         breakTimeStart = parcel.readString()
         breakTimeEnd = parcel.readString()
+        partWorkDone = parcel.readString()
         createdAt = parcel.readString()
         updatedAt = parcel.readString()
         sheetSigned = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
@@ -79,6 +84,7 @@ class LumpersTimeSchedule() : Parcelable {
         parcel.writeString(endTime)
         parcel.writeString(breakTimeStart)
         parcel.writeString(breakTimeEnd)
+        parcel.writeString(partWorkDone)
         parcel.writeString(createdAt)
         parcel.writeString(updatedAt)
         parcel.writeValue(sheetSigned)

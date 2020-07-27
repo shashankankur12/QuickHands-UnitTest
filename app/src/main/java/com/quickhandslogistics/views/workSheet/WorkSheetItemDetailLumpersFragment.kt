@@ -39,6 +39,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         private const val LUMPER_WORK_DETALS = "LUMPER_WORK_DETALS"
         private const val LUMPER_SCHEDULE = "LUMPER_SCHEDULE"
         private const val TEMP_LUMPER_IDS = "TEMP_LUMPER_IDS"
+        const val TOTAL_CASES = "TOTAL_CASES"
         @JvmStatic
         fun newInstance(
             allWorkItem: WorkItemDetail?,
@@ -126,7 +127,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
             }
         }
 
-        workSheetItemDetailLumpersAdapter.updateList(workItemDetail.assignedLumpersList, timingsData, workItemDetail.status, tempLumperIds)
+        workSheetItemDetailLumpersAdapter.updateList(workItemDetail.assignedLumpersList, timingsData, workItemDetail.status, tempLumperIds, getTotalCases(workItemDetail?.buildingOps))
 
         if (workItemDetail.assignedLumpersList.isNullOrEmpty()) {
             buttonAddLumpers.text = getString(R.string.add_lumpers)
@@ -136,7 +137,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
 
         workItemDetail.status?.let { status ->
             if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED || status == AppConstant.WORK_ITEM_STATUS_CANCELLED) {
-                buttonAddLumpers.visibility = View.GONE
+                buttonAddLumpers.visibility = View.VISIBLE
                 textViewEmptyData.text = getString(R.string.empty_work_item_lumpers_past_date_info_message)
             } else {
                 buttonAddLumpers.visibility = View.VISIBLE
@@ -146,7 +147,12 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
     }
 
     fun showEmptyData() {
-        workSheetItemDetailLumpersAdapter.updateList(ArrayList(), LinkedHashMap(), tempLumperIds = ArrayList())
+        workSheetItemDetailLumpersAdapter.updateList(
+            ArrayList(),
+            LinkedHashMap(),
+            tempLumperIds = ArrayList(),
+            totalCases = getTotalCases(workItemDetail?.buildingOps)
+        )
         buttonAddLumpers.visibility = View.GONE
     }
 
@@ -165,6 +171,14 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         }
     }
 
+    private fun getTotalCases(permeters: HashMap<String, String>?): String? {
+        var cases: String = ""
+        if (!permeters.isNullOrEmpty() && permeters.size > 0) {
+            cases = permeters.get("Cases").toString()
+        }
+        return cases
+    }
+
     /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
@@ -178,6 +192,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
     override fun onAddTimeClick(employeeData: EmployeeData, timingData: LumpersTimeSchedule?) {
         val bundle = Bundle()
         bundle.putString(ARG_WORK_ITEM_ID, workItemDetail?.id)
+        bundle.putString(TOTAL_CASES, getTotalCases(workItemDetail?.buildingOps))
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_TIMING_DATA, timingData)
         startIntent(AddLumperTimeWorkSheetItemActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)

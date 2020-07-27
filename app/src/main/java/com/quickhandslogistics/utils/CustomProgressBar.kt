@@ -49,6 +49,19 @@ class CustomProgressBar {
         progressDialog.setContentTextGravity(Gravity.START)
     }
 
+    fun showMessageDialog(message: String, activityContext: Context) {
+        val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.NORMAL_TYPE)
+        progressDialog.titleText = ""
+        progressDialog.showTitleText(false)
+        progressDialog.contentText = message.capitalize()
+        progressDialog.confirmText = activityContext.getString(R.string.ok)
+        progressDialog.show()
+        progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
+        progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
+        updateButtonsUI(progressDialog, activityContext)
+        progressDialog.setContentTextGravity(Gravity.CENTER)
+    }
+
     fun showErrorDialog(message: String, activityContext: Context) {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.ERROR_TYPE)
         progressDialog.titleText = activityContext.getString(R.string.error)
