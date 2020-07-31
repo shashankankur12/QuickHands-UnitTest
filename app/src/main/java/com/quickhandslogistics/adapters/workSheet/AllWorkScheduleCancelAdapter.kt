@@ -12,12 +12,13 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.controls.CustomTextView
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.utils.UIUtils
+import com.quickhandslogistics.views.workSheet.AllWorkScheduleCancelActivity
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_add_lumpers.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AllWorkScheduleCancelAdapter : Adapter<AllWorkScheduleCancelAdapter.ViewHolder>() {
+class AllWorkScheduleCancelAdapter(private val onAdapterClick: AllWorkScheduleCancelActivity) : Adapter<AllWorkScheduleCancelAdapter.ViewHolder>() {
 
     private var searchEnabled = false
     private var searchTerm = ""
@@ -58,12 +59,7 @@ class AllWorkScheduleCancelAdapter : Adapter<AllWorkScheduleCancelAdapter.ViewHo
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
             textViewShiftHours.text = UIUtils.getDisplayShiftHours(employeeData)
-
-            if (selectedLumperIdsList.contains(employeeData.id!!)) {
-                imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick)
-            } else {
-                imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick_blank)
-            }
+            imageViewAdd.visibility=View.GONE
 
             itemView.setOnClickListener(this)
         }
@@ -71,15 +67,16 @@ class AllWorkScheduleCancelAdapter : Adapter<AllWorkScheduleCancelAdapter.ViewHo
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
-                    itemView.id -> {
-                        val employeeData = getItem(adapterPosition)
-                        if (selectedLumperIdsList.contains(employeeData.id!!)) {
-                            selectedLumperIdsList.remove(employeeData.id!!)
-                        } else {
-                            selectedLumperIdsList.add(employeeData.id!!)
-                        }
-                        notifyDataSetChanged()
-                    }
+//                    itemView.id -> {
+//                        val employeeData = getItem(adapterPosition)
+//                        if (selectedLumperIdsList.contains(employeeData.id!!)) {
+//                            selectedLumperIdsList.remove(employeeData.id!!)
+//                        } else {
+//                            selectedLumperIdsList.add(employeeData.id!!)
+//                        }
+//                        onAdapterClick.onLumperSelectionChanged()
+//                        notifyDataSetChanged()
+//                    }
                 }
             }
         }
@@ -114,6 +111,34 @@ class AllWorkScheduleCancelAdapter : Adapter<AllWorkScheduleCancelAdapter.ViewHo
                 }
             }
         }
+        notifyDataSetChanged()
+    }
+
+    fun invokeSelectAll() {
+        if (itemCount > 0) {
+            val selectedCount = getSelectedLumper().size
+            if (selectedCount == itemCount) {
+                clearAllSelection()
+            } else {
+            selectAllLumpers()
+            }
+        }
+    }
+
+    fun clearAllSelection() {
+        selectedLumperIdsList.clear()
+
+        onAdapterClick.onLumperSelectionChanged()
+        notifyDataSetChanged()
+    }
+
+    private fun selectAllLumpers() {
+        for (employeeData in employeeDataList) {
+            if (!selectedLumperIdsList.contains(employeeData.id!!)) {
+                selectedLumperIdsList.add(employeeData.id!!)
+            }
+        }
+        onAdapterClick.onLumperSelectionChanged()
         notifyDataSetChanged()
     }
 

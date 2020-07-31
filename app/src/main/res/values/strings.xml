@@ -22,7 +22,7 @@
     <string name="building_name_lead">Building Name : </string>
     <string name="building_operations">Building Operations</string>
     <string name="cancel">Cancel</string>
-    <string name="cancel_all_work_schedules">Cancel All Work Schedules</string>
+    <string name="cancel_all_work_schedules">Today\'s Work Cancel</string>
     <string name="cancel_request">Cancel Request</string>
     <string name="cancelled">Cancelled</string>
     <string name="cancelled_s">Cancelled: %s</string>
@@ -187,6 +187,7 @@
     <string name="empty_add_work_item_lumpers_info_message">This building doesn\'t have any lumpers present for the selected date. Please mark lumpers attendance in \'Time-Clock Attendance\' section for selecting them.</string>
     <string name="empty_edit_schedule_time_info_message">Add the lumpers you wish to schedule</string>
     <string name="empty_work_item_detail_page_lumpers_info_message">Press \'Add Lumpers\' to assign.</string>
+    <string name="empty_work_item_cancel_message">Clock-In Lumpers</string>
     <string name="empty_work_item_lumpers_info_message">You haven\'t assigned any lumpers to this container. Click on \'Add Lumpers\' to assign.</string>
     <string name="empty_work_item_lumpers_past_date_info_message">You haven\'t assigned any lumpers to this container.</string>
     <string name="empty_building_operations_info_message">This building doesn\'t have any parameters assigned. Please contact the admin to add new parameters.</string>
@@ -262,6 +263,8 @@
     <string name="notification_off_info_message">Notification are turned off from the app Settings. Click to update.</string>
     <string name="search_info_message">Search by Name…</string>
     <string name="sign_in_info_message">Sign in by entering the details below.</string>
+    <string name="work_sheet_lumper_message">Lead and lumpers have been Clocked-In</string>
+    <string name="work_sheet_cancel_header_message">Clock-In lead and all lumpers who are present before submitting. Add a note if needed</string>
 
     <!--Lumper Timing Warnings-->
     <string name="work_start_less_work_end_warning_message">Work\'s Start Time should be less than End Time</string>
