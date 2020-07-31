@@ -90,6 +90,10 @@ open class EmployeeData() : Parcelable {
     @Expose
     var jobDescription: String? = null
 
+    @SerializedName("scheduleNotes")
+    @Expose
+    var scheduleNotes: String? = null
+
     @SerializedName("lastDayWorked")
     @Expose
     var lastDayWorked: String? = null
@@ -122,6 +126,7 @@ open class EmployeeData() : Parcelable {
         milesRadiusFromPrimaryBuilding = parcel.readString()
         hiringDate = parcel.readString()
         jobDescription = parcel.readString()
+        scheduleNotes = parcel.readString()
         lastDayWorked = parcel.readString()
         fullTime = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         isTemporaryAssigned = parcel.readValue(Boolean::class.java.classLoader) as Boolean
@@ -149,6 +154,7 @@ open class EmployeeData() : Parcelable {
         parcel.writeString(milesRadiusFromPrimaryBuilding)
         parcel.writeString(hiringDate)
         parcel.writeString(jobDescription)
+        parcel.writeString(scheduleNotes)
         parcel.writeString(lastDayWorked)
         parcel.writeValue(fullTime)
         parcel.writeValue(isTemporaryAssigned)

@@ -76,7 +76,9 @@ open class BaseActivity : AppCompatActivity(), BaseContract.View {
 
         if (showBackButton) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_arrow)
+            if (title.equals(getString(R.string.my_profile)) || title.equals(getString(R.string.lumper_profile)))
+                supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_arrow_white)
+            else supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_arrow)
         }
     }
 

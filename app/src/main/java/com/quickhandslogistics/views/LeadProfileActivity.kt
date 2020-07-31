@@ -13,7 +13,6 @@ import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.UIUtils
 import com.quickhandslogistics.views.common.FullScreenImageActivity
 import kotlinx.android.synthetic.main.content_lead_profile.*
-import java.util.*
 
 
 class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnClickListener {
@@ -31,7 +30,7 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
         setContentView(R.layout.activity_lead_profile)
         setupToolbar(title = getString(R.string.my_profile))
 
-        layoutDMEmail.setOnClickListener(this)
+//        layoutDMEmail.setOnClickListener(this)
         //  circleImageViewProfile.setOnClickListener(this)
 
         leadProfilePresenter = LeadProfilePresenter(this, resources, sharedPref)
@@ -88,9 +87,10 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
                         startZoomIntent(FullScreenImageActivity::class.java, bundle, circleImageViewProfile)
                     }
                 }
-                layoutDMEmail.id -> {
-                    showEmailDialog()
-                }
+//                layoutDMEmail.id -> {
+//                    showEmailDialog()
+//                }
+
             }
         }
     }
@@ -99,21 +99,27 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
     override fun loadLeadProfile(employeeData: LeadProfileData) {
         this.employeeData = employeeData
         UIUtils.showEmployeeProfileImage(activity, employeeData, circleImageViewProfile)
-
         textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
-        textViewEmployeeId.text = if (!employeeData.employeeId.isNullOrEmpty()) employeeData.employeeId else "-"
-        textViewRole.text = if (!employeeData.role.isNullOrEmpty()) employeeData.role!!.toUpperCase(Locale.getDefault()) else "-"
-        textViewEmailAddress.text = if (!employeeData.email.isNullOrEmpty()) employeeData.email else "-"
+        if (!employeeData.buildingDetailData?.buildingName.isNullOrEmpty() && !employeeData.role.isNullOrEmpty()) {
+            textViewCompanyName.text =
+                employeeData.role!!.capitalize() + " at " + employeeData.buildingDetailData?.buildingName!!.capitalize()
+        } else textViewCompanyName.visibility = View.GONE
 
+        textViewEmailAddress.text = if (!employeeData.email.isNullOrEmpty()) employeeData.email else "-"
         val phoneNumber = UIUtils.getDisplayPhoneNumber(employeeData)
         textViewPhoneNumber.text = if (phoneNumber.isNotEmpty()) phoneNumber else "-"
 
+        textViewEmployeeId.text = if (!employeeData.employeeId.isNullOrEmpty()) employeeData.employeeId else "-"
+        textViewRole.text = if (!employeeData.role.isNullOrEmpty()) employeeData.role!!.capitalize() else "-"
+        textViewDepartment.text = if (!employeeData.department.isNullOrEmpty()) employeeData.department!!.capitalize() else "-"
+        textViewTitle.text = if (!employeeData.title.isNullOrEmpty()) employeeData.title!!.capitalize() else "---"
+
         textViewShiftHours.text = if (!employeeData.shiftHours.isNullOrEmpty()) employeeData.shiftHours else "-"
         textViewShift.text = if (!employeeData.shift.isNullOrEmpty()) employeeData.shift?.capitalize() else "-"
-        textViewBuildingName.text = if (!employeeData.buildingDetailData?.buildingName.isNullOrEmpty()) employeeData.buildingDetailData?.buildingName!!.capitalize() else "-"
-        textViewDepartment.text = if (!employeeData.department.isNullOrEmpty()) UIUtils.getDisplayEmployeeDepartment(employeeData) else "-"
+        textViewScheduleNote.text = if (!employeeData.scheduleNotes.isNullOrEmpty()) getString(R.string.schedule_note) + employeeData.scheduleNotes else getString(R.string.schedule_note_lead)
+        textViewAvailability.text = if (employeeData.fullTime!!) getString(R.string.full_time) else getString(R.string.part_time)
 
-        textViewDMName.text = UIUtils.getEmployeeFullName(employeeData.buildingDetailData?.districtManager)
-        textViewDMEmail.text = if (!employeeData.buildingDetailData?.districtManager?.email.isNullOrEmpty()) employeeData.buildingDetailData?.districtManager?.email else "-"
+        textViewBuildingName.text = if (!employeeData.buildingDetailData?.buildingName.isNullOrEmpty()) employeeData.buildingDetailData?.buildingName!!.capitalize() else "-"
+        textViewCustomerName.text = if (!employeeData.buildingDetailData?.customerDetail?.companyAdminName.isNullOrEmpty()) employeeData.buildingDetailData?.customerDetail?.companyAdminName!!.capitalize() else "-"
     }
 }

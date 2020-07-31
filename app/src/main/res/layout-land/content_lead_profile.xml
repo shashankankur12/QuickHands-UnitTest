@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/appBackground"
+    android:background="@color/float_transparent"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -13,30 +13,56 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_10ssp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/circleImageViewProfile"
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_70sdp"
-            android:src="@drawable/dummy"
-            android:transitionName="@string/transition_name"
-            app:civ_border_color="@color/imageBorder"
-            app:civ_border_width="1dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textViewLumperName"
-            android:layout_width="0dp"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
-            android:gravity="center"
-            android:textColor="@color/textBlack"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold"
+            android:paddingHorizontal="@dimen/_20sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/circleImageViewProfile" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleImageViewProfile"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
+                android:src="@drawable/dummy"
+                android:transitionName="@string/transition_name"
+                app:civ_border_color="@color/imageBorder"
+                app:civ_border_width="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/headerLogo"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/qhl_thumb_logo_white" />
+
+            <TextView
+                android:id="@+id/textViewLumperName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/headerLogo"
+                android:layout_alignParentRight="true"
+                android:text="ghjhddhdj"
+                android:gravity="center"
+                android:textColor="@color/buildingTitle"
+                android:textSize="@dimen/_14ssp" />
+
+            <TextView
+                android:id="@+id/textViewCompanyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewLumperName"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:text="njhhd"
+                android:textColor="@color/buildingTitle"
+                android:textSize="@dimen/_12ssp" />
+
+        </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -45,267 +71,496 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/constraintLayout"
         android:background="@drawable/white_background"
-        android:padding="@dimen/_16ssp"
+        android:paddingHorizontal="@dimen/_16ssp"
+        android:paddingTop="@dimen/_10sdp"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:paddingBottom="@dimen/_15sdp"
             android:layout_height="match_parent">
-
-            <LinearLayout
-                android:id="@+id/layoutEmployeeId"
-                android:layout_width="0dp"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewContact"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/layoutRole"
+                android:elevation="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_5sdp"
+                app:layout_constraintEnd_toStartOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    style="@style/detailTextHeader"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/employee_id" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textViewEmployeeId"
-                    style="@style/detailTextValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp" />
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:background="@color/colorTextGrey"
+                        android:paddingHorizontal="@dimen/_10sdp">
 
-            <LinearLayout
-                android:id="@+id/layoutRole"
-                android:layout_width="0dp"
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="Contact"
+                            android:textColor="@color/textWhite"
+                            android:textSize="@dimen/_14sdp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutPhoneNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5ssp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_10sdp">
+
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/phone_number_lead"
+                            android:textColor="@color/buildingTitle"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textViewPhoneNumber"
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorTextGrey"
+                            android:paddingStart="@dimen/_2sdp"
+                            android:textSize="@dimen/_11ssp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutEmailAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5ssp"
+                        android:layout_marginBottom="@dimen/_5ssp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_10sdp">
+
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/email_addess_lead"
+                            android:textColor="@color/buildingTitle"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textViewEmailAddress"
+                            style="@style/detailTextHeader"
+                            android:paddingStart="@dimen/_2sdp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorTextGrey"
+                            android:textSize="@dimen/_11ssp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewWorkIdentification"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/layoutEmployeeId"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_marginTop="@dimen/_15sdp"
+                android:elevation="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_5sdp"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewContact">
 
-                <TextView
-                    style="@style/detailTextHeader"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/role" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textViewRole"
-                    style="@style/detailTextValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp" />
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:background="@color/colorTextGrey"
+                        android:paddingHorizontal="@dimen/_10sdp">
 
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/labelBarrier1"
-                android:layout_width="wrap_content"
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="Work Identification"
+                            android:textColor="@color/textWhite"
+                            android:textSize="@dimen/_14sdp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutEmployeeId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_10sdp">
+
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/employee_id_lead"
+                            android:textColor="@color/buildingTitle"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textViewEmployeeId"
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="@dimen/_2sdp"
+                            android:textColor="@color/colorTextGrey"
+                            android:textSize="@dimen/_11ssp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5ssp"
+                        android:layout_marginBottom="@dimen/_5ssp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:weightSum="3">
+
+                        <LinearLayout
+                            android:id="@+id/layoutRole"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/layoutEmployeeId"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                style="@style/detailTextHeader"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/role_lead"
+                                android:textColor="@color/buildingTitle"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textViewRole"
+                                style="@style/detailTextHeader"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="@dimen/_2sdp"
+                                android:textColor="@color/colorTextGrey"
+                                android:textSize="@dimen/_11ssp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layoutTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/layoutEmployeeId"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                style="@style/detailTextHeader"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/title_lead"
+                                android:textColor="@color/buildingTitle"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textViewTitle"
+                                style="@style/detailTextHeader"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="@dimen/_2sdp"
+                                android:textColor="@color/colorTextGrey"
+                                android:textSize="@dimen/_11ssp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layoutDepartment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/detailTextHeader"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/department_lead"
+                                android:textColor="@color/buildingTitle"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textViewDepartment"
+                                style="@style/detailTextHeader"
+                                android:layout_width="wrap_content"
+                                android:paddingHorizontal="@dimen/_2sdp"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorTextGrey"
+                                android:textSize="@dimen/_11ssp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewWorkSchedule"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:barrierDirection="bottom"
-                app:constraint_referenced_ids="layoutEmployeeId,layoutRole" />
+                android:layout_marginTop="@dimen/_15sdp"
+                android:elevation="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_5sdp"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewWorkIdentification">
 
-            <LinearLayout
-                android:id="@+id/layoutEmailAddress"
-                android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:background="@color/colorTextGrey"
+                        android:paddingHorizontal="@dimen/_10sdp">
+
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="Work Schedule"
+                            android:textColor="@color/textWhite"
+                            android:textSize="@dimen/_14sdp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutAvailability"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_10sdp">
+
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Availability : "
+                            android:textColor="@color/buildingTitle"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textViewAvailability"
+                            android:paddingHorizontal="@dimen/_2sdp"
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorTextGrey"
+                            android:textSize="@dimen/_11ssp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5ssp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:id="@+id/layoutShift"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/layoutShiftHours"
+                            app:layout_constraintTop_toBottomOf="@+id/layoutPhoneNumber">
+
+                            <TextView
+                                style="@style/detailTextHeader"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/shift_lead"
+                                android:textColor="@color/buildingTitle"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textViewShift"
+                                style="@style/detailTextHeader"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="@dimen/_2sdp"
+                                android:textColor="@color/colorTextGrey"
+                                android:textSize="@dimen/_11ssp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layoutShiftHours"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toStartOf="@id/layoutShift"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/layoutPhoneNumber">
+
+                            <TextView
+                                style="@style/detailTextHeader"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/shift_hours_lead"
+                                android:textColor="@color/buildingTitle"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textViewShiftHours"
+                                style="@style/detailTextHeader"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="@dimen/_2sdp"
+                                android:textColor="@color/colorTextGrey"
+                                android:textSize="@dimen/_11ssp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutScheduleNote"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_5ssp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_10sdp">
+
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:id="@+id/textViewScheduleNote"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/schedule_note"
+                            android:textColor="@color/buildingTitle"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="@dimen/_2sdp"
+                            android:textColor="@color/colorTextGrey"
+                            android:textSize="@dimen/_11ssp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewWorkLocation"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15ssp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/labelBarrier1">
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:elevation="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_5sdp"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewWorkSchedule">
 
-                <TextView
-                    style="@style/detailTextHeader"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/email_address" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textViewEmailAddress"
-                    style="@style/detailTextValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp" />
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:background="@color/colorTextGrey"
+                        android:paddingHorizontal="@dimen/_10sdp">
 
-            <LinearLayout
-                android:id="@+id/layoutPhoneNumber"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15ssp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutEmailAddress">
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="WorkLocation"
+                            android:textColor="@color/textWhite"
+                            android:textSize="@dimen/_14sdp"
+                            android:textStyle="bold" />
 
-                <TextView
-                    style="@style/detailTextHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/phone_number" />
+                    </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textViewPhoneNumber"
-                    style="@style/detailTextValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp" />
-            </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/layoutCustomerName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5ssp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_10sdp">
 
-            <LinearLayout
-                android:id="@+id/layoutShiftHours"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15ssp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@id/layoutShift"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutPhoneNumber">
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Customer name : "
+                            android:textColor="@color/buildingTitle"
+                            android:textStyle="bold" />
 
-                <TextView
-                    style="@style/detailTextHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/shift_hours" />
+                        <TextView
+                            android:id="@+id/textViewCustomerName"
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="@dimen/_2sdp"
+                            android:textColor="@color/colorTextGrey"
+                            android:textSize="@dimen/_11ssp" />
+                    </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textViewShiftHours"
-                    style="@style/detailTextValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp" />
-            </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/layoutBuildingName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5ssp"
+                        android:layout_marginBottom="@dimen/_5ssp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_10sdp">
 
-            <LinearLayout
-                android:id="@+id/layoutShift"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15ssp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/layoutShiftHours"
-                app:layout_constraintTop_toBottomOf="@+id/layoutPhoneNumber">
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/building_name_lead"
+                            android:textColor="@color/buildingTitle"
+                            android:textStyle="bold" />
 
-                <TextView
-                    style="@style/detailTextHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/shift" />
-
-                <TextView
-                    android:id="@+id/textViewShift"
-                    style="@style/detailTextValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layoutBuildingName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15ssp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/layoutDepartment"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutShiftHours">
-
-                <TextView
-                    style="@style/detailTextHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/building_name" />
-
-                <TextView
-                    android:id="@+id/textViewBuildingName"
-                    style="@style/detailTextValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/layoutDepartment"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15ssp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/layoutBuildingName"
-                app:layout_constraintTop_toBottomOf="@+id/layoutShift">
-
-                <TextView
-                    style="@style/detailTextHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/department" />
-
-                <TextView
-                    android:id="@+id/textViewDepartment"
-                    style="@style/detailTextValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp" />
-            </LinearLayout>
-
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/labelBarrier2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:barrierDirection="bottom"
-                app:constraint_referenced_ids="layoutBuildingName,layoutDepartment" />
-
-            <LinearLayout
-                android:id="@+id/layoutDMName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15ssp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/layoutDMEmail"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/labelBarrier2">
-
-                <TextView
-                    style="@style/detailTextHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/district_manager_name" />
-
-                <TextView
-                    android:id="@+id/textViewDMName"
-                    style="@style/detailTextValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layoutDMEmail"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15ssp"
-                android:background="?android:attr/selectableItemBackground"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/layoutDMName"
-                app:layout_constraintTop_toBottomOf="@+id/labelBarrier2">
-
-                <TextView
-                    style="@style/detailTextHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_email"
-                    android:drawablePadding="@dimen/_6sdp"
-                    android:text="@string/district_manager_email" />
-
-                <TextView
-                    android:id="@+id/textViewDMEmail"
-                    style="@style/detailTextValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp" />
-            </LinearLayout>
+                        <TextView
+                            android:id="@+id/textViewBuildingName"
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:paddingStart="@dimen/_2sdp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorTextGrey"
+                            android:textSize="@dimen/_11ssp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </RelativeLayout>
