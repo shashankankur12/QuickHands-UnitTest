@@ -31,6 +31,8 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     private var isPastDate = false
     private var selectedTime: Long = 0
     private var scheduledLumpersCount: Int = 0
+    private var scheduledLumpersAssignedCount: Int = 0
+    private var scheduledLumpersTotalCount: Int = 0
     private var dateString: String = ""
 
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
@@ -130,6 +132,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         buttonCreateNewRequest.setOnClickListener(this)
         bottomSheetBackgroundRequestLumpers.setOnClickListener(this)
         buttonSubmit.setOnClickListener(this)
+        buttonCancelRequest.setOnClickListener(this)
     }
 
     private fun closeBottomSheet() {
@@ -212,6 +215,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
                         showSubmitRequestConfirmationDialog(requiredLumperCount, notesDM)
                     }
                 }
+                buttonCancelRequest.id ->{ super.onBackPressed() }
             }
         }
     }
@@ -224,6 +228,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     override fun showAllRequests(records: ArrayList<RequestLumpersRecord>) {
         this.records=records
         swipe_pull_refresh?.isRefreshing = false
+        setTotalLumperRequest(records)
         requestLumpersAdapter.updateList(records)
     }
 
@@ -231,7 +236,8 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     {
         this.dateString=dateString
         textViewDate.text = dateString
-        textViewTotalCount.text = String.format(getString(R.string.total_lumpers_assigned_s), scheduledLumpersCount)
+        textViewTotalCount.text = String.format(getString(R.string.total_lumpers_assigned_s), scheduledLumpersAssignedCount)
+        textViewTotalRequestCount.text = String.format(getString(R.string.total_lumpers_requested), scheduledLumpersTotalCount)
     }
 
     override fun showSuccessDialog(message: String, date: Date) {
@@ -240,6 +246,21 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
                 requestLumpersPresenter.fetchAllRequestsByDate(date)
             }
         })
+    }
+
+    private fun setTotalLumperRequest(records: ArrayList<RequestLumpersRecord>) {
+        var totalRequestCount: Int = 0
+        var assignedLumersRequestCount: Int = 0
+        records.forEach {
+            totalRequestCount += it.requestedLumpersCount!!
+            if (!it.lumpersAllocated.isNullOrEmpty())
+                assignedLumersRequestCount += it.lumpersAllocated!!.size
+        }
+        scheduledLumpersTotalCount = totalRequestCount
+        scheduledLumpersAssignedCount = assignedLumersRequestCount
+
+        textViewTotalCount.text = String.format(getString(R.string.total_lumpers_assigned_s), scheduledLumpersAssignedCount)
+        textViewTotalRequestCount.text = String.format(getString(R.string.total_lumpers_requested), scheduledLumpersTotalCount)
     }
 
     /** Adapter Listeners */

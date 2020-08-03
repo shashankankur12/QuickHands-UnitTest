@@ -132,7 +132,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
             }
             radioButtonMonthly.id -> {
                 selectedEndDate = calendar.time
-                calendar.add(Calendar.MONTH, -1)
+                calendar.set(Calendar.DATE, 1)
                 selectedStartDate = calendar.time
             }
             radioButtonCustom.id -> {
@@ -145,13 +145,13 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
 
     private fun updateSelectedDateText() {
         selectedStartDate?.also { date ->
-            textViewStartDate.text = DateUtils.getDateString(DateUtils.PATTERN_DATE_DISPLAY, date)
+            textViewStartDate.text = DateUtils.getDateString(DateUtils.PATTERN_MONTH_DAY_DISPLAY, date)
         } ?: run {
             textViewStartDate.text = ""
         }
 
         selectedEndDate?.also { date ->
-            textViewEndDate.text = DateUtils.getDateString(DateUtils.PATTERN_DATE_DISPLAY, date)
+            textViewEndDate.text = DateUtils.getDateString(DateUtils.PATTERN_MONTH_DAY_DISPLAY, date)
         } ?: run {
             textViewEndDate.text = ""
         }

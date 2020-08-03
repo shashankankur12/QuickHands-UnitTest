@@ -32,11 +32,15 @@
             android:id="@+id/radioButtonDaily"
             style="@style/valuesTextViewTheme"
             android:layout_width="wrap_content"
+            android:button="@drawable/custome_radio_button"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:text="@string/day" />
 
         <RadioButton
             android:id="@+id/radioButtonWeekly"
             style="@style/valuesTextViewTheme"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:button="@drawable/custome_radio_button"
             android:layout_width="wrap_content"
             android:text="@string/week" />
 
@@ -44,11 +48,15 @@
             android:id="@+id/radioButtonMonthly"
             style="@style/valuesTextViewTheme"
             android:layout_width="wrap_content"
+            android:button="@drawable/custome_radio_button"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:text="@string/month" />
 
         <RadioButton
             android:id="@+id/radioButtonCustom"
             style="@style/valuesTextViewTheme"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:button="@drawable/custome_radio_button"
             android:layout_width="wrap_content"
             android:text="@string/custom" />
     </RadioGroup>
@@ -79,15 +87,14 @@
             android:textColor="@color/scheduleDetail"
             android:textSize="@dimen/_12ssp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:gravity="center"
+        <ImageView
+            android:layout_width="@dimen/_22sdp"
+            android:layout_height="@dimen/_22sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_gravity="center"
             android:text="@string/to"
-            android:textColor="@color/textBlack"
-            android:textSize="@dimen/_10ssp" />
+            android:src="@drawable/ic_remove_icon" />
 
         <TextView
             android:id="@+id/textViewEndDate"

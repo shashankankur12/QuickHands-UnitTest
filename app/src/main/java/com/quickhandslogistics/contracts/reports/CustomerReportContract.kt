@@ -19,6 +19,9 @@ class CustomerReportContract {
         fun showAPIErrorMessage(message: String)
         fun showReportDownloadDialog(reportUrl: String, mimeType: String)
         fun showLoginScreen()
+        interface OnAdapterItemClickListener {
+            fun onLumperSelectionChanged()
+        }
     }
 
     interface Presenter : BaseContract.Presenter {

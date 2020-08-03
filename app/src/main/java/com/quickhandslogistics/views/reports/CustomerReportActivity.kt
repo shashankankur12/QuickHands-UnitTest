@@ -6,23 +6,36 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.RadioGroup
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.adapters.reports.CustomerJobReportAdapter
 import com.quickhandslogistics.contracts.reports.CustomerReportContract
+import com.quickhandslogistics.data.dashboard.BuildingDetailData
+import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.presenters.reports.CustomerReportPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.content_customer_report.*
+import kotlinx.android.synthetic.main.content_customer_report.buttonGenerateReport
+import kotlinx.android.synthetic.main.content_customer_report.mainConstraintLayout
+import kotlinx.android.synthetic.main.content_customer_report.recyclerViewCustomer
+import kotlinx.android.synthetic.main.content_lumper_job_report.*
 import kotlinx.android.synthetic.main.layout_date_filter.*
 import kotlinx.android.synthetic.main.layout_report_type.*
 import java.util.*
+import kotlinx.android.synthetic.main.content_lumper_job_report.textViewEmptyData as textViewEmptyData1
 
-class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerReportContract.View, RadioGroup.OnCheckedChangeListener {
+class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerReportContract.View, CustomerReportContract.View.OnAdapterItemClickListener, RadioGroup.OnCheckedChangeListener {
 
     private var selectedStartDate: Date? = null
     private var selectedEndDate: Date? = null
 
     private lateinit var customerReportPresenter: CustomerReportPresenter
+    private lateinit var customerJobReportAdapter: CustomerJobReportAdapter
+    private  var buildingDetailList: ArrayList<BuildingDetailData> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +43,18 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
         setupToolbar(getString(R.string.customer_report))
 
         initializeUI()
+        getBuildingDetail()
 
         customerReportPresenter = CustomerReportPresenter(this, resources)
+    }
+
+    private fun getBuildingDetail() {
+        val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+        var buildingDetailData= leadProfile?.buildingDetailData
+
+        buildingDetailData?.let { buildingDetailList.add(it) }
+
+        customerJobReportAdapter.updateLumpersData(buildingDetailList)
     }
 
 
@@ -51,12 +74,39 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
     }
 
     private fun initializeUI() {
+        recyclerViewCustomer.apply {
+            val linearLayoutManager = LinearLayoutManager(activity)
+            layoutManager = linearLayoutManager
+            val dividerItemDecoration = DividerItemDecoration(activity, linearLayoutManager.orientation)
+            addItemDecoration(dividerItemDecoration)
+            customerJobReportAdapter = CustomerJobReportAdapter(this@CustomerReportActivity)
+            adapter = customerJobReportAdapter
+        }
+
+        customerJobReportAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                invalidateEmptyView()
+            }
+        })
+
         updateTimeByRangeOptionSelected()
 
         radioGroupDateRange.setOnCheckedChangeListener(this)
         textViewStartDate.setOnClickListener(this)
         textViewEndDate.setOnClickListener(this)
         buttonGenerateReport.setOnClickListener(this)
+    }
+
+    private fun invalidateEmptyView() {
+        if (customerJobReportAdapter.itemCount == 0) {
+            buttonGenerateReport.isEnabled=false
+            textViewEmptyData.visibility = View.VISIBLE
+        } else {
+            buttonGenerateReport.isEnabled=true
+            textViewEmptyData.visibility = View.GONE
+            textViewEmptyData.text = getString(R.string.empty_lumpers_list_info_message)
+        }
     }
 
     private fun resetAllData() {
@@ -81,7 +131,7 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
             }
             radioButtonMonthly.id -> {
                 selectedEndDate = calendar.time
-                calendar.add(Calendar.MONTH, -1)
+                calendar.set(Calendar.DATE, 1)
                 selectedStartDate = calendar.time
             }
             radioButtonCustom.id -> {
@@ -94,13 +144,13 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
 
     private fun updateSelectedDateText() {
         selectedStartDate?.also { date ->
-            textViewStartDate.text = DateUtils.getDateString(DateUtils.PATTERN_DATE_DISPLAY, date)
+            textViewStartDate.text = DateUtils.getDateString(DateUtils.PATTERN_MONTH_DAY_DISPLAY, date)
         } ?: run {
             textViewStartDate.text = ""
         }
 
         selectedEndDate?.also { date ->
-            textViewEndDate.text = DateUtils.getDateString(DateUtils.PATTERN_DATE_DISPLAY, date)
+            textViewEndDate.text = DateUtils.getDateString(DateUtils.PATTERN_MONTH_DAY_DISPLAY, date)
         } ?: run {
             textViewEndDate.text = ""
         }
@@ -181,5 +231,9 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
 
     override fun showLoginScreen() {
         startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
+    }
+
+    override fun onLumperSelectionChanged() {
+        TODO("Not yet implemented")
     }
 }

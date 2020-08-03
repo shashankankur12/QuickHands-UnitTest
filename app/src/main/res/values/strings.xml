@@ -39,7 +39,7 @@
     <string name="container_no_s">Container No: %s</string>
     <string name="container_details">Container Detail</string>
     <string name="containers">Containers</string>
-    <string name="create_new_request">Create New Request</string>
+    <string name="create_new_request">New Request</string>
     <string name="current_time">Current Time: </string>
     <string name="custom">Custom</string>
     <string name="customer_details">Customer Details</string>
@@ -145,8 +145,8 @@
     <string name="shift_details">Shift Details</string>
     <string name="shift_hours">Shift Hours</string>
     <string name="shift_hours_lead">Shift Hours : </string>
-    <string name="schedule_note_lead">Schedule Notes : ---</string>
-    <string name="schedule_note"><b>Schedule Notes :</b></string>
+    <string name="schedule_note_lead"><![CDATA[<b>Schedule Notes : </b> ---]]></string>
+    <string name="schedule_note"><![CDATA[<b>Schedule Notes : </b>]]></string>
     <string name="shift_time">Shift Time</string>
     <string name="sign_in">Sign In</string>
     <string name="signature">Signature</string>
@@ -161,10 +161,11 @@
     <string name="time_clock">Time Clock</string>
     <string name="time_clock_report">Time Clock Report</string>
     <string name="title">Title</string>
-    <string name="to">- to -</string>
+    <string name="to">-</string>
     <string name="today_s_work_sheet">Work Sheet</string>
     <string name="total_containers_s">Total Containers: %s</string>
-    <string name="total_lumpers_assigned_s">Total Lumpers Assigned: %s</string>
+    <string name="total_lumpers_assigned_s">Lumpers DM has Assigned: %s</string>
+    <string name="total_lumpers_requested">Total Requested: %s</string>
     <string name="unfinished_s">Unfinished: %s</string>
     <string name="unselect_all">UnSelect All</string>
     <string name="update_building_operations">Update Building Operations</string>
@@ -192,6 +193,7 @@
     <string name="empty_work_item_lumpers_past_date_info_message">You haven\'t assigned any lumpers to this container.</string>
     <string name="empty_building_operations_info_message">This building doesn\'t have any parameters assigned. Please contact the admin to add new parameters.</string>
     <string name="empty_lumpers_list_info_message">This building doesn\'t have any lumpers assigned. Please contact the admin to assign new lumpers.</string>
+    <string name="empty_customer_list_info_message">You don\'t have any Building assigned. Please contact the admin to assign Building.</string>
     <string name="empty_request_lumpers_list_info_message">You haven\'t placed any request for the selected date. Click on \'Create New Request\' to create an new request fo additional lumpers.</string>
     <string name="empty_request_lumpers_list_info_message_past">You haven\'t placed any request for the selected date.</string>
     <string name="empty_lumper_sheet_info_message">Lumpers have not been assigned to containers in the \'Work Sheet\' section on this date.</string>

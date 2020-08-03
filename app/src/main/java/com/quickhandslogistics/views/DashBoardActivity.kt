@@ -139,12 +139,10 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             when(fragment){
                 is LumpersFragment ->
                     tabName = getString(R.string.lumper_contact)
-                //not done yet
                 is WorkSheetFragment->
                     tabName = getString(R.string.today_s_work_sheet)
                 is ScheduleTimeFragment->
                     tabName = getString(R.string.scheduled_lumpers)
-                //not done yet
                 is ScheduleFragment->
                     tabName = getString(R.string.schedule)
                 is LumperSheetFragment->

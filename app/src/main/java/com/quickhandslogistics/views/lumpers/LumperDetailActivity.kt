@@ -72,7 +72,7 @@ class LumperDetailActivity : BaseActivity(), View.OnClickListener {
 
             textViewShiftHours.text = if (!employeeData.shiftHours.isNullOrEmpty()) employeeData.shiftHours else "-"
             textViewShift.text = if (!employeeData.shift.isNullOrEmpty()) employeeData.shift?.capitalize() else "-"
-            textViewScheduleNote.text = if (!employeeData.scheduleNotes.isNullOrEmpty()) getString(R.string.schedule_note) + employeeData.scheduleNotes else getString(R.string.schedule_note_lead)
+            textViewScheduleNote.text = if (!employeeData.scheduleNotes.isNullOrEmpty()) UIUtils.getSpannedText(getString(R.string.schedule_note) + employeeData.scheduleNotes) else UIUtils.getSpannedText(getString(R.string.schedule_note_lead))
             textViewAvailability.text = if (employeeData.fullTime!!) getString(R.string.full_time) else getString(R.string.part_time)
 
 //            textViewBuildingName.text = if (!employeeData.buildingDetailData?.buildingName.isNullOrEmpty()) employeeData.buildingDetailData?.buildingName!!.capitalize() else "-"

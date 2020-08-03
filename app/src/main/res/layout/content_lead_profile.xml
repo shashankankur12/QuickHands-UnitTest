@@ -458,8 +458,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/schedule_note"
-                            android:textColor="@color/colorTextGrey"
-                            android:textStyle="bold" />
+                            android:textColor="@color/colorTextGrey" />
 
                         <TextView
                             style="@style/detailTextHeader"
