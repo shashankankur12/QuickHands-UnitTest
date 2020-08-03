@@ -183,6 +183,9 @@
     <string name="work_time">Work Time</string>
     <string name="yes">Yes</string>
     <string name="logout_buttoon">Log Out</string>
+    <string name="bar_header_shift">Shift: <![CDATA[<b> %s</b>]]></string>
+    <string name="bar_header_dept">Dept: <![CDATA[<b> %s</b>]]></string>
+    <string name="bar_header_leads">Leads: <![CDATA[<b> %s</b>]]></string>
 
     <!--No Record Messages-->
     <string name="empty_add_work_item_lumpers_info_message">This building doesn\'t have any lumpers present for the selected date. Please mark lumpers attendance in \'Time-Clock Attendance\' section for selecting them.</string>

@@ -34,6 +34,7 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
         //  circleImageViewProfile.setOnClickListener(this)
 
         leadProfilePresenter = LeadProfilePresenter(this, resources, sharedPref)
+        initializeUI()
 
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(LEAD_DATA)) {
@@ -43,6 +44,10 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
         } ?: run {
             leadProfilePresenter.loadLeadProfileData()
         }
+    }
+
+    private fun initializeUI() {
+        textViewScheduleNote.text = UIUtils.getSpannedText(getString(R.string.schedule_note_lead))
     }
 
     override fun onDestroy() {

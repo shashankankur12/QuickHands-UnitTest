@@ -107,5 +107,10 @@ object UIUtils {
             Html.fromHtml(text)
         }
     }
+
+    fun getSpannableText(sourseString: String, valueString: String): Spanned? {
+        var stringFormet=String.format(sourseString,valueString)
+        return getSpannedText(stringFormet)
+    }
 }
 

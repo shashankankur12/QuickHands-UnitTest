@@ -12,6 +12,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.schedule.ScheduleAdapter
 import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
+import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.presenters.schedule.SchedulePresenter
@@ -198,6 +199,19 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     override fun showDateString(dateString: String) {
         this.dateString = dateString
         textViewDate.text = UIUtils.getSpannedText(dateString)
+
+        val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+
+        if (leadProfile?.buildingDetailData != null) {
+            textViewBuildingName.text = leadProfile?.buildingDetailData?.buildingName!!.capitalize()
+            textViewDept.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), leadProfile.department?.capitalize().toString())
+            textViewShift.text = UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile.shift?.capitalize().toString())
+            textViewLeadNumber.text = UIUtils.getSpannableText(getString(R.string.bar_header_leads), leadProfile.buildingDetailData?.leadIds!!.size.toString())
+        } else {
+            layoutWorkScheduleInfo.visibility = View.GONE
+            appBarView.visibility = View.GONE
+        }
+
     }
 
     override fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<ScheduleDetail>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int) {
