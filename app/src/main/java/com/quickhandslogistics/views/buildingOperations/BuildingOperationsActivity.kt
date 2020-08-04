@@ -4,18 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.buildingOperations.BuildingOperationsAdapter
 import com.quickhandslogistics.contracts.buildingOperations.BuildingOperationsContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.presenters.buildingOperations.BuildingOperationsPresenter
-import com.quickhandslogistics.views.BaseActivity
-import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETERS
-import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETERS
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
 import kotlinx.android.synthetic.main.content_building_operations.*
 
 class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, BuildingOperationsContract.View {
@@ -49,6 +50,7 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, Buildin
 
     private fun initializeUI() {
         buttonSubmit.setOnClickListener(this)
+        buttonCancelRequest.setOnClickListener(this)
 
         recyclerViewBuildingOperations.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -56,6 +58,15 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, Buildin
             buildingOperationsAdapter = BuildingOperationsAdapter(parameters)
             adapter = buildingOperationsAdapter
         }
+
+        buildingOperationsAdapter!!.registerAdapterDataObserver(object :
+            RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                invalidateEmptyView()
+            }
+        })
+
     }
 
     private fun submitBODetails() {
@@ -72,11 +83,22 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, Buildin
         }
     }
 
+    private fun invalidateEmptyView() {
+        if (buildingOperationsAdapter!!.itemCount == 0) {
+            isDataSave(true)
+        } else{
+            if ( buildingOperationsAdapter!!.getUpdatedData().size>0)
+                isDataSave(false)
+            else isDataSave(true)
+        }
+    }
+
     /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
                 buttonSubmit.id -> submitBODetails()
+                buttonCancelRequest.id -> onBackPressed()
             }
         }
     }
@@ -94,6 +116,7 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, Buildin
 
     override fun buildingOperationsDataSaved() {
         setResult(RESULT_OK)
+        isDataSave(true)
         onBackPressed()
     }
 

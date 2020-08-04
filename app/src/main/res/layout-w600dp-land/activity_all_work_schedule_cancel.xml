@@ -130,12 +130,32 @@
                     style="@style/notesEditTextTheme" />
             </LinearLayout>
 
-            <Button
-                android:id="@+id/buttonSubmit"
-                style="@style/positiveRoundButtonTheme"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:layout_marginBottom="@dimen/_6sdp"
-                android:text="@string/submit" />
+            <LinearLayout
+                android:id="@+id/layoutSaveCancelButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonSubmit"
+                    style="@style/positiveRoundButtonTheme"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:text="@string/submit" />
+
+                <Button
+                    android:id="@+id/buttonCancelRequest"
+                    style="@style/negativeRoundButtonTheme"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:text="@string/cancel" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

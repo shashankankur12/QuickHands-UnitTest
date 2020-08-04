@@ -45,6 +45,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private var percentageTime: Double = 0.0
     private var partWorkDone: Int = 0
     private var isPartWorkDoneValid: Boolean = true
+    private lateinit var  watcher: TextWatcher
 
     private lateinit var addLumperTimeWorkSheetItemPresenter: AddLumperTimeWorkSheetItemPresenter
 
@@ -101,6 +102,19 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             editTextTotalCases.isEnabled=false
             editTextCasesLumpers.isEnabled=false
         }
+
+        editTextWaitingTime.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (text.isNullOrEmpty())isDataSave(true) else isDataSave(false)
+            }
+        })
+
         updateButtonsUI()
         if(!totalCases.isNullOrEmpty() && partWorkDone!=0) lumpercaseVisibility()
         toggleSaveButtonVisibility()
@@ -111,7 +125,10 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         buttonBreakInTime.setOnClickListener(this)
         buttonBreakOutTime.setOnClickListener(this)
         buttonSave.setOnClickListener(this)
+        buttonCancelRequest.setOnClickListener(this)
     }
+
+
 
     private fun updateTimingsDetails(timingDetail: LumpersTimeSchedule) {
         initialStartTime = updateInitialTime(timingDetail.startTime, buttonStartTime)
@@ -171,6 +188,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         this.selectedStartTime = selectedStartTime
         buttonStartTime.text = DateUtils.convertMillisecondsToTimeString(selectedStartTime)
         updateButtonsUI()
+        isDataSave(false)
     }
 
     private fun onSelectEndTime(calendar: Calendar) {
@@ -183,6 +201,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             this.selectedEndTime = selectedEndTime
             buttonEndTime.text = DateUtils.convertMillisecondsToTimeString(selectedEndTime)
             updateButtonsUI()
+            isDataSave(false)
         }
     }
 
@@ -203,6 +222,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         this.selectedBreakInTime = selectedBreakInTime
         buttonBreakInTime.text = DateUtils.convertMillisecondsToTimeString(selectedBreakInTime)
         updateButtonsUI()
+        isDataSave(false)
     }
 
     private fun onSelectBreakOutTime(calendar: Calendar) {
@@ -217,6 +237,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             this.selectedBreakOutTime = selectedBreakOutTime
             buttonBreakOutTime.text = DateUtils.convertMillisecondsToTimeString(selectedBreakOutTime)
             updateButtonsUI()
+            isDataSave(false)
         }
     }
 
@@ -287,6 +308,9 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
                         CustomProgressBar.getInstance().showMessageDialog(getString(R.string.lumper_cases_error) , activity)
                     }else saveSelectedTimings()
                 }
+                buttonCancelRequest.id -> {
+                    onBackPressed()
+                }
             }
         }
     }
@@ -300,6 +324,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
 
     override fun lumpersTimingSaved() {
         setResult(RESULT_OK)
+        isDataSave(true)
         onBackPressed()
     }
 
@@ -321,9 +346,11 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         text?.let {
             if (!text.isNullOrEmpty() && (text.toString()).toInt() != 0) {
                 getPercent(text.toString(), totalCases)
+                isDataSave(false)
             } else {
                 percentWorkDone.text = "0.0%"
                 partWorkDone=0
+                isDataSave(true)
             }
         }
     }

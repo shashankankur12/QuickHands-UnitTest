@@ -16,6 +16,7 @@ import java.util.*
 class BuildingOperationsAdapter(private val parameters: ArrayList<String>) : Adapter<BuildingOperationsAdapter.ViewHolder>() {
 
     private var data = HashMap<String, String>()
+    var isTextChanged :Boolean= false
 
     init {
         parameters.sortWith(Comparator { value1: String, value2: String ->
@@ -55,6 +56,7 @@ class BuildingOperationsAdapter(private val parameters: ArrayList<String>) : Ada
                 data[header] = ""
             }
             data[header] = text.toString()
+            isTextChanged=true
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
