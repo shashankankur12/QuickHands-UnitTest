@@ -133,6 +133,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         bottomSheetBackgroundRequestLumpers.setOnClickListener(this)
         buttonSubmit.setOnClickListener(this)
         buttonCancelRequest.setOnClickListener(this)
+        buttonCancelNote.setOnClickListener(this)
     }
 
     private fun closeBottomSheet() {
@@ -216,6 +217,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
                     }
                 }
                 buttonCancelRequest.id ->{ super.onBackPressed() }
+                buttonCancelNote.id ->{ closeBottomSheet() }
             }
         }
     }

@@ -120,6 +120,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         buttonSubmit.setOnClickListener(this)
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
+        buttonCancelNote.setOnClickListener(this)
 
         invalidateOptionsMenu()
 
@@ -205,6 +206,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             when (view.id) {
                 imageViewAddLumpers.id -> showChooseLumpersScreen()
                 textViewAddSameTime.id -> chooseSameTimeForAllLumpers()
+                buttonCancelNote.id -> onBackPressed()
                 buttonSubmit.id -> saveLumperScheduleTimings()
                 imageViewCancel.id -> {
                     editTextSearch.setText("")
