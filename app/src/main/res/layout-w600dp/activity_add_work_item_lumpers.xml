@@ -68,12 +68,32 @@
                 android:visibility="gone" />
         </RelativeLayout>
 
-        <Button
-            android:id="@+id/buttonAdd"
-            style="@style/positiveRoundButtonTheme"
+        <LinearLayout
+            android:id="@+id/layoutSaveCancelButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_6sdp"
-            android:enabled="false"
-            android:text="@string/submit" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonAdd"
+                style="@style/positiveRoundButtonTheme"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:text="@string/submit" />
+
+            <Button
+                android:id="@+id/buttonCancelRequest"
+                style="@style/negativeRoundButtonTheme"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:text="@string/cancel" />
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

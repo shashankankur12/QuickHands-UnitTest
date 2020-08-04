@@ -112,10 +112,12 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
         buttonAdd.setOnClickListener(this)
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
+        buttonCancelRequest.setOnClickListener(this)
     }
 
     private fun invalidateEmptyView() {
         if (addWorkItemLumperAdapter.itemCount == 0) {
+            isDataSave(true)
             textViewEmptyData.visibility = View.VISIBLE
             if (addWorkItemLumperAdapter.isSearchEnabled()) {
                 textViewEmptyData.text = getString(R.string.no_record_found_info_message)
@@ -123,9 +125,25 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
                 textViewEmptyData.text = getString(R.string.empty_add_work_item_lumpers_info_message)
             }
         } else {
+            if (isListUpdated())isDataSave(false) else isDataSave(true)
             textViewEmptyData.visibility = View.GONE
             textViewEmptyData.text = getString(R.string.empty_add_work_item_lumpers_info_message)
         }
+    }
+
+    private fun isListUpdated(): Boolean {
+        var selectedLumperIdsList = addWorkItemLumperAdapter.getSelectedLumper()
+        var isUpdated =false
+        if (!assignedLumpersList.size.equals(selectedLumperIdsList.size)){
+            isUpdated=true
+        }else {
+            for (assignedLumper in assignedLumpersList) {
+                for (selectedLumperId in selectedLumperIdsList) {
+                    isUpdated = !assignedLumper.id!!.equals(selectedLumperId)
+                }
+            }
+        }
+        return isUpdated
     }
 
     private fun showConfirmationDialog() {
@@ -158,6 +176,7 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
         view?.let {
             when (view.id) {
                 buttonAdd.id -> showConfirmationDialog()
+                buttonCancelRequest.id -> onBackPressed()
                 imageViewCancel.id -> {
                     editTextSearch.setText("")
                     AppUtils.hideSoftKeyboard(activity)
@@ -195,6 +214,7 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
 
     override fun lumperAssignmentFinished() {
         setResult(RESULT_OK)
+        isDataSave(true)
         onBackPressed()
     }
 
