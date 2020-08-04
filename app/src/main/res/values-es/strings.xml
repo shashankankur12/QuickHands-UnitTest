@@ -182,6 +182,7 @@
     <string name="work_sheet_detail">Work Sheet Detail</string>
     <string name="work_time">Work Time</string>
     <string name="yes">Yes</string>
+    <string name="lead_note">Lead Note</string>
     <string name="logout_buttoon">Log Out</string>
     <string name="bar_header_shift">Shift: <![CDATA[<b> %s</b>]]></string>
     <string name="bar_header_dept">Dept: <![CDATA[<b> %s</b>]]></string>

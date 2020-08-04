@@ -4,6 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
@@ -65,6 +67,8 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
         private val textViewScheduleTime: TextView = view.textViewScheduleTime
         private val textViewAddStartTime: TextView = view.textViewAddStartTime
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
+        private val layoutScheduleNote: LinearLayout = view.layoutScheduleNote
+        private val imageViewCancel: ImageView = view.imageViewCancel
 
         fun bind(scheduleTimeDetail: ScheduleTimeDetail) {
             scheduleTimeDetail.lumperInfo?.let { employeeData ->
@@ -101,6 +105,12 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
                     }
                     textViewAddStartTime.id -> {
                         onAdapterClick.onAddStartTimeClick(adapterPosition, 0)
+                    }
+                    layoutScheduleNote.id -> {
+                        onAdapterClick.onAddScheduleNoteClick(adapterPosition)
+                    }
+                    imageViewCancel.id -> {
+                        onAdapterClick.onAddRemoveClick(adapterPosition)
                     }
                 }
             }

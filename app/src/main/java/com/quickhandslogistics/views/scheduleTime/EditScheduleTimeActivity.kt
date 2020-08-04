@@ -257,4 +257,12 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             }, mHour, mMinute, false
         ).show()
     }
+
+    override fun onAddScheduleNoteClick(adapterPosition: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onAddRemoveClick(adapterPosition: Int) {
+        TODO("Not yet implemented")
+    }
 }

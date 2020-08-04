@@ -24,6 +24,8 @@ class EditScheduleTimeContract {
 
         interface OnAdapterItemClickListener {
             fun onAddStartTimeClick(adapterPosition: Int, timeInMillis: Long)
+            fun onAddScheduleNoteClick(adapterPosition: Int)
+            fun onAddRemoveClick(adapterPosition: Int)
         }
     }
 

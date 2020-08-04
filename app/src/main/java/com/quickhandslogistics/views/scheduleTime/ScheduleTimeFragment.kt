@@ -16,6 +16,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.scheduleTime.ScheduleTimeAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
 import com.quickhandslogistics.contracts.scheduleTime.ScheduleTimeContract
+import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.presenters.scheduleTime.ScheduleTimePresenter
 import com.quickhandslogistics.utils.*
@@ -248,6 +249,16 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     override fun showDateString(dateString: String) {
         this.dateString = dateString
         textViewDate.text = UIUtils.getSpannedText(dateString)
+        val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+
+        if (leadProfile?.buildingDetailData != null) {
+            textViewBuildingName.text = leadProfile?.buildingDetailData?.buildingName!!.capitalize()
+            textViewDept.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), leadProfile.department?.capitalize().toString())
+            textViewShift.text = UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile.shift?.capitalize().toString())
+        } else {
+            layoutWorkScheduleInfo.visibility = View.GONE
+            appBarView.visibility = View.GONE
+        }
     }
 
     override fun showAPIErrorMessage(message: String) {

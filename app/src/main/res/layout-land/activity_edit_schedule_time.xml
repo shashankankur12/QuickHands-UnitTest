@@ -91,6 +91,12 @@
                     android:text="@string/add_same_start_time_for_all"
                     android:visibility="gone" />
             </LinearLayout>
+            <View
+                android:id="@+id/appBarView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1ssp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@color/darkGreyDivider"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
