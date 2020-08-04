@@ -38,6 +38,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     private lateinit var editScheduleTimeAdapter: EditScheduleTimeAdapter
 
     private var dateString: String? = null
+    private var isLeavePage: Boolean = true
 
     companion object {
         const val SELECTED_DATE_STRING = "SELECTED_DATE_STRING"
@@ -134,6 +135,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     private fun invalidateEmptyView() {
         if (editScheduleTimeAdapter.itemCount == 0) {
             buttonSubmit.isEnabled = false
+            isDataSave(true)
             textViewAddSameTime.visibility = View.GONE
             textViewEmptyData.visibility = View.VISIBLE
             if (editScheduleTimeAdapter.isSearchEnabled()) {
@@ -142,8 +144,8 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
                 textViewEmptyData.text = getString(R.string.empty_edit_schedule_time_info_message)
             }
         } else {
-            buttonSubmit.isEnabled =
-                (editScheduleTimeAdapter.getLumpersList().size > 0 && editScheduleTimeAdapter.getScheduledLumpersTimeMap().size > 0) && editScheduleTimeAdapter.getScheduledLumpersTimeMap().size == editScheduleTimeAdapter.getLumpersList().size
+            isDataSave (!(editScheduleTimeAdapter.getLumpersList().size > 0 && editScheduleTimeAdapter.getScheduledLumpersTimeMap().size > 0) && editScheduleTimeAdapter.getScheduledLumpersTimeMap().size == editScheduleTimeAdapter.getLumpersList().size)
+            buttonSubmit.isEnabled = (editScheduleTimeAdapter.getLumpersList().size > 0 && editScheduleTimeAdapter.getScheduledLumpersTimeMap().size > 0) && editScheduleTimeAdapter.getScheduledLumpersTimeMap().size == editScheduleTimeAdapter.getLumpersList().size
             textViewAddSameTime.visibility = View.VISIBLE
             textViewEmptyData.visibility = View.GONE
             textViewEmptyData.text = getString(R.string.empty_edit_schedule_time_info_message)
@@ -223,6 +225,19 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         }
     }
 
+    private fun showLeavePopup() {
+        CustomProgressBar.getInstance().showLeaveDialog(
+            getString(R.string.leave_alert_message),
+            activity,
+            object : CustomDialogWarningListener {
+                override fun onConfirmClick() {
+
+                }
+                override fun onCancelClick() {
+                }
+            })
+    }
+
     /** Presenter Listeners */
     override fun showDateString(dateString: String) {
         this.dateString = dateString
@@ -235,6 +250,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
 
     override fun scheduleTimeFinished() {
         setResult(RESULT_OK)
+        isDataSave(true)
         onBackPressed()
     }
 

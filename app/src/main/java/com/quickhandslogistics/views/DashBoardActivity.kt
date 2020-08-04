@@ -208,7 +208,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     }
 
     private fun showLeavePopup() {
-        CustomProgressBar.getInstance().showWarningDialog(
+        CustomProgressBar.getInstance().showLeaveDialog(
             getString(R.string.leave_alert_message),
             activity,
             object : CustomDialogWarningListener {

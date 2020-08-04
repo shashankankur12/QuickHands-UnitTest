@@ -240,6 +240,7 @@
     <string name="time_clock_fill_alert_message">Don\'t forget to Clock Out all the lumpers in \'Time-Clock\' before submitting Lumper Sheet.</string>
     <string name="use_external_storage_alert_message">Please allow storage permission in the app settings, so that you could download \'Reports\'</string>
     <string name="warning_alert_message">You want to make these changes</string>
+    <string name="discard_leave_alert_message">Discard information and Leave?</string>
 
     <!--Error Messages-->
     <string name="customer_sheet_warning_message"><![CDATA[Please provide both Customer Representative Name & his Signature.]]></string>

@@ -17,6 +17,7 @@ import com.franmontiel.localechanger.utils.ActivityRecreationHelper
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.BaseContract
 import com.quickhandslogistics.network.DataManager
+import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SharedPref
 import kotlinx.android.synthetic.main.layout_toolbar.*
@@ -25,6 +26,7 @@ import okhttp3.Dispatcher
 open class BaseActivity : AppCompatActivity(), BaseContract.View {
 
     lateinit var sharedPref: SharedPref
+    private var isDataSave=true
 
     protected lateinit var activity: Activity
 
@@ -36,8 +38,12 @@ open class BaseActivity : AppCompatActivity(), BaseContract.View {
 
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        overridePendingTransition(R.anim.anim_prev_slide_in, R.anim.anim_prev_slide_out)
+        if (isDataSave) {
+            super.onBackPressed()
+            overridePendingTransition(R.anim.anim_prev_slide_in, R.anim.anim_prev_slide_out)
+        } else {
+            showLeavePopup()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -82,6 +88,10 @@ open class BaseActivity : AppCompatActivity(), BaseContract.View {
         }
     }
 
+    protected fun isDataSave(isDataSave: Boolean) {
+       this.isDataSave= isDataSave
+    }
+
     fun startIntent(className: Class<*>, bundle: Bundle? = null, isFinish: Boolean = false, flags: Array<Int>? = null, requestCode: Int? = null) {
         val intent = Intent(this, className)
         flags?.let {
@@ -123,6 +133,20 @@ open class BaseActivity : AppCompatActivity(), BaseContract.View {
             }
             return@setOnTouchListener false
         }
+    }
+
+    private fun showLeavePopup() {
+        CustomProgressBar.getInstance().showLeaveDialog(
+            getString(R.string.leave_alert_message),
+            activity,
+            object : CustomDialogWarningListener {
+                override fun onConfirmClick() {
+                    isDataSave=true
+                    onBackPressed()
+                }
+                override fun onCancelClick() {
+                }
+            })
     }
 
     /** Presenter Listeners */

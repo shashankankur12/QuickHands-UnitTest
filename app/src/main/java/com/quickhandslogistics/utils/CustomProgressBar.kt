@@ -131,6 +131,26 @@ class CustomProgressBar {
         updateButtonsUI(progressDialog, activityContext)
     }
 
+    fun showLeaveDialog(message: String = "", activityContext: Context, listener: CustomDialogWarningListener) {
+        val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.WARNING_TYPE)
+        progressDialog.titleText = activityContext.getString(R.string.discard_leave_alert_message)
+        progressDialog.confirmText = activityContext.getString(R.string.yes)
+        progressDialog.cancelText = activityContext.getString(R.string.no)
+        progressDialog.showCancelButton(true)
+        progressDialog.setConfirmClickListener {
+            it.dismissWithAnimation()
+            listener.onConfirmClick()
+        }
+        progressDialog.setCancelClickListener {
+            it.dismissWithAnimation()
+            listener.onCancelClick()
+        }
+        progressDialog.show()
+        progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
+        progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
+        updateButtonsUI(progressDialog, activityContext)
+    }
+
     fun showLogoutDialog(message: String = "", activityContext: Context, listener: CustomDialogWarningListener) {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.WARNING_TYPE)
         progressDialog.titleText = activityContext.getString(R.string.are_you_sure_alert_message)
