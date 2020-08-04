@@ -110,6 +110,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
 
         textViewAddSignature.setOnClickListener(this)
         buttonSave.setOnClickListener(this)
+        buttonCancelRequest.setOnClickListener(this)
     }
 
     private fun showLocalSignatureOnUI(signatureFilePath: String?) {
@@ -118,12 +119,14 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
             Glide.with(activity).load(File(signatureFilePath)).into(imageViewSignature)
             imageViewSignature.visibility = View.VISIBLE
             textViewAddSignature.visibility = View.GONE
-            buttonSave.visibility = View.VISIBLE
+            layoutSaveCancelButton.visibility = View.VISIBLE
+            isDataSave(false)
         } else {
             this.signatureFilePath = ""
             imageViewSignature.visibility = View.GONE
             textViewAddSignature.visibility = View.VISIBLE
-            buttonSave.visibility = View.GONE
+            layoutSaveCancelButton.visibility = View.GONE
+            isDataSave(true)
         }
     }
 
@@ -172,6 +175,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
             when (view.id) {
                 textViewAddSignature.id -> startIntent(AddSignatureActivity::class.java, requestCode = AppConstant.REQUEST_CODE_CHANGED)
                 buttonSave.id -> showConfirmationDialog()
+                buttonCancelRequest.id -> onBackPressed()
             }
         }
     }
@@ -184,7 +188,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     override fun showLumperWorkDetails(lumperDaySheetList: ArrayList<LumperDaySheet>) {
         this.lumperDaySheetList=lumperDaySheetList
         val isCurrentDate = DateUtils.isCurrentDate(selectedTime)
-        buttonSave.visibility = View.GONE
+        layoutSaveCancelButton.visibility = View.GONE
 
         lumperWorkDetailAdapter.updateWorkDetails(lumperDaySheetList)
 
@@ -209,6 +213,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
 
     override fun lumperSignatureSaved() {
         signatureFilePath=""
+        isDataSave(true)
         setResult(RESULT_OK)
     }
 
