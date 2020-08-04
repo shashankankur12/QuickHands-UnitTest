@@ -18,10 +18,6 @@ import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.activity_all_work_schedule_cancel.*
-import kotlinx.android.synthetic.main.activity_all_work_schedule_cancel.mainConstraintLayout
-import kotlinx.android.synthetic.main.activity_all_work_schedule_cancel.recyclerViewLumpers
-import kotlinx.android.synthetic.main.activity_all_work_schedule_cancel.textViewEmptyData
-import kotlinx.android.synthetic.main.content_lumper_job_report.*
 
 class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, LumperJobReportContract.View.OnAdapterItemClickListener, AllWorkScheduleCancelContract.View {
 
@@ -82,11 +78,13 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Lump
         buttonSubmit.setOnClickListener(this)
 //        editTextSearch.addTextChangedListener(this)
         imageViewAdd.setOnClickListener(this)
+        buttonCancelRequest.setOnClickListener(this)
     }
 
     private fun invalidateEmptyView() {
         if (allWorkScheduleCancelAdapter.itemCount == 0) {
             textViewEmptyData.visibility = View.VISIBLE
+            isDataSave(true)
             buttonSubmit.isEnabled=false
             if (allWorkScheduleCancelAdapter.isSearchEnabled()) {
                 textViewEmptyData.text = getString(R.string.no_record_found_info_message)
@@ -95,8 +93,10 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Lump
             }
         } else if (allWorkScheduleCancelAdapter.getSelectedLumper().size>0) {
             buttonSubmit.isEnabled=true
+            isDataSave(false)
         }else{
             buttonSubmit.isEnabled=false
+            isDataSave(true)
             textViewEmptyData.visibility = View.GONE
             textViewEmptyData.text = getString(R.string.empty_work_item_cancel_message)
         }
@@ -126,6 +126,9 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Lump
 
                 imageViewAdd.id -> {
                     allWorkScheduleCancelAdapter.invokeSelectAll()
+                }
+                buttonCancelRequest.id -> {
+                    super.onBackPressed()
                 }
             }
         }
@@ -164,6 +167,7 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Lump
 
     override fun cancellingWorkScheduleFinished() {
         setResult(RESULT_OK)
+        isDataSave(true)
         onBackPressed()
     }
 
