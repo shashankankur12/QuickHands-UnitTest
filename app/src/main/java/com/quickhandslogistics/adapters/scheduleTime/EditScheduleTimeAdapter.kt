@@ -68,7 +68,6 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
         private val textViewScheduleTime: TextView = view.textViewScheduleTime
         private val textViewAddStartTime: TextView = view.textViewAddStartTime
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
-        private val layoutScheduleNote: LinearLayout = view.layoutScheduleNote
         private val imageViewCancel: ImageView = view.imageViewCancel
         private val layoutScheduleTime: RelativeLayout = view.layoutScheduleTime
 
@@ -93,23 +92,16 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
             textViewAddStartTime.setOnClickListener(this)
             itemView.setOnClickListener(this)
             layoutScheduleTime.setOnClickListener(this)
-            layoutScheduleNote.setOnClickListener(this)
             imageViewCancel.setOnClickListener(this)
         }
 
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
-                    itemView.id -> {
-//                        var timeInMillis: Long = 0
-//                        val scheduleTimeDetail = getItem(adapterPosition)
-//                        if (scheduledLumpersIdsTimeMap.containsKey(scheduleTimeDetail.lumperInfo?.id!!)) {
-//                            timeInMillis = scheduledLumpersIdsTimeMap[scheduleTimeDetail.lumperInfo?.id!!]!!
-//                        }
-//                        onAdapterClick.onAddStartTimeClick(adapterPosition, timeInMillis)
+                    textViewAddStartTime.id -> {
+                        onAdapterClick.onAddStartTimeClick(adapterPosition, 0)
                     }
                     layoutScheduleTime.id -> {
-//                        onAdapterClick.onAddStartTimeClick(adapterPosition, 0)
                         var timeInMillis: Long = 0
                         val scheduleTimeDetail = getItem(adapterPosition)
                         if (scheduledLumpersIdsTimeMap.containsKey(scheduleTimeDetail.lumperInfo?.id!!)) {
@@ -117,7 +109,7 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
                         }
                         onAdapterClick.onAddStartTimeClick(adapterPosition, timeInMillis)
                     }
-                    layoutScheduleNote.id -> {
+                    layoutScheduleTime.id -> {
                         onAdapterClick.onAddScheduleNoteClick(adapterPosition)
                     }
                     imageViewCancel.id -> {
