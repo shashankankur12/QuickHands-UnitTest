@@ -22,9 +22,9 @@ class TimeClockReportPresenter(private var timeClockReportView: TimeClockReportC
         timeClockReportView = null
     }
 
-    override fun fetchLumpersList() {
+    override fun fetchLumpersList(startdate: String, endDate: String) {
         timeClockReportView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        timeClockReportModel.fetchLumpersList(this)
+        timeClockReportModel.fetchLumpersList(this, startdate, endDate )
     }
 
     override fun createTimeClockReport(startDate: Date, endDate: Date, reportType: String, lumperIdsList: ArrayList<String>) {

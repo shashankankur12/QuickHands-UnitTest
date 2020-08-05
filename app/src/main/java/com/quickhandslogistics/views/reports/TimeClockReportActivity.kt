@@ -4,8 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.RadioGroup
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -22,6 +20,7 @@ import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.content_lumper_job_report.*
 import kotlinx.android.synthetic.main.layout_date_filter.*
 import kotlinx.android.synthetic.main.layout_report_type.*
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -45,9 +44,8 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
         setContentView(R.layout.activity_lumper_job_report)
         setupToolbar(getString(R.string.time_clock_report))
 
-        initializeUI()
-
         timeClockReportPresenter = TimeClockReportPresenter(this, resources)
+        initializeUI()
 
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(LUMPER_REPORT_LIST)) {
@@ -55,7 +53,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
                 showLumpersData(employeeDataList)
             }
         } ?: run {
-            timeClockReportPresenter.fetchLumpersList()
+//            timeClockReportPresenter.fetchLumpersList(startdate, endDate)
         }
 
     }
@@ -124,16 +122,32 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
             radioButtonDaily.id -> {
                 selectedEndDate = calendar.time
                 selectedStartDate = calendar.time
+
+                var startdate =getFormetedDate(calendar.time,"yyyy-MM-dd")
+                var endDate =getFormetedDate(calendar.time,"yyyy-MM-dd")
+                if (timeClockReportPresenter!=null)
+                    timeClockReportPresenter.fetchLumpersList(startdate, endDate)
             }
             radioButtonWeekly.id -> {
                 selectedEndDate = calendar.time
+                var endDate =getFormetedDate(calendar.time,"yyyy-MM-dd")
                 calendar.add(Calendar.WEEK_OF_YEAR, -1)
                 selectedStartDate = calendar.time
+
+                var startdate =getFormetedDate(calendar.time,"yyyy-MM-dd")
+
+                if (timeClockReportPresenter!=null)
+                    timeClockReportPresenter.fetchLumpersList(startdate, endDate)
             }
             radioButtonMonthly.id -> {
                 selectedEndDate = calendar.time
+                var endDate =getFormetedDate(calendar.time,"yyyy-MM-dd")
                 calendar.set(Calendar.DATE, 1)
                 selectedStartDate = calendar.time
+                var startdate =getFormetedDate(calendar.time,"yyyy-MM-dd")
+
+                if (timeClockReportPresenter!=null)
+                    timeClockReportPresenter.fetchLumpersList(startdate, endDate)
             }
             radioButtonCustom.id -> {
                 selectedEndDate = null
@@ -141,6 +155,12 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
             }
         }
         updateSelectedDateText()
+    }
+
+    private fun getFormetedDate(selectedStartDate: Date, format: String): String {
+        val date = selectedStartDate
+        val formatter = SimpleDateFormat(format, Locale.US)
+        return formatter.format(date)
     }
 
     private fun updateSelectedDateText() {

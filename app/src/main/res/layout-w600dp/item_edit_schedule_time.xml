@@ -62,24 +62,20 @@
             android:orientation="vertical">
             <RelativeLayout
                 android:layout_width="wrap_content"
+                android:id="@+id/layoutScheduleTime"
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/textViewScheduleTime"
                     style="@style/valuesTextViewTheme"
                     android:layout_width="wrap_content"
                     android:textColor="@color/textBlack"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/textViewAddStartTime"
                     style="@style/addTextViewTheme"
                     android:visibility="gone"
-                    android:text="@string/add_start_time"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    android:text="@string/add_start_time" />
 
             </RelativeLayout>
 
@@ -87,17 +83,19 @@
                 android:id="@+id/layoutScheduleNote"
                 android:layout_width="wrap_content"
                 android:layout_gravity="end"
+                android:paddingTop="@dimen/_1ssp"
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/textViewScheduleNote"
                     style="@style/valuesTextViewTheme"
                     android:layout_width="wrap_content"
                     android:textColor="@color/textBlack"
-                    android:text="@string/lead_note"/>
+                    android:text="@string/add_notes"/>
                 <ImageView
                     android:id="@+id/imageViewNote"
                     android:layout_width="@dimen/_18ssp"
                     android:layout_height="@dimen/_18ssp"
+                    android:tint="@color/buttonRed"
                     android:src="@drawable/ic_notes"/>
             </LinearLayout>
 
@@ -111,7 +109,7 @@
             android:layout_marginEnd="@dimen/_10ssp"
             android:layout_gravity="center_vertical"
             android:layout_height="@dimen/_20ssp"
-            android:src="@drawable/ic_cancel"/>
+            android:src="@drawable/ic_clear"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

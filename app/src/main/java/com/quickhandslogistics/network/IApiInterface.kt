@@ -184,5 +184,8 @@ interface IApiInterface {
         @Header("Authorization") auth: String, @Query("start") startDate: String,
         @Query("end") endDate: String, @Query("type") type: String
     ): Call<ReportResponse>
+
+    @GET("employees/lead/lumpers/date-range")
+    fun getAllLumpersSelectedDates(@Header("Authorization") auth: String, @Query("dayStart") dayStart: String, @Query("dayEnd") dayEnd: String): Call<LumperListAPIResponse>
     /////////////////////////////////////////////////////////////
 }

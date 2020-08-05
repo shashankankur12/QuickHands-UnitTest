@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
@@ -69,6 +70,7 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
         private val layoutScheduleNote: LinearLayout = view.layoutScheduleNote
         private val imageViewCancel: ImageView = view.imageViewCancel
+        private val layoutScheduleTime: RelativeLayout = view.layoutScheduleTime
 
         fun bind(scheduleTimeDetail: ScheduleTimeDetail) {
             scheduleTimeDetail.lumperInfo?.let { employeeData ->
@@ -90,21 +92,30 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
 
             textViewAddStartTime.setOnClickListener(this)
             itemView.setOnClickListener(this)
+            layoutScheduleTime.setOnClickListener(this)
+            layoutScheduleNote.setOnClickListener(this)
+            imageViewCancel.setOnClickListener(this)
         }
 
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
                     itemView.id -> {
+//                        var timeInMillis: Long = 0
+//                        val scheduleTimeDetail = getItem(adapterPosition)
+//                        if (scheduledLumpersIdsTimeMap.containsKey(scheduleTimeDetail.lumperInfo?.id!!)) {
+//                            timeInMillis = scheduledLumpersIdsTimeMap[scheduleTimeDetail.lumperInfo?.id!!]!!
+//                        }
+//                        onAdapterClick.onAddStartTimeClick(adapterPosition, timeInMillis)
+                    }
+                    layoutScheduleTime.id -> {
+//                        onAdapterClick.onAddStartTimeClick(adapterPosition, 0)
                         var timeInMillis: Long = 0
                         val scheduleTimeDetail = getItem(adapterPosition)
                         if (scheduledLumpersIdsTimeMap.containsKey(scheduleTimeDetail.lumperInfo?.id!!)) {
                             timeInMillis = scheduledLumpersIdsTimeMap[scheduleTimeDetail.lumperInfo?.id!!]!!
                         }
                         onAdapterClick.onAddStartTimeClick(adapterPosition, timeInMillis)
-                    }
-                    textViewAddStartTime.id -> {
-                        onAdapterClick.onAddStartTimeClick(adapterPosition, 0)
                     }
                     layoutScheduleNote.id -> {
                         onAdapterClick.onAddScheduleNoteClick(adapterPosition)
@@ -201,4 +212,14 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
 
         notifyDataSetChanged()
     }
+
+    fun removeLumpersInList(position :Int) {
+        val scheduleTimeDetail = getItem(position)
+        scheduleTimeList.removeAt(position)
+        if (scheduledLumpersIdsTimeMap.containsKey(scheduleTimeDetail.lumperInfo?.id!!))
+        scheduledLumpersIdsTimeMap.remove(scheduleTimeDetail.lumperInfo?.id!!)
+        notifyDataSetChanged()
+    }
+
+
 }

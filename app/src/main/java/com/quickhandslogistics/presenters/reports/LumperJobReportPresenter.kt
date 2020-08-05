@@ -22,9 +22,9 @@ class LumperJobReportPresenter(private var lumperJobReportView: LumperJobReportC
         lumperJobReportView = null
     }
 
-    override fun fetchLumpersList() {
+    override fun fetchLumpersList(startdate: String, endDate: String) {
         lumperJobReportView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        lumperJobHistoryModel.fetchLumpersList(this)
+        lumperJobHistoryModel.fetchLumpersList(this, startdate, endDate)
     }
 
     override fun createTimeClockReport(startDate: Date, endDate: Date, reportType: String, lumperIdsList: ArrayList<String>) {
