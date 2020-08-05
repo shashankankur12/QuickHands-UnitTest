@@ -204,7 +204,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
         if (leadProfile?.buildingDetailData != null) {
             textViewBuildingName.text = leadProfile?.buildingDetailData?.buildingName!!.capitalize()
-            textViewDept.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), leadProfile.department?.capitalize().toString())
+            textViewDept.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), UIUtils.getDisplayEmployeeDepartment(leadProfile))
             textViewShift.text = UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile.shift?.capitalize().toString())
             textViewLeadNumber.text = UIUtils.getSpannableText(getString(R.string.bar_header_leads), leadProfile.buildingDetailData?.leadIds!!.size.toString())
         } else {

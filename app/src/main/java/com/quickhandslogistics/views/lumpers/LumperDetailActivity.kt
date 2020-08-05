@@ -67,7 +67,7 @@ class LumperDetailActivity : BaseActivity(), View.OnClickListener {
 
             textViewEmployeeId.text = if (!employeeData.employeeId.isNullOrEmpty()) employeeData.employeeId else "-"
             textViewRole.text = if (!employeeData.role.isNullOrEmpty()) employeeData.role!!.capitalize() else "-"
-            textViewDepartment.text = if (!employeeData.department.isNullOrEmpty()) employeeData.department!!.capitalize() else "-"
+            textViewDepartment.text = if (!employeeData.department.isNullOrEmpty()) UIUtils.getDisplayEmployeeDepartment(employeeData) else "-"
             textViewTitle.text = if (!employeeData.title.isNullOrEmpty()) employeeData.title!!.capitalize() else "---"
 
             textViewShiftHours.text = if (!employeeData.shiftHours.isNullOrEmpty()) employeeData.shiftHours else "-"

@@ -253,7 +253,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
         if (leadProfile?.buildingDetailData != null) {
             textViewBuildingName.text = leadProfile?.buildingDetailData?.buildingName!!.capitalize()
-            textViewDept.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), leadProfile.department?.capitalize().toString())
+            textViewDept.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), UIUtils.getDisplayEmployeeDepartment(leadProfile))
             textViewShift.text = UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile.shift?.capitalize().toString())
         } else {
             layoutWorkScheduleInfo.visibility = View.GONE
