@@ -23,9 +23,12 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, CustomerSheetContract.View.OnFragmentInteractionListener, CalendarUtils.CalendarSelectionListener {
+class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
+    CustomerSheetContract.View.OnFragmentInteractionListener,
+    CalendarUtils.CalendarSelectionListener, CustomerSheetContract.View.fragmentDataListener {
 
-    private var onFragmentInteractionListener: DashBoardContract.View.OnFragmentInteractionListener? = null
+    private var onFragmentInteractionListener: DashBoardContract.View.OnFragmentInteractionListener? =
+        null
 
     private var selectedTime: Long = 0
     private lateinit var availableDates: List<Date>
@@ -37,6 +40,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
     private var localCustomerSheetData: LocalCustomerSheetData? = null
 
     private var isSavedState: Boolean = false
+    private var isSaveddata: Boolean = true
     private var selectedDatePosition: Int = 0
 
     private lateinit var customerSheetPresenter: CustomerSheetPresenter
@@ -56,6 +60,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         super.onAttach(context)
         if (context is DashBoardContract.View.OnFragmentInteractionListener) {
             onFragmentInteractionListener = context
+            isSaveddata=true
         }
     }
 
@@ -68,22 +73,34 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         availableDates = CalendarUtils.getPastCalendarDates()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_customer_sheet, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarCustomerSheet, availableDates, this)
+        CalendarUtils.initializeCalendarView(
+            fragmentActivity!!,
+            singleRowCalendarCustomerSheet,
+            availableDates,
+            this
+        )
         savedInstanceState?.also {
             isSavedState = true
             if (savedInstanceState.containsKey(SELECTED_DATE_POSITION)) {
-                selectedDatePosition = savedInstanceState.getInt(SELECTED_DATE_POSITION)!!
+                selectedDatePosition = savedInstanceState.getInt(SELECTED_DATE_POSITION)
                 singleRowCalendarCustomerSheet.select(selectedDatePosition)
             }
 
-            if (savedInstanceState.containsKey(COMPANY_NAME) && savedInstanceState.containsKey(DATE_STRING)) {
+            if (savedInstanceState.containsKey(COMPANY_NAME) && savedInstanceState.containsKey(
+                    DATE_STRING
+                )
+            ) {
                 companyName = savedInstanceState.getString(COMPANY_NAME)!!
                 date = savedInstanceState.getString(DATE_STRING)!!
                 showHeaderInfo(companyName, date)
@@ -93,7 +110,10 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
                 localCustomerSheetData = savedInstanceState.getParcelable(LOCAL_CUSTOMER_SHEET_DATA)
             }
 
-            if (savedInstanceState.containsKey(SCHEDULE_DETAIL) && savedInstanceState.containsKey(DATE) && savedInstanceState.containsKey(CUSTOMER_SHEET)) {
+            if (savedInstanceState.containsKey(SCHEDULE_DETAIL) && savedInstanceState.containsKey(
+                    DATE
+                ) && savedInstanceState.containsKey(CUSTOMER_SHEET)
+            ) {
                 customerSheetScheduleDetails = savedInstanceState.getParcelable(SCHEDULE_DETAIL)
                 selectedDate = savedInstanceState.getSerializable(DATE) as Date
                 customerSheetData = savedInstanceState.getParcelable(CUSTOMER_SHEET)
@@ -101,7 +121,12 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
                 selectedTime = selectedDate.time
 
                 val allWorkItemLists = createDifferentListData(customerSheetScheduleDetails!!)
-                initializeViewPager(allWorkItemLists, customerSheetData, selectedTime, localCustomerSheetData)
+                initializeViewPager(
+                    allWorkItemLists,
+                    customerSheetData,
+                    selectedTime,
+                    localCustomerSheetData
+                )
             }
         } ?: run {
             initializeViewPager()
@@ -131,10 +156,19 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
 
     private fun initializeViewPager(
         allWorkItemLists: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>? = null,
-        customerSheetData: CustomerSheetData? = null, selectedTime: Long? = null, localCustomerSheetData: LocalCustomerSheetData? = null
+        customerSheetData: CustomerSheetData? = null,
+        selectedTime: Long? = null,
+        localCustomerSheetData: LocalCustomerSheetData? = null
     ) {
         adapter = if (allWorkItemLists != null) {
-            CustomerSheetPagerAdapter(childFragmentManager, resources, allWorkItemLists, customerSheetData, selectedTime, localCustomerSheetData)
+            CustomerSheetPagerAdapter(
+                childFragmentManager,
+                resources,
+                allWorkItemLists,
+                customerSheetData,
+                selectedTime,
+                localCustomerSheetData
+            )
         } else {
             CustomerSheetPagerAdapter(childFragmentManager, resources)
         }
@@ -153,7 +187,8 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         allWorkItems.addAll(onGoingWorkItems)
         allWorkItems.addAll(scheduleDetails.cancelled!!)
         allWorkItems.addAll(scheduleDetails.completed!!)
-        textViewTotalCount.text = String.format(getString(R.string.total_containers_s), allWorkItems.size)
+        textViewTotalCount.text =
+            String.format(getString(R.string.total_containers_s), allWorkItems.size)
 
         return Triple(onGoingWorkItems, scheduleDetails.cancelled!!, scheduleDetails.completed!!)
     }
@@ -167,7 +202,11 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         textViewTotalCount.text = ""
     }
 
-    override fun showCustomerSheets(scheduleDetails: CustomerSheetScheduleDetails, customerSheet: CustomerSheetData?, selectedDate: Date) {
+    override fun showCustomerSheets(
+        scheduleDetails: CustomerSheetScheduleDetails,
+        customerSheet: CustomerSheetData?,
+        selectedDate: Date
+    ) {
         this.selectedDate = selectedDate
         this.customerSheetScheduleDetails = scheduleDetails
         this.customerSheetData = customerSheet
@@ -184,9 +223,16 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         allWorkItems.addAll(onGoingWorkItems)
         allWorkItems.addAll(scheduleDetails.cancelled!!)
         allWorkItems.addAll(scheduleDetails.completed!!)
-        textViewTotalCount.text = String.format(getString(R.string.total_containers_s), allWorkItems.size)
+        textViewTotalCount.text =
+            String.format(getString(R.string.total_containers_s), allWorkItems.size)
 
-        adapter.updateCustomerSheetList(onGoingWorkItems, scheduleDetails.cancelled!!, scheduleDetails.completed!!, customerSheet, selectedTime)
+        adapter.updateCustomerSheetList(
+            onGoingWorkItems,
+            scheduleDetails.cancelled!!,
+            scheduleDetails.completed!!,
+            customerSheet,
+            selectedTime
+        )
     }
 
     override fun showHeaderInfo(companyName: String, date: String) {
@@ -200,16 +246,21 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
     override fun customerSavedSuccessfully() {
         LocalNotificationUtils.showTimeClockNotification(fragmentActivity!!)
 
-        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.customer_sheet_success_message),
-            fragmentActivity!!, object : CustomDialogListener {
-                override fun onConfirmClick() {
-                    customerSheetPresenter.getCustomerSheetByDate(Date(selectedTime))
-                }
-            })
+        CustomProgressBar.getInstance()
+            .showSuccessDialog(getString(R.string.customer_sheet_success_message),
+                fragmentActivity!!, object : CustomDialogListener {
+                    override fun onConfirmClick() {
+                        customerSheetPresenter.getCustomerSheetByDate(Date(selectedTime))
+                    }
+                })
     }
 
     override fun showLoginScreen() {
-        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
+        startIntent(
+            LoginActivity::class.java,
+            isFinish = true,
+            flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK)
+        )
     }
 
     /** Fragment Interaction Listeners */
@@ -219,10 +270,19 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         signatureFilePath: String,
         customerId: String
     ) {
-        customerSheetPresenter.saveCustomerSheet(customerName, notesCustomer, signatureFilePath, customerId)
+        customerSheetPresenter.saveCustomerSheet(
+            customerName,
+            notesCustomer,
+            signatureFilePath,
+            customerId
+        )
     }
 
-    override fun saveSateCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String) {
+    override fun saveSateCustomerSheet(
+        customerName: String,
+        notesCustomer: String,
+        signatureFilePath: String
+    ) {
         if (localCustomerSheetData == null) {
             localCustomerSheetData = LocalCustomerSheetData()
         }
@@ -231,11 +291,28 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         localCustomerSheetData?.signatureFilePath = signatureFilePath
     }
 
+    override fun isDataSave(isDataSave: Boolean) {
+        isSaveddata = isDataSave
+    }
+
     /** Calendar Listeners */
     override fun onSelectCalendarDate(date: Date, selected: Boolean, position: Int) {
         if (!isSavedState)
             customerSheetPresenter.getCustomerSheetByDate(date)
         isSavedState = false
         selectedDatePosition = position
+    }
+
+    override fun onDataChanges(): Boolean {
+        var isDataChanged = false
+        if (customerSheetData != null && customerSheetData!!.isSigned!!.equals(true)) {
+            isDataChanged = false
+        } else {
+            if (!isSaveddata) {
+                isDataChanged = true
+            } else false
+        }
+
+        return isDataChanged
     }
 }

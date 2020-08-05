@@ -201,6 +201,9 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
                     if (currentFragment is TimeClockAttendanceFragment) {
                         if (currentFragment.onDataChanges()) showLeavePopup()
                         else openLeadActivity()
+                    } else if (currentFragment is CustomerSheetFragment) {
+                        if (currentFragment.onDataChanges()) showLeavePopup()
+                        else openLeadActivity()
                     } else openLeadActivity()
                 }
             }

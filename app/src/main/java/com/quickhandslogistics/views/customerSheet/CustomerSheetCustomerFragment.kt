@@ -105,6 +105,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
             data?.let {
                 val signatureFilePath = data.getStringExtra(AddSignatureActivity.ARG_SIGNATURE_FILE_PATH)
                 showLocalSignatureOnUI(signatureFilePath)
+                onFragmentInteractionListener?.isDataSave(false)
             }
         }
     }
@@ -126,6 +127,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
             editTextCustomerNotes.setText(customerSheet.note)
             customerId= customerSheet.id!!
             updateUIVisibility(ValueUtils.getDefaultOrValue(customerSheet.isSigned), isCurrentDate, inCompleteWorkItemsCount, customerSheet.signatureUrl)
+            onFragmentInteractionListener?.isDataSave(true)
         } ?: run {
             editTextCustomerName.setText("")
             editTextCustomerNotes.setText("")
