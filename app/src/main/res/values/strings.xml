@@ -19,7 +19,7 @@
     <string name="lumper_profile">Lumper Profile</string>
     <string name="total_cases_text">Total cases</string>
     <string name="building_name">Building Name</string>
-    <string name="building_name_lead">Building Name : </string>
+    <string name="building_name_lead">Building : </string>
     <string name="building_operations">Building Operations</string>
     <string name="cancel">Cancel</string>
     <string name="cancel_all_work_schedules">Today\'s Work Cancel</string>
@@ -61,8 +61,8 @@
     <string name="email_address">Email Address</string>
     <string name="employee_id">Employee ID</string>
     <string name="employee_id_lead">Employee ID : </string>
-    <string name="phone_number_lead">Phone Number :</string>
-    <string name="email_addess_lead">Email Address :</string>
+    <string name="phone_number_lead">Phone :</string>
+    <string name="email_addess_lead">Email :</string>
     <string name="end">End</string>
     <string name="end_time">End Time</string>
     <string name="english">English</string>
@@ -72,6 +72,7 @@
     <string name="forgot_password">Forgot Password</string>
     <string name="forgot_password_question_mark">Forgot Password?</string>
     <string name="full_time">Full Time</string>
+    <string name="full_time_ud">Full-Time</string>
     <string name="generate_report">Generate Report</string>
     <string name="hiring_date">Hiring Date</string>
     <string name="in_progress">In-Progress</string>
@@ -111,6 +112,7 @@
     <string name="out_to_lunch">Out to Lunch</string>
     <string name="parameters">Parameters</string>
     <string name="part_time">Part Time</string>
+    <string name="part_time_ud">Part-Time</string>
     <string name="pdf">PDF</string>
     <string name="pending">Pending</string>
     <string name="phone_number">Phone Number</string>
@@ -270,8 +272,8 @@
     <string name="notification_off_info_message">Notification are turned off from the app Settings. Click to update.</string>
     <string name="search_info_message">Search by Name…</string>
     <string name="sign_in_info_message">Sign in by entering the details below.</string>
-    <string name="work_sheet_lumper_message">Lead and lumpers have been Clocked-In</string>
-    <string name="work_sheet_cancel_header_message">Clock-In lead and all lumpers who are present before submitting. Add a note if needed</string>
+    <string name="work_sheet_lumper_message">Lumpers have been Clocked-In</string>
+    <string name="work_sheet_cancel_header_message">Clock-In all lumpers who are present before submitting. Add a note if needed</string>
 
     <!--Lumper Timing Warnings-->
     <string name="work_start_less_work_end_warning_message">Work\'s Start Time should be less than End Time</string>

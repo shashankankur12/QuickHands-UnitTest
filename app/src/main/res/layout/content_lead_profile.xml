@@ -498,7 +498,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="WorkLocation"
+                            android:text="Work Location"
                             android:textColor="@color/textWhite"
                             android:textSize="@dimen/_14sdp"
                             android:textStyle="bold" />
@@ -517,7 +517,7 @@
                             style="@style/detailTextHeader"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Customer name : "
+                            android:text="Customer : "
                             android:textColor="@color/colorTextGrey"
                             android:textStyle="bold" />
 

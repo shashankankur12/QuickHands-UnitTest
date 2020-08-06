@@ -71,22 +71,22 @@ class LumperDetailActivity : BaseActivity(), View.OnClickListener {
                     employeeData.role!!.capitalize() + " at " + buildingDetailData?.buildingName!!.capitalize()
             } else textViewCompanyName.visibility = View.GONE
 
-            textViewEmailAddress.text = if (!employeeData.email.isNullOrEmpty()) employeeData.email else "-"
+            textViewEmailAddress.text = if (!employeeData.email.isNullOrEmpty()) employeeData.email else "---"
             val phoneNumber = UIUtils.getDisplayPhoneNumber(employeeData)
-            textViewPhoneNumber.text = if (phoneNumber.isNotEmpty()) phoneNumber else "-"
+            textViewPhoneNumber.text = if (phoneNumber.isNotEmpty()) phoneNumber else "---"
 
-            textViewEmployeeId.text = if (!employeeData.employeeId.isNullOrEmpty()) employeeData.employeeId else "-"
-            textViewRole.text = if (!employeeData.role.isNullOrEmpty()) employeeData.role!!.capitalize() else "-"
-            textViewDepartment.text = if (!employeeData.department.isNullOrEmpty()) UIUtils.getDisplayEmployeeDepartment(employeeData) else "-"
+            textViewEmployeeId.text = if (!employeeData.employeeId.isNullOrEmpty()) employeeData.employeeId else "---"
+            textViewRole.text = if (!employeeData.role.isNullOrEmpty()) employeeData.role!!.capitalize() else "---"
+            textViewDepartment.text = if (!employeeData.department.isNullOrEmpty()) UIUtils.getDisplayEmployeeDepartment(employeeData) else "---"
             textViewTitle.text = if (!employeeData.title.isNullOrEmpty()) employeeData.title!!.capitalize() else "---"
 
-            textViewShiftHours.text = if (!employeeData.shiftHours.isNullOrEmpty()) employeeData.shiftHours else "-"
-            textViewShift.text = if (!employeeData.shift.isNullOrEmpty()) employeeData.shift?.capitalize() else "-"
+            textViewShiftHours.text = if (!employeeData.shiftHours.isNullOrEmpty()) employeeData.shiftHours else "---"
+            textViewShift.text = if (!employeeData.shift.isNullOrEmpty()) employeeData.shift?.capitalize() else "---"
             textViewScheduleNote.text = if (!employeeData.scheduleNotes.isNullOrEmpty()) UIUtils.getSpannedText(getString(R.string.schedule_note) + employeeData.scheduleNotes) else UIUtils.getSpannedText(getString(R.string.schedule_note_lead))
-            textViewAvailability.text = if (employeeData.fullTime!!) getString(R.string.full_time) else getString(R.string.part_time)
+            textViewAvailability.text = if (employeeData.fullTime!!) getString(R.string.full_time_ud) else getString(R.string.part_time_ud)
 
-            textViewBuildingName.text = if (!buildingDetailData?.buildingName.isNullOrEmpty()) buildingDetailData?.buildingName!!.capitalize() else "-"
-            textViewCustomerName.text = if (!buildingDetailData?.customerDetail?.companyAdminName.isNullOrEmpty()) buildingDetailData?.customerDetail?.companyAdminName!!.capitalize() else "-"
+            textViewBuildingName.text = if (!buildingDetailData?.buildingName.isNullOrEmpty()) buildingDetailData?.buildingName!!.capitalize() else "---"
+            textViewCustomerName.text = if (!buildingDetailData?.customerDetail?.companyAdminName.isNullOrEmpty()) buildingDetailData?.customerDetail?.companyAdminName!!.capitalize() else "---"
 
 
             //circleImageViewProfile.setOnClickListener(this@LumperDetailActivity)
