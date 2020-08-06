@@ -5,6 +5,7 @@ import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.reports.LumperJobReportContract
 import com.quickhandslogistics.data.ErrorResponse
+import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.data.reports.ReportResponse
 import com.quickhandslogistics.models.reports.LumperJobReportModel
@@ -53,7 +54,12 @@ class LumperJobReportPresenter(private var lumperJobReportView: LumperJobReportC
 
     override fun onSuccess(response: LumperListAPIResponse) {
         lumperJobReportView?.hideProgressDialog()
-        lumperJobReportView?.showLumpersData(response.data?.permanentLumpersList!!)
+
+        val allLumpersList = ArrayList<EmployeeData>()
+        allLumpersList.addAll(response.data?.permanentLumpersList!!)
+        allLumpersList.addAll(response.data?.temporaryLumpers!!)
+
+        lumperJobReportView?.showLumpersData(allLumpersList)
     }
 
     override fun onSuccessCreateReport(response: ReportResponse) {

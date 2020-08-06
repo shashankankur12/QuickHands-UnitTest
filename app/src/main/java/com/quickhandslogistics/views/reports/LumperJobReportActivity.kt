@@ -30,6 +30,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     private var selectedStartDate: Date? = null
     private var selectedEndDate: Date? = null
 
+
     private lateinit var lumperJobReportPresenter: LumperJobReportPresenter
     private lateinit var lumperJobReportAdapter: LumperJobReportAdapter
     private  var employeeDataList: ArrayList<EmployeeData> = ArrayList()
@@ -152,6 +153,8 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
             radioButtonCustom.id -> {
                 selectedStartDate = null
                 selectedEndDate = null
+                employeeDataList.clear()
+                lumperJobReportAdapter.updateLumpersData(employeeDataList)
             }
         }
         updateSelectedDateText()
@@ -214,6 +217,18 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
             override fun onDateSet(selected: Date) {
                 selectedStartDate = selected
                 updateSelectedDateText()
+                if (selectedEndDate != null) {
+                    var startDate = DateUtils.getDateString(
+                        DateUtils.PATTERN_API_REQUEST_PARAMETER,
+                        selectedStartDate!!
+                    )
+                    var endDate = DateUtils.getDateString(
+                        DateUtils.PATTERN_API_REQUEST_PARAMETER,
+                        selectedEndDate!!
+                    )
+                    if (lumperJobReportPresenter != null)
+                        lumperJobReportPresenter.fetchLumpersList(startDate, endDate)
+                }
             }
         })
     }
@@ -223,6 +238,18 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
             override fun onDateSet(selected: Date) {
                 selectedEndDate = selected
                 updateSelectedDateText()
+                if (selectedStartDate != null) {
+                    var startDate = DateUtils.getDateString(
+                        DateUtils.PATTERN_API_REQUEST_PARAMETER,
+                        selectedStartDate!!
+                    )
+                    var endDate = DateUtils.getDateString(
+                        DateUtils.PATTERN_API_REQUEST_PARAMETER,
+                        selectedEndDate!!
+                    )
+                    if (lumperJobReportPresenter != null)
+                        lumperJobReportPresenter.fetchLumpersList(startDate, endDate)
+                }
             }
         })
     }

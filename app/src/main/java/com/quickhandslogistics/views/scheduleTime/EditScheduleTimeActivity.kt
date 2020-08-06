@@ -135,7 +135,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         imageViewCancel.setOnClickListener(this)
         buttonCancelNote.setOnClickListener(this)
         bottomSheetBackgroundEditSchedule.setOnClickListener(this)
-        buttonCancel.setOnClickListener(this)
+//        buttonCancel.setOnClickListener(this)
 
         invalidateOptionsMenu()
 
@@ -234,7 +234,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             when (view.id) {
                 imageViewAddLumpers.id -> showChooseLumpersScreen()
                 bottomSheetBackgroundEditSchedule.id -> closeBottomSheet()
-                buttonCancel.id -> closeBottomSheet()
+//                buttonCancel.id -> closeBottomSheet()
                 textViewAddSameTime.id -> chooseSameTimeForAllLumpers()
                 buttonCancelNote.id -> onBackPressed()
                 buttonSubmit.id -> saveLumperScheduleTimings()

@@ -29,6 +29,8 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
 
     private var selectedStartDate: Date? = null
     private var selectedEndDate: Date? = null
+    private var startDate: String = ""
+    private var endDate: String = ""
 
     private lateinit var timeClockReportPresenter: TimeClockReportPresenter
     private lateinit var timeClockReportAdapter: TimeClockReportAdapter
@@ -47,6 +49,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
         timeClockReportPresenter = TimeClockReportPresenter(this, resources)
         initializeUI()
 
+
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(LUMPER_REPORT_LIST)) {
                 employeeDataList = savedInstanceState.getParcelableArrayList(LUMPER_REPORT_LIST)!!
@@ -54,6 +57,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
             }
         } ?: run {
 //            timeClockReportPresenter.fetchLumpersList(startdate, endDate)
+
         }
 
     }
@@ -123,45 +127,43 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
                 selectedEndDate = calendar.time
                 selectedStartDate = calendar.time
 
-                var startdate =getFormetedDate(calendar.time,"yyyy-MM-dd")
-                var endDate =getFormetedDate(calendar.time,"yyyy-MM-dd")
+                startDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedStartDate!!)
+                endDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedEndDate!!)
                 if (timeClockReportPresenter!=null)
-                    timeClockReportPresenter.fetchLumpersList(startdate, endDate)
+                    timeClockReportPresenter.fetchLumpersList(startDate, endDate)
             }
             radioButtonWeekly.id -> {
                 selectedEndDate = calendar.time
-                var endDate =getFormetedDate(calendar.time,"yyyy-MM-dd")
+                endDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedEndDate!!)
                 calendar.add(Calendar.WEEK_OF_YEAR, -1)
                 selectedStartDate = calendar.time
 
-                var startdate =getFormetedDate(calendar.time,"yyyy-MM-dd")
+                startDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedStartDate!!)
 
                 if (timeClockReportPresenter!=null)
-                    timeClockReportPresenter.fetchLumpersList(startdate, endDate)
+                    timeClockReportPresenter.fetchLumpersList(startDate, endDate)
             }
             radioButtonMonthly.id -> {
                 selectedEndDate = calendar.time
-                var endDate =getFormetedDate(calendar.time,"yyyy-MM-dd")
+                endDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedEndDate!!)
                 calendar.set(Calendar.DATE, 1)
                 selectedStartDate = calendar.time
-                var startdate =getFormetedDate(calendar.time,"yyyy-MM-dd")
+                startDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedStartDate!!)
 
                 if (timeClockReportPresenter!=null)
-                    timeClockReportPresenter.fetchLumpersList(startdate, endDate)
+                    timeClockReportPresenter.fetchLumpersList(startDate, endDate)
             }
             radioButtonCustom.id -> {
                 selectedEndDate = null
                 selectedStartDate = null
+                employeeDataList.clear()
+                timeClockReportAdapter.updateLumpersData(employeeDataList)
+
             }
         }
         updateSelectedDateText()
     }
 
-    private fun getFormetedDate(selectedStartDate: Date, format: String): String {
-        val date = selectedStartDate
-        val formatter = SimpleDateFormat(format, Locale.US)
-        return formatter.format(date)
-    }
 
     private fun updateSelectedDateText() {
         selectedStartDate?.also { date ->
@@ -213,6 +215,12 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
             override fun onDateSet(selected: Date) {
                 selectedStartDate = selected
                 updateSelectedDateText()
+                if (selectedEndDate!=null){
+                    startDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedStartDate!!)
+                    endDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedEndDate!!)
+                    if (timeClockReportPresenter!=null)
+                        timeClockReportPresenter.fetchLumpersList(startDate, endDate)
+                }
             }
         })
     }
@@ -222,6 +230,12 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
             override fun onDateSet(selected: Date) {
                 selectedEndDate = selected
                 updateSelectedDateText()
+                if (selectedStartDate!=null){
+                    startDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedStartDate!!)
+                    endDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedEndDate!!)
+                    if (timeClockReportPresenter!=null)
+                        timeClockReportPresenter.fetchLumpersList(startDate, endDate)
+                }
             }
         })
     }
