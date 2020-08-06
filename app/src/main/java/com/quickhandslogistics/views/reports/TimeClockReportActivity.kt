@@ -20,7 +20,6 @@ import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.content_lumper_job_report.*
 import kotlinx.android.synthetic.main.layout_date_filter.*
 import kotlinx.android.synthetic.main.layout_report_type.*
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -31,14 +30,14 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
     private var selectedEndDate: Date? = null
     private var startDate: String = ""
     private var endDate: String = ""
+    private var isSavedInstacnse: Boolean = false
 
-    private lateinit var timeClockReportPresenter: TimeClockReportPresenter
+    private  var timeClockReportPresenter: TimeClockReportPresenter?=null
     private lateinit var timeClockReportAdapter: TimeClockReportAdapter
     private var employeeDataList: ArrayList<EmployeeData> = ArrayList()
 
     companion object {
         const val LUMPER_REPORT_LIST = "LUMPER_REPORT_LIST"
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,17 +45,18 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
         setContentView(R.layout.activity_lumper_job_report)
         setupToolbar(getString(R.string.time_clock_report))
 
-        timeClockReportPresenter = TimeClockReportPresenter(this, resources)
         initializeUI()
-
+        timeClockReportPresenter = TimeClockReportPresenter(this, resources)
 
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(LUMPER_REPORT_LIST)) {
                 employeeDataList = savedInstanceState.getParcelableArrayList(LUMPER_REPORT_LIST)!!
+                isSavedInstacnse=true
                 showLumpersData(employeeDataList)
             }
         } ?: run {
-//            timeClockReportPresenter.fetchLumpersList(startdate, endDate)
+            val dateString = DateUtils.getCurrentDateStringByEmployeeShift()
+            timeClockReportPresenter!!.fetchLumpersList(dateString, dateString)
 
         }
 
@@ -70,7 +70,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
 
     override fun onDestroy() {
         super.onDestroy()
-        timeClockReportPresenter.onDestroy()
+        timeClockReportPresenter!!.onDestroy()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
@@ -100,9 +100,11 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
             }
         })
 
+        if (!isSavedInstacnse)
         updateTimeByRangeOptionSelected()
 
         linearLayoutSelectAll.setOnClickListener(this)
+        radioGroupDateRange.setOnCheckedChangeListener(this)
         radioGroupDateRange.setOnCheckedChangeListener(this)
         textViewStartDate.setOnClickListener(this)
         textViewEndDate.setOnClickListener(this)
@@ -127,38 +129,24 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
                 selectedEndDate = calendar.time
                 selectedStartDate = calendar.time
 
-                startDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedStartDate!!)
-                endDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedEndDate!!)
-                if (timeClockReportPresenter!=null)
-                    timeClockReportPresenter.fetchLumpersList(startDate, endDate)
+                getLumperListData()
             }
             radioButtonWeekly.id -> {
                 selectedEndDate = calendar.time
-                endDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedEndDate!!)
                 calendar.add(Calendar.WEEK_OF_YEAR, -1)
                 selectedStartDate = calendar.time
 
-                startDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedStartDate!!)
-
-                if (timeClockReportPresenter!=null)
-                    timeClockReportPresenter.fetchLumpersList(startDate, endDate)
+                getLumperListData()
             }
             radioButtonMonthly.id -> {
                 selectedEndDate = calendar.time
-                endDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedEndDate!!)
                 calendar.set(Calendar.DATE, 1)
                 selectedStartDate = calendar.time
-                startDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedStartDate!!)
 
-                if (timeClockReportPresenter!=null)
-                    timeClockReportPresenter.fetchLumpersList(startDate, endDate)
+                getLumperListData()
             }
             radioButtonCustom.id -> {
-                selectedEndDate = null
-                selectedStartDate = null
-                employeeDataList.clear()
-                timeClockReportAdapter.updateLumpersData(employeeDataList)
-
+                customeClick()
             }
         }
         updateSelectedDateText()
@@ -181,6 +169,13 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
         updateGenerateButtonUI()
     }
 
+    private fun customeClick() {
+        selectedStartDate = null
+        selectedEndDate = null
+        employeeDataList.clear()
+        timeClockReportAdapter.updateLumpersData(employeeDataList)
+    }
+
     private fun updateSelectAllSectionUI() {
         val selectedCount = timeClockReportAdapter.getSelectedLumperIdsList().size
         if (selectedCount == timeClockReportAdapter.itemCount) {
@@ -201,6 +196,8 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
             textViewEmptyData.visibility = View.VISIBLE
             if (timeClockReportAdapter.isSearchEnabled()) {
                 textViewEmptyData.text = getString(R.string.no_record_found_info_message)
+            } else if (selectedStartDate == null || selectedEndDate == null) {
+                textViewEmptyData.text = getString(R.string.no_record_found_info_message)
             } else {
                 textViewEmptyData.text = getString(R.string.empty_lumpers_list_info_message)
             }
@@ -216,10 +213,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
                 selectedStartDate = selected
                 updateSelectedDateText()
                 if (selectedEndDate!=null){
-                    startDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedStartDate!!)
-                    endDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedEndDate!!)
-                    if (timeClockReportPresenter!=null)
-                        timeClockReportPresenter.fetchLumpersList(startDate, endDate)
+                    getLumperListData()
                 }
             }
         })
@@ -231,20 +225,25 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
                 selectedEndDate = selected
                 updateSelectedDateText()
                 if (selectedStartDate!=null){
-                    startDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedStartDate!!)
-                    endDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedEndDate!!)
-                    if (timeClockReportPresenter!=null)
-                        timeClockReportPresenter.fetchLumpersList(startDate, endDate)
+                    getLumperListData()
                 }
             }
         })
+    }
+
+    private fun getLumperListData() {
+        startDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedStartDate!!)
+        endDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedEndDate!!)
+        if (timeClockReportPresenter!=null&&!isSavedInstacnse)
+            timeClockReportPresenter!!.fetchLumpersList(startDate, endDate)
+
     }
 
     private fun showConfirmationDialog() {
         CustomProgressBar.getInstance().showWarningDialog(getString(R.string.generate_report_alert_message), activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 val reportType = if (radioGroupReportType.checkedRadioButtonId == radioButtonPdf.id) "pdf" else "excel"
-                timeClockReportPresenter.createTimeClockReport(selectedStartDate!!, selectedEndDate!!, reportType, timeClockReportAdapter.getSelectedLumperIdsList())
+                timeClockReportPresenter!!.createTimeClockReport(selectedStartDate!!, selectedEndDate!!, reportType, timeClockReportAdapter.getSelectedLumperIdsList())
             }
 
             override fun onCancelClick() {
@@ -287,6 +286,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
 
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
         updateTimeByRangeOptionSelected()
+        isSavedInstacnse=false
     }
 
     override fun showLoginScreen() {

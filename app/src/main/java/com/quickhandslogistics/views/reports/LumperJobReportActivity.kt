@@ -29,9 +29,12 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
 
     private var selectedStartDate: Date? = null
     private var selectedEndDate: Date? = null
+    private var startDate: String = ""
+    private var endDate: String = ""
+    private var isSavedInstacnse: Boolean = false
 
 
-    private lateinit var lumperJobReportPresenter: LumperJobReportPresenter
+    private  var lumperJobReportPresenter: LumperJobReportPresenter ? =null
     private lateinit var lumperJobReportAdapter: LumperJobReportAdapter
     private  var employeeDataList: ArrayList<EmployeeData> = ArrayList()
 
@@ -44,17 +47,19 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
         setContentView(R.layout.activity_lumper_job_report)
         setupToolbar(getString(R.string.lumper_sheet_report))
 
-        lumperJobReportPresenter = LumperJobReportPresenter(this, resources)
         initializeUI()
+        lumperJobReportPresenter = LumperJobReportPresenter(this, resources)
+
 
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(LUMPER_JOB_REPORT_LIST)) {
                 employeeDataList = savedInstanceState.getParcelableArrayList(LUMPER_JOB_REPORT_LIST)!!
                 showLumpersData(employeeDataList)
+                isSavedInstacnse=true
             }
         } ?: run {
             val dateString = DateUtils.getCurrentDateStringByEmployeeShift()
-//            lumperJobReportPresenter.fetchLumpersList(dateString, dateString)
+            lumperJobReportPresenter!!.fetchLumpersList(dateString, dateString)
         }
     }
 
@@ -66,7 +71,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
 
     override fun onDestroy() {
         super.onDestroy()
-        lumperJobReportPresenter.onDestroy()
+        lumperJobReportPresenter!!.onDestroy()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
@@ -123,47 +128,43 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
                 selectedEndDate = calendar.time
                 selectedStartDate = calendar.time
 
-                var startdate =getFormetedDate(calendar.time,"yyyy-MM-dd")
-                var endDate =getFormetedDate(calendar.time,"yyyy-MM-dd")
-                if (lumperJobReportPresenter!=null)
-                lumperJobReportPresenter.fetchLumpersList(startdate, endDate)
+                getLumperListData()
             }
             radioButtonWeekly.id -> {
                 selectedEndDate = calendar.time
-                var endDate =getFormetedDate(calendar.time,"yyyy-MM-dd")
+
                 calendar.add(Calendar.WEEK_OF_YEAR, -1)
                 selectedStartDate = calendar.time
 
-                var startdate =getFormetedDate(calendar.time,"yyyy-MM-dd")
-                if (lumperJobReportPresenter!=null)
-                    lumperJobReportPresenter.fetchLumpersList(startdate, endDate)
-
+                getLumperListData()
             }
             radioButtonMonthly.id -> {
                 selectedEndDate = calendar.time
-                var endDate =getFormetedDate(calendar.time,"yyyy-MM-dd")
                 calendar.set(Calendar.DATE, 1)
                 selectedStartDate = calendar.time
-                var startdate =getFormetedDate(calendar.time,"yyyy-MM-dd")
-                if (lumperJobReportPresenter!=null)
-                    lumperJobReportPresenter.fetchLumpersList(startdate, endDate)
 
-
+                getLumperListData()
             }
             radioButtonCustom.id -> {
-                selectedStartDate = null
-                selectedEndDate = null
-                employeeDataList.clear()
-                lumperJobReportAdapter.updateLumpersData(employeeDataList)
+                customeClick()
             }
         }
         updateSelectedDateText()
     }
 
-    private fun getFormetedDate(selectedStartDate: Date, format: String): String {
-        val date = selectedStartDate
-        val formatter = SimpleDateFormat(format, Locale.US)
-        return formatter.format(date)
+    private fun customeClick() {
+        selectedStartDate = null
+        selectedEndDate = null
+        employeeDataList.clear()
+        lumperJobReportAdapter.updateLumpersData(employeeDataList)
+    }
+
+    private fun getLumperListData() {
+        startDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedStartDate!!)
+        endDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedEndDate!!)
+        if (lumperJobReportPresenter!=null&&!isSavedInstacnse)
+            lumperJobReportPresenter!!.fetchLumpersList(startDate, endDate)
+
     }
 
 
@@ -203,7 +204,9 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
             textViewEmptyData.visibility = View.VISIBLE
             if (lumperJobReportAdapter.isSearchEnabled()) {
                 textViewEmptyData.text = getString(R.string.no_record_found_info_message)
-            } else {
+            } else if (selectedStartDate == null || selectedEndDate == null) {
+                textViewEmptyData.text = getString(R.string.no_record_found_info_message)
+            }else {
                 textViewEmptyData.text = getString(R.string.empty_lumpers_list_info_message)
             }
         } else {
@@ -217,18 +220,8 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
             override fun onDateSet(selected: Date) {
                 selectedStartDate = selected
                 updateSelectedDateText()
-                if (selectedEndDate != null) {
-                    var startDate = DateUtils.getDateString(
-                        DateUtils.PATTERN_API_REQUEST_PARAMETER,
-                        selectedStartDate!!
-                    )
-                    var endDate = DateUtils.getDateString(
-                        DateUtils.PATTERN_API_REQUEST_PARAMETER,
-                        selectedEndDate!!
-                    )
-                    if (lumperJobReportPresenter != null)
-                        lumperJobReportPresenter.fetchLumpersList(startDate, endDate)
-                }
+                if (selectedEndDate != null)
+                    getLumperListData()
             }
         })
     }
@@ -238,18 +231,8 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
             override fun onDateSet(selected: Date) {
                 selectedEndDate = selected
                 updateSelectedDateText()
-                if (selectedStartDate != null) {
-                    var startDate = DateUtils.getDateString(
-                        DateUtils.PATTERN_API_REQUEST_PARAMETER,
-                        selectedStartDate!!
-                    )
-                    var endDate = DateUtils.getDateString(
-                        DateUtils.PATTERN_API_REQUEST_PARAMETER,
-                        selectedEndDate!!
-                    )
-                    if (lumperJobReportPresenter != null)
-                        lumperJobReportPresenter.fetchLumpersList(startDate, endDate)
-                }
+                if (selectedStartDate != null)
+                    getLumperListData()
             }
         })
     }
@@ -258,7 +241,8 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
         CustomProgressBar.getInstance().showWarningDialog(getString(R.string.generate_report_alert_message), activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 val reportType = if (radioGroupReportType.checkedRadioButtonId == radioButtonPdf.id) "pdf" else "excel"
-                lumperJobReportPresenter.createTimeClockReport(selectedStartDate!!, selectedEndDate!!, reportType, lumperJobReportAdapter.getSelectedLumperIdsList())
+                if(lumperJobReportPresenter!=null)
+                lumperJobReportPresenter!!.createTimeClockReport(selectedStartDate!!, selectedEndDate!!, reportType, lumperJobReportAdapter.getSelectedLumperIdsList())
             }
 
             override fun onCancelClick() {
@@ -305,6 +289,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
 
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
         updateTimeByRangeOptionSelected()
+        isSavedInstacnse=false
     }
 
     /** Presenter Listeners */
