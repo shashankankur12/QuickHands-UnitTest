@@ -461,13 +461,6 @@
                             android:text="@string/schedule_note"
                             android:textColor="@color/buildingTitle"/>
 
-                        <TextView
-                            style="@style/detailTextHeader"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingHorizontal="@dimen/_2sdp"
-                            android:textColor="@color/colorTextGrey"
-                            android:textSize="@dimen/_11ssp" />
                     </LinearLayout>
 
                 </LinearLayout>

@@ -75,7 +75,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:paddingBottom="@dimen/_15sdp"
-            android:paddingHorizontal="@dimen/_16ssp"
+            android:paddingHorizontal="@dimen/_12ssp"
             android:layout_height="match_parent">
 
             <androidx.cardview.widget.CardView
@@ -117,7 +117,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5ssp"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="@dimen/_10sdp">
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_5sdp">
 
                         <TextView
                             style="@style/detailTextHeader"
@@ -133,7 +134,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/hypertext_color"
-                            android:paddingStart="@dimen/_2sdp"
+                            android:paddingStart="@dimen/_1sdp"
                             android:textSize="@dimen/_11ssp" />
                     </LinearLayout>
 
@@ -144,7 +145,8 @@
                         android:layout_marginTop="@dimen/_5ssp"
                         android:layout_marginBottom="@dimen/_5ssp"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="@dimen/_10sdp">
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_5sdp">
 
                         <TextView
                             style="@style/detailTextHeader"
@@ -157,7 +159,7 @@
                         <TextView
                             android:id="@+id/textViewEmailAddress"
                             style="@style/detailTextHeader"
-                            android:paddingStart="@dimen/_2sdp"
+                            android:paddingStart="@dimen/_1sdp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/hypertext_color"
@@ -171,7 +173,7 @@
                 android:id="@+id/cardViewWorkIdentification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_12ssp"
                 android:elevation="@dimen/_5sdp"
                 app:cardCornerRadius="@dimen/_7sdp"
                 app:layout_constraintTop_toBottomOf="@+id/cardViewContact">
@@ -205,7 +207,8 @@
                         android:layout_marginTop="@dimen/_5ssp"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="@dimen/_10sdp">
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_5sdp">
 
                         <TextView
                             style="@style/detailTextHeader"
@@ -220,7 +223,7 @@
                             style="@style/detailTextHeader"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingStart="@dimen/_2sdp"
+                            android:paddingStart="@dimen/_1sdp"
                             android:textColor="@color/colorTextGrey"
                             android:textSize="@dimen/_11ssp" />
                     </LinearLayout>
@@ -231,12 +234,13 @@
                         android:layout_marginTop="@dimen/_5ssp"
                         android:layout_marginBottom="@dimen/_5ssp"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_5sdp"
                         android:weightSum="3">
 
                         <LinearLayout
                             android:id="@+id/layoutRole"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:orientation="horizontal"
@@ -257,14 +261,14 @@
                                 style="@style/detailTextHeader"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:paddingHorizontal="@dimen/_2sdp"
+                                android:paddingHorizontal="@dimen/_1sdp"
                                 android:textColor="@color/colorTextGrey"
                                 android:textSize="@dimen/_11ssp" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/layoutTitle"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:orientation="horizontal"
@@ -285,14 +289,14 @@
                                 style="@style/detailTextHeader"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:paddingHorizontal="@dimen/_2sdp"
+                                android:paddingHorizontal="@dimen/_1sdp"
                                 android:textColor="@color/colorTextGrey"
                                 android:textSize="@dimen/_11ssp" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/layoutDepartment"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:orientation="horizontal">
@@ -309,7 +313,7 @@
                                 android:id="@+id/textViewDepartment"
                                 style="@style/detailTextHeader"
                                 android:layout_width="wrap_content"
-                                android:paddingHorizontal="@dimen/_2sdp"
+                                android:paddingHorizontal="@dimen/_1sdp"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorTextGrey"
                                 android:textSize="@dimen/_11ssp" />
@@ -324,7 +328,7 @@
                 android:id="@+id/cardViewWorkSchedule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_12ssp"
                 android:elevation="@dimen/_5sdp"
                 app:cardCornerRadius="@dimen/_7sdp"
                 app:layout_constraintTop_toBottomOf="@+id/cardViewWorkIdentification">
@@ -358,7 +362,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5ssp"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="@dimen/_10sdp">
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_5sdp">
 
                         <TextView
                             style="@style/detailTextHeader"
@@ -383,7 +388,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5ssp"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_5sdp"
                         android:weightSum="2">
 
                         <LinearLayout
@@ -409,7 +415,7 @@
                                 style="@style/detailTextHeader"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:paddingHorizontal="@dimen/_2sdp"
+                                android:paddingHorizontal="@dimen/_1sdp"
                                 android:textColor="@color/colorTextGrey"
                                 android:textSize="@dimen/_11ssp" />
                         </LinearLayout>
@@ -437,7 +443,7 @@
                                 style="@style/detailTextHeader"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:paddingHorizontal="@dimen/_2sdp"
+                                android:paddingHorizontal="@dimen/_1sdp"
                                 android:textColor="@color/colorTextGrey"
                                 android:textSize="@dimen/_11ssp" />
                         </LinearLayout>
@@ -451,7 +457,8 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_5ssp"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="@dimen/_10sdp">
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_5sdp">
 
                         <TextView
                             style="@style/detailTextHeader"
@@ -461,13 +468,6 @@
                             android:text="@string/schedule_note"
                             android:textColor="@color/colorTextGrey" />
 
-                        <TextView
-                            style="@style/detailTextHeader"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingHorizontal="@dimen/_2sdp"
-                            android:textColor="@color/colorTextGrey"
-                            android:textSize="@dimen/_11ssp" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -477,8 +477,8 @@
                 android:id="@+id/cardViewWorkLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginBottom="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_12ssp"
+                android:layout_marginBottom="@dimen/_12ssp"
                 android:elevation="@dimen/_5sdp"
                 app:cardCornerRadius="@dimen/_7sdp"
                 app:layout_constraintTop_toBottomOf="@+id/cardViewWorkSchedule">
@@ -512,7 +512,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5ssp"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="@dimen/_10sdp">
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_5sdp">
 
                         <TextView
                             style="@style/detailTextHeader"
@@ -527,7 +528,7 @@
                             style="@style/detailTextHeader"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingStart="@dimen/_2sdp"
+                            android:paddingStart="@dimen/_1sdp"
                             android:textColor="@color/colorTextGrey"
                             android:textSize="@dimen/_11ssp" />
                     </LinearLayout>
@@ -539,7 +540,8 @@
                         android:layout_marginTop="@dimen/_5ssp"
                         android:layout_marginBottom="@dimen/_5ssp"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="@dimen/_10sdp">
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_5sdp">
 
                         <TextView
                             style="@style/detailTextHeader"
@@ -553,7 +555,7 @@
                             android:id="@+id/textViewBuildingName"
                             style="@style/detailTextHeader"
                             android:layout_width="wrap_content"
-                            android:paddingStart="@dimen/_2sdp"
+                            android:paddingStart="@dimen/_1sdp"
                             android:layout_height="wrap_content"
                             android:textColor="@color/colorTextGrey"
                             android:textSize="@dimen/_11ssp" />
@@ -562,43 +564,4 @@
             </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <!--<LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/constraintLayout"
-        android:layout_marginTop="@dimen/_12sdp"
-        android:background="@drawable/white_background"
-        android:orientation="vertical"
-        android:paddingStart="@dimen/_16ssp"
-        android:paddingTop="@dimen/_2ssp"
-        android:paddingEnd="@dimen/_16ssp">
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayoutLumperDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewLumperName"
-            app:tabIndicatorColor="@color/buttonRed"
-            app:tabIndicatorFullWidth="false"
-            app:tabMode="scrollable"
-            app:tabSelectedTextColor="@color/textBlack"
-            app:tabTextAppearance="@style/TabTextAppearance"
-            app:tabTextColor="@color/detailHeader" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/greyDivider" />
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewPagerLumperDetail"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/_10ssp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-    </LinearLayout>-->
 </RelativeLayout>
