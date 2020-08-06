@@ -1,7 +1,6 @@
 package com.quickhandslogistics.contracts.scheduleTime
 
 import com.quickhandslogistics.contracts.BaseContract
-import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
 import java.util.*
@@ -22,8 +21,21 @@ class ScheduleTimeContract {
         fun showDateString(dateString: String)
         fun showAPIErrorMessage(message: String)
         fun showNotesData(notes: String?)
-        fun showScheduleTimeData(selectedDate: Date, scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>, tempLumperIds: ArrayList<String>)
+        fun showScheduleTimeData(
+            selectedDate: Date,
+            scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>,
+            tempLumperIds: ArrayList<String>,
+            notes: String?
+        )
         fun showLoginScreen()
+        interface OnAdapterItemClickListener {
+            fun onEditTimeClick(adapterPosition: Int, timeInMillis: Long)
+            fun onScheduleNoteClick(adapterPosition: Int, notes: String)
+            fun onAddRemoveClick(
+                adapterPosition: Int,
+                details: ScheduleTimeDetail
+            )
+        }
     }
 
     interface Presenter : BaseContract.Presenter {

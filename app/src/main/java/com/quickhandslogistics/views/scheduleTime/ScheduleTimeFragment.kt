@@ -9,14 +9,17 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.scheduleTime.ScheduleTimeAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
 import com.quickhandslogistics.contracts.scheduleTime.ScheduleTimeContract
 import com.quickhandslogistics.data.dashboard.LeadProfileData
+import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.presenters.scheduleTime.ScheduleTimePresenter
 import com.quickhandslogistics.utils.*
@@ -27,11 +30,16 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCH
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_NOTES
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
+import kotlinx.android.synthetic.main.activity_request_lumpers.*
+import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.*
+import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.textViewTitle
+import kotlinx.android.synthetic.main.bottom_sheet_schdule_time_fragement.*
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.*
 import kotlinx.android.synthetic.main.fragment_schedule_time.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, ScheduleTimeContract.View, CalendarUtils.CalendarSelectionListener {
+class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, ScheduleTimeContract.View, ScheduleTimeContract.View.OnAdapterItemClickListener, CalendarUtils.CalendarSelectionListener {
 
     private var onFragmentInteractionListener: DashBoardContract.View.OnFragmentInteractionListener? = null
 
@@ -42,6 +50,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     private var datePosition: Int = 0
     private var isPastDate: Boolean = false
 
+    private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var availableDates: List<Date>
     private var scheduleTimeDetailList: ArrayList<ScheduleTimeDetail> = ArrayList()
     private var scheduleTimeNotes: String? = null
@@ -104,12 +113,14 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        sheetBehavior = BottomSheetBehavior.from(constraintLayoutBottomSheetScheduleLumper)
+        sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         recyclerViewScheduleTime.apply {
             val linearLayoutManager = LinearLayoutManager(fragmentActivity!!)
             layoutManager = linearLayoutManager
             val dividerItemDecoration = DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            scheduleTimeAdapter = ScheduleTimeAdapter()
+            scheduleTimeAdapter = ScheduleTimeAdapter(this@ScheduleTimeFragment)
             adapter = scheduleTimeAdapter
         }
 
@@ -126,10 +137,19 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         imageViewCancel.setOnClickListener(this)
         buttonScheduleLumpers.setOnClickListener(this)
         buttonRequestLumpers.setOnClickListener(this)
+        bottomSheetBackground.setOnClickListener(this)
 
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarScheduleTime, availableDates, this)
         savedInstanceState?.also {
             isSavedState = true
+            if (savedInstanceState.containsKey(DATE_HEADER_SCHEDULE_TIME)) {
+                dateString = savedInstanceState.getString(DATE_HEADER_SCHEDULE_TIME)!!
+                showDateString(dateString!!)
+            }
+            if (savedInstanceState.containsKey(NOTE_SCHEDULE_TIME)) {
+                scheduleTimeNotes = savedInstanceState.getString(NOTE_SCHEDULE_TIME)!!
+                showNotesData(scheduleTimeNotes!!)
+            }
             if (savedInstanceState.containsKey(TEMP_LUMPER_SCHEDULE_TIME)) {
                 tempLumperIds = savedInstanceState.getStringArrayList(TEMP_LUMPER_SCHEDULE_TIME)!!
 
@@ -145,15 +165,12 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             if (savedInstanceState.containsKey(SCHEDULE_TIME_DETAIL)) {
                 scheduleTimeDetailList =
                     savedInstanceState.getParcelableArrayList(SCHEDULE_TIME_DETAIL)!!
-                showScheduleTimeData(selectedDate, scheduleTimeDetailList, tempLumperIds)
-            }
-            if (savedInstanceState.containsKey(DATE_HEADER_SCHEDULE_TIME)) {
-                dateString = savedInstanceState.getString(DATE_HEADER_SCHEDULE_TIME)!!
-                showDateString(dateString!!)
-            }
-            if (savedInstanceState.containsKey(NOTE_SCHEDULE_TIME)) {
-                scheduleTimeNotes = savedInstanceState.getString(NOTE_SCHEDULE_TIME)!!
-                showNotesData(scheduleTimeNotes!!)
+                showScheduleTimeData(
+                    selectedDate,
+                    scheduleTimeDetailList,
+                    tempLumperIds,
+                    scheduleTimeNotes
+                )
             }
         } ?: run {
             isSavedState = false
@@ -209,6 +226,32 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         }
     }
 
+    private fun showBottomSheetWithData(record: ScheduleTimeDetail? = null) {
+        record?.also {
+            textViewTitle.text = getString(R.string.update_request)
+//            val requestedLumpersCount = ValueUtils.getDefaultOrValue(record.requestedLumpersCount)
+//            editTextLumpersRequired.setText("$requestedLumpersCount")
+//            editTextDMNotes.setText(record.notesForDM)
+//            buttonSubmit.setTag(R.id.requestLumperId, record.id)
+        } ?: run {
+            textViewTitle.text = getString(R.string.create_new_request)
+            editTextLumpersRequired.setText("")
+            editTextDMNotes.setText("")
+            buttonSubmit.setTag(R.id.requestLumperId, "")
+        }
+
+        if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+            sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            bottomSheetBackground.visibility = View.VISIBLE
+        } else {
+            closeBottomSheet()
+        }
+    }
+
+    private fun closeBottomSheet() {
+        sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetBackground.visibility = View.GONE
+    }
     /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
@@ -230,6 +273,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                     bundle.putInt(ARG_SCHEDULED_LUMPERS_COUNT, scheduleTimeDetailList.size)
                     startIntent(RequestLumpersActivity::class.java, bundle = bundle)
                 }
+                bottomSheetBackground.id-> closeBottomSheet()
             }
         }
     }
@@ -267,15 +311,17 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
-    override fun showScheduleTimeData(mSelectedDate: Date, mScheduleTimeDetailList: ArrayList<ScheduleTimeDetail>, mTempLumperIds: ArrayList<String>) {
+    override fun showScheduleTimeData(mSelectedDate: Date, mScheduleTimeDetailList: ArrayList<ScheduleTimeDetail>, mTempLumperIds: ArrayList<String>, notes: String?) {
         this.scheduleTimeDetailList = mScheduleTimeDetailList
         this.selectedDate = mSelectedDate
         this.tempLumperIds = mTempLumperIds
+        this.scheduleTimeNotes = notes
+
         selectedTime = selectedDate.time
         isPastDate = !DateUtils.isFutureDate(selectedTime) && !DateUtils.isCurrentDate(selectedTime)
         invalidateScheduleButton()
 
-        scheduleTimeAdapter.updateLumpersData(scheduleTimeDetailList, tempLumperIds)
+        scheduleTimeAdapter.updateLumpersData(scheduleTimeDetailList, tempLumperIds,scheduleTimeNotes,isPastDate)
 
         if (!scheduleTimeSelectedDate.isNullOrEmpty()) {
             scheduleTimeSelectedDate = ""
@@ -302,5 +348,17 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             scheduleTimePresenter.getSchedulesTimeByDate(date)
         isSavedState = false
         datePosition = position
+    }
+
+    /** Adapter Listeners */
+    override fun onEditTimeClick(adapterPosition: Int, timeInMillis: Long) {
+    }
+
+    override fun onScheduleNoteClick(adapterPosition: Int, notes: String) {
+        CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), notes, fragmentActivity!!)
+    }
+
+    override fun onAddRemoveClick(adapterPosition: Int, details: ScheduleTimeDetail) {
+        showBottomSheetWithData(details)
     }
 }

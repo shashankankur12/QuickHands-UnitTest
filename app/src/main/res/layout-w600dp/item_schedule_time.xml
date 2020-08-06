@@ -15,38 +15,90 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textViewLumperName"
-        style="@style/titleTextViewTheme"
+    <LinearLayout
+        android:id="@+id/layoutNameTime"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginStart="@dimen/_8sdp"
         android:layout_marginEnd="@dimen/_8sdp"
-        android:text="John Snow"
-        android:textColor="@color/textBlack"
-        app:layout_constraintEnd_toStartOf="@id/textViewScheduleTime"
-        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.quickhandslogistics.controls.CustomTextView
-        android:id="@+id/textViewEmployeeId"
-        style="@style/valuesSmallTextViewTheme"
-        android:layout_width="0dp"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:layout_marginTop="@dimen/_2sdp"
-        android:layout_marginEnd="@dimen/_8sdp"
-        android:text="(Emp ID: 1001)"
-        android:textColor="@color/textBlack"
-        app:emptyDataVisibility="empty_gone"
-        app:layout_constraintEnd_toStartOf="@id/textViewScheduleTime"
-        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
-
-    <TextView
-        android:id="@+id/textViewScheduleTime"
-        style="@style/valuesTextViewTheme"
-        android:layout_width="wrap_content"
-        android:textColor="@color/textBlack"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textViewLumperName"
+            style="@style/titleTextViewTheme"
+            android:layout_width="wrap_content"
+            android:text="John Snow"
+            android:layout_weight="1"
+            android:textColor="@color/textBlack" />
+        <TextView
+            android:id="@+id/textViewScheduleTime"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="wrap_content"
+            android:textColor="@color/textBlack"
+            android:text="33333"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutIdNote"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_1sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+        app:layout_constraintTop_toBottomOf="@id/layoutNameTime">
+
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewEmployeeId"
+            style="@style/valuesSmallTextViewTheme"
+            android:layout_width="wrap_content"
+            android:text="(Emp ID: 1001)"
+            android:layout_weight="1"
+            android:textColor="@color/textBlack"
+            app:emptyDataVisibility="empty_gone" />
+        <TextView
+            android:id="@+id/textViewScheduleNote"
+            style="@style/noteTextViewTheme"
+            android:layout_width="wrap_content"
+            android:text="Lead Note:" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutCancelEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+        app:layout_constraintTop_toBottomOf="@id/layoutIdNote">
+
+        <TextView
+            android:id="@+id/textViewLumperCancel"
+            style="@style/editTextViewTheme"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:drawableTint="@color/buttonRed"
+            android:drawableStart="@drawable/ic_clear_red_small"
+            android:text="Cancel Lumper" />
+        <TextView
+            android:id="@+id/textViewScheduleEdit"
+            style="@style/editTextViewTheme"
+            android:layout_width="wrap_content"
+            android:drawableTint="@color/buttonRed"
+            android:drawableStart="@drawable/ic_edit"
+            android:text="Edit Time/ Note" />
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

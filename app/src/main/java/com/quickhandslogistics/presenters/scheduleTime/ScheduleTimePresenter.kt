@@ -50,7 +50,7 @@ class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.V
         scheduleTimeView?.hideProgressDialog()
 
         scheduleTimeAPIResponse.data?.let { data ->
-            scheduleTimeView?.showScheduleTimeData(selectedDate, data.scheduledLumpers!!, data.tempLumperIds!!)
+            scheduleTimeView?.showScheduleTimeData(selectedDate, data.scheduledLumpers!!, data.tempLumperIds!!,data.notes )
             scheduleTimeView?.showNotesData(data.notes)
         }
     }
