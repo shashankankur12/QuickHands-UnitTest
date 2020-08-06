@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.quickhandslogistics.data.dashboard.BuildingDetailData
 
 open class EmployeeData() : Parcelable {
     @SerializedName("id")
@@ -73,6 +74,9 @@ open class EmployeeData() : Parcelable {
     @SerializedName("primaryBuilding")
     @Expose
     var primaryBuilding: String? = null
+    @SerializedName("buildingAssignedAsLumper")
+    @Expose
+    var buildingAssignedAsLumper: BuildingDetailData? = null
 
     @SerializedName("abilityToTravelBetweenBuildings")
     @Expose
@@ -122,6 +126,7 @@ open class EmployeeData() : Parcelable {
         workSchedule = parcel.readString()
         title = parcel.readString()
         primaryBuilding = parcel.readString()
+        buildingAssignedAsLumper= parcel.readValue(BuildingDetailData::class.java.classLoader) as BuildingDetailData?
         abilityToTravelBetweenBuildings = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         milesRadiusFromPrimaryBuilding = parcel.readString()
         hiringDate = parcel.readString()
@@ -150,6 +155,7 @@ open class EmployeeData() : Parcelable {
         parcel.writeString(workSchedule)
         parcel.writeString(title)
         parcel.writeString(primaryBuilding)
+        parcel.writeValue(buildingAssignedAsLumper)
         parcel.writeValue(abilityToTravelBetweenBuildings)
         parcel.writeString(milesRadiusFromPrimaryBuilding)
         parcel.writeString(hiringDate)

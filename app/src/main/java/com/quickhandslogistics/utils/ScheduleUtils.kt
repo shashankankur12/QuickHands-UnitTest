@@ -10,10 +10,6 @@ import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
-import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
-import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.Comparator
 import kotlin.collections.ArrayList
@@ -166,6 +162,7 @@ object ScheduleUtils {
             employeesList
         } else ArrayList()
     }
+
 
     fun sortEmployeesAttendanceList(employeesList: ArrayList<LumperAttendanceData>?, isTemporaryLumpers: Boolean = false): ArrayList<LumperAttendanceData> {
         return if (!employeesList.isNullOrEmpty()) {
