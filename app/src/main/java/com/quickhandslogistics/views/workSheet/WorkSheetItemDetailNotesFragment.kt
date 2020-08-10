@@ -2,6 +2,8 @@ package com.quickhandslogistics.views.workSheet
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +16,12 @@ import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_work_sheet_item_detail_notes.*
 
-class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener {
+class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, TextWatcher {
 
     private var onFragmentInteractionListener: WorkSheetItemDetailContract.View.OnFragmentInteractionListener? = null
 
     private var workItemDetail: WorkItemDetail? = null
+    private var isDataChanged: Boolean =false
 
     companion object {
         private const val NOTE_WORK_DETALS = "NOTE_WORK_DETALS"
@@ -58,6 +61,7 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener {
         addNotesTouchListener(editTextQHLNotes)
 
         buttonSubmit.setOnClickListener(this)
+        editTextQHLCustomerNotes.addTextChangedListener(this)
         workItemDetail?.let { showNotesData(it) }
     }
 
@@ -109,4 +113,29 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener {
             }
         }
     }
+
+    override fun afterTextChanged(text: Editable?) {
+        if (text === editTextQHLCustomerNotes.editableText) {
+            var notesQHLCustomerBefore = ""
+            if (!workItemDetail!!.notesQHLCustomer.isNullOrEmpty() && workItemDetail!!.notesQHLCustomer != AppConstant.NOTES_NOT_AVAILABLE) {
+                notesQHLCustomerBefore = workItemDetail!!.notesQHLCustomer!!
+            }
+            if (!notesQHLCustomerBefore.equals(text.toString())) onFragmentInteractionListener!!.dataChanged(true) else onFragmentInteractionListener!!.dataChanged(false)
+
+        } else if (text === editTextQHLNotes.editableText) {
+            var notesQHLBefore = ""
+            if (!workItemDetail!!.notesQHL.isNullOrEmpty() && workItemDetail!!.notesQHL != AppConstant.NOTES_NOT_AVAILABLE) {
+                notesQHLBefore =workItemDetail!!.notesQHL!!
+            }
+            if (!notesQHLBefore.equals(text.toString())) onFragmentInteractionListener!!.dataChanged(true) else onFragmentInteractionListener!!.dataChanged(false)
+
+        }
+    }
+
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+    }
+
+    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+    }
+
 }

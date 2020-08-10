@@ -32,6 +32,7 @@ class WorkSheetItemDetailContract {
         interface OnFragmentInteractionListener {
             fun fetchWorkItemDetail(changeResultCode: Boolean)
             fun updateWorkItemNotes(notesQHLCustomer: String, notesQHL: String)
+            fun dataChanged(isChanged: Boolean)
         }
     }
 

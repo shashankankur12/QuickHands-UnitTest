@@ -15,7 +15,6 @@ import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.presenters.workSheet.WorkSheetItemDetailPresenter
 import com.quickhandslogistics.utils.*
-import com.quickhandslogistics.utils.ValueUtils.isNumeric
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
@@ -49,6 +48,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_work_sheet_item_detail)
         setupToolbar(getString(R.string.container_details))
+
 
         intent.extras?.let { it ->
             workItemId = it.getString(ARG_WORK_ITEM_ID, "")
@@ -267,10 +267,15 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     override fun fetchWorkItemDetail(changeResultCode: Boolean) {
         if (changeResultCode)
             setResult(RESULT_OK)
+        isDataSave(true)
         workSheetItemDetailPresenter.fetchWorkItemDetail(workItemId)
     }
 
     override fun updateWorkItemNotes(notesQHLCustomer: String, notesQHL: String) {
         workSheetItemDetailPresenter.updateWorkItemNotes(workItemId, notesQHLCustomer, notesQHL)
+    }
+
+    override fun dataChanged(isChanged: Boolean) {
+        if (isChanged) isDataSave(false) else isDataSave(true)
     }
 }
