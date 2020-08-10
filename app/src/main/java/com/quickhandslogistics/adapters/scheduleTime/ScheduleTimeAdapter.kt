@@ -81,7 +81,7 @@ class ScheduleTimeAdapter(private val onAdapterClick: ScheduleTimeContract.View.
             view?.let {
                 when (view.id) {
                     textViewScheduleEdit.id -> {
-                        onAdapterClick.onEditTimeClick(adapterPosition, 0)
+                        onAdapterClick.onEditTimeClick(adapterPosition, 0,getItem(adapterPosition) )
                     }
                     textViewLumperCancel.id -> {
                         onAdapterClick.onAddRemoveClick(adapterPosition, getItem(adapterPosition))

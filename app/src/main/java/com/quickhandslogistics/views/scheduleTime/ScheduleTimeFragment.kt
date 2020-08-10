@@ -1,6 +1,8 @@
 package com.quickhandslogistics.views.scheduleTime
 
 import android.app.Activity
+import android.app.TimePickerDialog
+import android.app.TimePickerDialog.OnTimeSetListener
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -19,7 +21,6 @@ import com.quickhandslogistics.adapters.scheduleTime.ScheduleTimeAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
 import com.quickhandslogistics.contracts.scheduleTime.ScheduleTimeContract
 import com.quickhandslogistics.data.dashboard.LeadProfileData
-import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.presenters.scheduleTime.ScheduleTimePresenter
 import com.quickhandslogistics.utils.*
@@ -30,8 +31,6 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCH
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_NOTES
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
-import kotlinx.android.synthetic.main.activity_request_lumpers.*
-import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.*
 import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.textViewTitle
 import kotlinx.android.synthetic.main.bottom_sheet_schdule_time_fragement.*
 import kotlinx.android.synthetic.main.content_schedule_time_fragment.*
@@ -46,6 +45,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     private var scheduleTimeSelectedDate: String? = null
 
     private var selectedTime: Long = 0
+    private var timeInMillis: Long = 0
     private var selectedDatePosition: Int = 0
     private var datePosition: Int = 0
     private var isPastDate: Boolean = false
@@ -69,6 +69,8 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         const val NOTE_SCHEDULE_TIME = "NOTE_SCHEDULE_TIME"
         const val DATE_HEADER_SCHEDULE_TIME = "DATE_HEADER_SCHEDULE_TIME"
         const val SELECTED_DATE_POSITION_SCHEDULE_TIME = "SELECTED_DATE_POSITION_SCHEDULE_TIME"
+        const val EDIT_SCHEDULE_LUMPER = "EDIT_SCHEDULE_LUMPER"
+        const val CANCEL_SCHEDULE_LUMPER = "CANCEL_SCHEDULE_LUMPER"
     }
 
     override fun onAttach(context: Context) {
@@ -138,6 +140,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         buttonScheduleLumpers.setOnClickListener(this)
         buttonRequestLumpers.setOnClickListener(this)
         bottomSheetBackground.setOnClickListener(this)
+        buttonCancel.setOnClickListener(this)
+        buttonUpdate.setOnClickListener(this)
+        textViewScheduleLumperTime.setOnClickListener(this)
+        buttonYes.setOnClickListener(this)
+        buttonNo.setOnClickListener(this)
 
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarScheduleTime, availableDates, this)
         savedInstanceState?.also {
@@ -226,18 +233,26 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         }
     }
 
-    private fun showBottomSheetWithData(record: ScheduleTimeDetail? = null) {
-        record?.also {
-            textViewTitle.text = getString(R.string.update_request)
-//            val requestedLumpersCount = ValueUtils.getDefaultOrValue(record.requestedLumpersCount)
-//            editTextLumpersRequired.setText("$requestedLumpersCount")
-//            editTextDMNotes.setText(record.notesForDM)
-//            buttonSubmit.setTag(R.id.requestLumperId, record.id)
-        } ?: run {
-            textViewTitle.text = getString(R.string.create_new_request)
-            editTextLumpersRequired.setText("")
-            editTextDMNotes.setText("")
-            buttonSubmit.setTag(R.id.requestLumperId, "")
+    private fun showBottomSheetWithData(record: ScheduleTimeDetail, operation: String) {
+        when(operation){
+            EDIT_SCHEDULE_LUMPER->{
+                record.let {
+                    textViewTitle.text = getString(R.string.edit_schedule_lumper)
+                    linearLayoutCancelLumper.visibility=View.GONE
+                    linearLayoutEditLumper.visibility=View.VISIBLE
+                    setLumperDetails(it)
+                }
+
+            }
+            CANCEL_SCHEDULE_LUMPER->{
+                record.let {
+                    textViewTitle.text = getString(R.string.cancel_lumper)
+                    linearLayoutCancelLumper.visibility=View.VISIBLE
+                    linearLayoutEditLumper.visibility=View.GONE
+                    textViewheaderTitle.text =ScheduleUtils.getCancelHeaderDetails(it, getString(R.string.cancel_header_details))
+                    buttonYes.setTag(R.id.requestLumperId, it.lumperInfo!!.id)
+                }
+            }
         }
 
         if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
@@ -246,6 +261,36 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         } else {
             closeBottomSheet()
         }
+    }
+
+    private fun setLumperDetails(record: ScheduleTimeDetail) {
+        UIUtils.showEmployeeProfileImage(context!!, record.lumperInfo!!.profileImageUrl, circleImageViewLumperProfile)
+        UIUtils.updateProfileBorder(context!!, tempLumperIds.contains(record.lumperInfo!!.id), circleImageViewLumperProfile)
+        textViewLumpersName.setText( UIUtils.getEmployeeFullName(record.lumperInfo!!))
+        textViewLumperId.text = UIUtils.getDisplayEmployeeID(record.lumperInfo!!)
+        timeInMillis= DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, record.reportingTimeAndDay)
+        textViewScheduleLumperTime.text = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, record.reportingTimeAndDay)
+
+    }
+
+    private fun editTime() {
+        val calendar = Calendar.getInstance()
+        if (timeInMillis > 0) {
+            calendar.timeInMillis = timeInMillis
+        } else {
+            calendar.timeInMillis = selectedTime
+        }
+        val mHour = calendar.get(Calendar.HOUR_OF_DAY)
+        val mMinute = calendar.get(Calendar.MINUTE)
+
+        TimePickerDialog(
+            context, OnTimeSetListener { view, hourOfDay, minute ->
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                calendar.set(Calendar.MINUTE, minute)
+                textViewScheduleLumperTime.text=DateUtils.convertMillisecondsToTimeString(calendar.timeInMillis)
+//                editScheduleTimeAdapter.addStartTime(adapterPosition, calendar.timeInMillis)
+            }, mHour, mMinute, false
+        ).show()
     }
 
     private fun closeBottomSheet() {
@@ -274,6 +319,13 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                     startIntent(RequestLumpersActivity::class.java, bundle = bundle)
                 }
                 bottomSheetBackground.id-> closeBottomSheet()
+                buttonCancel.id-> closeBottomSheet()
+                buttonNo.id-> closeBottomSheet()
+                buttonUpdate.id-> {}
+                textViewScheduleLumperTime.id-> {
+                    editTime()
+                }
+                buttonYes.id-> {}
             }
         }
     }
@@ -351,7 +403,8 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     }
 
     /** Adapter Listeners */
-    override fun onEditTimeClick(adapterPosition: Int, timeInMillis: Long) {
+    override fun onEditTimeClick(adapterPosition: Int, timeInMillis: Long, details: ScheduleTimeDetail) {
+        showBottomSheetWithData(details, EDIT_SCHEDULE_LUMPER)
     }
 
     override fun onScheduleNoteClick(adapterPosition: Int, notes: String) {
@@ -359,6 +412,6 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     }
 
     override fun onAddRemoveClick(adapterPosition: Int, details: ScheduleTimeDetail) {
-        showBottomSheetWithData(details)
+        showBottomSheetWithData(details, CANCEL_SCHEDULE_LUMPER)
     }
 }

@@ -1,6 +1,7 @@
 package com.quickhandslogistics.utils
 
 import android.content.res.Resources
+import android.text.Spanned
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.quickhandslogistics.R
@@ -10,6 +11,7 @@ import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
+import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
 import java.util.*
 import kotlin.Comparator
 import kotlin.collections.ArrayList
@@ -317,8 +319,18 @@ object ScheduleUtils {
         })
         return records
     }
+
     fun calculatePercent(lumperCase: String, totalCases: String): Double {
         return (lumperCase.toDouble() / totalCases.toDouble()) * 100
+    }
+
+    fun getCancelHeaderDetails(scheduleDetails: ScheduleTimeDetail, rawString:String): Spanned? {
+        var lumperName =String.format( "%s %s", scheduleDetails.lumperInfo!!.firstName,scheduleDetails.lumperInfo!!.lastName)
+        var lumperScheduleTime =DateUtils.changeDateString(DateUtils.PATTERN_API_RESPONSE ,DateUtils.PATTERN_NORMAL,
+            scheduleDetails.reportingTimeAndDay!!
+        )
+        var formetString= String.format(rawString, lumperName, lumperScheduleTime)
+        return UIUtils.getSpannedText(formetString)
     }
 
 }

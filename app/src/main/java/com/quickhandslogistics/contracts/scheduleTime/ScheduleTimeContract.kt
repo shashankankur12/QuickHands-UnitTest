@@ -29,7 +29,11 @@ class ScheduleTimeContract {
         )
         fun showLoginScreen()
         interface OnAdapterItemClickListener {
-            fun onEditTimeClick(adapterPosition: Int, timeInMillis: Long)
+            fun onEditTimeClick(
+                adapterPosition: Int,
+                timeInMillis: Long,
+                details: ScheduleTimeDetail
+            )
             fun onScheduleNoteClick(adapterPosition: Int, notes: String)
             fun onAddRemoveClick(
                 adapterPosition: Int,

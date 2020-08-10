@@ -10,8 +10,7 @@
     app:behavior_hideable="false"
     app:behavior_peekHeight="0dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    tools:showIn="@layout/fragment_schedule_time"
-    >
+    tools:showIn="@layout/fragment_schedule_time">
 
     <TextView
         android:id="@+id/textViewTitle"
@@ -28,79 +27,208 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/linearLayoutNoOfLumpers"
         android:layout_width="0dp"
+        android:id="@+id/linearLayoutCancelLumper"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:background="@drawable/schedule_item_background"
-        android:orientation="vertical"
-        android:padding="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitle">
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
+        android:layout_marginTop="@dimen/_10sdp">
+        <LinearLayout
+            android:id="@+id/linearLayoutNoOfLumpers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/schedule_item_background"
+            android:padding="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp">
 
-        <TextView
-            android:id="@+id/textViewheaderTitle"
-            style="@style/titleSmallTextViewTheme"
-            android:text="@string/no_of_lumpers_needed" />
+            <TextView
+                android:id="@+id/textViewheaderTitle"
+                style="@style/valuesTextViewTheme"
+                android:text="@string/no_of_lumpers_needed" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutReason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:background="@drawable/schedule_item_background"
+            android:orientation="vertical"
+            android:padding="@dimen/_10sdp">
+
+            <TextView
+                style="@style/titleTextViewTheme"
+                android:text="@string/cancel_reason" />
+
+            <EditText
+                android:id="@+id/editTextReason"
+                style="@style/notesEditTextTheme" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutYesNoButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonYes"
+                style="@style/positiveRoundButtonTheme"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:text="@string/yes_cancel" />
+
+            <Button
+                android:id="@+id/buttonNo"
+                style="@style/negativeRoundButtonTheme"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:text="@string/no" />
+        </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayoutNotes"
         android:layout_width="0dp"
+        android:id="@+id/linearLayoutEditLumper"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:background="@drawable/schedule_item_background"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
         android:orientation="vertical"
-        android:padding="@dimen/_10sdp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutNoOfLumpers">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCancelLumper"
+        android:layout_marginTop="@dimen/_10sdp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayoutLumperDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp">
 
-        <TextView
-            style="@style/titleTextViewTheme"
-            android:text="@string/cancel_reason" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleImageViewLumperProfile"
+                style="@style/circularImageViewTheme"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/editTextReason"
-            style="@style/notesEditTextTheme" />
+            <LinearLayout
+                android:id="@+id/layoutNameTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/circleImageViewLumperProfile"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/textViewLumpersName"
+                    style="@style/titleTextViewTheme"
+                    android:layout_width="wrap_content"
+                    android:text="John Snow"
+                    android:layout_weight="1"
+                    android:textColor="@color/textBlack" />
+                <TextView
+                    android:id="@+id/textViewScheduleLumperTime"
+                    style="@style/valuesTextViewTheme"
+                    android:layout_width="wrap_content"
+                    android:text="33333"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/circleImageViewLumperProfile"
+                app:layout_constraintTop_toBottomOf="@id/layoutNameTime">
+
+                <com.quickhandslogistics.controls.CustomTextView
+                    android:id="@+id/textViewLumperId"
+                    style="@style/valuesSmallTextViewTheme"
+                    android:layout_width="wrap_content"
+                    android:text="(Emp ID: 1001)"
+                    android:layout_weight="1"
+                    android:textColor="@color/textBlack"
+                    app:emptyDataVisibility="empty_gone" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:background="@drawable/schedule_item_background"
+            android:orientation="vertical"
+            android:padding="@dimen/_10sdp">
+
+            <TextView
+                style="@style/titleTextViewTheme"
+                android:text="@string/note" />
+
+            <EditText
+                android:id="@+id/editTextNote"
+                style="@style/notesEditTextTheme" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutUpdateCancle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonUpdate"
+                style="@style/positiveRoundButtonTheme"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:text="@string/update" />
+
+            <Button
+                android:id="@+id/buttonCancel"
+                style="@style/negativeRoundButtonTheme"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:text="@string/cancel" />
+        </LinearLayout>
+
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layoutSaveCancelButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginBottom="@dimen/_8sdp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutNotes">
 
-        <Button
-            android:id="@+id/buttonCancelLumper"
-            style="@style/positiveRoundButtonTheme"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_weight="1"
-            android:text="@string/yes_cancel" />
-
-        <Button
-            android:id="@+id/buttonNoCancel"
-            style="@style/negativeRoundButtonTheme"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_weight="1"
-            android:text="@string/no" />
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
