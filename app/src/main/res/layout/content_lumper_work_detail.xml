@@ -174,10 +174,10 @@
                             app:layout_flexGrow="1">
 
                             <TextView
-                                style="@style/titleVerySmallTextViewTheme"
+                                style="@style/titleSmallerTextViewTheme"
                                 android:layout_width="wrap_content"
-                                android:text="@string/shift_time"
-                                android:textColor="@color/scheduleDetail" />
+                                android:layout_height="wrap_content"
+                                android:text="@string/shift_time" />
 
                             <TextView
                                 android:id="@+id/textViewShiftTime"
@@ -205,11 +205,10 @@
                             app:layout_flexGrow="1">
 
                             <TextView
-                                style="@style/titleVerySmallTextViewTheme"
+                                style="@style/titleSmallerTextViewTheme"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/lunch_time"
-                                android:textColor="@color/scheduleDetail" />
+                                android:text="@string/lunch_time" />
 
                             <TextView
                                 android:id="@+id/textViewLunchTime"
