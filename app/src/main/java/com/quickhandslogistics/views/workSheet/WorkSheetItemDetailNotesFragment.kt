@@ -121,8 +121,9 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
             var notesQHLBefore = ""
             if (!workItemDetail!!.notesQHLCustomer.isNullOrEmpty() && workItemDetail!!.notesQHLCustomer != AppConstant.NOTES_NOT_AVAILABLE) {
                 notesQHLCustomerBefore = workItemDetail!!.notesQHLCustomer!!
-                notesQHLBefore=workItemDetail!!.notesQHL!!
             }
+            if (!workItemDetail!!.notesQHL.isNullOrEmpty() && workItemDetail!!.notesQHL != AppConstant.NOTES_NOT_AVAILABLE)
+                notesQHLBefore=workItemDetail!!.notesQHL!!
             if (!notesQHLCustomerBefore.equals(text.toString()) || !notesQHLBefore.equals(editTextQHLNotes.text.toString()))
                 onFragmentInteractionListener!!.dataChanged(true)
             else onFragmentInteractionListener!!.dataChanged(false)
@@ -131,9 +132,10 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
             var notesQHLCustomerBefore = ""
             var notesQHLBefore = ""
             if (!workItemDetail!!.notesQHL.isNullOrEmpty() && workItemDetail!!.notesQHL != AppConstant.NOTES_NOT_AVAILABLE) {
-                notesQHLCustomerBefore = workItemDetail!!.notesQHLCustomer!!
                 notesQHLBefore =workItemDetail!!.notesQHL!!
             }
+            if (!workItemDetail!!.notesQHLCustomer.isNullOrEmpty() && workItemDetail!!.notesQHLCustomer != AppConstant.NOTES_NOT_AVAILABLE)
+                notesQHLCustomerBefore = workItemDetail!!.notesQHLCustomer!!
             if (!notesQHLBefore.equals(text.toString()) || !notesQHLCustomerBefore.equals(editTextQHLCustomerNotes.text.toString()))
                 onFragmentInteractionListener!!.dataChanged(true)
             else onFragmentInteractionListener!!.dataChanged(false)

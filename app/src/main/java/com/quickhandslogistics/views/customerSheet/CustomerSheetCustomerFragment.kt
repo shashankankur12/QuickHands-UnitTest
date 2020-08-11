@@ -230,8 +230,9 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener, Text
             var notesBefore = ""
             if (!customerSheet?.customerRepresentativeName.isNullOrEmpty() ) {
                 nameCustomerBefore = customerSheet!!.customerRepresentativeName!!
-                notesBefore = customerSheet!!.note!!
             }
+            if (!customerSheet?.note.isNullOrEmpty())
+                notesBefore = customerSheet!!.note!!
             if (!nameCustomerBefore.equals(text.toString())|| !notesBefore.equals(editTextCustomerNotes.text.toString()))
                 onFragmentInteractionListener!!.isDataSave(false)
             else onFragmentInteractionListener!!.isDataSave(true)
@@ -240,9 +241,10 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener, Text
             var nameCustomerBefore = ""
             var notesBefore = ""
             if (!customerSheet?.note.isNullOrEmpty()) {
-                nameCustomerBefore = customerSheet!!.customerRepresentativeName!!
                 notesBefore =customerSheet!!.note!!
             }
+            if (!customerSheet?.customerRepresentativeName.isNullOrEmpty() )
+                nameCustomerBefore = customerSheet!!.customerRepresentativeName!!
             if (!notesBefore.equals(text.toString()) || !nameCustomerBefore.equals(editTextCustomerName.text.toString()))
                 onFragmentInteractionListener!!.isDataSave(false)
             else onFragmentInteractionListener!!.isDataSave(true)
