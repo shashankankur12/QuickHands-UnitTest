@@ -62,6 +62,7 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
 
         buttonSubmit.setOnClickListener(this)
         editTextQHLCustomerNotes.addTextChangedListener(this)
+        editTextQHLNotes.addTextChangedListener(this)
         workItemDetail?.let { showNotesData(it) }
     }
 
@@ -117,17 +118,25 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
     override fun afterTextChanged(text: Editable?) {
         if (text === editTextQHLCustomerNotes.editableText) {
             var notesQHLCustomerBefore = ""
+            var notesQHLBefore = ""
             if (!workItemDetail!!.notesQHLCustomer.isNullOrEmpty() && workItemDetail!!.notesQHLCustomer != AppConstant.NOTES_NOT_AVAILABLE) {
                 notesQHLCustomerBefore = workItemDetail!!.notesQHLCustomer!!
+                notesQHLBefore=workItemDetail!!.notesQHL!!
             }
-            if (!notesQHLCustomerBefore.equals(text.toString())) onFragmentInteractionListener!!.dataChanged(true) else onFragmentInteractionListener!!.dataChanged(false)
+            if (!notesQHLCustomerBefore.equals(text.toString()) || !notesQHLBefore.equals(editTextQHLNotes.text.toString()))
+                onFragmentInteractionListener!!.dataChanged(true)
+            else onFragmentInteractionListener!!.dataChanged(false)
 
         } else if (text === editTextQHLNotes.editableText) {
+            var notesQHLCustomerBefore = ""
             var notesQHLBefore = ""
             if (!workItemDetail!!.notesQHL.isNullOrEmpty() && workItemDetail!!.notesQHL != AppConstant.NOTES_NOT_AVAILABLE) {
+                notesQHLCustomerBefore = workItemDetail!!.notesQHLCustomer!!
                 notesQHLBefore =workItemDetail!!.notesQHL!!
             }
-            if (!notesQHLBefore.equals(text.toString())) onFragmentInteractionListener!!.dataChanged(true) else onFragmentInteractionListener!!.dataChanged(false)
+            if (!notesQHLBefore.equals(text.toString()) || !notesQHLCustomerBefore.equals(editTextQHLCustomerNotes.text.toString()))
+                onFragmentInteractionListener!!.dataChanged(true)
+            else onFragmentInteractionListener!!.dataChanged(false)
 
         }
     }
