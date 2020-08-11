@@ -26,6 +26,7 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUI
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETER_VALUES
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import kotlinx.android.synthetic.main.activity_lumper_work_detail.*
+import kotlinx.android.synthetic.main.content_lumper_work_detail.*
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
