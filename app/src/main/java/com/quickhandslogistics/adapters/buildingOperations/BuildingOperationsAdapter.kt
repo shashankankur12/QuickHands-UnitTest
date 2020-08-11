@@ -10,12 +10,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
+import com.quickhandslogistics.contracts.buildingOperations.BuildingOperationsContract
+import com.quickhandslogistics.contracts.workSheet.WorkSheetItemContract
 import kotlinx.android.synthetic.main.item_building_operation.view.*
 import java.util.*
+import kotlin.collections.ArrayList
 
-class BuildingOperationsAdapter(private val parameters: ArrayList<String>) : Adapter<BuildingOperationsAdapter.ViewHolder>() {
+class BuildingOperationsAdapter(private val parameters: ArrayList<String>, var adapterItemClickListener: BuildingOperationsContract.View.OnAdapterItemClickListener ) : Adapter<BuildingOperationsAdapter.ViewHolder>() {
 
     private var data = HashMap<String, String>()
+    private var orignalData = HashMap<String, String>()
     var isTextChanged :Boolean= false
 
     init {
@@ -56,7 +60,8 @@ class BuildingOperationsAdapter(private val parameters: ArrayList<String>) : Ada
                 data[header] = ""
             }
             data[header] = text.toString()
-            isTextChanged=true
+            adapterItemClickListener.onTextChanged()
+
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -69,10 +74,19 @@ class BuildingOperationsAdapter(private val parameters: ArrayList<String>) : Ada
     fun updateData(data: HashMap<String, String>) {
         this.data.clear()
         this.data.putAll(data)
+        this.orignalData.putAll(data)
         notifyDataSetChanged()
     }
 
     fun getUpdatedData(): HashMap<String, String> {
         return data
+    }
+
+    fun compareChanges(): Boolean {
+        val valueSet1: HashSet<String> = HashSet<String>(orignalData.values)
+        val valueSet2: HashSet<String> = HashSet<String>(data.values)
+        valueSet1.remove("")
+        valueSet2.remove("")
+        return valueSet1.equals(valueSet2)
     }
 }

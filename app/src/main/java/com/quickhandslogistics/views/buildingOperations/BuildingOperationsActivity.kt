@@ -19,7 +19,8 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUI
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
 import kotlinx.android.synthetic.main.content_building_operations.*
 
-class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, BuildingOperationsContract.View {
+class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, BuildingOperationsContract.View,
+    BuildingOperationsContract.View.OnAdapterItemClickListener {
 
     private var workItemId: String = ""
     private var parameters: ArrayList<String> = ArrayList()
@@ -55,7 +56,7 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, Buildin
         recyclerViewBuildingOperations.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(20, 20))
-            buildingOperationsAdapter = BuildingOperationsAdapter(parameters)
+            buildingOperationsAdapter = BuildingOperationsAdapter(parameters, this@BuildingOperationsActivity)
             adapter = buildingOperationsAdapter
         }
 
@@ -122,5 +123,11 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, Buildin
 
     override fun showLoginScreen() {
         startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
+    }
+
+    override fun onTextChanged() {
+        if (buildingOperationsAdapter!!.compareChanges()) {
+            isDataSave(true)
+        } else isDataSave(false)
     }
 }
