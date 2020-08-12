@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -113,7 +112,7 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
                         onAdapterClick.onAddScheduleNoteClick(adapterPosition)
                     }
                     imageViewCancel.id -> {
-                        onAdapterClick.onAddRemoveClick(adapterPosition)
+                        onAdapterClick.onAddRemoveClick(adapterPosition, getItem(adapterPosition))
                     }
                 }
             }
@@ -205,7 +204,8 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
         notifyDataSetChanged()
     }
 
-    fun removeLumpersInList(position :Int) {
+    fun removeLumpersInList(position: Int, item: ScheduleTimeDetail
+    ) {
         val scheduleTimeDetail = getItem(position)
         scheduleTimeList.removeAt(position)
         if (scheduledLumpersIdsTimeMap.containsKey(scheduleTimeDetail.lumperInfo?.id!!))

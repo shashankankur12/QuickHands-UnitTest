@@ -106,6 +106,14 @@ class DateUtils {
             return calendar1[Calendar.DAY_OF_YEAR] == calendar2[Calendar.DAY_OF_YEAR] && calendar1[Calendar.YEAR] == calendar2[Calendar.YEAR]
         }
 
+        fun isTwoHourFromCurrentTime(milliseconds: Long): Boolean {
+            val calendar1 = Calendar.getInstance()
+            calendar1.time = Date()
+            calendar1.add(Calendar.HOUR_OF_DAY, 2)
+
+            return milliseconds <calendar1.timeInMillis
+        }
+
         fun convertDateStringToTime(patternDate: String, dateString: String? = ""): String {
             val dateStringValue = ValueUtils.getDefaultOrValue(dateString)
 
@@ -137,6 +145,8 @@ class DateUtils {
             }
             return dateStringValue
         }
+
+
 
         fun convertMillisecondsToTimeString(milliseconds: Long): String {
             val dateFormatTo = SimpleDateFormat(PATTERN_TIME)

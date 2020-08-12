@@ -56,4 +56,22 @@ class EditScheduleTimeModel(private val sharedPref: SharedPref) : EditScheduleTi
             }
         })
     }
+
+
+    override fun cancelScheduleLumpers(lumperId: String, date: Date, position: Int, onFinishedListener: EditScheduleTimeContract.Model.OnFinishedListener) {
+        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, date)
+
+        DataManager.getService().cancelScheduleLumper(getAuthToken(), lumperId, dateString).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessRequest(position)
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Log.e(RequestLumpersModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
+    }
 }

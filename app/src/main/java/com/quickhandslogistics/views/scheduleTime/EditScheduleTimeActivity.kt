@@ -228,6 +228,11 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
+    override fun showSuccessDialog(message: String, position: Int) {
+        setResult(RESULT_OK)
+        scheduleTimeList.removeAt(position)
+    }
+
     /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
@@ -291,6 +296,28 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         }
     }
 
+    private fun showDeleteDialog(adapterPosition: Int, item: ScheduleTimeDetail) {
+        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.cancel_request_lumper), this, object : CustomDialogWarningListener {
+            override fun onConfirmClick() {
+                scheduleTimeList.forEach {
+                    if (it.lumperInfo?.id!!.equals(item.lumperInfo?.id!!)){
+                        removeFromList(scheduleTimeList.indexOf(it), item)
+                    }
+                }
+                editScheduleTimeAdapter.removeLumpersInList(adapterPosition, item)
+
+            }
+
+            override fun onCancelClick() {
+            }
+        })
+    }
+
+    private fun removeFromList(adapterPosition: Int, item: ScheduleTimeDetail) {
+        var scheduleTimeDetail= item
+        editScheduleTimePresenter.cancelScheduleLumpers(scheduleTimeDetail.lumperInfo?.id!!,DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, scheduleTimeDetail.reportingTimeAndDay),adapterPosition)
+    }
+
     /** Presenter Listeners */
     override fun showDateString(dateString: String) {
         this.dateString = dateString
@@ -331,9 +358,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         showBottomSheetWithData()
     }
 
-    override fun onAddRemoveClick(adapterPosition: Int) {
-        if (scheduleTimeList.size > 0)
-            scheduleTimeList.removeAt(adapterPosition)
-        editScheduleTimeAdapter.removeLumpersInList(adapterPosition)
+    override fun onAddRemoveClick(adapterPosition: Int, item: ScheduleTimeDetail) {
+        showDeleteDialog(adapterPosition , item)
     }
 }

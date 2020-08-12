@@ -9,6 +9,7 @@ import com.quickhandslogistics.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.models.scheduleTime.ScheduleTimeModel
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
+import com.quickhandslogistics.views.scheduleTime.ScheduleTimeFragment.Companion.CANCEL_SCHEDULE_LUMPER
 import java.util.*
 
 class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.View?, private val resources: Resources, sharedPref: SharedPref) :
@@ -70,8 +71,11 @@ class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.V
         scheduleTimeView?.showDateString(dateString)
     }
 
-    override fun onSuccessRequest(date: Date) {
+    override fun onSuccessRequest(date: Date, typeScheduleLumper: String) {
         scheduleTimeView?.hideProgressDialog()
-        scheduleTimeView?.showSuccessDialog(resources.getString(R.string.request_placed_success_message), date)
+        if (typeScheduleLumper.equals(CANCEL_SCHEDULE_LUMPER))
+            scheduleTimeView?.showSuccessDialog(resources.getString(R.string.request_cancel_success_message), date)
+        else
+            scheduleTimeView?.showSuccessDialog(resources.getString(R.string.request_update_success_message), date)
     }
 }

@@ -16,7 +16,7 @@ class ScheduleTimeContract {
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(selectedDate: Date, scheduleTimeAPIResponse: GetScheduleTimeAPIResponse)
             fun onSuccessGetHeaderInfo(dateString: String)
-            fun onSuccessRequest(date: Date)
+            fun onSuccessRequest(date: Date, cancelScheduleLumper: String)
         }
     }
 

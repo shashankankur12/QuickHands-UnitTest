@@ -238,9 +238,11 @@
     <string name="reports_generate_success_message">Report has been generated Successfully. Please check the notification bar to see the downloading.</string>
     <string name="request_cancelled_success_message">Request cancelled successfully</string>
     <string name="request_lumpers_alert_message">You want to submit the lumper request</string>
-    <string name="cancel_request_lumper">You want to cancel the lumper request</string>
+    <string name="cancel_request_lumper">You want to cancel this schedule lumper</string>
     <string name="edit_schedule_lumper_message">You want to update info of this lumper</string>
     <string name="request_placed_success_message">Request placed successfully</string>
+    <string name="request_cancel_success_message">Cancel successfully</string>
+    <string name="request_update_success_message">Updated successfully</string>
     <string name="save_attendance_alert_message">You want to save the attendance details</string>
     <string name="save_notes_alert_message">You want to submit the notes</string>
     <string name="schedule_lumpers_alert_message">You want to Schedule these lumpers</string>
@@ -266,6 +268,8 @@
     <string name="request_help_message"><![CDATA[You will have to enter both Required Lumper Count & DM Notes]]></string>
     <string name="request_valid_message"><![CDATA[Please enter valid number of additional lumpers needed.]]></string>
     <string name="something_went_wrong_message">Something went wrong, Please try again after sometime!!!</string>
+    <string name="cancel_schedule_lumper_invalidate_message">You can cancel lumper after two hours of start time!!!</string>
+    <string name="edit_schedule_lumper_invalidate_message">You can update lumper after two hours of start time!!!</string>
 
     <!--Info Messages-->
     <string name="enter_employee_id_info_message">Employee ID</string>

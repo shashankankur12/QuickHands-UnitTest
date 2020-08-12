@@ -12,6 +12,8 @@ import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.SharedPref
+import com.quickhandslogistics.views.scheduleTime.ScheduleTimeFragment.Companion.CANCEL_SCHEDULE_LUMPER
+import com.quickhandslogistics.views.scheduleTime.ScheduleTimeFragment.Companion.EDIT_SCHEDULE_LUMPER
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -50,7 +52,7 @@ class ScheduleTimeModel(private val sharedPref: SharedPref) : ScheduleTimeContra
         DataManager.getService().cancelScheduleLumper(getAuthToken(), lumperId, dateString).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
-                    onFinishedListener.onSuccessRequest(date)
+                    onFinishedListener.onSuccessRequest(date, CANCEL_SCHEDULE_LUMPER)
                 }
             }
 
@@ -66,7 +68,7 @@ class ScheduleTimeModel(private val sharedPref: SharedPref) : ScheduleTimeContra
         DataManager.getService().editScheduleLumper(getAuthToken(), lumperId, dateString,timeMilsec).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
-                    onFinishedListener.onSuccessRequest(date)
+                    onFinishedListener.onSuccessRequest(date, EDIT_SCHEDULE_LUMPER)
                 }
             }
 

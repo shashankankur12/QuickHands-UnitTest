@@ -4,4 +4,5 @@
     <item name="isMultiSelect" type="id" />
     <item name="requestLumperId" type="id" />
     <item name="cancelLumperDay" type="id" />
+    <item name="adapterPosition" type="id" />
 </resources>

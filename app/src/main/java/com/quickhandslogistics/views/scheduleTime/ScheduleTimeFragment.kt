@@ -445,7 +445,15 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     /** Adapter Listeners */
     override fun onEditTimeClick(adapterPosition: Int, timeInMillis: Long, details: ScheduleTimeDetail) {
-        showBottomSheetWithData(details, EDIT_SCHEDULE_LUMPER)
+        var timeInMillis = DateUtils.convertUTCDateStringToMilliseconds(
+            DateUtils.PATTERN_API_RESPONSE,
+            scheduleTimeDetailList[adapterPosition].reportingTimeAndDay
+        )
+        if (DateUtils.isTwoHourFromCurrentTime(timeInMillis))
+            showBottomSheetWithData(details, EDIT_SCHEDULE_LUMPER)
+        else
+            CustomProgressBar.getInstance()
+                .showMessageDialog(getString(R.string.edit_schedule_lumper_invalidate_message), context!!)
     }
 
     override fun onScheduleNoteClick(adapterPosition: Int, notes: String) {
@@ -453,6 +461,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     }
 
     override fun onAddRemoveClick(adapterPosition: Int, details: ScheduleTimeDetail) {
-        showBottomSheetWithData(details, CANCEL_SCHEDULE_LUMPER)
+        var timeInMillis = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, scheduleTimeDetailList[adapterPosition].reportingTimeAndDay)
+        if (DateUtils.isTwoHourFromCurrentTime(timeInMillis))
+            showBottomSheetWithData(details, CANCEL_SCHEDULE_LUMPER)
+        else
+            CustomProgressBar.getInstance()
+                .showMessageDialog(getString(R.string.cancel_schedule_lumper_invalidate_message), context!!)
     }
 }

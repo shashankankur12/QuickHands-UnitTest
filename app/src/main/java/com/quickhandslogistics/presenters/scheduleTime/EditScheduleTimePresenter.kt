@@ -29,6 +29,10 @@ class EditScheduleTimePresenter(private var editScheduleTimeView: EditScheduleTi
         editScheduleTimeModel.assignScheduleTime(scheduledLumpersIdsTimeMap, notes, selectedDate, this)
     }
 
+    override fun cancelScheduleLumpers(lumperId: String, date: Date, position: Int) {
+        editScheduleTimeModel.cancelScheduleLumpers(lumperId, date,position , this)
+    }
+
     /** Model Result Listeners */
     override fun onFailure(message: String) {
         editScheduleTimeView?.hideProgressDialog()
@@ -55,5 +59,9 @@ class EditScheduleTimePresenter(private var editScheduleTimeView: EditScheduleTi
 
     override fun onSuccessGetHeaderInfo(dateString: String) {
         editScheduleTimeView?.showDateString(dateString)
+    }
+
+    override fun onSuccessRequest(position: Int) {
+        editScheduleTimeView?.showSuccessDialog(resources.getString(R.string.request_placed_success_message), position)
     }
 }
