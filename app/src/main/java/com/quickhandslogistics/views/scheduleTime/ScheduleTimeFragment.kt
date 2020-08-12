@@ -251,6 +251,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                     linearLayoutEditLumper.visibility=View.GONE
                     textViewheaderTitle.text =ScheduleUtils.getCancelHeaderDetails(it, getString(R.string.cancel_header_details))
                     buttonYes.setTag(R.id.requestLumperId, it.lumperInfo!!.id)
+                    textViewTitle.setTag(R.id.cancelLumperDay, it.reportingTimeAndDay!!)
                 }
             }
         }
@@ -270,7 +271,8 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         textViewLumperId.text = UIUtils.getDisplayEmployeeID(record.lumperInfo!!)
         timeInMillis= DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, record.reportingTimeAndDay)
         textViewScheduleLumperTime.text = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, record.reportingTimeAndDay)
-
+        buttonUpdate.setTag(R.id.requestLumperId, record.lumperInfo!!.id)
+        textViewTitle.setTag(R.id.cancelLumperDay, record.reportingTimeAndDay!!)
     }
 
     private fun editTime() {
@@ -288,7 +290,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                 calendar.set(Calendar.MINUTE, minute)
                 textViewScheduleLumperTime.text=DateUtils.convertMillisecondsToTimeString(calendar.timeInMillis)
-//                editScheduleTimeAdapter.addStartTime(adapterPosition, calendar.timeInMillis)
+                timeInMillis=calendar.timeInMillis
             }, mHour, mMinute, false
         ).show()
     }
@@ -321,11 +323,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                 bottomSheetBackground.id-> closeBottomSheet()
                 buttonCancel.id-> closeBottomSheet()
                 buttonNo.id-> closeBottomSheet()
-                buttonUpdate.id-> {}
+                buttonUpdate.id-> {showConfirmationDialog(EDIT_SCHEDULE_LUMPER)}
                 textViewScheduleLumperTime.id-> {
                     editTime()
                 }
-                buttonYes.id-> {}
+                buttonYes.id-> {showConfirmationDialog(CANCEL_SCHEDULE_LUMPER)}
             }
         }
     }
@@ -339,6 +341,37 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             scheduleTimeAdapter.setSearchEnabled(text.isNotEmpty(), text.toString())
             imageViewCancel.visibility = if (text.isNotEmpty()) View.VISIBLE else View.GONE
         }
+    }
+
+    private fun showConfirmationDialog(type: String) {
+        var message =""
+
+        if (type.equals(CANCEL_SCHEDULE_LUMPER))
+            message=getString(R.string.cancel_request_lumper)
+        else if(type.equals(EDIT_SCHEDULE_LUMPER))
+            message=getString(R.string.edit_schedule_lumper_message)
+
+        CustomProgressBar.getInstance().showWarningDialog(message, context!!, object : CustomDialogWarningListener {
+            override fun onConfirmClick() {
+                closeBottomSheet()
+                if (type.equals(CANCEL_SCHEDULE_LUMPER)) {
+                    val requestLumperId = buttonYes.getTag(R.id.requestLumperId) as String?
+                    val requestLumperDate = textViewTitle.getTag(R.id.cancelLumperDay) as String?
+                    if (!requestLumperId.isNullOrEmpty() && !requestLumperDate.isNullOrEmpty()) {
+                        scheduleTimePresenter.cancelScheduleLumpers(requestLumperId, DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, requestLumperDate))
+                    }
+                } else if(type.equals(EDIT_SCHEDULE_LUMPER)){
+                    val requestLumperId = buttonUpdate.getTag(R.id.requestLumperId) as String?
+                    val requestLumperDate = textViewTitle.getTag(R.id.cancelLumperDay) as String?
+                    if (!requestLumperId.isNullOrEmpty() && !requestLumperDate.isNullOrEmpty()) {
+                        scheduleTimePresenter.editScheduleLumpers(requestLumperId, DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, requestLumperDate),timeInMillis!! )
+                    }
+                }
+            }
+
+            override fun onCancelClick() {
+            }
+        })
     }
 
     /** Presenter Listeners */
@@ -388,6 +421,14 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         } else {
             onFragmentInteractionListener?.invalidateScheduleTimeNotes("")
         }
+    }
+
+    override fun showSuccessDialog(message: String, date: Date) {
+        CustomProgressBar.getInstance().showSuccessDialog(message, context!!, object : CustomDialogListener {
+            override fun onConfirmClick() {
+                scheduleTimePresenter.getSchedulesTimeByDate(date)
+            }
+        })
     }
 
     override fun showLoginScreen() {

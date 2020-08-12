@@ -1,8 +1,8 @@
 package com.quickhandslogistics.models.scheduleTime
 
 import android.util.Log
-import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.contracts.scheduleTime.ScheduleTimeContract
+import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.network.DataManager
@@ -39,6 +39,39 @@ class ScheduleTimeModel(private val sharedPref: SharedPref) : ScheduleTimeContra
 
             override fun onFailure(call: Call<GetScheduleTimeAPIResponse>, t: Throwable) {
                 Log.e(ScheduleTimeModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
+    }
+
+    override fun cancelScheduleLumpers(lumperId: String, date: Date, onFinishedListener: ScheduleTimeContract.Model.OnFinishedListener) {
+        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, date)
+
+        DataManager.getService().cancelScheduleLumper(getAuthToken(), lumperId, dateString).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessRequest(date)
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Log.e(RequestLumpersModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
+    }
+    override fun editScheduleLumpers(lumperId: String, date: Date,timeMilsec :Long, onFinishedListener: ScheduleTimeContract.Model.OnFinishedListener) {
+        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, date)
+
+        DataManager.getService().editScheduleLumper(getAuthToken(), lumperId, dateString,timeMilsec).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessRequest(date)
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Log.e(RequestLumpersModel::class.simpleName, t.localizedMessage!!)
                 onFinishedListener.onFailure()
             }
         })

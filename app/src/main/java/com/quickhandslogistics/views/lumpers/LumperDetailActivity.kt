@@ -117,7 +117,7 @@ class LumperDetailActivity : BaseActivity(), View.OnClickListener {
                         val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email"))
                         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "")
                         emailIntent.putExtra(Intent.EXTRA_TEXT, "")
-                        startActivity(emailIntent)
+                        startActivity(Intent.createChooser(emailIntent, "Send email..."))
                     }
                 }
             }

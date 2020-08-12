@@ -180,6 +180,7 @@
     <string name="week">Week</string>
     <string name="work_item_detail">Work Item Detail</string>
     <string name="work_items_s">Work Items: %s</string>
+    <string name="work_live_lode">Live Lode: /t %s</string>
     <string name="work_schedule">Work Schedule</string>
     <string name="work_sheet_detail">Work Sheet Detail</string>
     <string name="work_time">Work Time</string>
@@ -237,6 +238,8 @@
     <string name="reports_generate_success_message">Report has been generated Successfully. Please check the notification bar to see the downloading.</string>
     <string name="request_cancelled_success_message">Request cancelled successfully</string>
     <string name="request_lumpers_alert_message">You want to submit the lumper request</string>
+    <string name="cancel_request_lumper">You want to cancel the lumper request</string>
+    <string name="edit_schedule_lumper_message">You want to update info of this lumper</string>
     <string name="request_placed_success_message">Request placed successfully</string>
     <string name="save_attendance_alert_message">You want to save the attendance details</string>
     <string name="save_notes_alert_message">You want to submit the notes</string>

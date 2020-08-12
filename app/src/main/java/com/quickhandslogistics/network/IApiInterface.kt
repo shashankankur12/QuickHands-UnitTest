@@ -106,6 +106,13 @@ interface IApiInterface {
 
     @POST("employees/requests/cancel")
     fun cancelRequestLumpers(@Header("Authorization") auth: String, @Body request: CancelRequestLumpersRequest): Call<BaseResponse>
+
+    @DELETE("employees/scheduled/lumpers/{lumperId}")
+    fun cancelScheduleLumper(@Header("Authorization") auth: String, @Path("lumperId") lumperId: String, @Query("day") day: String): Call<BaseResponse>
+
+    @PUT("employees/scheduled/lumpers/{lumperId}")
+    fun editScheduleLumper(@Header("Authorization") auth: String, @Path("lumperId") lumperId: String, @Query("day") day: String, @Query("reportingTime") reportingTime: Long): Call<BaseResponse>
+
     /////////////////////////////////////////////////////////////
 
     // Work Sheet /////////////////////////////////////////////////

@@ -10,10 +10,13 @@ class ScheduleTimeContract {
     interface Model {
         fun fetchHeaderInfo(selectedDate: Date, onFinishedListener: OnFinishedListener)
         fun fetchSchedulesTimeByDate(selectedDate: Date, onFinishedListener: OnFinishedListener)
+        fun cancelScheduleLumpers(lumperId: String, date: Date, onFinishedListener:OnFinishedListener)
+        fun editScheduleLumpers(lumperId: String, date: Date ,timeMilsec :Long, onFinishedListener:OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(selectedDate: Date, scheduleTimeAPIResponse: GetScheduleTimeAPIResponse)
             fun onSuccessGetHeaderInfo(dateString: String)
+            fun onSuccessRequest(date: Date)
         }
     }
 
@@ -21,6 +24,7 @@ class ScheduleTimeContract {
         fun showDateString(dateString: String)
         fun showAPIErrorMessage(message: String)
         fun showNotesData(notes: String?)
+        fun showSuccessDialog(message:String, date: Date)
         fun showScheduleTimeData(
             selectedDate: Date,
             scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>,
@@ -44,5 +48,7 @@ class ScheduleTimeContract {
 
     interface Presenter : BaseContract.Presenter {
         fun getSchedulesTimeByDate(date: Date)
+        fun cancelScheduleLumpers(lumperId: String, date: Date)
+        fun editScheduleLumpers(lumperId: String, date: Date ,timeMilsec :Long)
     }
 }

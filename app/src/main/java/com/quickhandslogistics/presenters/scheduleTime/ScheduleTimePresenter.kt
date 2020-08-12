@@ -27,6 +27,16 @@ class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.V
         scheduleTimeModel.fetchSchedulesTimeByDate(date, this)
     }
 
+    override fun cancelScheduleLumpers(lumperId: String, date: Date) {
+        scheduleTimeView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        scheduleTimeModel.cancelScheduleLumpers(lumperId, date, this)
+    }
+
+    override fun editScheduleLumpers(lumperId: String, date: Date ,timeMilsec :Long) {
+        scheduleTimeView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        scheduleTimeModel.editScheduleLumpers(lumperId, date,timeMilsec, this)
+    }
+
     /** Model Result Listeners */
     override fun onFailure(message: String) {
         scheduleTimeView?.hideProgressDialog()
@@ -58,5 +68,10 @@ class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.V
 
     override fun onSuccessGetHeaderInfo(dateString: String) {
         scheduleTimeView?.showDateString(dateString)
+    }
+
+    override fun onSuccessRequest(date: Date) {
+        scheduleTimeView?.hideProgressDialog()
+        scheduleTimeView?.showSuccessDialog(resources.getString(R.string.request_placed_success_message), date)
     }
 }
