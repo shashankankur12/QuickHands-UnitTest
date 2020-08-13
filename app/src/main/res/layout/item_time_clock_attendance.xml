@@ -205,6 +205,19 @@
                     android:drawablePadding="@dimen/_5sdp"
                     android:gravity="center_vertical"/>
             </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/layoutEditTimeClock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true" >
+                <ImageView
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_edit"
+                    android:tint="@color/detailHeader" />
+
+            </RelativeLayout>
         </com.google.android.flexbox.FlexboxLayout>
 
         <androidx.constraintlayout.widget.Barrier

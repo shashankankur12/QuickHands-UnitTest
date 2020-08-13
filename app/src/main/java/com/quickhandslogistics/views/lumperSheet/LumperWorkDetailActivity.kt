@@ -5,8 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.lumperSheet.LumperWorkDetailAdapter
 import com.quickhandslogistics.contracts.lumperSheet.LumperWorkDetailContract
@@ -26,7 +28,12 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUI
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETER_VALUES
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import kotlinx.android.synthetic.main.activity_lumper_work_detail.*
+import kotlinx.android.synthetic.main.activity_lumper_work_detail.mainConstraintLayout
+import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.constraintLayoutBottomSheetRequestLumpers
+import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.*
 import kotlinx.android.synthetic.main.content_lumper_work_detail.*
+import kotlinx.android.synthetic.main.content_lumper_work_detail.layoutEditTimeClock
+import kotlinx.android.synthetic.main.content_lumper_work_detail.layoutSaveCancelButton
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
@@ -41,10 +48,13 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     private lateinit var lumperWorkDetailPresenter: LumperWorkDetailPresenter
     private lateinit var lumperWorkDetailAdapter: LumperWorkDetailAdapter
     private  var lumperDaySheetList: ArrayList<LumperDaySheet> = ArrayList()
+    private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
     companion object {
         const val LUMPER_WORK_DETAIL = "LUMPER_WORK_DETAIL"
         const val LUMPER_SIGNATURE = "LUMPER_SIGNATURE"
+        const val LUMPER_EDIT_TIEM= "LUMPER_EDIT_TIEM"
+        const val LUMPER_EDIT_NOTE = "LUMPER_EDIT_NOTE"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,6 +106,9 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     }
 
     private fun initializeUI() {
+        sheetBehavior = BottomSheetBehavior.from(constraintLayoutBottomSheetRequestLumpers)
+        sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
         lumpersInfo?.let { employeeData ->
             UIUtils.showEmployeeProfileImage(activity, employeeData.lumperImageUrl, circleImageViewProfile)
             textViewLumperName.text = getDefaultOrValue(employeeData.lumperName)
@@ -112,6 +125,9 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         textViewAddSignature.setOnClickListener(this)
         buttonSave.setOnClickListener(this)
         buttonCancelRequest.setOnClickListener(this)
+        layoutEditTimeClock.setOnClickListener(this)
+        layoutEditLumerNote.setOnClickListener(this)
+        bottomSheetBackground.setOnClickListener(this)
     }
 
     private fun showLocalSignatureOnUI(signatureFilePath: String?) {
@@ -170,13 +186,46 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
+    override fun onBackPressed() {
+        if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+            closeBottomSheet()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    private fun showBottomSheetWithData(type: String) {
+        if (type.equals(LUMPER_EDIT_NOTE)){
+            layoutTimeClockNote.visibility=View.VISIBLE
+            layoutEditLumperTimeClock.visibility=View.GONE
+        }else if (type.equals(LUMPER_EDIT_TIEM)){
+            layoutTimeClockNote.visibility=View.GONE
+            layoutEditLumperTimeClock.visibility=View.VISIBLE
+        }
+
+        if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+            sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            bottomSheetBackground.visibility = View.VISIBLE
+        } else {
+            closeBottomSheet()
+        }
+    }
+
+    private fun closeBottomSheet() {
+        sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetBackground.visibility = View.GONE
+    }
+
     /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
                 textViewAddSignature.id -> startIntent(AddSignatureActivity::class.java, requestCode = AppConstant.REQUEST_CODE_CHANGED)
                 buttonSave.id -> showConfirmationDialog()
-                buttonCancelRequest.id -> onBackPressed()
+                buttonSave.id -> showConfirmationDialog()
+                layoutEditTimeClock.id -> showBottomSheetWithData(LUMPER_EDIT_TIEM)
+                layoutEditLumerNote.id -> showBottomSheetWithData(LUMPER_EDIT_NOTE)
+                bottomSheetBackground.id -> closeBottomSheet()
             }
         }
     }

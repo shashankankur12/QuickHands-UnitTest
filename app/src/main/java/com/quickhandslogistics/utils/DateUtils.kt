@@ -120,10 +120,10 @@ class DateUtils {
             val punchOut= convertUTCDateStringToMilliseconds(PATTERN_API_RESPONSE, eveningPunchOut)
             val diffrence=punchOut-punchIn
 
-            val minutes =  TimeUnit.MILLISECONDS.toMinutes(diffrence)
-            val hours = TimeUnit.MILLISECONDS.toHours(diffrence)
-
-            return String.format("Total Time: %s H %s M", hours, minutes )
+            return String.format("Total Time: %s H %s M",
+                (diffrence / (1000 * 60 * 60) % 24),
+                (diffrence / (1000 * 60) % 60)
+            )
         }
 
         fun convertDateStringToTime(patternDate: String, dateString: String? = ""): String {
