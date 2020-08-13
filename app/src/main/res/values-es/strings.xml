@@ -183,6 +183,8 @@
     <string name="work_schedule">Work Schedule</string>
     <string name="work_sheet_detail">Work Sheet Detail</string>
     <string name="work_time">Work Time</string>
+    <string name="work_live_lode">Live Lode: /t %s</string>
+    <string name="total_time">Total Time: %s</string>
     <string name="yes">Yes</string>
     <string name="lead_note">Lead Note</string>
     <string name="logout_buttoon">Log Out</string>

@@ -5,6 +5,7 @@ import com.quickhandslogistics.data.dashboard.ShiftDetail
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class DateUtils {
     companion object {
@@ -112,6 +113,17 @@ class DateUtils {
             calendar1.add(Calendar.HOUR_OF_DAY, 2)
 
             return milliseconds <calendar1.timeInMillis
+        }
+
+        fun getDateTimeCalculeted(morningPunchIn: String, eveningPunchOut: String): String {
+            val punchIn= convertUTCDateStringToMilliseconds(PATTERN_API_RESPONSE, morningPunchIn)
+            val punchOut= convertUTCDateStringToMilliseconds(PATTERN_API_RESPONSE, eveningPunchOut)
+            val diffrence=punchOut-punchIn
+
+            val minutes =  TimeUnit.MILLISECONDS.toMinutes(diffrence)
+            val hours = TimeUnit.MILLISECONDS.toHours(diffrence)
+
+            return String.format("Total Time: %s H %s M", hours, minutes )
         }
 
         fun convertDateStringToTime(patternDate: String, dateString: String? = ""): String {

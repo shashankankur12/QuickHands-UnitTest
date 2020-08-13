@@ -387,6 +387,8 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             bottomSheetBackground.visibility = View.VISIBLE
             bottomSheetBackground.setTag(R.id.attendancePosition, itemPosition)
             bottomSheetBackground.setTag(R.id.isMultiSelect, false)
+            var fullName= String.format("%s %s" ,lumperAttendanceData.firstName, lumperAttendanceData.lastName)
+            textViewLName.text=fullName
 
             // Show Clock-In Time
             val clockInTime = convertDateStringToTime(PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.morningPunchIn)

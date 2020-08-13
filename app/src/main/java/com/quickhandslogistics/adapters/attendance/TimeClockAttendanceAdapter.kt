@@ -7,7 +7,6 @@ import android.util.SparseBooleanArray
 import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -83,6 +82,8 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
         private val flexboxLayoutLumperTime: FlexboxLayout = view.flexboxLayoutLumperTime
         private val textViewShiftTime: TextView = view.textViewShiftTime
         private val textViewLunchTime: TextView = view.textViewLunchTime
+        private val textViewShiftTotalTime: TextView = view.textViewShiftTotalTime
+        private val textViewLunchTotalTime: TextView = view.textViewLunchTotalTime
         private val editTextNotes: EditText = view.editTextNotes
         private val relativeLayoutSelected: RelativeLayout = view.relativeLayoutSelected
         private val layoutCheckBox: RelativeLayout = view.layoutCheckBox
@@ -114,6 +115,9 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
                         if (eveningPunchOut.isNotEmpty()) eveningPunchOut else "NA"
                     )
 
+                    if(!attendanceDetail.morningPunchIn.isNullOrEmpty()&& !attendanceDetail.eveningPunchOut.isNullOrEmpty())
+                        textViewShiftTotalTime.text=DateUtils.getDateTimeCalculeted(attendanceDetail.morningPunchIn!!, attendanceDetail.eveningPunchOut!!)
+
                     val lunchPunchIn = convertDateStringToTime(PATTERN_API_RESPONSE, attendanceDetail.lunchPunchIn)
                     val lunchPunchOut = convertDateStringToTime(PATTERN_API_RESPONSE, attendanceDetail.lunchPunchOut)
                     textViewLunchTime.text = String.format(
@@ -121,7 +125,8 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
                         if (lunchPunchIn.isNotEmpty()) lunchPunchIn else "NA",
                         if (lunchPunchOut.isNotEmpty()) lunchPunchOut else "NA"
                     )
-
+                    if(!attendanceDetail.lunchPunchIn.isNullOrEmpty()&&!attendanceDetail.lunchPunchOut.isNullOrEmpty())
+                        textViewLunchTotalTime.text=DateUtils.getDateTimeCalculeted(attendanceDetail.lunchPunchIn!!, attendanceDetail.lunchPunchOut!!)
                     textViewAddTime.visibility = /*if( attendanceDetail?.eveningPunchOut == null) View.VISIBLE else*/ View.GONE
                 }
                 editTextNotes.setText(attendanceDetail.attendanceNote)

@@ -186,6 +186,7 @@
     <string name="work_time">Work Time</string>
     <string name="yes">Yes</string>
     <string name="lead_note">Lead Note</string>
+    <string name="total_time">Total Time: %s</string>
     <string name="logout_buttoon">Log Out</string>
     <string name="bar_header_shift">Shift: <![CDATA[<b> %s</b>]]></string>
     <string name="bar_header_dept">Dept: <![CDATA[<b> %s</b>]]></string>

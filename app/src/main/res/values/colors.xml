@@ -33,4 +33,5 @@
     <color name="row_activated">#D8D7D7</color>
     <color name="bg_circle_default">#666666</color>
     <color name="temp_lumper_background">#742C8C</color>
+    <color name="color_yellow">#FF9800</color>
 </resources>
