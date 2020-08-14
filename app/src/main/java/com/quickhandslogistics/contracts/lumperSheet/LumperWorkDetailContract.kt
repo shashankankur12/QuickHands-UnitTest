@@ -1,6 +1,8 @@
 package com.quickhandslogistics.contracts.lumperSheet
 
 import com.quickhandslogistics.contracts.BaseContract
+import com.quickhandslogistics.data.attendance.AttendanceDetail
+import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
 import com.quickhandslogistics.data.lumperSheet.LumperWorkDetailAPIResponse
 import com.quickhandslogistics.data.schedule.WorkItemDetail
@@ -20,7 +22,10 @@ class LumperWorkDetailContract {
 
     interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
-        fun showLumperWorkDetails(lumperDaySheetList: ArrayList<LumperDaySheet>)
+        fun showLumperWorkDetails(
+            lumperDaySheetList: ArrayList<LumperDaySheet>,
+            lumperAttendanceData: AttendanceDetail
+        )
         fun lumperSignatureSaved()
         fun showLoginScreen()
 

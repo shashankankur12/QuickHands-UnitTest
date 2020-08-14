@@ -52,7 +52,7 @@ class LumperWorkDetailPresenter(private var lumperWorkDetailView: LumperWorkDeta
 
     override fun onSuccess(response: LumperWorkDetailAPIResponse) {
         lumperWorkDetailView?.hideProgressDialog()
-        lumperWorkDetailView?.showLumperWorkDetails(response.data?.lumperDaySheet!!)
+        lumperWorkDetailView?.showLumperWorkDetails(response.data?.lumperDaySheet!!, response.data?.lumperAttendanceData!!)
     }
 
     override fun onSuccessSaveLumperSignature(lumperId: String, date: Date) {

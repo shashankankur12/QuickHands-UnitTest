@@ -109,10 +109,12 @@ class DateUtils {
 
         fun isTwoHourFromCurrentTime(milliseconds: Long): Boolean {
             val calendar1 = Calendar.getInstance()
+            val calendar2 = Calendar.getInstance()
             calendar1.time = Date()
-            calendar1.add(Calendar.HOUR_OF_DAY, 2)
+            calendar2.time = Date(milliseconds)
+            calendar2.add(Calendar.HOUR_OF_DAY, 2)
 
-            return milliseconds <calendar1.timeInMillis
+            return calendar2.timeInMillis >calendar1.timeInMillis
         }
 
         fun getDateTimeCalculeted(morningPunchIn: String, eveningPunchOut: String): String {

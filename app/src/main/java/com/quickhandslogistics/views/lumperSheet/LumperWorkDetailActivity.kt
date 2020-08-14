@@ -13,6 +13,8 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.lumperSheet.LumperWorkDetailAdapter
 import com.quickhandslogistics.contracts.lumperSheet.LumperWorkDetailContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
+import com.quickhandslogistics.data.attendance.AttendanceDetail
+import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
 import com.quickhandslogistics.data.lumperSheet.LumpersInfo
 import com.quickhandslogistics.data.schedule.WorkItemDetail
@@ -37,6 +39,8 @@ import kotlinx.android.synthetic.main.content_lumper_work_detail.layoutSaveCance
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.textViewShiftTime as textViewShiftTime1
+import kotlinx.android.synthetic.main.content_lumper_work_detail.textViewLunchTime as textViewLunchTime1
 
 class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWorkDetailContract.View,
     LumperWorkDetailContract.View.OnAdapterItemClickListener {
@@ -48,6 +52,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     private lateinit var lumperWorkDetailPresenter: LumperWorkDetailPresenter
     private lateinit var lumperWorkDetailAdapter: LumperWorkDetailAdapter
     private  var lumperDaySheetList: ArrayList<LumperDaySheet> = ArrayList()
+    private  var lumperAttendanceData: AttendanceDetail = AttendanceDetail()
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
     companion object {
@@ -75,7 +80,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(LUMPER_WORK_DETAIL)) {
                 lumperDaySheetList= savedInstanceState.getParcelableArrayList(LUMPER_WORK_DETAIL)!!
-                showLumperWorkDetails(lumperDaySheetList)
+                showLumperWorkDetails(lumperDaySheetList, lumperAttendanceData)
             }
             if (savedInstanceState.containsKey(LUMPER_SIGNATURE)) {
                 signatureFilePath= savedInstanceState.getString(LUMPER_SIGNATURE)!!
@@ -235,11 +240,13 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }
 
-    override fun showLumperWorkDetails(lumperDaySheetList: ArrayList<LumperDaySheet>) {
+    override fun showLumperWorkDetails(lumperDaySheetList: ArrayList<LumperDaySheet>, lumperAttendanceData: AttendanceDetail) {
         this.lumperDaySheetList=lumperDaySheetList
+        this.lumperAttendanceData=lumperAttendanceData
         val isCurrentDate = DateUtils.isCurrentDate(selectedTime)
         layoutSaveCancelButton.visibility = View.GONE
 
+        showLumperTimeDetails(lumperAttendanceData)
         lumperWorkDetailAdapter.updateWorkDetails(lumperDaySheetList)
 
         var inCompleteWorkItemsCount = 0
@@ -259,6 +266,47 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         } else {
             updateUIVisibility(false, isCurrentDate, inCompleteWorkItemsCount)
         }
+    }
+
+    private fun showLumperTimeDetails(lumperAttendanceData: AttendanceDetail) {
+        val isPresent = getDefaultOrValue(lumperAttendanceData.isPresent)
+        if (isPresent) {
+            val morningPunchIn = DateUtils.convertDateStringToTime(
+                DateUtils.PATTERN_API_RESPONSE,
+                lumperAttendanceData.morningPunchIn
+            )
+            val eveningPunchOut = DateUtils.convertDateStringToTime(
+                DateUtils.PATTERN_API_RESPONSE,
+                lumperAttendanceData.eveningPunchOut
+            )
+            textViewShiftTime.text = String.format(
+                "%s - %s",
+                if (morningPunchIn.isNotEmpty()) morningPunchIn else "NA",
+                if (eveningPunchOut.isNotEmpty()) eveningPunchOut else "NA"
+            )
+
+            if(!lumperAttendanceData.morningPunchIn.isNullOrEmpty()&& !lumperAttendanceData.eveningPunchOut.isNullOrEmpty())
+                textViewShiftTotalTime.text=DateUtils.getDateTimeCalculeted(lumperAttendanceData.morningPunchIn!!, lumperAttendanceData.eveningPunchOut!!)
+            else textViewLunchTotalTime.visibility=View.GONE
+
+            val lunchPunchIn = DateUtils.convertDateStringToTime(
+                DateUtils.PATTERN_API_RESPONSE,
+                lumperAttendanceData.lunchPunchIn
+            )
+            val lunchPunchOut = DateUtils.convertDateStringToTime(
+                DateUtils.PATTERN_API_RESPONSE,
+                lumperAttendanceData.lunchPunchOut
+            )
+            textViewLunchTime.text = String.format(
+                "%s - %s",
+                if (lunchPunchIn.isNotEmpty()) lunchPunchIn else "NA",
+                if (lunchPunchOut.isNotEmpty()) lunchPunchOut else "NA"
+            )
+            if(!lumperAttendanceData.lunchPunchIn.isNullOrEmpty()&&!lumperAttendanceData.lunchPunchOut.isNullOrEmpty())
+                textViewLunchTotalTime.text=DateUtils.getDateTimeCalculeted(lumperAttendanceData.lunchPunchIn!!, lumperAttendanceData.lunchPunchOut!!)
+            else textViewLunchTotalTime.visibility=View.GONE
+        }
+        editTextNotes.text = if (!lumperAttendanceData.attendanceNote.isNullOrEmpty())lumperAttendanceData.attendanceNote else "Add Note"
     }
 
     override fun lumperSignatureSaved() {

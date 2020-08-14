@@ -217,6 +217,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     private fun invalidateScheduleButton() {
         buttonScheduleLumpers.visibility = if (isPastDate) View.GONE else View.VISIBLE
+        buttonRequestLumpers.visibility = if (isPastDate) View.GONE else View.VISIBLE
     }
 
     private fun invalidateEmptyView() {
@@ -358,13 +359,13 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                     val requestLumperId = buttonYes.getTag(R.id.requestLumperId) as String?
                     val requestLumperDate = textViewTitle.getTag(R.id.cancelLumperDay) as String?
                     if (!requestLumperId.isNullOrEmpty() && !requestLumperDate.isNullOrEmpty()) {
-                        scheduleTimePresenter.cancelScheduleLumpers(requestLumperId, DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, requestLumperDate))
+                        scheduleTimePresenter.cancelScheduleLumpers(requestLumperId, selectedDate/*DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, requestLumperDate)*/)
                     }
                 } else if(type.equals(EDIT_SCHEDULE_LUMPER)){
                     val requestLumperId = buttonUpdate.getTag(R.id.requestLumperId) as String?
                     val requestLumperDate = textViewTitle.getTag(R.id.cancelLumperDay) as String?
                     if (!requestLumperId.isNullOrEmpty() && !requestLumperDate.isNullOrEmpty()) {
-                        scheduleTimePresenter.editScheduleLumpers(requestLumperId, DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, requestLumperDate),timeInMillis!! )
+                        scheduleTimePresenter.editScheduleLumpers(requestLumperId,selectedDate /*DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, requestLumperDate)*/,timeInMillis!! )
                     }
                 }
             }
@@ -416,11 +417,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     override fun showNotesData(notes: String?) {
         scheduleTimeNotes = notes
-        if (!scheduleTimeNotes.isNullOrEmpty()) {
-            onFragmentInteractionListener?.invalidateScheduleTimeNotes(scheduleTimeNotes!!)
-        } else {
-            onFragmentInteractionListener?.invalidateScheduleTimeNotes("")
-        }
+//        if (!scheduleTimeNotes.isNullOrEmpty()) {
+//            onFragmentInteractionListener?.invalidateScheduleTimeNotes(scheduleTimeNotes!!)
+//        } else {
+//            onFragmentInteractionListener?.invalidateScheduleTimeNotes("")
+//        }
     }
 
     override fun showSuccessDialog(message: String, date: Date) {
