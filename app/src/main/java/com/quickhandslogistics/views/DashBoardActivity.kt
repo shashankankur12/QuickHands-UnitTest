@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.quickhandslogistics.BuildConfig
@@ -24,8 +25,9 @@ import com.quickhandslogistics.views.scheduleTime.ScheduleTimeFragment
 import com.quickhandslogistics.views.workSheet.AllWorkScheduleCancelActivity
 import com.quickhandslogistics.views.workSheet.WorkSheetFragment
 import kotlinx.android.synthetic.main.content_dashboard.*
+import kotlinx.android.synthetic.main.dashboard_layout_toolbar.*
 import kotlinx.android.synthetic.main.include_main_nav_drawer.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
+import kotlinx.android.synthetic.main.layout_toolbar.toolbar
 import kotlinx.android.synthetic.main.nav_header_dashboard.*
 
 class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContract.View, DashBoardContract.View.OnFragmentInteractionListener {
@@ -262,6 +264,17 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     /** Child Fragment Interaction Listeners */
     override fun onNewFragmentReplaced(title: String) {
         selectedFragmentTitle = title
+        if(title.equals(getString(R.string.lumper_contact))){
+            toolbar.background = ContextCompat.getDrawable(this, R.drawable.header_background)
+            toolbar.setTitleTextColor(resources.getColor(android.R.color.white))
+            toolbar.setNavigationIcon(R.drawable.ic_hamburger)
+            headerLogoImage.visibility=View.VISIBLE
+        }else{
+            toolbar.setBackgroundColor(resources.getColor(R.color.colorPrimary));
+            toolbar.setTitleTextColor(resources.getColor(android.R.color.black))
+            toolbar.setNavigationIcon(R.drawable.ic_sidemenu)
+            headerLogoImage.visibility=View.GONE
+        }
         invalidateOptionsMenu()
     }
 

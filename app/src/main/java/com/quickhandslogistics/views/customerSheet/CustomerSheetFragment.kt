@@ -308,7 +308,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         if (customerSheetData != null && customerSheetData!!.isSigned!!.equals(true)) {
             isDataChanged = false
         } else {
-            if (!isSaveddata) {
+            if ( !isSaveddata) {
                 isDataChanged = true
             } else false
         }

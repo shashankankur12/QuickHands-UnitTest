@@ -105,11 +105,11 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
             if (lumpersAdapter.isSearchEnabled()) {
                 textViewEmptyData.text = getString(R.string.no_record_found_info_message)
             } else {
-                textViewEmptyData.text = getString(R.string.empty_lumpers_list_info_message)
+                textViewEmptyData.text = getString(R.string.empty_lumper_list_message)
             }
         } else {
             textViewEmptyData.visibility = View.GONE
-            textViewEmptyData.text = getString(R.string.empty_lumpers_list_info_message)
+            textViewEmptyData.text = getString(R.string.empty_lumper_list_message)
         }
     }
 

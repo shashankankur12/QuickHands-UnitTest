@@ -217,6 +217,7 @@
     <string name="empty_containers_list_ongoing_info_message">You don\'t have any Ongoing containers scheduled for the selected date.</string>
     <string name="empty_containers_list_cancelled_info_message">You don\'t have any Cancelled containers scheduled for the selected date.</string>
     <string name="empty_containers_list_completed_info_message">You don\'t have any Completed containers scheduled for the selected date.</string>
+    <string name="empty_lumper_list_message">No Lumpers are assigne to this building. Please inform your District Manager </string>
 
     <!--Alert Messages-->
     <string name="are_you_sure_alert_message">Are you sure?</string>

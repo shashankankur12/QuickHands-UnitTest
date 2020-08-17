@@ -6,6 +6,9 @@ import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.BitmapFactory
+import android.graphics.Shader
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.MotionEvent
@@ -22,6 +25,7 @@ import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SharedPref
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import okhttp3.Dispatcher
+
 
 open class BaseActivity : AppCompatActivity(), BaseContract.View {
 
@@ -84,7 +88,11 @@ open class BaseActivity : AppCompatActivity(), BaseContract.View {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             if (title.equals(getString(R.string.my_profile)) || title.equals(getString(R.string.lumper_profile)))
                 supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_arrow_white)
-            else supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_arrow)
+            else if(title.equals(getString(R.string.lumper_contact))){
+                val background = BitmapDrawable(BitmapFactory.decodeResource(resources, R.drawable.header_background))
+                background.tileModeX = Shader.TileMode.REPEAT
+                supportActionBar?.setBackgroundDrawable(background)
+            }else supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_arrow)
         }
     }
 

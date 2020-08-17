@@ -33,5 +33,11 @@
         android:title="@string/refresh"
         android:visible="false"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/iconQhl"
+        android:layout_width="30dp"
+        android:icon="@drawable/qhl_thumb_logo_white"
+        android:visible="false"
+        app:showAsAction="always" />
 
 </menu>
