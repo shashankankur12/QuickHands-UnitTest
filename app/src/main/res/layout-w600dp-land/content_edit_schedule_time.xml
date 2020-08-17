@@ -119,6 +119,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
+                android:id="@+id/layoutEditTextNotes"
                 android:background="@drawable/schedule_item_background"
                 android:orientation="vertical"
                 android:padding="@dimen/_10sdp">

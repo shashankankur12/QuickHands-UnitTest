@@ -166,6 +166,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             buttonSubmit.isEnabled = false
             isDataSave(true)
             textViewAddSameTime.visibility = View.GONE
+            layoutEditTextNotes.visibility = View.GONE
             textViewEmptyData.visibility = View.VISIBLE
             if (editScheduleTimeAdapter.isSearchEnabled()) {
                 textViewEmptyData.text = getString(R.string.no_record_found_info_message)
@@ -177,6 +178,8 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             buttonSubmit.isEnabled = (editScheduleTimeAdapter.getLumpersList().size > 0 && editScheduleTimeAdapter.getScheduledLumpersTimeMap().size > 0) && editScheduleTimeAdapter.getScheduledLumpersTimeMap().size == editScheduleTimeAdapter.getLumpersList().size
             textViewAddSameTime.visibility = View.VISIBLE
             textViewEmptyData.visibility = View.GONE
+            layoutEditTextNotes.visibility = View.VISIBLE
+
             textViewEmptyData.text = getString(R.string.empty_edit_schedule_time_info_message)
         }
     }

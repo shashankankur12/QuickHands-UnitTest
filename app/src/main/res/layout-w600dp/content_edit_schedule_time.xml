@@ -121,6 +121,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/layoutEditTextNotes"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/schedule_item_background"
                 android:orientation="vertical"
