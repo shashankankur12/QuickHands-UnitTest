@@ -87,12 +87,12 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
         private val editTextNotes: EditText = view.editTextNotes
         private val relativeLayoutSelected: RelativeLayout = view.relativeLayoutSelected
         private val layoutCheckBox: RelativeLayout = view.layoutCheckBox
+        private val layoutEditTimeClock: RelativeLayout = view.layoutEditTimeClock
         private val constraintLayout: ConstraintLayout = view.constraintLayout
 
         init {
             itemView.setOnLongClickListener(this)
             itemView.setOnClickListener(this)
-            layoutCheckBox.setOnClickListener(this)
         }
 
         fun bind(lumperAttendance: LumperAttendanceData) {
@@ -134,21 +134,24 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
             }
 
             textViewAddTime.setOnClickListener(this)
+            flexboxLayoutLumperTime.setOnClickListener(this)
+            layoutCheckBox.setOnClickListener(this)
 
             val isSelected = selectedItems.get(adapterPosition, false)
             constraintLayout.isActivated = isSelected
+            checkBoxAttendance.isChecked = isSelected
 
             textViewAddTime.visibility = if (textViewAddTime.visibility == View.VISIBLE && selectedItems.size() == 0&& lumperAttendance?.attendanceDetail?.eveningPunchOut == null) View.VISIBLE else View.GONE
             editTextNotes.isEnabled = selectedItems.size() == 0
-            layoutCheckBox.visibility = if (isSelected) View.VISIBLE else View.GONE
+            layoutCheckBox.visibility = /*if (isSelected) View.VISIBLE else*/ View.GONE
         }
 
         private fun updateTimeUI(isPresent: Boolean, lumperId: String) {
             viewAttendanceStatus.setBackgroundResource(if (isPresent) R.drawable.online_dot else R.drawable.offline_dot)
-            checkBoxAttendance.isChecked = isPresent
-            checkBoxAttendance.isEnabled = checkIfEditable(isPresent, ATTENDANCE_IS_PRESENT, lumperId)
-            textViewAddTime.visibility = if (isPresent) View.VISIBLE else View.GONE
-            flexboxLayoutLumperTime.visibility = if (isPresent) View.VISIBLE else View.GONE
+//            checkBoxAttendance.isChecked = false
+//            checkBoxAttendance.isEnabled = checkIfEditable(isPresent, ATTENDANCE_IS_PRESENT, lumperId)
+            textViewAddTime.visibility = /*if (isPresent) View.VISIBLE else*/ View.GONE
+            flexboxLayoutLumperTime.visibility = /*if (isPresent)*/ View.VISIBLE /*else View.GONE*/
             textViewNoTimeLoggedIn.visibility = if (isPresent) View.GONE else View.VISIBLE
 
             checkBoxAttendance.setOnClickListener(this)
@@ -161,6 +164,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
             } else {
                 textViewCheckBoxStatus.text = context.getString(R.string.present)
             }
+            textViewCheckBoxStatus.visibility=View.GONE
         }
 
         private fun applyIconAnimation(position: Int) {
@@ -188,18 +192,18 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
         override fun onLongClick(view: View?): Boolean {
             view?.let {
                 return when (view.id) {
-                    itemView.id -> {
-                        val isPresent = getItem(adapterPosition).attendanceDetail?.isPresent
-                        isPresent?.let {
-                            if (isPresent) {
-                                onAdapterClick.onRowLongClicked(adapterPosition)
-                                view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-                                return true
-                            }
-                        }
-                        Toast.makeText(context, "Lumper isn't arrived yet", Toast.LENGTH_SHORT).show()
-                        false
-                    }
+//                    itemView.id -> {
+//                        val isPresent = getItem(adapterPosition).attendanceDetail?.isPresent
+//                        isPresent?.let {
+//                            if (isPresent) {
+//                                onAdapterClick.onRowLongClicked(adapterPosition)
+//                                view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+//                                return true
+//                            }
+//                        }
+//                        Toast.makeText(context, "Lumper isn't arrived yet", Toast.LENGTH_SHORT).show()
+//                        false
+//                    }
                     else -> {
                         false
                     }
@@ -211,30 +215,34 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
-                    itemView.id -> {
+                    /*itemView.id -> {
                         if (getSelectedItemCount() > 0) {
                             val isPresent = getItem(adapterPosition).attendanceDetail?.isPresent
-                            isPresent?.let {
-                                if (isPresent) {
+//                            isPresent?.let {
+                                if (checkBoxAttendance.isChecked) {
                                     onAdapterClick.onRowClicked(adapterPosition)
                                 } else {
                                     Toast.makeText(context, "Lumper isn't arrived yet", Toast.LENGTH_SHORT).show()
                                 }
-                            }
+//                            }
                         }
-                    }
-                    textViewAddTime.id -> {
+                    }*/
+                    flexboxLayoutLumperTime.id -> {
                         onAdapterClick.onAddTimeClick(getItem(adapterPosition), adapterPosition)
                     }
                     checkBoxAttendance.id -> {
-                        val isChecked = checkBoxAttendance.isChecked
-
-                        val item = getItem(adapterPosition)
-                        // Update in API Request Object
-                        changeIsPresentRecord(item.id, isPresent = isChecked)
-
-                        //Update in Local List Object to show changes on UI
-                        getItem(adapterPosition).attendanceDetail?.isPresent = isChecked
+//
+//                        val item = getItem(adapterPosition)
+//                        // Update in API Request Object
+//                        changeIsPresentRecord(item.id, isPresent = isChecked)
+//
+//                        //Update in Local List Object to show changes on UId
+//                        getItem(adapterPosition).attendanceDetail?.isPresent = isChecked
+                        if (getSelectedItemCount() > 0){
+                            onAdapterClick.onRowClicked(adapterPosition)
+                        }else{
+                            onAdapterClick.onRowLongClicked(adapterPosition)
+                        }
 
                         notifyDataSetChanged()
                     }
@@ -298,6 +306,17 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
         this.lumperAttendanceList.clear()
         this.lumperAttendanceList.addAll(lumperAttendanceList)
         notifyDataSetChanged()
+    }
+
+    fun updatePresentRecord(adapterPosition: Int, isChecked :Boolean) {
+
+        val item = getItem(adapterPosition)
+        // Update in API Request Object
+        changeIsPresentRecord(item.id, isPresent = isChecked)
+
+        //Update in Local List Object to show changes on UI
+        getItem(adapterPosition).attendanceDetail?.isPresent = isChecked
+
     }
 
     private fun changeIsPresentRecord(lumperId: String?, isPresent: Boolean) {
@@ -413,6 +432,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
     fun updateClockInTimeForSelectedPositions(currentTime: Long) {
         val positions = getSelectedItemPositions()
         for (position in positions) {
+            updatePresentRecord(position, true)
             updateClockInTime(position, currentTime, isNotify = false)
         }
 

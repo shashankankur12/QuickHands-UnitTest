@@ -131,6 +131,7 @@
     <string name="role_lead">Role : </string>
     <string name="save">Save</string>
     <string name="schedule">Work Schedule</string>
+    <string name="bulk_action">Bulk Action</string>
     <string name="scheduled">Scheduled</string>
     <string name="scheduled_time_s">Scheduled Time: %s</string>
     <string name="schedule_detail">Schedule Detail</string>

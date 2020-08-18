@@ -110,7 +110,7 @@ class DateUtils {
         fun isTwoHourFromCurrentTime(milliseconds: Long): Boolean {
             val calendar1 = Calendar.getInstance()
             val calendar2 = Calendar.getInstance()
-            calendar1.time = Date()
+            calendar1.time = getCurrentDateByEmployeeShift(Date())
             calendar2.time = Date(milliseconds)
             calendar2.add(Calendar.HOUR_OF_DAY, 2)
 

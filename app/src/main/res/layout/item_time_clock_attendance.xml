@@ -94,7 +94,7 @@
                 android:id="@+id/checkBoxAttendance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
+                android:checked="false"
                 android:enabled="true"
                 android:textColor="@color/scheduleDetail" />
 
@@ -103,6 +103,7 @@
                 style="@style/valuesVerySmallTextViewTheme"
                 android:layout_width="wrap_content"
                 android:text="Mark Present"
+                android:visibility="gone"
                 app:emptyDataVisibility="empty_gone" />
         </LinearLayout>
 
@@ -140,7 +141,6 @@
             android:background="@drawable/notes_item_background"
             android:orientation="vertical"
             android:padding="@dimen/_8sdp"
-            android:visibility="gone"
             app:flexWrap="wrap"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -154,19 +154,19 @@
                 app:layout_flexGrow="1">
 
                 <TextView
-                    style="@style/titleVerySmallTextViewTheme"
+                    style="@style/titleSmallerTextViewTheme"
                     android:layout_width="wrap_content"
                     android:text="@string/shift_time"
                     android:textColor="@color/scheduleDetail" />
 
                 <TextView
                     android:id="@+id/textViewShiftTime"
-                    style="@style/valuesSmallTextViewTheme"
+                    style="@style/valuesSmallTextViewThemeHeader"
                     android:layout_width="wrap_content"
                     android:layout_marginTop="@dimen/_2sdp"
                     android:drawablePadding="@dimen/_5sdp"
                     android:gravity="center_vertical"
-                    android:text="10:00 pm - 00:00 am" />
+                    android:text="NA - NA" />
                 <TextView
                     android:id="@+id/textViewShiftTotalTime"
                     style="@style/valuesSmallTextViewTheme"
@@ -183,7 +183,7 @@
                 app:layout_flexGrow="1">
 
                 <TextView
-                    style="@style/titleVerySmallTextViewTheme"
+                    style="@style/titleSmallerTextViewTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/lunch_time"
@@ -191,12 +191,12 @@
 
                 <TextView
                     android:id="@+id/textViewLunchTime"
-                    style="@style/valuesSmallTextViewTheme"
+                    style="@style/valuesSmallTextViewThemeHeader"
                     android:layout_width="wrap_content"
                     android:layout_marginTop="@dimen/_2sdp"
                     android:drawablePadding="@dimen/_5sdp"
                     android:gravity="center_vertical"
-                    android:text="10:00 pm - 00:00 am" />
+                    android:text="NA - NA" />
                 <TextView
                     android:id="@+id/textViewLunchTotalTime"
                     style="@style/valuesSmallTextViewTheme"
@@ -209,6 +209,7 @@
                 android:id="@+id/layoutEditTimeClock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:clickable="true" >
                 <ImageView
                     android:layout_width="@dimen/_18sdp"

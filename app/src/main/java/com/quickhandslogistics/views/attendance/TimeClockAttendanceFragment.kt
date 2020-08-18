@@ -157,6 +157,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             var hasAllPreSavedLunchOutTime = true
 
             val list = timeClockAttendanceAdapter.getSelectedItems()
+            textViewLName.text=getString(R.string.bulk_action)
             for (lumperAttendanceData in list) {
                 // Check Clock-In Time
                 val clockInTime = convertDateStringToTime(PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.morningPunchIn)
@@ -249,6 +250,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             toggleSaveButton(timeClockAttendanceAdapter.getSelectedItemCount())
         } else {
             val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
+            timeClockAttendanceAdapter.updatePresentRecord(itemPosition, true)
             timeClockAttendanceAdapter.updateClockInTime(itemPosition, System.currentTimeMillis())
         }
     }
