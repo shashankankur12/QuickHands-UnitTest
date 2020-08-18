@@ -5,6 +5,7 @@ import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.lumperSheet.LumperWorkDetailContract
 import com.quickhandslogistics.data.ErrorResponse
+import com.quickhandslogistics.data.attendance.AttendanceDetail
 import com.quickhandslogistics.data.lumperSheet.LumperWorkDetailAPIResponse
 import com.quickhandslogistics.models.lumperSheet.LumperWorkDetailModel
 import com.quickhandslogistics.utils.AppConstant
@@ -29,6 +30,11 @@ class LumperWorkDetailPresenter(private var lumperWorkDetailView: LumperWorkDeta
     override fun saveLumperSignature(lumperId: String, date: Date, signatureFilePath: String) {
         lumperWorkDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         lumperWorkDetailModel.saveLumperSignature(lumperId, date, signatureFilePath, this)
+    }
+
+    override fun saveAttendanceDetails(attendanceDetailList: List<AttendanceDetail>) {
+        lumperWorkDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        lumperWorkDetailModel.saveLumpersAttendanceList(attendanceDetailList, this)
     }
 
     /** Model Result Listeners */
@@ -58,5 +64,10 @@ class LumperWorkDetailPresenter(private var lumperWorkDetailView: LumperWorkDeta
     override fun onSuccessSaveLumperSignature(lumperId: String, date: Date) {
         lumperWorkDetailView?.lumperSignatureSaved()
         lumperWorkDetailModel.fetchLumperWorkDetails(lumperId, date, this)
+    }
+
+    override fun onSuccessSaveDate() {
+        lumperWorkDetailView?.hideProgressDialog()
+        lumperWorkDetailView?.showDataSavedMessage()
     }
 }

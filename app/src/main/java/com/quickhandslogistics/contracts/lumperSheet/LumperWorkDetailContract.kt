@@ -1,6 +1,7 @@
 package com.quickhandslogistics.contracts.lumperSheet
 
 import com.quickhandslogistics.contracts.BaseContract
+import com.quickhandslogistics.contracts.attendance.TimeClockAttendanceContract
 import com.quickhandslogistics.data.attendance.AttendanceDetail
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
@@ -13,10 +14,12 @@ class LumperWorkDetailContract {
     interface Model {
         fun fetchLumperWorkDetails(lumperId: String, selectedDate: Date, onFinishedListener: OnFinishedListener)
         fun saveLumperSignature(lumperId: String, date: Date, signatureFilePath: String, onFinishedListener: OnFinishedListener)
+        fun saveLumpersAttendanceList(attendanceDetailList: List<AttendanceDetail>, onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(response: LumperWorkDetailAPIResponse)
             fun onSuccessSaveLumperSignature(lumperId: String, date: Date)
+            fun onSuccessSaveDate()
         }
     }
 
@@ -27,6 +30,7 @@ class LumperWorkDetailContract {
             lumperAttendanceData: AttendanceDetail
         )
         fun lumperSignatureSaved()
+        fun showDataSavedMessage()
         fun showLoginScreen()
 
         interface OnAdapterItemClickListener {
@@ -38,5 +42,6 @@ class LumperWorkDetailContract {
     interface Presenter : BaseContract.Presenter {
         fun getLumperWorkDetails(lumperId: String, selectedDate: Date)
         fun saveLumperSignature(lumperId: String, date: Date, signatureFilePath: String)
+        fun saveAttendanceDetails(attendanceDetailList: List<AttendanceDetail>)
     }
 }

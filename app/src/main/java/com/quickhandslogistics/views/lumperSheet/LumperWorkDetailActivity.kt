@@ -3,7 +3,9 @@ package com.quickhandslogistics.views.lumperSheet
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,12 +32,29 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUI
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETER_VALUES
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import kotlinx.android.synthetic.main.activity_lumper_work_detail.*
+import kotlinx.android.synthetic.main.activity_lumper_work_detail.bottomSheetBackground
 import kotlinx.android.synthetic.main.activity_lumper_work_detail.mainConstraintLayout
+import kotlinx.android.synthetic.main.bottom_sheet_add_attendance_time.*
 import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.constraintLayoutBottomSheetRequestLumpers
 import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.*
+import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.buttonClockIn
+import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.buttonClockOut
+import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.buttonLunchIn
+import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.buttonLunchOut
+import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.textViewLName
+import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.textViewLunchTime
+import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
 import kotlinx.android.synthetic.main.content_lumper_work_detail.*
+import kotlinx.android.synthetic.main.content_lumper_work_detail.buttonCancelRequest
+import kotlinx.android.synthetic.main.content_lumper_work_detail.buttonSave
+import kotlinx.android.synthetic.main.content_lumper_work_detail.circleImageViewProfile
 import kotlinx.android.synthetic.main.content_lumper_work_detail.layoutEditTimeClock
 import kotlinx.android.synthetic.main.content_lumper_work_detail.layoutSaveCancelButton
+import kotlinx.android.synthetic.main.content_lumper_work_detail.textViewEmployeeId
+import kotlinx.android.synthetic.main.content_lumper_work_detail.textViewLumperName
+import kotlinx.android.synthetic.main.content_lumper_work_detail.textViewShiftTime
+import kotlinx.android.synthetic.main.content_time_clock_attendance.*
+import kotlinx.android.synthetic.main.fragment_time_clock_attendance.*
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
@@ -43,7 +62,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.textViewSh
 import kotlinx.android.synthetic.main.content_lumper_work_detail.textViewLunchTime as textViewLunchTime1
 
 class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWorkDetailContract.View,
-    LumperWorkDetailContract.View.OnAdapterItemClickListener {
+    LumperWorkDetailContract.View.OnAdapterItemClickListener, TextWatcher {
 
     private var signatureFilePath = ""
     private var selectedTime: Long = 0
@@ -54,6 +73,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     private  var lumperDaySheetList: ArrayList<LumperDaySheet> = ArrayList()
     private  var lumperAttendanceData: AttendanceDetail = AttendanceDetail()
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    private var updateData: HashMap<String, AttendanceDetail> = HashMap()
 
     companion object {
         const val LUMPER_WORK_DETAIL = "LUMPER_WORK_DETAIL"
@@ -133,6 +153,13 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         layoutEditTimeClock.setOnClickListener(this)
         layoutEditLumerNote.setOnClickListener(this)
         bottomSheetBackground.setOnClickListener(this)
+        buttonSubmit.setOnClickListener(this)
+        buttonCancelNote.setOnClickListener(this)
+        buttonClockIn.setOnClickListener(this)
+        buttonClockOut.setOnClickListener(this)
+        buttonLunchIn.setOnClickListener(this)
+        buttonLunchOut.setOnClickListener(this)
+        editTextLumpersRequired.addTextChangedListener(this)
     }
 
     private fun showLocalSignatureOnUI(signatureFilePath: String?) {
@@ -203,22 +230,180 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         if (type.equals(LUMPER_EDIT_NOTE)){
             layoutTimeClockNote.visibility=View.VISIBLE
             layoutEditLumperTimeClock.visibility=View.GONE
+            if (!lumperAttendanceData.attendanceNote.isNullOrEmpty())
+            editTextLumpersRequired.setText(lumperAttendanceData.attendanceNote)
         }else if (type.equals(LUMPER_EDIT_TIEM)){
             layoutTimeClockNote.visibility=View.GONE
             layoutEditLumperTimeClock.visibility=View.VISIBLE
+            attendenceDetail()
         }
 
         if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
             sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             bottomSheetBackground.visibility = View.VISIBLE
+
         } else {
             closeBottomSheet()
+        }
+    }
+
+    private fun changeNotesRecord(lumperId: String?) {
+        if (!lumperId.isNullOrEmpty() && !updateData.containsKey(lumperId)) {
+            updateData[lumperId] = AttendanceDetail()
+            updateData[lumperId]?.lumperId = lumperId
+        }
+    }
+    private fun attendenceDetail(){
+        var fullName= String.format("%s" ,lumpersInfo!!.lumperName)
+        textViewLName.text=fullName
+
+        // Show Clock-In Time
+        val clockInTime = DateUtils.convertDateStringToTime(
+            DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.morningPunchIn
+        )
+        buttonClockIn.text = if (clockInTime.isNotEmpty()) clockInTime else getString(R.string.clock_in)
+//        val isClockInEditable = timeClockAttendanceAdapter.checkIfEditable(clockInTime.isNotEmpty(), AppConstant.ATTENDANCE_MORNING_PUNCH_IN, lumperAttendanceData.id!!)
+
+        // Show Clock-Out Time
+        val clockOutTime = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.eveningPunchOut)
+        buttonClockOut.text = if (clockOutTime.isNotEmpty()) clockOutTime else getString(R.string.clock_out)
+//        val isClockOutEditable = timeClockAttendanceAdapter.checkIfEditable(clockOutTime.isNotEmpty(), AppConstant.ATTENDANCE_EVENING_PUNCH_OUT, lumperAttendanceData.id!!)
+
+        // Show Lunch-In Time
+        val lunchInTime = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.lunchPunchIn)
+        buttonLunchIn.text = if (lunchInTime.isNotEmpty()) lunchInTime else getString(R.string.out_to_lunch)
+//        val isLunchInEditable = timeClockAttendanceAdapter.checkIfEditable(lunchInTime.isNotEmpty(), AppConstant.ATTENDANCE_LUNCH_PUNCH_IN, lumperAttendanceData.id!!)
+
+        // Show Lunch-Out Time
+        val lunchOutTime = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.lunchPunchOut)
+        buttonLunchOut.text = if (lunchOutTime.isNotEmpty()) lunchOutTime else getString(R.string.back_to_work)
+//        val isLunchOutEditable = timeClockAttendanceAdapter.checkIfEditable(lunchOutTime.isNotEmpty(), AppConstant.ATTENDANCE_LUNCH_PUNCH_OUT, lumperAttendanceData.id!!)
+
+//        buttonClockIn.isEnabled = isClockInEditable
+
+        /* ClockOut Button will only be enabled in these cases:
+            1. ClockIn Time is Punched
+            2. LunchIn Time is Not Punched
+            3. LunchIn Time & LunchOut Time are punched */
+//        buttonClockOut.isEnabled = isClockOutEditable && !isClockInEditable && (isLunchInEditable || !(!isLunchInEditable && isLunchOutEditable))
+
+        /* LunchIn Button will only be enabled in these cases:
+            1. ClockIn Time is Punched
+            2. ClockOut Time is Not Punched */
+//        buttonLunchIn.isEnabled = isLunchInEditable && !isClockInEditable && isClockOutEditable
+
+        /* LunchOut Button will only be enabled in these cases:
+            1. LunchIn Time is Punched
+            2. ClockIn Time is Punched */
+//        buttonLunchOut.isEnabled = isLunchOutEditable && !isLunchInEditable && !isClockInEditable
+
+    }
+
+    private fun initiateUpdateRecord(lumperId: String?, isPresent: Boolean = true) {
+        if (!lumperId.isNullOrEmpty() && !updateData.containsKey(lumperId)) {
+            updateData[lumperId] = AttendanceDetail()
+            updateData[lumperId]?.lumperId = lumperId
+            updateData[lumperId]?.isPresent = isPresent
+        }
+    }
+
+
+    private fun clockInButtonClicked() {
+        val selectedStartTime = System.currentTimeMillis()
+        val lumperEndTime = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.eveningPunchOut)
+
+        if (lumperEndTime > 0) {
+            if (!DateUtils.isFutureTime(selectedStartTime, lumperEndTime)) {
+                showErrorDialog(getString(R.string.work_start_less_work_end_warning_message))
+                return
+            }
+        }
+        initiateUpdateRecord(lumpersInfo!!.lumperId)
+        updateData[lumpersInfo!!.lumperId]?.morningPunchIn = "$selectedStartTime"
+        buttonClockIn.text = DateUtils.convertMillisecondsToTimeString(selectedStartTime)
+        updateData[lumpersInfo!!.lumperId]?.isMorningPunchInChanged = true
+    }
+    private fun clockOutButtonClicked() {
+        val selectedEndTime = System.currentTimeMillis()
+        val lumperStartTime = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.morningPunchIn)
+        val lumperLunchInTime = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.lunchPunchIn)
+
+        if (!DateUtils.isFutureTime(lumperStartTime, selectedEndTime)) {
+            showErrorDialog(getString(R.string.work_end_greater_work_start_warning_message))
+        } else if (lumperLunchInTime > 0 && !DateUtils.isFutureTime(lumperStartTime, selectedEndTime)
+        ) {
+            showErrorDialog(getString(R.string.work_end_greater_break_start_warning_message))
+        } else {
+            initiateUpdateRecord(lumpersInfo!!.lumperId)
+            updateData[lumpersInfo!!.lumperId]?.eveningPunchOut = "$selectedEndTime"
+            buttonClockOut.text = DateUtils.convertMillisecondsToTimeString(selectedEndTime)
+            updateData[lumpersInfo!!.lumperId]?.isEveningPunchOutChanged = true
+        }
+    }
+
+    private fun lunchInButtonClicked() {
+        val selectedBreakInTime = System.currentTimeMillis()
+        val lumperStartTime = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.morningPunchIn)
+        val lumperLunchOutTime = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.lunchPunchOut)
+        val lumperEndTime = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.eveningPunchOut)
+        if (lumperLunchOutTime > 0) {
+            if (!DateUtils.isFutureTime(lumperStartTime, selectedBreakInTime)) {
+                showErrorDialog(getString(R.string.break_start_greater_work_start_warning_message))
+                return
+            } else if (!DateUtils.isFutureTime(selectedBreakInTime, lumperLunchOutTime)) {
+                showErrorDialog(getString(R.string.break_start_less_break_end_warning_message))
+                return
+            } else if (lumperEndTime > 0 && !DateUtils.isFutureTime(selectedBreakInTime, lumperEndTime)) {
+                showErrorDialog(getString(R.string.break_start_less_work_end_warning_message))
+                return
+            }
+        }
+        initiateUpdateRecord(lumpersInfo!!.lumperId)
+        updateData[lumpersInfo!!.lumperId]?.lunchPunchIn = "$selectedBreakInTime"
+        buttonLunchIn.text = DateUtils.convertMillisecondsToTimeString(selectedBreakInTime)
+        updateData[lumpersInfo!!.lumperId]?.isLunchPunchInChanged = true
+    }
+
+    private fun lunchOutButtonClicked() {
+        val selectedBreakOutTime = System.currentTimeMillis()
+        val lumperStartTime = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.morningPunchIn)
+        val lumperLunchInTime = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.lunchPunchIn)
+        val lumperEndTime = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.eveningPunchOut)
+
+
+        if (!DateUtils.isFutureTime(lumperStartTime, lumperLunchInTime)) {
+            showErrorDialog(getString(R.string.break_end_greater_work_start_warning_message))
+        } else if (!DateUtils.isFutureTime(lumperLunchInTime, selectedBreakOutTime)) {
+            showErrorDialog(getString(R.string.break_end_greater_break_start_warning_message))
+        } else if (lumperEndTime > 0 && !DateUtils.isFutureTime(
+                selectedBreakOutTime,
+                lumperEndTime
+            )
+        ) {
+            showErrorDialog(getString(R.string.break_end_less_work_end_warning_message))
+        } else {
+            initiateUpdateRecord(lumpersInfo!!.lumperId)
+            updateData[lumpersInfo!!.lumperId]?.lunchPunchOut = "$selectedBreakOutTime"
+            buttonLunchOut.text = DateUtils.convertMillisecondsToTimeString(selectedBreakOutTime)
+            updateData[lumpersInfo!!.lumperId]?.isLunchPunchOutChanged = true
         }
     }
 
     private fun closeBottomSheet() {
         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetBackground.visibility = View.GONE
+    }
+
+    private fun showUpdateConfirmationDialog() {
+        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.save_attendance_alert_message), this, object : CustomDialogWarningListener {
+            override fun onConfirmClick() {
+                closeBottomSheet()
+                lumperWorkDetailPresenter.saveAttendanceDetails(updateData.values.distinct())
+            }
+
+            override fun onCancelClick() {
+            }
+        })
     }
 
     /** Native Views Listeners */
@@ -231,6 +416,12 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
                 layoutEditTimeClock.id -> showBottomSheetWithData(LUMPER_EDIT_TIEM)
                 layoutEditLumerNote.id -> showBottomSheetWithData(LUMPER_EDIT_NOTE)
                 bottomSheetBackground.id -> closeBottomSheet()
+                buttonCancelNote.id -> closeBottomSheet()
+                buttonSubmit.id -> {showUpdateConfirmationDialog() }
+                buttonClockIn.id -> clockInButtonClicked()
+                buttonClockOut.id -> clockOutButtonClicked()
+                buttonLunchIn.id -> lunchInButtonClicked()
+                buttonLunchOut.id -> lunchOutButtonClicked()
             }
         }
     }
@@ -266,6 +457,14 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         } else {
             updateUIVisibility(false, isCurrentDate, inCompleteWorkItemsCount)
         }
+    }
+    override fun showDataSavedMessage() {
+        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.attendance_saved_success_message),
+            this, object : CustomDialogListener {
+                override fun onConfirmClick() {
+                    lumperWorkDetailPresenter.getLumperWorkDetails(getDefaultOrValue(lumpersInfo?.lumperId), Date(selectedTime))
+                }
+            })
     }
 
     private fun showLumperTimeDetails(lumperAttendanceData: AttendanceDetail) {
@@ -327,5 +526,21 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         notes?.let {
             CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), notes, activity)
         }
+    }
+
+    override fun afterTextChanged(text: Editable?) {
+        if (getDefaultOrValue(lumperAttendanceData?.attendanceNote) != text.toString()) {
+            // Update in API Request Object
+            changeNotesRecord(lumpersInfo!!.lumperId)
+            updateData[lumpersInfo!!.lumperId]?.attendanceNote = text.toString()
+
+        }
+    }
+
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+    }
+
+    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
     }
 }
