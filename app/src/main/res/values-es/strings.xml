@@ -197,6 +197,8 @@
     <string name="cancel_reason">Reason for Cancellation :</string>
     <string name="yes_cancel">Yes Cancel</string>
     <string name="update">Update</string>
+    <string name="lead_name">Lead : %s</string>
+    <string name="view_details">View Details</string>
     <string name="cancel_header_details">Remove <![CDATA[<b><font color=#e30913> %s</font></b>]]> from <![CDATA[<b><font color=#e30913> %s</font></b>]]> schedule</string>
 
     <!--No Record Messages-->

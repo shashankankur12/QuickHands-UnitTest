@@ -106,7 +106,7 @@
     <string name="on_hold">On-Hold</string>
     <string name="ongoing">Ongoing</string>
     <string name="ongoing_s">Ongoing: %s</string>
-    <string name="out_bound_s">Outbound: %s</string>
+    <string name="out_bound_s">Outbound:  %s</string>
     <string name="out_bounds">Outbounds</string>
     <string name="out_bounds_s">Outbounds: %s</string>
     <string name="out_to_lunch">Out to Lunch</string>
@@ -197,6 +197,8 @@
     <string name="cancel_reason">Reason for Cancellation :</string>
     <string name="yes_cancel">Yes Cancel</string>
     <string name="update">Update</string>
+    <string name="lead_name">Lead : %s</string>
+    <string name="view_details">View Details</string>
     <string name="cancel_header_details">Remove <![CDATA[<b><font color=#e30913> %s</font></b>]]> from <![CDATA[<b><font color=#e30913> %s</font></b>]]> schedule</string>
 
     <!--No Record Messages-->

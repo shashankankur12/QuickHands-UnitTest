@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/linear_user_connections"
     android:layout_width="@dimen/_20sdp"
+    android:layout_marginStart="@dimen/_5sdp"
     android:layout_height="@dimen/_20sdp">
 
     <de.hdodenhof.circleimageview.CircleImageView

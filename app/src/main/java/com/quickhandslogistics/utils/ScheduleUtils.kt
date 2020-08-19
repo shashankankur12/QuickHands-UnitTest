@@ -105,6 +105,12 @@ object ScheduleUtils {
                 relativeLayoutSide?.setBackgroundResource(R.drawable.schedule_item_stroke_completed)
                 setStatusViewEditable(isEditable, textViewStatus)
             }
+            AppConstant.VIEW_DETAILS -> {
+                textViewStatus.text = resources.getString(R.string.view_details)
+                textViewStatus.setBackgroundResource(R.drawable.chip_background_scheduled)
+                relativeLayoutSide?.setBackgroundResource(R.drawable.schedule_item_stroke_scheduled)
+                setStatusViewEditable(isEditable, textViewStatus)
+            }
         }
     }
 
