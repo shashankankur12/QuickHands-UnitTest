@@ -50,6 +50,7 @@
     <string name="day">Day</string>
     <string name="department">Department</string>
     <string name="department_lead">Dept :</string>
+    <string name="department_full">Department : <![CDATA[<b> %s </b>]]></string>
     <string name="title_lead">Title :</string>
     <string name="dept_bold"><![CDATA[<b>Dept: </b>]]></string>
     <string name="district_manager_email">DM Email</string>

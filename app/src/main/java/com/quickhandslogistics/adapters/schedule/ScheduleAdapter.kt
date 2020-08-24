@@ -13,10 +13,14 @@ import com.quickhandslogistics.adapters.common.LumperImagesAdapter
 import com.quickhandslogistics.contracts.common.LumperImagesContract
 import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.controls.OverlapDecoration
+import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.AppConstant.Companion.VIEW_DETAILS
+import com.quickhandslogistics.utils.DateUtils.Companion.sharedPref
 import com.quickhandslogistics.utils.ScheduleUtils
+import com.quickhandslogistics.utils.UIUtils
 import kotlinx.android.synthetic.main.item_schedule.view.*
 
 class ScheduleAdapter(private val resources: Resources, var adapterItemClickListener: ScheduleContract.View.OnAdapterItemClickListener) :
@@ -61,13 +65,15 @@ class ScheduleAdapter(private val resources: Resources, var adapterItemClickList
         }
 
         fun bind(scheduleDetail: ScheduleDetail) {
-            if (!scheduleDetail.buildingName.isNullOrEmpty())
-                textViewBuildingName.text = scheduleDetail.buildingName?.capitalize()
+            val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+
+            textViewBuildingName.text = UIUtils.getSpannableText(resources.getString(R.string.department_full),UIUtils.getDisplayEmployeeDepartment(leadProfile))
             textViewScheduleType.text = String.format(resources.getString(R.string.out_bound_s),scheduleDetail.scheduleTypes?.outbounds?.size.toString())
             textViewScheduleTypeLiveLoad.text = String.format(resources.getString(R.string.live_load_s),scheduleDetail.scheduleTypes?.liveLoads?.size.toString())
             textViewScheduleTypeDrops.text = String.format(resources.getString(R.string.drops_s),scheduleDetail.scheduleTypes?.drops?.size.toString())
             textViewWorkItemsCount.text = String.format(resources.getString(R.string.total_containers_s), scheduleDetail.totalNumberOfWorkItems)
-            textViewWorkItemsLeadName.text = String.format(resources.getString(R.string.lead_name),"")
+            val leadName= String.format("%s %s",leadProfile!!.firstName, leadProfile!!.lastName)
+            textViewWorkItemsLeadName.text = String.format(resources.getString(R.string.lead_name),leadName)
             ScheduleUtils.changeStatusUIByValue(resources, VIEW_DETAILS, textViewStatus, relativeLayoutSide)
 
             recyclerViewLumpersImagesList.apply {
