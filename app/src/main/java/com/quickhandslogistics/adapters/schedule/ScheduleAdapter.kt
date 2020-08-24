@@ -18,6 +18,7 @@ import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.AppConstant.Companion.VIEW_DETAILS
+import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.sharedPref
 import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.UIUtils
@@ -54,6 +55,9 @@ class ScheduleAdapter(private val resources: Resources, var adapterItemClickList
         private val textViewScheduleTypeLiveLoad: TextView = itemView.textViewScheduleTypeLiveLoad
         private val textViewScheduleTypeDrops: TextView = itemView.textViewScheduleTypeDrops
         private val textViewWorkItemsLeadName: TextView = itemView.textViewWorkItemsLeadName
+        private val textViewScheduleTypeStartTime: TextView = itemView.textViewScheduleTypeStartTime
+        private val textViewScheduleTypeLiveLoadStartTime: TextView = itemView.textViewScheduleTypeLiveLoadStartTime
+        private val textViewScheduleTypeDropsStartTime: TextView = itemView.textViewScheduleTypeDropsStartTime
         private val recyclerViewLumpersImagesList: RecyclerView = itemView.recyclerViewLumpersImagesList
         private val relativeLayoutSide: RelativeLayout = itemView.relativeLayoutSide
 
@@ -74,6 +78,12 @@ class ScheduleAdapter(private val resources: Resources, var adapterItemClickList
             textViewWorkItemsCount.text = String.format(resources.getString(R.string.total_containers_s), scheduleDetail.totalNumberOfWorkItems)
             val leadName= String.format("%s %s",leadProfile!!.firstName, leadProfile!!.lastName)
             textViewWorkItemsLeadName.text = String.format(resources.getString(R.string.lead_name),leadName)
+            if (scheduleDetail.scheduleTypes?.outbounds!!.size>0 && !scheduleDetail.scheduleTypes?.outbounds!![0].startTime.isNullOrEmpty())
+                textViewScheduleTypeStartTime.text=DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.outbounds!![0].startTime)!!.toLong())
+            if (scheduleDetail.scheduleTypes?.liveLoads!!.size>0 && !scheduleDetail.scheduleTypes?.liveLoads!![0].startTime.isNullOrEmpty())
+                textViewScheduleTypeLiveLoadStartTime.text=DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.liveLoads!![0].startTime)!!.toLong())
+            if (scheduleDetail.scheduleTypes?.drops!!.size>0 && !scheduleDetail.scheduleTypes?.drops!![0].startTime.isNullOrEmpty())
+                textViewScheduleTypeDropsStartTime.text=DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.drops!![0].startTime)!!.toLong())
             ScheduleUtils.changeStatusUIByValue(resources, VIEW_DETAILS, textViewStatus, relativeLayoutSide)
 
             recyclerViewLumpersImagesList.apply {

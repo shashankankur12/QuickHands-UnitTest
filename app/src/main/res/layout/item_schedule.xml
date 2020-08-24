@@ -42,22 +42,52 @@
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewScheduleType"
             style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
             android:layout_marginTop="@dimen/_4sdp"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewScheduleTypeStartTime"
+            app:layout_constraintTop_toBottomOf="@+id/textViewBuildingName" />
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewScheduleTypeStartTime"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/_4sdp"
+            app:layout_constraintStart_toEndOf="@+id/textViewScheduleType"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewBuildingName" />
 
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewScheduleTypeLiveLoad"
             style="@style/valuesTextViewTheme"
             android:layout_marginTop="@dimen/_4sdp"
+            android:layout_width="0dp"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewScheduleTypeLiveLoadStartTime"
+            app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewScheduleTypeLiveLoadStartTime"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/_4sdp"
+            app:layout_constraintStart_toEndOf="@+id/textViewScheduleTypeLiveLoad"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />
 
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewScheduleTypeDrops"
             style="@style/valuesTextViewTheme"
             android:layout_marginTop="@dimen/_4sdp"
+            android:layout_width="0dp"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewScheduleTypeDropsStartTime"
+            app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTypeLiveLoad" />
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewScheduleTypeDropsStartTime"
+            style="@style/valuesTextViewTheme"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_width="0dp"
+            app:layout_constraintStart_toEndOf="@+id/textViewScheduleTypeDrops"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTypeLiveLoad" />
 
         <com.quickhandslogistics.controls.CustomTextView
