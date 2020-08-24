@@ -31,11 +31,22 @@
     <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewTotalCount"
         style="@style/valuesTextViewTheme"
+        android:layout_width="0dp"
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginTop="@dimen/_4sdp"
-        android:layout_marginEnd="@dimen/_10ssp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textViewGroupNote"
+        app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemsDate" />
+    <com.quickhandslogistics.controls.CustomTextView
+        android:id="@+id/textViewGroupNote"
+        style="@style/noteTextViewTheme"
+        android:layout_width="wrap_content"
+        android:text="@string/notes_by_customer"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginEnd="@dimen/_10ssp"
+        android:textColor="@color/scheduleDetail"
+        app:layout_constraintStart_toEndOf="@+id/textViewTotalCount"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemsDate" />
 
     <com.google.android.flexbox.FlexboxLayout

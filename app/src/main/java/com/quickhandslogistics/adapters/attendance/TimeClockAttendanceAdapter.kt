@@ -140,6 +140,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
             val isSelected = selectedItems.get(adapterPosition, false)
             constraintLayout.isActivated = isSelected
             checkBoxAttendance.isChecked = isSelected
+            flexboxLayoutLumperTime.isClickable = selectedItems.size() <= 0
 
             textViewAddTime.visibility = if (textViewAddTime.visibility == View.VISIBLE && selectedItems.size() == 0&& lumperAttendance?.attendanceDetail?.eveningPunchOut == null) View.VISIBLE else View.GONE
             editTextNotes.isEnabled = selectedItems.size() == 0

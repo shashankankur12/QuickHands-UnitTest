@@ -5,7 +5,6 @@ import com.quickhandslogistics.data.dashboard.ShiftDetail
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 class DateUtils {
     companion object {
@@ -115,6 +114,13 @@ class DateUtils {
             calendar2.add(Calendar.HOUR_OF_DAY, 2)
 
             return calendar2.timeInMillis >calendar1.timeInMillis
+        }
+
+        fun getTimeMilisAccordingShift(): Long {
+            val calendar1 = Calendar.getInstance()
+            calendar1.time = getCurrentDateByEmployeeShift(Date())
+
+            return calendar1.timeInMillis
         }
 
         fun getDateTimeCalculeted(morningPunchIn: String, eveningPunchOut: String): String {
@@ -304,5 +310,7 @@ class DateUtils {
 
             return date!!
         }
+
     }
+
 }

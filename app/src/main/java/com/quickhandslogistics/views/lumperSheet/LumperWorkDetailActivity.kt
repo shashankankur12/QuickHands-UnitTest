@@ -16,7 +16,6 @@ import com.quickhandslogistics.adapters.lumperSheet.LumperWorkDetailAdapter
 import com.quickhandslogistics.contracts.lumperSheet.LumperWorkDetailContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.attendance.AttendanceDetail
-import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
 import com.quickhandslogistics.data.lumperSheet.LumpersInfo
 import com.quickhandslogistics.data.schedule.WorkItemDetail
@@ -32,34 +31,23 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUI
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETER_VALUES
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import kotlinx.android.synthetic.main.activity_lumper_work_detail.*
-import kotlinx.android.synthetic.main.activity_lumper_work_detail.bottomSheetBackground
 import kotlinx.android.synthetic.main.activity_lumper_work_detail.mainConstraintLayout
-import kotlinx.android.synthetic.main.bottom_sheet_add_attendance_time.*
-import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.constraintLayoutBottomSheetRequestLumpers
 import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.*
-import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.buttonClockIn
-import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.buttonClockOut
-import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.buttonLunchIn
-import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.buttonLunchOut
-import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.textViewLName
 import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.textViewLunchTime
 import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
 import kotlinx.android.synthetic.main.content_lumper_work_detail.*
 import kotlinx.android.synthetic.main.content_lumper_work_detail.buttonCancelRequest
 import kotlinx.android.synthetic.main.content_lumper_work_detail.buttonSave
 import kotlinx.android.synthetic.main.content_lumper_work_detail.circleImageViewProfile
-import kotlinx.android.synthetic.main.content_lumper_work_detail.layoutEditTimeClock
 import kotlinx.android.synthetic.main.content_lumper_work_detail.layoutSaveCancelButton
 import kotlinx.android.synthetic.main.content_lumper_work_detail.textViewEmployeeId
 import kotlinx.android.synthetic.main.content_lumper_work_detail.textViewLumperName
 import kotlinx.android.synthetic.main.content_lumper_work_detail.textViewShiftTime
-import kotlinx.android.synthetic.main.content_time_clock_attendance.*
-import kotlinx.android.synthetic.main.fragment_time_clock_attendance.*
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.textViewShiftTime as textViewShiftTime1
-import kotlinx.android.synthetic.main.content_lumper_work_detail.textViewLunchTime as textViewLunchTime1
+import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.constraintLayoutBottomSheetRequestLumpers as constraintLayoutBottomSheetRequestLumpers1
+import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.linearLayout as linearLayout1
 
 class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWorkDetailContract.View,
     LumperWorkDetailContract.View.OnAdapterItemClickListener, TextWatcher {
@@ -72,7 +60,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     private lateinit var lumperWorkDetailAdapter: LumperWorkDetailAdapter
     private  var lumperDaySheetList: ArrayList<LumperDaySheet> = ArrayList()
     private  var lumperAttendanceData: AttendanceDetail = AttendanceDetail()
-    private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
+//    private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private var updateData: HashMap<String, AttendanceDetail> = HashMap()
 
     companion object {
@@ -131,8 +119,8 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     }
 
     private fun initializeUI() {
-        sheetBehavior = BottomSheetBehavior.from(constraintLayoutBottomSheetRequestLumpers)
-        sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+//        sheetBehavior = BottomSheetBehavior.from(constraintLayoutBottomSheetRequestLumpers1)
+//        sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
         lumpersInfo?.let { employeeData ->
             UIUtils.showEmployeeProfileImage(activity, employeeData.lumperImageUrl, circleImageViewProfile)
@@ -150,16 +138,16 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         textViewAddSignature.setOnClickListener(this)
         buttonSave.setOnClickListener(this)
         buttonCancelRequest.setOnClickListener(this)
-        layoutEditTimeClock.setOnClickListener(this)
-        layoutEditLumerNote.setOnClickListener(this)
-        bottomSheetBackground.setOnClickListener(this)
-        buttonSubmit.setOnClickListener(this)
-        buttonCancelNote.setOnClickListener(this)
-        buttonClockIn.setOnClickListener(this)
-        buttonClockOut.setOnClickListener(this)
-        buttonLunchIn.setOnClickListener(this)
-        buttonLunchOut.setOnClickListener(this)
-        editTextLumpersRequired.addTextChangedListener(this)
+//        layoutEditTimeClock.setOnClickListener(this)
+//        layoutEditLumerNote.setOnClickListener(this)
+//        bottomSheetBackground.setOnClickListener(this)
+//        buttonSubmit.setOnClickListener(this)
+//        buttonCancelNote.setOnClickListener(this)
+//        buttonClockIn.setOnClickListener(this)
+//        buttonClockOut.setOnClickListener(this)
+//        buttonLunchIn.setOnClickListener(this)
+//        buttonLunchOut.setOnClickListener(this)
+//        editTextLumpersRequired.addTextChangedListener(this)
     }
 
     private fun showLocalSignatureOnUI(signatureFilePath: String?) {
@@ -219,33 +207,33 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     }
 
     override fun onBackPressed() {
-        if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
-            closeBottomSheet()
-        } else {
+//        if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+//            closeBottomSheet()
+//        } else {
             super.onBackPressed()
-        }
+//        }
     }
 
-    private fun showBottomSheetWithData(type: String) {
-        if (type.equals(LUMPER_EDIT_NOTE)){
-            layoutTimeClockNote.visibility=View.VISIBLE
-            layoutEditLumperTimeClock.visibility=View.GONE
-            if (!lumperAttendanceData.attendanceNote.isNullOrEmpty())
-            editTextLumpersRequired.setText(lumperAttendanceData.attendanceNote)
-        }else if (type.equals(LUMPER_EDIT_TIEM)){
-            layoutTimeClockNote.visibility=View.GONE
-            layoutEditLumperTimeClock.visibility=View.VISIBLE
-            attendenceDetail()
-        }
-
-        if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-            sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            bottomSheetBackground.visibility = View.VISIBLE
-
-        } else {
-            closeBottomSheet()
-        }
-    }
+//    private fun showBottomSheetWithData(type: String) {
+//        if (type.equals(LUMPER_EDIT_NOTE)){
+//            layoutTimeClockNote.visibility=View.VISIBLE
+//            layoutEditLumperTimeClock.visibility=View.GONE
+//            if (!lumperAttendanceData.attendanceNote.isNullOrEmpty())
+//            editTextLumpersRequired.setText(lumperAttendanceData.attendanceNote)
+//        }else if (type.equals(LUMPER_EDIT_TIEM)){
+//            layoutTimeClockNote.visibility=View.GONE
+//            layoutEditLumperTimeClock.visibility=View.VISIBLE
+//            attendenceDetail()
+//        }
+//
+//        if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+//            sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+//            bottomSheetBackground.visibility = View.VISIBLE
+//
+//        } else {
+//            closeBottomSheet()
+//        }
+//    }
 
     private fun changeNotesRecord(lumperId: String?) {
         if (!lumperId.isNullOrEmpty() && !updateData.containsKey(lumperId)) {
@@ -389,15 +377,15 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         }
     }
 
-    private fun closeBottomSheet() {
-        sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        bottomSheetBackground.visibility = View.GONE
-    }
+//    private fun closeBottomSheet() {
+//        sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+//        bottomSheetBackground.visibility = View.GONE
+//    }
 
     private fun showUpdateConfirmationDialog() {
         CustomProgressBar.getInstance().showWarningDialog(getString(R.string.save_attendance_alert_message), this, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
-                closeBottomSheet()
+//                closeBottomSheet()
                 lumperWorkDetailPresenter.saveAttendanceDetails(updateData.values.distinct())
             }
 
@@ -412,16 +400,16 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
             when (view.id) {
                 textViewAddSignature.id -> startIntent(AddSignatureActivity::class.java, requestCode = AppConstant.REQUEST_CODE_CHANGED)
                 buttonSave.id -> showConfirmationDialog()
-                buttonSave.id -> showConfirmationDialog()
-                layoutEditTimeClock.id -> showBottomSheetWithData(LUMPER_EDIT_TIEM)
-                layoutEditLumerNote.id -> showBottomSheetWithData(LUMPER_EDIT_NOTE)
-                bottomSheetBackground.id -> closeBottomSheet()
-                buttonCancelNote.id -> closeBottomSheet()
-                buttonSubmit.id -> {showUpdateConfirmationDialog() }
-                buttonClockIn.id -> clockInButtonClicked()
-                buttonClockOut.id -> clockOutButtonClicked()
-                buttonLunchIn.id -> lunchInButtonClicked()
-                buttonLunchOut.id -> lunchOutButtonClicked()
+                buttonCancelRequest.id -> onBackPressed()
+//                layoutEditTimeClock.id -> showBottomSheetWithData(LUMPER_EDIT_TIEM)
+//                layoutEditLumerNote.id -> showBottomSheetWithData(LUMPER_EDIT_NOTE)
+//                bottomSheetBackground.id -> closeBottomSheet()
+//                buttonCancelNote.id -> closeBottomSheet()
+//                buttonSubmit.id -> {showUpdateConfirmationDialog() }
+//                buttonClockIn.id -> clockInButtonClicked()
+//                buttonClockOut.id -> clockOutButtonClicked()
+//                buttonLunchIn.id -> lunchInButtonClicked()
+//                buttonLunchOut.id -> lunchOutButtonClicked()
             }
         }
     }
@@ -505,7 +493,10 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
                 textViewLunchTotalTime.text=DateUtils.getDateTimeCalculeted(lumperAttendanceData.lunchPunchIn!!, lumperAttendanceData.lunchPunchOut!!)
             else textViewLunchTotalTime.visibility=View.GONE
         }
-        editTextNotes.text = if (!lumperAttendanceData.attendanceNote.isNullOrEmpty())lumperAttendanceData.attendanceNote else "Add Note"
+        if (!lumperAttendanceData.attendanceNote.isNullOrEmpty()) {
+            linearLayout.visibility = View.VISIBLE
+            editTextNotes.text = lumperAttendanceData.attendanceNote
+        } else linearLayout.visibility = View.GONE
     }
 
     override fun lumperSignatureSaved() {

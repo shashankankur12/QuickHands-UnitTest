@@ -254,7 +254,7 @@
                 android:gravity="top"
                 android:hint="@string/add_notes"
                 android:imeOptions="actionDone"
-                android:inputType="textPersonName|textCapSentences"
+                android:inputType="textCapSentences|textPersonName"
                 android:maxLength="300"
                 android:padding="@dimen/_8sdp"
                 android:textSize="@dimen/_12ssp" />

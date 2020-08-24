@@ -22,6 +22,7 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WOR
 import kotlinx.android.synthetic.main.activity_work_sheet_item_detail.*
 import kotlinx.android.synthetic.main.bottom_sheet_select_status.*
 import kotlinx.android.synthetic.main.content_work_sheet_item_detail.*
+import kotlinx.android.synthetic.main.content_work_sheet_item_detail.textViewWorkSheetNote as textViewWorkSheetNote1
 
 class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSheetItemDetailContract.View,
     WorkSheetItemDetailContract.View.OnAdapterItemClickListener, WorkSheetItemDetailContract.View.OnFragmentInteractionListener {
@@ -127,6 +128,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         }
 
         textViewStatus.setOnClickListener(this)
+        textViewWorkSheetNote1.setOnClickListener(this)
         bottomSheetBackgroundStatus.setOnClickListener(this)
     }
 
@@ -156,6 +158,15 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
                     } else {
                         closeBottomSheet()
                     }
+
+                }
+                textViewWorkSheetNote1.id->{
+                    if(!workItemDetail.scheduleNote.isNullOrEmpty() &&  !workItemDetail.scheduleNote.equals("NA")) {
+                        val title =
+                            ScheduleUtils.scheduleTypeNotePopupTitle(workItemDetail, resources)
+                        CustomProgressBar.getInstance()
+                            .showInfoDialog(title, workItemDetail.scheduleNote!!, this)
+                    }
                 }
             }
         }
@@ -174,6 +185,12 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         this.workItemDetail = workItemDetail
         this.tempLumperIds = tempLumperIds
         textViewStartTime.text = String.format(getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
+        if (!workItemDetail.scheduleNote.isNullOrEmpty() && !workItemDetail.scheduleNote.equals("NA")) {
+            textViewWorkSheetNote1.isEnabled=true
+            textViewWorkSheetNote1.text = ScheduleUtils.getscheduleTypeNote(workItemDetail, resources)
+        } else {
+            textViewWorkSheetNote1.isEnabled=false
+        }
 
         when (workItemTypeDisplayName) {
             getString(R.string.drops) -> textViewDropItems.text = String.format(getString(R.string.no_of_drops_s), workItemDetail.sequence)

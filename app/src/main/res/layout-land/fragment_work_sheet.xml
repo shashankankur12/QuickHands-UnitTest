@@ -28,6 +28,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewCompanyName" />
 
+    <com.quickhandslogistics.controls.CustomTextView
+        android:id="@+id/textViewGroupNote"
+        style="@style/noteTextViewTheme"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="@dimen/_15ssp"
+        android:layout_marginEnd="@dimen/_15ssp"
+        android:text="@string/notes_by_customer"
+        android:textColor="@color/scheduleDetail"
+        android:layout_marginTop="@dimen/_4sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemsDate" />
+
     <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/flexboxLayoutCounts"
         android:layout_width="0dp"
@@ -37,7 +49,7 @@
         app:flexWrap="wrap"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemsDate">
+        app:layout_constraintTop_toBottomOf="@+id/textViewGroupNote">
 
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewTotalCount"

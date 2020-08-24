@@ -29,6 +29,7 @@
     <color name="fabBackgroundOverlay">#5C000000</color>
     <color name="online">#53d769</color>
     <color name="hypertext_color">#6597E3</color>
+    <color name="colorOpaque">#00000000</color>
 
     <color name="row_activated">#D8D7D7</color>
     <color name="bg_circle_default">#666666</color>

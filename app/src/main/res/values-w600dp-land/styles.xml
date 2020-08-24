@@ -218,7 +218,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">?android:attr/selectableItemBackground</item>
         <item name="android:clickable">true</item>
-        <item name="android:drawableEnd">@drawable/ic_note_red_small</item>
+        <item name="android:drawableEnd">@drawable/note_icon_selector</item>
         <item name="android:textColor">@color/buttonRed</item>
         <item name="android:textSize">@dimen/_10ssp</item>
     </style>
@@ -239,8 +239,19 @@
         <item name="android:textSize">@dimen/_10ssp</item>
     </style>
 
+    <style name="dialogTitleTextViewThemeBold" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/_10ssp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/textBlack</item>
+    </style>
+
     <style name="dialogContentTextViewTheme" parent="Widget.AppCompat.TextView"> <!--Changed-->
         <item name="android:textSize">@dimen/_8ssp</item>
+    </style>
+
+    <style name="dialogContentTextViewThemeBold" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/_8ssp</item>
+        <item name="android:textColor">@color/textBlack</item>
     </style>
 
 

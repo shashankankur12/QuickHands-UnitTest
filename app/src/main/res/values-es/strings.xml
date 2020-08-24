@@ -199,6 +199,14 @@
     <string name="update">Update</string>
     <string name="lead_name">Lead : %s</string>
     <string name="view_details">View Details</string>
+    <string name="daily">Daily :</string>
+    <string name="weekly">Weekly :</string>
+    <string name="monthly">Monthly :</string>
+    <string name="custom_s">Custom :</string>
+    <string name="daily_scheduled">Daily Scheduled</string>
+    <string name="weekly_scheduled">Weekly Scheduled</string>
+    <string name="monthly_scheduled">Monthly Scheduled</string>
+    <string name="custom_scheduled">Custom Scheduled</string>
     <string name="cancel_header_details">Remove <![CDATA[<b><font color=#e30913> %s</font></b>]]> from <![CDATA[<b><font color=#e30913> %s</font></b>]]> schedule</string>
 
     <!--No Record Messages-->
@@ -259,6 +267,7 @@
     <string name="use_external_storage_alert_message">Please allow storage permission in the app settings, so that you could download \'Reports\'</string>
     <string name="warning_alert_message">You want to make these changes</string>
     <string name="discard_leave_alert_message">Discard information and Leave?</string>
+    <string name="attendece_start_time_over_message">Start time is over for this shift</string>
 
     <!--Error Messages-->
     <string name="customer_sheet_warning_message"><![CDATA[Please provide both Customer Representative Name & his Signature.]]></string>

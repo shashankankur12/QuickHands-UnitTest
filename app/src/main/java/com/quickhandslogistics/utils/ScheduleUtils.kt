@@ -12,6 +12,7 @@ import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
+import com.quickhandslogistics.data.workSheet.WorkSheetListAPIResponse
 import java.util.*
 import kotlin.Comparator
 import kotlin.collections.ArrayList
@@ -339,4 +340,57 @@ object ScheduleUtils {
         return UIUtils.getSpannedText(formetString)
     }
 
+    fun getscheduleTypeNote(workItemDetail: WorkItemDetail, resources: Resources): String {
+          var noteType=  resources.getString(R.string.daily)
+        if (workItemDetail.scheduleForWeek!!){
+            noteType= resources.getString(R.string.weekly)
+        }else if (workItemDetail.scheduleForMonth!!){
+            noteType= resources.getString(R.string.monthly)
+        }
+        return noteType
+    }
+    fun scheduleTypeNotePopupTitle(workItemDetail: WorkItemDetail, resources: Resources): String {
+        var noteType=  resources.getString(R.string.daily_scheduled)
+        if (workItemDetail.scheduleForWeek!!){
+            noteType= resources.getString(R.string.weekly_scheduled)
+        }else if (workItemDetail.scheduleForMonth!!){
+            noteType= resources.getString(R.string.monthly_scheduled)
+        }
+        return noteType
+    }
+
+    fun getGroupNoteList(workItemData: WorkSheetListAPIResponse.Data): Triple<ArrayList<String>, ArrayList<String>, ArrayList<String>>  {
+         var dailyNoteList: ArrayList<String> = ArrayList()
+         var weeklyNoteList: ArrayList<String> = ArrayList()
+         var monthlyNoteList: ArrayList<String> = ArrayList()
+         var workItemDetail: ArrayList<WorkItemDetail> = ArrayList()
+
+        workItemData?.let{
+            workItemDetail.addAll(it.cancelled!!)
+            workItemDetail.addAll(it.onHold!!)
+            workItemDetail.addAll(it.inProgress!!)
+            workItemDetail.addAll(it.scheduled!!)
+            workItemDetail.addAll(it.completed!!)
+        }
+
+        workItemDetail.forEach{
+            when {
+                it.scheduleForWeek!! -> {
+                    if(!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
+                    weeklyNoteList.add(it.scheduleNote!!)
+                }
+                it.scheduleForMonth!! -> {
+                    if(!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
+                    monthlyNoteList.add(it.scheduleNote!!)
+                }
+                else -> {
+                    if(!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
+                    dailyNoteList.add(it.scheduleNote!!)
+                }
+            }
+
+        }
+
+        return Triple(dailyNoteList,weeklyNoteList ,monthlyNoteList)
+    }
 }

@@ -31,6 +31,8 @@ import com.quickhandslogistics.views.workSheet.WorkSheetFragment
 import kotlinx.android.synthetic.main.bottom_sheet_add_attendance_time.*
 import kotlinx.android.synthetic.main.content_time_clock_attendance.*
 import kotlinx.android.synthetic.main.fragment_time_clock_attendance.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWatcher,
     TimeClockAttendanceContract.View, TimeClockAttendanceContract.View.OnAdapterItemClickListener, TimeClockAttendanceContract.View.fragmentDataListener{

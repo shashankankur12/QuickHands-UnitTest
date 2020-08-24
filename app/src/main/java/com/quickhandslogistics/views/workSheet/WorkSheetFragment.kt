@@ -15,21 +15,18 @@ import com.quickhandslogistics.data.customerSheet.CustomerSheetData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.presenters.workSheet.WorkSheetPresenter
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.ScheduleUtils
-import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.utils.UIUtils
+import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.ScheduleUtils.getGroupNoteList
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
-import kotlinx.android.synthetic.main.content_request_lumpers.*
 import kotlinx.android.synthetic.main.fragment_work_sheet.*
 import kotlinx.android.synthetic.main.fragment_work_sheet.mainConstraintLayout
 import kotlinx.android.synthetic.main.fragment_work_sheet.swipe_pull_refresh
 import kotlinx.android.synthetic.main.fragment_work_sheet.textViewTotalCount
-import java.util.*
 import kotlin.collections.ArrayList
 
-class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContract.View.OnFragmentInteractionListener {
+class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContract.View.OnFragmentInteractionListener,
+    View.OnClickListener {
 
     private var onFragmentInteractionListener: DashBoardContract.View.OnFragmentInteractionListener? = null
 
@@ -38,6 +35,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     private var data: WorkSheetListAPIResponse.Data = WorkSheetListAPIResponse.Data()
     private lateinit var date: String
     private lateinit var companyName: String
+    private lateinit var customerGroupNote:Triple<ArrayList<String>, ArrayList<String>, ArrayList<String>>
 
     companion object {
         const val WORKSHEET_DETAIL = "WORKSHEET_DETAIL"
@@ -64,6 +62,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        textViewGroupNote.setOnClickListener(this)
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(WORKSHEET_DATE_SELECTED_HEADER)) {
                 date = savedInstanceState.getString(WORKSHEET_DATE_SELECTED_HEADER)!!
@@ -172,6 +171,11 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     override fun showWorkSheets(data: WorkSheetListAPIResponse.Data) {
         this.data = data
         swipe_pull_refresh?.isRefreshing = false
+
+        customerGroupNote=getGroupNoteList(data)
+        textViewGroupNote.isEnabled = (customerGroupNote!=null&& (customerGroupNote.first.size>0 ||customerGroupNote.second.size>0|| customerGroupNote.third.size>0))
+
+
         // Change the visibility of Cancel All Schedule Option
         if (data.inProgress.isNullOrEmpty() && data.onHold.isNullOrEmpty() && data.cancelled.isNullOrEmpty() && data.completed.isNullOrEmpty() && !data.scheduled.isNullOrEmpty()) {
             onFragmentInteractionListener?.invalidateCancelAllSchedulesOption(true)
@@ -239,5 +243,15 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     /** Child Fragment Interaction Listeners */
     override fun fetchWorkSheetList() {
         workSheetPresenter.fetchWorkSheetList()
+    }
+
+    override fun onClick(view: View?) {
+        when(view!!.id){
+            textViewGroupNote.id->{
+                if (customerGroupNote!=null&& (customerGroupNote.first.size>0 ||customerGroupNote.second.size>0|| customerGroupNote.third.size>0))
+                CustomeDialog.showGroupNoteDialog(activity, "Customer Note ", customerGroupNote)
+
+            }
+        }
     }
 }

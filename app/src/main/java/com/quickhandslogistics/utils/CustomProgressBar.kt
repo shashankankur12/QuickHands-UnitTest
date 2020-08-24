@@ -43,8 +43,8 @@ class CustomProgressBar {
         progressDialog.contentText = message.capitalize()
         progressDialog.confirmText = activityContext.getString(R.string.ok)
         progressDialog.show()
-        progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
-        progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
+        progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewThemeBold)
+        progressDialog.setContentTextAppearance(R.style.dialogContentTextViewThemeBold)
         updateButtonsUI(progressDialog, activityContext)
         progressDialog.setContentTextGravity(Gravity.CENTER_HORIZONTAL)
     }
