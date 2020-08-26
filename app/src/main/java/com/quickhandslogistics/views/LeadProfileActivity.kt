@@ -127,4 +127,5 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
         textViewBuildingName.text = if (!employeeData.buildingDetailData?.buildingName.isNullOrEmpty()) employeeData.buildingDetailData?.buildingName!!.capitalize() else "---"
         textViewCustomerName.text = if (!employeeData.buildingDetailData?.customerDetail?.companyAdminName.isNullOrEmpty()) employeeData.buildingDetailData?.customerDetail?.companyAdminName!!.capitalize() else "---"
     }
+
 }

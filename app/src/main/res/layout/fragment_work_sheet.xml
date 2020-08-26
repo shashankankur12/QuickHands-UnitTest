@@ -41,7 +41,7 @@
         android:id="@+id/textViewGroupNote"
         style="@style/noteTextViewTheme"
         android:layout_width="wrap_content"
-        android:text="@string/notes_by_customer"
+        android:text="@string/customer_notes"
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginEnd="@dimen/_10ssp"
         android:textColor="@color/scheduleDetail"

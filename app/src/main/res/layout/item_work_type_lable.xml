@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutLiveLode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textViewLiveLode"
+            android:layout_width="match_parent"
+            style="@style/titleVerySmallTextViewTheme"
+            android:textColor="@color/textBlack"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycelrViewLiveLodeHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutLiveLode"
+        android:nestedScrollingEnabled="false"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycelrViewLiveLodeItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/recycelrViewLiveLodeHeader"
+        android:nestedScrollingEnabled="false"/>
+
+    <TextView
+        android:id="@+id/textViewLiveLoadNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/valuesVerySmallTextViewTheme"
+        android:textColor="@color/textBlack"
+        android:textStyle="bold"
+        android:textAllCaps="true"
+        android:text="@string/notes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recycelrViewLiveLodeItem"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycelrViewLiveLoadNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLiveLoadNote"
+        android:nestedScrollingEnabled="false"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

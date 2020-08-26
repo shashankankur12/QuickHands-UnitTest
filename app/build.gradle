@@ -114,4 +114,6 @@ dependencies {
 
     // Custom Alert Dialog
     implementation 'com.github.sahilgarg90:sweet-alert-dialog:2.5'
+
+    implementation 'com.otaliastudios:zoomlayout:1.8.0'
 }

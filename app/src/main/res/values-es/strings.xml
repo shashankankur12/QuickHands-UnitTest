@@ -43,7 +43,9 @@
     <string name="current_time">Current Time: </string>
     <string name="custom">Custom</string>
     <string name="customer_details">Customer Details</string>
+    <string name="customer_section">Customer Section</string>
     <string name="customer_note">Customer Note</string>
+    <string name="customer_notes">Customer Note :</string>
     <string name="customer_report">Customer Report</string>
     <string name="customer_representative_name">Customer Representative Name</string>
     <string name="customer_sheet">Customer Sheet</string>
@@ -208,6 +210,8 @@
     <string name="weekly_scheduled">Weekly Scheduled</string>
     <string name="monthly_scheduled">Monthly Scheduled</string>
     <string name="custom_scheduled">Custom Scheduled</string>
+    <string name="date">Date: <![CDATA[<b> %s</b>]]></string>
+    <string name="complete_a">Complete %s</string>
     <string name="cancel_header_details">Remove <![CDATA[<b><font color=#e30913> %s</font></b>]]> from <![CDATA[<b><font color=#e30913> %s</font></b>]]> schedule</string>
 
     <!--No Record Messages-->

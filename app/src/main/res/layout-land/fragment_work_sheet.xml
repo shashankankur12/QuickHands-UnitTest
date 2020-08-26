@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginEnd="@dimen/_15ssp"
-        android:text="@string/notes_by_customer"
+        android:text="@string/customer_notes"
         android:textColor="@color/scheduleDetail"
         android:layout_marginTop="@dimen/_4sdp"
         app:layout_constraintStart_toStartOf="parent"
