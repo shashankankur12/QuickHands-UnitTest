@@ -31,7 +31,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     private var selectedEndDate: Date? = null
     private var startDate: String = ""
     private var endDate: String = ""
-    private var isSavedInstacnse: Boolean = false
+    private var mCheckedId: Int = 0
 
 
     private  var lumperJobReportPresenter: LumperJobReportPresenter ? =null
@@ -55,7 +55,6 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
             if (savedInstanceState.containsKey(LUMPER_JOB_REPORT_LIST)) {
                 employeeDataList = savedInstanceState.getParcelableArrayList(LUMPER_JOB_REPORT_LIST)!!
                 showLumpersData(employeeDataList)
-                isSavedInstacnse=true
             }
         } ?: run {
             val dateString = DateUtils.getCurrentDateStringByEmployeeShift()
@@ -121,6 +120,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     private fun updateTimeByRangeOptionSelected() {
         textViewStartDate.isEnabled = radioGroupDateRange.checkedRadioButtonId == radioButtonCustom.id
         textViewEndDate.isEnabled = radioGroupDateRange.checkedRadioButtonId == radioButtonCustom.id
+        mCheckedId=radioGroupDateRange.checkedRadioButtonId
 
         val calendar = Calendar.getInstance()
         when (radioGroupDateRange.checkedRadioButtonId) {
@@ -128,26 +128,24 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
                 selectedEndDate = calendar.time
                 selectedStartDate = calendar.time
 
-                getLumperListData()
             }
             radioButtonWeekly.id -> {
                 selectedEndDate = calendar.time
 
                 calendar.add(Calendar.WEEK_OF_YEAR, -1)
                 selectedStartDate = calendar.time
-
-                getLumperListData()
             }
             radioButtonMonthly.id -> {
                 selectedEndDate = calendar.time
                 calendar.set(Calendar.DATE, 1)
                 selectedStartDate = calendar.time
-
-                getLumperListData()
             }
             radioButtonCustom.id -> {
                 customeClick()
             }
+        }
+        if(selectedStartDate!=null && selectedEndDate!= null){
+            getLumperListData()
         }
         updateSelectedDateText()
     }
@@ -155,6 +153,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     private fun customeClick() {
         selectedStartDate = null
         selectedEndDate = null
+        lumperJobReportAdapter.clearAllSelection()
         employeeDataList.clear()
         lumperJobReportAdapter.updateLumpersData(employeeDataList)
     }
@@ -162,7 +161,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     private fun getLumperListData() {
         startDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedStartDate!!)
         endDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedEndDate!!)
-        if (lumperJobReportPresenter!=null&&!isSavedInstacnse)
+        if (lumperJobReportPresenter!=null)
             lumperJobReportPresenter!!.fetchLumpersList(startDate, endDate)
 
     }
@@ -186,7 +185,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
 
     private fun updateSelectAllSectionUI() {
         val selectedCount = lumperJobReportAdapter.getSelectedLumperIdsList().size
-        if (selectedCount == lumperJobReportAdapter.itemCount) {
+        if (selectedCount == lumperJobReportAdapter.itemCount && lumperJobReportAdapter.itemCount>0) {
             imageViewSelectAll.setImageResource(R.drawable.ic_add_lumer_tick)
         //    textViewSelectAll.text = getString(R.string.unselect_all)
         } else {
@@ -288,8 +287,10 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     }
 
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
-        updateTimeByRangeOptionSelected()
-        isSavedInstacnse=false
+        if (!mCheckedId.equals(checkedId)) {
+            updateTimeByRangeOptionSelected()
+            lumperJobReportAdapter.clearAllSelection()
+        }
     }
 
     /** Presenter Listeners */

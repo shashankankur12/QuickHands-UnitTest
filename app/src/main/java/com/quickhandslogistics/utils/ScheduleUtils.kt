@@ -373,19 +373,22 @@ object ScheduleUtils {
             workItemDetail.addAll(it.completed!!)
         }
 
-        workItemDetail.forEach{
+        workItemDetail.forEach {
             when {
                 it.scheduleForWeek!! -> {
-                    if(!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
-                    weeklyNoteList.add(it.scheduleNote!!)
+                    if (!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
+                        if (!weeklyNoteList.contains(it.scheduleNote!!))
+                            weeklyNoteList.add(it.scheduleNote!!)
                 }
                 it.scheduleForMonth!! -> {
-                    if(!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
-                    monthlyNoteList.add(it.scheduleNote!!)
+                    if (!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
+                        if (!monthlyNoteList.contains(it.scheduleNote!!))
+                            monthlyNoteList.add(it.scheduleNote!!)
                 }
                 else -> {
-                    if(!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
-                    dailyNoteList.add(it.scheduleNote!!)
+                    if (!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
+                        if (!dailyNoteList.contains(it.scheduleNote!!))
+                            dailyNoteList.add(it.scheduleNote!!)
                 }
             }
 

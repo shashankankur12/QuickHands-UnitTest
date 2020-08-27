@@ -30,7 +30,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
     private var selectedEndDate: Date? = null
     private var startDate: String = ""
     private var endDate: String = ""
-    private var isSavedInstacnse: Boolean = false
+    private var mCheckedId: Int = 0
 
     private  var timeClockReportPresenter: TimeClockReportPresenter?=null
     private lateinit var timeClockReportAdapter: TimeClockReportAdapter
@@ -51,7 +51,6 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(LUMPER_REPORT_LIST)) {
                 employeeDataList = savedInstanceState.getParcelableArrayList(LUMPER_REPORT_LIST)!!
-                isSavedInstacnse=true
                 showLumpersData(employeeDataList)
             }
         } ?: run {
@@ -100,7 +99,6 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
             }
         })
 
-        if (!isSavedInstacnse)
         updateTimeByRangeOptionSelected()
 
         linearLayoutSelectAll.setOnClickListener(this)
@@ -122,6 +120,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
     private fun updateTimeByRangeOptionSelected() {
         textViewStartDate.isEnabled = radioGroupDateRange.checkedRadioButtonId == radioButtonCustom.id
         textViewEndDate.isEnabled = radioGroupDateRange.checkedRadioButtonId == radioButtonCustom.id
+        mCheckedId=radioGroupDateRange.checkedRadioButtonId
 
         val calendar = Calendar.getInstance()
         when (radioGroupDateRange.checkedRadioButtonId) {
@@ -129,25 +128,25 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
                 selectedEndDate = calendar.time
                 selectedStartDate = calendar.time
 
-                getLumperListData()
             }
             radioButtonWeekly.id -> {
                 selectedEndDate = calendar.time
                 calendar.add(Calendar.WEEK_OF_YEAR, -1)
                 selectedStartDate = calendar.time
 
-                getLumperListData()
             }
             radioButtonMonthly.id -> {
                 selectedEndDate = calendar.time
                 calendar.set(Calendar.DATE, 1)
                 selectedStartDate = calendar.time
 
-                getLumperListData()
             }
             radioButtonCustom.id -> {
                 customeClick()
             }
+        }
+        if(selectedStartDate!=null && selectedEndDate!= null){
+            getLumperListData()
         }
         updateSelectedDateText()
     }
@@ -178,7 +177,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
 
     private fun updateSelectAllSectionUI() {
         val selectedCount = timeClockReportAdapter.getSelectedLumperIdsList().size
-        if (selectedCount == timeClockReportAdapter.itemCount) {
+        if (selectedCount == timeClockReportAdapter.itemCount && timeClockReportAdapter.itemCount>0) {
             imageViewSelectAll.setImageResource(R.drawable.ic_add_lumer_tick)
           //  textViewSelectAll.text = getString(R.string.unselect_all)
         } else {
@@ -234,7 +233,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
     private fun getLumperListData() {
         startDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedStartDate!!)
         endDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedEndDate!!)
-        if (timeClockReportPresenter!=null&&!isSavedInstacnse)
+        if (timeClockReportPresenter!=null)
             timeClockReportPresenter!!.fetchLumpersList(startDate, endDate)
 
     }
@@ -285,9 +284,14 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
     }
 
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
-        updateTimeByRangeOptionSelected()
-        isSavedInstacnse=false
+        if (!mCheckedId.equals(checkedId)){
+            updateTimeByRangeOptionSelected()
+            timeClockReportAdapter.clearAllSelection()
+
+        }
+
     }
+
 
     override fun showLoginScreen() {
         startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
