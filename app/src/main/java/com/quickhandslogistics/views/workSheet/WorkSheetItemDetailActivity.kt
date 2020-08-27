@@ -152,7 +152,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
                 bottomSheetBackgroundStatus.id -> closeBottomSheet()
                 textViewStatus.id -> {
                     if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-                        workSheetItemStatusAdapter?.updateInitialStatus(textViewStatus.text.toString())
+                        workSheetItemStatusAdapter?.updateInitialStatus(textViewStatus.text.toString(), workItemDetail.isCompleted!!)
                         sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                         bottomSheetBackgroundStatus.visibility = View.VISIBLE
                     } else {
@@ -261,7 +261,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
             }
 
             override fun onCancelClick() {
-                workSheetItemStatusAdapter?.updateInitialStatus(textViewStatus.text.toString())
+                workSheetItemStatusAdapter?.updateInitialStatus(textViewStatus.text.toString(), workItemDetail.isCompleted!!)
             }
         })
     }

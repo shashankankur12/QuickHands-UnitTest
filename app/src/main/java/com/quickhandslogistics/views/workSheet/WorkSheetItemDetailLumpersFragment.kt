@@ -127,7 +127,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
             }
         }
 
-        workSheetItemDetailLumpersAdapter.updateList(workItemDetail.assignedLumpersList, timingsData, workItemDetail.status, tempLumperIds, getTotalCases(workItemDetail?.buildingOps))
+        workSheetItemDetailLumpersAdapter.updateList(workItemDetail.assignedLumpersList, timingsData, workItemDetail.status, tempLumperIds, getTotalCases(workItemDetail?.buildingOps), workItemDetail.isCompleted)
 
         if (workItemDetail.assignedLumpersList.isNullOrEmpty()) {
             buttonAddLumpers.text = getString(R.string.add_lumpers)
@@ -137,7 +137,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
 
         workItemDetail.status?.let { status ->
             if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED || status == AppConstant.WORK_ITEM_STATUS_CANCELLED) {
-                buttonAddLumpers.visibility = View.VISIBLE
+                buttonAddLumpers.visibility =if (!workItemDetail.isCompleted!!) View.VISIBLE else View.GONE
                 textViewEmptyData.text = getString(R.string.empty_work_item_lumpers_past_date_info_message)
             } else {
                 buttonAddLumpers.visibility = View.VISIBLE
@@ -151,7 +151,8 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
             ArrayList(),
             LinkedHashMap(),
             tempLumperIds = ArrayList(),
-            totalCases = getTotalCases(workItemDetail?.buildingOps)
+            totalCases = getTotalCases(workItemDetail?.buildingOps),
+            isCompleted = workItemDetail!!.isCompleted
         )
         buttonAddLumpers.visibility = View.GONE
     }

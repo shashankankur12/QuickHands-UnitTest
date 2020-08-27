@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.CustomProgressBar
 import kotlinx.android.synthetic.main.item_select_status.view.*
 
 class WorkSheetItemStatusAdapter(private val resources: Resources, private val onAdapterClick: WorkSheetItemDetailContract.View.OnAdapterItemClickListener) :
@@ -22,6 +23,7 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
     private var statusList: LinkedHashMap<String, String> = LinkedHashMap()
     private var initialDisplayStatus: String = ""
     private var selectedDisplayStatus: String = ""
+    private var isCompleted: Boolean=false
 
     init {
         statusList[resources.getString(R.string.scheduled)] = AppConstant.WORK_ITEM_STATUS_SCHEDULED
@@ -81,11 +83,15 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
             view?.let {
                 when (view.id) {
                     itemView.id -> {
-                        val pair = getItem(adapterPosition)
-                        if (selectedDisplayStatus != pair.first) {
-                            selectedDisplayStatus = pair.first
-                            notifyDataSetChanged()
-                            onAdapterClick.onSelectStatus(pair.second)
+                        if (isCompleted){
+                            CustomProgressBar.getInstance().showErrorDialog(resources.getString(R.string.updtae_status_after_signature_message), context)
+                        }else {
+                            val pair = getItem(adapterPosition)
+                            if (selectedDisplayStatus != pair.first) {
+                                selectedDisplayStatus = pair.first
+                                notifyDataSetChanged()
+                                onAdapterClick.onSelectStatus(pair.second)
+                            }
                         }
                     }
                 }
@@ -93,8 +99,9 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
         }
     }
 
-    fun updateInitialStatus(initialStatus: String) {
+    fun updateInitialStatus(initialStatus: String, isCompleted: Boolean ) {
         this.initialDisplayStatus = initialStatus
+        this.isCompleted = isCompleted
         selectedDisplayStatus = initialStatus
         notifyDataSetChanged()
     }

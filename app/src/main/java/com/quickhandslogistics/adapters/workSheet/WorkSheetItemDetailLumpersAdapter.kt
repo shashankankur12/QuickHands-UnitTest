@@ -27,6 +27,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
 
     private var workItemStatus = ""
     private var totalCases = ""
+    private var isCompleted: Boolean= false
     private var tempLumperIds = ArrayList<String>()
     private var lumperList = ArrayList<EmployeeData>()
     private var timingsData = HashMap<String, LumpersTimeSchedule>()
@@ -105,7 +106,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
 
         private fun changeAddButtonVisibility() {
             if (workItemStatus == AppConstant.WORK_ITEM_STATUS_IN_PROGRESS || workItemStatus == AppConstant.WORK_ITEM_STATUS_ON_HOLD ||workItemStatus == AppConstant.WORK_ITEM_STATUS_SCHEDULED||workItemStatus == AppConstant.WORK_ITEM_STATUS_CANCELLED ||workItemStatus == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
-                textViewAddTime.visibility = View.VISIBLE
+                textViewAddTime.visibility = if (isCompleted) View.GONE else View.VISIBLE
             } else {
                 textViewAddTime.visibility = View.GONE
             }
@@ -124,7 +125,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
         }
     }
 
-    fun updateList(lumperList: ArrayList<EmployeeData>?, timingsData: LinkedHashMap<String, LumpersTimeSchedule>, status: String? = "", tempLumperIds: ArrayList<String>, totalCases: String?) {
+    fun updateList(lumperList: ArrayList<EmployeeData>?, timingsData: LinkedHashMap<String, LumpersTimeSchedule>, status: String? = "", tempLumperIds: ArrayList<String>, totalCases: String?, isCompleted: Boolean?) {
         this.timingsData.clear()
         this.lumperList.clear()
         lumperList?.let {
@@ -133,6 +134,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
         }
         this.workItemStatus = getDefaultOrValue(status)
         this.totalCases=getDefaultOrValue(totalCases)
+        this.isCompleted= getDefaultOrValue(isCompleted)
 
         this.tempLumperIds.clear()
         this.tempLumperIds.addAll(tempLumperIds)
