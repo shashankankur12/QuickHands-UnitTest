@@ -9,6 +9,7 @@ import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
+import com.quickhandslogistics.data.schedule.ScheduleWorkItem
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
@@ -349,7 +350,27 @@ object ScheduleUtils {
         }
         return noteType
     }
+    fun scheduleTypeNote(workItemDetail: ScheduleWorkItem, resources: Resources): String {
+        var noteType=  resources.getString(R.string.daily)
+        if (workItemDetail.scheduleForWeek!!){
+            noteType= resources.getString(R.string.weekly)
+        }else if (workItemDetail.scheduleForMonth!!){
+            noteType= resources.getString(R.string.monthly)
+        }
+        return noteType
+    }
     fun scheduleTypeNotePopupTitle(workItemDetail: WorkItemDetail, resources: Resources): String {
+        var noteType=  resources.getString(R.string.daily_scheduled)
+        if (workItemDetail.scheduleForWeek!!){
+            noteType= resources.getString(R.string.weekly_scheduled)
+        }else if (workItemDetail.scheduleForMonth!!){
+            noteType= resources.getString(R.string.monthly_scheduled)
+        }
+        return noteType
+    }
+
+
+    fun scheduleNotePopupTitle(workItemDetail: ScheduleWorkItem, resources: Resources): String {
         var noteType=  resources.getString(R.string.daily_scheduled)
         if (workItemDetail.scheduleForWeek!!){
             noteType= resources.getString(R.string.weekly_scheduled)

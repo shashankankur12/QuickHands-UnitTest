@@ -55,6 +55,7 @@ class TimeClockReportAdapter(private val onAdapterClick: TimeClockReportContract
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
         private val textViewShiftHours: CustomTextView = view.textViewShiftHours
         private val imageViewAdd: ImageView = view.imageViewAdd
+        private val viewAttendanceStatus: View = view.viewAttendanceStatus
 
         fun bind(employeeData: EmployeeData) {
             UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
@@ -62,6 +63,7 @@ class TimeClockReportAdapter(private val onAdapterClick: TimeClockReportContract
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
             textViewShiftHours.text = UIUtils.getDisplayShiftHours(employeeData)
+            viewAttendanceStatus.visibility=View.GONE
 
             if (selectedLumperIdsList.contains(employeeData.id!!)) {
                 imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick)

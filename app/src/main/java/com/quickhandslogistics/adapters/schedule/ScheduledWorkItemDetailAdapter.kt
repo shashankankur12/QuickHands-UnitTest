@@ -9,15 +9,16 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.controls.CustomTextView
-import com.quickhandslogistics.data.attendance.AttendanceDetail
+import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.lumpers.PresentLumper
 import com.quickhandslogistics.utils.UIUtils
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_workitem_detail_lumper.view.*
 
 class ScheduledWorkItemDetailAdapter : Adapter<ScheduledWorkItemDetailAdapter.ViewHolder>() {
 
-    private val lumpersList: ArrayList<EmployeeData> = ArrayList()
+    private val lumpersList: ArrayList<LumperAttendanceData> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_workitem_detail_lumper, parent, false)
@@ -28,7 +29,7 @@ class ScheduledWorkItemDetailAdapter : Adapter<ScheduledWorkItemDetailAdapter.Vi
         return lumpersList.size
     }
 
-    private fun getItem(position: Int): EmployeeData {
+    private fun getItem(position: Int): LumperAttendanceData {
         return lumpersList[position]
     }
 
@@ -43,21 +44,19 @@ class ScheduledWorkItemDetailAdapter : Adapter<ScheduledWorkItemDetailAdapter.Vi
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
         private val viewAttendanceStatus: View = view.viewAttendanceStatus
 
-        fun bind(employeeData: EmployeeData) {
+        fun bind(employeeData: LumperAttendanceData) {
             UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
             UIUtils.updateProfileBorder(context, employeeData.isTemporaryAssigned, circleImageViewProfile)
-            textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
-            textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
-//            attendanceDetail.isPresent?.let {
-//                viewAttendanceStatus.setBackgroundResource(if (employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
-//            }
+            textViewLumperName.text = UIUtils.getPresentLumperFullName(employeeData)
+            textViewEmployeeId.text = UIUtils.getDisplayPresentLumperID(employeeData)
+            employeeData.attendanceDetail?.let {
+                viewAttendanceStatus.setBackgroundResource(if (it.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
+            }
+
         }
     }
 
-    fun updateData(
-        lumpersList: List<EmployeeData>,
-        attendanceDetail: AttendanceDetail
-    ) {
+    fun updateData(lumpersList: ArrayList<LumperAttendanceData>) {
         this.lumpersList.clear()
         this.lumpersList.addAll(lumpersList)
         notifyDataSetChanged()

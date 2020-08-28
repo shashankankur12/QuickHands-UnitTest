@@ -9,7 +9,9 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
+import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.lumpers.PresentLumper
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -27,7 +29,27 @@ object UIUtils {
         return fullName
     }
 
+    fun getPresentLumperFullName(employeeData: LumperAttendanceData?): String {
+        var fullName = ""
+        employeeData?.let {
+            fullName = String.format(
+                "%s %s",
+                getDefaultOrValue(employeeData.firstName).trim().capitalize(),
+                getDefaultOrValue(employeeData.lastName).trim().capitalize()
+            )
+        }
+        return fullName
+    }
+
     fun getDisplayEmployeeID(employeeData: EmployeeData?): String {
+        var displayEmployeeId = ""
+        employeeData?.let {
+            displayEmployeeId = getDisplayEmployeeID(employeeData.employeeId)
+        }
+        return displayEmployeeId
+    }
+
+    fun getDisplayPresentLumperID(employeeData: LumperAttendanceData?): String {
         var displayEmployeeId = ""
         employeeData?.let {
             displayEmployeeId = getDisplayEmployeeID(employeeData.employeeId)

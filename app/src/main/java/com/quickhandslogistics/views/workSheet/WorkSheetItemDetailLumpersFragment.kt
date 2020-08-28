@@ -14,12 +14,15 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.workSheet.WorkSheetItemDetailLumpersAdapter
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailLumpersContract
+import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.schedule.ScheduleWorkItem
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.lumpers.LumperDetailActivity
+import com.quickhandslogistics.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_PRESENT
 import com.quickhandslogistics.views.schedule.AddWorkItemLumpersActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE
@@ -31,7 +34,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
 
     private lateinit var workSheetItemDetailLumpersAdapter: WorkSheetItemDetailLumpersAdapter
 
-    private var workItemDetail: WorkItemDetail? = null
+    private var workItemDetail: ScheduleWorkItem? = null
     private  var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule> = ArrayList<LumpersTimeSchedule>()
     private var tempLumperIds: ArrayList<String> = ArrayList()
 
@@ -42,7 +45,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         const val TOTAL_CASES = "TOTAL_CASES"
         @JvmStatic
         fun newInstance(
-            allWorkItem: WorkItemDetail?,
+            allWorkItem: ScheduleWorkItem?,
             lumperTimeSchedule: ArrayList<LumpersTimeSchedule>?,
             tempLumperIds: ArrayList<String>?
         ) = WorkSheetItemDetailLumpersFragment()
@@ -68,7 +71,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         super.onCreate(savedInstanceState)
         arguments?.let {
             if (it.containsKey(LUMPER_WORK_DETALS))
-            workItemDetail = it.getParcelable<WorkItemDetail>(LUMPER_WORK_DETALS)
+            workItemDetail = it.getParcelable<ScheduleWorkItem>(LUMPER_WORK_DETALS)
             if (it.containsKey(LUMPER_SCHEDULE))
                 lumpersTimeSchedule = it.getParcelableArrayList(LUMPER_SCHEDULE)!!
             if (it.containsKey(LUMPER_WORK_DETALS))
@@ -110,7 +113,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         }
     }
 
-    fun showLumpersData(workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?, tempLumperIds: ArrayList<String>) {
+    fun showLumpersData(workItemDetail: ScheduleWorkItem, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?, tempLumperIds: ArrayList<String>) {
         this.workItemDetail = workItemDetail
 
         val timingsData = LinkedHashMap<String, LumpersTimeSchedule>()
@@ -190,11 +193,12 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
     }
 
     /** Adapter Listeners */
-    override fun onAddTimeClick(employeeData: EmployeeData, timingData: LumpersTimeSchedule?) {
+    override fun onAddTimeClick(employeeData: LumperAttendanceData, timingData: LumpersTimeSchedule?) {
         val bundle = Bundle()
         bundle.putString(ARG_WORK_ITEM_ID, workItemDetail?.id)
         bundle.putString(TOTAL_CASES, getTotalCases(workItemDetail?.buildingOps))
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
+        bundle.putBoolean(ARG_LUMPER_PRESENT, employeeData?.attendanceDetail?.isPresent!!)
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_TIMING_DATA, timingData)
         startIntent(AddLumperTimeWorkSheetItemActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }

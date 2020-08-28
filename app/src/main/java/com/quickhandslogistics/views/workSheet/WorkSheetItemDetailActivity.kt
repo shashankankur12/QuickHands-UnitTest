@@ -11,6 +11,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.workSheet.WorkSheetItemDetailPagerAdapter
 import com.quickhandslogistics.adapters.workSheet.WorkSheetItemStatusAdapter
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
+import com.quickhandslogistics.data.schedule.ScheduleWorkItem
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.presenters.workSheet.WorkSheetItemDetailPresenter
@@ -29,7 +30,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
     private var workItemId: String = ""
     private var workItemTypeDisplayName: String = ""
-    private var workItemDetail: WorkItemDetail = WorkItemDetail()
+    private var workItemDetail: ScheduleWorkItem = ScheduleWorkItem()
     private var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule> = ArrayList<LumpersTimeSchedule>()
     private var tempLumperIds: ArrayList<String> = ArrayList()
 
@@ -90,7 +91,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         super.onSaveInstanceState(outState)
     }
 
-    private fun createDifferentListData(workItemDetail: WorkItemDetail): WorkItemDetail {
+    private fun createDifferentListData(workItemDetail: ScheduleWorkItem): ScheduleWorkItem {
         textViewStartTime.text = String.format(getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
 
         when (workItemTypeDisplayName) {
@@ -105,7 +106,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         return workItemDetail
     }
 
-    private fun initializeUI(allWorkItem: WorkItemDetail? = null, tampLumpId: ArrayList<String>? = null, lumperTimeSchedule: ArrayList<LumpersTimeSchedule>? = null) {
+    private fun initializeUI(allWorkItem: ScheduleWorkItem? = null, tampLumpId: ArrayList<String>? = null, lumperTimeSchedule: ArrayList<LumpersTimeSchedule>? = null) {
 
         workSheetItemDetailPagerAdapter = if (allWorkItem != null)
             WorkSheetItemDetailPagerAdapter(supportFragmentManager, resources, allWorkItem, tampLumpId, lumperTimeSchedule)
@@ -163,7 +164,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
                 textViewWorkSheetNote1.id->{
                     if(!workItemDetail.scheduleNote.isNullOrEmpty() &&  !workItemDetail.scheduleNote.equals("NA")) {
                         val title =
-                            ScheduleUtils.scheduleTypeNotePopupTitle(workItemDetail, resources)
+                            ScheduleUtils.scheduleNotePopupTitle(workItemDetail, resources)
                         CustomProgressBar.getInstance()
                             .showInfoDialog(title, workItemDetail.scheduleNote!!, this)
                     }
@@ -179,7 +180,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         workSheetItemDetailPagerAdapter?.showEmptyData()
     }
 
-    override fun showWorkItemDetail(workItemDetail: WorkItemDetail, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?, tempLumperIds: ArrayList<String>) {
+    override fun showWorkItemDetail(workItemDetail: ScheduleWorkItem, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?, tempLumperIds: ArrayList<String>) {
         this.lumpersTimeSchedule = lumpersTimeSchedule!!
 
         this.workItemDetail = workItemDetail
@@ -187,7 +188,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         textViewStartTime.text = String.format(getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
         if (!workItemDetail.scheduleNote.isNullOrEmpty() && !workItemDetail.scheduleNote.equals("NA")) {
             textViewWorkSheetNote1.isEnabled=true
-            textViewWorkSheetNote1.text = ScheduleUtils.getscheduleTypeNote(workItemDetail, resources)
+            textViewWorkSheetNote1.text = ScheduleUtils.scheduleTypeNote(workItemDetail, resources)
         } else {
             textViewWorkSheetNote1.isEnabled=false
         }

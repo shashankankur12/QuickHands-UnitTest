@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
+import com.quickhandslogistics.data.schedule.ScheduleWorkItem
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.CustomDialogWarningListener
@@ -20,13 +21,13 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
 
     private var onFragmentInteractionListener: WorkSheetItemDetailContract.View.OnFragmentInteractionListener? = null
 
-    private var workItemDetail: WorkItemDetail? = null
+    private var workItemDetail: ScheduleWorkItem? = null
     private var isDataChanged: Boolean =false
 
     companion object {
         private const val NOTE_WORK_DETALS = "NOTE_WORK_DETALS"
         @JvmStatic
-        fun newInstance(allWorkItem: WorkItemDetail?) = WorkSheetItemDetailNotesFragment()
+        fun newInstance(allWorkItem: ScheduleWorkItem?) = WorkSheetItemDetailNotesFragment()
             .apply {
                 arguments = Bundle().apply {
                     if(allWorkItem!=null){
@@ -46,7 +47,7 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            workItemDetail = it.getParcelable<WorkItemDetail>(NOTE_WORK_DETALS)
+            workItemDetail = it.getParcelable<ScheduleWorkItem>(NOTE_WORK_DETALS)
         }
     }
 
@@ -66,7 +67,7 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
         workItemDetail?.let { showNotesData(it) }
     }
 
-    fun showNotesData(workItemDetail: WorkItemDetail) {
+    fun showNotesData(workItemDetail: ScheduleWorkItem) {
         this.workItemDetail = workItemDetail
 
         if (!workItemDetail.notesQHLCustomer.isNullOrEmpty() && workItemDetail.notesQHLCustomer != AppConstant.NOTES_NOT_AVAILABLE) {

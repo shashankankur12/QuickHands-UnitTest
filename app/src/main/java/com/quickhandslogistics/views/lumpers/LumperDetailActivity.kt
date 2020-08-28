@@ -39,6 +39,7 @@ class LumperDetailActivity : BaseActivity(), View.OnClickListener {
     companion object {
         const val ARG_LUMPER_DATA = "ARG_LUMPER_DATA"
         const val ARG_LUMPER_TIMING_DATA = "ARG_LUMPER_TIMING_DATA"
+        const val ARG_LUMPER_PRESENT= "ARG_LUMPER_PRESENT"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

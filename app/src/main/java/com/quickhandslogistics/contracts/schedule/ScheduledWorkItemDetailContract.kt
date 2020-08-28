@@ -1,6 +1,7 @@
 package com.quickhandslogistics.contracts.schedule
 
 import com.quickhandslogistics.contracts.BaseContract
+import com.quickhandslogistics.data.schedule.ScheduleWorkItem
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.schedule.WorkItemDetailAPIResponse
 
@@ -15,7 +16,7 @@ class ScheduledWorkItemDetailContract {
 
     interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
-        fun showWorkItemDetail(workItemDetail: WorkItemDetail)
+        fun showWorkItemDetail(workItemDetail: ScheduleWorkItem)
         fun showLoginScreen()
     }
 

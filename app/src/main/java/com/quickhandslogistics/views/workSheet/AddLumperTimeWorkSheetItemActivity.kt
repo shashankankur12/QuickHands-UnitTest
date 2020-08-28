@@ -20,6 +20,7 @@ import com.quickhandslogistics.utils.ValueUtils.isNumeric
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_DATA
+import com.quickhandslogistics.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_PRESENT
 import com.quickhandslogistics.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_TIMING_DATA
 import com.quickhandslogistics.views.schedule.ScheduleFragment
 import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
@@ -45,6 +46,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private var percentageTime: Double = 0.0
     private var partWorkDone: Int = 0
     private var isPartWorkDoneValid: Boolean = true
+    private var isLumperPresent: Boolean = false
     private lateinit var  watcher: TextWatcher
 
     private lateinit var addLumperTimeWorkSheetItemPresenter: AddLumperTimeWorkSheetItemPresenter
@@ -57,6 +59,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         intent.extras?.let { it ->
             if (it.containsKey(ARG_LUMPER_DATA)) {
                 workItemId = it.getString(ScheduleFragment.ARG_WORK_ITEM_ID, "")
+                isLumperPresent = it.getBoolean(ARG_LUMPER_PRESENT, false)
                 totalCases = it.getString(WorkSheetItemDetailLumpersFragment.TOTAL_CASES, "")
                 employeeData = it.getParcelable(ARG_LUMPER_DATA) as EmployeeData?
                 employeeTimingData = it.getParcelable(ARG_LUMPER_TIMING_DATA) as LumpersTimeSchedule?
@@ -74,6 +77,8 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             UIUtils.updateProfileBorder(activity, employeeData.isTemporaryAssigned, circleImageViewProfile)
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
+            viewAttendanceStatus.setBackgroundResource(if (isLumperPresent) R.drawable.online_dot else R.drawable.offline_dot)
+
         }
 
         employeeTimingData?.let { timingDetail ->

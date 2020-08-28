@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailLumpersContract
 import com.quickhandslogistics.controls.CustomTextView
+import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.utils.AppConstant
@@ -29,7 +30,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
     private var totalCases = ""
     private var isCompleted: Boolean= false
     private var tempLumperIds = ArrayList<String>()
-    private var lumperList = ArrayList<EmployeeData>()
+    private var lumperList = ArrayList<LumperAttendanceData>()
     private var timingsData = HashMap<String, LumpersTimeSchedule>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -41,7 +42,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
         return lumperList.size
     }
 
-    private fun getItem(position: Int): EmployeeData {
+    private fun getItem(position: Int): LumperAttendanceData {
         return lumperList[position]
     }
 
@@ -59,12 +60,16 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
         private val textViewWaitingTime: TextView = view.textViewWaitingTime
         private val textViewBreakTime: TextView = view.textViewBreakTime
         private val textViewWorkDone: TextView = view.textViewWorkDone
+        private val viewAttendanceStatus: View = view.viewAttendanceStatus
 
-        fun bind(employeeData: EmployeeData) {
+        fun bind(employeeData: LumperAttendanceData) {
             UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
             UIUtils.updateProfileBorder(context, tempLumperIds.contains(employeeData.id), circleImageViewProfile)
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
+            employeeData.attendanceDetail?.let {
+                viewAttendanceStatus.setBackgroundResource(if (it.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
+            }
 
             if (timingsData.containsKey(employeeData.id)) {
                 val timingDetail = timingsData[employeeData.id]
@@ -125,7 +130,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
         }
     }
 
-    fun updateList(lumperList: ArrayList<EmployeeData>?, timingsData: LinkedHashMap<String, LumpersTimeSchedule>, status: String? = "", tempLumperIds: ArrayList<String>, totalCases: String?, isCompleted: Boolean?) {
+    fun updateList(lumperList: ArrayList<LumperAttendanceData>?, timingsData: LinkedHashMap<String, LumpersTimeSchedule>, status: String? = "", tempLumperIds: ArrayList<String>, totalCases: String?, isCompleted: Boolean?) {
         this.timingsData.clear()
         this.lumperList.clear()
         lumperList?.let {

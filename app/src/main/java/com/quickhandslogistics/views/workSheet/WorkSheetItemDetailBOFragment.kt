@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.common.ContainerDetailAdapter
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
+import com.quickhandslogistics.data.schedule.ScheduleWorkItem
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.buildingOperations.BuildingOperationsActivity
@@ -26,12 +27,12 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var containerDetailAdapter: ContainerDetailAdapter
 
-    private var workItemDetail: WorkItemDetail? = null
+    private var workItemDetail: ScheduleWorkItem? = null
 
     companion object {
         private const val WORK_DETALS = "WORK_DETALS"
         @JvmStatic
-        fun newInstance(allWorkItem: WorkItemDetail?) = WorkSheetItemDetailBOFragment()
+        fun newInstance(allWorkItem: ScheduleWorkItem?) = WorkSheetItemDetailBOFragment()
             .apply {
                 arguments = Bundle().apply {
                     if(allWorkItem!=null){
@@ -44,7 +45,7 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            workItemDetail = it.getParcelable<WorkItemDetail>(WORK_DETALS)
+            workItemDetail = it.getParcelable<ScheduleWorkItem>(WORK_DETALS)
         }
     }
 
@@ -92,7 +93,7 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-    fun showBuildingOperationsData(workItemDetail: WorkItemDetail) {
+    fun showBuildingOperationsData(workItemDetail: ScheduleWorkItem) {
         this.workItemDetail = workItemDetail
         workItemDetail.status?.let { status ->
             if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED || status == AppConstant.WORK_ITEM_STATUS_CANCELLED) {

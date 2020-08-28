@@ -48,6 +48,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.constraintLayoutBottomSheetRequestLumpers as constraintLayoutBottomSheetRequestLumpers1
 import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.linearLayout as linearLayout1
+import kotlinx.android.synthetic.main.content_lumper_work_detail.viewAttendanceStatus as viewAttendanceStatus1
 
 class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWorkDetailContract.View,
     LumperWorkDetailContract.View.OnAdapterItemClickListener, TextWatcher {
