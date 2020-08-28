@@ -285,10 +285,11 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
     ) {
 
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
-
-        textViewBuildingName.text=  leadProfile!!.buildingDetailData!!.customerDetail!!.companyName + " \n"+leadProfile!!.buildingDetailData!!.customerDetail!!.companyAddress
+        leadProfile?.buildingDetailData?.let {
+            textViewBuildingName.text=  it.buildingName+ " \n"+it.buildingAddress +","+it.buildingZipcode
+        }
         textViewHeaderBar.text= UIUtils.getSpannableText(getString(R.string.date),DateUtils.getDateString(PATTERN_DATE_DISPLAY_SHEET, selectedDate))
-        textViewShiftName.text= UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile.shift!!.capitalize())
+        textViewShiftName.text= UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile?.shift!!.capitalize())
         val onGoingWorkItems = ArrayList<WorkItemDetail>()
         onGoingWorkItems.addAll(scheduleDetails.inProgress!!)
         onGoingWorkItems.addAll(scheduleDetails.onHold!!)
@@ -489,7 +490,8 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
             editTextCustomerNotes.isEnabled = false
             buttonSubmit.isEnabled = false
             if (signed) {
-                buttonSubmit.text = getText(R.string.sheet_submitted)
+                buttonSubmit.background = resources.getDrawable(R.drawable.round_button_blue)
+                buttonSubmit.text = getText(R.string.submitted)
             } else {
                 buttonSubmit.text = getText(R.string.submit)
             }

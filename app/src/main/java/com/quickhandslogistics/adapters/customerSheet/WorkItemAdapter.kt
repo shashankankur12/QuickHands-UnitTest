@@ -51,19 +51,19 @@ class WorkItemAdapter(
 
         fun bind(workItemDetail: ArrayList<WorkItemDetail>) {
             if(adapterPosition.equals(0)){
-                textViewStatusitme.text=String.format("Complete %s", workItemDetail.size )
+                textViewStatusitme.text=String.format("Complete : %s", workItemDetail.size )
                 val completed=getCompletedItemArray(workItemDetail)
                 if (completed.size>0)
                 setAdapter(completed)
 
             }else if(adapterPosition.equals(1)){
-                textViewStatusitme.text=String.format("Cancel %s", workItemDetail.size )
+                textViewStatusitme.text=String.format("Cancel : %s", workItemDetail.size )
                 val cancel= getCompletedItemArray(workItemDetail)
                 if (cancel.size>0)
                 setAdapter(cancel)
 
             }else if (adapterPosition.equals(2)){
-                textViewStatusitme.text=String.format("Schedule %s", workItemDetail.size )
+                textViewStatusitme.text=String.format("Schedule : %s", workItemDetail.size )
                 var schedule=getCompletedItemArray(workItemDetail )
                 if (schedule.size>0)
                 setAdapter(schedule)
