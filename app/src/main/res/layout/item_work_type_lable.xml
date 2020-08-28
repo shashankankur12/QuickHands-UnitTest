@@ -1,46 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/layoutLiveLode"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/textViewLiveLode"
             android:layout_width="match_parent"
             style="@style/titleVerySmallTextViewTheme"
             android:textColor="@color/textBlack"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_height="wrap_content"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycelrViewLiveLodeHeader"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutLiveLode"
-        android:nestedScrollingEnabled="false"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_1sdp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycelrViewLiveLodeItem"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintTop_toBottomOf="@+id/recycelrViewLiveLodeHeader"
-        android:nestedScrollingEnabled="false"/>
+        android:layout_marginTop="@dimen/_1sdp"
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/textViewLiveLoadNote"
@@ -51,16 +39,11 @@
         android:textStyle="bold"
         android:textAllCaps="true"
         android:text="@string/notes"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recycelrViewLiveLodeItem"/>
+        android:layout_marginTop="@dimen/_2sdp"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycelrViewLiveLoadNote"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLiveLoadNote"
-        android:nestedScrollingEnabled="false"/>
+        android:layout_marginTop="@dimen/_1sdp"
+        android:layout_height="match_parent"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

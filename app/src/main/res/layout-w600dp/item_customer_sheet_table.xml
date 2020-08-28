@@ -7,9 +7,9 @@
     <TextView
         style="@style/valuesVerySmallTextViewTheme"
         android:textColor="@color/textBlack"
-        android:layout_width="@dimen/_50sdp"
+        android:paddingStart="@dimen/_3sdp"
+        android:layout_width="@dimen/_85sdp"
         android:id="@+id/textViewItem"
-        android:paddingStart="@dimen/_1sdp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>

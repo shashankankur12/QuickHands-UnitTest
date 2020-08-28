@@ -1,37 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/layoutStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@color/buildingTitle"
         android:paddingVertical="@dimen/_2sdp"
-        android:paddingHorizontal="@dimen/_5sdp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:paddingHorizontal="@dimen/_5sdp">
         <TextView
             android:id="@+id/textViewStatusitme"
             android:layout_width="match_parent"
             style="@style/valuesSmallTextViewTheme"
             android:layout_height="wrap_content"
-            android:textColor="@color/textWhite"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:textColor="@color/textWhite"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycelrViewStatusType"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutStatus"
+        android:layout_height="match_parent"
         android:nestedScrollingEnabled="false"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

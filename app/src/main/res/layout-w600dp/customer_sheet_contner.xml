@@ -26,24 +26,25 @@
             android:id="@+id/textViewWorkItemsDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
             android:background="@drawable/background_date_selector"
             android:drawableStart="@drawable/ic_schedule_calendar"
             android:drawablePadding="@dimen/_6ssp"
             android:hint="@string/start"
-            android:padding="@dimen/_6sdp"
+            android:padding="@dimen/_4sdp"
             android:layout_marginStart="@dimen/_12ssp"
             android:layout_marginEnd="@dimen/_12ssp"
             app:layout_constraintTop_toBottomOf="@+id/textViewCompanyName"
             app:layout_constraintStart_toStartOf="parent"
             android:textColor="@color/scheduleDetail"
-            android:textSize="@dimen/_12ssp" />
+            android:textSize="@dimen/_8ssp" />
 
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewTotalCount"
-            style="@style/valuesTextViewTheme"
+            style="@style/valuesSmallTextViewTheme"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/_12ssp"
-            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginEnd="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/buttonSignature"
@@ -54,56 +55,31 @@
             android:textSize="@dimen/_12sdp"
             android:layout_width="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
-            android:paddingHorizontal="@dimen/_40sdp"
+            android:paddingHorizontal="@dimen/_20sdp"
             android:layout_height="@dimen/_25sdp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textViewTotalCount"
-            android:layout_marginEnd="@dimen/_12ssp"
-            app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemsDate"
+            android:layout_marginEnd="@dimen/_10ssp"
+            app:layout_constraintTop_toBottomOf="@+id/textViewCompanyName"
             android:layout_weight="1"
             android:text="@string/signature" />
 
-        <LinearLayout
+        <com.otaliastudios.zoom.ZoomLayout
             android:id="@+id/relativeLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:transformationGravity="center"
+            app:alignment="top"
+            app:minZoom="1"
+            app:minZoomType="zoom"
             android:background="@drawable/white_background"
-            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewTotalCount">
 
-            <!--            <com.google.android.material.tabs.TabLayout-->
-            <!--                android:id="@+id/tabLayoutCustomerSheet"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginStart="@dimen/_10ssp"-->
-            <!--                android:layout_marginEnd="@dimen/_10ssp"-->
-            <!--                app:tabIndicatorColor="@color/buttonRed"-->
-            <!--                app:tabMode="fixed"-->
-            <!--                app:tabSelectedTextColor="@color/textBlack"-->
-            <!--                app:tabTextAppearance="@style/TabTextAppearance"-->
-            <!--                app:tabTextColor="@color/detailHeader" />-->
-
-            <!--            <View-->
-            <!--                android:id="@+id/divider"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="1dp"-->
-            <!--                android:layout_marginStart="@dimen/_10ssp"-->
-            <!--                android:layout_marginEnd="@dimen/_10ssp"-->
-            <!--                android:background="@color/greyDivider" />-->
-
             <include layout="@layout/customer_sheet_content"/>
 
-            <!--            <androidx.viewpager.widget.ViewPager-->
-            <!--                android:id="@+id/viewPagerCustomerSheet"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:layout_marginTop="@dimen/_5sdp"-->
-            <!--                android:layout_weight="1"-->
-            <!--                app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
-        </LinearLayout>
+        </com.otaliastudios.zoom.ZoomLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -211,6 +211,7 @@
     <string name="monthly_scheduled">Monthly Scheduled</string>
     <string name="custom_scheduled">Custom Scheduled</string>
     <string name="date">Date: <![CDATA[<b> %s</b>]]></string>
+    <string name="date_day">Date</string>
     <string name="complete_a">Complete %s</string>
     <string name="cancel_header_details">Remove <![CDATA[<b><font color=#e30913> %s</font></b>]]> from <![CDATA[<b><font color=#e30913> %s</font></b>]]> schedule</string>
 
