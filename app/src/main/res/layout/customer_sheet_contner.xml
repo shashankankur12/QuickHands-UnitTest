@@ -64,7 +64,7 @@
 
         <com.otaliastudios.zoom.ZoomLayout
             android:id="@+id/relativeLayout"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_8sdp"
             app:transformationGravity="center"

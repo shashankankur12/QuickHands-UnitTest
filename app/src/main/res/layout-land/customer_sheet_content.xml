@@ -36,6 +36,7 @@
             <TextView
                 android:id="@+id/textViewBuildingName"
                 android:layout_weight=".4"
+                android:text="@string/attendance_saved_success_message"
                 style="@style/valuesVerySmallTextViewTheme"
                 android:layout_width="0dp"
                 android:layout_gravity="center"

@@ -39,6 +39,7 @@
                 style="@style/valuesVerySmallTextViewTheme"
                 android:layout_width="0dp"
                 android:layout_gravity="center"
+                android:text="@string/attendance_saved_success_message"
                 android:textColor="@color/textBlack"
                 android:layout_height="wrap_content"/>
 

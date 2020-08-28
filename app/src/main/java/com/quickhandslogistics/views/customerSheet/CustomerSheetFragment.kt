@@ -286,7 +286,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
 
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
         leadProfile?.buildingDetailData?.let {
-            textViewBuildingName.text=  it.buildingName+ " \n"+it.buildingAddress +","+it.buildingZipcode
+            textViewBuildingName.text=  it.buildingName!!.capitalize()+ " \n"+it.buildingAddress!!.capitalize() +","+it.buildingZipcode
         }
         textViewHeaderBar.text= UIUtils.getSpannableText(getString(R.string.date),DateUtils.getDateString(PATTERN_DATE_DISPLAY_SHEET, selectedDate))
         textViewShiftName.text= UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile?.shift!!.capitalize())
@@ -329,7 +329,6 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
             buttonSignature.text=getString(R.string.signature)
             buttonSignature.background = resources.getDrawable(R.drawable.round_button_red)
         }
-
 
     }
 

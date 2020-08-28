@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textViewLumperName"
+        android:id="@+id/textViewBuildingName"
         style="@style/titleTextViewTheme"
         android:layout_width="0dp"
         android:layout_marginStart="@dimen/_8sdp"
