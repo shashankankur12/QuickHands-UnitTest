@@ -21,14 +21,31 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/circleImageViewProfile"
-                android:layout_width="@dimen/_70sdp"
-                android:layout_height="@dimen/_70sdp"
-                android:src="@drawable/dummy"
-                android:transitionName="@string/transition_name"
-                app:civ_border_color="@color/textWhite"
-                app:civ_border_width="3dp" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/circleImageViewProfile"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_70sdp"
+                    android:src="@drawable/dummy"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:transitionName="@string/transition_name"
+                    app:civ_border_color="@color/textWhite"
+                    app:civ_border_width="3dp" />
+                <View
+                    android:id="@+id/viewAttendanceStatus"
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:background="@drawable/online_dot"
+                    android:translationX="-8dp"
+                    android:translationY="-8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/circleImageViewProfile"
+                    app:layout_constraintEnd_toEndOf="@+id/circleImageViewProfile" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <ImageView
                 android:id="@+id/headerLogo"

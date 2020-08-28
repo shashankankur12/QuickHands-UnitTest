@@ -49,6 +49,7 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
         private val textViewShiftHours: CustomTextView = view.textViewShiftHours
         private val imageViewCall: CircleImageView = view.imageViewCall
+        private val viewAttendanceStatus: View = view.viewAttendanceStatus
 
         fun bind(employeeData: EmployeeData) {
             UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
@@ -56,6 +57,7 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
             textViewShiftHours.text = UIUtils.getDisplayShiftHours(employeeData)
+            viewAttendanceStatus.setBackgroundResource(if (employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
 
             imageViewCall.setOnClickListener(this)
             itemView.setOnClickListener(this)

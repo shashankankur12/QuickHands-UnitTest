@@ -15,7 +15,12 @@ import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.UIUtils
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.item_lumper_sheet_layout.view.*
 import kotlinx.android.synthetic.main.item_schedule_time.view.*
+import kotlinx.android.synthetic.main.item_schedule_time.view.circleImageViewProfile
+import kotlinx.android.synthetic.main.item_schedule_time.view.textViewEmployeeId
+import kotlinx.android.synthetic.main.item_schedule_time.view.textViewLumperName
+import kotlinx.android.synthetic.main.item_schedule_time.view.viewAttendanceStatus
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -58,6 +63,7 @@ class ScheduleTimeAdapter(private val onAdapterClick: ScheduleTimeContract.View.
         private val textViewScheduleEdit: TextView = view.textViewScheduleEdit
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
         private val layoutCancelEdit: LinearLayout = view.layoutCancelEdit
+        private val viewAttendanceStatus: View = view.viewAttendanceStatus
 
         fun bind(scheduleTimeDetail: ScheduleTimeDetail) {
             val employeeData = scheduleTimeDetail.lumperInfo
@@ -66,6 +72,7 @@ class ScheduleTimeAdapter(private val onAdapterClick: ScheduleTimeContract.View.
                 UIUtils.updateProfileBorder(context, tempLumperIds.contains(employeeData.id), circleImageViewProfile)
                 textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
                 textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
+                viewAttendanceStatus.setBackgroundResource(if (scheduleTimeDetail.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
                 layoutCancelEdit.visibility = if (isPastDate) View.GONE else View.VISIBLE
                 if (notes.isNullOrEmpty()) textViewScheduleNote.visibility=View.GONE else textViewScheduleNote.visibility=View.VISIBLE
 

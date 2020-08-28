@@ -179,7 +179,7 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
         ScheduleUtils.changeStatusUIByValue(resources, workItemDetail.status, textViewStatus)
 
         workItemDetail.assignedLumpersList?.let { assignedLumpersList ->
-            lumpersAdapter.updateData(assignedLumpersList)
+            lumpersAdapter.updateData(assignedLumpersList, workItemDetail.attendanceDetail!! )
 
             if (assignedLumpersList.size > 0) {
                 buttonUpdateLumpers.text = getString(R.string.update_lumpers)

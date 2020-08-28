@@ -15,6 +15,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <View
+        android:id="@+id/viewAttendanceStatus"
+        android:layout_width="@dimen/_8sdp"
+        android:layout_height="@dimen/_8sdp"
+        android:background="@drawable/online_dot"
+        android:translationX="-2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/circleImageViewProfile"
+        app:layout_constraintEnd_toEndOf="@+id/circleImageViewProfile" />
+
     <TextView
         android:id="@+id/textViewLumperName"
         style="@style/titleTextViewTheme"

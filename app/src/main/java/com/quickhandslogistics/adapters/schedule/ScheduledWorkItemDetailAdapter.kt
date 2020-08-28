@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.controls.CustomTextView
+import com.quickhandslogistics.data.attendance.AttendanceDetail
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.utils.UIUtils
 import de.hdodenhof.circleimageview.CircleImageView
@@ -40,16 +41,23 @@ class ScheduledWorkItemDetailAdapter : Adapter<ScheduledWorkItemDetailAdapter.Vi
         private val textViewLumperName: TextView = view.textViewLumperName
         private val textViewEmployeeId: CustomTextView = view.textViewEmployeeId
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
+        private val viewAttendanceStatus: View = view.viewAttendanceStatus
 
         fun bind(employeeData: EmployeeData) {
             UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
             UIUtils.updateProfileBorder(context, employeeData.isTemporaryAssigned, circleImageViewProfile)
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
+//            attendanceDetail.isPresent?.let {
+//                viewAttendanceStatus.setBackgroundResource(if (employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
+//            }
         }
     }
 
-    fun updateData(lumpersList: List<EmployeeData>) {
+    fun updateData(
+        lumpersList: List<EmployeeData>,
+        attendanceDetail: AttendanceDetail
+    ) {
         this.lumpersList.clear()
         this.lumpersList.addAll(lumpersList)
         notifyDataSetChanged()

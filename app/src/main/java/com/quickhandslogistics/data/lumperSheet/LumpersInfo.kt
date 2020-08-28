@@ -25,6 +25,9 @@ class LumpersInfo() : Parcelable {
     @SerializedName("sheetSigned")
     @Expose
     var sheetSigned: Boolean? = null
+    @SerializedName("isPresent")
+    @Expose
+    var isPresent: Boolean? = null
 
     constructor(parcel: Parcel) : this() {
         lumperId = parcel.readString()
@@ -32,6 +35,7 @@ class LumpersInfo() : Parcelable {
         lumperEmployeeId = parcel.readString()
         lumperImageUrl = parcel.readString()
         sheetSigned = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        isPresent = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -40,6 +44,7 @@ class LumpersInfo() : Parcelable {
         parcel.writeString(lumperEmployeeId)
         parcel.writeString(lumperImageUrl)
         parcel.writeValue(sheetSigned)
+        parcel.writeValue(isPresent)
     }
 
     override fun describeContents(): Int {

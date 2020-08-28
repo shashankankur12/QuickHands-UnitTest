@@ -20,6 +20,12 @@ import com.quickhandslogistics.utils.DateUtils.Companion.convertUTCDateStringToM
 import com.quickhandslogistics.utils.UIUtils
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_edit_schedule_time.view.*
+import kotlinx.android.synthetic.main.item_edit_schedule_time.view.circleImageViewProfile
+import kotlinx.android.synthetic.main.item_edit_schedule_time.view.textViewEmployeeId
+import kotlinx.android.synthetic.main.item_edit_schedule_time.view.textViewLumperName
+import kotlinx.android.synthetic.main.item_edit_schedule_time.view.textViewScheduleTime
+import kotlinx.android.synthetic.main.item_edit_schedule_time.view.viewAttendanceStatus
+import kotlinx.android.synthetic.main.item_schedule_time.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -69,6 +75,7 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
         private val imageViewCancel: ImageView = view.imageViewCancel
         private val layoutScheduleTime: RelativeLayout = view.layoutScheduleTime
+        private val viewAttendanceStatus: View = view.viewAttendanceStatus
 
         fun bind(scheduleTimeDetail: ScheduleTimeDetail) {
             scheduleTimeDetail.lumperInfo?.let { employeeData ->
@@ -76,6 +83,13 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
                 UIUtils.updateProfileBorder(context, employeeData.isTemporaryAssigned, circleImageViewProfile)
                 textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
                 textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
+                scheduleTimeDetail.isPresent?.let {
+                    viewAttendanceStatus.setBackgroundResource(if (scheduleTimeDetail.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
+                }
+                employeeData.isPresent?.let {
+                    viewAttendanceStatus.setBackgroundResource(if (employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
+                }
+
 
                 if (scheduledLumpersIdsTimeMap.containsKey(employeeData.id!!)) {
                     textViewScheduleTime.visibility = View.VISIBLE
