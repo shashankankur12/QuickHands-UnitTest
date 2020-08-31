@@ -44,7 +44,7 @@ open class EmployeeData() : Parcelable {
     var isEmailVerified: Boolean? = null
     @SerializedName("hasClockedOut")
     @Expose
-    var isPresent: Boolean? = null
+    var isPresent: Boolean? = true
 
     @SerializedName("isPhoneVerified")
     @Expose

@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.reports.CustomerReportContract
 import com.quickhandslogistics.data.dashboard.BuildingDetailData
@@ -50,7 +51,7 @@ class CustomerJobReportAdapter(private val onAdapterClick: CustomerReportContrac
              private val imageViewAdd: ImageView = view.imageViewAdd
 
              fun bind(buildingDetailData: BuildingDetailData) {
-                 UIUtils.showEmployeeProfileImage(context, "", circleImageViewProfile)
+                 Glide.with(context).load(R.drawable.building_image).into(circleImageViewProfile)
                  textViewBuildingName.text = buildingDetailData.buildingName?.capitalize()
                  imageViewAdd.setImageResource(R.drawable.ic_check_blue)
 

@@ -159,9 +159,9 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
 
         private fun ishaseClockOut(lumperAttendance: LumperAttendanceData) {
             lumperAttendance.attendanceDetail?.let {
-                if (it.isPresent!! && !it.morningPunchIn.isNullOrEmpty() && it.eveningPunchOut.isNullOrEmpty()){
+                if ( !it.morningPunchIn.isNullOrEmpty() && it.eveningPunchOut.isNullOrEmpty()){
                     viewAttendanceStatus.setBackgroundResource( R.drawable.online_dot )
-                }else if(it.isPresent!! && !it.morningPunchIn.isNullOrEmpty() && !it.eveningPunchOut.isNullOrEmpty()){
+                }else if(!it.morningPunchIn.isNullOrEmpty() && !it.eveningPunchOut.isNullOrEmpty()){
                     viewAttendanceStatus.setBackgroundResource( R.drawable.offline_dot)
 
                 }else viewAttendanceStatus.setBackgroundResource( R.drawable.offline_dot)
@@ -387,7 +387,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
 
     private fun reamoveUpdateRecord(lumperId: String?, isPresent: Boolean = true) {
         if (!lumperId.isNullOrEmpty() && updateData.containsKey(lumperId)) {
-            if (!updateData[lumperId]?.lunchPunchIn.isNullOrEmpty()!! || !updateData[lumperId]?.lunchPunchIn.isNullOrEmpty()) {
+            if ( !updateData[lumperId]?.lunchPunchIn.isNullOrEmpty()!! || !updateData[lumperId]?.eveningPunchOut.isNullOrEmpty()) {
                 updateData[lumperId]?.lumperId = lumperId
                 updateData[lumperId]?.isPresent = isPresent
             } else if (updateData.containsKey(lumperId)){
