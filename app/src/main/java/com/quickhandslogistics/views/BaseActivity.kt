@@ -145,7 +145,7 @@ open class BaseActivity : AppCompatActivity(), BaseContract.View {
 
     private fun showLeavePopup() {
         CustomProgressBar.getInstance().showLeaveDialog(
-            getString(R.string.leave_alert_message),
+            getString(R.string.discard_leave_alert_message),
             activity,
             object : CustomDialogWarningListener {
                 override fun onConfirmClick() {

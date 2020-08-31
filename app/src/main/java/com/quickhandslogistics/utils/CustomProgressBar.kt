@@ -133,7 +133,7 @@ class CustomProgressBar {
 
     fun showLeaveDialog(message: String = "", activityContext: Context, listener: CustomDialogWarningListener) {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.WARNING_TYPE)
-        progressDialog.titleText = activityContext.getString(R.string.discard_leave_alert_message)
+        progressDialog.titleText = if (message.isEmpty())activityContext.getString(R.string.discard_leave_alert_message) else message
         progressDialog.confirmText = activityContext.getString(R.string.yes)
         progressDialog.cancelText = activityContext.getString(R.string.no)
         progressDialog.showCancelButton(true)

@@ -253,6 +253,7 @@
     <string name="generate_report_alert_message">You want to generate report</string>
     <string name="language_change_alert_message">You want to change the language</string>
     <string name="logout_alert_message">You want to logout</string>
+    <string name="clear_time_alert_message">Clear Time?</string>
     <string name="leave_alert_message">You want to leave this page</string>
     <string name="lumper_sheet_success_message">Lumper Sheet submitted successfully</string>
     <string name="notes_saved_success_alert_message">Notes Saved Successfully</string>
@@ -276,6 +277,7 @@
     <string name="warning_alert_message">You want to make these changes</string>
     <string name="discard_leave_alert_message">Discard information and Leave?</string>
     <string name="attendece_start_time_over_message">Start time is over for this shift</string>
+    <string name="attendece_api_error_message">All morning punch in must be from today only</string>
 
     <!--Error Messages-->
     <string name="customer_sheet_warning_message"><![CDATA[Please provide both Customer Representative Name & his Signature.]]></string>

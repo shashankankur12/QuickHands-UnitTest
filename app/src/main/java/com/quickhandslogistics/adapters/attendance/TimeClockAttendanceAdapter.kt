@@ -4,7 +4,6 @@ import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.SparseBooleanArray
-import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -117,6 +116,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
 
                     if(!attendanceDetail.morningPunchIn.isNullOrEmpty()&& !attendanceDetail.eveningPunchOut.isNullOrEmpty())
                         textViewShiftTotalTime.text=DateUtils.getDateTimeCalculeted(attendanceDetail.morningPunchIn!!, attendanceDetail.eveningPunchOut!!)
+                    else textViewShiftTotalTime.text=""
 
                     val lunchPunchIn = convertDateStringToTime(PATTERN_API_RESPONSE, attendanceDetail.lunchPunchIn)
                     val lunchPunchOut = convertDateStringToTime(PATTERN_API_RESPONSE, attendanceDetail.lunchPunchOut)
@@ -127,7 +127,14 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
                     )
                     if(!attendanceDetail.lunchPunchIn.isNullOrEmpty()&&!attendanceDetail.lunchPunchOut.isNullOrEmpty())
                         textViewLunchTotalTime.text=DateUtils.getDateTimeCalculeted(attendanceDetail.lunchPunchIn!!, attendanceDetail.lunchPunchOut!!)
+                    else textViewLunchTotalTime.text=""
                     textViewAddTime.visibility = /*if( attendanceDetail?.eveningPunchOut == null) View.VISIBLE else*/ View.GONE
+                }else{
+                    textViewShiftTime.text = String.format("%s - %s", "NA", "NA")
+                    textViewLunchTime.text = String.format("%s - %s", "NA", "NA")
+                    textViewShiftTotalTime.text=""
+                    textViewLunchTotalTime.text=""
+
                 }
                 editTextNotes.setText(attendanceDetail.attendanceNote)
                 updateTimeUI(isPresent, lumperAttendance.id!!)
@@ -329,6 +336,27 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
         updateData[lumperId]?.isPresentChanged = true
     }
 
+    fun clearPresentRecord(adapterPosition: Int, isChecked :Boolean) {
+
+        val item = getItem(adapterPosition)
+        // Update in API Request Object
+        clearIsPresentRecord(item.id, isPresent = isChecked)
+
+        //Update in Local List Object to show changes on UI
+        getItem(adapterPosition).attendanceDetail?.isPresent = isChecked
+
+    }
+
+
+    private fun clearIsPresentRecord(lumperId: String?, isPresent: Boolean) {
+        if (!lumperId.isNullOrEmpty() && !updateData.containsKey(lumperId)) {
+            updateData[lumperId] = AttendanceDetail()
+            updateData[lumperId]?.lumperId = lumperId
+        }
+        updateData[lumperId]?.isPresent = isPresent
+        updateData[lumperId]?.isPresentChanged = true
+    }
+
     private fun changeNotesRecord(lumperId: String?) {
         if (!lumperId.isNullOrEmpty() && !updateData.containsKey(lumperId)) {
             updateData[lumperId] = AttendanceDetail()
@@ -341,6 +369,18 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
             updateData[lumperId] = AttendanceDetail()
             updateData[lumperId]?.lumperId = lumperId
             updateData[lumperId]?.isPresent = isPresent
+        }
+    }
+
+    private fun reamoveUpdateRecord(lumperId: String?, isPresent: Boolean = true) {
+        if (!lumperId.isNullOrEmpty() && updateData.containsKey(lumperId)) {
+            if (!updateData[lumperId]?.lunchPunchIn.isNullOrEmpty()!! || !updateData[lumperId]?.lunchPunchIn.isNullOrEmpty()) {
+                updateData[lumperId]?.lumperId = lumperId
+                updateData[lumperId]?.isPresent = isPresent
+            } else if (updateData.containsKey(lumperId)){
+                    updateData.remove(lumperId)
+                }
+
         }
     }
 
@@ -398,6 +438,76 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
 
         //Update in Local List Object to show changes on UI
         getItem(itemPosition).attendanceDetail?.lunchPunchOut = DateUtils.getUTCDateString(PATTERN_API_RESPONSE, Date(currentTime))
+
+        if (isNotify)
+            notifyDataSetChanged()
+    }
+
+    fun clearClockInTime(itemPosition: Int, isNotify: Boolean = true) {
+        val item = getItem(itemPosition)
+
+        // Update in API Request Object
+       if( updateData.containsKey(item.id)){
+           updateData.remove(item.id)
+       }
+
+        //Update in Local List Object to show changes on UI
+        getItem(itemPosition).attendanceDetail?.morningPunchIn =null
+
+        if (isNotify)
+            notifyDataSetChanged()
+    }
+
+    fun clearClockOutTime(itemPosition: Int, isNotify: Boolean = true) {
+        val item = getItem(itemPosition)
+
+        // Update in API Request Object
+        if (updateData.containsKey(item.id)) {
+            updateData[item.id]?.eveningPunchOut = null
+            updateData[item.id]?.isEveningPunchOutChanged = false
+        }
+        reamoveUpdateRecord(item.id)
+//        if( updateData.containsKey(item.id)){
+//            updateData.remove(item.id)
+//        }
+
+        //Update in Local List Object to show changes on UI
+        getItem(itemPosition).attendanceDetail?.eveningPunchOut = null
+        if (isNotify)
+            notifyDataSetChanged()
+    }
+
+    fun clearLunchInTime(itemPosition: Int,isNotify: Boolean = true) {
+        val item = getItem(itemPosition)
+
+        // Update in API Request Object
+        if (updateData.containsKey(item.id)){
+            updateData[item.id]?.lunchPunchIn = null
+            updateData[item.id]?.isLunchPunchInChanged = false
+        }
+
+        reamoveUpdateRecord(item.id)
+//        if( updateData.containsKey(item.id)){
+//            updateData.remove(item.id)
+//        }
+
+        //Update in Local List Object to show changes on UI
+        getItem(itemPosition).attendanceDetail?.lunchPunchIn = null
+
+        if (isNotify)
+            notifyDataSetChanged()
+    }
+
+    fun clearLunchOutTime(itemPosition: Int, isNotify: Boolean = true) {
+        val item = getItem(itemPosition)
+
+        // Update in API Request Object
+        if( updateData.containsKey(item.id)){
+            updateData.remove(item.id)
+        }
+
+        //Update in Local List Object to show changes on UI
+        getItem(itemPosition).attendanceDetail?.lunchPunchOut = null
 
         if (isNotify)
             notifyDataSetChanged()

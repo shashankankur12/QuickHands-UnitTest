@@ -247,7 +247,7 @@ public class NavDrawer {
         }
 
         private void showLeavePageAlert(BaseActivity activity, String text) {
-            CustomProgressBar.Companion.getInstance().showLeaveDialog(activity.getString(R.string.leave_alert_message), activity, new CustomDialogWarningListener() {
+            CustomProgressBar.Companion.getInstance().showLeaveDialog(activity.getString(R.string.discard_leave_alert_message), activity, new CustomDialogWarningListener() {
                 @Override
                 public void onConfirmClick() {
                     setFragment(activity, text);

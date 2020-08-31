@@ -27,15 +27,13 @@ import com.quickhandslogistics.utils.DateUtils.Companion.convertDateStringToTime
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.DashBoardActivity
 import com.quickhandslogistics.views.LoginActivity
-import com.quickhandslogistics.views.workSheet.WorkSheetFragment
 import kotlinx.android.synthetic.main.bottom_sheet_add_attendance_time.*
 import kotlinx.android.synthetic.main.content_time_clock_attendance.*
 import kotlinx.android.synthetic.main.fragment_time_clock_attendance.*
-import java.util.*
-import kotlin.collections.ArrayList
 
 class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWatcher,
-    TimeClockAttendanceContract.View, TimeClockAttendanceContract.View.OnAdapterItemClickListener, TimeClockAttendanceContract.View.fragmentDataListener{
+    TimeClockAttendanceContract.View, TimeClockAttendanceContract.View.OnAdapterItemClickListener, TimeClockAttendanceContract.View.fragmentDataListener,
+    View.OnLongClickListener {
 
     private lateinit var timeClockAttendancePresenter: TimeClockAttendancePresenter
     private lateinit var timeClockAttendanceAdapter: TimeClockAttendanceAdapter
@@ -125,6 +123,11 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         buttonLunchIn.setOnClickListener(this)
         buttonLunchOut.setOnClickListener(this)
         bottomSheetBackground.setOnClickListener(this)
+
+        buttonClockIn.setOnLongClickListener(this)
+        buttonClockOut.setOnLongClickListener(this)
+        buttonLunchIn.setOnLongClickListener(this)
+        buttonLunchOut.setOnLongClickListener(this)
     }
 
     private fun invalidateEmptyView() {
@@ -331,6 +334,70 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         }
     }
 
+    override fun onLongClick(view: View?): Boolean {
+        view?.let {
+            return when (view.id) {
+                buttonClockIn.id -> {
+                    val isMultiSelect = bottomSheetBackground.getTag(R.id.isMultiSelect) as Boolean
+                    if (!isMultiSelect && !timeClockAttendanceAdapter.getUpdatedData().isEmpty())
+                    clockButtonClear(buttonClockIn.id)
+                    return true
+                }
+                buttonClockOut.id -> {
+                    val isMultiSelect = bottomSheetBackground.getTag(R.id.isMultiSelect) as Boolean
+                    if (!isMultiSelect && !timeClockAttendanceAdapter.getUpdatedData().isEmpty())
+                    clockButtonClear(buttonClockOut.id)
+                    return true
+                }
+                buttonLunchIn.id -> {
+                    val isMultiSelect = bottomSheetBackground.getTag(R.id.isMultiSelect) as Boolean
+                    if (!isMultiSelect &&!timeClockAttendanceAdapter.getUpdatedData().isEmpty())
+                    clockButtonClear(buttonLunchIn.id)
+                    return true
+                }
+                buttonLunchOut.id -> {
+                    val isMultiSelect = bottomSheetBackground.getTag(R.id.isMultiSelect) as Boolean
+                    if (!isMultiSelect && !timeClockAttendanceAdapter.getUpdatedData().isEmpty())
+                    clockButtonClear(buttonLunchOut.id)
+                    return true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
+        return false
+    }
+
+
+    private fun clockButtonClear(id: Int) {
+        CustomProgressBar.getInstance().showLeaveDialog(getString(R.string.clear_time_alert_message), fragmentActivity!!, object : CustomDialogWarningListener { override fun onConfirmClick() {
+                    closeBottomSheet()
+                    val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
+
+                    when (id) {
+                        buttonClockIn.id -> {
+                            timeClockAttendanceAdapter.clearPresentRecord(itemPosition, false)
+                            timeClockAttendanceAdapter.clearClockInTime(itemPosition)
+                        }
+                        buttonClockOut.id -> {
+                            timeClockAttendanceAdapter.clearClockOutTime(itemPosition)
+                        }
+                        buttonLunchIn.id -> {
+                            timeClockAttendanceAdapter.clearLunchInTime(itemPosition)
+                        }
+                        buttonLunchOut.id -> {
+                            timeClockAttendanceAdapter.clearLunchOutTime(itemPosition)
+                        }
+                    }
+                }
+
+                override fun onCancelClick() {
+                }
+            })
+    }
+
+
     override fun afterTextChanged(s: Editable?) {
 
     }
@@ -349,8 +416,13 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+        if (message.equals(getString(R.string.attendece_api_error_message))){
+            recyclerViewLumpers.visibility = View.VISIBLE
+            textViewEmptyData.visibility = View.GONE
+        }else {
         recyclerViewLumpers.visibility = View.GONE
         textViewEmptyData.visibility = View.VISIBLE
+        }
     }
 
     override fun showLumpersAttendance(lumperAttendanceList: ArrayList<LumperAttendanceData>) {
@@ -457,4 +529,6 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         val updatedData = timeClockAttendanceAdapter.getUpdatedData()
         return updatedData.size > 0
     }
+
+
 }

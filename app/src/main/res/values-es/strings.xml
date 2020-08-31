@@ -236,6 +236,7 @@
     <string name="empty_containers_list_cancelled_info_message">You don\'t have any Cancelled containers scheduled for the selected date.</string>
     <string name="empty_containers_list_completed_info_message">You don\'t have any Completed containers scheduled for the selected date.</string>
     <string name="empty_lumper_list_message">No Lumpers are assigne to this building. Please inform your District Manager </string>
+    <string name="attendece_api_error_message">All morning punch in must be from today only</string>
 
     <!--Alert Messages-->
     <string name="are_you_sure_alert_message">Are you sure?</string>
@@ -252,6 +253,7 @@
     <string name="generate_report_alert_message">You want to generate report</string>
     <string name="language_change_alert_message">You want to change the language</string>
     <string name="logout_alert_message">You want to logout</string>
+    <string name="clear_time_alert_message">Clear Time?</string>
     <string name="leave_alert_message">You want to leave this page</string>
     <string name="lumper_sheet_success_message">Lumper Sheet submitted successfully</string>
     <string name="notes_saved_success_alert_message">Notes Saved Successfully</string>
