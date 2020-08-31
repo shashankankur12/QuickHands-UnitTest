@@ -57,7 +57,7 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
             textViewShiftHours.text = UIUtils.getDisplayShiftHours(employeeData)
-            viewAttendanceStatus.setBackgroundResource(if (employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
+            viewAttendanceStatus.setBackgroundResource(if (!employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
 
             imageViewCall.setOnClickListener(this)
             itemView.setOnClickListener(this)

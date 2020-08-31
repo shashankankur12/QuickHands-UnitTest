@@ -87,7 +87,7 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
                     viewAttendanceStatus.setBackgroundResource(if (scheduleTimeDetail.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
                 }
                 employeeData.isPresent?.let {
-                    viewAttendanceStatus.setBackgroundResource(if (employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
+                    viewAttendanceStatus.setBackgroundResource(if (!employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
                 }
 
 

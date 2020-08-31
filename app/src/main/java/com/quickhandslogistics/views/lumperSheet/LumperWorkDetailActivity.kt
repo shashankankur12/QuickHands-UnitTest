@@ -127,7 +127,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
             UIUtils.showEmployeeProfileImage(activity, employeeData.lumperImageUrl, circleImageViewProfile)
             textViewLumperName.text = getDefaultOrValue(employeeData.lumperName)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData.lumperEmployeeId)
-            viewAttendanceStatus.setBackgroundResource(if (employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
+            viewAttendanceStatus.setBackgroundResource(if (!employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
         }
 
         recyclerViewLumperWork.apply {

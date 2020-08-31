@@ -59,7 +59,7 @@ class LumperSheetAdapter(private var resources: Resources, var adapterItemClickL
             UIUtils.updateProfileBorder(context, tempLumperIds.contains(employeeData.lumperId), circleImageViewProfile)
             textViewLumperName.text = ValueUtils.getDefaultOrValue(employeeData.lumperName).capitalize()
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData.lumperEmployeeId)
-            viewAttendanceStatus.setBackgroundResource(if (employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
+            viewAttendanceStatus.setBackgroundResource(if (!employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
 
             if (ValueUtils.getDefaultOrValue(employeeData.sheetSigned)) {
                 textViewStatus.text = resources.getString(R.string.signed)

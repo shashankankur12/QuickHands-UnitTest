@@ -67,9 +67,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
             UIUtils.updateProfileBorder(context, tempLumperIds.contains(employeeData.id), circleImageViewProfile)
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
-            employeeData.attendanceDetail?.let {
-                viewAttendanceStatus.setBackgroundResource(if (it.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
-            }
+            ishaseClockOut(employeeData)
 
             if (timingsData.containsKey(employeeData.id)) {
                 val timingDetail = timingsData[employeeData.id]
@@ -107,6 +105,17 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
 
             changeAddButtonVisibility()
             textViewAddTime.setOnClickListener(this)
+        }
+
+        private fun ishaseClockOut(lumperAttendance: LumperAttendanceData) {
+            lumperAttendance.attendanceDetail?.let {
+                if (it.isPresent!! && !it.morningPunchIn.isNullOrEmpty() && it.eveningPunchOut.isNullOrEmpty()){
+                    viewAttendanceStatus.setBackgroundResource( R.drawable.online_dot )
+                }else if(it.isPresent!! && !it.morningPunchIn.isNullOrEmpty() && !it.eveningPunchOut.isNullOrEmpty()){
+                    viewAttendanceStatus.setBackgroundResource( R.drawable.offline_dot)
+
+                }else viewAttendanceStatus.setBackgroundResource( R.drawable.offline_dot)
+            }
         }
 
         private fun changeAddButtonVisibility() {

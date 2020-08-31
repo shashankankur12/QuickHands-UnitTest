@@ -148,12 +148,12 @@ class LumperJobReportAdapter(private val onAdapterClick: LumperJobReportContract
 
     fun invokeSelectAll() {
         if (itemCount > 0) {
-//            val selectedCount = getSelectedLumperIdsList().size
-//            if (selectedCount == itemCount) {
-//                clearAllSelection()
-//            } else {
+            val selectedCount = getSelectedLumperIdsList().size
+            if (selectedCount == itemCount) {
+                clearAllSelection()
+            } else {
                 selectAllLumpers()
-//            }
+            }
         }
     }
 

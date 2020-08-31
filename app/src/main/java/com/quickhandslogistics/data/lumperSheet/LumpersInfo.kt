@@ -25,7 +25,7 @@ class LumpersInfo() : Parcelable {
     @SerializedName("sheetSigned")
     @Expose
     var sheetSigned: Boolean? = null
-    @SerializedName("isPresent")
+    @SerializedName("hasClockedOut")
     @Expose
     var isPresent: Boolean? = null
 

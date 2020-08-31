@@ -15,7 +15,7 @@ class ScheduleTimeDetail() : Parcelable {
     @Expose
     var reportingTimeAndDay: String? = null
 
-    @SerializedName("isPresent")
+    @SerializedName("hasClockedOut")
     @Expose
     var isPresent: Boolean? = null
 

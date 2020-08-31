@@ -138,7 +138,10 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
                 }
                 editTextNotes.setText(attendanceDetail.attendanceNote)
                 updateTimeUI(isPresent, lumperAttendance.id!!)
+                ishaseClockOut(lumperAttendance)
             }
+
+
 
             textViewAddTime.setOnClickListener(this)
             flexboxLayoutLumperTime.setOnClickListener(this)
@@ -154,8 +157,18 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
             layoutCheckBox.visibility = /*if (isSelected) View.VISIBLE else*/ View.GONE
         }
 
+        private fun ishaseClockOut(lumperAttendance: LumperAttendanceData) {
+            lumperAttendance.attendanceDetail?.let {
+                if (it.isPresent!! && !it.morningPunchIn.isNullOrEmpty() && it.eveningPunchOut.isNullOrEmpty()){
+                    viewAttendanceStatus.setBackgroundResource( R.drawable.online_dot )
+                }else if(it.isPresent!! && !it.morningPunchIn.isNullOrEmpty() && !it.eveningPunchOut.isNullOrEmpty()){
+                    viewAttendanceStatus.setBackgroundResource( R.drawable.offline_dot)
+
+                }else viewAttendanceStatus.setBackgroundResource( R.drawable.offline_dot)
+            }
+        }
+
         private fun updateTimeUI(isPresent: Boolean, lumperId: String) {
-            viewAttendanceStatus.setBackgroundResource(if (isPresent) R.drawable.online_dot else R.drawable.offline_dot)
 //            checkBoxAttendance.isChecked = false
 //            checkBoxAttendance.isEnabled = checkIfEditable(isPresent, ATTENDANCE_IS_PRESENT, lumperId)
             textViewAddTime.visibility = /*if (isPresent) View.VISIBLE else*/ View.GONE

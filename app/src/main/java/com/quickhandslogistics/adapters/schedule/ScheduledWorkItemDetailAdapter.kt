@@ -49,10 +49,19 @@ class ScheduledWorkItemDetailAdapter : Adapter<ScheduledWorkItemDetailAdapter.Vi
             UIUtils.updateProfileBorder(context, employeeData.isTemporaryAssigned, circleImageViewProfile)
             textViewLumperName.text = UIUtils.getPresentLumperFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayPresentLumperID(employeeData)
-            employeeData.attendanceDetail?.let {
-                viewAttendanceStatus.setBackgroundResource(if (it.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
-            }
+            ishaseClockOut(employeeData)
 
+        }
+
+        private fun ishaseClockOut(lumperAttendance: LumperAttendanceData) {
+            lumperAttendance.attendanceDetail?.let {
+                if (it.isPresent!! && !it.morningPunchIn.isNullOrEmpty() && it.eveningPunchOut.isNullOrEmpty()){
+                    viewAttendanceStatus.setBackgroundResource( R.drawable.online_dot )
+                }else if(it.isPresent!! && !it.morningPunchIn.isNullOrEmpty() && !it.eveningPunchOut.isNullOrEmpty()){
+                    viewAttendanceStatus.setBackgroundResource( R.drawable.offline_dot)
+
+                }else viewAttendanceStatus.setBackgroundResource( R.drawable.offline_dot)
+            }
         }
     }
 
