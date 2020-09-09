@@ -62,7 +62,7 @@ class AddWorkItemLumperAdapter(
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
             textViewShiftHours.text = UIUtils.getDisplayShiftHours(employeeData)
-            viewAttendanceStatus.setBackgroundResource(if (!employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
+            viewAttendanceStatus.setBackgroundResource(if (employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
 
 
             if (selectedLumperIdsList.contains(employeeData.id!!)) {

@@ -72,7 +72,7 @@ class ScheduleTimeAdapter(private val onAdapterClick: ScheduleTimeContract.View.
                 UIUtils.updateProfileBorder(context, tempLumperIds.contains(employeeData.id), circleImageViewProfile)
                 textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
                 textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
-                viewAttendanceStatus.setBackgroundResource(if (!scheduleTimeDetail.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
+                viewAttendanceStatus.setBackgroundResource(if (scheduleTimeDetail.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
                 layoutCancelEdit.visibility = if (isPastDate) View.GONE else View.VISIBLE
                 if (notes.isNullOrEmpty()) textViewScheduleNote.visibility=View.GONE else textViewScheduleNote.visibility=View.VISIBLE
 
