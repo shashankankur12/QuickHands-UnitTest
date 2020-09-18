@@ -1,6 +1,7 @@
 package com.quickhandslogistics.adapters.buildingOperations
 
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -48,6 +49,11 @@ class BuildingOperationsAdapter(private val parameters: ArrayList<String>, var a
         fun bind() {
             val header = parameters[adapterPosition]
             textViewHeader.text = header.capitalize()
+            if (header.equals("Cases")){
+                editTextValue.inputType = InputType.TYPE_CLASS_NUMBER;
+            }else{
+                editTextValue.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME;
+            }
             if (data.containsKey(header)) {
                 editTextValue.setText(data[header])
             }

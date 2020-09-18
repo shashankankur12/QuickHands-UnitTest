@@ -2,6 +2,7 @@ package com.quickhandslogistics.utils
 
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.dashboard.ShiftDetail
+import com.quickhandslogistics.utils.AppConstant.Companion.EMPLOYEE_SHIFT_NIGHT
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -250,7 +251,11 @@ class DateUtils {
                         shiftDetail = leadProfile.buildingDetailData?.nightShift
                     }
                 }
-                val date = calculateDateByShiftStartTime(shiftDetail, originalDate)
+                val date = calculateDateByShiftStartTime(
+                    shiftDetail,
+                    originalDate,
+                    leadProfile.shift
+                )
                 dateString = getDateString(pattern, date)
             }
 
@@ -276,20 +281,22 @@ class DateUtils {
                         shiftDetail = leadProfile.buildingDetailData?.nightShift
                     }
                 }
-                date = calculateDateByShiftStartTime(shiftDetail, originalDate)
+                date = calculateDateByShiftStartTime(shiftDetail, originalDate, leadProfile.shift)
             }
 
             return date!!
         }
 
-        private fun calculateDateByShiftStartTime(shiftDetail: ShiftDetail?, originalDate: Date): Date {
+        private fun calculateDateByShiftStartTime(shiftDetail: ShiftDetail?, originalDate: Date, shift: String?): Date {
             var date: Date? = null
 
             //Create original date calendar instance
             val calendar = Calendar.getInstance()
             calendar.time = originalDate
 
+            if(shift.equals(EMPLOYEE_SHIFT_NIGHT))
             shiftDetail?.let {
+
                 val startTime = shiftDetail.startTime
                 startTime?.let {
 
@@ -298,8 +305,14 @@ class DateUtils {
                     startTimeCalendar.time = Date(startTime)
                     startTimeCalendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE))
 
+                    val calendarMaxLimit = Calendar.getInstance()
+                    calendarMaxLimit.time = originalDate
+                    calendarMaxLimit.set(Calendar.HOUR_OF_DAY, 12)
+                    calendarMaxLimit.set(Calendar.MINUTE, 0)
+                    calendarMaxLimit.set(Calendar.SECOND, 0)
+
                     // Check if shift start or not. If not then show pass previous date
-                    if (startTimeCalendar.timeInMillis > calendar.timeInMillis) {
+                    if (startTimeCalendar.timeInMillis > calendar.timeInMillis && calendar.before(calendarMaxLimit)) {
                         calendar.add(Calendar.DATE, -1)
                     }
                     date = calendar.time

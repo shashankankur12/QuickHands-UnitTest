@@ -163,7 +163,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
-
+        swipe_pull_refresh?.isRefreshing = false
         resetUI()
         onFragmentInteractionListener?.invalidateCancelAllSchedulesOption(false)
     }

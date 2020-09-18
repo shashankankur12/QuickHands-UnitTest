@@ -244,6 +244,8 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         textViewCompanyName.text = ""
 //        textViewWorkItemsDate.text = ""
         textViewTotalCount.text = ""
+        textViewBuildingName.text=""
+        buttonSignature.isEnabled=false
     }
 
     override fun showCustomerSheets(scheduleDetails: CustomerSheetScheduleDetails, customerSheet: CustomerSheetData?, selectedDate: Date) {
@@ -279,10 +281,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
     }
 
 
-    private fun buildingDetails(
-        scheduleDetails: CustomerSheetScheduleDetails,
-        customerSheet: CustomerSheetData?
-    ) {
+    private fun buildingDetails(scheduleDetails: CustomerSheetScheduleDetails, customerSheet: CustomerSheetData?) {
 
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
         leadProfile?.buildingDetailData?.let {
@@ -551,5 +550,9 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
             override fun onCancelClick() {
             }
         })
+    }
+
+    private fun disableSignature(){
+        textViewBuildingName.text=""
     }
 }
