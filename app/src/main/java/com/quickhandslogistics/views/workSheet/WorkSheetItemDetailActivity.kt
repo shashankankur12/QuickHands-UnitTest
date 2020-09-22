@@ -12,7 +12,6 @@ import com.quickhandslogistics.adapters.workSheet.WorkSheetItemDetailPagerAdapte
 import com.quickhandslogistics.adapters.workSheet.WorkSheetItemStatusAdapter
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.data.schedule.ScheduleWorkItem
-import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.presenters.workSheet.WorkSheetItemDetailPresenter
 import com.quickhandslogistics.utils.*
@@ -222,8 +221,8 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     /** Adapter Listeners */
     override fun onSelectStatus(status: String) {
         if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
-            val filledParameterCount = ScheduleUtils.getFilledBuildingParametersCount(workItemDetail.buildingOps)
-            val parameters = ScheduleUtils.getBuildingParametersList(sharedPref)
+            val filledParameterCount = ScheduleUtils.getFilledBuildingParametersCounts(workItemDetail)
+            val parameters = ScheduleUtils.getBuildingParametersList(workItemDetail.buildingDetailData)
 
             if (workItemDetail.buildingOps.isNullOrEmpty() || filledParameterCount != parameters.size) {
                 CustomProgressBar.getInstance().showErrorDialog(getString(R.string.fill_building_parameters_message), activity)

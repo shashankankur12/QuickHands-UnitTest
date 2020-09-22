@@ -6,6 +6,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
+import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
@@ -416,5 +417,31 @@ object ScheduleUtils {
         }
 
         return Triple(dailyNoteList,weeklyNoteList ,monthlyNoteList)
+    }
+
+    fun getBuildingParametersList(buildingDetailData: BuildingDetailData ?): ArrayList<String> {
+        val parameters = ArrayList<String>()
+
+        buildingDetailData?.let { buildingDetailData ->
+            if (!buildingDetailData.parameters.isNullOrEmpty()) {
+                parameters.addAll(buildingDetailData.parameters!!)
+            }
+        }
+        return parameters
+    }
+
+    fun getFilledBuildingParametersCounts(workItemDetail: ScheduleWorkItem): Int {
+        var count = 0
+        val parameters = ScheduleUtils.getBuildingParametersList(workItemDetail.buildingDetailData)
+
+        workItemDetail.buildingOps?.let {
+            for (key in it.keys) {
+                val value = it[key]
+                if (!value.isNullOrEmpty() && parameters.contains(key)) {
+                    count++
+                }
+            }
+        }
+        return count
     }
 }
