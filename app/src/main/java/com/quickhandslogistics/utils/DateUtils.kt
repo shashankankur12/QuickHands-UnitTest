@@ -9,7 +9,7 @@ import java.util.*
 
 class DateUtils {
     companion object {
-        const val PATTERN_NORMAL = "EEEE MMMM dd, yyyy"
+        const val PATTERN_NORMAL = "EEEE, MMMM dd, yyyy"
         const val PATTERN_NORMAL_Week = "EEEE, MMMM dd, yyyy: hh:mm a"
         const val PATTERN_API_REQUEST_PARAMETER = "yyyy-MM-dd"
         const val PATTERN_API_RESPONSE = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"

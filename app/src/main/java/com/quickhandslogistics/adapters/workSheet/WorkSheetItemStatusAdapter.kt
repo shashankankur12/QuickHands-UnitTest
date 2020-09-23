@@ -29,8 +29,8 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
         statusList[resources.getString(R.string.scheduled)] = AppConstant.WORK_ITEM_STATUS_SCHEDULED
         statusList[resources.getString(R.string.in_progress)] = AppConstant.WORK_ITEM_STATUS_IN_PROGRESS
         statusList[resources.getString(R.string.on_hold)] = AppConstant.WORK_ITEM_STATUS_ON_HOLD
-        statusList[resources.getString(R.string.cancelled)] = AppConstant.WORK_ITEM_STATUS_CANCELLED
         statusList[resources.getString(R.string.completed)] = AppConstant.WORK_ITEM_STATUS_COMPLETED
+        statusList[resources.getString(R.string.cancelled)] = AppConstant.WORK_ITEM_STATUS_CANCELLED
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -56,16 +56,32 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
 
         private val textViewStatus: TextView = view.textViewStatus
         private val imageViewAdd: ImageView = view.imageViewAdd
+        private val textViewDescription: TextView = view.textViewDescription
 
         fun bind(pair: Pair<String, String>) {
             textViewStatus.text = pair.first
 
             when (pair.first) {
-                resources.getString(R.string.in_progress) -> textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_green_light))
-                resources.getString(R.string.on_hold) -> textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_orange_dark))
-                resources.getString(R.string.scheduled) -> textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_blue_light))
-                resources.getString(R.string.cancelled) -> textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_dark))
-                resources.getString(R.string.completed) -> textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.darker_gray))
+                resources.getString(R.string.in_progress) ->{
+                    textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_green_light))
+                    textViewDescription.text = resources.getString(R.string.in_progress_description)
+                }
+                resources.getString(R.string.on_hold) -> {
+                    textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_orange_dark))
+                    textViewDescription.text = resources.getString(R.string.on_hold_description)
+                }
+                resources.getString(R.string.scheduled) ->{
+                    textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_blue_light))
+                    textViewDescription.text = resources.getString(R.string.scheduled_description)
+                }
+                resources.getString(R.string.cancelled) -> {
+                    textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_dark))
+                    textViewDescription.text = resources.getString(R.string.cancelled_description)
+                }
+                resources.getString(R.string.completed) -> {
+                    textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.darker_gray))
+                    textViewDescription.text = resources.getString(R.string.completed_description)
+                }
             }
 
             if (selectedDisplayStatus == pair.first) {
