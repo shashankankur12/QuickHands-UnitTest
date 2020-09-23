@@ -61,7 +61,6 @@
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/white_background"
             android:paddingStart="@dimen/_12ssp"
             android:paddingTop="@dimen/_6ssp"

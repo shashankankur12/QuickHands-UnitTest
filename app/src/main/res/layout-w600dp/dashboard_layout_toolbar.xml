@@ -8,7 +8,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_43ssp"
+        android:layout_height="@dimen/_35ssp"
         android:background="?attr/colorPrimary"
         app:contentInsetStart="0dp"
         app:buttonGravity="center_vertical"
@@ -16,14 +16,14 @@
         app:popupTheme="@style/AppTheme.PopupOverlay"
         app:titleTextColor="@color/textBlack">
         <RelativeLayout
-            android:layout_width="100dp"
+            android:layout_width="160dp"
             android:layout_gravity="end"
             android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/headerLogoImage"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:visibility="gone"
                 android:src="@drawable/qhl_thumb_logo_white"

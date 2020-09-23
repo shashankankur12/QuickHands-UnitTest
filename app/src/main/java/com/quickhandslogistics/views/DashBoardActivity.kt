@@ -27,7 +27,6 @@ import com.quickhandslogistics.views.workSheet.WorkSheetFragment
 import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.dashboard_layout_toolbar.*
 import kotlinx.android.synthetic.main.include_main_nav_drawer.*
-import kotlinx.android.synthetic.main.layout_toolbar.toolbar
 import kotlinx.android.synthetic.main.nav_header_dashboard.*
 
 class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContract.View, DashBoardContract.View.OnFragmentInteractionListener {
@@ -265,7 +264,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     override fun onNewFragmentReplaced(title: String) {
         selectedFragmentTitle = title
         if(title.equals(getString(R.string.lumper_contact))){
-            toolbar.background = ContextCompat.getDrawable(this, R.drawable.header_background)
+            toolbar.background = ContextCompat.getDrawable(this, R.drawable.header_background_lumper)
             toolbar.setTitleTextColor(resources.getColor(android.R.color.white))
             toolbar.setNavigationIcon(R.drawable.ic_hamburger)
             headerLogoImage.visibility=View.VISIBLE

@@ -48,7 +48,7 @@
 
             <ImageView
                 android:id="@+id/headerLogo"
-                android:layout_width="@dimen/_100sdp"
+                android:layout_width="@dimen/_90sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_alignParentRight="true"
@@ -60,7 +60,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/headerLogo"
                 android:layout_alignParentRight="true"
-                android:text="dhhsdhjsgdhjsd"
                 android:textColor="@color/buildingTitle"
                 android:textSize="@dimen/_13ssp"
                 android:textStyle="bold" />
@@ -70,7 +69,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/textViewLumperName"
-                android:text="dhhsdhjsgdhjsd"
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:textColor="@color/buildingTitle"
