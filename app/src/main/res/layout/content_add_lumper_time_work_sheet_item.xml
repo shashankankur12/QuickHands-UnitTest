@@ -245,6 +245,7 @@
                             android:id="@+id/editTextCasesLumpers"
                             style="@style/valueEditTextTheme"
                             android:layout_width="match_parent"
+                            android:digits="0123456789"
                             android:textAlignment="center"
                             android:inputType="number"
                             android:maxLength="6" />

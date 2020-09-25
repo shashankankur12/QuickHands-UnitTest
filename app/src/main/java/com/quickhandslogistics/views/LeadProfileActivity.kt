@@ -38,7 +38,7 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
 
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(LEAD_DATA)) {
-                employeeData = savedInstanceState.getParcelable<LeadProfileData>(LEAD_DATA)!!
+                employeeData = savedInstanceState.getParcelable(LEAD_DATA)!!
                 loadLeadProfile(employeeData!!)
             }
         } ?: run {

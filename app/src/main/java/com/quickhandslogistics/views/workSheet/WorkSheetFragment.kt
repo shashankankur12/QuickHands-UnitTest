@@ -20,10 +20,6 @@ import com.quickhandslogistics.utils.ScheduleUtils.getGroupNoteList
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.fragment_work_sheet.*
-import kotlinx.android.synthetic.main.fragment_work_sheet.mainConstraintLayout
-import kotlinx.android.synthetic.main.fragment_work_sheet.swipe_pull_refresh
-import kotlinx.android.synthetic.main.fragment_work_sheet.textViewTotalCount
-import kotlin.collections.ArrayList
 
 class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContract.View.OnFragmentInteractionListener,
     View.OnClickListener {
@@ -103,8 +99,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
             outState.putParcelable(WORKSHEET_DETAIL, data)
         if (!date.isNullOrEmpty())
             outState.putString(WORKSHEET_DATE_SELECTED_HEADER, date)
-        if (!companyName.isNullOrEmpty())
-            outState.putSerializable(WORKSHEET_COMPANY_NAME, companyName)
+        outState.putSerializable(WORKSHEET_COMPANY_NAME, companyName)
         super.onSaveInstanceState(outState)
     }
 
