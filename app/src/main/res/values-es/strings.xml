@@ -12,7 +12,7 @@
     <string name="approved">Approved</string>
     <string name="availability">Availability</string>
     <string name="back_to_work">Back to Work</string>
-    <string name="break_time">Break Time</string>
+    <string name="break_time">Pause Time</string>
     <string name="work_done">Amount of Work Done</string>
     <string name="lumper_cases_text">Portion of cases for this lumper</string>
     <string name="lumper_cases_error">Portion of cases for the lumper should be less than or equal to total cases</string>
@@ -26,6 +26,7 @@
     <string name="cancel_request">Cancel Request</string>
     <string name="cancelled">Cancelled</string>
     <string name="cancelled_description">(Customer cancelled a schedule container)</string>
+    <string name="psuse_time_description">(Lumper has to pause work on this container to work on another but will return.)</string>
     <string name="cancelled_s">Cancelled: %s</string>
     <string name="change_language">Change Language</string>
     <string name="change_present">Change Present</string>
@@ -69,6 +70,7 @@
     <string name="phone_number_lead">Phone :</string>
     <string name="email_addess_lead">Email :</string>
     <string name="end">End</string>
+    <string name="resume">Resume</string>
     <string name="end_time">End Time</string>
     <string name="english">English</string>
     <string name="error">Error</string>
@@ -164,6 +166,7 @@
     <string name="signed">Signed</string>
     <string name="spanish">Spanish</string>
     <string name="start">Start</string>
+    <string name="pause">Pause</string>
     <string name="start_and_end_time"><![CDATA[Start & End Time]]></string>
     <string name="start_time">Start Time</string>
     <string name="start_time_s">Start Time: %s</string>
@@ -194,6 +197,7 @@
     <string name="work_time">Work Time</string>
     <string name="work_live_lode">Live Lode: /t %s</string>
     <string name="total_time">Total Time: %s</string>
+    <string name="total_pause_time">Total Pause: %s</string>
     <string name="yes">Yes</string>
     <string name="lead_note">Lead Note</string>
     <string name="logout_buttoon">Log Out</string>

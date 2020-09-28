@@ -136,6 +136,16 @@ class DateUtils {
             )
         }
 
+
+        fun getDateTimeCalculetedLong(morningPunchIn: Long, eveningPunchOut: Long): String {
+            val diffrence=eveningPunchOut-morningPunchIn
+
+            return String.format("%s H %s M",
+                (diffrence / (1000 * 60 * 60) % 24),
+                (diffrence / (1000 * 60) % 60)
+            )
+        }
+
         fun convertDateStringToTime(patternDate: String, dateString: String? = ""): String {
             val dateStringValue = ValueUtils.getDefaultOrValue(dateString)
 

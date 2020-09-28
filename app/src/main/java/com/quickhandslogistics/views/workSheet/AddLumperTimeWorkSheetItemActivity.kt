@@ -152,6 +152,24 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         buttonEndTime.isEnabled = initialEndTime <= 0 && selectedStartTime > 0 && checkBrackout()
         buttonBreakInTime.isEnabled = initialBreakInTime <= 0 && selectedStartTime > 0
         buttonBreakOutTime.isEnabled = initialBreakOutTime <= 0 && selectedBreakInTime > 0
+        getTimeCalculate()
+        getPauseTimeCalculate()
+    }
+
+    private fun getPauseTimeCalculate() {
+        if (selectedBreakInTime > 0 && selectedBreakOutTime > 0) {
+            totalPauseTime.visibility = View.VISIBLE
+            val dateString = String.format(getString(R.string.total_pause_time), DateUtils.getDateTimeCalculetedLong(selectedBreakInTime, selectedBreakOutTime))
+            totalPauseTime.text = dateString
+        } else totalPauseTime.visibility = View.GONE
+    }
+
+    private fun getTimeCalculate() {
+        if (selectedStartTime > 0 && selectedEndTime > 0) {
+            totalWorkTime.visibility = View.VISIBLE
+            val dateString = String.format(getString(R.string.total_time), DateUtils.getDateTimeCalculetedLong(selectedStartTime, selectedEndTime))
+            totalWorkTime.text = dateString
+        } else totalWorkTime.visibility = View.GONE
     }
 
     private fun checkBrackout(): Boolean {

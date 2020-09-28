@@ -93,25 +93,6 @@
 
                 <TextView
                     style="@style/titleTextViewTheme"
-                    android:text="@string/waiting_time_in_min" />
-
-                <EditText
-                    android:id="@+id/editTextWaitingTime"
-                    style="@style/valueEditTextTheme"
-                    android:inputType="number"
-                    android:maxLength="3" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/schedule_item_background"
-                android:orientation="vertical"
-                android:padding="@dimen/_10sdp">
-
-                <TextView
-                    style="@style/titleTextViewTheme"
                     android:text="@string/work_time" />
 
                 <LinearLayout
@@ -131,21 +112,21 @@
                     <Button
                         android:id="@+id/buttonStartTime"
                         style="@style/positiveButtonTheme"
+                        android:layout_width="@dimen/_100sdp"
                         android:layout_height="wrap_content"
                         android:text="@string/start_time" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:layout_width="@dimen/_22ssp"
+                        android:layout_height="@dimen/_22ssp"
                         android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:text="- to -"
-                        android:textColor="@color/textBlack"
-                        android:textSize="@dimen/_12ssp" />
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_remove_icon" />
 
                     <Button
                         android:id="@+id/buttonEndTime"
                         style="@style/positiveButtonTheme"
+                        android:layout_width="@dimen/_100sdp"
                         android:layout_height="wrap_content"
                         android:text="@string/end_time" />
 
@@ -154,6 +135,13 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/totalWorkTime"
+                    style="@style/valuesSmallTextViewThemeHeader"
+                    android:gravity="center_horizontal"
+                    android:visibility="gone"
+                    android:layout_marginTop="@dimen/_10sdp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -167,6 +155,10 @@
                 <TextView
                     style="@style/titleTextViewTheme"
                     android:text="@string/break_time" />
+                <TextView
+                    style="@style/valuesVerySmallTextViewTheme"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:text="@string/psuse_time_description" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -185,29 +177,55 @@
                     <Button
                         android:id="@+id/buttonBreakInTime"
                         style="@style/positiveButtonTheme"
+                        android:layout_width="@dimen/_100sdp"
                         android:layout_height="wrap_content"
-                        android:text="@string/start" />
+                        android:text="@string/pause" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:layout_width="@dimen/_22ssp"
+                        android:layout_height="@dimen/_22ssp"
                         android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:text="- to -"
-                        android:textColor="@color/textBlack"
-                        android:textSize="@dimen/_12ssp" />
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_remove_icon" />
 
                     <Button
                         android:id="@+id/buttonBreakOutTime"
                         style="@style/positiveButtonTheme"
+                        android:layout_width="@dimen/_100sdp"
                         android:layout_height="wrap_content"
-                        android:text="@string/end" />
+                        android:text="@string/resume" />
 
                     <Space
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/totalPauseTime"
+                    style="@style/valuesSmallTextViewThemeHeader"
+                    android:gravity="center_horizontal"
+                    android:visibility="gone"
+                    android:layout_marginTop="@dimen/_10sdp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/schedule_item_background"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+                <TextView
+                    style="@style/titleTextViewTheme"
+                    android:text="@string/waiting_time_in_min" />
+
+                <EditText
+                    android:id="@+id/editTextWaitingTime"
+                    style="@style/valueEditTextTheme"
+                    android:inputType="number"
+                    android:maxLength="3" />
             </LinearLayout>
 
             <LinearLayout
@@ -251,12 +269,11 @@
                             android:maxLength="6" />
 
                         <TextView
+                            style="@style/valuesVerySmallTextViewTheme"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="@string/lumper_cases_text"
-                            android:textColor="@color/material_blue_grey_80"
-                            android:textSize="@dimen/_9sdp" />
+                            android:text="@string/lumper_cases_text"/>
 
                     </LinearLayout>
 
@@ -284,13 +301,12 @@
                             android:inputType="number" />
 
                         <TextView
+                            style="@style/valuesVerySmallTextViewTheme"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="@string/total_cases_text"
-                            android:textColor="@color/material_blue_grey_80"
-                            android:textSize="@dimen/_9sdp" />
+                            android:text="@string/total_cases_text" />
                     </LinearLayout>
 
                     <TextView
