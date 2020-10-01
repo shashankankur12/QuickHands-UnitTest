@@ -87,6 +87,7 @@
                 android:id="@+id/buttonSave"
                 style="@style/positiveRoundButtonTheme"
                 android:enabled="false"
+                android:visibility="gone"
                 android:text="@string/save" />
 
             <Button

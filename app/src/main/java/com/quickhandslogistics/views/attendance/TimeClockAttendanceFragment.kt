@@ -241,7 +241,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             buttonSave.visibility = View.GONE
         } else {
             buttonAddTime.visibility = View.GONE
-            buttonSave.visibility = View.VISIBLE
+            buttonSave.visibility=if (timeClockAttendanceAdapter.getUpdatedData().size > 0) View.VISIBLE else View.GONE
         }
     }
 
@@ -257,6 +257,10 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
             timeClockAttendanceAdapter.updatePresentRecord(itemPosition, true)
             timeClockAttendanceAdapter.updateClockInTime(itemPosition, System.currentTimeMillis())
+
+            imageViewCancel.performClick()
+            val updatedData = timeClockAttendanceAdapter.getUpdatedData()
+            timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct())
         }
     }
 
@@ -271,6 +275,10 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         } else {
             val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
             timeClockAttendanceAdapter.updateClockOutTime(itemPosition, System.currentTimeMillis())
+
+            imageViewCancel.performClick()
+            val updatedData = timeClockAttendanceAdapter.getUpdatedData()
+            timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct())
         }
     }
 
@@ -285,6 +293,10 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         } else {
             val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
             timeClockAttendanceAdapter.updateLunchInTime(itemPosition, System.currentTimeMillis())
+
+            imageViewCancel.performClick()
+            val updatedData = timeClockAttendanceAdapter.getUpdatedData()
+            timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct())
         }
     }
 
@@ -299,6 +311,10 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         } else {
             val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
             timeClockAttendanceAdapter.updateLunchOutTime(itemPosition, System.currentTimeMillis())
+
+            imageViewCancel.performClick()
+            val updatedData = timeClockAttendanceAdapter.getUpdatedData()
+            timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct())
         }
     }
 
@@ -435,6 +451,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             recyclerViewLumpers.visibility = View.GONE
             textViewEmptyData.visibility = View.VISIBLE
         }
+        buttonSave.visibility= View.GONE
     }
 
     override fun showDataSavedMessage() {
