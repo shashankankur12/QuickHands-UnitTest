@@ -30,6 +30,8 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     private var adapter: WorkSheetPagerAdapter? = null
     private var data: WorkSheetListAPIResponse.Data = WorkSheetListAPIResponse.Data()
     private lateinit var date: String
+    private lateinit var shift: String
+    private lateinit var dept: String
     private lateinit var companyName: String
     private lateinit var customerGroupNote:Triple<ArrayList<String>, ArrayList<String>, ArrayList<String>>
 
@@ -37,6 +39,8 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         const val WORKSHEET_DETAIL = "WORKSHEET_DETAIL"
         const val WORKSHEET_DATE_SELECTED_HEADER = "WORKSHEET_DATE_SELECTED_HEADER"
         const val WORKSHEET_COMPANY_NAME = "WORKSHEET_COMPANY_NAME"
+        const val WORKSHEET_SHIFT = "WORKSHEET_SHIFT"
+        const val WORKSHEET_DEPT = "WORKSHEET_DEPT"
     }
 
     override fun onAttach(context: Context) {
@@ -63,9 +67,15 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
             if (savedInstanceState.containsKey(WORKSHEET_DATE_SELECTED_HEADER)) {
                 date = savedInstanceState.getString(WORKSHEET_DATE_SELECTED_HEADER)!!
             }
+            if (savedInstanceState.containsKey(WORKSHEET_SHIFT)) {
+                shift = savedInstanceState.getString(WORKSHEET_SHIFT)!!
+            }
+            if (savedInstanceState.containsKey(WORKSHEET_DEPT)) {
+                dept = savedInstanceState.getString(WORKSHEET_DEPT)!!
+            }
             if (savedInstanceState.containsKey(WORKSHEET_COMPANY_NAME)) {
                 companyName = savedInstanceState.getString(WORKSHEET_COMPANY_NAME)!!
-                showHeaderInfo(companyName, date)
+                showHeaderInfo(companyName, date, shift, dept)
             }
             if (savedInstanceState.containsKey(WORKSHEET_DETAIL)) {
                 data = savedInstanceState.getParcelable<WorkSheetListAPIResponse.Data>(WORKSHEET_DETAIL) as WorkSheetListAPIResponse.Data
@@ -99,6 +109,10 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
             outState.putParcelable(WORKSHEET_DETAIL, data)
         if (!date.isNullOrEmpty())
             outState.putString(WORKSHEET_DATE_SELECTED_HEADER, date)
+        if (!shift.isNullOrEmpty())
+            outState.putString(WORKSHEET_SHIFT, shift)
+        if (!dept.isNullOrEmpty())
+            outState.putString(WORKSHEET_DEPT, dept)
         outState.putSerializable(WORKSHEET_COMPANY_NAME, companyName)
         super.onSaveInstanceState(outState)
     }
@@ -148,6 +162,8 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         // Reset Whole Screen Data
         textViewCompanyName.text = ""
         textViewWorkItemsDate.text = ""
+        textViewWorkItemShift.text = ""
+        textViewWorkItemDept.text = ""
         textViewTotalCount.text = ""
         textViewLiveLoadsCount.text = ""
         textViewDropsCount.text = ""
@@ -223,12 +239,16 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         return sortedList
     }
 
-    override fun showHeaderInfo(companyName: String, date: String) {
+    override fun showHeaderInfo(companyName: String, date: String, shift: String, dept: String) {
         this.companyName = companyName
         this.date = date
+        this.shift=shift
+        this.dept=dept
 
         textViewCompanyName.text = companyName.capitalize()
         textViewWorkItemsDate.text = UIUtils.getSpannedText(date)
+        textViewWorkItemShift.text = UIUtils.getSpannedText(shift)
+        textViewWorkItemDept.text = UIUtils.getSpannedText(dept)
     }
 
     override fun showLoginScreen() {

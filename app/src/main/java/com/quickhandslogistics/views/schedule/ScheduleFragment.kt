@@ -20,7 +20,18 @@ import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
+import kotlinx.android.synthetic.main.fragment_schedule.appBarView
+import kotlinx.android.synthetic.main.fragment_schedule.layoutWorkScheduleInfo
+import kotlinx.android.synthetic.main.fragment_schedule.mainConstraintLayout
+import kotlinx.android.synthetic.main.fragment_schedule.textViewBuildingName
+import kotlinx.android.synthetic.main.fragment_schedule.textViewDate
+import kotlinx.android.synthetic.main.fragment_schedule.textViewDept
+import kotlinx.android.synthetic.main.fragment_schedule.textViewEmptyData
+import kotlinx.android.synthetic.main.fragment_schedule.textViewHeaderDept
+import kotlinx.android.synthetic.main.fragment_schedule.textViewHeaderShift
+import kotlinx.android.synthetic.main.fragment_schedule.textViewShift
 import java.util.*
 
 class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract.View.OnAdapterItemClickListener, CalendarUtils.CalendarSelectionListener {
@@ -211,6 +222,14 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
             layoutWorkScheduleInfo.visibility = View.GONE
             appBarView.visibility = View.GONE
         }
+
+        if(!leadProfile?.shift.isNullOrEmpty()){
+            textViewHeaderShift.text=UIUtils.getSpannedText(ScheduleUtils.getShiftDetailString(leadProfile))
+        } else textViewHeaderShift.visibility=View.GONE
+
+        if (!leadProfile?.department.isNullOrEmpty()){
+            textViewHeaderDept.text=UIUtils.getSpannedText("${ ResourceManager.getInstance().getString(R.string.dept_bold)} ${ UIUtils.getDisplayEmployeeDepartment(leadProfile)}")
+        }else textViewHeaderDept.visibility=View.GONE
 
     }
 

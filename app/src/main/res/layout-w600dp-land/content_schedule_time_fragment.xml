@@ -11,14 +11,39 @@
         android:layout_height="match_parent"
         android:background="@color/appBackground">
 
-        <TextView
-            android:id="@+id/textViewDate"
-            style="@style/valuesTextViewTheme"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/shiftLayout"
             android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textViewDate"
+                style="@style/valuesTextViewTheme"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                />
+
+            <TextView
+                android:id="@+id/textViewHeaderShift"
+                style="@style/valuesTextViewTheme"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                />
+
+            <TextView
+                android:id="@+id/textViewHeaderDept"
+                style="@style/valuesTextViewTheme"
+                android:layout_width="0dp"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
 
         <com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
             android:id="@+id/singleRowCalendarScheduleTime"
@@ -30,7 +55,7 @@
             app:deselection="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewDate"
+            app:layout_constraintTop_toBottomOf="@id/shiftLayout"
             app:longPress="false"
             app:multiSelection="false" />
 

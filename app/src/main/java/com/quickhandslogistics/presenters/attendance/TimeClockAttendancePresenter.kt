@@ -52,8 +52,8 @@ class TimeClockAttendancePresenter(private var timeClockAttendanceView: TimeCloc
         }
     }
 
-    override fun onSuccessGetHeaderInfo(date: String) {
-        timeClockAttendanceView?.showHeaderInfo(date)
+    override fun onSuccessGetHeaderInfo(date: String, shift: String, dept: String) {
+        timeClockAttendanceView?.showHeaderInfo(date, shift, dept)
     }
 
     override fun onSuccessGetList(response: GetAttendanceAPIResponse) {

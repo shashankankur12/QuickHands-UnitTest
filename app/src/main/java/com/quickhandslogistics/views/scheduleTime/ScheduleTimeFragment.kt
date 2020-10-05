@@ -24,6 +24,7 @@ import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.presenters.scheduleTime.ScheduleTimePresenter
 import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.ScheduleUtils.getShiftDetailString
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.DashBoardActivity
 import com.quickhandslogistics.views.LoginActivity
@@ -389,6 +390,14 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             layoutWorkScheduleInfo.visibility = View.GONE
             appBarView.visibility = View.GONE
         }
+
+        if(!leadProfile?.shift.isNullOrEmpty()){
+            textViewHeaderShift.text=UIUtils.getSpannedText(getShiftDetailString(leadProfile))
+        } else textViewHeaderShift.visibility=View.GONE
+
+        if (!leadProfile?.department.isNullOrEmpty()){
+            textViewHeaderDept.text=UIUtils.getSpannedText("${ ResourceManager.getInstance().getString(R.string.dept_bold)} ${ UIUtils.getDisplayEmployeeDepartment(leadProfile)}")
+        }else textViewHeaderDept.visibility=View.GONE
     }
 
     override fun showAPIErrorMessage(message: String) {

@@ -263,8 +263,9 @@ object ScheduleUtils {
             shiftName = name.capitalize()
         }
 
-        return " ${ResourceManager.getInstance().getString(R.string.dept_bold)} ${UIUtils.getDisplayEmployeeDepartment(leadProfile)}  ${ResourceManager.getInstance().getString(R.string.shift_bold)} $shiftName"
+        return " ${ResourceManager.getInstance().getString(R.string.shift_bold)} $shiftName  "
     }
+
 
     fun getOldShiftDetailString(leadProfile: LeadProfileData?): String {
         var shiftName = ""

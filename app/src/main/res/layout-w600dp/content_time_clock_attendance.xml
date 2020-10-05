@@ -18,6 +18,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/shiftLayout"
+        android:layout_marginStart="@dimen/_10ssp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_10ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTimeClockDate">
+
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewTimeClockShift"
+            style="@style/valuesTextViewTheme"
+            android:layout_weight="1"
+            android:layout_width="0dp"/>
+
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewTimeClockDept"
+            style="@style/valuesTextViewTheme"
+            android:layout_weight="1"
+            android:layout_width="0dp"/>
+
+    </LinearLayout>
+
     <EditText
         android:id="@+id/editTextSearch"
         style="@style/searchEditTextTheme"
@@ -27,7 +53,7 @@
         android:layout_marginEnd="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTimeClockDate" />
+        app:layout_constraintTop_toBottomOf="@+id/shiftLayout" />
 
     <ImageView
         android:id="@+id/imageViewCancel"

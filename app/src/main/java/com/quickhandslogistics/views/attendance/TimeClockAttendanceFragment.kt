@@ -41,10 +41,14 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     private  var lumperAttendanceList: ArrayList<LumperAttendanceData> =ArrayList()
 
     private lateinit var date: String
+    private var shift: String = ""
+    private var dept: String = ""
 
     companion object {
         const val LUMPER_ATTENDANCE_LIST = "LUMPER_ATTENDANCE_LIST"
         const val TIME_CLOCK_DATE_SELECTED_HEADER = "TIME_CLOCK_DATE_SELECTED_HEADER"
+        const val TIME_CLOCK_DEPT_SELECTED_HEADER = "TIME_CLOCK_DEPT_SELECTED_HEADER"
+        const val TIME_CLOCK_SHIFT_SELECTED_HEADER = "TIME_CLOCK_SHIFT_SELECTED_HEADER"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,9 +66,16 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         initializeUI()
 
         savedInstanceState?.also {
+            if (savedInstanceState.containsKey(TIME_CLOCK_DEPT_SELECTED_HEADER)) {
+                dept = savedInstanceState.getString(TIME_CLOCK_DEPT_SELECTED_HEADER)!!
+            }
+            if (savedInstanceState.containsKey(TIME_CLOCK_SHIFT_SELECTED_HEADER)) {
+                shift = savedInstanceState.getString(TIME_CLOCK_SHIFT_SELECTED_HEADER)!!
+
+            }
             if (savedInstanceState.containsKey(TIME_CLOCK_DATE_SELECTED_HEADER)) {
                 date = savedInstanceState.getString(TIME_CLOCK_DATE_SELECTED_HEADER)!!
-                showHeaderInfo(date)
+                showHeaderInfo(date, shift, dept)
             }
             if (savedInstanceState.containsKey(LUMPER_ATTENDANCE_LIST)) {
                 lumperAttendanceList =
@@ -86,6 +97,10 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             outState.putParcelableArrayList(LUMPER_ATTENDANCE_LIST, lumperAttendanceList)
         if (!date.isNullOrEmpty())
             outState.putString(TIME_CLOCK_DATE_SELECTED_HEADER, date)
+        if (!dept.isNullOrEmpty())
+            outState.putString(TIME_CLOCK_DEPT_SELECTED_HEADER, dept)
+        if (!shift.isNullOrEmpty())
+            outState.putString(TIME_CLOCK_SHIFT_SELECTED_HEADER, shift)
         super.onSaveInstanceState(outState)
     }
 
@@ -463,10 +478,14 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             })
     }
 
-    override fun showHeaderInfo(date: String) {
+    override fun showHeaderInfo(date: String, shift: String, dept: String) {
         this.date = date
+        this.shift = shift
+        this.dept = dept
 
         textViewTimeClockDate.text = UIUtils.getSpannedText(date)
+        textViewTimeClockShift.text = UIUtils.getSpannedText(shift)
+        textViewTimeClockDept.text = UIUtils.getSpannedText(dept)
     }
 
     override fun showLoginScreen() {

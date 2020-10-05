@@ -34,6 +34,8 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     private var selectedDate: Date = Date()
     private var tempLumperIds: ArrayList<String> =ArrayList()
     private var dateString: String ?=null
+    private var shift: String =""
+    private var dept: String =""
     private var datePosition: Int = 0
     private var isSavedState: Boolean = false
 
@@ -48,6 +50,8 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         const val SHEET_SUBMITTED = "SHEET_SUBMITTED"
         const val TEMP_LUMPER_SHEET = "TEMP_LUMPER_SHEET"
         const val SELECTED_DATE_POSITION = "SELECTED_DATE_POSITION"
+        const val HEADER_DEPT = "HEADER_DEPT"
+        const val HEADER_SHIFT = "HEADER_SHIFT"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,9 +111,15 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
                 lumperInfoList = savedInstanceState.getParcelableArrayList(LUMPER_INFO_LIST)!!
                 showLumperSheetData(lumperInfoList, sheetSubmitted, selectedDate, tempLumperIds)
             }
+            if (savedInstanceState.containsKey(HEADER_SHIFT)) {
+                shift = savedInstanceState.getString(HEADER_SHIFT)!!
+            }
+            if (savedInstanceState.containsKey(HEADER_DEPT)) {
+                dept = savedInstanceState.getString(HEADER_DEPT)!!
+            }
             if (savedInstanceState.containsKey(DATE_STRING_HEADER)) {
                 dateString = savedInstanceState.getString(DATE_STRING_HEADER)!!
-                showDateString(dateString!!)
+                showDateString(dateString!!, shift,dept)
             }
 
         } ?: run {
@@ -136,6 +146,10 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
             outState.putString(DATE_STRING_HEADER, dateString)
         if (datePosition != null)
             outState.putInt(SELECTED_DATE_POSITION, datePosition)
+        if (dept != null)
+            outState.putString(HEADER_DEPT, dept)
+        if (shift != null)
+            outState.putString(HEADER_SHIFT, shift)
         super.onSaveInstanceState(outState)
     }
 
@@ -200,9 +214,14 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
-    override fun showDateString(dateString: String) {
+    override fun showDateString(dateString: String, shift: String , dept : String) {
         this.dateString=dateString
+        this.shift=shift
+        this.dept=dept
+
         textViewDate.text = UIUtils.getSpannedText(dateString)
+        textViewHeaderShift.text = UIUtils.getSpannedText(shift)
+        textViewHeaderDept.text = UIUtils.getSpannedText(dept)
     }
 
     override fun showLumperSheetData(mlumperInfoList: ArrayList<LumpersInfo>, msheetSubmitted: Boolean, mselectedDate: Date, mtempLumperIds: ArrayList<String>) {

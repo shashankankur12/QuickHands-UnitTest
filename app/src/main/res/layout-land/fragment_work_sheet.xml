@@ -18,15 +18,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.quickhandslogistics.controls.CustomTextView
-        android:id="@+id/textViewWorkItemsDate"
-        style="@style/valuesTextViewTheme"
+    <LinearLayout
+        android:id="@+id/shiftLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginEnd="@dimen/_10ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCompanyName" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewCompanyName" >
+
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewWorkItemsDate"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewWorkItemShift"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewWorkItemDept"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
     <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewGroupNote"
@@ -38,7 +62,7 @@
         android:textColor="@color/scheduleDetail"
         android:layout_marginTop="@dimen/_4sdp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemsDate" />
+        app:layout_constraintTop_toBottomOf="@+id/shiftLayout" />
 
     <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/flexboxLayoutCounts"

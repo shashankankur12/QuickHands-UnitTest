@@ -74,7 +74,7 @@ class LumperSheetPresenter(private var lumperSheetView: LumperSheetContract.View
         lumperSheetView?.sheetSubmittedSuccessfully()
     }
 
-    override fun onSuccessGetHeaderInfo(dateString: String) {
-        lumperSheetView?.showDateString(dateString)
+    override fun onSuccessGetHeaderInfo(dateString: String, shift: String, dept: String) {
+        lumperSheetView?.showDateString(dateString, shift, dept)
     }
 }
