@@ -79,7 +79,7 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
                     textViewDescription.text = resources.getString(R.string.cancelled_description)
                 }
                 resources.getString(R.string.completed) -> {
-                    textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.darker_gray))
+                    textViewStatus.setTextColor(ContextCompat.getColor(context, R.color.buildingTitle))
                     textViewDescription.text = resources.getString(R.string.completed_description)
                 }
             }
