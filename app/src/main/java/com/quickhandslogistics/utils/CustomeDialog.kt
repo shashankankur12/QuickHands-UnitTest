@@ -33,7 +33,7 @@ object CustomeDialog : AppConstant {
         return dialog
     }
 
-    fun showGroupNoteDialog(activity: Activity?, title: String?, customerGroupNote: Triple<ArrayList<String>?, ArrayList<String>?, ArrayList<String>?>) {
+    fun showGroupNoteDialog(activity: Activity?, title: String?, customerGroupNote: Triple<Pair<ArrayList<String>?, ArrayList<String>?>?, ArrayList<String>?, ArrayList<String>?>) {
         mActivity = activity
         val dialog =
             getDialog(R.layout.custome_alert_dialog, activity)
@@ -46,18 +46,18 @@ object CustomeDialog : AppConstant {
         window.setBackgroundDrawableResource(android.R.color.transparent)
         val titleTextView = dialog.findViewById<TextView>(R.id.title_text)
         val layoutDailyNote = dialog.findViewById<LinearLayout>(R.id.layoutDailyNote)
-        val layoutWeeklyNote =
-            dialog.findViewById<LinearLayout>(R.id.layoutWeeklyNote)
-        val layoutMonthlyNote =
-            dialog.findViewById<LinearLayout>(R.id.layoutMonthlyNote)
+        val layoutWeeklyNote = dialog.findViewById<LinearLayout>(R.id.layoutWeeklyNote)
+        val layoutMonthlyNote = dialog.findViewById<LinearLayout>(R.id.layoutMonthlyNote)
+        val layoutCustomNote = dialog.findViewById<LinearLayout>(R.id.layoutCustomNote)
         val dailyNoteRecycler: RecyclerView = dialog.findViewById(R.id.recycler_view_daily_note)
         val weeklyNoteRecycler: RecyclerView = dialog.findViewById(R.id.recycler_view_weekly_note)
         val MonthlyNoteRecycelr: RecyclerView = dialog.findViewById(R.id.recycler_view_monthly_note)
-        val confirm =
-            dialog.findViewById<Button>(R.id.confirm_button)
-        val dailyNoteList = customerGroupNote.first
+        val CustomNoteRecycler: RecyclerView = dialog.findViewById(R.id.recycler_view_custom_note)
+        val confirm = dialog.findViewById<Button>(R.id.confirm_button)
+        val dailyNoteList = customerGroupNote.first?.first
         val weeklyNoteList = customerGroupNote.second
         val monthlyNoteList = customerGroupNote.third
+        val customNoteList = customerGroupNote.first?.second
         if (dailyNoteList != null && dailyNoteList.size > 0) {
             val mDailyNoteAdapter = ListContentAdapter(dailyNoteList)
             val manager1: RecyclerView.LayoutManager = LinearLayoutManager(activity)
@@ -90,6 +90,17 @@ object CustomeDialog : AppConstant {
         } else {
             MonthlyNoteRecycelr.visibility = View.GONE
             layoutMonthlyNote.visibility = View.GONE
+        }
+        if (customNoteList != null && customNoteList.size > 0) {
+            val mCustomNoteAdaptor = ListContentAdapter(customNoteList)
+            val manager3: RecyclerView.LayoutManager = LinearLayoutManager(activity)
+            CustomNoteRecycler.layoutManager = manager3
+            CustomNoteRecycler.adapter = mCustomNoteAdaptor
+            CustomNoteRecycler.visibility = View.VISIBLE
+            layoutCustomNote.visibility = View.VISIBLE
+        } else {
+            CustomNoteRecycler.visibility = View.GONE
+            layoutCustomNote.visibility = View.GONE
         }
         titleTextView.text = title
         confirm.setOnClickListener { dialog.dismiss() }

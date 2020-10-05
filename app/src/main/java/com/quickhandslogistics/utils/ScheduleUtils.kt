@@ -349,6 +349,8 @@ object ScheduleUtils {
             noteType= resources.getString(R.string.weekly)
         }else if (workItemDetail.scheduleForMonth!!){
             noteType= resources.getString(R.string.monthly)
+        }else if (workItemDetail.specificDates!!.isNotEmpty()){
+            noteType= resources.getString(R.string.custom_s)
         }
         return noteType
     }
@@ -358,6 +360,8 @@ object ScheduleUtils {
             noteType= resources.getString(R.string.weekly)
         }else if (workItemDetail.scheduleForMonth!!){
             noteType= resources.getString(R.string.monthly)
+        }else if (workItemDetail.specificDates!!.isNotEmpty()){
+            noteType= resources.getString(R.string.custom_s)
         }
         return noteType
     }
@@ -367,6 +371,8 @@ object ScheduleUtils {
             noteType= resources.getString(R.string.weekly_scheduled)
         }else if (workItemDetail.scheduleForMonth!!){
             noteType= resources.getString(R.string.monthly_scheduled)
+        } else if (workItemDetail.specificDates!!.isNotEmpty()){
+            noteType= resources.getString(R.string.custom_scheduled)
         }
         return noteType
     }
@@ -378,14 +384,17 @@ object ScheduleUtils {
             noteType= resources.getString(R.string.weekly_scheduled)
         }else if (workItemDetail.scheduleForMonth!!){
             noteType= resources.getString(R.string.monthly_scheduled)
+        }else if (workItemDetail.specificDates!!.isNotEmpty()){
+            noteType= resources.getString(R.string.custom_scheduled)
         }
         return noteType
     }
 
-    fun getGroupNoteList(workItemData: WorkSheetListAPIResponse.Data): Triple<ArrayList<String>, ArrayList<String>, ArrayList<String>>  {
+    fun getGroupNoteList(workItemData: WorkSheetListAPIResponse.Data): Triple<Pair<ArrayList<String>,ArrayList<String>>, ArrayList<String>, ArrayList<String>>  {
          var dailyNoteList: ArrayList<String> = ArrayList()
          var weeklyNoteList: ArrayList<String> = ArrayList()
          var monthlyNoteList: ArrayList<String> = ArrayList()
+         var customNoteList: ArrayList<String> = ArrayList()
          var workItemDetail: ArrayList<WorkItemDetail> = ArrayList()
 
         workItemData?.let{
@@ -408,6 +417,11 @@ object ScheduleUtils {
                         if (!monthlyNoteList.contains(it.scheduleNote!!))
                     monthlyNoteList.add(it.scheduleNote!!)
                 }
+                !it.specificDates.isNullOrEmpty() -> {
+                    if(!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
+                        if (!customNoteList.contains(it.scheduleNote!!))
+                            customNoteList.add(it.scheduleNote!!)
+                }
                 else -> {
                     if(!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
                         if(!dailyNoteList.contains(it.scheduleNote!!))
@@ -417,7 +431,8 @@ object ScheduleUtils {
 
         }
 
-        return Triple(dailyNoteList,weeklyNoteList ,monthlyNoteList)
+
+        return Triple(Pair(dailyNoteList, customNoteList),weeklyNoteList ,monthlyNoteList)
     }
 
     fun getBuildingParametersList(buildingDetailData: BuildingDetailData ?): ArrayList<String> {

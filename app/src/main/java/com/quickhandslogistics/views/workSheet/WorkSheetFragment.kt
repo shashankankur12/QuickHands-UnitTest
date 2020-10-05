@@ -33,7 +33,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     private lateinit var shift: String
     private lateinit var dept: String
     private lateinit var companyName: String
-    private lateinit var customerGroupNote:Triple<ArrayList<String>, ArrayList<String>, ArrayList<String>>
+    private lateinit var customerGroupNote:Triple<Pair<ArrayList<String>,ArrayList<String>>, ArrayList<String>, ArrayList<String>>
 
     companion object {
         const val WORKSHEET_DETAIL = "WORKSHEET_DETAIL"
@@ -184,7 +184,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         swipe_pull_refresh?.isRefreshing = false
 
         customerGroupNote=getGroupNoteList(data)
-        textViewGroupNote.isEnabled = (customerGroupNote!=null&& (customerGroupNote.first.size>0 ||customerGroupNote.second.size>0|| customerGroupNote.third.size>0))
+        textViewGroupNote.isEnabled = (customerGroupNote!=null&& (customerGroupNote.first.first.size>0 ||customerGroupNote.second.size>0|| customerGroupNote.third.size>0||customerGroupNote.first.second.size>0 ))
 
 
         // Change the visibility of Cancel All Schedule Option
@@ -263,7 +263,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     override fun onClick(view: View?) {
         when(view!!.id){
             textViewGroupNote.id->{
-                if (customerGroupNote!=null&& (customerGroupNote.first.size>0 ||customerGroupNote.second.size>0|| customerGroupNote.third.size>0))
+                if (customerGroupNote!=null&& (customerGroupNote.first.first.size>0 ||customerGroupNote.second.size>0|| customerGroupNote.third.size>0|| customerGroupNote.first.second.size>0))
                 CustomeDialog.showGroupNoteDialog(activity, "Customer Note ", customerGroupNote)
 
             }

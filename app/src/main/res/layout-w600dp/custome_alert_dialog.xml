@@ -118,6 +118,37 @@
                 android:layout_height="wrap_content"/>
 
             <LinearLayout
+                android:id="@+id/layoutCustomNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_1sdp"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/gray_btn_bg_color"
+                    android:layout_height="@dimen/_1sdp"/>
+
+                <TextView
+                    style="@style/dialogTitleTextViewThemeBold"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/custom_scheduleds" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_custom_note"
+                android:layout_width="match_parent"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginHorizontal="15dp"
+                android:visibility="gone"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
                 android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
