@@ -292,7 +292,7 @@
     <string name="customer_sheet_warning_message"><![CDATA[Please provide both Customer Representative Name & his Signature.]]></string>
     <string name="empty_employee_id_message">Please enter Employee Id</string>
     <string name="empty_password_message">Please enter Password</string>
-    <string name="fill_building_parameters_message">You haven\'t filled all building parameters values. Please fill them, before changing the container status to complete.</string>
+    <string name="fill_building_parameters_message">Fill out all container parameter before changing status to Completed.</string>
     <string name="assign_lumpers_message">You haven\'t assigned any lumper to the container. Please assign one or more lumper, before changing the container status to complete.</string>
     <string name="assign_lumpers_endtime_starttime_message">You haven\'t finish lumper start and end time. Please finish start and end time for lumper, before changing the container status to complete.</string>
     <string name="assign_lumpers_bracktime_message">You haven\'t finish break time for lumper . Please finish break time for lumper, before changing the container status to complete.</string>
