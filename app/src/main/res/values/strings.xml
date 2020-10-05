@@ -242,9 +242,9 @@
     <string name="empty_containers_list_info_message">This building doesn\'t have any containers scheduled for the selected date.</string>
     <string name="empty_schedules_list_info_message">No Work Scheduled</string>
     <string name="empty_schedule_time_list_info_message">No Lumpers Scheduled</string>
-    <string name="empty_containers_list_ongoing_info_message">You don\'t have any Ongoing containers scheduled for the selected date.</string>
-    <string name="empty_containers_list_cancelled_info_message">You don\'t have any Cancelled containers scheduled for the selected date.</string>
-    <string name="empty_containers_list_completed_info_message">You don\'t have any Completed containers scheduled for the selected date.</string>
+    <string name="empty_containers_list_ongoing_info_message">There are no Ongoing containers.</string>
+    <string name="empty_containers_list_cancelled_info_message">There are no Cancelled containers.</string>
+    <string name="empty_containers_list_completed_info_message">There are no Completed containers.</string>
     <string name="empty_lumper_list_message">No Lumpers are assigne to this building. Please inform your District Manager </string>
 
     <!--Alert Messages-->

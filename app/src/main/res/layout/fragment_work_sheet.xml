@@ -86,9 +86,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTotalCount">
-
         <com.quickhandslogistics.controls.CustomTextView
-            android:id="@+id/textViewDropsCount"
+            android:id="@+id/textViewOutBoundsCount"
             style="@style/blueChipTheme"
             android:layout_marginTop="@dimen/_8sdp" />
 
@@ -98,11 +97,12 @@
             android:layout_marginStart="@dimen/_4ssp"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginEnd="@dimen/_4ssp" />
-
         <com.quickhandslogistics.controls.CustomTextView
-            android:id="@+id/textViewOutBoundsCount"
+            android:id="@+id/textViewDropsCount"
             style="@style/blueChipTheme"
             android:layout_marginTop="@dimen/_8sdp" />
+
+
     </com.google.android.flexbox.FlexboxLayout>
 
     <LinearLayout
