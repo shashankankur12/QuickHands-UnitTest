@@ -21,6 +21,7 @@ import com.quickhandslogistics.data.lumperSheet.LumpersInfo
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.presenters.lumperSheet.LumperWorkDetailPresenter
 import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.DateUtils.Companion.getDateTimeCalculeted
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
@@ -475,7 +476,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
             )
 
             if(!lumperAttendanceData.morningPunchIn.isNullOrEmpty()&& !lumperAttendanceData.eveningPunchOut.isNullOrEmpty())
-                textViewShiftTotalTime.text=DateUtils.getDateTimeCalculeted(lumperAttendanceData.morningPunchIn!!, lumperAttendanceData.eveningPunchOut!!)
+                textViewShiftTotalTime.text=String.format("Total Time: %s",getDateTimeCalculeted(lumperAttendanceData.morningPunchIn!!, lumperAttendanceData.eveningPunchOut!!))
             else textViewLunchTotalTime.visibility=View.GONE
 
             val lunchPunchIn = DateUtils.convertDateStringToTime(
@@ -492,7 +493,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
                 if (lunchPunchOut.isNotEmpty()) lunchPunchOut else "NA"
             )
             if(!lumperAttendanceData.lunchPunchIn.isNullOrEmpty()&&!lumperAttendanceData.lunchPunchOut.isNullOrEmpty())
-                textViewLunchTotalTime.text=DateUtils.getDateTimeCalculeted(lumperAttendanceData.lunchPunchIn!!, lumperAttendanceData.lunchPunchOut!!)
+                textViewLunchTotalTime.text=String.format("Total Time: %s",getDateTimeCalculeted(lumperAttendanceData.lunchPunchIn!!, lumperAttendanceData.lunchPunchOut!!))
             else textViewLunchTotalTime.visibility=View.GONE
         }
         if (!lumperAttendanceData.attendanceNote.isNullOrEmpty()) {

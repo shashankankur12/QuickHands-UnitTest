@@ -11,7 +11,6 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailLumpersContract
 import com.quickhandslogistics.controls.CustomTextView
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
-import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
@@ -74,7 +73,9 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
                 timingDetail?.let {
                     val startTime = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.startTime)
                     val endTime = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.endTime)
-                    textViewWorkTime.text = String.format("%s - %s", if (startTime.isNotEmpty()) startTime else "NA", if (endTime.isNotEmpty()) endTime else "NA")
+                    if (startTime.isNotEmpty() && endTime.isNotEmpty())
+                        textViewWorkTime.text = String.format("%s - %s : %s",  startTime ,  endTime ,DateUtils.getDateTimeCalculeted(timingDetail.startTime!!, timingDetail.endTime!!))
+                    else textViewWorkTime.text = String.format("%s - %s", if (startTime.isNotEmpty()) startTime else "NA", if (endTime.isNotEmpty()) endTime else "NA")
 
                     val waitingTime = getDefaultOrValue(timingDetail.waitingTime)
                     if (waitingTime.isNotEmpty() && waitingTime.toInt() != 0) {
@@ -85,7 +86,9 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
 
                     val breakTimeStart = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeStart)
                     val breakTimeEnd = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeEnd)
-                    textViewBreakTime.text = String.format("%s - %s", if (breakTimeStart.isNotEmpty()) breakTimeStart else "NA", if (breakTimeEnd.isNotEmpty()) breakTimeEnd else "NA")
+                    if (breakTimeStart.isNotEmpty() && breakTimeEnd.isNotEmpty())
+                        textViewBreakTime.text = String.format("%s - %s :%s", breakTimeStart , breakTimeEnd,DateUtils.getDateTimeCalculeted(timingDetail.breakTimeStart!!, timingDetail.breakTimeEnd!!))
+                    else textViewBreakTime.text = String.format("%s - %s", if (breakTimeStart.isNotEmpty()) breakTimeStart else "NA", if (breakTimeEnd.isNotEmpty()) breakTimeEnd else "NA")
 
                     if (!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt() != 0) {
                         if (!totalCases.isNullOrEmpty() && isNumeric(totalCases)) {

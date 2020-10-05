@@ -130,7 +130,7 @@ class DateUtils {
             val punchOut= convertUTCDateStringToMilliseconds(PATTERN_API_RESPONSE, eveningPunchOut)
             val diffrence=punchOut-punchIn
 
-            return String.format("Total Time: %s H %s M",
+            return String.format("%s H %s M",
                 (diffrence / (1000 * 60 * 60) % 24),
                 (diffrence / (1000 * 60) % 60)
             )

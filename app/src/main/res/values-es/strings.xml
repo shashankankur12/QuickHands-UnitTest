@@ -13,6 +13,7 @@
     <string name="availability">Availability</string>
     <string name="back_to_work">Back to Work</string>
     <string name="break_time">Pause Time</string>
+    <string name="break_time_s">Pause Time :</string>
     <string name="work_done">Amount of Work Done</string>
     <string name="lumper_cases_text">Portion of cases for this lumper</string>
     <string name="lumper_cases_error">Portion of cases for the lumper should be less than or equal to total cases</string>
@@ -187,7 +188,9 @@
     <string name="update_request">Update Request</string>
     <string name="view_building_operations">View Building Operations</string>
     <string name="waiting_time">Waiting Time</string>
+    <string name="waiting_time_s">Waiting Time :</string>
     <string name="works_done">Work Done</string>
+    <string name="works_done_s">Work Done :</string>
     <string name="waiting_time_in_min">Waiting Time (in Min.)</string>
     <string name="week">Week</string>
     <string name="work_item_detail">Work Item Detail</string>
@@ -195,6 +198,7 @@
     <string name="work_schedule">Work Schedule</string>
     <string name="work_sheet_detail">Work Sheet Detail</string>
     <string name="work_time">Work Time</string>
+    <string name="work_time_s">Work Time :</string>
     <string name="work_live_lode">Live Lode: /t %s</string>
     <string name="total_time">Total Time: %s</string>
     <string name="total_pause_time">Total Pause: %s</string>

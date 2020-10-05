@@ -26,6 +26,7 @@ import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_MORNING_PU
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.convertDateStringToTime
+import com.quickhandslogistics.utils.DateUtils.Companion.getDateTimeCalculeted
 import com.quickhandslogistics.utils.FlipAnimatorUtil
 import com.quickhandslogistics.utils.UIUtils
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
@@ -115,7 +116,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
                     )
 
                     if(!attendanceDetail.morningPunchIn.isNullOrEmpty()&& !attendanceDetail.eveningPunchOut.isNullOrEmpty())
-                        textViewShiftTotalTime.text=DateUtils.getDateTimeCalculeted(attendanceDetail.morningPunchIn!!, attendanceDetail.eveningPunchOut!!)
+                        textViewShiftTotalTime.text=String.format("Total Time: %s",getDateTimeCalculeted(attendanceDetail.morningPunchIn!!, attendanceDetail.eveningPunchOut!!))
                     else textViewShiftTotalTime.text=""
 
                     val lunchPunchIn = convertDateStringToTime(PATTERN_API_RESPONSE, attendanceDetail.lunchPunchIn)
@@ -126,7 +127,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
                         if (lunchPunchOut.isNotEmpty()) lunchPunchOut else "NA"
                     )
                     if(!attendanceDetail.lunchPunchIn.isNullOrEmpty()&&!attendanceDetail.lunchPunchOut.isNullOrEmpty())
-                        textViewLunchTotalTime.text=DateUtils.getDateTimeCalculeted(attendanceDetail.lunchPunchIn!!, attendanceDetail.lunchPunchOut!!)
+                        textViewLunchTotalTime.text=String.format("Total Time: %s",getDateTimeCalculeted(attendanceDetail.lunchPunchIn!!, attendanceDetail.lunchPunchOut!!))
                     else textViewLunchTotalTime.text=""
                     textViewAddTime.visibility = /*if( attendanceDetail?.eveningPunchOut == null) View.VISIBLE else*/ View.GONE
                 }else{
