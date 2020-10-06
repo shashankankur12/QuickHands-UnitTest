@@ -132,11 +132,11 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
 
         workSheetItemDetailLumpersAdapter.updateList(workItemDetail.assignedLumpersList, timingsData, workItemDetail.status, tempLumperIds, getTotalCases(workItemDetail?.buildingOps), workItemDetail.isCompleted)
 
-        if (workItemDetail.assignedLumpersList.isNullOrEmpty()) {
-            buttonAddLumpers.text = getString(R.string.add_lumpers)
-        } else {
-            buttonAddLumpers.text = getString(R.string.update_lumpers)
-        }
+//        if (workItemDetail.assignedLumpersList.isNullOrEmpty()) {
+//            buttonAddLumpers.text = getString(R.string.add_lumpers)
+//        } else {
+//            buttonAddLumpers.text = getString(R.string.update_lumpers)
+//        }
 
         workItemDetail.status?.let { status ->
             if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED || status == AppConstant.WORK_ITEM_STATUS_CANCELLED) {

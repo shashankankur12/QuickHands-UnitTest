@@ -54,7 +54,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_lumper_time_work_sheet_item)
-        setupToolbar(getString(R.string.add_time))
+        setupToolbar(getString(R.string.lumper_parameter))
 
         intent.extras?.let { it ->
             if (it.containsKey(ARG_LUMPER_DATA)) {
