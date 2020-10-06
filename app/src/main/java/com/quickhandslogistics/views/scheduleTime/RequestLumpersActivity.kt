@@ -15,6 +15,7 @@ import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
 import com.quickhandslogistics.presenters.scheduleTime.RequestLumpersPresenter
 import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.AppUtils.Companion.hideSoftKeyboard
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_LUMPERS_COUNT
@@ -201,7 +202,9 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
-                bottomSheetBackgroundRequestLumpers.id -> closeBottomSheet()
+                bottomSheetBackgroundRequestLumpers.id ->{
+                    closeBottomSheet()
+                }
                 buttonCreateNewRequest.id -> {
                     showBottomSheetWithData()
                 }
@@ -217,7 +220,9 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
                     }
                 }
                 buttonCancelRequest.id ->{ super.onBackPressed() }
-                buttonCancelNote.id ->{ closeBottomSheet() }
+                buttonCancelNote.id ->{
+                    closeBottomSheet()
+                }
             }
         }
     }

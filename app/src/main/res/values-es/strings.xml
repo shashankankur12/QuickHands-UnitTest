@@ -260,7 +260,7 @@
     <string name="api_loading_alert_message">Please wait while we set things up for you!</string>
     <string name="call_lumper_alert_message">You want to call %s</string>
     <string name="cancel_all_schedules_alert_message">You want to cancel all work schedules</string>
-    <string name="cancel_lumper_request_alert_message">You want to cancel the lumper request</string>
+    <string name="cancel_lumper_request_alert_message">You want to cancel this lumper request</string>
     <string name="change_status_alert_message">You want to change the status</string>
     <string name="change_status_permanently_alert_message">You want to change the status. Consider adding notes before changing permanently</string>
     <string name="choose_lumper_alert_message">You want to choose these lumpers.</string>
@@ -275,7 +275,7 @@
     <string name="notes_saved_success_alert_message">Notes Saved Successfully</string>
     <string name="reports_generate_success_message">Report has been generated Successfully. Please check the notification bar to see the downloading.</string>
     <string name="request_cancelled_success_message">Request cancelled successfully</string>
-    <string name="request_lumpers_alert_message">You want to submit the lumper request</string>
+    <string name="request_lumpers_alert_message">You want to submit this lumper request</string>
     <string name="cancel_request_lumper">You want to cancel this schedule lumper</string>
     <string name="edit_schedule_lumper_message">You want to update info of this lumper</string>
     <string name="request_placed_success_message">Request placed successfully</string>
