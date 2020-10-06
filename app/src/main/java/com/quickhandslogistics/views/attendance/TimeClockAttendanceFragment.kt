@@ -151,11 +151,11 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             if (timeClockAttendanceAdapter.isSearchEnabled()) {
                 textViewEmptyData.text = getString(R.string.no_record_found_info_message)
             } else {
-                textViewEmptyData.text = getString(R.string.empty_lumpers_list_info_message)
+                textViewEmptyData.text = getString(R.string.empty_lumpers_list_info_message_time_clock)
             }
         } else {
             textViewEmptyData.visibility = View.GONE
-            textViewEmptyData.text = getString(R.string.empty_lumpers_list_info_message)
+            textViewEmptyData.text = getString(R.string.empty_lumpers_list_info_message_time_clock)
         }
     }
 
