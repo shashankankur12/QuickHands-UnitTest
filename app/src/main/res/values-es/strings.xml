@@ -216,7 +216,7 @@
     <string name="cancel_lumper">Cancel Lumper</string>
     <string name="edit_schedule_lumper">Edit Time / Note</string>
     <string name="cancel_reason">Reason for Cancellation :</string>
-    <string name="yes_cancel">Yes Cancel</string>
+    <string name="yes_cancel">Yes, Cancel</string>
     <string name="update">Update</string>
     <string name="lead_name">Lead : %s</string>
     <string name="view_details">View Details</string>
