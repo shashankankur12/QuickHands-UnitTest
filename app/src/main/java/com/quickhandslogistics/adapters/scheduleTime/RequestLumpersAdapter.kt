@@ -66,12 +66,12 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
                     changeUpdateUIVisibility(!isPastDate)
                 }
                 AppConstant.REQUEST_LUMPERS_STATUS_APPROVED -> {
-                    textViewStatus.text = resources.getString(R.string.approved)
+                    textViewStatus.text = resources.getString(R.string.complete)
                     textViewStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
                     changeUpdateUIVisibility(false)
                 }
                 AppConstant.REQUEST_LUMPERS_STATUS_REJECTED -> {
-                    textViewStatus.text = resources.getString(R.string.rejected)
+                    textViewStatus.text = resources.getString(R.string.not_approved)
                     textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
                     changeUpdateUIVisibility(false)
                 }

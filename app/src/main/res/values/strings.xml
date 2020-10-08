@@ -132,6 +132,7 @@
     <string name="primary_building">Primary Building</string>
     <string name="refresh">Refresh</string>
     <string name="rejected">Rejected</string>
+    <string name="not_approved">Not Approved</string>
     <string name="report_type">Report Type:</string>
     <string name="reports">Reports</string>
     <string name="reset_password">Reset Password</string>
