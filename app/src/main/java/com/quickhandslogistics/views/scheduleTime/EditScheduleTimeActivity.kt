@@ -300,8 +300,8 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     }
 
     private fun showDeleteDialog(adapterPosition: Int, item: ScheduleTimeDetail) {
-        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.cancel_request_lumper), this, object : CustomDialogWarningListener {
-            override fun onConfirmClick() {
+//        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.cancel_request_lumper), this, object : CustomDialogWarningListener {
+//            override fun onConfirmClick() {
                 scheduleTimeList.forEach {
                     if (it.lumperInfo?.id!!.equals(item.lumperInfo?.id!!)){
                         removeFromList(scheduleTimeList.indexOf(it), item)
@@ -309,11 +309,11 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
                 }
                 editScheduleTimeAdapter.removeLumpersInList(adapterPosition, item)
 
-            }
-
-            override fun onCancelClick() {
-            }
-        })
+//            }
+//
+//            override fun onCancelClick() {
+//            }
+//        })
     }
 
     private fun removeFromList(adapterPosition: Int, item: ScheduleTimeDetail) {
