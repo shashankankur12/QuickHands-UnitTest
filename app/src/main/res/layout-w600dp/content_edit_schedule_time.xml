@@ -129,7 +129,7 @@
 
                 <TextView
                     style="@style/titleTextViewTheme"
-                    android:text="@string/notes" />
+                    android:text="@string/group_notes" />
 
                 <EditText
                     android:id="@+id/editTextNotes"

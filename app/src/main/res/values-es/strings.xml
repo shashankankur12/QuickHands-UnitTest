@@ -111,6 +111,7 @@
     <string name="no_time_logged_in_yet">No time logged in yet</string>
     <string name="note">Note</string>
     <string name="notes">Notes</string>
+    <string name="group_notes">Group Notes</string>
     <string name="notifications">Notifications</string>
     <string name="ok">OK</string>
     <string name="on_hold">On-Hold</string>
