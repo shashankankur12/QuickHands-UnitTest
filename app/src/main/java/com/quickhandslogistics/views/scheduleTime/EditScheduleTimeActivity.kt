@@ -139,13 +139,16 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
 
         invalidateOptionsMenu()
 
-        if (scheduleTimeList.size == 0) {
-            textViewEmptyData.visibility = View.VISIBLE
-            showChooseLumpersScreen()
-        } else {
-            textViewAddSameTime.visibility = View.VISIBLE
-            buttonSubmit.isEnabled = true
-        }
+//        if (scheduleTimeList.size == 0) {
+//            textViewEmptyData.visibility = View.VISIBLE
+//            showChooseLumpersScreen()
+//        } else {
+//            textViewAddSameTime.visibility = View.VISIBLE
+//            buttonSubmit.isEnabled = true
+//        }
+
+        textViewEmptyData.visibility = View.VISIBLE
+        showChooseLumpersScreen()
     }
 
     private fun closeBottomSheet() {

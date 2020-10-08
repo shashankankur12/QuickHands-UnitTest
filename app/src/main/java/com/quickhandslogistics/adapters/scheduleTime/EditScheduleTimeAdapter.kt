@@ -46,7 +46,7 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
                 scheduledLumpersIdsTimeMap[scheduleTime.lumperInfo?.id!!] = convertUTCDateStringToMilliseconds(PATTERN_API_RESPONSE, scheduleTime.reportingTimeAndDay)
             }
         }
-        this.scheduleTimeList.addAll(scheduleTimeList)
+//        this.scheduleTimeList.addAll(scheduleTimeList)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
