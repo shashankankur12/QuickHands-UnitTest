@@ -254,6 +254,7 @@
                 android:gravity="top"
                 android:hint="@string/add_notes"
                 android:imeOptions="actionDone"
+                android:textColor="@color/scheduleDetail"
                 android:inputType="textCapSentences|textPersonName"
                 android:maxLength="300"
                 android:padding="@dimen/_8sdp"
