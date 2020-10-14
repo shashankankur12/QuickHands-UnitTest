@@ -138,6 +138,8 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun closeBottomSheet() {
+        hideSoftKeyboard(this)
+        constraintLayoutBottomSheetRequestLumpers.visibility=View.GONE
         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetBackgroundRequestLumpers.visibility = View.GONE
     }
@@ -173,6 +175,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun showBottomSheetWithData(record: RequestLumpersRecord? = null) {
+        constraintLayoutBottomSheetRequestLumpers.visibility=View.VISIBLE
         record?.also {
             textViewTitle.text = getString(R.string.update_request)
             val requestedLumpersCount = ValueUtils.getDefaultOrValue(record.requestedLumpersCount)

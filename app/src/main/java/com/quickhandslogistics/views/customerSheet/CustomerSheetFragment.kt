@@ -443,6 +443,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
 
 
     private fun showBottomSheetWithData(customerSheet: CustomerSheetData?) {
+        constraintLayoutBottomSheetCustomerDetails.visibility=View.VISIBLE
         val isCurrentDate = DateUtils.isCurrentDate(selectedTime)
         customerSheet?.also {
             editTextCustomerName.setText(customerSheet.customerRepresentativeName)
@@ -466,6 +467,8 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
     }
 
     private fun closeBottomSheet() {
+        AppUtils.hideSoftKeyboard(activity!!)
+        constraintLayoutBottomSheetCustomerDetails.visibility=View.GONE
         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetBackground.visibility = View.GONE
     }
