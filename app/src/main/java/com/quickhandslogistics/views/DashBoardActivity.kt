@@ -25,9 +25,10 @@ import com.quickhandslogistics.views.scheduleTime.ScheduleTimeFragment
 import com.quickhandslogistics.views.workSheet.AllWorkScheduleCancelActivity
 import com.quickhandslogistics.views.workSheet.WorkSheetFragment
 import kotlinx.android.synthetic.main.content_dashboard.*
-import kotlinx.android.synthetic.main.dashboard_layout_toolbar.*
+import kotlinx.android.synthetic.main.custome_dashbord_toolbar.*
 import kotlinx.android.synthetic.main.include_main_nav_drawer.*
 import kotlinx.android.synthetic.main.nav_header_dashboard.*
+import java.util.*
 
 class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContract.View, DashBoardContract.View.OnFragmentInteractionListener {
 
@@ -265,16 +266,26 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         selectedFragmentTitle = title
         if(title.equals(getString(R.string.lumper_contact))){
             toolbar.background = ContextCompat.getDrawable(this, R.drawable.header_background_lumper)
-            toolbar.setTitleTextColor(resources.getColor(android.R.color.white))
+            textViewToolbar.setTextColor(resources.getColor(android.R.color.white))
             toolbar.setNavigationIcon(R.drawable.ic_hamburger)
             headerLogoImage.visibility=View.VISIBLE
         }else{
             toolbar.setBackgroundColor(resources.getColor(R.color.colorPrimary));
-            toolbar.setTitleTextColor(resources.getColor(android.R.color.black))
+            textViewToolbar.setTextColor(resources.getColor(android.R.color.black))
             toolbar.setNavigationIcon(R.drawable.ic_sidemenu)
             headerLogoImage.visibility=View.GONE
+
         }
+        if (title.equals(getString(R.string.today_s_work_sheet))|| title.equals(getString(R.string.customer_sheet)) || title.equals(getString(R.string.reports))|| title.equals(getString(R.string.lumper_contact))|| title.equals(getString(R.string.settings))){
+            textViewDate.visibility=View.GONE
+            textViewDate.text = ""
+        }else{
+            textViewDate.visibility=View.VISIBLE
+            textViewDate.text = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, Date())
+        }
+        textViewToolbar.text = title
         invalidateOptionsMenu()
+
     }
 
     override fun invalidateScheduleTimeNotes(notes: String) {

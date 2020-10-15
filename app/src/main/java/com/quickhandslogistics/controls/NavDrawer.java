@@ -199,7 +199,7 @@ public class NavDrawer {
             super.inflate(inflater, navDrawer);
 
             if (showOnLaunch) {
-                toolbar.setTitle(text);
+//                toolbar.setTitle(text);
                 this.navDrawer.setSelectedItem(this);
                 showFragment(this.navDrawer.activity, false);
                 this.navDrawer.invalidateOptionMenu(text);
@@ -260,7 +260,7 @@ public class NavDrawer {
         }
 
         public void setFragment(BaseActivity activity, String text) {
-            toolbar.setTitle(text);
+//            toolbar.setTitle(text);
             navDrawer.setSelectedItem(this);
             showFragment(activity, true);
             navDrawer.invalidateOptionMenu(text);
