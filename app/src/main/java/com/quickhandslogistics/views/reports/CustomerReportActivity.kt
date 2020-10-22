@@ -32,6 +32,7 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
 
     private var selectedStartDate: Date? = null
     private var selectedEndDate: Date? = null
+    private var isCustome: Boolean = false
 
     private lateinit var customerReportPresenter: CustomerReportPresenter
     private lateinit var customerJobReportAdapter: CustomerJobReportAdapter
@@ -115,7 +116,7 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
     }
 
     private fun updateTimeByRangeOptionSelected() {
-        textViewStartDate.isEnabled = radioGroupDateRange.checkedRadioButtonId == radioButtonCustom.id
+//        textViewStartDate.isEnabled = radioGroupDateRange.checkedRadioButtonId == radioButtonCustom.id
         textViewEndDate.isEnabled = radioGroupDateRange.checkedRadioButtonId == radioButtonCustom.id
 
         val calendar = Calendar.getInstance()
@@ -123,20 +124,24 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
             radioButtonDaily.id -> {
                 selectedEndDate = calendar.time
                 selectedStartDate = calendar.time
+                isCustome=false
             }
             radioButtonWeekly.id -> {
                 selectedEndDate = calendar.time
                 calendar.add(Calendar.WEEK_OF_YEAR, -1)
                 selectedStartDate = calendar.time
+                isCustome=false
             }
             radioButtonMonthly.id -> {
                 selectedEndDate = calendar.time
                 calendar.set(Calendar.DATE, 1)
                 selectedStartDate = calendar.time
+                isCustome=false
             }
             radioButtonCustom.id -> {
                 selectedStartDate = null
                 selectedEndDate = null
+                isCustome=true
             }
         }
         updateSelectedDateText()
@@ -163,9 +168,33 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
     }
 
     private fun showStartDatePicker() {
-        ReportUtils.showStartDatePicker(selectedStartDate, selectedEndDate, activity, object : ReportUtils.OnDateSetListener {
+        ReportUtils.showStartDatePicker(selectedStartDate, selectedEndDate, activity, isCustome, object : ReportUtils.OnDateSetListener {
             override fun onDateSet(selected: Date) {
                 selectedStartDate = selected
+
+                val calendar = Calendar.getInstance()
+                if(radioGroupDateRange.checkedRadioButtonId == radioButtonDaily.id){
+                    selectedEndDate=selected
+                }else if (radioGroupDateRange.checkedRadioButtonId == radioButtonWeekly.id){
+                    calendar.time=selected
+                    if (calendar.get(Calendar.WEEK_OF_MONTH).equals(Calendar.WEEK_OF_MONTH) || calendar.get(Calendar.DAY_OF_WEEK).equals(Calendar.SUNDAY)){
+                        selectedEndDate=Date()
+                    }else{
+                        calendar.add(Calendar.WEEK_OF_YEAR, 1)
+                        selectedEndDate = calendar.time
+                    }
+
+                }else if (radioGroupDateRange.checkedRadioButtonId == radioButtonMonthly.id){
+                    calendar.time=selected
+                    if (calendar.get(Calendar.MONTH ).equals(Calendar.getInstance().get(Calendar.MONTH))){
+                        selectedEndDate=Date()
+                    }else{
+                        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
+                        selectedEndDate = calendar.time
+                    }
+
+                }
+
                 updateSelectedDateText()
             }
         })

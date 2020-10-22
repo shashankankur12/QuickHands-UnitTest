@@ -484,8 +484,11 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         this.dept = dept
 
         textViewTimeClockDate.text = UIUtils.getSpannedText(date)
-        textViewTimeClockShift.text = UIUtils.getSpannedText(shift)
-        textViewTimeClockDept.text = UIUtils.getSpannedText(dept)
+        textViewTimeClockDate.visibility = View.GONE
+        textViewTimeClockShift.visibility = View.GONE
+        textViewTimeClockDept.visibility = View.GONE
+//        textViewTimeClockShift.text = UIUtils.getSpannedText(shift)
+//        textViewTimeClockDept.text = UIUtils.getSpannedText(dept)
     }
 
     override fun showLoginScreen() {

@@ -31,6 +31,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
     private var startDate: String = ""
     private var endDate: String = ""
     private var mCheckedId: Int = 0
+    private var isCustome: Boolean = false
 
     private  var timeClockReportPresenter: TimeClockReportPresenter?=null
     private lateinit var timeClockReportAdapter: TimeClockReportAdapter
@@ -118,7 +119,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
     }
 
     private fun updateTimeByRangeOptionSelected() {
-        textViewStartDate.isEnabled = radioGroupDateRange.checkedRadioButtonId == radioButtonCustom.id
+//        textViewStartDate.isEnabled = radioGroupDateRange.checkedRadioButtonId == radioButtonCustom.id
         textViewEndDate.isEnabled = radioGroupDateRange.checkedRadioButtonId == radioButtonCustom.id
         mCheckedId=radioGroupDateRange.checkedRadioButtonId
 
@@ -127,22 +128,26 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
             radioButtonDaily.id -> {
                 selectedEndDate = calendar.time
                 selectedStartDate = calendar.time
+                isCustome=false
 
             }
             radioButtonWeekly.id -> {
                 selectedEndDate = calendar.time
                 calendar.add(Calendar.WEEK_OF_YEAR, -1)
                 selectedStartDate = calendar.time
+                isCustome=false
 
             }
             radioButtonMonthly.id -> {
                 selectedEndDate = calendar.time
                 calendar.set(Calendar.DATE, 1)
                 selectedStartDate = calendar.time
+                isCustome=false
 
             }
             radioButtonCustom.id -> {
                 customeClick()
+                isCustome=true
             }
         }
         if(selectedStartDate!=null && selectedEndDate!= null){
@@ -207,9 +212,33 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
     }
 
     private fun showStartDatePicker() {
-        ReportUtils.showStartDatePicker(selectedStartDate, selectedEndDate, activity, object : ReportUtils.OnDateSetListener {
+        ReportUtils.showStartDatePicker(selectedStartDate, selectedEndDate, activity, isCustome,object : ReportUtils.OnDateSetListener {
             override fun onDateSet(selected: Date) {
                 selectedStartDate = selected
+
+                val calendar = Calendar.getInstance()
+                if(radioGroupDateRange.checkedRadioButtonId == radioButtonDaily.id){
+                    selectedEndDate=selected
+                }else if (radioGroupDateRange.checkedRadioButtonId == radioButtonWeekly.id){
+                    calendar.time=selected
+                    if (calendar.get(Calendar.WEEK_OF_MONTH).equals(Calendar.WEEK_OF_MONTH) || calendar.get(Calendar.DAY_OF_WEEK).equals(Calendar.SUNDAY)){
+                        selectedEndDate=Date()
+                    }else{
+                        calendar.add(Calendar.WEEK_OF_YEAR, 1)
+                        selectedEndDate = calendar.time
+                    }
+
+                }else if (radioGroupDateRange.checkedRadioButtonId == radioButtonMonthly.id){
+                    calendar.time=selected
+                    if (calendar.get(Calendar.MONTH ).equals(Calendar.getInstance().get(Calendar.MONTH))){
+                        selectedEndDate=Date()
+                    }else{
+                        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
+                        selectedEndDate = calendar.time
+                    }
+
+                }
+
                 updateSelectedDateText()
                 if (selectedEndDate!=null){
                     getLumperListData()

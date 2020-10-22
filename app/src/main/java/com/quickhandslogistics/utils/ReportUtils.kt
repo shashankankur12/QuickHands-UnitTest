@@ -6,7 +6,7 @@ import java.util.*
 
 object ReportUtils {
 
-    fun showStartDatePicker(startDate: Date?, endDate: Date?, context: Context, listener: OnDateSetListener) {
+    fun showStartDatePicker(startDate: Date?, endDate: Date?, context: Context, isCustome:Boolean, listener: OnDateSetListener) {
         val calendar = Calendar.getInstance()
         startDate?.let { date ->
             calendar.time = date
@@ -21,11 +21,13 @@ object ReportUtils {
         startCalendar.add(Calendar.MONTH, -1)
         picker.datePicker.minDate = startCalendar.timeInMillis
 
-        endDate?.also { date ->
-            picker.datePicker.maxDate = date.time
-        } ?: run {
-            picker.datePicker.maxDate = System.currentTimeMillis()
-        }
+        if (isCustome)
+            endDate?.also { date ->
+                picker.datePicker.maxDate = date.time
+            } ?: run {
+                picker.datePicker.maxDate = System.currentTimeMillis()
+            }
+        else picker.datePicker.maxDate = System.currentTimeMillis()
         picker.show()
     }
 

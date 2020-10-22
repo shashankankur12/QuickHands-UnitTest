@@ -174,19 +174,19 @@ interface IApiInterface {
     /////////////////////////////////////////////////////////////
 
     // Reports /////////////////////////////////////////////////
-    @POST("employees/worksheet/reports")
+    @POST("employees/worksheet/reports/lumpers")
     fun createLumperJobReport(
         @Header("Authorization") auth: String, @Query("start") startDate: String,
         @Query("end") endDate: String, @Query("type") type: String, @Body request: ReportRequest
     ): Call<ReportResponse>
 
-    @POST("employees/timeclock/reports")
+    @POST("employees/timeclock/reports/lumpers")
     fun createTimeClockReport(
         @Header("Authorization") auth: String, @Query("start") startDate: String,
         @Query("end") endDate: String, @Query("type") type: String, @Body request: ReportRequest
     ): Call<ReportResponse>
 
-    @GET("customers/reports")
+    @POST("customers/reports")
     fun createCustomerReport(
         @Header("Authorization") auth: String, @Query("start") startDate: String,
         @Query("end") endDate: String, @Query("type") type: String

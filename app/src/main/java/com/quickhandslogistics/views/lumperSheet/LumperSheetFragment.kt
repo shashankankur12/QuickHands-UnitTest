@@ -220,6 +220,9 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         this.dept=dept
 
         textViewDate.text = UIUtils.getSpannedText(dateString)
+        textViewDate.visibility = View.GONE
+        textViewHeaderShift.visibility = View.GONE
+        textViewHeaderDept.visibility = View.GONE
         textViewHeaderShift.text = UIUtils.getSpannedText(shift)
         textViewHeaderDept.text = UIUtils.getSpannedText(dept)
     }

@@ -210,6 +210,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     override fun showDateString(dateString: String) {
         this.dateString = dateString
         textViewDate.text = UIUtils.getSpannedText(dateString)
+        textViewDate.visibility = View.GONE
 
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
 
@@ -225,10 +226,12 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
         if(!leadProfile?.shift.isNullOrEmpty()){
             textViewHeaderShift.text=UIUtils.getSpannedText(ScheduleUtils.getShiftDetailString(leadProfile))
+            textViewHeaderShift.visibility=View.GONE
         } else textViewHeaderShift.visibility=View.GONE
 
         if (!leadProfile?.department.isNullOrEmpty()){
             textViewHeaderDept.text=UIUtils.getSpannedText("${ ResourceManager.getInstance().getString(R.string.dept_bold)} ${ UIUtils.getDisplayEmployeeDepartment(leadProfile)}")
+            textViewHeaderDept.visibility=View.GONE
         }else textViewHeaderDept.visibility=View.GONE
 
     }
