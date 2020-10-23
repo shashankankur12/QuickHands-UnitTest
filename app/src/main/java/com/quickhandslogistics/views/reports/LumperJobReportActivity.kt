@@ -229,7 +229,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
                     selectedEndDate=selected
                 }else if (radioGroupDateRange.checkedRadioButtonId == radioButtonWeekly.id){
                     calendar.time=selected
-                    if (calendar.get(Calendar.WEEK_OF_MONTH).equals(Calendar.WEEK_OF_MONTH) || calendar.get(Calendar.DAY_OF_WEEK).equals(Calendar.SUNDAY)){
+                    if (calendar.get(Calendar.MONTH ).equals(Calendar.getInstance().get(Calendar.MONTH)) && calendar.get(Calendar.WEEK_OF_MONTH).equals(Calendar.WEEK_OF_MONTH)){
                         selectedEndDate=Date()
                     }else{
                     calendar.add(Calendar.WEEK_OF_YEAR, 1)
