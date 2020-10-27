@@ -14,11 +14,11 @@
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
         android:largeHeap="true"
+        android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="LockedOrientationActivity">
-
+        <activity android:name=".views.schedule.WorkScheduleActivity"></activity>
         <activity android:name=".views.buildingOperations.BuildingOperationsActivity" />
         <activity
             android:name=".views.common.AddSignatureActivity"
@@ -37,12 +37,10 @@
         <activity android:name=".views.schedule.AddWorkItemLumpersActivity" />
         <activity android:name=".views.schedule.ScheduleDetailActivity" />
         <activity android:name=".views.schedule.ScheduledWorkItemDetailActivity" />
-
         <activity
             android:name=".views.scheduleTime.EditScheduleTimeActivity"
             android:configChanges="orientation" />
         <activity android:name=".views.scheduleTime.RequestLumpersActivity" />
-
         <activity android:name=".views.workSheet.AddLumperTimeWorkSheetItemActivity" />
         <activity android:name=".views.workSheet.AllWorkScheduleCancelActivity" />
         <activity android:name=".views.workSheet.WorkSheetItemDetailActivity" />
@@ -58,6 +56,7 @@
         <activity android:name=".views.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -80,4 +79,5 @@
                 android:resource="@xml/file_provider_paths" />
         </provider>
     </application>
+
 </manifest>
