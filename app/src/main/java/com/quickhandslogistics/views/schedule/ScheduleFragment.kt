@@ -1,15 +1,18 @@
 package com.quickhandslogistics.views.schedule
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.schedule.ScheduleAdapter
+import com.quickhandslogistics.contracts.DashBoardContract
 import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.dashboard.LeadProfileData
@@ -20,19 +23,9 @@ import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
-import kotlinx.android.synthetic.main.content_schedule_time_fragment.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
-import kotlinx.android.synthetic.main.fragment_schedule.appBarView
-import kotlinx.android.synthetic.main.fragment_schedule.layoutWorkScheduleInfo
-import kotlinx.android.synthetic.main.fragment_schedule.mainConstraintLayout
-import kotlinx.android.synthetic.main.fragment_schedule.textViewBuildingName
-import kotlinx.android.synthetic.main.fragment_schedule.textViewDate
-import kotlinx.android.synthetic.main.fragment_schedule.textViewDept
-import kotlinx.android.synthetic.main.fragment_schedule.textViewEmptyData
-import kotlinx.android.synthetic.main.fragment_schedule.textViewHeaderDept
-import kotlinx.android.synthetic.main.fragment_schedule.textViewHeaderShift
-import kotlinx.android.synthetic.main.fragment_schedule.textViewShift
 import java.util.*
+
 
 class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract.View.OnAdapterItemClickListener, CalendarUtils.CalendarSelectionListener {
 
@@ -48,6 +41,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     private var dateString: String? = null
     private var isSavedState: Boolean = false
     private var datePosition: Int = 0
+    private var onFragmentInteractionListener: DashBoardContract.View.OnFragmentInteractionListener? = null
 
 
     private lateinit var schedulePresenter: SchedulePresenter
@@ -78,6 +72,14 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         const val SCHEDULED_NEXT_PAGE = "SCHEDULED_NEXT_PAGE"
         const val SCHEDULED_CURRENT_PAGE = "SCHEDULED_CURRENT_PAGE"
         const val SCHEDULED_SELECTED_DATE_POSITION = "SCHEDULED_SELECTED_DATE_POSITION"
+    }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is DashBoardContract.View.OnFragmentInteractionListener) {
+            onFragmentInteractionListener = context
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -278,7 +280,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         bundle.putBoolean(ARG_IS_FUTURE_DATE, DateUtils.isFutureDate(selectedTime))
         bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleDetail.scheduleIdentity)
         bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
-        startIntent(ScheduleDetailActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
+        startIntent(WorkScheduleActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }
 
     override fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>) {

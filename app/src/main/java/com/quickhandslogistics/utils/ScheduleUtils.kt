@@ -435,6 +435,52 @@ object ScheduleUtils {
         return Triple(Pair(dailyNoteList, customNoteList),weeklyNoteList ,monthlyNoteList)
     }
 
+
+
+    fun getGroupNoteListWorkSchedule(workItemData: ScheduleDetail?): Triple<Pair<ArrayList<String>,ArrayList<String>>, ArrayList<String>, ArrayList<String>>  {
+        var dailyNoteList: ArrayList<String> = ArrayList()
+        var weeklyNoteList: ArrayList<String> = ArrayList()
+        var monthlyNoteList: ArrayList<String> = ArrayList()
+        var customNoteList: ArrayList<String> = ArrayList()
+        var workItemDetail: ArrayList<WorkItemDetail> = ArrayList()
+
+        workItemData?.scheduleTypes.let{
+            workItemDetail.addAll(it?.liveLoads!!)
+            workItemDetail.addAll(it?.outbounds!!)
+            workItemDetail.addAll(it?.drops!!)
+
+        }
+
+        workItemDetail.forEach{
+            when {
+                it.scheduleForWeek!! -> {
+                    if(!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
+                        if(!weeklyNoteList.contains(it.scheduleNote!!))
+                            weeklyNoteList.add(it.scheduleNote!!)
+                }
+                it.scheduleForMonth!! -> {
+                    if(!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
+                        if (!monthlyNoteList.contains(it.scheduleNote!!))
+                            monthlyNoteList.add(it.scheduleNote!!)
+                }
+                !it.specificDates.isNullOrEmpty() -> {
+                    if(!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
+                        if (!customNoteList.contains(it.scheduleNote!!))
+                            customNoteList.add(it.scheduleNote!!)
+                }
+                else -> {
+                    if(!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
+                        if(!dailyNoteList.contains(it.scheduleNote!!))
+                            dailyNoteList.add(it.scheduleNote!!)
+                }
+            }
+
+        }
+
+
+        return Triple(Pair(dailyNoteList, customNoteList),weeklyNoteList ,monthlyNoteList)
+    }
+
     fun getBuildingParametersList(buildingDetailData: BuildingDetailData ?): ArrayList<String> {
         val parameters = ArrayList<String>()
 
