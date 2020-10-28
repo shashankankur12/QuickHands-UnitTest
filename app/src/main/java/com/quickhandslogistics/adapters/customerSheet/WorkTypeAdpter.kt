@@ -61,33 +61,33 @@ class WorkTypeAdpter(
 
                 if (workItemDetail.size>0){
                     textViewLiveLode.visibility=View.VISIBLE
-                    textViewLiveLoadNote.visibility=View.VISIBLE
+//                    textViewLiveLoadNote.visibility=View.VISIBLE
                     textViewLiveLode.text=resources.getString(R.string.out_bounds)
                     setAdaptet( leadProfile, workItemDetail)
                 }else{
                     textViewLiveLode.visibility=View.GONE
-                    textViewLiveLoadNote.visibility=View.GONE
+//                    textViewLiveLoadNote.visibility=View.GONE
                 }
 
             }else if(adapterPosition.equals(1)){
                 if (workItemDetail.size>0){
                     textViewLiveLode.text=resources.getString(R.string.live_loads)
                     textViewLiveLode.visibility=View.VISIBLE
-                    textViewLiveLoadNote.visibility=View.VISIBLE
+//                    textViewLiveLoadNote.visibility=View.VISIBLE
                     setAdaptet( leadProfile, workItemDetail)
                 }else{
                     textViewLiveLode.visibility=View.GONE
-                    textViewLiveLoadNote.visibility=View.GONE
+//                    textViewLiveLoadNote.visibility=View.GONE
                 }
             }else if (adapterPosition.equals(2)){
                 if (workItemDetail.size>0){
                     textViewLiveLode.visibility=View.VISIBLE
-                    textViewLiveLoadNote.visibility=View.VISIBLE
+//                    textViewLiveLoadNote.visibility=View.VISIBLE
                     textViewLiveLode.text=resources.getString(R.string.drops)
                     setAdaptet( leadProfile, workItemDetail)
                 }else{
                     textViewLiveLode.visibility=View.GONE
-                    textViewLiveLoadNote.visibility=View.GONE
+//                    textViewLiveLoadNote.visibility=View.GONE
                 }
             }
 

@@ -3,9 +3,12 @@ package com.quickhandslogistics.views.schedule
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.quickhandslogistics.R
-import com.quickhandslogistics.adapters.workSheet.WorkSheetPagerAdapter
+import com.quickhandslogistics.adapters.schedule.WorkSchedulePagerAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
 import com.quickhandslogistics.contracts.schedule.WorkScheduleContract
 import com.quickhandslogistics.data.customerSheet.CustomerSheetData
@@ -15,9 +18,10 @@ import com.quickhandslogistics.presenters.schedule.WorkSchedulePresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
-import kotlinx.android.synthetic.main.fragment_work_sheet.*
+import kotlinx.android.synthetic.main.work_schedule_container.*
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 class WorkScheduleActivity : BaseActivity(), WorkScheduleContract.View, WorkScheduleContract.View.OnFragmentInteractionListener,
 View.OnClickListener   {
@@ -25,7 +29,7 @@ View.OnClickListener   {
     private var onFragmentInteractionListener: DashBoardContract.View.OnFragmentInteractionListener? = null
 
     private lateinit var workSheetPresenter: WorkSchedulePresenter
-    private var adapter: WorkSheetPagerAdapter? = null
+    private var adapter: WorkSchedulePagerAdapter? = null
     private var data: ScheduleDetail = ScheduleDetail()
     private lateinit var date: String
     private lateinit var shift: String
@@ -41,6 +45,7 @@ View.OnClickListener   {
         const val WORKSHEET_COMPANY_NAME = "WORKSHEET_COMPANY_NAME"
         const val WORKSHEET_SHIFT = "WORKSHEET_SHIFT"
         const val WORKSHEET_DEPT = "WORKSHEET_DEPT"
+        const val WORKSHEET_SELECTED_DATE = "WORKSHEET_SELECTED_DATE"
     }
 
 
@@ -50,8 +55,6 @@ View.OnClickListener   {
         setupToolbar(getString(R.string.schedule_detail))
 
         intent.extras?.let { bundle ->
-//            allowUpdate = bundle.getBoolean(ScheduleFragment.ARG_ALLOW_UPDATE)
-//            isFutureDate = bundle.getBoolean(ScheduleFragment.ARG_IS_FUTURE_DATE)
             scheduleIdentity = bundle.getString(ScheduleFragment.ARG_SCHEDULE_IDENTITY, "")
             selectedTime = bundle.getLong(ScheduleFragment.ARG_SELECTED_DATE_MILLISECONDS, 0)
         }
@@ -66,6 +69,9 @@ View.OnClickListener   {
             }
             if (savedInstanceState.containsKey(WORKSHEET_SHIFT)) {
                 shift = savedInstanceState.getString(WORKSHEET_SHIFT)!!
+            }
+            if (savedInstanceState.containsKey(WORKSHEET_SELECTED_DATE)) {
+                selectedTime = savedInstanceState.getString(WORKSHEET_SELECTED_DATE) !!.toLong()
             }
             if (savedInstanceState.containsKey(WORKSHEET_DEPT)) {
                 dept = savedInstanceState.getString(WORKSHEET_DEPT)!!
@@ -109,6 +115,8 @@ View.OnClickListener   {
             outState.putString(WORKSHEET_DATE_SELECTED_HEADER, date)
         if (!shift.isNullOrEmpty())
             outState.putString(WORKSHEET_SHIFT, shift)
+        if (selectedTime!=null)
+            outState.putString(WORKSHEET_SELECTED_DATE, selectedTime.toString())
         if (!dept.isNullOrEmpty())
             outState.putString(WORKSHEET_DEPT, dept)
         outState.putSerializable(WORKSHEET_COMPANY_NAME, companyName)
@@ -121,13 +129,24 @@ View.OnClickListener   {
         customerSheetData: CustomerSheetData? = null, selectedTime: Long? = null
     ) {
         adapter = if (allWorkItemLists != null) {
-            WorkSheetPagerAdapter(supportFragmentManager, resources, allWorkItemLists)
+            WorkSchedulePagerAdapter(supportFragmentManager, resources, this.selectedTime, allWorkItemLists)
         } else {
-            WorkSheetPagerAdapter(supportFragmentManager, resources)
+            WorkSchedulePagerAdapter(supportFragmentManager, resources,this.selectedTime)
         }
         viewPagerWorkSheet.offscreenPageLimit = adapter?.count!!
         viewPagerWorkSheet.adapter = adapter
         tabLayoutWorkSheet.setupWithViewPager(viewPagerWorkSheet)
+        checkDateForSchedule()
+
+    }
+
+    private fun checkDateForSchedule() {
+        if(DateUtils.isFutureDate(selectedTime!!)){
+            viewPagerWorkSheet.pagingEnabled =false
+            (tabLayoutWorkSheet.getChildAt(0) as ViewGroup).getChildAt(2).isEnabled = false
+            (tabLayoutWorkSheet.getChildAt(0) as ViewGroup).getChildAt(1).isEnabled = false
+        }else{
+            viewPagerWorkSheet.pagingEnabled =true        }
     }
 
     private fun createDifferentListData(data: ScheduleDetail): Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>> {
@@ -177,7 +196,7 @@ View.OnClickListener   {
         textViewLiveLoadsCount.text = ""
         textViewDropsCount.text = ""
         textViewOutBoundsCount.text = ""
-        adapter?.updateWorkItemsList(ArrayList(), ArrayList(), ArrayList())
+        adapter?.updateWorkItemsList(ArrayList(), ArrayList(), ArrayList(), selectedTime)
     }
 
     /** Presenter Listeners */
@@ -227,8 +246,8 @@ View.OnClickListener   {
 
 
 
-        adapter?.updateWorkItemsList(getSortList(onGoingWorkItems), getSortList(cancelled!!), getSortList(
-            completed!!))
+        adapter?.updateWorkItemsList(getSortList(onGoingWorkItems), getSortList(cancelled!!), getSortList(completed!!), selectedTime)
+
     }
 
     private fun getSortList(workItemsList: ArrayList<WorkItemDetail>): ArrayList<WorkItemDetail> {
