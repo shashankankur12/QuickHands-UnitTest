@@ -277,7 +277,7 @@
     <string name="leave_alert_message">You want to leave this page</string>
     <string name="lumper_sheet_success_message">Lumper Sheet submitted successfully</string>
     <string name="notes_saved_success_alert_message">Notes Saved Successfully</string>
-    <string name="reports_generate_success_message">Report has been generated Successfully. Please check the notification bar to see the downloading.</string>
+    <string name="reports_generate_success_message">Report has been generated Successfully. Please check the notification bar to see the downloading. \n</string>
     <string name="request_cancelled_success_message">Request cancelled successfully</string>
     <string name="request_lumpers_alert_message">You want to submit this lumper request</string>
     <string name="cancel_request_lumper">You want to cancel this schedule lumper</string>
@@ -289,7 +289,7 @@
     <string name="save_notes_alert_message">You want to submit the notes</string>
     <string name="schedule_lumpers_alert_message">You want to Schedule these lumpers</string>
     <string name="submit_customer_sheet_alert_message">You want to submit the customer sheet</string>
-    <string name="submit_customer_sheet_permanently_alert_message">You want to submit the customer sheet. Consider adding notes before changing permanently</string>
+    <string name="submit_customer_sheet_permanently_alert_message">You want to submit the customer sheet. Consider adding notes before changing permanently \n</string>
     <string name="submit_lumper_sheet_alert_message">You want to submit the lumper sheet.</string>
     <string name="time_clock_fill_alert_title">Quick Hands | Alert</string>
     <string name="time_clock_fill_alert_message">Don\'t forget to Clock Out all the lumpers in \'Time-Clock\' before submitting Lumper Sheet.</string>
@@ -304,9 +304,9 @@
     <string name="empty_employee_id_message">Please enter Employee Id</string>
     <string name="empty_password_message">Please enter Password</string>
     <string name="fill_building_parameters_message">Fill out all container parameter before changing status to Completed.</string>
-    <string name="assign_lumpers_message">You haven\'t assigned any lumper to the container. Please assign one or more lumper, before changing the container status to complete.</string>
-    <string name="assign_lumpers_endtime_starttime_message">You haven\'t finish lumper start and end time. Please finish start and end time for lumper, before changing the container status to complete.</string>
-    <string name="assign_lumpers_bracktime_message">You haven\'t finish break time for lumper . Please finish break time for lumper, before changing the container status to complete.</string>
+    <string name="assign_lumpers_message">You haven\'t assigned any lumper to the container. Please assign one or more lumper, before changing the container status to complete. \n</string>
+    <string name="assign_lumpers_endtime_starttime_message">You haven\'t finish lumper start and end time. Please finish start and end time for lumper, before changing the container status to complete. \n</string>
+    <string name="assign_lumpers_bracktime_message">You haven\'t finish break time for lumper . Please finish break time for lumper, before changing the container status to complete. \n</string>
     <string name="assign_work_done_message">You haven\'t enter work done. Please enter work done, before changing the container status to complete.</string>
     <string name="password_short_length_message">Please enter Password of at-least 8 characters</string>
     <string name="request_help_message"><![CDATA[You will have to enter both Required Lumper Count & DM Notes]]></string>

@@ -236,7 +236,7 @@
     <string name="cancel_header_details">Remove <![CDATA[<b><font color=#e30913> %s</font></b>]]> from <![CDATA[<b><font color=#e30913> %s</font></b>]]> schedule</string>
 
     <!--No Record Messages-->
-    <string name="empty_add_work_item_lumpers_info_message">This building doesn\'t have any lumpers present for the selected date. Please mark lumpers attendance in \'Time-Clock Attendance\' section for selecting them.</string>
+    <string name="empty_add_work_item_lumpers_info_message">This building doesn\'t have any lumpers present for the selected date. Please mark lumpers attendance in \'Time-Clock Attendance\' section for selecting them. \n</string>
     <string name="empty_edit_schedule_time_info_message">Add the lumpers you wish to schedule</string>
     <string name="empty_work_item_detail_page_lumpers_info_message">Press \'Add Lumpers\' to assign.</string>
     <string name="empty_work_item_cancel_message">Clock-In Lumpers</string>
@@ -246,7 +246,7 @@
     <string name="empty_lumpers_list_info_message">This building doesn\'t have any lumpers assigned. Please contact the admin to assign new lumpers.</string>
     <string name="empty_lumpers_list_info_message_time_clock">There are no lumpers assigned to this shift/department. Please contact your District Manager</string>
     <string name="empty_customer_list_info_message">You don\'t have any Building assigned. Please contact the admin to assign Building.</string>
-    <string name="empty_request_lumpers_list_info_message">You haven\'t placed any request for the selected date. Click on \'Create New Request\' to create an new request fo additional lumpers.</string>
+    <string name="empty_request_lumpers_list_info_message">You haven\'t placed any request for the selected date. Click on \'Create New Request\' to create an new request fo additional lumpers.\n</string>
     <string name="empty_request_lumpers_list_info_message_past">You haven\'t placed any request for the selected date.</string>
     <string name="empty_lumper_sheet_info_message">No container has been Completed.</string>
     <string name="empty_containers_list_info_message">This building doesn\'t have any containers scheduled for the selected date.</string>
@@ -303,10 +303,10 @@
     <string name="empty_employee_id_message">Please enter Employee Id</string>
     <string name="empty_password_message">Please enter Password</string>
     <string name="fill_building_parameters_message">Fill out all container parameter before changing status to Completed.</string>
-    <string name="assign_lumpers_message">You haven\'t assigned any lumper to the container. Please assign one or more lumper, before changing the container status to complete.</string>
-    <string name="assign_lumpers_endtime_starttime_message">You haven\'t finish lumper start and end time. Please finish start and end time for lumper, before changing the container status to complete.</string>
-    <string name="assign_lumpers_bracktime_message">You haven\'t finish break time for lumper . Please finish break time for lumper, before changing the container status to complete.</string>
-    <string name="assign_work_done_message">You haven\'t enter work done. Please enter work done, before changing the container status to complete.</string>
+    <string name="assign_lumpers_message">You haven\'t assigned any lumper to the container. Please assign one or more lumper, before changing the container status to complete.\n</string>
+    <string name="assign_lumpers_endtime_starttime_message">You haven\'t finish lumper start and end time. Please finish start and end time for lumper, before changing the container status to complete.\n</string>
+    <string name="assign_lumpers_bracktime_message">You haven\'t finish break time for lumper . Please finish break time for lumper, before changing the container status to complete. \n</string>
+    <string name="assign_work_done_message">You haven\'t enter work done. Please enter work done, before changing the container status to complete. \n</string>
     <string name="password_short_length_message">Please enter Password of at-least 8 characters</string>
     <string name="request_help_message"><![CDATA[You will have to enter both Required Lumper Count & DM Notes]]></string>
     <string name="request_valid_message"><![CDATA[Please enter valid number of additional lumpers needed.]]></string>
