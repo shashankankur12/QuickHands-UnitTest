@@ -26,7 +26,7 @@
     <string name="cancel">Cancel</string>
     <string name="cancel_all_work_schedules">Cancel All Work Schedules</string>
     <string name="cancel_request">Cancel Request</string>
-    <string name="cancelled">Cancelled</string>
+    <string name="cancelled">Cancel</string>
     <string name="cancelled_description">(Customer cancelled a schedule container)</string>
     <string name="psuse_time_description">(Lumper has to pause work on this container to work on another but will return.)</string>
     <string name="cancelled_s">Cancelled: %s</string>
