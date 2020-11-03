@@ -322,7 +322,7 @@
     <!--Info Messages-->
     <string name="enter_employee_id_info_message">Employee ID</string>
     <string name="enter_password_info_message">Password</string>
-    <string name="forgot_password_info_message">We just need your registered employee Id  to reset your password.</string>
+    <string name="forgot_password_info_message">Enter the following information to receive an email with a  link to reset your password.</string>
     <string name="no_of_lumpers_needed">No. of Additional Lumpers Needed</string>
     <string name="no_record_found_info_message">No Record Found</string>
     <string name="notes_by_customer">Notes by Customer</string>
