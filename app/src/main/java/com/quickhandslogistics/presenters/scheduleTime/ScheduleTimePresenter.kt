@@ -6,6 +6,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.scheduleTime.ScheduleTimeContract
 import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.scheduleTime.GetScheduleTimeAPIResponse
+import com.quickhandslogistics.data.scheduleTime.ScheduleTimeNoteRequest
 import com.quickhandslogistics.models.scheduleTime.ScheduleTimeModel
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
@@ -33,9 +34,14 @@ class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.V
         scheduleTimeModel.cancelScheduleLumpers(lumperId, date, this)
     }
 
-    override fun editScheduleLumpers(lumperId: String, date: Date ,timeMilsec :Long) {
+    override fun editScheduleLumpers(
+        lumperId: String,
+        date: Date,
+        timeMilsec: Long,
+        request: ScheduleTimeNoteRequest
+    ) {
         scheduleTimeView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        scheduleTimeModel.editScheduleLumpers(lumperId, date,timeMilsec, this)
+        scheduleTimeModel.editScheduleLumpers(lumperId, date,timeMilsec,request, this)
     }
 
     /** Model Result Listeners */

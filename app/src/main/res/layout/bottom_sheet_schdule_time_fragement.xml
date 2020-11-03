@@ -186,7 +186,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:visibility="gone"
             android:layout_marginStart="@dimen/_10sdp"
             android:background="@drawable/schedule_item_background"
             android:orientation="vertical"
@@ -198,6 +197,14 @@
 
             <EditText
                 android:id="@+id/editTextNote"
+                style="@style/notesEditTextTheme" />
+
+            <TextView
+                style="@style/titleTextViewTheme"
+                android:text="@string/group_notes" />
+
+            <EditText
+                android:id="@+id/editTextNoteGroup"
                 style="@style/notesEditTextTheme" />
         </LinearLayout>
 

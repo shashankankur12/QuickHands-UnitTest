@@ -3,6 +3,7 @@ package com.quickhandslogistics.contracts.scheduleTime
 import com.quickhandslogistics.contracts.BaseContract
 import com.quickhandslogistics.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
+import com.quickhandslogistics.data.scheduleTime.ScheduleTimeNoteRequest
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -11,7 +12,13 @@ class ScheduleTimeContract {
         fun fetchHeaderInfo(selectedDate: Date, onFinishedListener: OnFinishedListener)
         fun fetchSchedulesTimeByDate(selectedDate: Date, onFinishedListener: OnFinishedListener)
         fun cancelScheduleLumpers(lumperId: String, date: Date, onFinishedListener:OnFinishedListener)
-        fun editScheduleLumpers(lumperId: String, date: Date ,timeMilsec :Long, onFinishedListener:OnFinishedListener)
+        fun editScheduleLumpers(
+            lumperId: String,
+            date: Date,
+            timeMilsec: Long,
+            request: ScheduleTimeNoteRequest,
+            onFinishedListener: OnFinishedListener
+        )
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(selectedDate: Date, scheduleTimeAPIResponse: GetScheduleTimeAPIResponse)
@@ -49,6 +56,11 @@ class ScheduleTimeContract {
     interface Presenter : BaseContract.Presenter {
         fun getSchedulesTimeByDate(date: Date)
         fun cancelScheduleLumpers(lumperId: String, date: Date)
-        fun editScheduleLumpers(lumperId: String, date: Date ,timeMilsec :Long)
+        fun editScheduleLumpers(
+            lumperId: String,
+            date: Date,
+            timeMilsec: Long,
+            request: ScheduleTimeNoteRequest
+        )
     }
 }

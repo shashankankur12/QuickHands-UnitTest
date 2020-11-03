@@ -16,8 +16,9 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.scheduleTime.EditScheduleTimeAdapter
 import com.quickhandslogistics.contracts.scheduleTime.EditScheduleTimeContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
-import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
+import com.quickhandslogistics.data.scheduleTime.LumperScheduleTimeData
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
+import com.quickhandslogistics.data.scheduleTime.ScheduleTimeRequest
 import com.quickhandslogistics.presenters.scheduleTime.EditScheduleTimePresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
@@ -135,6 +136,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         imageViewCancel.setOnClickListener(this)
         buttonCancelNote.setOnClickListener(this)
         bottomSheetBackgroundEditSchedule.setOnClickListener(this)
+        buttonSaveNote.setOnClickListener(this)
 //        buttonCancel.setOnClickListener(this)
 
         invalidateOptionsMenu()
@@ -222,7 +224,17 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     private fun showConfirmationDialog(scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String) {
         CustomProgressBar.getInstance().showWarningDialog(getString(R.string.schedule_lumpers_alert_message), activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
-                editScheduleTimePresenter.initiateScheduleTime(scheduledLumpersIdsTimeMap, notes, Date(selectedTime))
+
+                val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, Date(selectedTime))
+                val lumpersData: ArrayList<LumperScheduleTimeData> = ArrayList()
+                for (employeeId in scheduledLumpersIdsTimeMap.keys) {
+                    val timestamp = scheduledLumpersIdsTimeMap[employeeId]!!
+                    val individualNote = editScheduleTimeAdapter.getIndividualNote(employeeId)
+                    lumpersData.add(LumperScheduleTimeData(timestamp, employeeId, individualNote))
+                }
+
+                val request = ScheduleTimeRequest(lumpersData, notes, dateString)
+                editScheduleTimePresenter.initiateScheduleTime(request, Date(selectedTime))
             }
 
             override fun onCancelClick() {
@@ -249,12 +261,21 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
                 textViewAddSameTime.id -> chooseSameTimeForAllLumpers()
                 buttonCancelNote.id -> onBackPressed()
                 buttonSubmit.id -> saveLumperScheduleTimings()
+                buttonSaveNote.id -> saveLumperIndividualNote()
                 imageViewCancel.id -> {
                     editTextSearch.setText("")
                     AppUtils.hideSoftKeyboard(activity)
                 }
             }
         }
+    }
+
+    private fun saveLumperIndividualNote() {
+       if (buttonSubmit.getTag(R.id.adapterPosition)!=null){
+           closeBottomSheet()
+           var adapterPosition: Int= buttonSubmit.getTag(R.id.adapterPosition) as Int
+           editScheduleTimeAdapter.addIndividualNote(adapterPosition,editTextDMNotes.text.toString() )
+       }
     }
 
     override fun afterTextChanged(p0: Editable?) {}
@@ -282,16 +303,16 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     }
 
 
-    private fun showBottomSheetWithData(record: RequestLumpersRecord? = null) {
+    private fun showBottomSheetWithData(record: ScheduleTimeDetail? = null, adapterPosition: Int) {
         record?.also {
             textViewTitle.text = getString(R.string.update_request)
-            val requestedLumpersCount = ValueUtils.getDefaultOrValue(record.requestedLumpersCount)
-            editTextDMNotes.setText(record.notesForDM)
-            buttonSubmit.setTag(R.id.requestLumperId, record.id)
+            val noteForLumper = ValueUtils.getDefaultOrValue(record.notesForLumper)
+            editTextDMNotes.setText(noteForLumper)
+            buttonSubmit.setTag(R.id.adapterPosition, adapterPosition)
         } ?: run {
             textViewTitle.text = getString(R.string.add_notes)
             editTextDMNotes.setText("")
-            buttonSubmit.setTag(R.id.requestLumperId, "")
+            buttonSubmit.setTag(R.id.adapterPosition, adapterPosition)
         }
 
         if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
@@ -360,8 +381,11 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         ).show()
     }
 
-    override fun onAddScheduleNoteClick(adapterPosition: Int) {
-        showBottomSheetWithData()
+    override fun onAddScheduleNoteClick(
+        adapterPosition: Int,
+        item: ScheduleTimeDetail
+    ) {
+        showBottomSheetWithData(item , adapterPosition)
     }
 
     override fun onAddRemoveClick(adapterPosition: Int, item: ScheduleTimeDetail) {

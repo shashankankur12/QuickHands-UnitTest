@@ -22,6 +22,7 @@ import com.quickhandslogistics.contracts.DashBoardContract
 import com.quickhandslogistics.contracts.scheduleTime.ScheduleTimeContract
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
+import com.quickhandslogistics.data.scheduleTime.ScheduleTimeNoteRequest
 import com.quickhandslogistics.presenters.scheduleTime.ScheduleTimePresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.utils.ScheduleUtils.getShiftDetailString
@@ -274,6 +275,8 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         timeInMillis= DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, record.reportingTimeAndDay)
         textViewScheduleLumperTime.text = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, record.reportingTimeAndDay)
         buttonUpdate.setTag(R.id.requestLumperId, record.lumperInfo!!.id)
+        editTextNote.setText(record.notesForLumper)
+        editTextNoteGroup.setText(scheduleTimeNotes)
         textViewTitle.setTag(R.id.cancelLumperDay, record.reportingTimeAndDay!!)
     }
 
@@ -365,8 +368,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                 } else if(type.equals(EDIT_SCHEDULE_LUMPER)){
                     val requestLumperId = buttonUpdate.getTag(R.id.requestLumperId) as String?
                     val requestLumperDate = textViewTitle.getTag(R.id.cancelLumperDay) as String?
+                    val individualNote = editTextNote.text.toString()
+                    val groupNote = editTextNoteGroup.text.toString()
+                    val request = ScheduleTimeNoteRequest(individualNote,groupNote)
                     if (!requestLumperId.isNullOrEmpty() && !requestLumperDate.isNullOrEmpty()) {
-                        scheduleTimePresenter.editScheduleLumpers(requestLumperId,selectedDate /*DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, requestLumperDate)*/,timeInMillis!! )
+                        scheduleTimePresenter.editScheduleLumpers(requestLumperId,selectedDate /*DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, requestLumperDate)*/,timeInMillis!!, request )
                     }
                 }
             }

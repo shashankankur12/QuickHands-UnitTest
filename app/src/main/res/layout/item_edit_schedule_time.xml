@@ -93,7 +93,6 @@
             <LinearLayout
                 android:id="@+id/layoutScheduleNote"
                 android:layout_width="wrap_content"
-                android:visibility="gone"
                 android:layout_gravity="end"
                 android:paddingTop="@dimen/_1ssp"
                 android:layout_height="wrap_content">

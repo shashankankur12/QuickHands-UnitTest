@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +26,6 @@ import kotlinx.android.synthetic.main.item_edit_schedule_time.view.textViewEmplo
 import kotlinx.android.synthetic.main.item_edit_schedule_time.view.textViewLumperName
 import kotlinx.android.synthetic.main.item_edit_schedule_time.view.textViewScheduleTime
 import kotlinx.android.synthetic.main.item_edit_schedule_time.view.viewAttendanceStatus
-import kotlinx.android.synthetic.main.item_schedule_time.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -76,6 +76,7 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
         private val imageViewCancel: ImageView = view.imageViewCancel
         private val layoutScheduleTime: RelativeLayout = view.layoutScheduleTime
         private val viewAttendanceStatus: View = view.viewAttendanceStatus
+        private val layoutScheduleNote: LinearLayout = view.layoutScheduleNote
 
         fun bind(scheduleTimeDetail: ScheduleTimeDetail) {
             scheduleTimeDetail.lumperInfo?.let { employeeData ->
@@ -106,6 +107,7 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
             itemView.setOnClickListener(this)
             layoutScheduleTime.setOnClickListener(this)
             imageViewCancel.setOnClickListener(this)
+            layoutScheduleNote.setOnClickListener(this)
         }
 
         override fun onClick(view: View?) {
@@ -122,8 +124,11 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
                         }
                         onAdapterClick.onAddStartTimeClick(adapterPosition, timeInMillis)
                     }
-                    layoutScheduleTime.id -> {
-                        onAdapterClick.onAddScheduleNoteClick(adapterPosition)
+                    layoutScheduleNote.id -> {
+                        onAdapterClick.onAddScheduleNoteClick(adapterPosition, getItem(adapterPosition) )
+                    }
+                    imageViewCancel.id -> {
+                        onAdapterClick.onAddRemoveClick(adapterPosition, getItem(adapterPosition))
                     }
                     imageViewCancel.id -> {
                         onAdapterClick.onAddRemoveClick(adapterPosition, getItem(adapterPosition))
@@ -170,6 +175,21 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
         scheduledLumpersIdsTimeMap[scheduleTimeDetail.lumperInfo?.id!!] = timeInMillis
         scheduleTimeList[adapterPosition].reportingTimeAndDay = DateUtils.convertMillisecondsToUTCDateString(PATTERN_API_RESPONSE, timeInMillis)
         notifyDataSetChanged()
+    }
+
+    fun addIndividualNote(adapterPosition: Int, note: String) {
+        scheduleTimeList[adapterPosition].notesForLumper = note
+        notifyDataSetChanged()
+    }
+
+    fun getIndividualNote(lumperId: String): String? {
+        var lumperNote: String?= null
+        scheduleTimeList.forEach {
+            if (lumperId.equals(it.lumperInfo!!.id)){
+                lumperNote= it.notesForLumper
+            }
+        }
+        return lumperNote
     }
 
     fun addStartTimetoAll(timeInMillis: Long) {

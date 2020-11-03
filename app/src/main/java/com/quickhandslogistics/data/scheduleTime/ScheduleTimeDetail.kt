@@ -15,6 +15,10 @@ class ScheduleTimeDetail() : Parcelable {
     @Expose
     var reportingTimeAndDay: String? = null
 
+    @SerializedName("notesForLumper")
+    @Expose
+    var notesForLumper: String? = null
+
     @SerializedName("hasClockedOut")
     @Expose
     var isPresent: Boolean? = null
@@ -22,12 +26,14 @@ class ScheduleTimeDetail() : Parcelable {
     constructor(parcel: Parcel) : this() {
         lumperInfo = parcel.readParcelable(EmployeeData::class.java.classLoader)
         reportingTimeAndDay = parcel.readString()
+        notesForLumper = parcel.readString()
         isPresent = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeParcelable(lumperInfo, flags)
         parcel.writeString(reportingTimeAndDay)
+        parcel.writeString(notesForLumper)
         parcel.writeValue(isPresent)
     }
 
