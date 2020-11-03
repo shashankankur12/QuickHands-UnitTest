@@ -8,6 +8,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.dashboard.LeadProfileData
+import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.data.schedule.ScheduleWorkItem
@@ -505,5 +506,30 @@ object ScheduleUtils {
             }
         }
         return count
+    }
+
+    fun getFilteredLumperWorkList(lumperDaySheetList: ArrayList<LumperDaySheet>): ArrayList<LumperDaySheet> {
+        var outBound: ArrayList<LumperDaySheet> = ArrayList()
+        var live: ArrayList<LumperDaySheet> =ArrayList()
+        var drop: ArrayList<LumperDaySheet> =ArrayList()
+        var filterLumperDaySheetList: ArrayList<LumperDaySheet> =ArrayList()
+
+        lumperDaySheetList.forEach {
+            it.workItemDetail?.workItemType.let { type->
+                when (type){
+                    AppConstant.WORKSHEET_WORK_ITEM_LIVE ->{live.add(it) }
+                    AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND ->{outBound.add(it) }
+                    else -> {drop.add(it)}
+                }
+            }
+
+        }
+
+        filterLumperDaySheetList.addAll(outBound)
+        filterLumperDaySheetList.addAll(live)
+        filterLumperDaySheetList.addAll(drop)
+
+        return filterLumperDaySheetList
+
     }
 }

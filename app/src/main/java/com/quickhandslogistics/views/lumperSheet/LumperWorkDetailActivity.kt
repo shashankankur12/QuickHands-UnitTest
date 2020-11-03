@@ -21,6 +21,9 @@ import com.quickhandslogistics.data.lumperSheet.LumpersInfo
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.presenters.lumperSheet.LumperWorkDetailPresenter
 import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.AppConstant.Companion.WORKSHEET_WORK_ITEM_INBOUND
+import com.quickhandslogistics.utils.AppConstant.Companion.WORKSHEET_WORK_ITEM_LIVE
+import com.quickhandslogistics.utils.AppConstant.Companion.WORKSHEET_WORK_ITEM_OUTBOUND
 import com.quickhandslogistics.utils.DateUtils.Companion.getDateTimeCalculeted
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import com.quickhandslogistics.views.BaseActivity
@@ -429,6 +432,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     override fun showLumperWorkDetails(lumperDaySheetList: ArrayList<LumperDaySheet>, lumperAttendanceData: AttendanceDetail) {
         this.lumperDaySheetList=lumperDaySheetList
         this.lumperAttendanceData=lumperAttendanceData
+
         val isCurrentDate = DateUtils.isCurrentDate(selectedTime)
         layoutSaveCancelButton.visibility = View.GONE
 

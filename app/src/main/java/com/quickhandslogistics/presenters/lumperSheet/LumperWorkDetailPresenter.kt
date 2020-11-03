@@ -9,6 +9,7 @@ import com.quickhandslogistics.data.attendance.AttendanceDetail
 import com.quickhandslogistics.data.lumperSheet.LumperWorkDetailAPIResponse
 import com.quickhandslogistics.models.lumperSheet.LumperWorkDetailModel
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.ScheduleUtils.getFilteredLumperWorkList
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 
@@ -58,7 +59,8 @@ class LumperWorkDetailPresenter(private var lumperWorkDetailView: LumperWorkDeta
 
     override fun onSuccess(response: LumperWorkDetailAPIResponse) {
         lumperWorkDetailView?.hideProgressDialog()
-        lumperWorkDetailView?.showLumperWorkDetails(response.data?.lumperDaySheet!!, response.data?.lumperAttendanceData!!)
+        val filterList= getFilteredLumperWorkList(response.data?.lumperDaySheet!!)
+        lumperWorkDetailView?.showLumperWorkDetails(filterList, response.data?.lumperAttendanceData!!)
     }
 
     override fun onSuccessSaveLumperSignature(lumperId: String, date: Date) {
