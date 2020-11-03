@@ -80,7 +80,7 @@ class LumperWorkDetailAdapter(
         fun bind(lumperDaySheet: LumperDaySheet) {
             var totalcase =""
             lumperDaySheet.workItemDetail?.let { workItemDetail ->
-                val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.workItemType, resources)
+                val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplay(workItemDetail.workItemType, resources)
                 textViewWorkItemType.text = workItemTypeDisplayName
                 textViewStartTime.text = String.format(resources.getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
 

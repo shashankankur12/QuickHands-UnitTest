@@ -64,6 +64,7 @@
     <string name="district_manager_name">DM Name</string>
     <string name="door_s">Door: %s</string>
     <string name="drops">Drops</string>
+    <string name="drop">Drop</string>
     <string name="drops_s">Drops: %s</string>
     <string name="edit_parameters">Edit Parameters</string>
     <string name="email_address">Email Address</string>
@@ -93,6 +94,7 @@
     <string name="last_name">Last Name</string>
     <string name="live_load_s">Live Load: %s</string>
     <string name="live_loads">Live Loads</string>
+    <string name="live_load">Live Load</string>
     <string name="live_loads_s">Live Loads: %s</string>
     <string name="loading">Loading</string>
     <string name="logout">Log Out</string>
@@ -120,6 +122,7 @@
     <string name="ongoing_s">Ongoing: %s</string>
     <string name="out_bound_s">Outbound:  %s</string>
     <string name="out_bounds">Outbounds</string>
+    <string name="out_bound">Outbound</string>
     <string name="out_bounds_s">Outbounds: %s</string>
     <string name="out_to_lunch">Out to Lunch</string>
     <string name="parameters">Parameters</string>

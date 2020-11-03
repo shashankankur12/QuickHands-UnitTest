@@ -59,6 +59,18 @@ object ScheduleUtils {
         return workItemTypeDisplayName
     }
 
+    fun getWorkItemTypeDisplay(workItemType: String?, resources: Resources): String {
+        var workItemTypeDisplayName = ""
+        workItemType?.let {
+            workItemTypeDisplayName = when (workItemType) {
+                "live" -> resources.getString(R.string.live_load)
+                "drop" -> resources.getString(R.string.drop)
+                else -> resources.getString(R.string.out_bound)
+            }
+        }
+        return workItemTypeDisplayName
+    }
+
     fun getWorkItemTypeCounts(list: ArrayList<WorkItemDetail>): Triple<Int, Int, Int> {
         var liveLoadsCount = 0
         var dropsCount = 0
