@@ -236,6 +236,23 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
 
         selectedTime = selectedDate.time
 
+
+        var signedData :ArrayList<LumpersInfo> = ArrayList()
+        var unSignedData :ArrayList<LumpersInfo> = ArrayList()
+        var sortedData :ArrayList<LumpersInfo> = ArrayList()
+
+        lumperInfoList.forEach {
+            if (ValueUtils.getDefaultOrValue(it.sheetSigned))
+                signedData.add(it)
+            else unSignedData.add(it)
+        }
+
+
+        sortedData.addAll(unSignedData)
+        sortedData.addAll(signedData)
+
+
+
         var isSignatureLeft = 0
         for (lumperInfo in lumperInfoList) {
             if (!ValueUtils.getDefaultOrValue(lumperInfo.sheetSigned)) {
@@ -255,7 +272,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
             buttonSubmit.visibility = View.GONE
         }
 
-        lumperSheetAdapter.updateLumperSheetData(lumperInfoList, tempLumperIds)
+        lumperSheetAdapter.updateLumperSheetData(sortedData, tempLumperIds)
         if (lumperInfoList.size > 0) {
             textViewEmptyData.visibility = View.GONE
             recyclerViewLumpersSheet.visibility = View.VISIBLE

@@ -42,7 +42,6 @@
         android:layout_width="0dp"
         android:layout_marginStart="@dimen/_8sdp"
         android:layout_marginTop="@dimen/_2sdp"
-        android:layout_marginEnd="@dimen/_8sdp"
         android:text="(Emp ID: 1001)"
         android:textColor="@color/textBlack"
         app:emptyDataVisibility="empty_gone"
@@ -53,8 +52,8 @@
     <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewStatus"
         style="@style/baseChipTheme"
-        android:layout_marginTop="@dimen/_4sdp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewLumperName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

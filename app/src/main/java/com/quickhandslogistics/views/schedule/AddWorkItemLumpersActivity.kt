@@ -55,11 +55,11 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
             workItemId = it.getString(ARG_WORK_ITEM_ID, "")
             workItemType = it.getString(ARG_WORK_ITEM_TYPE, "")
 
-            if (isAddLumper) {
+//            if (isAddLumper) {
                 setupToolbar(getString(R.string.add_lumpers))
-            } else {
-                setupToolbar(getString(R.string.update_lumpers))
-            }
+//            } else {
+//                setupToolbar(getString(R.string.update_lumpers))
+//            }
         }
 
         initializeUI()
