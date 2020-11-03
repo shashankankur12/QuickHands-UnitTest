@@ -89,6 +89,10 @@ open class EmployeeData() : Parcelable {
     @Expose
     var milesRadiusFromPrimaryBuilding: String? = null
 
+    @SerializedName("buildingIdAsLumper")
+    @Expose
+    var buildingIdAsLumper: String? = null
+
     @SerializedName("hiringDate")
     @Expose
     var hiringDate: String? = null
@@ -133,6 +137,7 @@ open class EmployeeData() : Parcelable {
         buildingAssignedAsLumper= parcel.readValue(BuildingDetailData::class.java.classLoader) as BuildingDetailData?
         abilityToTravelBetweenBuildings = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         milesRadiusFromPrimaryBuilding = parcel.readString()
+        buildingIdAsLumper = parcel.readString()
         hiringDate = parcel.readString()
         jobDescription = parcel.readString()
         scheduleNotes = parcel.readString()
@@ -163,6 +168,7 @@ open class EmployeeData() : Parcelable {
         parcel.writeValue(buildingAssignedAsLumper)
         parcel.writeValue(abilityToTravelBetweenBuildings)
         parcel.writeString(milesRadiusFromPrimaryBuilding)
+        parcel.writeString(buildingIdAsLumper)
         parcel.writeString(hiringDate)
         parcel.writeString(jobDescription)
         parcel.writeString(scheduleNotes)

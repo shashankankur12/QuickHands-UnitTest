@@ -48,6 +48,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private var isPartWorkDoneValid: Boolean = true
     private var isLumperPresent: Boolean = false
     private lateinit var  watcher: TextWatcher
+    private var tempLumperIds: ArrayList<String> = ArrayList()
 
     private lateinit var addLumperTimeWorkSheetItemPresenter: AddLumperTimeWorkSheetItemPresenter
 
@@ -63,6 +64,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
                 totalCases = it.getString(WorkSheetItemDetailLumpersFragment.TOTAL_CASES, "")
                 employeeData = it.getParcelable(ARG_LUMPER_DATA) as EmployeeData?
                 employeeTimingData = it.getParcelable(ARG_LUMPER_TIMING_DATA) as LumpersTimeSchedule?
+                tempLumperIds = it.getStringArrayList(WorkSheetItemDetailLumpersFragment.TEMP_LUMPER_IDS) as ArrayList<String>
             }
         }
 
@@ -74,7 +76,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private fun initializeUI() {
         employeeData?.let { employeeData ->
             UIUtils.showEmployeeProfileImage(activity, employeeData, circleImageViewProfile)
-            UIUtils.updateProfileBorder(activity, employeeData.isTemporaryAssigned, circleImageViewProfile)
+            UIUtils.updateProfileBorder(activity, tempLumperIds.contains(employeeData.id), circleImageViewProfile)
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
             viewAttendanceStatus.setBackgroundResource(if (isLumperPresent) R.drawable.online_dot else R.drawable.offline_dot)

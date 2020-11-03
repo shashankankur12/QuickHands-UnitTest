@@ -10,11 +10,14 @@ import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.common.LumperImagesContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.SharedPref
 import com.quickhandslogistics.utils.UIUtils
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.content_lumper_work_detail.*
 import kotlinx.android.synthetic.main.item_schdule_lumper_image_list.view.*
 
-class LumperImagesAdapter(var lumpersList: ArrayList<EmployeeData>, var onItemClickListener: LumperImagesContract.OnItemClickListener) :
+class LumperImagesAdapter(var lumpersList: ArrayList<EmployeeData>, private val sharedPref: SharedPref, var onItemClickListener: LumperImagesContract.OnItemClickListener) :
     RecyclerView.Adapter<LumperImagesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -51,6 +54,8 @@ class LumperImagesAdapter(var lumpersList: ArrayList<EmployeeData>, var onItemCl
                 textViewNumber.text = "+${lumpersList.size - 4}"
             } else {
                 UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
+                 var buildingId =if (!sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID).isNullOrEmpty()) sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID) else ""
+                UIUtils.updateProfileBorder(context, !buildingId.equals(employeeData.buildingIdAsLumper), circleImageViewProfile)
                 circleImageViewProfile.visibility = View.VISIBLE
                 textViewNumber.visibility = View.GONE
             }

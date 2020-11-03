@@ -41,7 +41,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
     companion object {
         private const val LUMPER_WORK_DETALS = "LUMPER_WORK_DETALS"
         private const val LUMPER_SCHEDULE = "LUMPER_SCHEDULE"
-        private const val TEMP_LUMPER_IDS = "TEMP_LUMPER_IDS"
+        internal const val TEMP_LUMPER_IDS = "TEMP_LUMPER_IDS"
         const val TOTAL_CASES = "TOTAL_CASES"
         @JvmStatic
         fun newInstance(
@@ -115,6 +115,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
 
     fun showLumpersData(workItemDetail: ScheduleWorkItem, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?, tempLumperIds: ArrayList<String>) {
         this.workItemDetail = workItemDetail
+        this.tempLumperIds=tempLumperIds
 
         val timingsData = LinkedHashMap<String, LumpersTimeSchedule>()
         workItemDetail.assignedLumpersList?.let { assignedLumpersList ->
@@ -200,6 +201,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
         bundle.putBoolean(ARG_LUMPER_PRESENT, employeeData?.attendanceDetail?.isPresent!!)
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_TIMING_DATA, timingData)
+        bundle.putStringArrayList(TEMP_LUMPER_IDS, tempLumperIds)
         startIntent(AddLumperTimeWorkSheetItemActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }
 }

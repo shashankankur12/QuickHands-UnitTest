@@ -57,7 +57,7 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
         init {
             recyclerViewLumpersImagesList.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                addItemDecoration(OverlapDecoration())
+//                addItemDecoration(OverlapDecoration())
             }
 
             itemView.setOnClickListener(this)
@@ -90,7 +90,7 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
             textViewWorkSheetNote.isEnabled=(!workItemDetail.scheduleNote.isNullOrEmpty() && !getItem(adapterPosition).scheduleNote!!.equals("NA"))
 
             workItemDetail.assignedLumpersList?.let { imagesList ->
-                recyclerViewLumpersImagesList.adapter = LumperImagesAdapter(imagesList, this@ViewHolder)
+                recyclerViewLumpersImagesList.adapter = LumperImagesAdapter(imagesList, sharedPref,this@ViewHolder)
             }
 
             ScheduleUtils.changeStatusUIByValue(resources, workItemDetail.status, textViewStatus, relativeLayoutSide)

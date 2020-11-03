@@ -52,6 +52,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         const val SELECTED_DATE_POSITION = "SELECTED_DATE_POSITION"
         const val HEADER_DEPT = "HEADER_DEPT"
         const val HEADER_SHIFT = "HEADER_SHIFT"
+        const val TEMP_LUMPER = "TEMP_LUMPER"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -280,6 +281,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     override fun onItemClick(lumperInfo: LumpersInfo) {
         val bundle = Bundle()
         bundle.putParcelable(ARG_LUMPER_INFO, lumperInfo)
+        bundle.putStringArrayList(TEMP_LUMPER, tempLumperIds)
         bundle.putLong(ScheduleFragment.ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
         startIntent(LumperWorkDetailActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }

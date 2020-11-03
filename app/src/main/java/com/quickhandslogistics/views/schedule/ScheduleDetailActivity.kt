@@ -144,7 +144,7 @@ class ScheduleDetailActivity : BaseActivity(), LumperImagesContract.OnItemClickL
         recyclerViewLumpersImagesList.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             addItemDecoration(OverlapDecoration())
-            allLumpersImagesAdapter = LumperImagesAdapter(ArrayList(), this@ScheduleDetailActivity)
+            allLumpersImagesAdapter = LumperImagesAdapter(ArrayList(), sharedPref,this@ScheduleDetailActivity)
             adapter = allLumpersImagesAdapter
         }
     }

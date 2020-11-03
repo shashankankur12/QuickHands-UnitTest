@@ -87,7 +87,7 @@ class ScheduleAdapter(private val resources: Resources, var adapterItemClickList
             ScheduleUtils.changeStatusUIByValue(resources, VIEW_DETAILS, textViewStatus, relativeLayoutSide)
 
             recyclerViewLumpersImagesList.apply {
-                adapter = LumperImagesAdapter(scheduleDetail.allAssignedLumpers, this@ViewHolder)
+                adapter = LumperImagesAdapter(scheduleDetail.allAssignedLumpers, sharedPref,this@ViewHolder)
             }
 
             itemView.setOnClickListener(this)

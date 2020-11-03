@@ -28,6 +28,7 @@ import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.common.AddSignatureActivity
 import com.quickhandslogistics.views.common.BuildingOperationsViewActivity
 import com.quickhandslogistics.views.lumperSheet.LumperSheetFragment.Companion.ARG_LUMPER_INFO
+import com.quickhandslogistics.views.lumperSheet.LumperSheetFragment.Companion.TEMP_LUMPER
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETERS
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETER_VALUES
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
@@ -64,6 +65,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     private  var lumperAttendanceData: AttendanceDetail = AttendanceDetail()
 //    private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private var updateData: HashMap<String, AttendanceDetail> = HashMap()
+    private var tempLumperIds: ArrayList<String> =ArrayList()
 
     companion object {
         const val LUMPER_WORK_DETAIL = "LUMPER_WORK_DETAIL"
@@ -81,6 +83,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         intent.extras?.let { bundle ->
             lumpersInfo = bundle.getParcelable(ARG_LUMPER_INFO) as LumpersInfo?
             selectedTime = bundle.getLong(ARG_SELECTED_DATE_MILLISECONDS, 0)
+            tempLumperIds = bundle.getStringArrayList(TEMP_LUMPER) as ArrayList<String>
         }
 
         initializeUI()
@@ -126,6 +129,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
 
         lumpersInfo?.let { employeeData ->
             UIUtils.showEmployeeProfileImage(activity, employeeData.lumperImageUrl, circleImageViewProfile)
+            UIUtils.updateProfileBorder(this, tempLumperIds.contains(employeeData.lumperId), circleImageViewProfile)
             textViewLumperName.text = getDefaultOrValue(employeeData.lumperName)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData.lumperEmployeeId)
             viewAttendanceStatus.setBackgroundResource(if (employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
