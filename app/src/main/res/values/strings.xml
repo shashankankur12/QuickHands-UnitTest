@@ -248,7 +248,7 @@
     <string name="empty_work_item_lumpers_info_message">You haven\'t assigned any lumpers to this container. Click on \'Add Lumpers\' to assign.</string>
     <string name="empty_work_item_lumpers_past_date_info_message">You haven\'t assigned any lumpers to this container.</string>
     <string name="empty_building_operations_info_message">This building doesn\'t have any parameters assigned. Please contact the admin to add new parameters.</string>
-    <string name="empty_lumpers_list_info_message">This building doesn\'t have any lumpers assigned. Please contact the admin to assign new lumpers.</string>
+    <string name="empty_lumpers_list_info_message">There are no lumpers assigned to this shift/department. Please contact your District Manager.</string>
     <string name="empty_lumpers_list_info_message_time_clock">There are no lumpers assigned to this shift/department. Please contact your District Manager.</string>
     <string name="empty_customer_list_info_message">You don\'t have any Building assigned. Please contact the admin to assign Building.</string>
     <string name="empty_request_lumpers_list_info_message">Click on New Request to ask for additional lumpers for selected date.</string>
@@ -260,7 +260,7 @@
     <string name="empty_containers_list_ongoing_info_message">There are no Ongoing containers.</string>
     <string name="empty_containers_list_cancelled_info_message">There are no Cancelled containers.</string>
     <string name="empty_containers_list_completed_info_message">There are no Completed containers.</string>
-    <string name="empty_lumper_list_message">No Lumpers are assigne to this building. Please inform your District Manager </string>
+    <string name="empty_lumper_list_message">There are no lumpers assigned to this shift/department. Please contact your District Manager.</string>
 
     <!--Alert Messages-->
     <string name="are_you_sure_alert_message">Are you sure?</string>
