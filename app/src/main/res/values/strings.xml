@@ -249,7 +249,7 @@
     <string name="empty_work_item_lumpers_past_date_info_message">You haven\'t assigned any lumpers to this container.</string>
     <string name="empty_building_operations_info_message">This building doesn\'t have any parameters assigned. Please contact the admin to add new parameters.</string>
     <string name="empty_lumpers_list_info_message">This building doesn\'t have any lumpers assigned. Please contact the admin to assign new lumpers.</string>
-    <string name="empty_lumpers_list_info_message_time_clock">There are no lumpers assigned to this shift/department. Please contact your District Manager</string>
+    <string name="empty_lumpers_list_info_message_time_clock">There are no lumpers assigned to this shift/department. Please contact your District Manager.</string>
     <string name="empty_customer_list_info_message">You don\'t have any Building assigned. Please contact the admin to assign Building.</string>
     <string name="empty_request_lumpers_list_info_message">Click on New Request to ask for additional lumpers for selected date.</string>
     <string name="empty_request_lumpers_list_info_message_past">You haven\'t placed any request for the selected date.</string>
