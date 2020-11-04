@@ -475,8 +475,10 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                 .showMessageDialog(getString(R.string.edit_schedule_lumper_invalidate_message), context!!)
     }
 
-    override fun onScheduleNoteClick(adapterPosition: Int, notes: String) {
-        CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), notes, fragmentActivity!!)
+    override fun onScheduleNoteClick(
+        adapterPosition: Int, notes: String?, item: ScheduleTimeDetail) {
+        CustomeDialog.showLeadNoteDialog(activity, "Lead Note ", item.notesForLumper,notes)
+//        CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), notes, fragmentActivity!!)
     }
 
     override fun onAddRemoveClick(adapterPosition: Int, details: ScheduleTimeDetail) {

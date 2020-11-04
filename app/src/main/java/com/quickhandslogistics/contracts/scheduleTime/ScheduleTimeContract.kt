@@ -45,7 +45,11 @@ class ScheduleTimeContract {
                 timeInMillis: Long,
                 details: ScheduleTimeDetail
             )
-            fun onScheduleNoteClick(adapterPosition: Int, notes: String)
+            fun onScheduleNoteClick(
+                adapterPosition: Int,
+                notes: String?,
+                item: ScheduleTimeDetail
+            )
             fun onAddRemoveClick(
                 adapterPosition: Int,
                 details: ScheduleTimeDetail

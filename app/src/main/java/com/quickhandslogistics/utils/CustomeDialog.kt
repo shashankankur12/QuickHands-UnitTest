@@ -107,5 +107,44 @@ object CustomeDialog : AppConstant {
         dialog.show()
     }
 
+
+    fun showLeadNoteDialog(activity: Activity?, title: String?, individualNote: String?, groupNote: String?) {
+        mActivity = activity
+        val dialog =
+            getDialog(R.layout.lead_note_dialog, activity)
+        //        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        val window = dialog.window
+        window!!.setLayout(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        window.setBackgroundDrawableResource(android.R.color.transparent)
+        val titleTextView = dialog.findViewById<TextView>(R.id.title_text)
+        val layoutIndividualNote = dialog.findViewById<LinearLayout>(R.id.layoutIndividualNote)
+        val layoutGroupNote = dialog.findViewById<LinearLayout>(R.id.layoutGroupNote)
+        val individualNoteText: TextView = dialog.findViewById(R.id.individual_note)
+        val groupNoteText: TextView = dialog.findViewById(R.id.groupNote)
+        val confirm = dialog.findViewById<Button>(R.id.confirm_button)
+
+        if(individualNote.isNullOrEmpty()){
+            layoutIndividualNote.visibility=View.GONE
+        }else{
+            layoutIndividualNote.visibility=View.VISIBLE
+        }
+
+        if(groupNote.isNullOrEmpty()){
+            layoutGroupNote.visibility=View.GONE
+        }else{
+            layoutGroupNote.visibility=View.VISIBLE
+        }
+
+        individualNoteText.text= individualNote
+        groupNoteText.text= groupNote
+        titleTextView.text = title
+        confirm.setOnClickListener { dialog.dismiss() }
+        dialog.show()
+    }
+
+
     interface IDialogOnClick
 }

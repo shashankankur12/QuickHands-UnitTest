@@ -232,6 +232,7 @@
     <string name="monthly_scheduled">Monthly Scheduled</string>
     <string name="custom_scheduled">Custom Scheduled</string>
     <string name="custom_scheduleds">Custom Date Scheduled</string>
+    <string name="individual_note">Individual Note</string>
     <string name="date">Date: <![CDATA[<b> %s</b>]]></string>
     <string name="date_day">Date</string>
     <string name="complete_a">Complete %s</string>
