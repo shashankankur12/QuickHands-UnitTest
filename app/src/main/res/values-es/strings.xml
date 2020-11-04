@@ -252,7 +252,7 @@
     <string name="empty_customer_list_info_message">You don\'t have any Building assigned. Please contact the admin to assign Building.</string>
     <string name="empty_request_lumpers_list_info_message">You haven\'t placed any request for the selected date. Click on \'Create New Request\' to create an new request fo additional lumpers.\n</string>
     <string name="empty_request_lumpers_list_info_message_past">You haven\'t placed any request for the selected date.</string>
-    <string name="empty_lumper_sheet_info_message">No container has been Completed.</string>
+    <string name="empty_lumper_sheet_info_message">No lumpers have been clocked-in. </string>
     <string name="empty_containers_list_info_message">This building doesn\'t have any containers scheduled for the selected date.</string>
     <string name="empty_schedules_list_info_message">No Work Scheduled</string>
     <string name="empty_schedule_time_list_info_message">No Lumpers Scheduled</string>
