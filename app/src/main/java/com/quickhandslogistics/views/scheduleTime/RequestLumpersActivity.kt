@@ -2,6 +2,8 @@ package com.quickhandslogistics.views.scheduleTime
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,7 +29,8 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
-    RequestLumpersContract.View, RequestLumpersContract.View.OnAdapterItemClickListener {
+    RequestLumpersContract.View, RequestLumpersContract.View.OnAdapterItemClickListener,
+    TextWatcher {
 
     private var isPastDate = false
     private var selectedTime: Long = 0
@@ -135,6 +138,8 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         buttonSubmit.setOnClickListener(this)
         buttonCancelRequest.setOnClickListener(this)
         buttonCancelNote.setOnClickListener(this)
+//        editTextLumpersRequired.addTextChangedListener(this)
+//        editTextDMNotes.addTextChangedListener(this)
     }
 
     private fun closeBottomSheet() {
@@ -158,35 +163,42 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun showSubmitRequestConfirmationDialog(requiredLumperCount: String, notesDM: String) {
-        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.request_lumpers_alert_message), activity, object : CustomDialogWarningListener {
-            override fun onConfirmClick() {
-                closeBottomSheet()
-                val requestLumperId = buttonSubmit.getTag(R.id.requestLumperId) as String?
-                if (requestLumperId.isNullOrEmpty()) {
-                    requestLumpersPresenter.createNewRequestForLumpers(requiredLumperCount, notesDM, Date(selectedTime))
-                } else {
-                    requestLumpersPresenter.updateRequestForLumpers(requestLumperId, requiredLumperCount, notesDM, Date(selectedTime))
-                }
-            }
+        val requestLumperId = buttonSubmit.getTag(R.id.requestLumperId) as String?
+        if (requestLumperId.isNullOrEmpty()) {
+            CustomProgressBar.getInstance().showWarningDialog(getString(R.string.request_lumpers_alert_message), activity, object : CustomDialogWarningListener {
+                    override fun onConfirmClick() {
+                        closeBottomSheet()
+                        requestLumpersPresenter.createNewRequestForLumpers(requiredLumperCount, notesDM, Date(selectedTime)
+                        )
 
-            override fun onCancelClick() {
-            }
-        })
+                    }
+                    override fun onCancelClick() {}
+                })
+        } else {
+            closeBottomSheet()
+            requestLumpersPresenter.updateRequestForLumpers(requestLumperId, requiredLumperCount, notesDM, Date(selectedTime))
+        }
     }
 
     private fun showBottomSheetWithData(record: RequestLumpersRecord? = null) {
         constraintLayoutBottomSheetRequestLumpers.visibility=View.VISIBLE
         record?.also {
             textViewTitle.text = getString(R.string.update_request)
+            buttonSubmit.text = getString(R.string.update)
             val requestedLumpersCount = ValueUtils.getDefaultOrValue(record.requestedLumpersCount)
             editTextLumpersRequired.setText("$requestedLumpersCount")
             editTextDMNotes.setText(record.notesForDM)
             buttonSubmit.setTag(R.id.requestLumperId, record.id)
+            editTextLumpersRequired.setTag(R.id.requirment, requestedLumpersCount)
+            editTextDMNotes.setTag(R.id.note, record.notesForDM)
         } ?: run {
             textViewTitle.text = getString(R.string.create_new_request)
+            buttonSubmit.text = getString(R.string.submit)
             editTextLumpersRequired.setText("")
             editTextDMNotes.setText("")
             buttonSubmit.setTag(R.id.requestLumperId, "")
+            editTextLumpersRequired.setTag(R.id.requirment, "")
+            editTextDMNotes.setTag(R.id.note, "")
         }
 
         if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
@@ -195,6 +207,25 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         } else {
             closeBottomSheet()
         }
+    }
+
+
+    override fun afterTextChanged(text: Editable?) {
+        if (text === editTextLumpersRequired.editableText) {
+            var primaryRequest=editTextLumpersRequired.getTag(R.id.requirment)
+            buttonSubmit.isEnabled = !primaryRequest.equals(text)
+
+        } else if (text === editTextDMNotes.editableText) {
+            var primaryNote=editTextDMNotes.getTag(R.id.note)
+            buttonSubmit.isEnabled = !primaryNote.equals(text)
+
+        }
+    }
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+    }
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
     }
 
     override fun showLoginScreen() {
@@ -262,7 +293,8 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         var totalRequestCount: Int = 0
         var assignedLumersRequestCount: Int = 0
         records.forEach {
-            totalRequestCount += it.requestedLumpersCount!!
+            if (!it.requestStatus!!.equals(AppConstant.REQUEST_LUMPERS_STATUS_CANCELLED))
+                totalRequestCount += it.requestedLumpersCount!!
             if (!it.lumpersAllocated.isNullOrEmpty())
                 assignedLumersRequestCount += it.lumpersAllocated!!.size
         }
