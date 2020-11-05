@@ -92,19 +92,19 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
     }
 
     private fun saveWorkItemNotes() {
-        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.save_notes_alert_message), fragmentActivity!!, object : CustomDialogWarningListener {
-            override fun onConfirmClick() {
+//        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.save_notes_alert_message), fragmentActivity!!, object : CustomDialogWarningListener {
+//            override fun onConfirmClick() {
                 workItemDetail?.let {
                     val notesQHLCustomer = editTextQHLCustomerNotes.text.toString()
                     val notesQHL = editTextQHLNotes.text.toString()
 
                     onFragmentInteractionListener?.updateWorkItemNotes(notesQHLCustomer, notesQHL)
                 }
-            }
-
-            override fun onCancelClick() {
-            }
-        })
+//            }
+//
+//            override fun onCancelClick() {
+//            }
+//        })
     }
 
     /** Native Views Listeners */
