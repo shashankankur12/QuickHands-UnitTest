@@ -149,14 +149,14 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
     private fun showConfirmationDialog() {
         val selectedLumperIdsList = addWorkItemLumperAdapter.getSelectedLumper()
         if (selectedLumperIdsList.size > 0) {
-            CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
-                override fun onConfirmClick() {
+//            CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
+//                override fun onConfirmClick() {
                     assignLumpersToWorkItem(selectedLumperIdsList)
-                }
-
-                override fun onCancelClick() {
-                }
-            })
+//                }
+//
+//                override fun onCancelClick() {
+//                }
+//            })
         }
     }
 
