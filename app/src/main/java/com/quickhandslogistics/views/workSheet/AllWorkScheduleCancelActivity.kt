@@ -84,7 +84,7 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Lump
     private fun invalidateEmptyView() {
         if (allWorkScheduleCancelAdapter.itemCount == 0) {
             textViewEmptyData.visibility = View.VISIBLE
-            isDataSave(true)
+//            isDataSave(true)
             buttonSubmit.isEnabled=false
             if (allWorkScheduleCancelAdapter.isSearchEnabled()) {
                 textViewEmptyData.text = getString(R.string.no_record_found_info_message)
@@ -93,10 +93,10 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Lump
             }
         } else if (allWorkScheduleCancelAdapter.getSelectedLumper().size>0) {
             buttonSubmit.isEnabled=true
-            isDataSave(false)
+//            isDataSave(false)
         }else{
             buttonSubmit.isEnabled=false
-            isDataSave(true)
+//            isDataSave(true)
             textViewEmptyData.visibility = View.GONE
             textViewEmptyData.text = getString(R.string.empty_work_item_cancel_message)
         }
@@ -167,7 +167,7 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Lump
 
     override fun cancellingWorkScheduleFinished() {
         setResult(RESULT_OK)
-        isDataSave(true)
+//        isDataSave(true)
         onBackPressed()
     }
 
