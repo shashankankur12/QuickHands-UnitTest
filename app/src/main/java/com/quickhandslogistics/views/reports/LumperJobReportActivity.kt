@@ -210,8 +210,11 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
             if (lumperJobReportAdapter.isSearchEnabled()) {
                 textViewEmptyData.text = getString(R.string.no_record_found_info_message)
             } else if (selectedStartDate == null || selectedEndDate == null) {
-                textViewEmptyData.text = getString(R.string.no_record_found_info_message)
-            }else {
+                if (isCustome) {
+                    textViewEmptyData.text = getString(R.string.custome_report_message)
+                } else
+                    textViewEmptyData.text = getString(R.string.no_record_found_info_message)
+            } else {
                 textViewEmptyData.text = getString(R.string.empty_lumpers_list_info_message)
             }
         } else {

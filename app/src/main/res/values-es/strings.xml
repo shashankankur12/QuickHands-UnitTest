@@ -325,6 +325,7 @@
     <string name="forgot_password_info_message">Enter the following information to receive an email with a  link to reset your password.</string>
     <string name="no_of_lumpers_needed">No. of Additional Lumpers Needed</string>
     <string name="no_record_found_info_message">No Record Found</string>
+    <string name="custome_report_message">Enter a Date Range first. Then available workers will appear for selection.</string>
     <string name="notes_by_customer">Notes by Customer</string>
     <string name="notes_for_customer">Notes for Customer</string>
     <string name="notes_for_scheduled_lumpers">Notes for Scheduled Lumpers…</string>
