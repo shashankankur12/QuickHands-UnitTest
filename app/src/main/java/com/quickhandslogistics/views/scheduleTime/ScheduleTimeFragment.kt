@@ -351,35 +351,37 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     private fun showConfirmationDialog(type: String) {
         var message =""
 
-        if (type.equals(CANCEL_SCHEDULE_LUMPER))
-            message=getString(R.string.cancel_request_lumper)
-        else if(type.equals(EDIT_SCHEDULE_LUMPER))
-            message=getString(R.string.edit_schedule_lumper_message)
+        if (type.equals(CANCEL_SCHEDULE_LUMPER)){
+            val requestLumperId = buttonYes.getTag(R.id.requestLumperId) as String?
+            val requestLumperDate = textViewTitle.getTag(R.id.cancelLumperDay) as String?
+            if (!requestLumperId.isNullOrEmpty() && !requestLumperDate.isNullOrEmpty()) {
+                scheduleTimePresenter.cancelScheduleLumpers(requestLumperId, selectedDate/*DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, requestLumperDate)*/)
+            }
+        }
+        else if(type.equals(EDIT_SCHEDULE_LUMPER)) {
+            message = getString(R.string.edit_schedule_lumper_message)
 
-        CustomProgressBar.getInstance().showWarningDialog(message, context!!, object : CustomDialogWarningListener {
-            override fun onConfirmClick() {
-                closeBottomSheet()
-                if (type.equals(CANCEL_SCHEDULE_LUMPER)) {
-                    val requestLumperId = buttonYes.getTag(R.id.requestLumperId) as String?
-                    val requestLumperDate = textViewTitle.getTag(R.id.cancelLumperDay) as String?
-                    if (!requestLumperId.isNullOrEmpty() && !requestLumperDate.isNullOrEmpty()) {
-                        scheduleTimePresenter.cancelScheduleLumpers(requestLumperId, selectedDate/*DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, requestLumperDate)*/)
-                    }
-                } else if(type.equals(EDIT_SCHEDULE_LUMPER)){
-                    val requestLumperId = buttonUpdate.getTag(R.id.requestLumperId) as String?
-                    val requestLumperDate = textViewTitle.getTag(R.id.cancelLumperDay) as String?
-                    val individualNote = editTextNote.text.toString()
-                    val groupNote = editTextNoteGroup.text.toString()
-                    val request = ScheduleTimeNoteRequest(individualNote,groupNote)
-                    if (!requestLumperId.isNullOrEmpty() && !requestLumperDate.isNullOrEmpty()) {
-                        scheduleTimePresenter.editScheduleLumpers(requestLumperId,selectedDate /*DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, requestLumperDate)*/,timeInMillis!!, request )
-                    }
+            CustomProgressBar.getInstance().showWarningDialog(message, context!!, object : CustomDialogWarningListener {
+                override fun onConfirmClick() {
+                    closeBottomSheet()
+//                    if (type.equals(CANCEL_SCHEDULE_LUMPER)) {
+//
+//                    } else if (type.equals(EDIT_SCHEDULE_LUMPER)) {
+                        val requestLumperId = buttonUpdate.getTag(R.id.requestLumperId) as String?
+                        val requestLumperDate = textViewTitle.getTag(R.id.cancelLumperDay) as String?
+                        val individualNote = editTextNote.text.toString()
+                        val groupNote = editTextNoteGroup.text.toString()
+                        val request = ScheduleTimeNoteRequest(individualNote, groupNote)
+                        if (!requestLumperId.isNullOrEmpty() && !requestLumperDate.isNullOrEmpty()) {
+                            scheduleTimePresenter.editScheduleLumpers(requestLumperId, selectedDate /*DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, requestLumperDate)*/, timeInMillis!!, request)
+                        }
+//                    }
                 }
-            }
 
-            override fun onCancelClick() {
-            }
-        })
+                override fun onCancelClick() {
+                }
+            })
+        }
     }
 
     /** Presenter Listeners */
