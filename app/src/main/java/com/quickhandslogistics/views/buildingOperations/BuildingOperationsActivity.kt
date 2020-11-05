@@ -73,14 +73,14 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, Buildin
     private fun submitBODetails() {
         val data = buildingOperationsAdapter?.getUpdatedData()
         data?.let {
-            CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
-                override fun onConfirmClick() {
+//            CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
+//                override fun onConfirmClick() {
                     buildingOperationsPresenter.saveBuildingOperationsData(workItemId, data)
-                }
-
-                override fun onCancelClick() {
-                }
-            })
+//                }
+//
+//                override fun onCancelClick() {
+//                }
+//            })
         }
     }
 
