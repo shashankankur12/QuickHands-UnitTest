@@ -281,19 +281,19 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun saveSelectedTimings() {
-        CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
-            override fun onConfirmClick() {
+//        CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
+//            override fun onConfirmClick() {
                 val waitingTime = editTextWaitingTime.text.toString()
 
                 addLumperTimeWorkSheetItemPresenter.saveLumperTimings(
                     employeeData?.id!!, workItemId, selectedStartTime, selectedEndTime,
                     selectedBreakInTime, selectedBreakOutTime, waitingTime,partWorkDone
                 )
-            }
-
-            override fun onCancelClick() {
-            }
-        })
+//            }
+//
+//            override fun onCancelClick() {
+//            }
+//        })
     }
 
     /** Native Views Listeners */
