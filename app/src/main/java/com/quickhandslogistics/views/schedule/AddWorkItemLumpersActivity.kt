@@ -117,7 +117,7 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
 
     private fun invalidateEmptyView() {
         if (addWorkItemLumperAdapter.itemCount == 0) {
-            isDataSave(true)
+//            isDataSave(true)
             textViewEmptyData.visibility = View.VISIBLE
             if (addWorkItemLumperAdapter.isSearchEnabled()) {
                 textViewEmptyData.text = getString(R.string.no_record_found_info_message)
@@ -125,7 +125,7 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
                 textViewEmptyData.text = getString(R.string.empty_add_work_item_lumpers_info_message)
             }
         } else {
-            if (isListUpdated())isDataSave(false) else isDataSave(true)
+//            if (isListUpdated())isDataSave(false) else isDataSave(true)
             textViewEmptyData.visibility = View.GONE
             textViewEmptyData.text = getString(R.string.empty_add_work_item_lumpers_info_message)
         }
@@ -214,7 +214,7 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
 
     override fun lumperAssignmentFinished() {
         setResult(RESULT_OK)
-        isDataSave(true)
+//        isDataSave(true)
         onBackPressed()
     }
 
