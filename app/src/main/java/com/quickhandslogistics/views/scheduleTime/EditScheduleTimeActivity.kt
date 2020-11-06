@@ -137,7 +137,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         buttonCancelNote.setOnClickListener(this)
         bottomSheetBackgroundEditSchedule.setOnClickListener(this)
         buttonSaveNote.setOnClickListener(this)
-//        buttonCancel.setOnClickListener(this)
+        buttonCancelDialog.setOnClickListener(this)
 
         invalidateOptionsMenu()
 
@@ -257,7 +257,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             when (view.id) {
                 imageViewAddLumpers.id -> showChooseLumpersScreen()
                 bottomSheetBackgroundEditSchedule.id -> closeBottomSheet()
-//                buttonCancel.id -> closeBottomSheet()
+                buttonCancelDialog.id -> closeBottomSheet()
                 textViewAddSameTime.id -> chooseSameTimeForAllLumpers()
                 buttonCancelNote.id -> onBackPressed()
                 buttonSubmit.id -> saveLumperScheduleTimings()
@@ -304,9 +304,9 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
 
 
     private fun showBottomSheetWithData(record: ScheduleTimeDetail? = null, adapterPosition: Int) {
-        record?.also {
-            textViewTitle.text = getString(R.string.update_request)
-            val noteForLumper = ValueUtils.getDefaultOrValue(record.notesForLumper)
+        record?.notesForLumper.also {
+            textViewTitle.text = getString(R.string.update_notes)
+            val noteForLumper = ValueUtils.getDefaultOrValue(it)
             editTextDMNotes.setText(noteForLumper)
             buttonSubmit.setTag(R.id.adapterPosition, adapterPosition)
         } ?: run {

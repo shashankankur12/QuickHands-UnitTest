@@ -5,6 +5,7 @@
     <string name="ability_to_travel">Ability to travel between buildings</string>
     <string name="add_lumpers">Add Lumpers</string>
     <string name="add_notes">Add Notes</string>
+    <string name="update_notes">Update Notes</string>
     <string name="add_signature">Add Signature</string>
     <string name="add_start_time">Add Start Time</string>
     <string name="add_time">Add Time</string>
@@ -251,7 +252,7 @@
     <string name="empty_lumpers_list_info_message">There are no lumpers assigned to this shift/department. Please contact your District Manager.</string>
     <string name="empty_lumpers_list_info_message_time_clock">There are no lumpers assigned to this shift/department. Please contact your District Manager.</string>
     <string name="empty_customer_list_info_message">You don\'t have any Building assigned. Please contact the admin to assign Building.</string>
-    <string name="empty_request_lumpers_list_info_message">You haven\'t placed any request for the selected date. Click on \'Create New Request\' to create an new request fo additional lumpers.\n</string>
+    <string name="empty_request_lumpers_list_info_message">Click on New Request to ask your District Manager for additional lumpers for this date. \n</string>
     <string name="empty_request_lumpers_list_info_message_past">You haven\'t placed any request for the selected date.</string>
     <string name="empty_lumper_sheet_info_message">No lumpers have been clocked-in. </string>
     <string name="empty_containers_list_info_message">This building doesn\'t have any containers scheduled for the selected date.</string>

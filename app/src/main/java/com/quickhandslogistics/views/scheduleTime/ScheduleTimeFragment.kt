@@ -355,6 +355,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             val requestLumperId = buttonYes.getTag(R.id.requestLumperId) as String?
             val requestLumperDate = textViewTitle.getTag(R.id.cancelLumperDay) as String?
             if (!requestLumperId.isNullOrEmpty() && !requestLumperDate.isNullOrEmpty()) {
+                closeBottomSheet()
                 scheduleTimePresenter.cancelScheduleLumpers(requestLumperId, selectedDate/*DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, requestLumperDate)*/)
             }
         }

@@ -70,10 +70,10 @@
             android:text="@string/save" />
 
         <Button
-            android:id="@+id/buttonCancelNote"
+            android:id="@+id/buttonCancelDialog"
             style="@style/negativeRoundButtonTheme"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="37dp"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_weight="1"
             android:text="@string/cancel" />
