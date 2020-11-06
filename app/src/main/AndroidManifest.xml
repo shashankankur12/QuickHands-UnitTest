@@ -22,7 +22,7 @@
         <activity android:name=".views.buildingOperations.BuildingOperationsActivity" />
         <activity
             android:name=".views.common.AddSignatureActivity"
-            android:screenOrientation="reverseLandscape" />
+            android:configChanges="orientation"/>
         <activity android:name=".views.common.BuildingOperationsViewActivity" />
         <activity android:name=".views.scheduleTime.ChooseLumpersActivity" />
         <activity android:name=".views.common.DisplayLumpersListActivity" />
