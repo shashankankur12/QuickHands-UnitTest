@@ -543,16 +543,16 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
     }
 
     private fun showConfirmationDialog(message: String, customerName: String, notesCustomer: String) {
-        CustomProgressBar.getInstance().showWarningDialog(message, fragmentActivity!!, object : CustomDialogWarningListener {
-            override fun onConfirmClick() {
+//        CustomProgressBar.getInstance().showWarningDialog(message, fragmentActivity!!, object : CustomDialogWarningListener {
+//            override fun onConfirmClick() {
                 closeBottomSheet()
                 val customerId = buttonSubmit.getTag(R.id.requestLumperId) as String?
                 saveCustomerSheet(customerName, notesCustomer, signatureFilePath, customerId!!)
-            }
-
-            override fun onCancelClick() {
-            }
-        })
+//            }
+//
+//            override fun onCancelClick() {
+//            }
+//        })
     }
 
     private fun disableSignature(){
