@@ -246,7 +246,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
                     val requiredLumperCount = editTextLumpersRequired.text.toString()
                     val notesDM = editTextDMNotes.text.toString()
                     if (requiredLumperCount.isEmpty() || notesDM.isEmpty()) {
-                        CustomProgressBar.getInstance().showErrorDialog(getString(R.string.request_help_message), activity)
+                        CustomProgressBar.getInstance().showInfoDialog(getString(R.string.requirement),getString(R.string.request_help_message), activity)
                     }else if(requiredLumperCount.toInt()==0) {
                         CustomProgressBar.getInstance().showMessageDialog(getString(R.string.request_valid_message), activity)
                     }else {

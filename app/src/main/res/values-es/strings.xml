@@ -237,6 +237,7 @@
     <string name="date_day">Date</string>
     <string name="complete_a">Complete %s</string>
     <string name="submitted">Submitted</string>
+    <string name="requirement">Requirements</string>
     <string name="cancel_header_details">Remove <![CDATA[<b><font color=#e30913> %s</font></b>]]> from <![CDATA[<b><font color=#e30913> %s</font></b>]]> schedule</string>
 
     <!--No Record Messages-->
@@ -312,7 +313,7 @@
     <string name="assign_lumpers_bracktime_message">You haven\'t finish break time for lumper . Please finish break time for lumper, before changing the container status to complete. \n</string>
     <string name="assign_work_done_message">You haven\'t enter work done. Please enter work done, before changing the container status to complete. \n</string>
     <string name="password_short_length_message">Please enter Password of at-least 8 characters</string>
-    <string name="request_help_message"><![CDATA[You will have to enter both Required Lumper Count & DM Notes]]></string>
+    <string name="request_help_message"><![CDATA[Enter Number of Lumpers and Notes for DM.]]></string>
     <string name="request_valid_message"><![CDATA[Please enter valid number of additional lumpers needed.]]></string>
     <string name="something_went_wrong_message">Something went wrong, Please try again after sometime!!!</string>
     <string name="cancel_schedule_lumper_invalidate_message">You can cancel lumper after two hours of start time!!!</string>
