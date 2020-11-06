@@ -178,7 +178,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:layout_weight="1"
-                    android:text="@string/submit" />
+                    android:text="@string/save" />
 
                 <Button
                     android:id="@+id/buttonCancel"
