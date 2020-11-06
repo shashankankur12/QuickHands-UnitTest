@@ -470,6 +470,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     }
 
     override fun showDataSavedMessage() {
+        timeClockAttendancePresenter.fetchAttendanceList()
 //        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.attendance_saved_success_message),
 //            fragmentActivity!!, object : CustomDialogListener {
 //                override fun onConfirmClick() {

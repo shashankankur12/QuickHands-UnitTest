@@ -88,7 +88,7 @@ class LumperDetailActivity : BaseActivity(), View.OnClickListener {
             viewAttendanceStatus.setBackgroundResource(if (employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
 
             textViewBuildingName.text = if (!buildingDetailData?.buildingName.isNullOrEmpty()) buildingDetailData?.buildingName!!.capitalize() else "---"
-            textViewCustomerName.text = if (!buildingDetailData?.customerDetail?.companyAdminName.isNullOrEmpty()) buildingDetailData?.customerDetail?.companyAdminName!!.capitalize() else "---"
+            textViewCustomerName.text = if (!buildingDetailData?.customerDetail?.companyName.isNullOrEmpty()) buildingDetailData?.customerDetail?.companyName!!.capitalize() else "---"
 
 
             //circleImageViewProfile.setOnClickListener(this@LumperDetailActivity)

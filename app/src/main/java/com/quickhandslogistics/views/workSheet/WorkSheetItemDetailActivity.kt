@@ -254,16 +254,16 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         if (status == AppConstant.WORK_ITEM_STATUS_CANCELLED || status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
             message = getString(R.string.change_status_permanently_alert_message)
         }
-        CustomProgressBar.getInstance().showWarningDialog(message, activity, object : CustomDialogWarningListener {
-            override fun onConfirmClick() {
+//        CustomProgressBar.getInstance().showWarningDialog(message, activity, object : CustomDialogWarningListener {
+//            override fun onConfirmClick() {
                 closeBottomSheet()
                 workSheetItemDetailPresenter.changeWorkItemStatus(workItemId, status)
-            }
-
-            override fun onCancelClick() {
-                workSheetItemStatusAdapter?.updateInitialStatus(textViewStatus.text.toString(), workItemDetail.isCompleted!!)
-            }
-        })
+//            }
+//
+//            override fun onCancelClick() {
+//                workSheetItemStatusAdapter?.updateInitialStatus(textViewStatus.text.toString(), workItemDetail.isCompleted!!)
+//            }
+//        })
     }
 
     private fun getStartTimeCount(lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>): String {
