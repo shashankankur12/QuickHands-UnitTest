@@ -143,6 +143,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         buttonLunchIn.setOnClickListener(this)
         buttonLunchOut.setOnClickListener(this)
         bottomSheetBackground.setOnClickListener(this)
+        mainCoordinatorLayout.setOnClickListener(this)
 
         buttonClockIn.setOnLongClickListener(this)
         buttonClockOut.setOnLongClickListener(this)
@@ -165,12 +166,15 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     }
 
     private fun closeBottomSheet() {
+        AppUtils.hideSoftKeyboard(activity!!)
+        bottom_sheet.visibility=View.GONE
         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetBackground.visibility = View.GONE
     }
 
     private fun showTimePickerLayoutForMultipleLumpers() {
         if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+            bottom_sheet.visibility=View.VISIBLE
             var isClockInEditable = true
             var isClockOutEditable = true
             var isLunchInEditable = true
@@ -360,8 +364,8 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
         view?.let {
             when (view.id) {
-
                 bottomSheetBackground.id -> closeBottomSheet()
+                mainCoordinatorLayout.id -> {AppUtils.hideSoftKeyboard(activity!!)}
                 buttonClockIn.id -> clockInButtonClicked()
                 buttonClockOut.id -> clockOutButtonClicked()
                 buttonLunchIn.id -> lunchInButtonClicked()
@@ -515,6 +519,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     /** Adapter Listeners */
     override fun onAddTimeClick(lumperAttendanceData: LumperAttendanceData, itemPosition: Int) {
         if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+            bottom_sheet.visibility=View.VISIBLE
             sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             bottomSheetBackground.visibility = View.VISIBLE
             bottomSheetBackground.setTag(R.id.attendancePosition, itemPosition)

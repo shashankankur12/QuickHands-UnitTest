@@ -12,10 +12,7 @@ import com.quickhandslogistics.contracts.reports.LumperJobReportContract
 import com.quickhandslogistics.contracts.workSheet.AllWorkScheduleCancelContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.presenters.workSheet.AllWorkScheduleCancelPresenter
-import com.quickhandslogistics.utils.ConnectionDetector
-import com.quickhandslogistics.utils.CustomDialogWarningListener
-import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.activity_all_work_schedule_cancel.*
@@ -85,6 +82,7 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Lump
 //        editTextSearch.addTextChangedListener(this)
         imageViewAdd.setOnClickListener(this)
         buttonCancelRequest.setOnClickListener(this)
+        mainConstraintLayout.setOnClickListener(this)
     }
 
     private fun invalidateEmptyView() {
@@ -145,6 +143,10 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Lump
                 }
                 buttonCancelRequest.id -> {
                     super.onBackPressed()
+                }
+
+                mainConstraintLayout.id->{
+                    AppUtils.hideSoftKeyboard(this)
                 }
             }
         }
