@@ -103,6 +103,11 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
                 showLocalSignatureOnUI(signatureFilePath)
             }
         } ?: run {
+            if (!ConnectionDetector.isNetworkConnected(this)) {
+                ConnectionDetector.createSnackBar(this)
+                return
+            }
+
             lumperWorkDetailPresenter.getLumperWorkDetails(getDefaultOrValue(lumpersInfo?.lumperId), Date(selectedTime))
         }
 
@@ -202,6 +207,11 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     }
 
     private fun showConfirmationDialog() {
+        if (!ConnectionDetector.isNetworkConnected(this)) {
+            ConnectionDetector.createSnackBar(this)
+            return
+        }
+
         CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 lumperWorkDetailPresenter.saveLumperSignature(lumpersInfo?.lumperId!!, Date(selectedTime), signatureFilePath)
@@ -393,6 +403,11 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
 //    }
 
     private fun showUpdateConfirmationDialog() {
+        if (!ConnectionDetector.isNetworkConnected(this)) {
+            ConnectionDetector.createSnackBar(this)
+            return
+        }
+
         CustomProgressBar.getInstance().showWarningDialog(getString(R.string.save_attendance_alert_message), this, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
 //                closeBottomSheet()
@@ -406,6 +421,11 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
 
     /** Native Views Listeners */
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(this)) {
+            ConnectionDetector.createSnackBar(this)
+            return
+        }
+
         view?.let {
             when (view.id) {
                 textViewAddSignature.id -> startIntent(AddSignatureActivity::class.java, requestCode = AppConstant.REQUEST_CODE_CHANGED)
@@ -458,6 +478,11 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         }
     }
     override fun showDataSavedMessage() {
+        if (!ConnectionDetector.isNetworkConnected(this)) {
+            ConnectionDetector.createSnackBar(this)
+            return
+        }
+
         CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.attendance_saved_success_message),
             this, object : CustomDialogListener {
                 override fun onConfirmClick() {
@@ -518,6 +543,10 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
 
     /** Adapter Listeners */
     override fun onBOItemClick(workItemDetail: WorkItemDetail, parameters: ArrayList<String>) {
+        if (!ConnectionDetector.isNetworkConnected(this)) {
+            ConnectionDetector.createSnackBar(this)
+            return
+        }
         val bundle = Bundle()
         bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, parameters)
         bundle.putSerializable(ARG_BUILDING_PARAMETER_VALUES, workItemDetail.buildingOps)
@@ -525,6 +554,10 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     }
 
     override fun onNotesItemClick(notes: String?) {
+        if (!ConnectionDetector.isNetworkConnected(this)) {
+            ConnectionDetector.createSnackBar(this)
+            return
+        }
         notes?.let {
             CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), notes, activity)
         }

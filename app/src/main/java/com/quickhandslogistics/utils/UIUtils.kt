@@ -1,6 +1,7 @@
 package com.quickhandslogistics.utils
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Build
 import android.telephony.PhoneNumberUtils
 import android.text.Html
@@ -11,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.data.lumpers.EmployeeData
-import com.quickhandslogistics.data.lumpers.PresentLumper
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -21,9 +21,9 @@ object UIUtils {
         var fullName = ""
         employeeData?.let {
             fullName = String.format(
-                "%s %s",
-                getDefaultOrValue(employeeData.firstName).trim().capitalize(),
-                getDefaultOrValue(employeeData.lastName).trim().capitalize()
+                    "%s %s",
+                    getDefaultOrValue(employeeData.firstName).trim().capitalize(),
+                    getDefaultOrValue(employeeData.lastName).trim().capitalize()
             )
         }
         return fullName
@@ -33,9 +33,9 @@ object UIUtils {
         var fullName = ""
         employeeData?.let {
             fullName = String.format(
-                "%s %s",
-                getDefaultOrValue(employeeData.firstName).trim().capitalize(),
-                getDefaultOrValue(employeeData.lastName).trim().capitalize()
+                    "%s %s",
+                    getDefaultOrValue(employeeData.firstName).trim().capitalize(),
+                    getDefaultOrValue(employeeData.lastName).trim().capitalize()
             )
         }
         return fullName
@@ -131,8 +131,14 @@ object UIUtils {
     }
 
     fun getSpannableText(sourseString: String, valueString: String): Spanned? {
-        var stringFormet=String.format(sourseString,valueString)
+        var stringFormet=String.format(sourseString, valueString)
         return getSpannedText(stringFormet)
+    }
+
+    fun isNetworkConnected(context: Context): Boolean {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = cm.activeNetworkInfo
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting
     }
 }
 

@@ -13,10 +13,7 @@ import com.quickhandslogistics.adapters.schedule.AddWorkItemLumperAdapter
 import com.quickhandslogistics.contracts.schedule.AddWorkItemLumpersContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.presenters.schedule.AddWorkItemLumpersPresenter
-import com.quickhandslogistics.utils.AppUtils
-import com.quickhandslogistics.utils.CustomDialogWarningListener
-import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
@@ -76,6 +73,11 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
                 showLumpersData(permanentLumpersList, temporaryLumpersList)
             }
         } ?: run {
+            if (!ConnectionDetector.isNetworkConnected(activity)) {
+                ConnectionDetector.createSnackBar(activity)
+                return
+            }
+
             addWorkItemLumpersPresenter.fetchLumpersList()
         }
 
@@ -147,6 +149,11 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
     }
 
     private fun showConfirmationDialog() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         val selectedLumperIdsList = addWorkItemLumperAdapter.getSelectedLumper()
         if (selectedLumperIdsList.size > 0) {
 //            CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
@@ -161,6 +168,11 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
     }
 
     private fun assignLumpersToWorkItem(selectedLumperIdsList: ArrayList<String>) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         val tempLumperIds = ArrayList<String>()
         for (lumper in temporaryLumpersList) {
             if (selectedLumperIdsList.contains(lumper.id!!)) {
@@ -173,6 +185,11 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
 
     /** Native Views Listeners */
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         view?.let {
             when (view.id) {
                 buttonAdd.id -> showConfirmationDialog()
@@ -202,6 +219,11 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
     }
 
     override fun showLumpersData(permanentLumpers: ArrayList<EmployeeData>, temporaryLumpers: ArrayList<EmployeeData>) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         this.permanentLumpersList = permanentLumpers
         this.temporaryLumpersList = temporaryLumpers
 

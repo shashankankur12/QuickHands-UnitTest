@@ -1,5 +1,6 @@
 package com.quickhandslogistics.views.reports
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -56,6 +57,10 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
             }
         } ?: run {
             val dateString = DateUtils.getCurrentDateStringByEmployeeShift()
+            if (!ConnectionDetector.isNetworkConnected(this)) {
+                ConnectionDetector.createSnackBar(this)
+                return
+            }
             timeClockReportPresenter!!.fetchLumpersList(dateString, dateString)
 
         }
@@ -263,6 +268,10 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
     }
 
     private fun getLumperListData() {
+        if (!ConnectionDetector.isNetworkConnected(this)) {
+            ConnectionDetector.createSnackBar(this)
+            return
+        }
         startDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedStartDate!!)
         endDate =DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedEndDate!!)
         if (timeClockReportPresenter!=null)
@@ -271,6 +280,10 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
     }
 
     private fun showConfirmationDialog() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
         CustomProgressBar.getInstance().showWarningDialog(getString(R.string.generate_report_alert_message), activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 val reportType = if (radioGroupReportType.checkedRadioButtonId == radioButtonPdf.id) "pdf" else "excel"
@@ -284,6 +297,11 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
 
     /** Native Views Listeners */
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(this)) {
+            ConnectionDetector.createSnackBar(this)
+            return
+        }
+
         view?.let {
             when (view.id) {
                 imageViewCancel.id -> {
@@ -316,6 +334,10 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
     }
 
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+        if (!ConnectionDetector.isNetworkConnected(this)) {
+            ConnectionDetector.createSnackBar(this)
+            return
+        }
         if (!mCheckedId.equals(checkedId)){
             updateTimeByRangeOptionSelected()
             timeClockReportAdapter.clearAllSelection()

@@ -19,6 +19,7 @@ import com.quickhandslogistics.views.buildingOperations.BuildingOperationsActivi
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETERS
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.ConnectionDetector
 import kotlinx.android.synthetic.main.fragment_work_sheet_item_detail_bo.*
 
 class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
@@ -89,6 +90,11 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
+            if (!ConnectionDetector.isNetworkConnected(activity)) {
+                ConnectionDetector.createSnackBar(activity)
+                return
+            }
+
             onFragmentInteractionListener?.fetchWorkItemDetail(changeResultCode = true)
         }
     }
@@ -113,6 +119,11 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
 
     /** Native Views Listeners */
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         view?.let {
             when (view.id) {
                 buttonUpdate.id -> {

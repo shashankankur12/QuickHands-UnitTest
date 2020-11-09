@@ -12,6 +12,7 @@ import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.data.schedule.ScheduleWorkItem
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.ConnectionDetector
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.views.BaseFragment
@@ -92,6 +93,11 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
     }
 
     private fun saveWorkItemNotes() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
 //        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.save_notes_alert_message), fragmentActivity!!, object : CustomDialogWarningListener {
 //            override fun onConfirmClick() {
                 workItemDetail?.let {
@@ -109,6 +115,11 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
 
     /** Native Views Listeners */
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         view?.let {
             when (view.id) {
                 buttonSubmit.id -> saveWorkItemNotes()

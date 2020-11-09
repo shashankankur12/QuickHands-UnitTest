@@ -83,6 +83,11 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
                 showLumpersAttendance(lumperAttendanceList)
             }
         } ?: run {
+            if (!ConnectionDetector.isNetworkConnected(activity)) {
+                ConnectionDetector.createSnackBar(activity)
+                return
+            }
+
             timeClockAttendancePresenter.fetchAttendanceList()
         }
     }
@@ -348,8 +353,14 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
     /** Native Views Listeners */
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         view?.let {
             when (view.id) {
+
                 bottomSheetBackground.id -> closeBottomSheet()
                 buttonClockIn.id -> clockInButtonClicked()
                 buttonClockOut.id -> clockOutButtonClicked()
@@ -470,6 +481,11 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     }
 
     override fun showDataSavedMessage() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         timeClockAttendancePresenter.fetchAttendanceList()
 //        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.attendance_saved_success_message),
 //            fragmentActivity!!, object : CustomDialogListener {

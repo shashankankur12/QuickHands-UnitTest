@@ -176,6 +176,11 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     }
 
     private fun fetchScheduledWorkItems() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         if (singleRowCalendarSchedule.getSelectedDates().isNotEmpty()) {
             schedulePresenter.getScheduledWorkItemsByDate(singleRowCalendarSchedule.getSelectedDates()[0], currentPageIndex)
         }
@@ -275,6 +280,11 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
     /** Adapter Listeners */
     override fun onScheduleItemClick(scheduleDetail: ScheduleDetail) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         val bundle = Bundle()
         bundle.putBoolean(ARG_ALLOW_UPDATE, DateUtils.isCurrentDate(selectedTime))
         bundle.putBoolean(ARG_IS_FUTURE_DATE, DateUtils.isFutureDate(selectedTime))
@@ -284,6 +294,11 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     }
 
     override fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         val bundle = Bundle()
         bundle.putParcelableArrayList(DisplayLumpersListActivity.ARG_LUMPERS_LIST, lumpersList)
         startIntent(DisplayLumpersListActivity::class.java, bundle = bundle)
@@ -291,6 +306,11 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
     /** Calendar Listeners */
     override fun onSelectCalendarDate(date: Date, selected: Boolean, position: Int) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         if (!isSavedState) {
             resetPaginationValues()
             schedulePresenter.getScheduledWorkItemsByDate(date, currentPageIndex)

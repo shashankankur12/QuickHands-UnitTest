@@ -78,6 +78,11 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         headerLayout.setOnClickListener(this)
 
         dashBoardPresenter = DashBoardPresenter(this, resources, sharedPref)
+
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
         dashBoardPresenter.loadLeadProfileData()
 
         snackBar = SnackBarFactory.createShortSnackBar(activity, frameLayoutMain, getString(R.string.press_back_again_to_exit), isShow = false)
@@ -226,6 +231,11 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     }
 
     private fun openLeadActivity() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         navDrawer?.setOpen(false)
         startIntent(LeadProfileActivity::class.java)
     }
@@ -299,6 +309,11 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     }
 
     override fun onLogoutOptionSelected() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         CustomProgressBar.getInstance().showWarningDialog(getString(R.string.logout_alert_message), activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 isPerformLogout=true

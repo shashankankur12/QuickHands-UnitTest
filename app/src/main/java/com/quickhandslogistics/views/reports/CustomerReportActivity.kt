@@ -1,5 +1,6 @@
 package com.quickhandslogistics.views.reports
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -223,6 +224,11 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
 
     /** Native Views Listeners */
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(this)) {
+            ConnectionDetector.createSnackBar(this)
+            return
+        }
+
         view?.let {
             when (view.id) {
                 textViewStartDate.id -> showStartDatePicker()
@@ -239,6 +245,11 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
     }
 
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+        if (!ConnectionDetector.isNetworkConnected(this)) {
+            ConnectionDetector.createSnackBar(this)
+            return
+        }
+
         updateTimeByRangeOptionSelected()
     }
 

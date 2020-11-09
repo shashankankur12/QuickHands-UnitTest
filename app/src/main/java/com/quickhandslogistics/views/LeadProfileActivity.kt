@@ -8,6 +8,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.LeadProfileContract
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.presenters.LeadProfilePresenter
+import com.quickhandslogistics.utils.ConnectionDetector
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.UIUtils
@@ -42,6 +43,10 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
                 loadLeadProfile(employeeData!!)
             }
         } ?: run {
+            if (!ConnectionDetector.isNetworkConnected(this)) {
+                ConnectionDetector.createSnackBar(this)
+                return
+            }
             leadProfilePresenter.loadLeadProfileData()
         }
     }
@@ -86,6 +91,11 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
         view?.let {
             when (view.id) {
                 circleImageViewProfile.id -> {
+                    if (!ConnectionDetector.isNetworkConnected(this)) {
+                        ConnectionDetector.createSnackBar(this)
+                        return
+                    }
+
                     if (!employeeData?.profileImageUrl.isNullOrEmpty()) {
                         val bundle = Bundle()
                         bundle.putString(FullScreenImageActivity.ARG_IMAGE_URL, employeeData?.profileImageUrl)

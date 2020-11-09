@@ -1,5 +1,6 @@
 package com.quickhandslogistics.adapters.attendance
 
+import android.app.Activity
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
@@ -23,6 +24,7 @@ import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_IS_PRESENT
 import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_LUNCH_PUNCH_IN
 import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_LUNCH_PUNCH_OUT
 import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_MORNING_PUNCH_IN
+import com.quickhandslogistics.utils.ConnectionDetector
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.convertDateStringToTime
@@ -212,6 +214,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
         }
 
         override fun onLongClick(view: View?): Boolean {
+
             view?.let {
                 return when (view.id) {
 //                    itemView.id -> {
@@ -250,9 +253,18 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
                         }
                     }*/
                     flexboxLayoutLumperTime.id -> {
+                        if (!ConnectionDetector.isNetworkConnected(context)) {
+                            ConnectionDetector.createSnackBar(context as Activity?)
+                            return
+                        }
+
                         onAdapterClick.onAddTimeClick(getItem(adapterPosition), adapterPosition)
                     }
                     checkBoxAttendance.id -> {
+                        if (!ConnectionDetector.isNetworkConnected(context)) {
+                            ConnectionDetector.createSnackBar(context as Activity?)
+                            return
+                        }
 //
 //                        val item = getItem(adapterPosition)
 //                        // Update in API Request Object

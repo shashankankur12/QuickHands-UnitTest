@@ -86,6 +86,11 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
             }
         } ?: run {
             initializeViewPager()
+            if (!ConnectionDetector.isNetworkConnected(activity)) {
+                ConnectionDetector.createSnackBar(activity)
+                return
+            }
+
             workSheetPresenter.fetchWorkSheetList()
         }
         refreshData()
@@ -93,8 +98,15 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
 
 
     private fun refreshData() {
+
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         swipe_pull_refresh.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
             initializeViewPager()
+
             workSheetPresenter.fetchWorkSheetList()
         })
     }
@@ -257,12 +269,21 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
 
     /** Child Fragment Interaction Listeners */
     override fun fetchWorkSheetList() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
         workSheetPresenter.fetchWorkSheetList()
     }
 
     override fun onClick(view: View?) {
         when(view!!.id){
             textViewGroupNote.id->{
+                if (!ConnectionDetector.isNetworkConnected(activity)) {
+                    ConnectionDetector.createSnackBar(activity)
+                    return
+                }
+
                 if (customerGroupNote!=null&& (customerGroupNote.first.first.size>0 ||customerGroupNote.second.size>0|| customerGroupNote.third.size>0|| customerGroupNote.first.second.size>0))
                 CustomeDialog.showGroupNoteDialog(activity, "Customer Note ", customerGroupNote)
 

@@ -12,6 +12,7 @@ import com.quickhandslogistics.contracts.reports.LumperJobReportContract
 import com.quickhandslogistics.contracts.workSheet.AllWorkScheduleCancelContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.presenters.workSheet.AllWorkScheduleCancelPresenter
+import com.quickhandslogistics.utils.ConnectionDetector
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
@@ -44,6 +45,11 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Lump
                 showLumpersData(employeeDataList)
             }
         } ?: run {
+            if (!ConnectionDetector.isNetworkConnected(activity)) {
+                ConnectionDetector.createSnackBar(activity)
+                return
+            }
+
             allWorkScheduleCancelPresenter.fetchLumpersList()
         }
     }
@@ -103,6 +109,11 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Lump
     }
 
     private fun showConfirmationDialog(selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+        
         CustomProgressBar.getInstance().showWarningDialog(getString(R.string.cancel_all_schedules_alert_message), activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 allWorkScheduleCancelPresenter.initiateCancellingWorkSchedules(selectedLumperIdsList, notesQHL, notesCustomer)
@@ -115,6 +126,11 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Lump
 
     /** Native Views Listeners */
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         view?.let {
             when (view.id) {
                 buttonSubmit.id -> {

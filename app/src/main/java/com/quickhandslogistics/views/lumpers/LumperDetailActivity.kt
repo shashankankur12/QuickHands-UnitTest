@@ -10,6 +10,7 @@ import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.ConnectionDetector
 import com.quickhandslogistics.utils.UIUtils
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.common.FullScreenImageActivity
@@ -100,6 +101,11 @@ class LumperDetailActivity : BaseActivity(), View.OnClickListener {
         view?.let {
             when (view.id) {
                 circleImageViewProfile.id -> {
+                    if (!ConnectionDetector.isNetworkConnected(this)) {
+                        ConnectionDetector.createSnackBar(this)
+                        return
+                    }
+
                     if (!employeeData?.profileImageUrl.isNullOrEmpty()) {
                         val bundle = Bundle()
                         bundle.putString(FullScreenImageActivity.ARG_IMAGE_URL, employeeData?.profileImageUrl)
@@ -108,12 +114,22 @@ class LumperDetailActivity : BaseActivity(), View.OnClickListener {
                 }
                 textViewPhoneNumber.id -> {
                     if (!employeeData?.phone.isNullOrEmpty()) {
+                        if (!ConnectionDetector.isNetworkConnected(this)) {
+                            ConnectionDetector.createSnackBar(this)
+                            return
+                        }
+
                         var phone=employeeData?.phone
                         val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone")) // Initiates the Intent
                         startActivity(intent)
                     }
                 }
                 textViewEmailAddress.id -> {
+                    if (!ConnectionDetector.isNetworkConnected(this)) {
+                        ConnectionDetector.createSnackBar(this)
+                        return
+                    }
+
                     if (!employeeData?.email.isNullOrEmpty()) {
                         var email=employeeData?.email
                         val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email"))

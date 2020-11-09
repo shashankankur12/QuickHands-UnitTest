@@ -10,6 +10,7 @@ import com.quickhandslogistics.adapters.buildingOperations.BuildingOperationsAda
 import com.quickhandslogistics.contracts.buildingOperations.BuildingOperationsContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.presenters.buildingOperations.BuildingOperationsPresenter
+import com.quickhandslogistics.utils.ConnectionDetector
 import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
@@ -71,6 +72,11 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, Buildin
     }
 
     private fun submitBODetails() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         val data = buildingOperationsAdapter?.getUpdatedData()
         data?.let {
 //            CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
@@ -96,6 +102,11 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, Buildin
 
     /** Native Views Listeners */
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         view?.let {
             when (view.id) {
                 buttonSubmit.id -> submitBODetails()

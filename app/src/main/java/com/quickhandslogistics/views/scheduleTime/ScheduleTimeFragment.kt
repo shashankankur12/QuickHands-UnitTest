@@ -212,6 +212,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
             if (singleRowCalendarScheduleTime.getSelectedDates().isNotEmpty()) {
+                if (!ConnectionDetector.isNetworkConnected(activity)) {
+                    ConnectionDetector.createSnackBar(activity)
+                    return
+                }
+
                 scheduleTimePresenter.getSchedulesTimeByDate(singleRowCalendarScheduleTime.getSelectedDates()[0])
             }
         }
@@ -306,6 +311,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     }
     /** Native Views Listeners */
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         view?.let {
             when (view.id) {
                 imageViewCancel.id -> {
@@ -349,6 +359,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     }
 
     private fun showConfirmationDialog(type: String) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         var message =""
 
         if (type.equals(CANCEL_SCHEDULE_LUMPER)){
@@ -437,6 +452,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     }
 
     override fun showNotesData(notes: String?) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         scheduleTimeNotes = notes
 //        if (!scheduleTimeNotes.isNullOrEmpty()) {
 //            onFragmentInteractionListener?.invalidateScheduleTimeNotes(scheduleTimeNotes!!)
@@ -446,6 +466,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     }
 
     override fun showSuccessDialog(message: String, date: Date) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         CustomProgressBar.getInstance().showSuccessDialog(message, context!!, object : CustomDialogListener {
             override fun onConfirmClick() {
                 scheduleTimePresenter.getSchedulesTimeByDate(date)
@@ -459,6 +484,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     /** Calendar Listeners */
     override fun onSelectCalendarDate(date: Date, selected: Boolean, position: Int) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         if (!isSavedState)
             scheduleTimePresenter.getSchedulesTimeByDate(date)
         isSavedState = false
@@ -467,6 +497,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     /** Adapter Listeners */
     override fun onEditTimeClick(adapterPosition: Int, timeInMillis: Long, details: ScheduleTimeDetail) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         var timeInMillis = DateUtils.convertUTCDateStringToMilliseconds(
             DateUtils.PATTERN_API_RESPONSE,
             scheduleTimeDetailList[adapterPosition].reportingTimeAndDay
@@ -478,13 +513,22 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                 .showMessageDialog(getString(R.string.edit_schedule_lumper_invalidate_message), context!!)
     }
 
-    override fun onScheduleNoteClick(
-        adapterPosition: Int, notes: String?, item: ScheduleTimeDetail) {
+    override fun onScheduleNoteClick(adapterPosition: Int, notes: String?, item: ScheduleTimeDetail) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         CustomeDialog.showLeadNoteDialog(activity, "Lead Note ", item.notesForLumper,notes)
 //        CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), notes, fragmentActivity!!)
     }
 
     override fun onAddRemoveClick(adapterPosition: Int, details: ScheduleTimeDetail) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         var timeInMillis = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, scheduleTimeDetailList[adapterPosition].reportingTimeAndDay)
         if (DateUtils.isTwoHourFromCurrentTime(timeInMillis))
             showBottomSheetWithData(details, CANCEL_SCHEDULE_LUMPER)

@@ -16,10 +16,7 @@ import com.quickhandslogistics.contracts.workSheet.WorkSheetItemContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.utils.ScheduleUtils
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
 import com.quickhandslogistics.views.workSheet.WorkSheetItemDetailActivity
@@ -124,20 +121,32 @@ class WorkScheduleItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAd
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
+            if (!ConnectionDetector.isNetworkConnected(activity)) {
+                ConnectionDetector.createSnackBar(activity)
+                return
+            }
+
             onFragmentInteractionListener?.fetchWorkSheetList()
         }
     }
 
-    fun updateWorkItemsList(
-        workItemsList: ArrayList<WorkItemDetail>,
-        selectedTime: Long
-    ) {
+    fun updateWorkItemsList(workItemsList: ArrayList<WorkItemDetail>, selectedTime: Long) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         this.selectedTime=selectedTime
         workSheetItemAdapter.updateList(workItemsList)
     }
 
     /** Adapter Listeners */
     override fun onItemClick(workItemId: String, workItemTypeDisplayName: String) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         if (!DateUtils.isFutureDate(selectedTime)) {
             val bundle = Bundle()
             bundle.putString(ScheduleFragment.ARG_WORK_ITEM_ID, workItemId)
@@ -147,12 +156,22 @@ class WorkScheduleItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAd
     }
 
     override fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         val bundle = Bundle()
         bundle.putParcelableArrayList(DisplayLumpersListActivity.ARG_LUMPERS_LIST, lumpersList)
         startIntent(DisplayLumpersListActivity::class.java, bundle = bundle)
     }
 
     override fun onNoteClick(workItemDetail: WorkItemDetail) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         workItemDetail.scheduleNote?.let {
             val title= ScheduleUtils.scheduleTypeNotePopupTitle(workItemDetail, resources)
             CustomProgressBar.getInstance().showInfoDialog(title, it, fragmentActivity!!)

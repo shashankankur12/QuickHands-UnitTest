@@ -58,6 +58,11 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
             }
         } ?: run {
             val dateString = DateUtils.getCurrentDateStringByEmployeeShift()
+            if (!ConnectionDetector.isNetworkConnected(this)) {
+                ConnectionDetector.createSnackBar(this)
+                return
+            }
+
             lumperJobReportPresenter!!.fetchLumpersList(dateString, dateString)
         }
     }
@@ -268,6 +273,11 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     }
 
     private fun showConfirmationDialog() {
+        if (!ConnectionDetector.isNetworkConnected(this)) {
+            ConnectionDetector.createSnackBar(this)
+            return
+        }
+
         CustomProgressBar.getInstance().showWarningDialog(getString(R.string.generate_report_alert_message), activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 val reportType = if (radioGroupReportType.checkedRadioButtonId == radioButtonPdf.id) "pdf" else "excel"
@@ -286,6 +296,11 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
 
     /** Native Views Listeners */
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(this)) {
+            ConnectionDetector.createSnackBar(this)
+            return
+        }
+
         view?.let {
             when (view.id) {
                 imageViewCancel.id -> {
@@ -318,6 +333,11 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     }
 
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+        if (!ConnectionDetector.isNetworkConnected(this)) {
+            ConnectionDetector.createSnackBar(this)
+            return
+        }
+
         if (!mCheckedId.equals(checkedId)) {
             updateTimeByRangeOptionSelected()
             lumperJobReportAdapter.clearAllSelection()
@@ -335,6 +355,11 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     }
 
     override fun showReportDownloadDialog(reportUrl: String, mimeType: String) {
+        if (!ConnectionDetector.isNetworkConnected(this)) {
+            ConnectionDetector.createSnackBar(this)
+            return
+        }
+
         DownloadUtils.downloadFile(reportUrl, mimeType, activity)
 
         CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.reports_generate_success_message),

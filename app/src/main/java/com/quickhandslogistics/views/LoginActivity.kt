@@ -9,6 +9,7 @@ import com.quickhandslogistics.contracts.LoginContract
 import com.quickhandslogistics.presenters.LoginPresenter
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.AppUtils
+import com.quickhandslogistics.utils.ConnectionDetector
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
@@ -34,6 +35,11 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
 
     /** Native Views Listeners */
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         view?.let {
             when (view.id) {
                 textViewForgotPassword.id -> {
@@ -78,6 +84,11 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
     }
 
     override fun showNextScreen() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         startIntent(DashBoardActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 }

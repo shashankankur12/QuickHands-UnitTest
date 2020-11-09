@@ -76,6 +76,11 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
             }
         } ?: run {
             initializeUI()
+            if (!ConnectionDetector.isNetworkConnected(activity)) {
+                ConnectionDetector.createSnackBar(activity)
+                return
+            }
+
             workSheetItemDetailPresenter.fetchWorkItemDetail(workItemId)
         }
     }
@@ -147,6 +152,11 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     }
 
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         view?.let {
             when (view.id) {
                 bottomSheetBackgroundStatus.id -> closeBottomSheet()
@@ -206,10 +216,20 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     }
 
     override fun statusChangedSuccessfully() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         setResult(RESULT_OK)
     }
 
     override fun notesSavedSuccessfully() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         isDataSave(true)
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, getString(R.string.notes_saved_success_alert_message))
     }
@@ -220,6 +240,11 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
     /** Adapter Listeners */
     override fun onSelectStatus(status: String) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
             val filledParameterCount = ScheduleUtils.getFilledBuildingParametersCounts(workItemDetail)
             val parameters = ScheduleUtils.getBuildingParametersList(workItemDetail.buildingDetailData)
@@ -283,6 +308,11 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
     /** Child Fragment Interaction Listeners */
     override fun fetchWorkItemDetail(changeResultCode: Boolean) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         if (changeResultCode)
             setResult(RESULT_OK)
         isDataSave(true)
@@ -290,6 +320,11 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     }
 
     override fun updateWorkItemNotes(notesQHLCustomer: String, notesQHL: String) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         workSheetItemDetailPresenter.updateWorkItemNotes(workItemId, notesQHLCustomer, notesQHL)
     }
 
