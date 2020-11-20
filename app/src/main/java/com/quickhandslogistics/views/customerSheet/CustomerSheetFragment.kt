@@ -66,6 +66,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
     private var isSaveddata: Boolean = true
     private var selectedDatePosition: Int = 0
     private var inCompleteWorkItemsCount: Int = 0
+    private var workItemsCount: Int = 0
 
 
     private lateinit var customerSheetPresenter: CustomerSheetPresenter
@@ -268,6 +269,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         textViewTotalCount.text =
             String.format(getString(R.string.total_containers_s), allWorkItems.size)
 
+
 //        adapter.updateCustomerSheetList(
 //            onGoingWorkItems,
 //            scheduleDetails.cancelled!!,
@@ -275,6 +277,8 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
 //            customerSheet,
 //            selectedTime
 //        )
+
+        workItemsCount= allWorkItems.size
 
         inCompleteWorkItemsCount=onGoingWorkItems.size
         buildingDetails(scheduleDetails,customerSheet)
@@ -508,7 +512,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
             textViewAddSignature.visibility = View.GONE
         }
 
-        if (signed || (currentDate && inCompleteWorkItemsCount == 0)) {
+        if (signed || (currentDate && inCompleteWorkItemsCount == 0 && workItemsCount != 0)) {
             layoutSignature.visibility = View.VISIBLE
         } else {
             layoutSignature.visibility = View.GONE
