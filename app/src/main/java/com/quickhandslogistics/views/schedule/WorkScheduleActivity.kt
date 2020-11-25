@@ -320,7 +320,7 @@ View.OnClickListener   {
                 }
 
                 if (customerGroupNote!=null&& (customerGroupNote.first.first.size>0 ||customerGroupNote.second.size>0|| customerGroupNote.third.size>0|| customerGroupNote.first.second.size>0))
-                    CustomeDialog.showGroupNoteDialog(activity, "Customer Note ", customerGroupNote)
+                    CustomeDialog.showGroupNoteDialog(activity, "Customer Notes", customerGroupNote)
 
             }
         }
