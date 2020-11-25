@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
@@ -53,6 +54,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
 
         private val textViewLumperName: TextView = view.textViewLumperName
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
+        private val linearLayoutLumperTime: LinearLayout = view.linearLayoutLumperTime as LinearLayout
         private val textViewEmployeeId: CustomTextView = view.textViewEmployeeId
         private val textViewAddTime: TextView = view.textViewAddTime
         private val textViewWorkTime: TextView = view.textViewWorkTime
@@ -108,6 +110,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
 
             changeAddButtonVisibility()
             textViewAddTime.setOnClickListener(this)
+            linearLayoutLumperTime.setOnClickListener(this)
         }
 
         private fun ishaseClockOut(lumperAttendance: LumperAttendanceData) {
@@ -123,16 +126,19 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
 
         private fun changeAddButtonVisibility() {
             if (workItemStatus == AppConstant.WORK_ITEM_STATUS_IN_PROGRESS || workItemStatus == AppConstant.WORK_ITEM_STATUS_ON_HOLD ||workItemStatus == AppConstant.WORK_ITEM_STATUS_SCHEDULED||workItemStatus == AppConstant.WORK_ITEM_STATUS_CANCELLED ||workItemStatus == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
-                textViewAddTime.visibility = if (isCompleted) View.GONE else View.VISIBLE
+//                textViewAddTime.visibility = if (isCompleted) View.GONE else View.VISIBLE
+                textViewAddTime.visibility = View.GONE
+                linearLayoutLumperTime.isClickable = !isCompleted
             } else {
                 textViewAddTime.visibility = View.GONE
+                linearLayoutLumperTime.isClickable = false
             }
         }
 
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
-                    textViewAddTime.id -> {
+                    linearLayoutLumperTime.id -> {
                         val employeeData = getItem(adapterPosition)
                         val timingData = timingsData[employeeData.id]
                         onAdapterClick.onAddTimeClick(employeeData, timingData)
