@@ -83,7 +83,7 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:layout_weight="1"
                 android:enabled="false"
-                android:text="@string/submit" />
+                android:text="@string/add" />
 
             <Button
                 android:id="@+id/buttonCancelRequest"
