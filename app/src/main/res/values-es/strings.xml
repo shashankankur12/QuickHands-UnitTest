@@ -234,6 +234,7 @@
     <string name="monthly_scheduled">Month Scheduled Container</string>
     <string name="custom_scheduled">Custom Scheduled</string>
     <string name="custom_scheduleds">Custom Date Scheduled Container</string>
+    <string name="sub_title">These are all the notes for the containers in today\'s schedule.</string>
     <string name="individual_note">Individual Note</string>
     <string name="date">Date: <![CDATA[<b> %s</b>]]></string>
     <string name="date_day">Date</string>

@@ -13,8 +13,19 @@
         style="@style/dialogTitleTextViewThemeBold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="start"
         android:singleLine="true"
+        android:layout_marginHorizontal="20dp"
         android:text="@string/dialog_default_title" />
+
+    <TextView
+        android:id="@+id/sub_title_text"
+        style="@style/dialogContentTextViewThemeBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginHorizontal="20dp"
+        android:text="@string/sub_title" />
 
     <ScrollView
         android:layout_width="match_parent"

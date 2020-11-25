@@ -231,7 +231,12 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         }
 
         isDataSave(true)
-        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, getString(R.string.notes_saved_success_alert_message))
+        CustomProgressBar.getInstance().showSuccessDialog( getString(R.string.notes_saved_success_alert_message), activity, object : CustomDialogListener {
+            override fun onConfirmClick() {
+
+            }
+        })
+//        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, getString(R.string.notes_saved_success_alert_message))
     }
 
     override fun showLoginScreen() {

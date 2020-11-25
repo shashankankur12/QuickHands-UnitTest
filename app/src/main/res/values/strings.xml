@@ -156,6 +156,7 @@
     <string name="schedule_detail">Work Schedule Detail</string>
     <string name="schedule_lumpers">Schedule Lumpers</string>
     <string name="scheduled_lumpers">Scheduled Lumpers</string>
+    <string name="sub_title">These are all the notes for the containers in today\'s schedule.</string>
     <string name="select_all">Select All</string>
     <string name="select_date_range">Select Date Range</string>
     <string name="select_status">Select Status</string>
