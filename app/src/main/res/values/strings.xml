@@ -115,6 +115,7 @@
     <string name="note">Note</string>
     <string name="notes">Notes</string>
     <string name="group_notes">Group Notes</string>
+    <string name="group_note">Group Note :</string>
     <string name="notifications">Notifications</string>
     <string name="ok">OK</string>
     <string name="on_hold">On-Hold</string>

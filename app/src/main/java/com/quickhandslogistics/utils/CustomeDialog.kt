@@ -126,7 +126,7 @@ object CustomeDialog : AppConstant {
         val groupNoteText: TextView = dialog.findViewById(R.id.groupNote)
         val confirm = dialog.findViewById<Button>(R.id.confirm_button)
 
-        if(individualNote.isNullOrEmpty()){
+        if(individualNote.isNullOrEmpty() || individualNote.equals("NA")){
             layoutIndividualNote.visibility=View.GONE
         }else{
             layoutIndividualNote.visibility=View.VISIBLE

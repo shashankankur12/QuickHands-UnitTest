@@ -126,7 +126,7 @@
 
                 <TextView
                     style="@style/titleTextViewTheme"
-                    android:text="@string/group_notes" />
+                    android:text="@string/group_note" />
 
                 <EditText
                     android:id="@+id/editTextNotes"

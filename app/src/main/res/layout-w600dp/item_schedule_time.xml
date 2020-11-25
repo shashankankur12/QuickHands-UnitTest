@@ -76,7 +76,7 @@
             android:id="@+id/textViewScheduleNote"
             style="@style/noteTextViewTheme"
             android:layout_width="wrap_content"
-            android:text="Lead Note:" />
+            android:text="Lead Notes:" />
 
     </LinearLayout>
 

@@ -280,8 +280,10 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         timeInMillis= DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, record.reportingTimeAndDay)
         textViewScheduleLumperTime.text = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, record.reportingTimeAndDay)
         buttonUpdate.setTag(R.id.requestLumperId, record.lumperInfo!!.id)
-        editTextNote.setText(record.notesForLumper)
-        editTextNoteGroup.setText(scheduleTimeNotes)
+        if (!record.notesForLumper.isNullOrEmpty() && !record.notesForLumper.equals("NA"))
+            editTextNote.setText(record.notesForLumper)
+        if (!scheduleTimeNotes.isNullOrEmpty() && !scheduleTimeNotes.equals("NA"))
+            editTextNoteGroup.setText(scheduleTimeNotes)
         textViewTitle.setTag(R.id.cancelLumperDay, record.reportingTimeAndDay!!)
     }
 
@@ -519,7 +521,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             return
         }
 
-        CustomeDialog.showLeadNoteDialog(activity, "Lead Note ", item.notesForLumper,notes)
+        CustomeDialog.showLeadNoteDialog(activity, "Lead Notes ", item.notesForLumper,notes)
 //        CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), notes, fragmentActivity!!)
     }
 

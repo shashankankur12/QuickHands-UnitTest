@@ -74,7 +74,7 @@ class ScheduleTimeAdapter(private val onAdapterClick: ScheduleTimeContract.View.
                 textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
                 viewAttendanceStatus.setBackgroundResource(if (scheduleTimeDetail.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
                 layoutCancelEdit.visibility = if (isPastDate) View.GONE else View.VISIBLE
-                if (notes.isNullOrEmpty() && scheduleTimeDetail.notesForLumper.isNullOrEmpty()) textViewScheduleNote.visibility=View.GONE else textViewScheduleNote.visibility=View.VISIBLE
+                textViewScheduleNote.isEnabled = !(notes.isNullOrEmpty() && (scheduleTimeDetail.notesForLumper.isNullOrEmpty() || scheduleTimeDetail.notesForLumper.equals("NA")))
 
             }
 
