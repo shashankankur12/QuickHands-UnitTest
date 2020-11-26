@@ -57,12 +57,23 @@ class WorkTypeAdpter(
 
         fun bind(workItemDetail: ArrayList<WorkItemDetail>) {
             val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+            val outboundItme = ArrayList<WorkItemDetail>()
+            val liveLodeItem = ArrayList<WorkItemDetail>()
+            val dropItem = ArrayList<WorkItemDetail>()
+
+            workItemDetail.forEach {
+                when {
+                    it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> dropItem.add(it)
+                    it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> outboundItme.add(it)
+                    it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> liveLodeItem.add(it)
+                }
+            }
             if(adapterPosition.equals(0)){
 
                 if (workItemDetail.size>0){
                     textViewLiveLode.visibility=View.VISIBLE
 //                    textViewLiveLoadNote.visibility=View.VISIBLE
-                    textViewLiveLode.text=resources.getString(R.string.out_bounds)
+                    textViewLiveLode.text= String.format(resources.getString(R.string.out_bound_s), outboundItme.size)
                     setAdaptet( leadProfile, workItemDetail)
                 }else{
                     textViewLiveLode.visibility=View.GONE
@@ -71,7 +82,7 @@ class WorkTypeAdpter(
 
             }else if(adapterPosition.equals(1)){
                 if (workItemDetail.size>0){
-                    textViewLiveLode.text=resources.getString(R.string.live_loads)
+                    textViewLiveLode.text=String.format(resources.getString(R.string.live_load_s), liveLodeItem.size)
                     textViewLiveLode.visibility=View.VISIBLE
 //                    textViewLiveLoadNote.visibility=View.VISIBLE
                     setAdaptet( leadProfile, workItemDetail)
@@ -83,7 +94,7 @@ class WorkTypeAdpter(
                 if (workItemDetail.size>0){
                     textViewLiveLode.visibility=View.VISIBLE
 //                    textViewLiveLoadNote.visibility=View.VISIBLE
-                    textViewLiveLode.text=resources.getString(R.string.drops)
+                    textViewLiveLode.text=String.format(resources.getString(R.string.drops_value), dropItem.size)
                     setAdaptet( leadProfile, workItemDetail)
                 }else{
                     textViewLiveLode.visibility=View.GONE
