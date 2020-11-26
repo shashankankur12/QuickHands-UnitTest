@@ -180,7 +180,13 @@ class LumperWorkDetailAdapter(
     }
     fun updateWorkDetails(lumperDaySheetList: ArrayList<LumperDaySheet>) {
         this.lumperDaySheetList.clear()
-        this.lumperDaySheetList.addAll(lumperDaySheetList)
+//        this.lumperDaySheetList.addAll(lumperDaySheetList)
+
+        for (lumperDaySheet in lumperDaySheetList) {
+            if (lumperDaySheet.workItemDetail?.status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
+                this.lumperDaySheetList.add(lumperDaySheet)
+            }
+        }
         notifyDataSetChanged()
     }
 }
