@@ -72,6 +72,16 @@
                 android:layout_gravity="end"
                 android:textColor="@color/textWhite"/>
 
+            <TextView
+                android:id="@+id/textViewDepartmentName"
+                style="@style/valuesSmallTextViewTheme"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:layout_gravity="end"
+                android:textColor="@color/textWhite"/>
+
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

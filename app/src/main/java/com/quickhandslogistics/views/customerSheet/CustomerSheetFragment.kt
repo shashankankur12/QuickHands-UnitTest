@@ -293,6 +293,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         }
         textViewHeaderBar.text= UIUtils.getSpannableText(getString(R.string.date),DateUtils.getDateString(PATTERN_DATE_DISPLAY_SHEET, selectedDate))
         textViewShiftName.text= UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile?.shift!!.capitalize())
+        textViewDepartmentName.text= UIUtils.getSpannableText(getString(R.string.bar_header_dept), leadProfile?.department!!.capitalize())
         val onGoingWorkItems = ArrayList<WorkItemDetail>()
         onGoingWorkItems.addAll(scheduleDetails.inProgress!!)
         onGoingWorkItems.addAll(scheduleDetails.onHold!!)
