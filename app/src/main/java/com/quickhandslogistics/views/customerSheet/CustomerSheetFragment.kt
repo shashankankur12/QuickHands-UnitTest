@@ -22,6 +22,7 @@ import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.presenters.customerSheet.CustomerSheetPresenter
 import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_DATE_DISPLAY_CUSTOMER_SHEET
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_DATE_DISPLAY_SHEET
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
 import com.quickhandslogistics.views.BaseFragment
@@ -291,7 +292,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         leadProfile?.buildingDetailData?.let {
             textViewBuildingName.text=  it.buildingName!!.capitalize()+ " \n"+it.buildingAddress!!.capitalize() +", \n"+it.buildingCity+", "+it.buildingState +" "+it .buildingZipcode
         }
-        textViewHeaderBar.text= UIUtils.getSpannableText(getString(R.string.date),DateUtils.getDateString(PATTERN_DATE_DISPLAY_SHEET, selectedDate))
+        textViewHeaderBar.text= UIUtils.getSpannableText(getString(R.string.date),DateUtils.getDateString(PATTERN_DATE_DISPLAY_CUSTOMER_SHEET, selectedDate))
         textViewShiftName.text= UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile?.shift!!.capitalize())
         textViewDepartmentName.text= UIUtils.getSpannableText(getString(R.string.bar_header_dept), leadProfile?.department!!.capitalize())
         val onGoingWorkItems = ArrayList<WorkItemDetail>()
