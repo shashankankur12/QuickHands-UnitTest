@@ -13,20 +13,23 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.buildingOperations.BuildingOperationsContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemContract
+import com.quickhandslogistics.utils.ScheduleUtils
 import kotlinx.android.synthetic.main.item_building_operation.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class BuildingOperationsAdapter(private val parameters: ArrayList<String>, var adapterItemClickListener: BuildingOperationsContract.View.OnAdapterItemClickListener ) : Adapter<BuildingOperationsAdapter.ViewHolder>() {
+class BuildingOperationsAdapter(private var parameters: ArrayList<String>, var adapterItemClickListener: BuildingOperationsContract.View.OnAdapterItemClickListener ) : Adapter<BuildingOperationsAdapter.ViewHolder>() {
 
     private var data = HashMap<String, String>()
     private var orignalData = HashMap<String, String>()
     var isTextChanged :Boolean= false
 
     init {
-        parameters.sortWith(Comparator { value1: String, value2: String ->
-            value1.toLowerCase().compareTo(value2.toLowerCase())
-        })
+//        parameters.sortWith(Comparator { value1: String, value2: String ->
+//            value1.toLowerCase().compareTo(value2.toLowerCase())
+//        })
+
+        parameters= ScheduleUtils.sortAccordingly(parameters)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

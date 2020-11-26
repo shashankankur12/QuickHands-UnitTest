@@ -544,4 +544,39 @@ object ScheduleUtils {
         return filterLumperDaySheetList
 
     }
+
+
+    fun sortAccordingly(parameters: ArrayList<String>): ArrayList<String> {
+        var sortedPerameter : ArrayList<String> = ArrayList()
+        var sortedSubPerameter : ArrayList<String> = ArrayList()
+
+        if (parameters.contains("Door")){
+            sortedPerameter.add("Door")
+        }
+
+        if (parameters.contains("Container")){
+            sortedPerameter.add("Container")
+        }
+
+        if (parameters.contains("Cases")){
+            sortedPerameter.add("Cases")
+        }
+
+        if (parameters.contains("Item/Sort")){
+            sortedPerameter.add("Item/Sort")
+        }
+
+        for (it in parameters) {
+            if (!it.equals("Door", ignoreCase = true) && !it.equals("container", ignoreCase = true) && !it.equals("Cases", ignoreCase = true) && !it.equals("item/sort",ignoreCase = true))
+                sortedSubPerameter.add(it)
+        }
+
+        sortedSubPerameter.sortWith(Comparator { value1: String, value2: String ->
+            value1.toLowerCase().compareTo(value2.toLowerCase())
+        })
+
+        sortedPerameter.addAll(sortedSubPerameter)
+
+        return sortedPerameter
+    }
 }
