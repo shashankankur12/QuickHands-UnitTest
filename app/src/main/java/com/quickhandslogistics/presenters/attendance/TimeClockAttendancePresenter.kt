@@ -10,6 +10,7 @@ import com.quickhandslogistics.data.attendance.GetAttendanceAPIResponse
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.models.attendance.TimeClockAttendanceModel
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.SharedPref
 
 class TimeClockAttendancePresenter(private var timeClockAttendanceView: TimeClockAttendanceContract.View?, private val resources: Resources, sharedPref: SharedPref) :
@@ -63,7 +64,7 @@ class TimeClockAttendancePresenter(private var timeClockAttendanceView: TimeCloc
         allLumpersList.addAll(response.data?.permanentLumpersList!!)
         allLumpersList.addAll(response.data?.temporaryLumpers!!)
 
-        timeClockAttendanceView?.showLumpersAttendance(allLumpersList)
+        timeClockAttendanceView?.showLumpersAttendance(ScheduleUtils.getSortedAttendenceData(allLumpersList))
     }
 
     override fun onSuccessSaveDate() {

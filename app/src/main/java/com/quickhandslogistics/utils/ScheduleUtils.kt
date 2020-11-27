@@ -579,4 +579,27 @@ object ScheduleUtils {
 
         return sortedPerameter
     }
+
+
+    fun getSortedAttendenceData(lumperAttendanceList: ArrayList<LumperAttendanceData>): ArrayList<LumperAttendanceData> {
+        var shortedList: ArrayList<LumperAttendanceData> = ArrayList()
+        var shortedPunchInOutList: ArrayList<LumperAttendanceData> = ArrayList()
+        var shortedAbsentList: ArrayList<LumperAttendanceData> = ArrayList()
+
+        lumperAttendanceList.forEach {
+            if (!it.attendanceDetail?.eveningPunchOut.isNullOrEmpty() && !it.attendanceDetail?.morningPunchIn.isNullOrEmpty()){
+                shortedPunchInOutList.add(it)
+            }else if (!it.attendanceDetail?.morningPunchIn.isNullOrEmpty()){
+                shortedList.add(it)
+            }else{
+                shortedAbsentList.add(it)
+            }
+        }
+
+        sortEmployeesAttendanceList(shortedList)
+        shortedList.addAll(sortEmployeesAttendanceList(shortedPunchInOutList))
+        shortedList.addAll(sortEmployeesAttendanceList(shortedAbsentList))
+
+        return shortedList
+    }
 }
