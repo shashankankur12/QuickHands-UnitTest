@@ -262,8 +262,8 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         }
 
 
-        sortedData.addAll(unSignedData)
-        sortedData.addAll(signedData)
+        sortedData.addAll(ScheduleUtils.sortLumperList(unSignedData))
+        sortedData.addAll(ScheduleUtils.sortLumperList(signedData))
 
 
 

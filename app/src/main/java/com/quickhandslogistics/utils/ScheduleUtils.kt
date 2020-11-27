@@ -9,6 +9,7 @@ import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
+import com.quickhandslogistics.data.lumperSheet.LumpersInfo
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.data.schedule.ScheduleWorkItem
@@ -521,10 +522,10 @@ object ScheduleUtils {
     }
 
     fun getFilteredLumperWorkList(lumperDaySheetList: ArrayList<LumperDaySheet>): ArrayList<LumperDaySheet> {
-        var outBound: ArrayList<LumperDaySheet> = ArrayList()
-        var live: ArrayList<LumperDaySheet> =ArrayList()
-        var drop: ArrayList<LumperDaySheet> =ArrayList()
-        var filterLumperDaySheetList: ArrayList<LumperDaySheet> =ArrayList()
+        val outBound: ArrayList<LumperDaySheet> = ArrayList()
+        val live: ArrayList<LumperDaySheet> =ArrayList()
+        val drop: ArrayList<LumperDaySheet> =ArrayList()
+        val filterLumperDaySheetList: ArrayList<LumperDaySheet> =ArrayList()
 
         lumperDaySheetList.forEach {
             it.workItemDetail?.workItemType.let { type->
@@ -547,8 +548,8 @@ object ScheduleUtils {
 
 
     fun sortAccordingly(parameters: ArrayList<String>): ArrayList<String> {
-        var sortedPerameter : ArrayList<String> = ArrayList()
-        var sortedSubPerameter : ArrayList<String> = ArrayList()
+        val sortedPerameter : ArrayList<String> = ArrayList()
+        val sortedSubPerameter : ArrayList<String> = ArrayList()
 
         if (parameters.contains("Door")){
             sortedPerameter.add("Door")
@@ -582,9 +583,9 @@ object ScheduleUtils {
 
 
     fun getSortedAttendenceData(lumperAttendanceList: ArrayList<LumperAttendanceData>): ArrayList<LumperAttendanceData> {
-        var shortedList: ArrayList<LumperAttendanceData> = ArrayList()
-        var shortedPunchInOutList: ArrayList<LumperAttendanceData> = ArrayList()
-        var shortedAbsentList: ArrayList<LumperAttendanceData> = ArrayList()
+        val shortedList: ArrayList<LumperAttendanceData> = ArrayList()
+        val shortedPunchInOutList: ArrayList<LumperAttendanceData> = ArrayList()
+        val shortedAbsentList: ArrayList<LumperAttendanceData> = ArrayList()
 
         lumperAttendanceList.forEach {
             if (!it.attendanceDetail?.eveningPunchOut.isNullOrEmpty() && !it.attendanceDetail?.morningPunchIn.isNullOrEmpty()){
@@ -601,5 +602,20 @@ object ScheduleUtils {
         shortedList.addAll(sortEmployeesAttendanceList(shortedAbsentList))
 
         return shortedList
+    }
+
+
+    fun sortLumperList(lumperList: ArrayList<LumpersInfo>?): ArrayList<LumpersInfo> {
+        return if (!lumperList.isNullOrEmpty()) {
+            lumperList.sortWith(Comparator { lumper1, lumper2 ->
+                if (!lumper1.lumperName.isNullOrEmpty() && !lumper2.lumperName.isNullOrEmpty()) {
+                    lumper1.lumperName?.toLowerCase(Locale.getDefault())!!.compareTo(lumper2.lumperName?.toLowerCase(Locale.getDefault())!!)
+                } else {
+                    0
+                }
+            })
+
+            lumperList
+        } else ArrayList()
     }
 }
