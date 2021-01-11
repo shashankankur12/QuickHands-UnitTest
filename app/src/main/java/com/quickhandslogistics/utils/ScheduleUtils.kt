@@ -555,20 +555,24 @@ object ScheduleUtils {
             sortedPerameter.add("Door")
         }
 
-        if (parameters.contains("Container")){
-            sortedPerameter.add("Container")
+        if (parameters.contains("Container Number")){
+            sortedPerameter.add("Container Number")
         }
 
         if (parameters.contains("Cases")){
             sortedPerameter.add("Cases")
         }
 
-        if (parameters.contains("Item/Sort")){
-            sortedPerameter.add("Item/Sort")
+        if (parameters.contains("Items")){
+            sortedPerameter.add("Items")
+        }
+
+        if (parameters.contains("Sort")){
+            sortedPerameter.add("Sort")
         }
 
         for (it in parameters) {
-            if (!it.equals("Door", ignoreCase = true) && !it.equals("container", ignoreCase = true) && !it.equals("Cases", ignoreCase = true) && !it.equals("item/sort",ignoreCase = true))
+            if (!it.equals("Door", ignoreCase = true) && !it.equals("container number", ignoreCase = true) && !it.equals("Cases", ignoreCase = true) && !it.equals("items",ignoreCase = true)&& !it.equals("sort",ignoreCase = true))
                 sortedSubPerameter.add(it)
         }
 

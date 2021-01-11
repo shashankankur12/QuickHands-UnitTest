@@ -29,7 +29,7 @@ class BuildingOperationsAdapter(private var parameters: ArrayList<String>, var a
 //            value1.toLowerCase().compareTo(value2.toLowerCase())
 //        })
 
-        parameters= ScheduleUtils.sortAccordingly(parameters)
+//        parameters= ScheduleUtils.sortAccordingly(parameters)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -57,8 +57,11 @@ class BuildingOperationsAdapter(private var parameters: ArrayList<String>, var a
             }else{
                 editTextValue.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME;
             }
+
             if (data.containsKey(header)) {
                 editTextValue.setText(data[header])
+            }else{
+                editTextValue.setText("")
             }
             editTextValue.addTextChangedListener(this)
         }

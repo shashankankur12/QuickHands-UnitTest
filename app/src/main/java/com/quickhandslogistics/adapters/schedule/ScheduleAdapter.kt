@@ -64,7 +64,7 @@ class ScheduleAdapter(private val resources: Resources, var adapterItemClickList
         init {
             recyclerViewLumpersImagesList.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-//                addItemDecoration(OverlapDecoration())
+                addItemDecoration(OverlapDecoration())
             }
         }
 

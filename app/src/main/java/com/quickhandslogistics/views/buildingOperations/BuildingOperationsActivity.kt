@@ -10,10 +10,7 @@ import com.quickhandslogistics.adapters.buildingOperations.BuildingOperationsAda
 import com.quickhandslogistics.contracts.buildingOperations.BuildingOperationsContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.presenters.buildingOperations.BuildingOperationsPresenter
-import com.quickhandslogistics.utils.ConnectionDetector
-import com.quickhandslogistics.utils.CustomDialogWarningListener
-import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETERS
@@ -57,7 +54,7 @@ class BuildingOperationsActivity : BaseActivity(), View.OnClickListener, Buildin
         recyclerViewBuildingOperations.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(20, 20))
-            buildingOperationsAdapter = BuildingOperationsAdapter(parameters, this@BuildingOperationsActivity)
+            buildingOperationsAdapter = BuildingOperationsAdapter(ScheduleUtils.sortAccordingly(parameters), this@BuildingOperationsActivity)
             adapter = buildingOperationsAdapter
         }
 
