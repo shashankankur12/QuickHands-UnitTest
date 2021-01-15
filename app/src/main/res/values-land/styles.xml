@@ -70,6 +70,12 @@
         <item name="android:padding">@dimen/_10ssp</item>
         <item name="android:layout_width">wrap_content</item>
     </style>
+
+    <style name="positiveButtonThemeYellow" parent="baseButtonTheme">
+        <item name="android:background">@drawable/button_yellow_selector</item>
+        <item name="android:padding">@dimen/_10ssp</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
     <!---->
 
     <!--Chip TextView Styles-->
@@ -168,6 +174,10 @@
         <item name="android:textSize">@dimen/_12ssp</item>
     </style>
 
+    <style name="titleSmallerTextViewTheme" parent="titleTextViewTheme">
+        <item name="android:textSize">@dimen/_11ssp</item>
+    </style>
+
     <style name="titleVerySmallTextViewTheme" parent="titleTextViewTheme">
         <item name="android:textSize">@dimen/_10ssp</item>
     </style>
@@ -216,7 +226,27 @@
         <item name="android:padding">@dimen/_5sdp</item>
         <item name="android:textColor">@color/buttonRed</item>
         <item name="android:textSize">@dimen/_12ssp</item>
-        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="editTextViewTheme" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:drawableStart">@drawable/ic_clear_red_small</item>
+        <item name="android:drawablePadding">@dimen/_2sdp</item>
+        <item name="android:padding">@dimen/_1sdp</item>
+        <item name="android:textColor">@color/buttonRed</item>
+        <item name="android:textSize">@dimen/_12ssp</item>
+    </style>
+    <style name="noteTextViewTheme" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:drawableEnd">@drawable/note_icon_selector</item>
+        <item name="android:textColor">@color/button_negative_selector</item>
+        <item name="android:textSize">@dimen/_12ssp</item>
     </style>
     <!---->
 
@@ -235,8 +265,19 @@
         <item name="android:textSize">@dimen/_12ssp</item>
     </style>
 
+    <style name="dialogTitleTextViewThemeBold" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/_12ssp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/textBlack</item>
+    </style>
+
     <style name="dialogContentTextViewTheme" parent="Widget.AppCompat.TextView">
         <item name="android:textSize">@dimen/_10ssp</item>
+    </style>
+
+    <style name="dialogContentTextViewThemeBold" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/_10ssp</item>
+        <item name="android:textColor">@color/textBlack</item>
     </style>
 
     <style name="dialogConfirmButtonTheme" parent="Widget.AppCompat.Button">

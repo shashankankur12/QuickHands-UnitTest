@@ -59,7 +59,7 @@ class DisplayLumpersListActivity : BaseActivity(), View.OnClickListener, TextWat
             layoutManager = linearLayoutManager
             val dividerItemDecoration = DividerItemDecoration(activity, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            displayLumpersListAdapter = DisplayLumpersListAdapter(lumpersList, this@DisplayLumpersListActivity)
+            displayLumpersListAdapter = DisplayLumpersListAdapter(lumpersList, sharedPref,this@DisplayLumpersListActivity)
             adapter = displayLumpersListAdapter
         }
 

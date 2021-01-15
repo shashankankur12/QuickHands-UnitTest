@@ -12,10 +12,22 @@
         android:layout_height="match_parent"
         android:background="@color/appBackground">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainConstraintLayoutSearch"
+        android:background="@drawable/header_background"
+        android:paddingTop="@dimen/_8ssp"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/_10ssp"
+        android:layout_width="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <TextView
             android:id="@+id/textViewDate"
             style="@style/valuesTextViewTheme"
             android:layout_width="0dp"
+            android:visibility="gone"
             android:layout_marginStart="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,11 +56,11 @@
             app:layout_constraintBottom_toBottomOf="@+id/editTextSearch"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/editTextSearch" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/white_background"
             android:paddingStart="@dimen/_12ssp"
             android:paddingTop="@dimen/_6ssp"
@@ -56,7 +68,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextSearch">
+            app:layout_constraintTop_toBottomOf="@+id/mainConstraintLayoutSearch">
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipeRefreshLayoutLumpers"
@@ -73,7 +85,7 @@
                 android:id="@+id/textViewEmptyData"
                 style="@style/noRecordTextViewTheme"
                 android:layout_centerInParent="true"
-                android:text="@string/empty_lumpers_list_info_message"
+                android:text="@string/empty_lumper_list_message"
                 android:visibility="gone" />
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

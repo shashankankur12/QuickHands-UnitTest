@@ -11,7 +11,6 @@ import com.quickhandslogistics.network.DataManager.isSuccessResponse
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.FetchMimeType
 import com.quickhandslogistics.utils.OnFetchCompleteListener
-import com.quickhandslogistics.utils.SharedPref
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,10 +18,14 @@ import java.util.*
 
 class TimeClockReportModel : TimeClockReportContract.Model {
 
-    override fun fetchLumpersList(onFinishedListener: TimeClockReportContract.Model.OnFinishedListener) {
+    override fun fetchLumpersList(
+        onFinishedListener: TimeClockReportContract.Model.OnFinishedListener,
+        startdate: String,
+        endDate: String
+    ) {
         val dateString = DateUtils.getCurrentDateStringByEmployeeShift()
 
-        DataManager.getService().getAllLumpersData(getAuthToken(), dateString).enqueue(object : Callback<LumperListAPIResponse> {
+        DataManager.getService().getAllLumpersSelectedDates(getAuthToken(), startdate,endDate ).enqueue(object : Callback<LumperListAPIResponse> {
             override fun onResponse(call: Call<LumperListAPIResponse>, response: Response<LumperListAPIResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onSuccess(response.body()!!)

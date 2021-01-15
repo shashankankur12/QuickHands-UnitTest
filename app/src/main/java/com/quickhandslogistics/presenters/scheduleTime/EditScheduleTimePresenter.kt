@@ -5,6 +5,7 @@ import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.scheduleTime.EditScheduleTimeContract
 import com.quickhandslogistics.data.ErrorResponse
+import com.quickhandslogistics.data.scheduleTime.ScheduleTimeRequest
 import com.quickhandslogistics.models.scheduleTime.EditScheduleTimeModel
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
@@ -24,9 +25,13 @@ class EditScheduleTimePresenter(private var editScheduleTimeView: EditScheduleTi
         editScheduleTimeModel.fetchHeaderInfo(date, this)
     }
 
-    override fun initiateScheduleTime(scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String, selectedDate: Date) {
+    override fun initiateScheduleTime(request : ScheduleTimeRequest, selectedDate: Date) {
         editScheduleTimeView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        editScheduleTimeModel.assignScheduleTime(scheduledLumpersIdsTimeMap, notes, selectedDate, this)
+        editScheduleTimeModel.assignScheduleTime(request , selectedDate, this)
+    }
+
+    override fun cancelScheduleLumpers(lumperId: String, date: Date, position: Int) {
+        editScheduleTimeModel.cancelScheduleLumpers(lumperId, date,position , this)
     }
 
     /** Model Result Listeners */
@@ -55,5 +60,9 @@ class EditScheduleTimePresenter(private var editScheduleTimeView: EditScheduleTi
 
     override fun onSuccessGetHeaderInfo(dateString: String) {
         editScheduleTimeView?.showDateString(dateString)
+    }
+
+    override fun onSuccessRequest(position: Int) {
+        editScheduleTimeView?.showSuccessDialog(resources.getString(R.string.request_placed_success_message), position)
     }
 }

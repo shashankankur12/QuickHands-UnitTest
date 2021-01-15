@@ -29,19 +29,17 @@ class EditScheduleTimeModel(private val sharedPref: SharedPref) : EditScheduleTi
         onFinishedListener.onSuccessGetHeaderInfo(dateShiftDetail)
     }
 
-    override fun assignScheduleTime(
-        scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String,
-        selectedDate: Date, onFinishedListener: EditScheduleTimeContract.Model.OnFinishedListener
+    override fun assignScheduleTime(request : ScheduleTimeRequest, selectedDate: Date, onFinishedListener: EditScheduleTimeContract.Model.OnFinishedListener
     ) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
 
-        val lumpersData: ArrayList<LumperScheduleTimeData> = ArrayList()
-        for (employeeId in scheduledLumpersIdsTimeMap.keys) {
-            val timestamp = scheduledLumpersIdsTimeMap[employeeId]!!
-            lumpersData.add(LumperScheduleTimeData(timestamp, employeeId))
-        }
-
-        val request = ScheduleTimeRequest(lumpersData, notes, dateString)
+//        val lumpersData: ArrayList<LumperScheduleTimeData> = ArrayList()
+//        for (employeeId in scheduledLumpersIdsTimeMap.keys) {
+//            val timestamp = scheduledLumpersIdsTimeMap[employeeId]!!
+//            lumpersData.add(LumperScheduleTimeData(timestamp, employeeId))
+//        }
+//
+//        val request = ScheduleTimeRequest(lumpersData, notes, dateString)
 
         DataManager.getService().saveScheduleTimeDetails(getAuthToken(), request).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
@@ -52,6 +50,24 @@ class EditScheduleTimeModel(private val sharedPref: SharedPref) : EditScheduleTi
 
             override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
                 Log.e(EditScheduleTimeModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
+    }
+
+
+    override fun cancelScheduleLumpers(lumperId: String, date: Date, position: Int, onFinishedListener: EditScheduleTimeContract.Model.OnFinishedListener) {
+        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, date)
+
+        DataManager.getService().cancelScheduleLumper(getAuthToken(), lumperId, dateString).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessRequest(position)
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Log.e(RequestLumpersModel::class.simpleName, t.localizedMessage!!)
                 onFinishedListener.onFailure()
             }
         })

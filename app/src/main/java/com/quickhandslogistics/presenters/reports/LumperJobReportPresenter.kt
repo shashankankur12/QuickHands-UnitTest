@@ -5,6 +5,7 @@ import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.reports.LumperJobReportContract
 import com.quickhandslogistics.data.ErrorResponse
+import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.data.reports.ReportResponse
 import com.quickhandslogistics.models.reports.LumperJobReportModel
@@ -22,9 +23,9 @@ class LumperJobReportPresenter(private var lumperJobReportView: LumperJobReportC
         lumperJobReportView = null
     }
 
-    override fun fetchLumpersList() {
+    override fun fetchLumpersList(startdate: String, endDate: String) {
         lumperJobReportView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        lumperJobHistoryModel.fetchLumpersList(this)
+        lumperJobHistoryModel.fetchLumpersList(this, startdate, endDate)
     }
 
     override fun createTimeClockReport(startDate: Date, endDate: Date, reportType: String, lumperIdsList: ArrayList<String>) {
@@ -53,7 +54,12 @@ class LumperJobReportPresenter(private var lumperJobReportView: LumperJobReportC
 
     override fun onSuccess(response: LumperListAPIResponse) {
         lumperJobReportView?.hideProgressDialog()
-        lumperJobReportView?.showLumpersData(response.data?.permanentLumpersList!!)
+
+        val allLumpersList = ArrayList<EmployeeData>()
+        allLumpersList.addAll(response.data?.permanentLumpersList!!)
+        allLumpersList.addAll(response.data?.temporaryLumpers!!)
+
+        lumperJobReportView?.showLumpersData(allLumpersList)
     }
 
     override fun onSuccessCreateReport(response: ReportResponse) {

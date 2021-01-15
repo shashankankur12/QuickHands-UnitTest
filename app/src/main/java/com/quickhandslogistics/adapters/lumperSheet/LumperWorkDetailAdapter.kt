@@ -80,7 +80,7 @@ class LumperWorkDetailAdapter(
         fun bind(lumperDaySheet: LumperDaySheet) {
             var totalcase =""
             lumperDaySheet.workItemDetail?.let { workItemDetail ->
-                val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.workItemType, resources)
+                val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplay(workItemDetail.workItemType, resources)
                 textViewWorkItemType.text = workItemTypeDisplayName
                 textViewStartTime.text = String.format(resources.getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
 
@@ -114,7 +114,9 @@ class LumperWorkDetailAdapter(
             lumperDaySheet.lumpersTimeSchedule?.let { timingDetail ->
                 val startTime = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.startTime)
                 val endTime = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.endTime)
-                textViewWorkTime.text = String.format("%s - %s", if (startTime.isNotEmpty()) startTime else "NA", if (endTime.isNotEmpty()) endTime else "NA")
+                if (startTime.isNotEmpty() && endTime.isNotEmpty())
+                    textViewWorkTime.text = String.format("%s - %s : %s",  startTime ,  endTime ,DateUtils.getDateTimeCalculeted(timingDetail.startTime!!, timingDetail.endTime!!))
+                else textViewWorkTime.text = String.format("%s - %s", if (startTime.isNotEmpty()) startTime else "NA", if (endTime.isNotEmpty()) endTime else "NA")
 
                 val waitingTime = ValueUtils.getDefaultOrValue(timingDetail.waitingTime)
                 if (waitingTime.isNotEmpty() && waitingTime.toInt() != 0) {
@@ -125,7 +127,11 @@ class LumperWorkDetailAdapter(
 
                 val breakTimeStart = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeStart)
                 val breakTimeEnd = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeEnd)
-                textViewBreakTime.text = String.format("%s - %s", if (breakTimeStart.isNotEmpty()) breakTimeStart else "NA", if (breakTimeEnd.isNotEmpty()) breakTimeEnd else "NA")
+
+                if (breakTimeStart.isNotEmpty() && breakTimeEnd.isNotEmpty())
+                    textViewBreakTime.text = String.format("%s - %s :%s", breakTimeStart , breakTimeEnd,DateUtils.getDateTimeCalculeted(timingDetail.breakTimeStart!!, timingDetail.breakTimeEnd!!))
+                else textViewBreakTime.text = String.format("%s - %s", if (breakTimeStart.isNotEmpty()) breakTimeStart else "NA", if (breakTimeEnd.isNotEmpty()) breakTimeEnd else "NA")
+
                 if (!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt()!=0) {
                     if (!totalcase.isNullOrEmpty()) {
                         val percent = String.format("%.2f", calculatePercent(timingDetail.partWorkDone!!, totalcase)) + "%"
@@ -174,7 +180,13 @@ class LumperWorkDetailAdapter(
     }
     fun updateWorkDetails(lumperDaySheetList: ArrayList<LumperDaySheet>) {
         this.lumperDaySheetList.clear()
-        this.lumperDaySheetList.addAll(lumperDaySheetList)
+//        this.lumperDaySheetList.addAll(lumperDaySheetList)
+
+        for (lumperDaySheet in lumperDaySheetList) {
+            if (lumperDaySheet.workItemDetail?.status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
+                this.lumperDaySheetList.add(lumperDaySheet)
+            }
+        }
         notifyDataSetChanged()
     }
 }

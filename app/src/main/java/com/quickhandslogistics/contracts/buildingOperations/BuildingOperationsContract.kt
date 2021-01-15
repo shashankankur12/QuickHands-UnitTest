@@ -19,6 +19,9 @@ class BuildingOperationsContract {
         fun showBuildingOperationsData(data: HashMap<String, String>?)
         fun buildingOperationsDataSaved()
         fun showLoginScreen()
+        interface OnAdapterItemClickListener {
+            fun onTextChanged()
+        }
     }
 
     interface Presenter : BaseContract.Presenter {

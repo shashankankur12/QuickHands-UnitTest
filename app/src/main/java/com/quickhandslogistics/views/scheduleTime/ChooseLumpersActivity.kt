@@ -143,7 +143,14 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
                 buttonAdd.id -> {
                     val selectedLumpersList = chooseLumpersAdapter.getSelectedLumpersList()
                     if (selectedLumpersList.isNotEmpty()) {
-                        showConfirmationDialog(selectedLumpersList)
+//                        showConfirmationDialog(selectedLumpersList)
+                        val intent = Intent().apply {
+                            putExtras(Bundle().apply {
+                                putParcelableArrayList(ARG_LUMPERS_LIST, selectedLumpersList)
+                            })
+                        }
+                        setResult(RESULT_OK, intent)
+                        onBackPressed()
                     }
                 }
 

@@ -14,7 +14,7 @@ class WorkItemDetailAPIResponse : BaseResponse() {
     inner class Data  {
         @SerializedName("workItem")
         @Expose
-        var workItemDetail: WorkItemDetail? = null
+        var workItemDetail: ScheduleWorkItem? = null
 
         @SerializedName("lumpersTimeSchedule")
         @Expose

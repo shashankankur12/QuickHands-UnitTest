@@ -15,6 +15,7 @@ import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_DATE_TIME_DISPLAY
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL_Week
 import com.quickhandslogistics.utils.DateUtils.Companion.changeUTCDateStringToLocalDateString
 import kotlinx.android.synthetic.main.item_request_lumpers.view.*
 
@@ -54,7 +55,7 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
             textViewRequestedLumpersCount.text = String.format(resources.getString(R.string.requested_lumpers_s), requestLumpersRecord.requestedLumpersCount)
             textViewRequestedAt.text = String.format(
                 resources.getString(R.string.requested_maded_s),
-                changeUTCDateStringToLocalDateString(PATTERN_API_RESPONSE, PATTERN_DATE_TIME_DISPLAY, requestLumpersRecord.createdAt!!)
+                changeUTCDateStringToLocalDateString(PATTERN_API_RESPONSE, PATTERN_NORMAL_Week, requestLumpersRecord.createdAt!!)
             )
             textViewNote.text = requestLumpersRecord.notesForDM
 
@@ -65,12 +66,12 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
                     changeUpdateUIVisibility(!isPastDate)
                 }
                 AppConstant.REQUEST_LUMPERS_STATUS_APPROVED -> {
-                    textViewStatus.text = resources.getString(R.string.approved)
-                    textViewStatus.setBackgroundResource(R.drawable.chip_background_in_progress)
+                    textViewStatus.text = resources.getString(R.string.complete)
+                    textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
                     changeUpdateUIVisibility(false)
                 }
                 AppConstant.REQUEST_LUMPERS_STATUS_REJECTED -> {
-                    textViewStatus.text = resources.getString(R.string.rejected)
+                    textViewStatus.text = resources.getString(R.string.not_approved)
                     textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
                     changeUpdateUIVisibility(false)
                 }

@@ -43,10 +43,10 @@ class CustomProgressBar {
         progressDialog.contentText = message.capitalize()
         progressDialog.confirmText = activityContext.getString(R.string.ok)
         progressDialog.show()
-        progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
-        progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
+        progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewThemeBold)
+        progressDialog.setContentTextAppearance(R.style.dialogContentTextViewThemeBold)
         updateButtonsUI(progressDialog, activityContext)
-        progressDialog.setContentTextGravity(Gravity.START)
+        progressDialog.setContentTextGravity(Gravity.CENTER_HORIZONTAL)
     }
 
     fun showMessageDialog(message: String, activityContext: Context) {
@@ -114,6 +114,26 @@ class CustomProgressBar {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.WARNING_TYPE)
         progressDialog.titleText = activityContext.getString(R.string.are_you_sure_alert_message)
         progressDialog.contentText = if (message.isEmpty()) activityContext.getString(R.string.warning_alert_message) else message.capitalize()
+        progressDialog.confirmText = activityContext.getString(R.string.yes)
+        progressDialog.cancelText = activityContext.getString(R.string.no)
+        progressDialog.showCancelButton(true)
+        progressDialog.setConfirmClickListener {
+            it.dismissWithAnimation()
+            listener.onConfirmClick()
+        }
+        progressDialog.setCancelClickListener {
+            it.dismissWithAnimation()
+            listener.onCancelClick()
+        }
+        progressDialog.show()
+        progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
+        progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
+        updateButtonsUI(progressDialog, activityContext)
+    }
+
+    fun showLeaveDialog(message: String = "", activityContext: Context, listener: CustomDialogWarningListener) {
+        val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.WARNING_TYPE)
+        progressDialog.titleText = if (message.isEmpty())activityContext.getString(R.string.discard_leave_alert_message) else message
         progressDialog.confirmText = activityContext.getString(R.string.yes)
         progressDialog.cancelText = activityContext.getString(R.string.no)
         progressDialog.showCancelButton(true)

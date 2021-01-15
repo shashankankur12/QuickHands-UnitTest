@@ -50,13 +50,14 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
         private val textViewDoor: TextView = itemView.textViewDoor
         private val textViewContainer: TextView = itemView.textViewContainer
         private val textViewStatus: TextView = itemView.textViewStatus
+        private val textViewWorkSheetNote: TextView = itemView.textViewWorkSheetNote
         private val relativeLayoutSide: RelativeLayout = itemView.relativeLayoutSide
         private val recyclerViewLumpersImagesList: RecyclerView = itemView.recyclerViewLumpersImagesList
 
         init {
             recyclerViewLumpersImagesList.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                addItemDecoration(OverlapDecoration())
+//                addItemDecoration(OverlapDecoration())
             }
 
             itemView.setOnClickListener(this)
@@ -81,12 +82,19 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
 
             textViewDoor.text = String.format(resources.getString(R.string.door_s), if (!doorValue.isNullOrEmpty()) doorValue else "---")
             textViewContainer.text = String.format(resources.getString(R.string.container_no_s), if (!containerNumberValue.isNullOrEmpty()) containerNumberValue else "---")
+            if (!workItemDetail.scheduleNote.isNullOrEmpty()){
+                textViewWorkSheetNote.visibility=View.VISIBLE
+                textViewWorkSheetNote.text=ScheduleUtils.getscheduleTypeNote(workItemDetail, resources)
+            }else textViewWorkSheetNote.visibility=View.GONE
+            textViewWorkSheetNote.text=ScheduleUtils.getscheduleTypeNote(workItemDetail, resources)
+            textViewWorkSheetNote.isEnabled=(!workItemDetail.scheduleNote.isNullOrEmpty() && !getItem(adapterPosition).scheduleNote!!.equals("NA"))
 
             workItemDetail.assignedLumpersList?.let { imagesList ->
-                recyclerViewLumpersImagesList.adapter = LumperImagesAdapter(imagesList, this@ViewHolder)
+                recyclerViewLumpersImagesList.adapter = LumperImagesAdapter(imagesList, sharedPref,this@ViewHolder)
             }
 
             ScheduleUtils.changeStatusUIByValue(resources, workItemDetail.status, textViewStatus, relativeLayoutSide)
+            textViewWorkSheetNote.setOnClickListener(this)
         }
 
         override fun onClick(view: View?) {
@@ -96,6 +104,10 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
                         val workItemDetail = getItem(adapterPosition)
                         val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.workItemType, resources)
                         adapterItemClickListener.onItemClick(workItemDetail.id!!, workItemTypeDisplayName)
+                    }
+                    textViewWorkSheetNote.id->{
+                        if (!getItem(adapterPosition).scheduleNote.isNullOrEmpty() && !getItem(adapterPosition).scheduleNote!!.equals("NA"))
+                        adapterItemClickListener.onNoteClick(getItem(adapterPosition))
                     }
                 }
             }

@@ -64,92 +64,84 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:weightSum="2"
                 android:orientation="horizontal">
 
-                <LinearLayout
+                <TextView
+                    style="@style/titleVerySmallTextViewTheme"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/valuesSmallTextViewTheme"
-                        android:layout_width="wrap_content"
-                        android:text="@string/start_and_end_time" />
-
-                    <TextView
-                        android:id="@+id/textViewWorkTime"
-                        style="@style/titleVerySmallTextViewTheme"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        android:drawableStart="@drawable/ic_lumper_list_clock"
-                        android:drawablePadding="@dimen/_4sdp"
-                        android:text="NA - NA" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/valuesSmallTextViewTheme"
-                        android:layout_width="wrap_content"
-                        android:text="@string/waiting_time" />
-
-                    <TextView
-                        android:id="@+id/textViewWaitingTime"
-                        style="@style/titleVerySmallTextViewTheme"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        android:drawableStart="@drawable/ic_lumper_list_clock"
-                        android:drawablePadding="@dimen/_4sdp"
-                        android:text="NA" />
-                </LinearLayout>
-            </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.6"
-                android:orientation="vertical">
-            <TextView
-                style="@style/valuesSmallTextViewTheme"
-                android:layout_width="wrap_content"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:text="@string/break_time" />
-
-            <TextView
-                android:id="@+id/textViewBreakTime"
-                style="@style/titleVerySmallTextViewTheme"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:drawableStart="@drawable/ic_lumper_list_clock"
-                android:drawablePadding="@dimen/_4sdp"
-                android:text="NA - NA" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.4"
-                android:orientation="vertical">
+                    android:text="@string/work_time_s"
+                    android:layout_weight=".5" />
 
                 <TextView
+                    android:id="@+id/textViewWorkTime"
+                    android:layout_weight="1.5"
+                    android:layout_width="0dp"
                     style="@style/valuesSmallTextViewTheme"
-                    android:layout_width="wrap_content"
-                    android:layout_marginTop="@dimen/_6sdp"
-                    android:text="@string/works_done" />
+                    android:text="NA - NA" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:orientation="horizontal">
+                <TextView
+                    style="@style/titleVerySmallTextViewTheme"
+                    android:layout_width="0dp"
+                    android:text="@string/break_time_s"
+                    android:layout_weight=".5" />
+
+                <TextView
+                    android:id="@+id/textViewBreakTime"
+                    android:layout_width="0dp"
+                    style="@style/valuesSmallTextViewTheme"
+                    android:layout_weight="1.5"
+                    android:text="NA - NA" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:weightSum="2"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/titleVerySmallTextViewTheme"
+                    android:layout_width="0dp"
+                    android:text="@string/waiting_time_s"
+                    android:layout_weight="0.5"/>
+
+                <TextView
+                    android:id="@+id/textViewWaitingTime"
+                    android:layout_weight="1.5"
+                    android:layout_width="0dp"
+                    style="@style/valuesSmallTextViewTheme"
+                    android:text="NA" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/titleVerySmallTextViewTheme"
+                    android:layout_width="0dp"
+                    android:text="@string/works_done_s"
+                    android:layout_weight="0.5"/>
 
                 <TextView
                     android:id="@+id/textViewWorkDone"
-                    style="@style/titleVerySmallTextViewTheme"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:drawablePadding="@dimen/_4sdp"
+                    style="@style/valuesSmallTextViewTheme"
+                    android:layout_weight="1.5"
+                    android:layout_width="0dp"
                     android:text="NA" />
             </LinearLayout>
-        </LinearLayout>
         </LinearLayout>
 
         <RelativeLayout
@@ -160,7 +152,7 @@
             android:background="@drawable/notes_item_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/linearLayoutLumperTime">
+            app:layout_constraintTop_toBottomOf="@id/linearLayoutQHLNotes">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewBO"
@@ -190,6 +182,7 @@
             android:orientation="vertical"
             android:padding="@dimen/_8sdp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/relativeLayoutBO">
 
@@ -215,10 +208,9 @@
             android:background="@drawable/notes_item_background"
             android:orientation="vertical"
             android:padding="@dimen/_8sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/linearLayoutCustomerNotes">
+            app:layout_constraintTop_toBottomOf="@id/linearLayoutLumperTime">
 
             <TextView
                 style="@style/titleSmallTextViewTheme"

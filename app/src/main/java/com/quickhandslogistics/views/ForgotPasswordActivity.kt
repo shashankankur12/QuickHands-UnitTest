@@ -5,10 +5,7 @@ import android.view.View
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.ForgotPasswordContract
 import com.quickhandslogistics.presenters.ForgotPasswordPresenter
-import com.quickhandslogistics.utils.CustomDialogListener
-import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.utils.AppUtils
+import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.activity_forgot_password.*
 
 class ForgotPasswordActivity : BaseActivity(), ForgotPasswordContract.View, View.OnClickListener {
@@ -32,6 +29,11 @@ class ForgotPasswordActivity : BaseActivity(), ForgotPasswordContract.View, View
 
     /** Native Views Listeners */
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         view?.let {
             when (view.id) {
                 buttonPasswordReset.id -> {

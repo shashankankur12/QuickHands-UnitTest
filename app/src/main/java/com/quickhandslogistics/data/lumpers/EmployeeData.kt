@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.quickhandslogistics.data.dashboard.BuildingDetailData
 
 open class EmployeeData() : Parcelable {
     @SerializedName("id")
@@ -41,6 +42,9 @@ open class EmployeeData() : Parcelable {
     @SerializedName("isEmailVerified")
     @Expose
     var isEmailVerified: Boolean? = null
+    @SerializedName("hasClockedOut")
+    @Expose
+    var isPresent: Boolean? = null
 
     @SerializedName("isPhoneVerified")
     @Expose
@@ -73,6 +77,9 @@ open class EmployeeData() : Parcelable {
     @SerializedName("primaryBuilding")
     @Expose
     var primaryBuilding: String? = null
+    @SerializedName("buildingAssignedAsLumper")
+    @Expose
+    var buildingAssignedAsLumper: BuildingDetailData? = null
 
     @SerializedName("abilityToTravelBetweenBuildings")
     @Expose
@@ -82,6 +89,10 @@ open class EmployeeData() : Parcelable {
     @Expose
     var milesRadiusFromPrimaryBuilding: String? = null
 
+    @SerializedName("buildingIdAsLumper")
+    @Expose
+    var buildingIdAsLumper: String? = null
+
     @SerializedName("hiringDate")
     @Expose
     var hiringDate: String? = null
@@ -89,6 +100,10 @@ open class EmployeeData() : Parcelable {
     @SerializedName("jobDescription")
     @Expose
     var jobDescription: String? = null
+
+    @SerializedName("scheduleNotes")
+    @Expose
+    var scheduleNotes: String? = null
 
     @SerializedName("lastDayWorked")
     @Expose
@@ -110,6 +125,7 @@ open class EmployeeData() : Parcelable {
         isActive = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         profileImageUrl = parcel.readString()
         isEmailVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        isPresent = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         isPhoneVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         role = parcel.readString()
         employeeId = parcel.readString()
@@ -118,10 +134,13 @@ open class EmployeeData() : Parcelable {
         workSchedule = parcel.readString()
         title = parcel.readString()
         primaryBuilding = parcel.readString()
+        buildingAssignedAsLumper= parcel.readValue(BuildingDetailData::class.java.classLoader) as BuildingDetailData?
         abilityToTravelBetweenBuildings = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         milesRadiusFromPrimaryBuilding = parcel.readString()
+        buildingIdAsLumper = parcel.readString()
         hiringDate = parcel.readString()
         jobDescription = parcel.readString()
+        scheduleNotes = parcel.readString()
         lastDayWorked = parcel.readString()
         fullTime = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         isTemporaryAssigned = parcel.readValue(Boolean::class.java.classLoader) as Boolean
@@ -137,6 +156,7 @@ open class EmployeeData() : Parcelable {
         parcel.writeValue(isActive)
         parcel.writeString(profileImageUrl)
         parcel.writeValue(isEmailVerified)
+        parcel.writeValue(isPresent)
         parcel.writeValue(isPhoneVerified)
         parcel.writeString(role)
         parcel.writeString(employeeId)
@@ -145,10 +165,13 @@ open class EmployeeData() : Parcelable {
         parcel.writeString(workSchedule)
         parcel.writeString(title)
         parcel.writeString(primaryBuilding)
+        parcel.writeValue(buildingAssignedAsLumper)
         parcel.writeValue(abilityToTravelBetweenBuildings)
         parcel.writeString(milesRadiusFromPrimaryBuilding)
+        parcel.writeString(buildingIdAsLumper)
         parcel.writeString(hiringDate)
         parcel.writeString(jobDescription)
+        parcel.writeString(scheduleNotes)
         parcel.writeString(lastDayWorked)
         parcel.writeValue(fullTime)
         parcel.writeValue(isTemporaryAssigned)

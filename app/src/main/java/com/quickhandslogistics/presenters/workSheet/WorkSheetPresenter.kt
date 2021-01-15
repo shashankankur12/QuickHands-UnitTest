@@ -71,7 +71,7 @@ class WorkSheetPresenter(private var workSheetView: WorkSheetContract.View?, pri
         }
     }
 
-    override fun onSuccessGetHeaderInfo(companyName: String, date: String) {
-        workSheetView?.showHeaderInfo(companyName, date)
+    override fun onSuccessGetHeaderInfo(companyName: String, date: String, shift: String, dept: String) {
+        workSheetView?.showHeaderInfo(companyName, date, shift, dept)
     }
 }

@@ -1,17 +1,21 @@
 package com.quickhandslogistics.views.schedule
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.schedule.ScheduleAdapter
+import com.quickhandslogistics.contracts.DashBoardContract
 import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
+import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.presenters.schedule.SchedulePresenter
@@ -21,6 +25,7 @@ import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.util.*
+
 
 class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract.View.OnAdapterItemClickListener, CalendarUtils.CalendarSelectionListener {
 
@@ -36,6 +41,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     private var dateString: String? = null
     private var isSavedState: Boolean = false
     private var datePosition: Int = 0
+    private var onFragmentInteractionListener: DashBoardContract.View.OnFragmentInteractionListener? = null
 
 
     private lateinit var schedulePresenter: SchedulePresenter
@@ -66,6 +72,14 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         const val SCHEDULED_NEXT_PAGE = "SCHEDULED_NEXT_PAGE"
         const val SCHEDULED_CURRENT_PAGE = "SCHEDULED_CURRENT_PAGE"
         const val SCHEDULED_SELECTED_DATE_POSITION = "SCHEDULED_SELECTED_DATE_POSITION"
+    }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is DashBoardContract.View.OnFragmentInteractionListener) {
+            onFragmentInteractionListener = context
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -162,6 +176,11 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     }
 
     private fun fetchScheduledWorkItems() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         if (singleRowCalendarSchedule.getSelectedDates().isNotEmpty()) {
             schedulePresenter.getScheduledWorkItemsByDate(singleRowCalendarSchedule.getSelectedDates()[0], currentPageIndex)
         }
@@ -198,6 +217,30 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     override fun showDateString(dateString: String) {
         this.dateString = dateString
         textViewDate.text = UIUtils.getSpannedText(dateString)
+        textViewDate.visibility = View.GONE
+
+        val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+
+        if (leadProfile?.buildingDetailData != null) {
+            textViewBuildingName.text = leadProfile?.buildingDetailData?.buildingName!!.capitalize()
+            textViewDept.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), UIUtils.getDisplayEmployeeDepartment(leadProfile))
+            textViewShift.text = UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile.shift?.capitalize().toString())
+            textViewLeadNumber.text = UIUtils.getSpannableText(getString(R.string.bar_header_leads), leadProfile.buildingDetailData?.leadIds!!.size.toString())
+        } else {
+            layoutWorkScheduleInfo.visibility = View.GONE
+            appBarView.visibility = View.GONE
+        }
+
+        if(!leadProfile?.shift.isNullOrEmpty()){
+            textViewHeaderShift.text=UIUtils.getSpannedText(ScheduleUtils.getShiftDetailString(leadProfile))
+            textViewHeaderShift.visibility=View.GONE
+        } else textViewHeaderShift.visibility=View.GONE
+
+        if (!leadProfile?.department.isNullOrEmpty()){
+            textViewHeaderDept.text=UIUtils.getSpannedText("${ ResourceManager.getInstance().getString(R.string.dept_bold)} ${ UIUtils.getDisplayEmployeeDepartment(leadProfile)}")
+            textViewHeaderDept.visibility=View.GONE
+        }else textViewHeaderDept.visibility=View.GONE
+
     }
 
     override fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<ScheduleDetail>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int) {
@@ -237,15 +280,25 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
     /** Adapter Listeners */
     override fun onScheduleItemClick(scheduleDetail: ScheduleDetail) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         val bundle = Bundle()
         bundle.putBoolean(ARG_ALLOW_UPDATE, DateUtils.isCurrentDate(selectedTime))
         bundle.putBoolean(ARG_IS_FUTURE_DATE, DateUtils.isFutureDate(selectedTime))
         bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleDetail.scheduleIdentity)
         bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
-        startIntent(ScheduleDetailActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
+        startIntent(WorkScheduleActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }
 
     override fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         val bundle = Bundle()
         bundle.putParcelableArrayList(DisplayLumpersListActivity.ARG_LUMPERS_LIST, lumpersList)
         startIntent(DisplayLumpersListActivity::class.java, bundle = bundle)
@@ -253,6 +306,11 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
     /** Calendar Listeners */
     override fun onSelectCalendarDate(date: Date, selected: Boolean, position: Int) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         if (!isSavedState) {
             resetPaginationValues()
             schedulePresenter.getScheduledWorkItemsByDate(date, currentPageIndex)

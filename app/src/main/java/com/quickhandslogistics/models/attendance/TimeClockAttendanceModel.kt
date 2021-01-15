@@ -1,6 +1,7 @@
 package com.quickhandslogistics.models.attendance
 
 import android.util.Log
+import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.attendance.TimeClockAttendanceContract
 import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.attendance.AttendanceDetail
@@ -9,10 +10,7 @@ import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.DataManager.getAuthToken
 import com.quickhandslogistics.network.DataManager.isSuccessResponse
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.utils.ScheduleUtils
-import com.quickhandslogistics.utils.SharedPref
+import com.quickhandslogistics.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,8 +20,9 @@ class TimeClockAttendanceModel(private val sharedPref: SharedPref) : TimeClockAt
     override fun fetchHeaderInfo(onFinishedListener: TimeClockAttendanceContract.Model.OnFinishedListener) {
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
         val date = DateUtils.getCurrentDateStringByEmployeeShift(pattern = DateUtils.PATTERN_NORMAL)
-        val dateShiftDetail = "$date  ${ScheduleUtils.getShiftDetailString(leadProfile)}"
-        onFinishedListener.onSuccessGetHeaderInfo(dateShiftDetail)
+        val shiftDetail = ScheduleUtils.getShiftDetailString(leadProfile)
+        val deptDetail = "${ ResourceManager.getInstance().getString(R.string.dept_bold)} ${ UIUtils.getDisplayEmployeeDepartment(leadProfile)}"
+        onFinishedListener.onSuccessGetHeaderInfo(date, shiftDetail, deptDetail)
     }
 
     override fun fetchLumpersAttendanceList(onFinishedListener: TimeClockAttendanceContract.Model.OnFinishedListener) {

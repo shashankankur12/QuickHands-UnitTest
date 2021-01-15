@@ -12,7 +12,7 @@ class TimeClockAttendanceContract {
         fun saveLumpersAttendanceList(attendanceDetailList: List<AttendanceDetail>, onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
-            fun onSuccessGetHeaderInfo(date: String)
+            fun onSuccessGetHeaderInfo(date: String, shift: String, dept: String)
             fun onSuccessGetList(response: GetAttendanceAPIResponse)
             fun onSuccessSaveDate()
         }
@@ -22,7 +22,7 @@ class TimeClockAttendanceContract {
         fun showAPIErrorMessage(message: String)
         fun showLumpersAttendance(lumperAttendanceList: ArrayList<LumperAttendanceData>)
         fun showDataSavedMessage()
-        fun showHeaderInfo(date: String)
+        fun showHeaderInfo(date: String, shift: String, dept: String)
         fun showLoginScreen()
 
         interface OnAdapterItemClickListener {

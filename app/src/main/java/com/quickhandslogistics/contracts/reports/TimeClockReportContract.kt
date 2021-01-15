@@ -8,7 +8,11 @@ import java.util.*
 
 class TimeClockReportContract {
     interface Model {
-        fun fetchLumpersList(onFinishedListener: OnFinishedListener)
+        fun fetchLumpersList(
+            onFinishedListener: OnFinishedListener,
+            startdate: String,
+            endDate: String
+        )
         fun createTimeClockReport(startDate: Date, endDate: Date, reportType: String, lumperIdsList: ArrayList<String>, onFinishedListener: OnFinishedListener)
         fun getUrlMimeType(reportUrl: String, onFinishedListener: OnFinishedListener)
 
@@ -31,7 +35,7 @@ class TimeClockReportContract {
     }
 
     interface Presenter : BaseContract.Presenter {
-        fun fetchLumpersList()
+        fun fetchLumpersList(startdate: String, endDate: String)
         fun createTimeClockReport(startDate: Date, endDate: Date, reportType: String, lumperIdsList: ArrayList<String>)
     }
 }

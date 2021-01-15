@@ -53,19 +53,19 @@ class SettingsFragment : BaseFragment(), SettingsContract.View, View.OnClickList
     }
 
     private fun showConfirmationDialog(language: String) {
-        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.language_change_alert_message), fragmentActivity!!, object : CustomDialogWarningListener {
-            override fun onConfirmClick() {
+//        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.language_change_alert_message), fragmentActivity!!, object : CustomDialogWarningListener {
+//            override fun onConfirmClick() {
                 settingsPresenter?.saveSelectedLanguage(language)
-            }
-
-            override fun onCancelClick() {
-                if (language == LANGUAGE_ENGLISH_CODE) {
-                    radioBtnSpanish.isChecked = true
-                } else {
-                    radioBtnEnglish.isChecked = true
-                }
-            }
-        })
+//            }
+//
+//            override fun onCancelClick() {
+//                if (language == LANGUAGE_ENGLISH_CODE) {
+//                    radioBtnSpanish.isChecked = true
+//                } else {
+//                    radioBtnEnglish.isChecked = true
+//                }
+//            }
+//        })
     }
 
     /** Native Views Listeners */

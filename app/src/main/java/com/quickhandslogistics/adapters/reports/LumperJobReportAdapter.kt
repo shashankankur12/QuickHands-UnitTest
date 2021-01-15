@@ -55,6 +55,7 @@ class LumperJobReportAdapter(private val onAdapterClick: LumperJobReportContract
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
         private val textViewShiftHours: CustomTextView = view.textViewShiftHours
         private val imageViewAdd: ImageView = view.imageViewAdd
+        private val viewAttendanceStatus: View = view.viewAttendanceStatus
 
         fun bind(employeeData: EmployeeData) {
             UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
@@ -62,6 +63,7 @@ class LumperJobReportAdapter(private val onAdapterClick: LumperJobReportContract
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
             textViewShiftHours.text = UIUtils.getDisplayShiftHours(employeeData)
+            viewAttendanceStatus.visibility=View.GONE
 
             if (selectedLumperIdsList.contains(employeeData.id!!)) {
                 imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick)
@@ -146,12 +148,12 @@ class LumperJobReportAdapter(private val onAdapterClick: LumperJobReportContract
 
     fun invokeSelectAll() {
         if (itemCount > 0) {
-//            val selectedCount = getSelectedLumperIdsList().size
-//            if (selectedCount == itemCount) {
-//                clearAllSelection()
-//            } else {
+            val selectedCount = getSelectedLumperIdsList().size
+            if (selectedCount == itemCount) {
+                clearAllSelection()
+            } else {
                 selectAllLumpers()
-//            }
+            }
         }
     }
 

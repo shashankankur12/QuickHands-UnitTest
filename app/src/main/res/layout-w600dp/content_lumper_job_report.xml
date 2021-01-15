@@ -51,7 +51,7 @@
                     android:id="@+id/editTextSearch"
                     style="@style/searchEditTextTheme"
                     android:layout_width="match_parent"
-                    android:layout_marginEnd="@dimen/_8ssp"
+                    android:layout_marginEnd="@dimen/_15ssp"
                     android:layout_toStartOf="@+id/linearLayoutSelectAll" />
 
                 <ImageView
@@ -89,6 +89,12 @@
                         android:src="@drawable/ic_add_lumer_tick_blank" />
                 </LinearLayout>
             </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@color/darkGreyDivider"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewLumpers"

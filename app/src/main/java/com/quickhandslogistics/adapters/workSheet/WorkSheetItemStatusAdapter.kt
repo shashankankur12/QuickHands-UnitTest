@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.CustomProgressBar
 import kotlinx.android.synthetic.main.item_select_status.view.*
 
 class WorkSheetItemStatusAdapter(private val resources: Resources, private val onAdapterClick: WorkSheetItemDetailContract.View.OnAdapterItemClickListener) :
@@ -22,13 +23,14 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
     private var statusList: LinkedHashMap<String, String> = LinkedHashMap()
     private var initialDisplayStatus: String = ""
     private var selectedDisplayStatus: String = ""
+    private var isCompleted: Boolean=false
 
     init {
         statusList[resources.getString(R.string.scheduled)] = AppConstant.WORK_ITEM_STATUS_SCHEDULED
         statusList[resources.getString(R.string.in_progress)] = AppConstant.WORK_ITEM_STATUS_IN_PROGRESS
         statusList[resources.getString(R.string.on_hold)] = AppConstant.WORK_ITEM_STATUS_ON_HOLD
-        statusList[resources.getString(R.string.cancelled)] = AppConstant.WORK_ITEM_STATUS_CANCELLED
         statusList[resources.getString(R.string.completed)] = AppConstant.WORK_ITEM_STATUS_COMPLETED
+        statusList[resources.getString(R.string.cancelled)] = AppConstant.WORK_ITEM_STATUS_CANCELLED
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -54,16 +56,32 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
 
         private val textViewStatus: TextView = view.textViewStatus
         private val imageViewAdd: ImageView = view.imageViewAdd
+        private val textViewDescription: TextView = view.textViewDescription
 
         fun bind(pair: Pair<String, String>) {
             textViewStatus.text = pair.first
 
             when (pair.first) {
-                resources.getString(R.string.in_progress) -> textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_green_light))
-                resources.getString(R.string.on_hold) -> textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_orange_dark))
-                resources.getString(R.string.scheduled) -> textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_blue_light))
-                resources.getString(R.string.cancelled) -> textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_dark))
-                resources.getString(R.string.completed) -> textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.darker_gray))
+                resources.getString(R.string.in_progress) ->{
+                    textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_green_light))
+                    textViewDescription.text = resources.getString(R.string.in_progress_description)
+                }
+                resources.getString(R.string.on_hold) -> {
+                    textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_orange_dark))
+                    textViewDescription.text = resources.getString(R.string.on_hold_description)
+                }
+                resources.getString(R.string.scheduled) ->{
+                    textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_blue_light))
+                    textViewDescription.text = resources.getString(R.string.scheduled_description)
+                }
+                resources.getString(R.string.cancelled) -> {
+                    textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_dark))
+                    textViewDescription.text = resources.getString(R.string.cancelled_description)
+                }
+                resources.getString(R.string.completed) -> {
+                    textViewStatus.setTextColor(ContextCompat.getColor(context, R.color.buildingTitle))
+                    textViewDescription.text = resources.getString(R.string.completed_description)
+                }
             }
 
             if (selectedDisplayStatus == pair.first) {
@@ -81,11 +99,15 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
             view?.let {
                 when (view.id) {
                     itemView.id -> {
-                        val pair = getItem(adapterPosition)
-                        if (selectedDisplayStatus != pair.first) {
-                            selectedDisplayStatus = pair.first
-                            notifyDataSetChanged()
-                            onAdapterClick.onSelectStatus(pair.second)
+                        if (isCompleted){
+                            CustomProgressBar.getInstance().showErrorDialog(resources.getString(R.string.updtae_status_after_signature_message), context)
+                        }else {
+                            val pair = getItem(adapterPosition)
+                            if (selectedDisplayStatus != pair.first) {
+                                selectedDisplayStatus = pair.first
+                                notifyDataSetChanged()
+                                onAdapterClick.onSelectStatus(pair.second)
+                            }
                         }
                     }
                 }
@@ -93,8 +115,9 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
         }
     }
 
-    fun updateInitialStatus(initialStatus: String) {
+    fun updateInitialStatus(initialStatus: String, isCompleted: Boolean ) {
         this.initialDisplayStatus = initialStatus
+        this.isCompleted = isCompleted
         selectedDisplayStatus = initialStatus
         notifyDataSetChanged()
     }

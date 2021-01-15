@@ -34,9 +34,9 @@
         style="@style/positiveRoundButtonTheme"
         android:layout_width="0dp"
         android:layout_marginBottom="@dimen/_6sdp"
-        android:text="@string/update_building_operations"
-        android:visibility="visible"
+        android:text="@string/edit_parameters"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,14 +7,18 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.scheduleTime.EditScheduleTimeAdapter
 import com.quickhandslogistics.contracts.scheduleTime.EditScheduleTimeContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.scheduleTime.LumperScheduleTimeData
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
+import com.quickhandslogistics.data.scheduleTime.ScheduleTimeRequest
 import com.quickhandslogistics.presenters.scheduleTime.EditScheduleTimePresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
@@ -24,6 +28,12 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCH
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_NOTES
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import kotlinx.android.synthetic.main.activity_edit_schedule_time.*
+import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.editTextDMNotes
+import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.textViewTitle
+import kotlinx.android.synthetic.main.bottom_sheet_edit_schedule_time_note.*
+import kotlinx.android.synthetic.main.content_edit_schedule_time.*
+import kotlinx.android.synthetic.main.content_edit_schedule_time.buttonCancelNote
+import kotlinx.android.synthetic.main.content_edit_schedule_time.buttonSubmit
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -33,11 +43,13 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     private var selectedTime: Long = 0
     private var scheduleTimeList: ArrayList<ScheduleTimeDetail> = ArrayList()
     private var scheduleTimeNotes: String? = null
+    private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
     private lateinit var editScheduleTimePresenter: EditScheduleTimePresenter
     private lateinit var editScheduleTimeAdapter: EditScheduleTimeAdapter
 
     private var dateString: String? = null
+    private var isLeavePage: Boolean = true
 
     companion object {
         const val SELECTED_DATE_STRING = "SELECTED_DATE_STRING"
@@ -94,6 +106,9 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     }
 
     private fun initializeUI(scheduleTimeList: ArrayList<ScheduleTimeDetail>) {
+        sheetBehavior = BottomSheetBehavior.from(constraintLayoutBottomSheetEditSchedule)
+        sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
         editTextNotes.setText(scheduleTimeNotes)
 
         recyclerViewLumpers.apply {
@@ -119,22 +134,44 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         buttonSubmit.setOnClickListener(this)
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
+        buttonCancelNote.setOnClickListener(this)
+        bottomSheetBackgroundEditSchedule.setOnClickListener(this)
+        buttonSaveNote.setOnClickListener(this)
+        buttonCancelDialog.setOnClickListener(this)
 
         invalidateOptionsMenu()
 
-        if (scheduleTimeList.size == 0) {
-            textViewEmptyData.visibility = View.VISIBLE
-            showChooseLumpersScreen()
+//        if (scheduleTimeList.size == 0) {
+//            textViewEmptyData.visibility = View.VISIBLE
+//            showChooseLumpersScreen()
+//        } else {
+//            textViewAddSameTime.visibility = View.VISIBLE
+//            buttonSubmit.isEnabled = true
+//        }
+
+        textViewEmptyData.visibility = View.VISIBLE
+        showChooseLumpersScreen()
+    }
+
+    private fun closeBottomSheet() {
+        sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetBackgroundEditSchedule.visibility = View.GONE
+    }
+
+    override fun onBackPressed() {
+        if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+            closeBottomSheet()
         } else {
-            textViewAddSameTime.visibility = View.VISIBLE
-            buttonSubmit.isEnabled = true
+            super.onBackPressed()
         }
     }
 
     private fun invalidateEmptyView() {
         if (editScheduleTimeAdapter.itemCount == 0) {
             buttonSubmit.isEnabled = false
+            isDataSave(true)
             textViewAddSameTime.visibility = View.GONE
+            layoutEditTextNotes.visibility = View.GONE
             textViewEmptyData.visibility = View.VISIBLE
             if (editScheduleTimeAdapter.isSearchEnabled()) {
                 textViewEmptyData.text = getString(R.string.no_record_found_info_message)
@@ -142,10 +179,12 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
                 textViewEmptyData.text = getString(R.string.empty_edit_schedule_time_info_message)
             }
         } else {
-            buttonSubmit.isEnabled =
-                (editScheduleTimeAdapter.getLumpersList().size > 0 && editScheduleTimeAdapter.getScheduledLumpersTimeMap().size > 0) && editScheduleTimeAdapter.getScheduledLumpersTimeMap().size == editScheduleTimeAdapter.getLumpersList().size
+            isDataSave (!(editScheduleTimeAdapter.getLumpersList().size > 0 && editScheduleTimeAdapter.getScheduledLumpersTimeMap().size > 0) && editScheduleTimeAdapter.getScheduledLumpersTimeMap().size == editScheduleTimeAdapter.getLumpersList().size)
+            buttonSubmit.isEnabled = (editScheduleTimeAdapter.getLumpersList().size > 0 && editScheduleTimeAdapter.getScheduledLumpersTimeMap().size > 0) && editScheduleTimeAdapter.getScheduledLumpersTimeMap().size == editScheduleTimeAdapter.getLumpersList().size
             textViewAddSameTime.visibility = View.VISIBLE
             textViewEmptyData.visibility = View.GONE
+            layoutEditTextNotes.visibility = View.VISIBLE
+
             textViewEmptyData.text = getString(R.string.empty_edit_schedule_time_info_message)
         }
     }
@@ -185,7 +224,17 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     private fun showConfirmationDialog(scheduledLumpersIdsTimeMap: HashMap<String, Long>, notes: String) {
         CustomProgressBar.getInstance().showWarningDialog(getString(R.string.schedule_lumpers_alert_message), activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
-                editScheduleTimePresenter.initiateScheduleTime(scheduledLumpersIdsTimeMap, notes, Date(selectedTime))
+
+                val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, Date(selectedTime))
+                val lumpersData: ArrayList<LumperScheduleTimeData> = ArrayList()
+                for (employeeId in scheduledLumpersIdsTimeMap.keys) {
+                    val timestamp = scheduledLumpersIdsTimeMap[employeeId]!!
+                    val individualNote = editScheduleTimeAdapter.getIndividualNote(employeeId)
+                    lumpersData.add(LumperScheduleTimeData(timestamp, employeeId, individualNote))
+                }
+
+                val request = ScheduleTimeRequest(lumpersData, notes, dateString)
+                editScheduleTimePresenter.initiateScheduleTime(request, Date(selectedTime))
             }
 
             override fun onCancelClick() {
@@ -197,19 +246,36 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
         startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
+    override fun showSuccessDialog(message: String, position: Int) {
+        setResult(RESULT_OK)
+        scheduleTimeList.removeAt(position)
+    }
+
     /** Native Views Listeners */
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
                 imageViewAddLumpers.id -> showChooseLumpersScreen()
+                bottomSheetBackgroundEditSchedule.id -> closeBottomSheet()
+                buttonCancelDialog.id -> closeBottomSheet()
                 textViewAddSameTime.id -> chooseSameTimeForAllLumpers()
+                buttonCancelNote.id -> onBackPressed()
                 buttonSubmit.id -> saveLumperScheduleTimings()
+                buttonSaveNote.id -> saveLumperIndividualNote()
                 imageViewCancel.id -> {
                     editTextSearch.setText("")
                     AppUtils.hideSoftKeyboard(activity)
                 }
             }
         }
+    }
+
+    private fun saveLumperIndividualNote() {
+       if (buttonSubmit.getTag(R.id.adapterPosition)!=null){
+           closeBottomSheet()
+           var adapterPosition: Int= buttonSubmit.getTag(R.id.adapterPosition) as Int
+           editScheduleTimeAdapter.addIndividualNote(adapterPosition,editTextDMNotes.text.toString() )
+       }
     }
 
     override fun afterTextChanged(p0: Editable?) {}
@@ -221,6 +287,62 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             editScheduleTimeAdapter.setSearchEnabled(text.isNotEmpty(), text.toString())
             imageViewCancel.visibility = if (text.isNotEmpty()) View.VISIBLE else View.GONE
         }
+    }
+
+    private fun showLeavePopup() {
+        CustomProgressBar.getInstance().showLeaveDialog(
+            getString(R.string.discard_leave_alert_message),
+            activity,
+            object : CustomDialogWarningListener {
+                override fun onConfirmClick() {
+
+                }
+                override fun onCancelClick() {
+                }
+            })
+    }
+
+
+    private fun showBottomSheetWithData(record: ScheduleTimeDetail? = null, adapterPosition: Int) {
+        record?.notesForLumper.also {
+            textViewTitle.text = getString(R.string.update_notes)
+            val noteForLumper = ValueUtils.getDefaultOrValue(it)
+            editTextDMNotes.setText(noteForLumper)
+            buttonSubmit.setTag(R.id.adapterPosition, adapterPosition)
+        } ?: run {
+            textViewTitle.text = getString(R.string.add_notes)
+            editTextDMNotes.setText("")
+            buttonSubmit.setTag(R.id.adapterPosition, adapterPosition)
+        }
+
+        if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+            sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            bottomSheetBackgroundEditSchedule.visibility = View.VISIBLE
+        } else {
+            closeBottomSheet()
+        }
+    }
+
+    private fun showDeleteDialog(adapterPosition: Int, item: ScheduleTimeDetail) {
+//        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.cancel_request_lumper), this, object : CustomDialogWarningListener {
+//            override fun onConfirmClick() {
+                scheduleTimeList.forEach {
+                    if (it.lumperInfo?.id!!.equals(item.lumperInfo?.id!!)){
+                        removeFromList(scheduleTimeList.indexOf(it), item)
+                    }
+                }
+                editScheduleTimeAdapter.removeLumpersInList(adapterPosition, item)
+
+//            }
+//
+//            override fun onCancelClick() {
+//            }
+//        })
+    }
+
+    private fun removeFromList(adapterPosition: Int, item: ScheduleTimeDetail) {
+        var scheduleTimeDetail= item
+        editScheduleTimePresenter.cancelScheduleLumpers(scheduleTimeDetail.lumperInfo?.id!!,DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, scheduleTimeDetail.reportingTimeAndDay),adapterPosition)
     }
 
     /** Presenter Listeners */
@@ -235,6 +357,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
 
     override fun scheduleTimeFinished() {
         setResult(RESULT_OK)
+        isDataSave(true)
         onBackPressed()
     }
 
@@ -256,5 +379,16 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
                 editScheduleTimeAdapter.addStartTime(adapterPosition, calendar.timeInMillis)
             }, mHour, mMinute, false
         ).show()
+    }
+
+    override fun onAddScheduleNoteClick(
+        adapterPosition: Int,
+        item: ScheduleTimeDetail
+    ) {
+        showBottomSheetWithData(item , adapterPosition)
+    }
+
+    override fun onAddRemoveClick(adapterPosition: Int, item: ScheduleTimeDetail) {
+        showDeleteDialog(adapterPosition , item)
     }
 }

@@ -20,6 +20,7 @@ import com.quickhandslogistics.utils.CustomDialogWarningListener;
 import com.quickhandslogistics.utils.CustomProgressBar;
 import com.quickhandslogistics.views.BaseActivity;
 import com.quickhandslogistics.views.attendance.TimeClockAttendanceFragment;
+import com.quickhandslogistics.views.customerSheet.CustomerSheetFragment;
 import com.quickhandslogistics.views.workSheet.WorkSheetFragment;
 
 import java.util.ArrayList;
@@ -198,7 +199,7 @@ public class NavDrawer {
             super.inflate(inflater, navDrawer);
 
             if (showOnLaunch) {
-                toolbar.setTitle(text);
+//                toolbar.setTitle(text);
                 this.navDrawer.setSelectedItem(this);
                 showFragment(this.navDrawer.activity, false);
                 this.navDrawer.invalidateOptionMenu(text);
@@ -216,10 +217,16 @@ public class NavDrawer {
                 navDrawer.showLogoutDialog();
             } else {
                 Fragment currentFragment = activity.getSupportFragmentManager().findFragmentById(R.id.frameLayoutMain);
-                if (currentFragment != null && currentFragment.getClass().getSimpleName().equals(TimeClockAttendanceFragment.class.getSimpleName())
-                        && !targetFragment.getClass().getSimpleName().equals(TimeClockAttendanceFragment.class.getSimpleName())) {
+                if (currentFragment != null && checkCurrentFragment(currentFragment) && targetedFragment(targetFragment)) {
                     if (currentFragment instanceof TimeClockAttendanceFragment) {
                         if (((TimeClockAttendanceFragment) currentFragment).onDataChanges()) {
+                            showLeavePageAlert(activity, text);
+                        } else {
+                            setFragment(activity, text);
+                        }
+                    }
+                    if (currentFragment instanceof CustomerSheetFragment) {
+                        if (((CustomerSheetFragment) currentFragment).onDataChanges()) {
                             showLeavePageAlert(activity, text);
                         } else {
                             setFragment(activity, text);
@@ -231,8 +238,16 @@ public class NavDrawer {
             }
         }
 
+        private boolean targetedFragment(Fragment targetFragment) {
+            return !targetFragment.getClass().getSimpleName().equals(TimeClockAttendanceFragment.class.getSimpleName())|| targetFragment.getClass().getSimpleName().equals(CustomerSheetFragment.class.getSimpleName());
+        }
+
+        private boolean checkCurrentFragment(Fragment currentFragment) {
+            return currentFragment.getClass().getSimpleName().equals(TimeClockAttendanceFragment.class.getSimpleName()) || currentFragment.getClass().getSimpleName().equals(CustomerSheetFragment.class.getSimpleName());
+        }
+
         private void showLeavePageAlert(BaseActivity activity, String text) {
-            CustomProgressBar.Companion.getInstance().showWarningDialog(activity.getString(R.string.leave_alert_message), activity, new CustomDialogWarningListener() {
+            CustomProgressBar.Companion.getInstance().showLeaveDialog(activity.getString(R.string.discard_leave_alert_message), activity, new CustomDialogWarningListener() {
                 @Override
                 public void onConfirmClick() {
                     setFragment(activity, text);
@@ -245,7 +260,7 @@ public class NavDrawer {
         }
 
         public void setFragment(BaseActivity activity, String text) {
-            toolbar.setTitle(text);
+//            toolbar.setTitle(text);
             navDrawer.setSelectedItem(this);
             showFragment(activity, true);
             navDrawer.invalidateOptionMenu(text);

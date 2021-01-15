@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_35ssp"
+    android:background="?attr/colorPrimary"
+    app:buttonGravity="center_vertical"
+    app:titleTextAppearance="@style/ToolbarTitleTextAppearance"
+    app:popupTheme="@style/AppTheme.PopupOverlay"
+    android:minHeight="?attr/actionBarSize"
+    app:titleTextColor="@color/textBlack"
+    app:contentInsetLeft="0dp"
+    app:contentInsetStart="0dp"
+    app:contentInsetStartWithNavigation="0dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewToolbar"
+            style="@style/titleBigTextViewThemeHeader"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:layout_alignParentStart="true"
+            android:layout_width="wrap_content" />
+
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewDate"
+            style="@style/titleSmallerTextViewTheme"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/textViewToolbar"
+            android:textAlignment="viewEnd"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:visibility="gone"
+            android:textColor="@color/textBlack"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content" />
+
+        <ImageView
+            android:id="@+id/headerLogoImage"
+            android:layout_width="@dimen/_100sdp"
+            android:padding="@dimen/_1sdp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:src="@drawable/qhl_thumb_logo_white"
+            android:foregroundGravity="right"
+            />
+        <!-- android:layout_centerVertical="true"-->
+    </RelativeLayout>
+</androidx.appcompat.widget.Toolbar>

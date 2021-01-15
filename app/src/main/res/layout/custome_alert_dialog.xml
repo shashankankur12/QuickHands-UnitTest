@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/loading"
+    android:layout_width="@dimen/alert_width"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_background"
+    android:padding="10dp">
+    <TextView
+        android:id="@+id/title_text"
+        style="@style/dialogTitleTextViewThemeBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:singleLine="true"
+        android:layout_marginHorizontal="20dp"
+        android:text="@string/dialog_default_title" />
+
+    <TextView
+        android:id="@+id/sub_title_text"
+        style="@style/dialogContentTextViewThemeBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginHorizontal="20dp"
+        android:text="@string/sub_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/layoutDailyNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/gray_btn_bg_color"
+                    android:layout_height="@dimen/_1sdp"/>
+
+                <TextView
+                    style="@style/dialogTitleTextViewThemeBold"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:text="@string/daily_scheduled" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_daily_note"
+                android:layout_width="match_parent"
+                android:nestedScrollingEnabled="false"
+                android:visibility="gone"
+                android:layout_marginHorizontal="20dp"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:id="@+id/layoutWeeklyNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/gray_btn_bg_color"
+                    android:layout_height="@dimen/_1sdp"/>
+
+                <TextView
+                    style="@style/dialogTitleTextViewThemeBold"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:text="@string/weekly_scheduled" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_weekly_note"
+                android:layout_width="match_parent"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginHorizontal="20dp"
+                android:visibility="gone"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:id="@+id/layoutMonthlyNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/gray_btn_bg_color"
+                    android:layout_height="@dimen/_1sdp"/>
+
+                <TextView
+                    style="@style/dialogTitleTextViewThemeBold"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/monthly_scheduled" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_monthly_note"
+                android:layout_width="match_parent"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginHorizontal="20dp"
+                android:visibility="gone"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:id="@+id/layoutCustomNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/gray_btn_bg_color"
+                    android:layout_height="@dimen/_1sdp"/>
+
+                <TextView
+                    style="@style/dialogTitleTextViewThemeBold"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/custom_scheduleds" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_custom_note"
+                android:layout_width="match_parent"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginHorizontal="20dp"
+                android:visibility="gone"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/gray_btn_bg_color"
+                    android:layout_height="@dimen/_1sdp"/>
+
+
+                <Button
+                    android:id="@+id/confirm_button"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    style="@style/dialog_blue_button"
+                    android:background="@drawable/round_button_red_selector"
+                    android:text="@string/dialog_ok" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+</LinearLayout>

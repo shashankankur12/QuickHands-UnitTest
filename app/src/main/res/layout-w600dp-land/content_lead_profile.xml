@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/float_transparent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_8ssp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleImageViewProfile"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
+                android:src="@drawable/dummy"
+                android:transitionName="@string/transition_name"
+                app:civ_border_color="@color/textWhite"
+                app:civ_border_width="3dp" />
+
+            <ImageView
+                android:id="@+id/headerLogo"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/qhl_thumb_logo_white" />
+
+            <TextView
+                android:id="@+id/textViewLumperName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/headerLogo"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/buildingTitle"
+                android:textSize="@dimen/_13ssp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewCompanyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewLumperName"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:textColor="@color/buildingTitle"
+                android:textSize="@dimen/_11ssp" />
+
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/constraintLayout"
+        android:background="@color/gray_btn_bg_color"
+        android:paddingTop="@dimen/_8ssp"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:paddingBottom="@dimen/_12sdp"
+            android:paddingHorizontal="@dimen/_10ssp"
+            android:layout_height="match_parent">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewContact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_7sdp"
+                app:layout_constraintEnd_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:background="@color/colorTextGrey"
+                        android:paddingHorizontal="@dimen/_8sdp">
+
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="Contact"
+                            android:textColor="@color/textWhite"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutPhoneNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4ssp"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_8sdp"
+                        android:paddingEnd="@dimen/_4sdp">
+
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/phone_number_lead"
+                            android:textColor="@color/colorTextGrey"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textViewPhoneNumber"
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/hypertext_color"
+                            android:paddingStart="@dimen/_1sdp"
+                            android:textSize="@dimen/_9ssp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutEmailAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4ssp"
+                        android:layout_marginBottom="@dimen/_5ssp"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_8sdp"
+                        android:paddingEnd="@dimen/_5sdp">
+
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/email_addess_lead"
+                            android:textColor="@color/colorTextGrey"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textViewEmailAddress"
+                            style="@style/detailTextHeader"
+                            android:paddingStart="@dimen/_1sdp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/hypertext_color"
+                            android:textSize="@dimen/_9ssp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewWorkIdentification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8ssp"
+                android:elevation="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_7sdp"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewContact">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:background="@color/colorTextGrey"
+                        android:paddingHorizontal="@dimen/_8sdp">
+
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="Work Identification"
+                            android:textColor="@color/textWhite"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutEmployeeId"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/_4ssp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_8sdp"
+                        android:paddingEnd="@dimen/_5sdp">
+
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/employee_id_lead"
+                            android:textColor="@color/colorTextGrey"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textViewEmployeeId"
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="@dimen/_1sdp"
+                            android:textColor="@color/colorTextGrey"
+                            android:textSize="@dimen/_9ssp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4ssp"
+                        android:layout_marginBottom="@dimen/_4ssp"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_8sdp"
+                        android:paddingEnd="@dimen/_5sdp"
+                        android:weightSum="3">
+
+                        <LinearLayout
+                            android:id="@+id/layoutRole"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/detailTextHeader"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/role_lead"
+                                android:textColor="@color/colorTextGrey"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textViewRole"
+                                style="@style/detailTextHeader"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="@dimen/_1sdp"
+                                android:textColor="@color/colorTextGrey"
+                                android:textSize="@dimen/_9ssp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layoutTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/detailTextHeader"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/title_lead"
+                                android:textColor="@color/colorTextGrey"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textViewTitle"
+                                style="@style/detailTextHeader"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="@dimen/_1sdp"
+                                android:textColor="@color/colorTextGrey"
+                                android:textSize="@dimen/_9ssp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layoutDepartment"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/detailTextHeader"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/department_lead"
+                                android:textColor="@color/colorTextGrey"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textViewDepartment"
+                                style="@style/detailTextHeader"
+                                android:layout_width="wrap_content"
+                                android:paddingHorizontal="@dimen/_1sdp"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorTextGrey"
+                                android:textSize="@dimen/_9ssp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewWorkSchedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8ssp"
+                android:elevation="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_7sdp"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewWorkIdentification">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:background="@color/colorTextGrey"
+                        android:paddingHorizontal="@dimen/_8sdp">
+
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="Work Schedule"
+                            android:textColor="@color/textWhite"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutAvailability"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4ssp"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_8sdp"
+                        android:paddingEnd="@dimen/_5sdp">
+
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Availability :"
+                            android:textColor="@color/colorTextGrey"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textViewAvailability"
+                            android:paddingHorizontal="@dimen/_1sdp"
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorTextGrey"
+                            android:textSize="@dimen/_9ssp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4ssp"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_8sdp"
+                        android:paddingEnd="@dimen/_5sdp"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:id="@+id/layoutShift"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/layoutShiftHours"
+                            app:layout_constraintTop_toBottomOf="@+id/layoutPhoneNumber">
+
+                            <TextView
+                                style="@style/detailTextHeader"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/shift_lead"
+                                android:textColor="@color/colorTextGrey"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textViewShift"
+                                style="@style/detailTextHeader"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="@dimen/_1sdp"
+                                android:textColor="@color/colorTextGrey"
+                                android:textSize="@dimen/_9ssp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layoutShiftHours"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toStartOf="@id/layoutShift"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/layoutPhoneNumber">
+
+                            <TextView
+                                style="@style/detailTextHeader"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/shift_hours_lead"
+                                android:textColor="@color/colorTextGrey"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textViewShiftHours"
+                                style="@style/detailTextHeader"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="@dimen/_1sdp"
+                                android:textColor="@color/colorTextGrey"
+                                android:textSize="@dimen/_9ssp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutScheduleNote"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:layout_marginBottom="@dimen/_4ssp"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_8sdp"
+                        android:paddingEnd="@dimen/_5sdp">
+
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:id="@+id/textViewScheduleNote"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/schedule_note"
+                            android:textColor="@color/colorTextGrey" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewWorkLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8ssp"
+                android:layout_marginBottom="@dimen/_8ssp"
+                android:elevation="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_7sdp"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewWorkSchedule">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:background="@color/colorTextGrey"
+                        android:paddingHorizontal="@dimen/_8sdp">
+
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="Work Location"
+                            android:textColor="@color/textWhite"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutCustomerName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4ssp"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_8sdp"
+                        android:paddingEnd="@dimen/_5sdp">
+
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Customer : "
+                            android:textColor="@color/colorTextGrey"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textViewCustomerName"
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="@dimen/_1sdp"
+                            android:textColor="@color/colorTextGrey"
+                            android:textSize="@dimen/_9ssp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutBuildingName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4ssp"
+                        android:layout_marginBottom="@dimen/_4ssp"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_8sdp"
+                        android:paddingEnd="@dimen/_5sdp">
+
+                        <TextView
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/building_name_lead"
+                            android:textColor="@color/colorTextGrey"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textViewBuildingName"
+                            style="@style/detailTextHeader"
+                            android:layout_width="wrap_content"
+                            android:paddingStart="@dimen/_1sdp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorTextGrey"
+                            android:textSize="@dimen/_9ssp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</RelativeLayout>
