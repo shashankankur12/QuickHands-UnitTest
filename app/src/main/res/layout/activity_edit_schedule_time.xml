@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.scheduleTime.EditScheduleTimeActivity">
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/layout_toolbar" />
+
+    <include
+        android:id="@+id/content_item"
+        layout="@layout/content_edit_schedule_time" />
+
+    <View
+        android:id="@+id/bottomSheetBackgroundEditSchedule"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/fabBackgroundOverlay"
+        android:visibility="gone" />
+
+    <!-- Adding bottom sheet after main content -->
+    <include layout="@layout/bottom_sheet_edit_schedule_time_note" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

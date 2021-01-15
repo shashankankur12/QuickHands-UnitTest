@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
+    tools:context=".views.workSheet.AllWorkScheduleCancelActivity">
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/layout_toolbar" />
+    <TextView
+        android:id="@+id/editTextSearch"
+        style="@style/detailTextHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorTextGrey"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_10sdp"
+        android:text="@string/work_sheet_cancel_header_message"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header" />
+
+    <RelativeLayout
+        android:id="@+id/layoutClockedIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/textWhite"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSearch">
+
+        <TextView
+            android:id="@+id/textViewClockIn"
+            style="@style/detailTextHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorTextGrey"
+            android:text="@string/work_sheet_lumper_message"
+            />
+
+        <ImageView
+            android:id="@+id/imageViewAdd"
+            android:layout_alignParentEnd="true"
+            android:layout_width="@dimen/_22sdp"
+            android:layout_height="@dimen/_22sdp"
+            android:src="@drawable/ic_add_lumer_tick_blank" />
+
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/white_background"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/_12ssp"
+        android:paddingTop="@dimen/_6ssp"
+        android:paddingEnd="@dimen/_12ssp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutClockedIn">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewLumpers"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:nestedScrollingEnabled="false" />
+
+                <TextView
+                    android:id="@+id/textViewEmptyData"
+                    style="@style/noRecordTextViewTheme"
+                    android:layout_height="250dp"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="@string/empty_add_work_item_lumpers_info_message"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/schedule_item_background"
+                android:orientation="vertical"
+                android:padding="@dimen/_8sdp">
+
+                <TextView
+                    style="@style/titleTextViewTheme"
+                    android:text="@string/notes_for_customer" />
+
+                <EditText
+                    android:id="@+id/editTextCustomerNotes"
+                    style="@style/notesEditTextTheme" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/schedule_item_background"
+                android:orientation="vertical"
+                android:padding="@dimen/_8sdp">
+
+                <TextView
+                    style="@style/titleTextViewTheme"
+                    android:text="@string/notes_for_qhl" />
+
+                <EditText
+                    android:id="@+id/editTextQHLNotes"
+                    style="@style/notesEditTextTheme" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutSaveCancelButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonSubmit"
+                    style="@style/positiveRoundButtonTheme"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:text="@string/save" />
+
+                <Button
+                    android:id="@+id/buttonCancelRequest"
+                    style="@style/negativeRoundButtonTheme"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:text="@string/cancel" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

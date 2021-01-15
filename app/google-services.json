@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "825941915227",
+    "firebase_url": "https://quickhands-172eb.firebaseio.com",
+    "project_id": "quickhands-172eb",
+    "storage_bucket": "quickhands-172eb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:825941915227:android:948d4373fc091ff75c317e",
+        "android_client_info": {
+          "package_name": "com.quickhandslogistics"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "825941915227-u77msrurh03abokp8s5f25vsb06l48bp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFuz7Qp6gDpPdMk2WzdmX0O6RkyDXdkRg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "825941915227-u77msrurh03abokp8s5f25vsb06l48bp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

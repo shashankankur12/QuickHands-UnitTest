@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="attendancePosition" type="id" />
+    <item name="isMultiSelect" type="id" />
+    <item name="requestLumperId" type="id" />
+    <item name="cancelLumperDay" type="id" />
+    <item name="adapterPosition" type="id" />
+    <item name="requirment" type="id" />
+    <item name="note" type="id" />
+</resources>

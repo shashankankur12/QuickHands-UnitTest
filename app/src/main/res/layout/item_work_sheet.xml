@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/schedule_item_background">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutSide"
+        android:layout_width="@dimen/_6ssp"
+        android:layout_height="0dp"
+        android:background="@drawable/schedule_item_stroke_in_progress"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:padding="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textViewStatus"
+            style="@style/baseChipTheme"
+            android:layout_marginEnd="@dimen/_4sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewNoOfDrops"
+            style="@style/titleBigTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:clickable="false"
+            android:text="Container Number :"
+            app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/layoutWorksheetNote"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewNoOfDrops"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textViewWorkSheetNote"
+                style="@style/noteTextViewTheme"
+                android:layout_width="wrap_content"
+                android:textColor="@color/scheduleDetail"
+                android:text="Lead Note:" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textViewStartTime"
+            style="@style/valuesTextViewTheme"
+            android:text="@string/start_time_s"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutWorksheetNote" />
+
+        <TextView
+            android:id="@+id/textViewDoor"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:text="@string/door_s"
+            app:layout_constraintEnd_toStartOf="@+id/textViewContainer"
+            app:layout_constraintHorizontal_weight="0.25"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
+
+        <TextView
+            android:id="@+id/textViewContainer"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:text="@string/container_no_s"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="0.75"
+            app:layout_constraintStart_toEndOf="@+id/textViewDoor"
+            app:layout_constraintTop_toBottomOf="@+id/textViewStartTime" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/labelBarrier1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="textViewDoor,textViewContainer" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circleImageViewArrow"
+            android:layout_width="@dimen/_22sdp"
+            android:layout_height="@dimen/_22sdp"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:src="@drawable/ic_arrow_right"
+            app:civ_border_color="@color/circleBackground"
+            app:civ_border_width="@dimen/_1sdp"
+            app:civ_circle_background_color="@color/circleBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelBarrier1"
+            app:layout_constraintVertical_bias="1" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewLumpersImagesList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/labelBarrier1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

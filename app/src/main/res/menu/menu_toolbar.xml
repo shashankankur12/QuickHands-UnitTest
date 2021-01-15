@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/actionNotes"
+        android:icon="@drawable/ic_notes"
+        android:title="@string/notes"
+        android:visible="false"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/actionCancelAllWork"
+        android:title="@string/cancel_all_work_schedules"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/actionAddSameLumperTime"
+        android:title="@string/add_same_start_time_for_all"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/actionAddLumpers"
+        android:icon="@drawable/ic_person_add"
+        android:title="@string/add_lumpers"
+        android:visible="false"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/actionRefresh"
+        android:icon="@drawable/ic_refresh"
+        android:title="@string/refresh"
+        android:visible="false"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/iconQhl"
+        android:layout_width="30dp"
+        android:icon="@drawable/qhl_thumb_logo_white"
+        android:visible="false"
+        app:showAsAction="always" />
+
+</menu>

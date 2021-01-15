@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:elevation="50dp"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    tools:showIn="@layout/fragment_time_clock_attendance">
+
+    <LinearLayout
+        android:id="@+id/layoutCurrentTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/buildingTitle"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/_8ssp"
+        android:paddingBottom="@dimen/_8ssp"
+        android:paddingStart="@dimen/_8ssp"
+        android:paddingEnd="@dimen/_8ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/titleTextViewTheme"
+                android:id="@+id/textViewLName"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/titleTextViewTheme"
+                android:text="@string/current_time"
+                android:textColor="@android:color/white" />
+
+            <TextClock
+                style="@style/titleTextViewTheme"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutCurrentTime">
+        <TextView
+            android:id="@+id/textViewShiftTime"
+            style="@style/titleBigTextViewTheme"
+            android:layout_width="0dp"
+            android:padding="@dimen/_8ssp"
+            android:gravity="center"
+            android:textAlignment="gravity"
+            android:text="@string/shift_time"
+            android:textColor="@color/buildingTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/layoutShiftTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewShiftTime">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/buttonClockIn"
+                style="@style/positiveButtonTheme"
+                android:layout_width="@dimen/_110sdp"
+                android:text="@string/clock_in" />
+
+            <ImageView
+                android:layout_width="@dimen/_22ssp"
+                android:layout_height="@dimen/_22ssp"
+                android:layout_weight="0.5"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_remove_icon" />
+
+            <Button
+                android:id="@+id/buttonClockOut"
+                style="@style/positiveButtonTheme"
+                android:layout_width="@dimen/_110sdp"
+                android:text="@string/clock_out" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textViewLunchTime"
+            style="@style/titleBigTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:gravity="center"
+            android:textAlignment="gravity"
+            android:padding="@dimen/_8ssp"
+            android:text="@string/lunch_time"
+            android:textColor="@color/buildingTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutShiftTime" />
+
+        <LinearLayout
+            android:id="@+id/layoutLunchTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewLunchTime">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/buttonLunchIn"
+                style="@style/positiveButtonThemeYellow"
+                android:layout_width="@dimen/_110sdp"
+                android:text="@string/out_to_lunch" />
+
+            <ImageView
+                android:layout_width="@dimen/_22ssp"
+                android:layout_height="@dimen/_22ssp"
+                android:layout_weight="0.5"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_remove_icon" />
+
+            <Button
+                android:id="@+id/buttonLunchOut"
+                style="@style/positiveButtonThemeYellow"
+                android:layout_width="@dimen/_110sdp"
+                android:text="@string/back_to_work" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

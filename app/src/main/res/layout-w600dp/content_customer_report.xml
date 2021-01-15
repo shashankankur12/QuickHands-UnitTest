@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_customer_report">
+
+    <include
+        android:id="@+id/layoutDateFilter"
+        layout="@layout/layout_date_filter" />
+
+    <include
+        android:id="@+id/layoutReportType"
+        layout="@layout/layout_report_type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutDateFilter" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_4ssp"
+        android:background="@drawable/white_background"
+        android:paddingStart="@dimen/_10ssp"
+        android:paddingTop="@dimen/_2ssp"
+        android:paddingEnd="@dimen/_10ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/buttonGenerateReport"
+        app:layout_constraintTop_toBottomOf="@+id/layoutReportType">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCustomer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_4ssp"
+            tools:listitem="@layout/item_add_building" />
+
+        <TextView
+            android:id="@+id/textViewEmptyData"
+            style="@style/noRecordTextViewTheme"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:text="@string/empty_customer_list_info_message"/>
+
+    </RelativeLayout>
+    <Button
+        android:id="@+id/buttonGenerateReport"
+        style="@style/positiveRoundButtonTheme"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/_8ssp"
+        android:enabled="false"
+        android:layout_marginStart="@dimen/_10ssp"
+        android:layout_marginEnd="@dimen/_10ssp"
+        android:text="@string/generate_report"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

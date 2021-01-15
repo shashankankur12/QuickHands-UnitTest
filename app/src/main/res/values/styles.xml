@@ -1,10 +1,298 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="actionOverflowButtonStyle">@style/MyOverflowButtonStyle</item>
+        <item name="android:windowContentTransitions">true</item>
+    </style>
+
+    <!--    <style name="rangeCalendarTheme" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+            <item name="colorPrimary">@color/buildingTitle</item>
+        </style>-->
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="MyOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">@color/textBlack</item>
+    </style>
+
+    <style name="dialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/anim_slide_up</item>
+        <item name="android:windowExitAnimation">@anim/anim_slide_down</item>
+    </style>
+
+    <style name="detailTextHeader">
+        <item name="android:textSize">@dimen/_12ssp</item>
+        <item name="android:textColor">@color/detailHeader</item>
+    </style>
+
+    <style name="detailTextValue">
+        <item name="android:textSize">@dimen/_14ssp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/textBlack</item>
+    </style>
+
+    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">@dimen/_13ssp</item>
+    </style>
+
+    <style name="ToolbarTitleTextAppearance" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">@dimen/_16ssp</item>
+    </style>
+
+
+    <style name="RadioButtonStyle" parent="AppTheme">
+        <item name="colorControlNormal">@color/colorAccent</item>
+        <item name="colorAccent">@color/buildingTitle</item>
+        <item name="android:textColorSecondary">@color/buildingTitle</item>
+    </style>
+
+    <!--Main Button Styles-->
+    <style name="baseButtonTheme" parent="Widget.AppCompat.Button">
+        <item name="android:layout_height">@dimen/_38sdp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/_15ssp</item>
+        <item name="android:paddingTop">@dimen/_4sdp</item>
+        <item name="android:paddingBottom">@dimen/_4sdp</item>
+    </style>
+
+    <style name="positiveRoundButtonTheme" parent="baseButtonTheme">
+        <item name="android:background">@drawable/round_button_red_selector</item>
+    </style>
+
+    <style name="negativeRoundButtonTheme" parent="baseButtonTheme">
+        <item name="android:textColor">@color/button_negative_selector</item>
+        <item name="android:background">@drawable/round_button_negative_selector</item>
+    </style>
+
+    <style name="positiveButtonTheme" parent="baseButtonTheme">
+        <item name="android:background">@drawable/button_red_selector</item>
+        <item name="android:padding">@dimen/_10ssp</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="positiveButtonThemeYellow" parent="baseButtonTheme">
+        <item name="android:background">@drawable/button_yellow_selector</item>
+        <item name="android:padding">@dimen/_10ssp</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+    <!---->
+
+    <!--Chip TextView Styles-->
+    <style name="baseChipTheme" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/_10ssp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingTop">@dimen/_5ssp</item>
+        <item name="android:paddingBottom">@dimen/_5ssp</item>
+        <item name="android:paddingEnd">@dimen/_10ssp</item>
+        <item name="android:paddingStart">@dimen/_10ssp</item>
+    </style>
+
+    <style name="blueChipTheme" parent="baseChipTheme">
+        <item name="android:textSize">@dimen/_12ssp</item>
+        <item name="android:background">@drawable/chip_background</item>
+    </style>
+
+    <style name="darkBlueChipTheme" parent="baseChipTheme">
+        <item name="android:textSize">@dimen/_12ssp</item>
+        <item name="android:background">@drawable/chip_background_dark</item>
+    </style>
+    <!---->
+
+    <!--EditText Styles-->
+    <style name="loginEditTextTheme" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@drawable/edittext_background</item>
+        <item name="android:drawablePadding">@dimen/_10sdp</item>
+        <item name="android:paddingTop">@dimen/_10ssp</item>
+        <item name="android:paddingBottom">@dimen/_10ssp</item>
+        <item name="android:paddingEnd">@dimen/_14ssp</item>
+        <item name="android:paddingStart">@dimen/_14ssp</item>
+        <item name="android:textSize">@dimen/_12ssp</item>
+        <item name="android:textColor">@color/textBlack</item>
+    </style>
+
+    <style name="searchEditTextTheme" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/edit_search_bg</item>
+        <item name="android:drawableStart">@drawable/ic_search</item>
+        <item name="android:drawablePadding">@dimen/_4sdp</item>
+        <item name="android:hint">@string/search_info_message</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:inputType">textPersonName</item>
+        <item name="android:paddingTop">@dimen/_6sdp</item>
+        <item name="android:paddingBottom">@dimen/_6sdp</item>
+        <item name="android:paddingEnd">@dimen/_30sdp</item>
+        <item name="android:paddingStart">@dimen/_5sdp</item>
+        <item name="android:textColor">@color/textBlack</item>
+        <item name="android:textSize">@dimen/_14ssp</item>
+    </style>
+
+    <style name="valueEditTextTheme" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/_2sdp</item>
+        <item name="android:backgroundTint">@color/buildingTitle</item>
+        <item name="android:inputType">textPersonName|textCapSentences</item>
+        <item name="android:textColor">@color/scheduleDetail</item>
+        <item name="android:textSize">@dimen/_12ssp</item>
+        <item name="android:textCursorDrawable">@drawable/color_cursor</item>
+    </style>
+
+    <style name="notesEditTextTheme" parent="valueEditTextTheme">
+        <item name="android:overScrollMode">always</item>
+        <item name="android:scrollbarStyle">insideInset</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:inputType">textMultiLine|textCapSentences</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:maxLength">300</item>
+    </style>
+    <!---->
+
+    <!--TextView Styles-->
+    <style name="titleTextViewTheme" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/buildingTitle</item>
+        <item name="android:textSize">@dimen/_14ssp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="titleBigTextViewTheme" parent="titleTextViewTheme">
+        <item name="android:textSize">@dimen/_16ssp</item>
+    </style>
+
+    <style name="titleBigTextViewThemeHeader" parent="titleTextViewTheme">
+        <item name="android:textSize">@dimen/_15ssp</item>
+    </style>
+
+    <style name="titleSmallTextViewTheme" parent="titleTextViewTheme">
+        <item name="android:textSize">@dimen/_12ssp</item>
+    </style>
+    <style name="titleSmallerTextViewTheme" parent="titleTextViewTheme">
+        <item name="android:textSize">@dimen/_11ssp</item>
+    </style>
+
+    <style name="titleVerySmallTextViewTheme" parent="titleTextViewTheme">
+        <item name="android:textSize">@dimen/_10ssp</item>
+    </style>
+
+    <style name="valuesTextViewTheme" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/scheduleDetail</item>
+        <item name="android:textSize">@dimen/_12ssp</item>
+    </style>
+
+
+    <style name="valuesSmallTextViewThemeHeader" parent="valuesTextViewTheme">
+        <item name="android:textSize">@dimen/_11ssp</item>
+    </style>
+
+    <style name="valuesSmallTextViewTheme" parent="valuesTextViewTheme">
+        <item name="android:textSize">@dimen/_10ssp</item>
+    </style>
+
+    <style name="valuesVerySmallTextViewTheme" parent="valuesTextViewTheme">
+        <item name="android:textSize">@dimen/_8ssp</item>
+    </style>
+
+    <style name="valuesBigTextViewTheme" parent="valuesTextViewTheme">
+        <item name="android:textSize">@dimen/_14ssp</item>
+    </style>
+
+    <style name="noRecordTextViewTheme" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:lineSpacingExtra">@dimen/_2ssp</item>
+        <item name="android:padding">@dimen/_10ssp</item>
+        <item name="android:textColor">@color/textBlack</item>
+        <item name="android:textSize">@dimen/_12ssp</item>
+        <item name="android:text">@string/no_record_found_info_message</item>
+    </style>
+
+    <style name="addTextViewTheme" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:drawableStart">@drawable/ic_add_time_plus</item>
+        <item name="android:drawablePadding">@dimen/_5sdp</item>
+        <item name="android:padding">@dimen/_5sdp</item>
+        <item name="android:textColor">@color/buttonRed</item>
+        <item name="android:textSize">@dimen/_12ssp</item>
+    </style>
+    <style name="editTextViewTheme" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:drawableStart">@drawable/ic_clear_red_small</item>
+        <item name="android:drawablePadding">@dimen/_2sdp</item>
+        <item name="android:padding">@dimen/_1sdp</item>
+        <item name="android:textColor">@color/buttonRed</item>
+        <item name="android:textSize">@dimen/_12ssp</item>
+    </style>
+    <style name="noteTextViewTheme" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:drawableEnd">@drawable/note_icon_selector</item>
+        <item name="android:textColor">@color/button_negative_selector</item>
+        <item name="android:textSize">@dimen/_12ssp</item>
+    </style>
+    <!---->
+
+    <!--ImageView Styles-->
+    <style name="circularImageViewTheme">
+        <item name="android:layout_width">@dimen/_35sdp</item>
+        <item name="android:layout_height">@dimen/_35sdp</item>
+        <item name="android:src">@drawable/dummy</item>
+        <item name="civ_border_color">@color/imageBorder</item>
+        <item name="civ_border_width">@dimen/circleNormalBorder</item>
+    </style>
+    <!---->
+
+    <!--Alert Dialog Styles-->
+    <style name="dialogTitleTextViewTheme" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/_12ssp</item>
+    </style>
+
+    <style name="dialogTitleTextViewThemeBold" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/_12ssp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/textBlack</item>
+    </style>
+    <style name="dialogContentTextViewTheme" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/_10ssp</item>
+    </style>
+    <style name="dialogContentTextViewThemeBold" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/_10ssp</item>
+        <item name="android:textColor">@color/textBlack</item>
+    </style>
+
+    <style name="dialogConfirmButtonTheme" parent="Widget.AppCompat.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/_11ssp</item>
+    </style>
+
+    <style name="dialogCancelButtonTheme" parent="Widget.AppCompat.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/button_negative_selector</item>
+        <item name="android:textSize">@dimen/_11ssp</item>
     </style>
 </resources>

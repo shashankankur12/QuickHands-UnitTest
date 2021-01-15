@@ -1,21 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.quickhandslogistics">
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
-        android:allowBackup="true"
+        android:name=".application.MyApplication"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".SplashActivity">
+        android:theme="@style/AppTheme"
+        tools:ignore="LockedOrientationActivity">
+        <activity android:name=".views.schedule.WorkScheduleActivity"></activity>
+        <activity android:name=".views.buildingOperations.BuildingOperationsActivity" />
+        <activity
+            android:name=".views.common.AddSignatureActivity"
+            android:configChanges="orientation"/>
+        <activity android:name=".views.common.BuildingOperationsViewActivity" />
+        <activity android:name=".views.scheduleTime.ChooseLumpersActivity" />
+        <activity android:name=".views.common.DisplayLumpersListActivity" />
+        <activity
+            android:name=".views.common.FullScreenImageActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".views.lumpers.LumperDetailActivity" />
+        <activity android:name=".views.lumperSheet.LumperWorkDetailActivity" />
+        <activity android:name=".views.reports.CustomerReportActivity" />
+        <activity android:name=".views.reports.LumperJobReportActivity" />
+        <activity android:name=".views.reports.TimeClockReportActivity" />
+        <activity android:name=".views.schedule.AddWorkItemLumpersActivity" />
+        <activity android:name=".views.schedule.ScheduleDetailActivity" />
+        <activity android:name=".views.schedule.ScheduledWorkItemDetailActivity" />
+        <activity
+            android:name=".views.scheduleTime.EditScheduleTimeActivity"
+            android:configChanges="orientation" />
+        <activity android:name=".views.scheduleTime.RequestLumpersActivity" />
+        <activity android:name=".views.workSheet.AddLumperTimeWorkSheetItemActivity" />
+        <activity android:name=".views.workSheet.AllWorkScheduleCancelActivity" />
+        <activity android:name=".views.workSheet.WorkSheetItemDetailActivity" />
+        <activity android:name=".views.BaseActivity" />
+        <activity android:name=".views.DashBoardActivity" />
+        <activity
+            android:name=".views.ForgotPasswordActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".views.LeadProfileActivity" />
+        <activity
+            android:name=".views.LoginActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".views.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".services.NotificationService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.quickhandslogistics.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths" />
+        </provider>
     </application>
 
 </manifest>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground">
+
+    <TextView
+        android:id="@+id/textViewDate"
+        style="@style/valuesTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginHorizontal="@dimen/_8sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/shiftLayout"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDate">
+
+        <TextView
+            android:id="@+id/textViewHeaderShift"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            />
+
+        <TextView
+            android:id="@+id/textViewHeaderDept"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
+        android:id="@+id/singleRowCalendarLumperSheet"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8ssp"
+        android:layout_marginTop="@dimen/_2ssp"
+        android:layout_marginEnd="@dimen/_8ssp"
+        app:deselection="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/shiftLayout"
+        app:longPress="false"
+        app:multiSelection="false" />
+
+    <EditText
+        android:id="@+id/editTextSearch"
+        style="@style/searchEditTextTheme"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/singleRowCalendarLumperSheet" />
+
+    <ImageView
+        android:id="@+id/imageViewCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_17sdp"
+        android:src="@drawable/ic_cancel"
+        android:tint="@color/colorLightGrey"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextSearch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextSearch" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/white_background"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/_12ssp"
+        android:paddingTop="@dimen/_6ssp"
+        android:paddingEnd="@dimen/_12ssp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSearch">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewLumpersSheet"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/textViewEmptyData"
+                style="@style/noRecordTextViewTheme"
+                android:layout_centerInParent="true"
+                android:text="@string/empty_lumper_sheet_info_message"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/buttonSubmit"
+            style="@style/positiveRoundButtonTheme"
+            android:layout_marginBottom="@dimen/_6sdp"
+            android:text="@string/submit" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

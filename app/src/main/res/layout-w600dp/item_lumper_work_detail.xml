@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_10ssp"
+    android:layout_marginEnd="@dimen/_10ssp"
+    android:background="@drawable/schedule_item_background_non_ripple"
+    android:elevation="@dimen/_4sdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/_6sdp"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingEnd="@dimen/_6sdp"
+        android:paddingBottom="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textViewStatus"
+            style="@style/baseChipTheme"
+            android:text="@string/in_progress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewWorkItemType"
+            style="@style/titleBigTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:clickable="false"
+            android:text="@string/live_loads"
+            app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewStartTime"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:text="@string/start_time_s"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemType" />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutLumperTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8ssp"
+            android:background="@drawable/notes_item_background"
+            android:orientation="vertical"
+            android:padding="@dimen/_8sdp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewStartTime">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/titleVerySmallTextViewTheme"
+                    android:layout_width="0dp"
+                    android:text="@string/work_time_s"
+                    android:layout_weight=".5" />
+
+                <TextView
+                    android:id="@+id/textViewWorkTime"
+                    android:layout_weight="1.5"
+                    android:layout_width="0dp"
+                    style="@style/valuesSmallTextViewTheme"
+                    android:text="NA - NA" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:orientation="horizontal">
+                <TextView
+                    style="@style/titleVerySmallTextViewTheme"
+                    android:layout_width="0dp"
+                    android:text="@string/break_time_s"
+                    android:layout_weight=".5" />
+
+                <TextView
+                    android:id="@+id/textViewBreakTime"
+                    android:layout_width="0dp"
+                    style="@style/valuesSmallTextViewTheme"
+                    android:layout_weight="1.5"
+                    android:text="NA - NA" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:weightSum="2"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/titleVerySmallTextViewTheme"
+                    android:layout_width="0dp"
+                    android:text="@string/waiting_time_s"
+                    android:layout_weight="0.5"/>
+
+                <TextView
+                    android:id="@+id/textViewWaitingTime"
+                    android:layout_weight="1.5"
+                    android:layout_width="0dp"
+                    style="@style/valuesSmallTextViewTheme"
+                    android:text="NA" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/titleVerySmallTextViewTheme"
+                    android:layout_width="0dp"
+                    android:text="@string/works_done_s"
+                    android:layout_weight="0.5"/>
+
+                <TextView
+                    android:id="@+id/textViewWorkDone"
+                    style="@style/valuesSmallTextViewTheme"
+                    android:layout_weight="1.5"
+                    android:layout_width="0dp"
+                    android:text="NA" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutBO"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@drawable/notes_item_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/linearLayoutQHLNotes">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewBO"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:paddingStart="@dimen/_8sdp"
+                android:paddingTop="@dimen/_4sdp"
+                android:paddingEnd="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_4sdp" />
+
+            <View
+                android:id="@+id/clickableViewBO"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/recyclerViewBO"
+                android:layout_alignBottom="@+id/recyclerViewBO"
+                android:background="?android:attr/selectableItemBackground" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutCustomerNotes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@drawable/notes_item_background"
+            android:orientation="vertical"
+            android:padding="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/relativeLayoutBO">
+
+            <TextView
+                style="@style/titleSmallTextViewTheme"
+                android:text="@string/notes_for_customer"
+                android:textColor="@color/scheduleDetail" />
+
+            <TextView
+                android:id="@+id/textViewCustomerNote"
+                style="@style/valuesTextViewTheme"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/request_help_message" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutQHLNotes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@drawable/notes_item_background"
+            android:orientation="vertical"
+            android:padding="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/linearLayoutLumperTime">
+
+            <TextView
+                style="@style/titleSmallTextViewTheme"
+                android:text="@string/notes_for_qhl"
+                android:textColor="@color/scheduleDetail" />
+
+            <TextView
+                android:id="@+id/textViewQHLNote"
+                style="@style/valuesTextViewTheme"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/request_help_message" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

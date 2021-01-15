@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.workSheet.AddLumperTimeWorkSheetItemActivity">
+
+    <include layout="@layout/layout_toolbar" />
+
+
+    <include layout="@layout/content_add_lumper_time_work_sheet_item" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
