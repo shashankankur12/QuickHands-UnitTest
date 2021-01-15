@@ -22,6 +22,9 @@ class AllWorkScheduleCancelContract {
         fun showLumpersData(employeeDataList: ArrayList<EmployeeData>)
         fun cancellingWorkScheduleFinished()
         fun showLoginScreen()
+        interface OnAdapterItemClickListener {
+            fun onLumperSelectionChanged()
+        }
     }
 
     interface Presenter : BaseContract.Presenter {

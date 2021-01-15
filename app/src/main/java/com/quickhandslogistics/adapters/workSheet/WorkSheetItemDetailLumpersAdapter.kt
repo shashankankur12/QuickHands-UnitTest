@@ -4,13 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailLumpersContract
 import com.quickhandslogistics.controls.CustomTextView
-import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
@@ -27,8 +28,9 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
 
     private var workItemStatus = ""
     private var totalCases = ""
+    private var isCompleted: Boolean= false
     private var tempLumperIds = ArrayList<String>()
-    private var lumperList = ArrayList<EmployeeData>()
+    private var lumperList = ArrayList<LumperAttendanceData>()
     private var timingsData = HashMap<String, LumpersTimeSchedule>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -40,7 +42,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
         return lumperList.size
     }
 
-    private fun getItem(position: Int): EmployeeData {
+    private fun getItem(position: Int): LumperAttendanceData {
         return lumperList[position]
     }
 
@@ -52,25 +54,30 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
 
         private val textViewLumperName: TextView = view.textViewLumperName
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
+        private val linearLayoutLumperTime: LinearLayout = view.linearLayoutLumperTime as LinearLayout
         private val textViewEmployeeId: CustomTextView = view.textViewEmployeeId
         private val textViewAddTime: TextView = view.textViewAddTime
         private val textViewWorkTime: TextView = view.textViewWorkTime
         private val textViewWaitingTime: TextView = view.textViewWaitingTime
         private val textViewBreakTime: TextView = view.textViewBreakTime
         private val textViewWorkDone: TextView = view.textViewWorkDone
+        private val viewAttendanceStatus: View = view.viewAttendanceStatus
 
-        fun bind(employeeData: EmployeeData) {
+        fun bind(employeeData: LumperAttendanceData) {
             UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
             UIUtils.updateProfileBorder(context, tempLumperIds.contains(employeeData.id), circleImageViewProfile)
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
+            ishaseClockOut(employeeData)
 
             if (timingsData.containsKey(employeeData.id)) {
                 val timingDetail = timingsData[employeeData.id]
                 timingDetail?.let {
                     val startTime = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.startTime)
                     val endTime = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.endTime)
-                    textViewWorkTime.text = String.format("%s - %s", if (startTime.isNotEmpty()) startTime else "NA", if (endTime.isNotEmpty()) endTime else "NA")
+                    if (startTime.isNotEmpty() && endTime.isNotEmpty())
+                        textViewWorkTime.text = String.format("%s - %s : %s",  startTime ,  endTime ,DateUtils.getDateTimeCalculeted(timingDetail.startTime!!, timingDetail.endTime!!))
+                    else textViewWorkTime.text = String.format("%s - %s", if (startTime.isNotEmpty()) startTime else "NA", if (endTime.isNotEmpty()) endTime else "NA")
 
                     val waitingTime = getDefaultOrValue(timingDetail.waitingTime)
                     if (waitingTime.isNotEmpty() && waitingTime.toInt() != 0) {
@@ -81,7 +88,9 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
 
                     val breakTimeStart = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeStart)
                     val breakTimeEnd = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeEnd)
-                    textViewBreakTime.text = String.format("%s - %s", if (breakTimeStart.isNotEmpty()) breakTimeStart else "NA", if (breakTimeEnd.isNotEmpty()) breakTimeEnd else "NA")
+                    if (breakTimeStart.isNotEmpty() && breakTimeEnd.isNotEmpty())
+                        textViewBreakTime.text = String.format("%s - %s :%s", breakTimeStart , breakTimeEnd,DateUtils.getDateTimeCalculeted(timingDetail.breakTimeStart!!, timingDetail.breakTimeEnd!!))
+                    else textViewBreakTime.text = String.format("%s - %s", if (breakTimeStart.isNotEmpty()) breakTimeStart else "NA", if (breakTimeEnd.isNotEmpty()) breakTimeEnd else "NA")
 
                     if (!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt() != 0) {
                         if (!totalCases.isNullOrEmpty() && isNumeric(totalCases)) {
@@ -101,20 +110,35 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
 
             changeAddButtonVisibility()
             textViewAddTime.setOnClickListener(this)
+            linearLayoutLumperTime.setOnClickListener(this)
+        }
+
+        private fun ishaseClockOut(lumperAttendance: LumperAttendanceData) {
+            lumperAttendance.attendanceDetail?.let {
+                if (it.isPresent!! && !it.morningPunchIn.isNullOrEmpty() && it.eveningPunchOut.isNullOrEmpty()){
+                    viewAttendanceStatus.setBackgroundResource( R.drawable.online_dot )
+                }else if(it.isPresent!! && !it.morningPunchIn.isNullOrEmpty() && !it.eveningPunchOut.isNullOrEmpty()){
+                    viewAttendanceStatus.setBackgroundResource( R.drawable.offline_dot)
+
+                }else viewAttendanceStatus.setBackgroundResource( R.drawable.offline_dot)
+            }
         }
 
         private fun changeAddButtonVisibility() {
             if (workItemStatus == AppConstant.WORK_ITEM_STATUS_IN_PROGRESS || workItemStatus == AppConstant.WORK_ITEM_STATUS_ON_HOLD ||workItemStatus == AppConstant.WORK_ITEM_STATUS_SCHEDULED||workItemStatus == AppConstant.WORK_ITEM_STATUS_CANCELLED ||workItemStatus == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
-                textViewAddTime.visibility = View.VISIBLE
+//                textViewAddTime.visibility = if (isCompleted) View.GONE else View.VISIBLE
+                textViewAddTime.visibility = View.GONE
+                linearLayoutLumperTime.isClickable = !isCompleted
             } else {
                 textViewAddTime.visibility = View.GONE
+                linearLayoutLumperTime.isClickable = false
             }
         }
 
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
-                    textViewAddTime.id -> {
+                    linearLayoutLumperTime.id -> {
                         val employeeData = getItem(adapterPosition)
                         val timingData = timingsData[employeeData.id]
                         onAdapterClick.onAddTimeClick(employeeData, timingData)
@@ -124,7 +148,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
         }
     }
 
-    fun updateList(lumperList: ArrayList<EmployeeData>?, timingsData: LinkedHashMap<String, LumpersTimeSchedule>, status: String? = "", tempLumperIds: ArrayList<String>, totalCases: String?) {
+    fun updateList(lumperList: ArrayList<LumperAttendanceData>?, timingsData: LinkedHashMap<String, LumpersTimeSchedule>, status: String? = "", tempLumperIds: ArrayList<String>, totalCases: String?, isCompleted: Boolean?) {
         this.timingsData.clear()
         this.lumperList.clear()
         lumperList?.let {
@@ -133,6 +157,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
         }
         this.workItemStatus = getDefaultOrValue(status)
         this.totalCases=getDefaultOrValue(totalCases)
+        this.isCompleted= getDefaultOrValue(isCompleted)
 
         this.tempLumperIds.clear()
         this.tempLumperIds.addAll(tempLumperIds)

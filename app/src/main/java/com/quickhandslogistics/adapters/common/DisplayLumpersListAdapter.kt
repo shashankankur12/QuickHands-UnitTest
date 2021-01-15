@@ -10,6 +10,8 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.lumpers.LumpersContract
 import com.quickhandslogistics.controls.CustomTextView
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.SharedPref
 import com.quickhandslogistics.utils.UIUtils
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_lumper_layout.view.*
@@ -17,7 +19,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class DisplayLumpersListAdapter(
-    private val lumpersList: ArrayList<EmployeeData>, var adapterItemClickListener: LumpersContract.View.OnAdapterItemClickListener
+    private val lumpersList: ArrayList<EmployeeData>, private val sharedPref: SharedPref, var adapterItemClickListener: LumpersContract.View.OnAdapterItemClickListener
 ) : RecyclerView.Adapter<DisplayLumpersListAdapter.ViewHolder>() {
 
     private var searchTerm = ""
@@ -52,7 +54,9 @@ class DisplayLumpersListAdapter(
 
         fun bind(employeeData: EmployeeData) {
             UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
-            UIUtils.updateProfileBorder(context, employeeData.isTemporaryAssigned, circleImageViewProfile)
+            var buildingId =if (!sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID).isNullOrEmpty()) sharedPref.getString(
+                AppConstant.PREFERENCE_BUILDING_ID) else ""
+            UIUtils.updateProfileBorder(context, !buildingId.equals(employeeData.buildingIdAsLumper), circleImageViewProfile)
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
             textViewShiftHours.text = UIUtils.getDisplayShiftHours(employeeData)

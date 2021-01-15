@@ -9,6 +9,7 @@ import com.quickhandslogistics.data.dashboard.LeadProfileAPIResponse
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.models.LeadProfileModel
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.ConnectionDetector
 import com.quickhandslogistics.utils.SharedPref
 
 class LeadProfilePresenter(private var leadProfileView: LeadProfileContract.View?, private val resources: Resources, sharedPref: SharedPref) :

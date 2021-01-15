@@ -5,9 +5,11 @@ import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.lumperSheet.LumperWorkDetailContract
 import com.quickhandslogistics.data.ErrorResponse
+import com.quickhandslogistics.data.attendance.AttendanceDetail
 import com.quickhandslogistics.data.lumperSheet.LumperWorkDetailAPIResponse
 import com.quickhandslogistics.models.lumperSheet.LumperWorkDetailModel
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.ScheduleUtils.getFilteredLumperWorkList
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*
 
@@ -31,6 +33,11 @@ class LumperWorkDetailPresenter(private var lumperWorkDetailView: LumperWorkDeta
         lumperWorkDetailModel.saveLumperSignature(lumperId, date, signatureFilePath, this)
     }
 
+    override fun saveAttendanceDetails(attendanceDetailList: List<AttendanceDetail>) {
+        lumperWorkDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        lumperWorkDetailModel.saveLumpersAttendanceList(attendanceDetailList, this)
+    }
+
     /** Model Result Listeners */
     override fun onFailure(message: String) {
         lumperWorkDetailView?.hideProgressDialog()
@@ -52,11 +59,17 @@ class LumperWorkDetailPresenter(private var lumperWorkDetailView: LumperWorkDeta
 
     override fun onSuccess(response: LumperWorkDetailAPIResponse) {
         lumperWorkDetailView?.hideProgressDialog()
-        lumperWorkDetailView?.showLumperWorkDetails(response.data?.lumperDaySheet!!)
+        val filterList= getFilteredLumperWorkList(response.data?.lumperDaySheet!!)
+        lumperWorkDetailView?.showLumperWorkDetails(filterList, response.data?.lumperAttendanceData!!)
     }
 
     override fun onSuccessSaveLumperSignature(lumperId: String, date: Date) {
         lumperWorkDetailView?.lumperSignatureSaved()
         lumperWorkDetailModel.fetchLumperWorkDetails(lumperId, date, this)
+    }
+
+    override fun onSuccessSaveDate() {
+        lumperWorkDetailView?.hideProgressDialog()
+        lumperWorkDetailView?.showDataSavedMessage()
     }
 }

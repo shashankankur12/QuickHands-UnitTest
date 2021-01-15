@@ -5,8 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".views.lumpers.LumperDetailActivity">
 
-    <include layout="@layout/layout_toolbar" />
+    <include layout="@layout/lead_profile_header" />
 
-    <include layout="@layout/content_lumper_detail" />
+    <include layout="@layout/content_lumper_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_50sdp"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

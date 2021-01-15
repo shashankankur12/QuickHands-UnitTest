@@ -37,6 +37,9 @@ class WorkItemDetail() : Parcelable {
     @SerializedName("scheduledFrom")
     @Expose
     var scheduledFrom: String? = null
+    @SerializedName("scheduleNote")
+    @Expose
+    var scheduleNote: String? = null
 
     @SerializedName("endDateForThisWorkItem")
     @Expose
@@ -111,6 +114,7 @@ class WorkItemDetail() : Parcelable {
         startTime = parcel.readString()
         scheduleIdentity = parcel.readString()
         scheduledFrom = parcel.readString()
+        scheduleNote = parcel.readString()
         endDateForThisWorkItem = parcel.readString()
         status = parcel.readString()
         notesQHL = parcel.readString()
@@ -148,6 +152,7 @@ class WorkItemDetail() : Parcelable {
         parcel.writeString(startTime)
         parcel.writeString(scheduleIdentity)
         parcel.writeString(scheduledFrom)
+        parcel.writeString(scheduleNote)
         parcel.writeString(endDateForThisWorkItem)
         parcel.writeString(status)
         parcel.writeString(notesQHL)

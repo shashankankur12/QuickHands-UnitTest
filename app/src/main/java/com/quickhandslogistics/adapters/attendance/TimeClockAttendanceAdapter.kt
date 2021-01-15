@@ -1,13 +1,12 @@
 package com.quickhandslogistics.adapters.attendance
 
+import android.app.Activity
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.SparseBooleanArray
-import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -25,9 +24,11 @@ import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_IS_PRESENT
 import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_LUNCH_PUNCH_IN
 import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_LUNCH_PUNCH_OUT
 import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_MORNING_PUNCH_IN
+import com.quickhandslogistics.utils.ConnectionDetector
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.convertDateStringToTime
+import com.quickhandslogistics.utils.DateUtils.Companion.getDateTimeCalculeted
 import com.quickhandslogistics.utils.FlipAnimatorUtil
 import com.quickhandslogistics.utils.UIUtils
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
@@ -83,15 +84,17 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
         private val flexboxLayoutLumperTime: FlexboxLayout = view.flexboxLayoutLumperTime
         private val textViewShiftTime: TextView = view.textViewShiftTime
         private val textViewLunchTime: TextView = view.textViewLunchTime
+        private val textViewShiftTotalTime: TextView = view.textViewShiftTotalTime
+        private val textViewLunchTotalTime: TextView = view.textViewLunchTotalTime
         private val editTextNotes: EditText = view.editTextNotes
         private val relativeLayoutSelected: RelativeLayout = view.relativeLayoutSelected
         private val layoutCheckBox: RelativeLayout = view.layoutCheckBox
+        private val layoutEditTimeClock: RelativeLayout = view.layoutEditTimeClock
         private val constraintLayout: ConstraintLayout = view.constraintLayout
 
         init {
             itemView.setOnLongClickListener(this)
             itemView.setOnClickListener(this)
-            layoutCheckBox.setOnClickListener(this)
         }
 
         fun bind(lumperAttendance: LumperAttendanceData) {
@@ -114,6 +117,10 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
                         if (eveningPunchOut.isNotEmpty()) eveningPunchOut else "NA"
                     )
 
+                    if(!attendanceDetail.morningPunchIn.isNullOrEmpty()&& !attendanceDetail.eveningPunchOut.isNullOrEmpty())
+                        textViewShiftTotalTime.text=String.format("Total Time: %s",getDateTimeCalculeted(attendanceDetail.morningPunchIn!!, attendanceDetail.eveningPunchOut!!))
+                    else textViewShiftTotalTime.text=""
+
                     val lunchPunchIn = convertDateStringToTime(PATTERN_API_RESPONSE, attendanceDetail.lunchPunchIn)
                     val lunchPunchOut = convertDateStringToTime(PATTERN_API_RESPONSE, attendanceDetail.lunchPunchOut)
                     textViewLunchTime.text = String.format(
@@ -121,29 +128,54 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
                         if (lunchPunchIn.isNotEmpty()) lunchPunchIn else "NA",
                         if (lunchPunchOut.isNotEmpty()) lunchPunchOut else "NA"
                     )
-
+                    if(!attendanceDetail.lunchPunchIn.isNullOrEmpty()&&!attendanceDetail.lunchPunchOut.isNullOrEmpty())
+                        textViewLunchTotalTime.text=String.format("Total Time: %s",getDateTimeCalculeted(attendanceDetail.lunchPunchIn!!, attendanceDetail.lunchPunchOut!!))
+                    else textViewLunchTotalTime.text=""
                     textViewAddTime.visibility = /*if( attendanceDetail?.eveningPunchOut == null) View.VISIBLE else*/ View.GONE
+                }else{
+                    textViewShiftTime.text = String.format("%s - %s", "NA", "NA")
+                    textViewLunchTime.text = String.format("%s - %s", "NA", "NA")
+                    textViewShiftTotalTime.text=""
+                    textViewLunchTotalTime.text=""
+
                 }
                 editTextNotes.setText(attendanceDetail.attendanceNote)
                 updateTimeUI(isPresent, lumperAttendance.id!!)
+                ishaseClockOut(lumperAttendance)
             }
 
+
+
             textViewAddTime.setOnClickListener(this)
+            flexboxLayoutLumperTime.setOnClickListener(this)
+            layoutCheckBox.setOnClickListener(this)
 
             val isSelected = selectedItems.get(adapterPosition, false)
             constraintLayout.isActivated = isSelected
+            checkBoxAttendance.isChecked = isSelected
+            flexboxLayoutLumperTime.isClickable = selectedItems.size() <= 0
 
             textViewAddTime.visibility = if (textViewAddTime.visibility == View.VISIBLE && selectedItems.size() == 0&& lumperAttendance?.attendanceDetail?.eveningPunchOut == null) View.VISIBLE else View.GONE
             editTextNotes.isEnabled = selectedItems.size() == 0
-            layoutCheckBox.visibility = if (isSelected) View.VISIBLE else View.GONE
+            layoutCheckBox.visibility = /*if (isSelected) View.VISIBLE else*/ View.GONE
+        }
+
+        private fun ishaseClockOut(lumperAttendance: LumperAttendanceData) {
+            lumperAttendance.attendanceDetail?.let {
+                if ( !it.morningPunchIn.isNullOrEmpty() && it.eveningPunchOut.isNullOrEmpty()){
+                    viewAttendanceStatus.setBackgroundResource( R.drawable.online_dot )
+                }else if(!it.morningPunchIn.isNullOrEmpty() && !it.eveningPunchOut.isNullOrEmpty()){
+                    viewAttendanceStatus.setBackgroundResource( R.drawable.offline_dot)
+
+                }else viewAttendanceStatus.setBackgroundResource( R.drawable.offline_dot)
+            }
         }
 
         private fun updateTimeUI(isPresent: Boolean, lumperId: String) {
-            viewAttendanceStatus.setBackgroundResource(if (isPresent) R.drawable.online_dot else R.drawable.offline_dot)
-            checkBoxAttendance.isChecked = isPresent
-            checkBoxAttendance.isEnabled = checkIfEditable(isPresent, ATTENDANCE_IS_PRESENT, lumperId)
-            textViewAddTime.visibility = if (isPresent) View.VISIBLE else View.GONE
-            flexboxLayoutLumperTime.visibility = if (isPresent) View.VISIBLE else View.GONE
+//            checkBoxAttendance.isChecked = false
+//            checkBoxAttendance.isEnabled = checkIfEditable(isPresent, ATTENDANCE_IS_PRESENT, lumperId)
+            textViewAddTime.visibility = /*if (isPresent) View.VISIBLE else*/ View.GONE
+            flexboxLayoutLumperTime.visibility = /*if (isPresent)*/ View.VISIBLE /*else View.GONE*/
             textViewNoTimeLoggedIn.visibility = if (isPresent) View.GONE else View.VISIBLE
 
             checkBoxAttendance.setOnClickListener(this)
@@ -156,6 +188,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
             } else {
                 textViewCheckBoxStatus.text = context.getString(R.string.present)
             }
+            textViewCheckBoxStatus.visibility=View.GONE
         }
 
         private fun applyIconAnimation(position: Int) {
@@ -181,20 +214,21 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
         }
 
         override fun onLongClick(view: View?): Boolean {
+
             view?.let {
                 return when (view.id) {
-                    itemView.id -> {
-                        val isPresent = getItem(adapterPosition).attendanceDetail?.isPresent
-                        isPresent?.let {
-                            if (isPresent) {
-                                onAdapterClick.onRowLongClicked(adapterPosition)
-                                view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-                                return true
-                            }
-                        }
-                        Toast.makeText(context, "Lumper isn't arrived yet", Toast.LENGTH_SHORT).show()
-                        false
-                    }
+//                    itemView.id -> {
+//                        val isPresent = getItem(adapterPosition).attendanceDetail?.isPresent
+//                        isPresent?.let {
+//                            if (isPresent) {
+//                                onAdapterClick.onRowLongClicked(adapterPosition)
+//                                view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+//                                return true
+//                            }
+//                        }
+//                        Toast.makeText(context, "Lumper isn't arrived yet", Toast.LENGTH_SHORT).show()
+//                        false
+//                    }
                     else -> {
                         false
                     }
@@ -206,30 +240,43 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
-                    itemView.id -> {
+                    /*itemView.id -> {
                         if (getSelectedItemCount() > 0) {
                             val isPresent = getItem(adapterPosition).attendanceDetail?.isPresent
-                            isPresent?.let {
-                                if (isPresent) {
+//                            isPresent?.let {
+                                if (checkBoxAttendance.isChecked) {
                                     onAdapterClick.onRowClicked(adapterPosition)
                                 } else {
                                     Toast.makeText(context, "Lumper isn't arrived yet", Toast.LENGTH_SHORT).show()
                                 }
-                            }
+//                            }
                         }
-                    }
-                    textViewAddTime.id -> {
+                    }*/
+                    flexboxLayoutLumperTime.id -> {
+                        if (!ConnectionDetector.isNetworkConnected(context)) {
+                            ConnectionDetector.createSnackBar(context as Activity?)
+                            return
+                        }
+
                         onAdapterClick.onAddTimeClick(getItem(adapterPosition), adapterPosition)
                     }
                     checkBoxAttendance.id -> {
-                        val isChecked = checkBoxAttendance.isChecked
-
-                        val item = getItem(adapterPosition)
-                        // Update in API Request Object
-                        changeIsPresentRecord(item.id, isPresent = isChecked)
-
-                        //Update in Local List Object to show changes on UI
-                        getItem(adapterPosition).attendanceDetail?.isPresent = isChecked
+                        if (!ConnectionDetector.isNetworkConnected(context)) {
+                            ConnectionDetector.createSnackBar(context as Activity?)
+                            return
+                        }
+//
+//                        val item = getItem(adapterPosition)
+//                        // Update in API Request Object
+//                        changeIsPresentRecord(item.id, isPresent = isChecked)
+//
+//                        //Update in Local List Object to show changes on UId
+//                        getItem(adapterPosition).attendanceDetail?.isPresent = isChecked
+                        if (getSelectedItemCount() > 0){
+                            onAdapterClick.onRowClicked(adapterPosition)
+                        }else{
+                            onAdapterClick.onRowLongClicked(adapterPosition)
+                        }
 
                         notifyDataSetChanged()
                     }
@@ -295,7 +342,39 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
         notifyDataSetChanged()
     }
 
+    fun updatePresentRecord(adapterPosition: Int, isChecked :Boolean) {
+
+        val item = getItem(adapterPosition)
+        // Update in API Request Object
+        changeIsPresentRecord(item.id, isPresent = isChecked)
+
+        //Update in Local List Object to show changes on UI
+        getItem(adapterPosition).attendanceDetail?.isPresent = isChecked
+
+    }
+
     private fun changeIsPresentRecord(lumperId: String?, isPresent: Boolean) {
+        if (!lumperId.isNullOrEmpty() && !updateData.containsKey(lumperId)) {
+            updateData[lumperId] = AttendanceDetail()
+            updateData[lumperId]?.lumperId = lumperId
+        }
+        updateData[lumperId]?.isPresent = isPresent
+        updateData[lumperId]?.isPresentChanged = true
+    }
+
+    fun clearPresentRecord(adapterPosition: Int, isChecked :Boolean) {
+
+        val item = getItem(adapterPosition)
+        // Update in API Request Object
+        clearIsPresentRecord(item.id, isPresent = isChecked)
+
+        //Update in Local List Object to show changes on UI
+        getItem(adapterPosition).attendanceDetail?.isPresent = isChecked
+
+    }
+
+
+    private fun clearIsPresentRecord(lumperId: String?, isPresent: Boolean) {
         if (!lumperId.isNullOrEmpty() && !updateData.containsKey(lumperId)) {
             updateData[lumperId] = AttendanceDetail()
             updateData[lumperId]?.lumperId = lumperId
@@ -316,6 +395,18 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
             updateData[lumperId] = AttendanceDetail()
             updateData[lumperId]?.lumperId = lumperId
             updateData[lumperId]?.isPresent = isPresent
+        }
+    }
+
+    private fun reamoveUpdateRecord(lumperId: String?, isPresent: Boolean = true) {
+        if (!lumperId.isNullOrEmpty() && updateData.containsKey(lumperId)) {
+            if ( !updateData[lumperId]?.lunchPunchIn.isNullOrEmpty()!! || !updateData[lumperId]?.eveningPunchOut.isNullOrEmpty()) {
+                updateData[lumperId]?.lumperId = lumperId
+                updateData[lumperId]?.isPresent = isPresent
+            } else if (updateData.containsKey(lumperId)){
+                    updateData.remove(lumperId)
+                }
+
         }
     }
 
@@ -378,6 +469,76 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
             notifyDataSetChanged()
     }
 
+    fun clearClockInTime(itemPosition: Int, isNotify: Boolean = true) {
+        val item = getItem(itemPosition)
+
+        // Update in API Request Object
+       if( updateData.containsKey(item.id)){
+           updateData.remove(item.id)
+       }
+
+        //Update in Local List Object to show changes on UI
+        getItem(itemPosition).attendanceDetail?.morningPunchIn =null
+
+        if (isNotify)
+            notifyDataSetChanged()
+    }
+
+    fun clearClockOutTime(itemPosition: Int, isNotify: Boolean = true) {
+        val item = getItem(itemPosition)
+
+        // Update in API Request Object
+        if (updateData.containsKey(item.id)) {
+            updateData[item.id]?.eveningPunchOut = null
+            updateData[item.id]?.isEveningPunchOutChanged = false
+        }
+        reamoveUpdateRecord(item.id)
+//        if( updateData.containsKey(item.id)){
+//            updateData.remove(item.id)
+//        }
+
+        //Update in Local List Object to show changes on UI
+        getItem(itemPosition).attendanceDetail?.eveningPunchOut = null
+        if (isNotify)
+            notifyDataSetChanged()
+    }
+
+    fun clearLunchInTime(itemPosition: Int,isNotify: Boolean = true) {
+        val item = getItem(itemPosition)
+
+        // Update in API Request Object
+        if (updateData.containsKey(item.id)){
+            updateData[item.id]?.lunchPunchIn = null
+            updateData[item.id]?.isLunchPunchInChanged = false
+        }
+
+        reamoveUpdateRecord(item.id)
+//        if( updateData.containsKey(item.id)){
+//            updateData.remove(item.id)
+//        }
+
+        //Update in Local List Object to show changes on UI
+        getItem(itemPosition).attendanceDetail?.lunchPunchIn = null
+
+        if (isNotify)
+            notifyDataSetChanged()
+    }
+
+    fun clearLunchOutTime(itemPosition: Int, isNotify: Boolean = true) {
+        val item = getItem(itemPosition)
+
+        // Update in API Request Object
+        if( updateData.containsKey(item.id)){
+            updateData.remove(item.id)
+        }
+
+        //Update in Local List Object to show changes on UI
+        getItem(itemPosition).attendanceDetail?.lunchPunchOut = null
+
+        if (isNotify)
+            notifyDataSetChanged()
+    }
+
     fun getUpdatedData(): HashMap<String, AttendanceDetail> {
         return updateData
     }
@@ -408,6 +569,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
     fun updateClockInTimeForSelectedPositions(currentTime: Long) {
         val positions = getSelectedItemPositions()
         for (position in positions) {
+            updatePresentRecord(position, true)
             updateClockInTime(position, currentTime, isNotify = false)
         }
 

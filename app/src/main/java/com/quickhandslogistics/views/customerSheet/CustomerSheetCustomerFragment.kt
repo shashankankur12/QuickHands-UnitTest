@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,10 +19,11 @@ import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.common.AddSignatureActivity
 import kotlinx.android.synthetic.main.fragment_customer_sheet_customer.*
+import kotlinx.android.synthetic.main.fragment_customer_sheet_customer.buttonSubmit
 import java.io.File
 import java.util.*
 
-class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
+class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener, TextWatcher {
 
     private var onFragmentInteractionListener: CustomerSheetContract.View.OnFragmentInteractionListener? = null
     private var signatureFilePath = ""
@@ -82,6 +85,9 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
 
         addNotesTouchListener(editTextCustomerNotes)
 
+        editTextCustomerNotes.addTextChangedListener(this)
+        editTextCustomerName.addTextChangedListener(this)
+
         textViewAddSignature.setOnClickListener(this)
         buttonSubmit.setOnClickListener(this)
 
@@ -105,6 +111,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
             data?.let {
                 val signatureFilePath = data.getStringExtra(AddSignatureActivity.ARG_SIGNATURE_FILE_PATH)
                 showLocalSignatureOnUI(signatureFilePath)
+                onFragmentInteractionListener?.isDataSave(false)
             }
         }
     }
@@ -126,6 +133,7 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
             editTextCustomerNotes.setText(customerSheet.note)
             customerId= customerSheet.id!!
             updateUIVisibility(ValueUtils.getDefaultOrValue(customerSheet.isSigned), isCurrentDate, inCompleteWorkItemsCount, customerSheet.signatureUrl)
+            onFragmentInteractionListener?.isDataSave(true)
         } ?: run {
             editTextCustomerName.setText("")
             editTextCustomerNotes.setText("")
@@ -214,6 +222,41 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener {
             override fun onCancelClick() {
             }
         })
+    }
+
+    override fun afterTextChanged(text: Editable?) {
+        if (text === editTextCustomerName.editableText) {
+            var nameCustomerBefore = ""
+            var notesBefore = ""
+            if (!customerSheet?.customerRepresentativeName.isNullOrEmpty() ) {
+                nameCustomerBefore = customerSheet!!.customerRepresentativeName!!
+            }
+            if (!customerSheet?.note.isNullOrEmpty())
+                notesBefore = customerSheet!!.note!!
+            if (!nameCustomerBefore.equals(text.toString())|| !notesBefore.equals(editTextCustomerNotes.text.toString()))
+                onFragmentInteractionListener!!.isDataSave(false)
+            else onFragmentInteractionListener!!.isDataSave(true)
+
+        } else if (text === editTextCustomerNotes.editableText) {
+            var nameCustomerBefore = ""
+            var notesBefore = ""
+            if (!customerSheet?.note.isNullOrEmpty()) {
+                notesBefore =customerSheet!!.note!!
+            }
+            if (!customerSheet?.customerRepresentativeName.isNullOrEmpty() )
+                nameCustomerBefore = customerSheet!!.customerRepresentativeName!!
+            if (!notesBefore.equals(text.toString()) || !nameCustomerBefore.equals(editTextCustomerName.text.toString()))
+                onFragmentInteractionListener!!.isDataSave(false)
+            else onFragmentInteractionListener!!.isDataSave(true)
+
+        }
+    }
+
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+    }
+
+    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
     }
 
     /** Native Views Listeners */

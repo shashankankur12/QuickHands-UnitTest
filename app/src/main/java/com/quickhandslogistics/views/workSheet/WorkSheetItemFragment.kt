@@ -22,6 +22,9 @@ import com.quickhandslogistics.views.common.DisplayLumpersListActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.ConnectionDetector
+import com.quickhandslogistics.utils.CustomProgressBar
+import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.views.customerSheet.CustomerSheetContainersFragment
 import kotlinx.android.synthetic.main.fragment_work_sheet_item.*
 import kotlin.collections.ArrayList
@@ -127,6 +130,11 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
 
     /** Adapter Listeners */
     override fun onItemClick(workItemId: String, workItemTypeDisplayName: String) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         val bundle = Bundle()
         bundle.putString(ARG_WORK_ITEM_ID, workItemId)
         bundle.putString(ARG_WORK_ITEM_TYPE_DISPLAY_NAME, workItemTypeDisplayName)
@@ -134,8 +142,26 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
     }
 
     override fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         val bundle = Bundle()
         bundle.putParcelableArrayList(DisplayLumpersListActivity.ARG_LUMPERS_LIST, lumpersList)
         startIntent(DisplayLumpersListActivity::class.java, bundle = bundle)
+    }
+
+    override fun onNoteClick(workItemDetail: WorkItemDetail) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
+        workItemDetail.scheduleNote?.let {
+            val title= ScheduleUtils.scheduleTypeNotePopupTitle(workItemDetail, resources)
+            CustomProgressBar.getInstance().showInfoDialog(title, it, fragmentActivity!!)
+        }
+
     }
 }

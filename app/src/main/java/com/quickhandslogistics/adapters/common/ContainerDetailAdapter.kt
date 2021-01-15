@@ -6,13 +6,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.utils.ScheduleUtils
 import kotlinx.android.synthetic.main.item_container_detail.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 class ContainerDetailAdapter : RecyclerView.Adapter<ContainerDetailAdapter.ViewHolder>() {
 
-    private val parameters: ArrayList<String> = ArrayList()
+    private var parameters: ArrayList<String> = ArrayList()
     private val buildingOps: HashMap<String, String> = HashMap()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -48,12 +49,14 @@ class ContainerDetailAdapter : RecyclerView.Adapter<ContainerDetailAdapter.ViewH
         this.parameters.clear()
         this.buildingOps.clear()
 
-        parameters?.let {
-            parameters.sortWith(Comparator { value1: String, value2: String ->
-                value1.toLowerCase().compareTo(value2.toLowerCase())
-            })
-            this.parameters.addAll(parameters)
-        }
+//        parameters?.let {
+//            parameters.sortWith(Comparator { value1: String, value2: String ->
+//                value1.toLowerCase().compareTo(value2.toLowerCase())
+//            })
+//            this.parameters.addAll(parameters)
+//        }
+
+        this.parameters= parameters?.let { ScheduleUtils.sortAccordingly(it) }!!
 
         buildingOps?.let {
             this.buildingOps.putAll(buildingOps)

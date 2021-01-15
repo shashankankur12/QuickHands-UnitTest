@@ -32,17 +32,36 @@
         android:paddingStart="@dimen/_10ssp"
         android:paddingTop="@dimen/_4ssp"
         android:paddingEnd="@dimen/_10ssp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/buttonGenerateReport"
         app:layout_constraintTop_toBottomOf="@+id/layoutReportType">
 
-        <Button
-            android:id="@+id/buttonGenerateReport"
-            style="@style/positiveRoundButtonTheme"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/_8ssp"
-            android:enabled="false"
-            android:text="@string/generate_report" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCustomer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_5ssp"
+            tools:listitem="@layout/item_add_building" />
+
+        <TextView
+            android:id="@+id/textViewEmptyData"
+            style="@style/noRecordTextViewTheme"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:text="@string/empty_customer_list_info_message"/>
     </RelativeLayout>
+    <Button
+        android:id="@+id/buttonGenerateReport"
+        style="@style/positiveRoundButtonTheme"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/_8ssp"
+        android:enabled="false"
+        android:layout_marginStart="@dimen/_10ssp"
+        android:layout_marginEnd="@dimen/_10ssp"
+        android:text="@string/generate_report"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

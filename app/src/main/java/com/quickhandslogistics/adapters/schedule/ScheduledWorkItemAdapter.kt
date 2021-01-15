@@ -16,6 +16,7 @@ import com.quickhandslogistics.controls.OverlapDecoration
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.DateUtils.Companion.sharedPref
 import com.quickhandslogistics.utils.ScheduleUtils
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_scheduled_workitem.view.*
@@ -75,7 +76,7 @@ class ScheduledWorkItemAdapter(
             }
 
             recyclerViewLumpersImagesList.apply {
-                adapter = LumperImagesAdapter(workItemDetail.assignedLumpersList!!, this@ViewHolder)
+                adapter = LumperImagesAdapter(workItemDetail.assignedLumpersList!!, sharedPref ,this@ViewHolder)
             }
 
             ScheduleUtils.changeStatusUIByValue(resources, workItemDetail.status, textViewStatus)

@@ -15,21 +15,14 @@ import com.quickhandslogistics.data.customerSheet.CustomerSheetData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.presenters.workSheet.WorkSheetPresenter
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.ScheduleUtils
-import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.utils.UIUtils
+import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.ScheduleUtils.getGroupNoteList
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
-import kotlinx.android.synthetic.main.content_request_lumpers.*
 import kotlinx.android.synthetic.main.fragment_work_sheet.*
-import kotlinx.android.synthetic.main.fragment_work_sheet.mainConstraintLayout
-import kotlinx.android.synthetic.main.fragment_work_sheet.swipe_pull_refresh
-import kotlinx.android.synthetic.main.fragment_work_sheet.textViewTotalCount
-import java.util.*
-import kotlin.collections.ArrayList
 
-class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContract.View.OnFragmentInteractionListener {
+class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContract.View.OnFragmentInteractionListener,
+    View.OnClickListener {
 
     private var onFragmentInteractionListener: DashBoardContract.View.OnFragmentInteractionListener? = null
 
@@ -37,12 +30,17 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     private var adapter: WorkSheetPagerAdapter? = null
     private var data: WorkSheetListAPIResponse.Data = WorkSheetListAPIResponse.Data()
     private lateinit var date: String
+    private lateinit var shift: String
+    private lateinit var dept: String
     private lateinit var companyName: String
+    private lateinit var customerGroupNote:Triple<Pair<ArrayList<String>,ArrayList<String>>, ArrayList<String>, ArrayList<String>>
 
     companion object {
         const val WORKSHEET_DETAIL = "WORKSHEET_DETAIL"
         const val WORKSHEET_DATE_SELECTED_HEADER = "WORKSHEET_DATE_SELECTED_HEADER"
         const val WORKSHEET_COMPANY_NAME = "WORKSHEET_COMPANY_NAME"
+        const val WORKSHEET_SHIFT = "WORKSHEET_SHIFT"
+        const val WORKSHEET_DEPT = "WORKSHEET_DEPT"
     }
 
     override fun onAttach(context: Context) {
@@ -64,13 +62,20 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        textViewGroupNote.setOnClickListener(this)
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(WORKSHEET_DATE_SELECTED_HEADER)) {
                 date = savedInstanceState.getString(WORKSHEET_DATE_SELECTED_HEADER)!!
             }
+            if (savedInstanceState.containsKey(WORKSHEET_SHIFT)) {
+                shift = savedInstanceState.getString(WORKSHEET_SHIFT)!!
+            }
+            if (savedInstanceState.containsKey(WORKSHEET_DEPT)) {
+                dept = savedInstanceState.getString(WORKSHEET_DEPT)!!
+            }
             if (savedInstanceState.containsKey(WORKSHEET_COMPANY_NAME)) {
                 companyName = savedInstanceState.getString(WORKSHEET_COMPANY_NAME)!!
-                showHeaderInfo(companyName, date)
+                showHeaderInfo(companyName, date, shift, dept)
             }
             if (savedInstanceState.containsKey(WORKSHEET_DETAIL)) {
                 data = savedInstanceState.getParcelable<WorkSheetListAPIResponse.Data>(WORKSHEET_DETAIL) as WorkSheetListAPIResponse.Data
@@ -81,6 +86,11 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
             }
         } ?: run {
             initializeViewPager()
+            if (!ConnectionDetector.isNetworkConnected(activity)) {
+                ConnectionDetector.createSnackBar(activity)
+                return
+            }
+
             workSheetPresenter.fetchWorkSheetList()
         }
         refreshData()
@@ -88,8 +98,15 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
 
 
     private fun refreshData() {
+
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         swipe_pull_refresh.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
             initializeViewPager()
+
             workSheetPresenter.fetchWorkSheetList()
         })
     }
@@ -104,8 +121,11 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
             outState.putParcelable(WORKSHEET_DETAIL, data)
         if (!date.isNullOrEmpty())
             outState.putString(WORKSHEET_DATE_SELECTED_HEADER, date)
-        if (!companyName.isNullOrEmpty())
-            outState.putSerializable(WORKSHEET_COMPANY_NAME, companyName)
+        if (!shift.isNullOrEmpty())
+            outState.putString(WORKSHEET_SHIFT, shift)
+        if (!dept.isNullOrEmpty())
+            outState.putString(WORKSHEET_DEPT, dept)
+        outState.putSerializable(WORKSHEET_COMPANY_NAME, companyName)
         super.onSaveInstanceState(outState)
     }
 
@@ -154,6 +174,8 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         // Reset Whole Screen Data
         textViewCompanyName.text = ""
         textViewWorkItemsDate.text = ""
+        textViewWorkItemShift.text = ""
+        textViewWorkItemDept.text = ""
         textViewTotalCount.text = ""
         textViewLiveLoadsCount.text = ""
         textViewDropsCount.text = ""
@@ -164,7 +186,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
-
+        swipe_pull_refresh?.isRefreshing = false
         resetUI()
         onFragmentInteractionListener?.invalidateCancelAllSchedulesOption(false)
     }
@@ -172,6 +194,11 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     override fun showWorkSheets(data: WorkSheetListAPIResponse.Data) {
         this.data = data
         swipe_pull_refresh?.isRefreshing = false
+
+        customerGroupNote=getGroupNoteList(data)
+        textViewGroupNote.isEnabled = (customerGroupNote!=null&& (customerGroupNote.first.first.size>0 ||customerGroupNote.second.size>0|| customerGroupNote.third.size>0||customerGroupNote.first.second.size>0 ))
+
+
         // Change the visibility of Cancel All Schedule Option
         if (data.inProgress.isNullOrEmpty() && data.onHold.isNullOrEmpty() && data.cancelled.isNullOrEmpty() && data.completed.isNullOrEmpty() && !data.scheduled.isNullOrEmpty()) {
             onFragmentInteractionListener?.invalidateCancelAllSchedulesOption(true)
@@ -224,12 +251,16 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         return sortedList
     }
 
-    override fun showHeaderInfo(companyName: String, date: String) {
+    override fun showHeaderInfo(companyName: String, date: String, shift: String, dept: String) {
         this.companyName = companyName
         this.date = date
+        this.shift=shift
+        this.dept=dept
 
         textViewCompanyName.text = companyName.capitalize()
         textViewWorkItemsDate.text = UIUtils.getSpannedText(date)
+        textViewWorkItemShift.text = UIUtils.getSpannedText(shift)
+        textViewWorkItemDept.text = UIUtils.getSpannedText(dept)
     }
 
     override fun showLoginScreen() {
@@ -238,6 +269,25 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
 
     /** Child Fragment Interaction Listeners */
     override fun fetchWorkSheetList() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
         workSheetPresenter.fetchWorkSheetList()
+    }
+
+    override fun onClick(view: View?) {
+        when(view!!.id){
+            textViewGroupNote.id->{
+                if (!ConnectionDetector.isNetworkConnected(activity)) {
+                    ConnectionDetector.createSnackBar(activity)
+                    return
+                }
+
+                if (customerGroupNote!=null&& (customerGroupNote.first.first.size>0 ||customerGroupNote.second.size>0|| customerGroupNote.third.size>0|| customerGroupNote.first.second.size>0))
+                CustomeDialog.showGroupNoteDialog(activity, "Customer Notes :", customerGroupNote)
+
+            }
+        }
     }
 }

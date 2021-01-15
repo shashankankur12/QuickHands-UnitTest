@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/fragment_schedule_time">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/appBackground">
+
+        <TextView
+            android:id="@+id/textViewDate"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_marginStart="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/shiftLayout"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDate">
+
+            <TextView
+                android:id="@+id/textViewHeaderShift"
+                style="@style/valuesTextViewTheme"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                />
+
+            <TextView
+                android:id="@+id/textViewHeaderDept"
+                style="@style/valuesTextViewTheme"
+                android:layout_width="0dp"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
+            android:id="@+id/singleRowCalendarScheduleTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8ssp"
+            android:layout_marginTop="@dimen/_2ssp"
+            android:layout_marginEnd="@dimen/_8ssp"
+            app:deselection="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/shiftLayout"
+            app:longPress="false"
+            app:multiSelection="false" />
+
+        <EditText
+            android:id="@+id/editTextSearch"
+            style="@style/searchEditTextTheme"
+            android:layout_width="0dp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/singleRowCalendarScheduleTime" />
+
+        <ImageView
+            android:id="@+id/imageViewCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_17sdp"
+            android:src="@drawable/ic_cancel"
+            android:tint="@color/colorLightGrey"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextSearch"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editTextSearch" />
+
+        <View
+            android:id="@+id/appBarView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1ssp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/darkGreyDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextSearch"/>
+
+        <RelativeLayout
+            android:id="@+id/layoutWorkScheduleInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingStart="@dimen/_10ssp"
+            android:paddingEnd="@dimen/_10ssp"
+            android:paddingTop="@dimen/_2ssp"
+            android:paddingBottom="@dimen/_2ssp"
+            android:background="@color/textWhite"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarView">
+            <TextView
+                android:id="@+id/textViewBuildingName"
+                style="@style/valuesSmallTextViewThemeHeader"
+                android:layout_width="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/textViewDept"
+                android:textColor="@color/textBlack"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/textViewDept"
+                style="@style/valuesSmallTextViewThemeHeader"
+                android:layout_width="wrap_content"
+                android:layout_toLeftOf="@+id/textViewShift"
+                android:textColor="@color/textBlack"
+                android:layout_marginStart="@dimen/_8ssp" />
+            <TextView
+                android:id="@+id/textViewShift"
+                style="@style/valuesSmallTextViewThemeHeader"
+                android:layout_width="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/textBlack"
+                android:layout_marginStart="@dimen/_8ssp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/white_background"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/_12ssp"
+            android:paddingTop="@dimen/_6ssp"
+            android:paddingEnd="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutWorkScheduleInfo">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewScheduleTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/textViewEmptyData"
+                    style="@style/noRecordTextViewTheme"
+                    android:layout_centerInParent="true"
+                    android:text="@string/empty_schedule_time_list_info_message"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonScheduleLumpers"
+                    style="@style/positiveRoundButtonTheme"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/_10ssp"
+                    android:layout_weight="1"
+                    android:text="@string/schedule_lumpers" />
+
+                <Button
+                    android:id="@+id/buttonRequestLumpers"
+                    style="@style/negativeRoundButtonTheme"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/request_lumpers" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

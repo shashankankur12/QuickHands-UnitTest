@@ -54,5 +54,6 @@ class BuildingOperationsPresenter(private var buildingOperationsView: BuildingOp
 
     override fun onSuccessSaveBuildingOperations() {
         buildingOperationsView?.buildingOperationsDataSaved()
+        buildingOperationsView?.hideProgressDialog()
     }
 }

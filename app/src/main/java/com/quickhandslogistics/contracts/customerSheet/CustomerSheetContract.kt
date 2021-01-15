@@ -40,6 +40,10 @@ class CustomerSheetContract {
                 customerId: String
             )
             fun saveSateCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String)
+            fun isDataSave(isDataSave:Boolean)
+        }
+        interface fragmentDataListener {
+            fun onDataChanges(): Boolean
         }
     }
 

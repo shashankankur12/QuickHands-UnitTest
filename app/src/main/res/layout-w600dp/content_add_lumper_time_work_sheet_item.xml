@@ -27,6 +27,14 @@
             android:layout_marginStart="@dimen/_10sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+        <View
+            android:id="@+id/viewAttendanceStatus"
+            android:layout_width="@dimen/_6sdp"
+            android:layout_height="@dimen/_6sdp"
+            android:background="@drawable/online_dot"
+            android:translationX="-2dp"
+            app:layout_constraintBottom_toBottomOf="@+id/circleImageViewProfile"
+            app:layout_constraintEnd_toEndOf="@+id/circleImageViewProfile" />
 
         <TextView
             android:id="@+id/textViewLumperName"
@@ -83,25 +91,6 @@
 
                 <TextView
                     style="@style/titleTextViewTheme"
-                    android:text="@string/waiting_time_in_min" />
-
-                <EditText
-                    android:id="@+id/editTextWaitingTime"
-                    style="@style/valueEditTextTheme"
-                    android:inputType="number"
-                    android:maxLength="3" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:background="@drawable/schedule_item_background"
-                android:orientation="vertical"
-                android:padding="@dimen/_8sdp">
-
-                <TextView
-                    style="@style/titleTextViewTheme"
                     android:text="@string/work_time" />
 
                 <LinearLayout
@@ -121,20 +110,20 @@
                     <Button
                         android:id="@+id/buttonStartTime"
                         style="@style/positiveButtonTheme"
+                        android:layout_width="@dimen/_100sdp"
                         android:text="@string/start_time" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:text="@string/to"
-                        android:textColor="@color/textBlack"
-                        android:textSize="@dimen/_10ssp" />
+                    <ImageView
+                    android:layout_width="@dimen/_20ssp"
+                    android:layout_height="@dimen/_20ssp"
+                    android:layout_weight="0.5"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_remove_icon" />
 
                     <Button
                         android:id="@+id/buttonEndTime"
                         style="@style/positiveButtonTheme"
+                        android:layout_width="@dimen/_100sdp"
                         android:text="@string/end_time" />
 
                     <Space
@@ -142,6 +131,13 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/totalWorkTime"
+                    style="@style/valuesSmallTextViewThemeHeader"
+                    android:gravity="center_horizontal"
+                    android:visibility="gone"
+                    android:layout_marginTop="@dimen/_10sdp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -155,6 +151,10 @@
                 <TextView
                     style="@style/titleTextViewTheme"
                     android:text="@string/break_time" />
+                <TextView
+                    style="@style/valuesVerySmallTextViewTheme"
+                    android:layout_marginTop="@dimen/_1sdp"
+                    android:text="@string/psuse_time_description" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -173,27 +173,53 @@
                     <Button
                         android:id="@+id/buttonBreakInTime"
                         style="@style/positiveButtonTheme"
-                        android:text="@string/start" />
+                        android:layout_width="@dimen/_100sdp"
+                        android:text="@string/pause" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:layout_width="@dimen/_20ssp"
+                        android:layout_height="@dimen/_20ssp"
                         android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:text="@string/to"
-                        android:textColor="@color/textBlack"
-                        android:textSize="@dimen/_10ssp" />
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_remove_icon" />
 
                     <Button
                         android:id="@+id/buttonBreakOutTime"
                         style="@style/positiveButtonTheme"
-                        android:text="@string/end" />
+                        android:layout_width="@dimen/_100sdp"
+                        android:text="@string/resume" />
 
                     <Space
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/totalPauseTime"
+                    style="@style/valuesSmallTextViewThemeHeader"
+                    android:gravity="center_horizontal"
+                    android:visibility="gone"
+                    android:layout_marginTop="@dimen/_8sdp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/schedule_item_background"
+                android:orientation="vertical"
+                android:padding="@dimen/_8sdp">
+
+                <TextView
+                    style="@style/titleTextViewTheme"
+                    android:text="@string/waiting_time_in_min" />
+
+                <EditText
+                    android:id="@+id/editTextWaitingTime"
+                    style="@style/valueEditTextTheme"
+                    android:inputType="number"
+                    android:maxLength="3" />
             </LinearLayout>
 
             <LinearLayout
@@ -231,16 +257,17 @@
                             android:id="@+id/editTextCasesLumpers"
                             style="@style/valueEditTextTheme"
                             android:textAlignment="center"
+                            android:digits="0123456789"
+                            android:imeOptions="actionDone"
                             android:layout_width="match_parent"
                             android:inputType="number" />
 
                         <TextView
+                            style="@style/valuesVerySmallTextViewTheme"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="@string/lumper_cases_text"
-                            android:textColor="@color/material_blue_grey_80"
-                            android:textSize="@dimen/_9sdp" />
+                            android:text="@string/lumper_cases_text" />
                     </LinearLayout>
 
                     <TextView
@@ -266,13 +293,12 @@
                             android:inputType="number" />
 
                         <TextView
+                            style="@style/valuesVerySmallTextViewTheme"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="@string/total_cases_text"
-                            android:textColor="@color/material_blue_grey_80"
-                            android:textSize="@dimen/_9sdp" />
+                            android:text="@string/total_cases_text" />
                     </LinearLayout>
 
                     <TextView
@@ -299,12 +325,32 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <Button
-                android:id="@+id/buttonSave"
-                style="@style/positiveRoundButtonTheme"
+            <LinearLayout
+                android:id="@+id/layoutSaveCancelButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10ssp"
                 android:layout_marginBottom="@dimen/_10ssp"
-                android:text="@string/save" />
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonSave"
+                    style="@style/positiveRoundButtonTheme"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:text="@string/save" />
+
+                <Button
+                    android:id="@+id/buttonCancelRequest"
+                    style="@style/negativeRoundButtonTheme"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:text="@string/cancel" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

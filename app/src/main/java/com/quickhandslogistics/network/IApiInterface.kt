@@ -106,6 +106,13 @@ interface IApiInterface {
 
     @POST("employees/requests/cancel")
     fun cancelRequestLumpers(@Header("Authorization") auth: String, @Body request: CancelRequestLumpersRequest): Call<BaseResponse>
+
+    @DELETE("employees/scheduled/lumpers/{lumperId}")
+    fun cancelScheduleLumper(@Header("Authorization") auth: String, @Path("lumperId") lumperId: String, @Query("day") day: String): Call<BaseResponse>
+
+    @PUT("employees/scheduled/lumpers/{lumperId}")
+    fun editScheduleLumper(@Header("Authorization") auth: String, @Path("lumperId") lumperId: String, @Query("day") day: String, @Query("reportingTime") reportingTime: Long, @Body request: ScheduleTimeNoteRequest): Call<BaseResponse>
+
     /////////////////////////////////////////////////////////////
 
     // Work Sheet /////////////////////////////////////////////////
@@ -167,22 +174,25 @@ interface IApiInterface {
     /////////////////////////////////////////////////////////////
 
     // Reports /////////////////////////////////////////////////
-    @POST("employees/worksheet/reports")
+    @POST("employees/worksheet/reports/lumpers")
     fun createLumperJobReport(
         @Header("Authorization") auth: String, @Query("start") startDate: String,
         @Query("end") endDate: String, @Query("type") type: String, @Body request: ReportRequest
     ): Call<ReportResponse>
 
-    @POST("employees/timeclock/reports")
+    @POST("employees/timeclock/reports/lumpers")
     fun createTimeClockReport(
         @Header("Authorization") auth: String, @Query("start") startDate: String,
         @Query("end") endDate: String, @Query("type") type: String, @Body request: ReportRequest
     ): Call<ReportResponse>
 
-    @GET("customers/reports")
+    @POST("customers/reports")
     fun createCustomerReport(
         @Header("Authorization") auth: String, @Query("start") startDate: String,
         @Query("end") endDate: String, @Query("type") type: String
     ): Call<ReportResponse>
+
+    @GET("employees/lead/lumpers/date-range")
+    fun getAllLumpersSelectedDates(@Header("Authorization") auth: String, @Query("dayStart") dayStart: String, @Query("dayEnd") dayEnd: String): Call<LumperListAPIResponse>
     /////////////////////////////////////////////////////////////
 }

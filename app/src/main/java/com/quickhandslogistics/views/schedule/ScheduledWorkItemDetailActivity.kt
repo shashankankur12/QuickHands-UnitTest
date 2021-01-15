@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.schedule.ScheduledWorkItemDetailAdapter
 import com.quickhandslogistics.contracts.schedule.ScheduledWorkItemDetailContract
-import com.quickhandslogistics.data.schedule.WorkItemDetail
+import com.quickhandslogistics.data.schedule.ScheduleWorkItem
 import com.quickhandslogistics.presenters.schedule.ScheduledWorkItemDetailPresenter
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
@@ -34,7 +34,7 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
     private var workItemId: String = ""
     private var workItemTypeDisplayName: String = ""
     private var allowUpdate: Boolean = true
-    private var workItemDetail: WorkItemDetail? = null
+    private var workItemDetail: ScheduleWorkItem? = null
 
     private lateinit var lumpersAdapter: ScheduledWorkItemDetailAdapter
     private lateinit var scheduledWorkItemDetailPresenter: ScheduledWorkItemDetailPresenter
@@ -163,7 +163,7 @@ class ScheduledWorkItemDetailActivity : BaseActivity(), View.OnClickListener, Sc
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }
 
-    override fun showWorkItemDetail(workItemDetail: WorkItemDetail) {
+    override fun showWorkItemDetail(workItemDetail: ScheduleWorkItem) {
         this.workItemDetail = workItemDetail
         textViewStartTime.text = String.format(getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
         workItemDetail.scheduledFrom?.let {

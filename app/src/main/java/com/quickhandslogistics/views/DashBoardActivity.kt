@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.quickhandslogistics.BuildConfig
@@ -24,9 +25,10 @@ import com.quickhandslogistics.views.scheduleTime.ScheduleTimeFragment
 import com.quickhandslogistics.views.workSheet.AllWorkScheduleCancelActivity
 import com.quickhandslogistics.views.workSheet.WorkSheetFragment
 import kotlinx.android.synthetic.main.content_dashboard.*
+import kotlinx.android.synthetic.main.custome_dashbord_toolbar.*
 import kotlinx.android.synthetic.main.include_main_nav_drawer.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
 import kotlinx.android.synthetic.main.nav_header_dashboard.*
+import java.util.*
 
 class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContract.View, DashBoardContract.View.OnFragmentInteractionListener {
 
@@ -76,6 +78,11 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         headerLayout.setOnClickListener(this)
 
         dashBoardPresenter = DashBoardPresenter(this, resources, sharedPref)
+
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
         dashBoardPresenter.loadLeadProfileData()
 
         snackBar = SnackBarFactory.createShortSnackBar(activity, frameLayoutMain, getString(R.string.press_back_again_to_exit), isShow = false)
@@ -139,12 +146,10 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             when(fragment){
                 is LumpersFragment ->
                     tabName = getString(R.string.lumper_contact)
-                //not done yet
                 is WorkSheetFragment->
                     tabName = getString(R.string.today_s_work_sheet)
                 is ScheduleTimeFragment->
                     tabName = getString(R.string.scheduled_lumpers)
-                //not done yet
                 is ScheduleFragment->
                     tabName = getString(R.string.schedule)
                 is LumperSheetFragment->
@@ -203,6 +208,9 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
                     if (currentFragment is TimeClockAttendanceFragment) {
                         if (currentFragment.onDataChanges()) showLeavePopup()
                         else openLeadActivity()
+                    } else if (currentFragment is CustomerSheetFragment) {
+                        if (currentFragment.onDataChanges()) showLeavePopup()
+                        else openLeadActivity()
                     } else openLeadActivity()
                 }
             }
@@ -210,8 +218,8 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     }
 
     private fun showLeavePopup() {
-        CustomProgressBar.getInstance().showWarningDialog(
-            getString(R.string.leave_alert_message),
+        CustomProgressBar.getInstance().showLeaveDialog(
+            getString(R.string.discard_leave_alert_message),
             activity,
             object : CustomDialogWarningListener {
                 override fun onConfirmClick() {
@@ -223,6 +231,11 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     }
 
     private fun openLeadActivity() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         navDrawer?.setOpen(false)
         startIntent(LeadProfileActivity::class.java)
     }
@@ -261,7 +274,28 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     /** Child Fragment Interaction Listeners */
     override fun onNewFragmentReplaced(title: String) {
         selectedFragmentTitle = title
+        if(title.equals(getString(R.string.lumper_contact))){
+            toolbar.background = ContextCompat.getDrawable(this, R.drawable.header_background_lumper)
+            textViewToolbar.setTextColor(resources.getColor(android.R.color.white))
+            toolbar.setNavigationIcon(R.drawable.ic_hamburger)
+            headerLogoImage.visibility=View.VISIBLE
+        }else{
+            toolbar.setBackgroundColor(resources.getColor(R.color.colorPrimary));
+            textViewToolbar.setTextColor(resources.getColor(android.R.color.black))
+            toolbar.setNavigationIcon(R.drawable.ic_sidemenu)
+            headerLogoImage.visibility=View.GONE
+
+        }
+        if (title.equals(getString(R.string.today_s_work_sheet))|| title.equals(getString(R.string.customer_sheet)) || title.equals(getString(R.string.reports))|| title.equals(getString(R.string.lumper_contact))|| title.equals(getString(R.string.settings))){
+            textViewDate.visibility=View.GONE
+            textViewDate.text = ""
+        }else{
+            textViewDate.visibility=View.VISIBLE
+            textViewDate.text = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, Date())
+        }
+        textViewToolbar.text = title
         invalidateOptionsMenu()
+
     }
 
     override fun invalidateScheduleTimeNotes(notes: String) {
@@ -275,6 +309,11 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     }
 
     override fun onLogoutOptionSelected() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         CustomProgressBar.getInstance().showWarningDialog(getString(R.string.logout_alert_message), activity, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 isPerformLogout=true

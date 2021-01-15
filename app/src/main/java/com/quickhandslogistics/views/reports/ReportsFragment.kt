@@ -1,5 +1,6 @@
 package com.quickhandslogistics.views.reports
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.reports.ReportsAdapter
 import com.quickhandslogistics.contracts.reports.ReportsContract
+import com.quickhandslogistics.utils.ConnectionDetector
 import com.quickhandslogistics.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_reports.*
 
@@ -35,14 +37,26 @@ class ReportsFragment : BaseFragment(), ReportsContract.View.OnAdapterItemClickL
 
     /** Adapter Listeners */
     override fun showLumperJobReport() {
+        if (!ConnectionDetector.isNetworkConnected(context)) {
+            ConnectionDetector.createSnackBar(context as Activity?)
+            return
+        }
         startIntent(LumperJobReportActivity::class.java)
     }
 
     override fun showTimeClockReport() {
+        if (!ConnectionDetector.isNetworkConnected(context)) {
+            ConnectionDetector.createSnackBar(context as Activity?)
+            return
+        }
         startIntent(TimeClockReportActivity::class.java)
     }
 
     override fun showCustomerSheetReport() {
+        if (!ConnectionDetector.isNetworkConnected(context)) {
+            ConnectionDetector.createSnackBar(context as Activity?)
+            return
+        }
         startIntent(CustomerReportActivity::class.java)
     }
 }

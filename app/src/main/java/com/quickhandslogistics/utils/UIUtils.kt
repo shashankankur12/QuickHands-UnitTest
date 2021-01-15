@@ -1,6 +1,7 @@
 package com.quickhandslogistics.utils
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Build
 import android.telephony.PhoneNumberUtils
 import android.text.Html
@@ -9,6 +10,7 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
+import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import de.hdodenhof.circleimageview.CircleImageView
@@ -19,15 +21,35 @@ object UIUtils {
         var fullName = ""
         employeeData?.let {
             fullName = String.format(
-                "%s %s",
-                getDefaultOrValue(employeeData.firstName).trim().capitalize(),
-                getDefaultOrValue(employeeData.lastName).trim().capitalize()
+                    "%s %s",
+                    getDefaultOrValue(employeeData.firstName).trim().capitalize(),
+                    getDefaultOrValue(employeeData.lastName).trim().capitalize()
+            )
+        }
+        return fullName
+    }
+
+    fun getPresentLumperFullName(employeeData: LumperAttendanceData?): String {
+        var fullName = ""
+        employeeData?.let {
+            fullName = String.format(
+                    "%s %s",
+                    getDefaultOrValue(employeeData.firstName).trim().capitalize(),
+                    getDefaultOrValue(employeeData.lastName).trim().capitalize()
             )
         }
         return fullName
     }
 
     fun getDisplayEmployeeID(employeeData: EmployeeData?): String {
+        var displayEmployeeId = ""
+        employeeData?.let {
+            displayEmployeeId = getDisplayEmployeeID(employeeData.employeeId)
+        }
+        return displayEmployeeId
+    }
+
+    fun getDisplayPresentLumperID(employeeData: LumperAttendanceData?): String {
         var displayEmployeeId = ""
         employeeData?.let {
             displayEmployeeId = getDisplayEmployeeID(employeeData.employeeId)
@@ -90,9 +112,9 @@ object UIUtils {
         employeeData?.let {
             if (!employeeData.department.isNullOrEmpty()) {
                 displayDepartment = when (employeeData.department) {
-                    AppConstant.EMPLOYEE_DEPARTMENT_BOTH -> "Both (Inbound & Outbound)"
-                    AppConstant.EMPLOYEE_DEPARTMENT_INBOUND -> "Inbound"
-                    AppConstant.EMPLOYEE_DEPARTMENT_OUTBOUND -> "Outbound"
+                    AppConstant.EMPLOYEE_DEPARTMENT_BOTH -> "Operations "
+                    AppConstant.EMPLOYEE_DEPARTMENT_INBOUND -> "Receiving "
+                    AppConstant.EMPLOYEE_DEPARTMENT_OUTBOUND -> "Shipping"
                     else -> employeeData.department!!
                 }
             }
@@ -106,6 +128,17 @@ object UIUtils {
         } else {
             Html.fromHtml(text)
         }
+    }
+
+    fun getSpannableText(sourseString: String, valueString: String): Spanned? {
+        var stringFormet=String.format(sourseString, valueString)
+        return getSpannedText(stringFormet)
+    }
+
+    fun isNetworkConnected(context: Context): Boolean {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = cm.activeNetworkInfo
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting
     }
 }
 

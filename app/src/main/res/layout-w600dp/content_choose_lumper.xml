@@ -76,7 +76,7 @@
                 style="@style/positiveRoundButtonTheme"
                 android:layout_marginBottom="@dimen/_6sdp"
                 android:enabled="false"
-                android:text="@string/submit" />
+                android:text="@string/add" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout>

@@ -20,6 +20,7 @@ import com.quickhandslogistics.utils.ValueUtils.isNumeric
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_DATA
+import com.quickhandslogistics.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_PRESENT
 import com.quickhandslogistics.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_TIMING_DATA
 import com.quickhandslogistics.views.schedule.ScheduleFragment
 import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
@@ -45,20 +46,25 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private var percentageTime: Double = 0.0
     private var partWorkDone: Int = 0
     private var isPartWorkDoneValid: Boolean = true
+    private var isLumperPresent: Boolean = false
+    private lateinit var  watcher: TextWatcher
+    private var tempLumperIds: ArrayList<String> = ArrayList()
 
     private lateinit var addLumperTimeWorkSheetItemPresenter: AddLumperTimeWorkSheetItemPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_lumper_time_work_sheet_item)
-        setupToolbar(getString(R.string.add_time))
+        setupToolbar(getString(R.string.lumper_parameter))
 
         intent.extras?.let { it ->
             if (it.containsKey(ARG_LUMPER_DATA)) {
                 workItemId = it.getString(ScheduleFragment.ARG_WORK_ITEM_ID, "")
+                isLumperPresent = it.getBoolean(ARG_LUMPER_PRESENT, false)
                 totalCases = it.getString(WorkSheetItemDetailLumpersFragment.TOTAL_CASES, "")
                 employeeData = it.getParcelable(ARG_LUMPER_DATA) as EmployeeData?
                 employeeTimingData = it.getParcelable(ARG_LUMPER_TIMING_DATA) as LumpersTimeSchedule?
+                tempLumperIds = it.getStringArrayList(WorkSheetItemDetailLumpersFragment.TEMP_LUMPER_IDS) as ArrayList<String>
             }
         }
 
@@ -70,9 +76,11 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private fun initializeUI() {
         employeeData?.let { employeeData ->
             UIUtils.showEmployeeProfileImage(activity, employeeData, circleImageViewProfile)
-            UIUtils.updateProfileBorder(activity, employeeData.isTemporaryAssigned, circleImageViewProfile)
+            UIUtils.updateProfileBorder(activity, tempLumperIds.contains(employeeData.id), circleImageViewProfile)
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
+            viewAttendanceStatus.setBackgroundResource(if (isLumperPresent) R.drawable.online_dot else R.drawable.offline_dot)
+
         }
 
         employeeTimingData?.let { timingDetail ->
@@ -101,6 +109,19 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             editTextTotalCases.isEnabled=false
             editTextCasesLumpers.isEnabled=false
         }
+
+        editTextWaitingTime.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (text.isNullOrEmpty())isDataSave(true) else isDataSave(false)
+            }
+        })
+
         updateButtonsUI()
         if(!totalCases.isNullOrEmpty() && partWorkDone!=0) lumpercaseVisibility()
         toggleSaveButtonVisibility()
@@ -111,7 +132,10 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         buttonBreakInTime.setOnClickListener(this)
         buttonBreakOutTime.setOnClickListener(this)
         buttonSave.setOnClickListener(this)
+        buttonCancelRequest.setOnClickListener(this)
     }
+
+
 
     private fun updateTimingsDetails(timingDetail: LumpersTimeSchedule) {
         initialStartTime = updateInitialTime(timingDetail.startTime, buttonStartTime)
@@ -130,6 +154,24 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         buttonEndTime.isEnabled = initialEndTime <= 0 && selectedStartTime > 0 && checkBrackout()
         buttonBreakInTime.isEnabled = initialBreakInTime <= 0 && selectedStartTime > 0
         buttonBreakOutTime.isEnabled = initialBreakOutTime <= 0 && selectedBreakInTime > 0
+        getTimeCalculate()
+        getPauseTimeCalculate()
+    }
+
+    private fun getPauseTimeCalculate() {
+        if (selectedBreakInTime > 0 && selectedBreakOutTime > 0) {
+            totalPauseTime.visibility = View.VISIBLE
+            val dateString = String.format(getString(R.string.total_pause_time), DateUtils.getDateTimeCalculetedLong(selectedBreakInTime, selectedBreakOutTime))
+            totalPauseTime.text = dateString
+        } else totalPauseTime.visibility = View.GONE
+    }
+
+    private fun getTimeCalculate() {
+        if (selectedStartTime > 0 && selectedEndTime > 0) {
+            totalWorkTime.visibility = View.VISIBLE
+            val dateString = String.format(getString(R.string.total_time), DateUtils.getDateTimeCalculetedLong(selectedStartTime, selectedEndTime))
+            totalWorkTime.text = dateString
+        } else totalWorkTime.visibility = View.GONE
     }
 
     private fun checkBrackout(): Boolean {
@@ -171,6 +213,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         this.selectedStartTime = selectedStartTime
         buttonStartTime.text = DateUtils.convertMillisecondsToTimeString(selectedStartTime)
         updateButtonsUI()
+        isDataSave(false)
     }
 
     private fun onSelectEndTime(calendar: Calendar) {
@@ -183,6 +226,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             this.selectedEndTime = selectedEndTime
             buttonEndTime.text = DateUtils.convertMillisecondsToTimeString(selectedEndTime)
             updateButtonsUI()
+            isDataSave(false)
         }
     }
 
@@ -203,6 +247,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         this.selectedBreakInTime = selectedBreakInTime
         buttonBreakInTime.text = DateUtils.convertMillisecondsToTimeString(selectedBreakInTime)
         updateButtonsUI()
+        isDataSave(false)
     }
 
     private fun onSelectBreakOutTime(calendar: Calendar) {
@@ -217,6 +262,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             this.selectedBreakOutTime = selectedBreakOutTime
             buttonBreakOutTime.text = DateUtils.convertMillisecondsToTimeString(selectedBreakOutTime)
             updateButtonsUI()
+            isDataSave(false)
         }
     }
 
@@ -235,23 +281,32 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun saveSelectedTimings() {
-        CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
-            override fun onConfirmClick() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+//        CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
+//            override fun onConfirmClick() {
                 val waitingTime = editTextWaitingTime.text.toString()
 
                 addLumperTimeWorkSheetItemPresenter.saveLumperTimings(
                     employeeData?.id!!, workItemId, selectedStartTime, selectedEndTime,
                     selectedBreakInTime, selectedBreakOutTime, waitingTime,partWorkDone
                 )
-            }
-
-            override fun onCancelClick() {
-            }
-        })
+//            }
+//
+//            override fun onCancelClick() {
+//            }
+//        })
     }
 
     /** Native Views Listeners */
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         view?.let {
             when (view.id) {
                 buttonStartTime.id -> {
@@ -287,6 +342,9 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
                         CustomProgressBar.getInstance().showMessageDialog(getString(R.string.lumper_cases_error) , activity)
                     }else saveSelectedTimings()
                 }
+                buttonCancelRequest.id -> {
+                    onBackPressed()
+                }
             }
         }
     }
@@ -300,6 +358,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
 
     override fun lumpersTimingSaved() {
         setResult(RESULT_OK)
+        isDataSave(true)
         onBackPressed()
     }
 
@@ -321,9 +380,11 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         text?.let {
             if (!text.isNullOrEmpty() && (text.toString()).toInt() != 0) {
                 getPercent(text.toString(), totalCases)
+                isDataSave(false)
             } else {
                 percentWorkDone.text = "0.0%"
                 partWorkDone=0
+                isDataSave(true)
             }
         }
     }

@@ -14,6 +14,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <View
+        android:id="@+id/viewAttendanceStatus"
+        android:layout_width="@dimen/_6sdp"
+        android:layout_height="@dimen/_6sdp"
+        android:background="@drawable/online_dot"
+        android:translationX="-2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/circleImageViewProfile"
+        app:layout_constraintEnd_toEndOf="@+id/circleImageViewProfile" />
+
     <TextView
         android:id="@+id/textViewLumperName"
         style="@style/titleTextViewTheme"
@@ -55,95 +64,85 @@
         app:layout_constraintTop_toBottomOf="@id/textViewEmployeeId">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:weightSum="1"
-            app:layout_flexGrow="1">
+            android:weightSum="2"
+            android:orientation="horizontal">
 
             <TextView
-                style="@style/valuesSmallTextViewTheme"
-                android:layout_width="wrap_content"
-                android:text="@string/start_and_end_time"
-                android:textColor="@color/detailHeader" />
+                style="@style/titleVerySmallTextViewTheme"
+                android:layout_width="0dp"
+                android:text="@string/work_time_s"
+                android:layout_weight=".4" />
 
             <TextView
                 android:id="@+id/textViewWorkTime"
-                style="@style/titleVerySmallTextViewTheme"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:drawableStart="@drawable/ic_lumper_list_clock"
-                android:drawablePadding="@dimen/_3sdp"
-                android:text="08:00 AM - 08:00 AM"
-                android:textColor="@color/textBlack" />
+                android:layout_weight="1.6"
+                android:layout_width="0dp"
+                style="@style/valuesSmallTextViewTheme"
+                android:text="NA - NA" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_6sdp"
-            android:orientation="vertical"
             android:weightSum="2"
-            app:layout_flexGrow="1">
-
+            android:layout_marginTop="@dimen/_4sdp"
+            android:orientation="horizontal">
             <TextView
-                style="@style/valuesSmallTextViewTheme"
-                android:layout_width="wrap_content"
-                android:text="@string/break_time"
-                android:textColor="@color/detailHeader" />
+                style="@style/titleVerySmallTextViewTheme"
+                android:layout_width="0dp"
+                android:text="@string/break_time_s"
+                android:layout_weight=".4" />
 
             <TextView
                 android:id="@+id/textViewBreakTime"
-                style="@style/titleVerySmallTextViewTheme"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:drawableStart="@drawable/ic_lumper_list_clock"
-                android:drawablePadding="@dimen/_3sdp"
-                android:text="08:00 AM - 08:00 AM"
-                android:textColor="@color/textBlack" />
+                android:layout_width="0dp"
+                style="@style/valuesSmallTextViewTheme"
+                android:layout_weight="1.6"
+                android:text="NA - NA" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:weightSum="1"
-            app:layout_flexGrow="1">
+            android:layout_marginTop="@dimen/_4sdp"
+            android:weightSum="2"
+            android:orientation="horizontal">
 
             <TextView
-                style="@style/valuesSmallTextViewTheme"
-                android:layout_width="wrap_content"
-                android:text="@string/waiting_time"
-                android:textColor="@color/detailHeader" />
+                style="@style/titleVerySmallTextViewTheme"
+                android:layout_width="0dp"
+                android:text="@string/waiting_time_s"
+                android:layout_weight="0.4"/>
 
             <TextView
                 android:id="@+id/textViewWaitingTime"
-                style="@style/titleVerySmallTextViewTheme"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:drawableStart="@drawable/ic_lumper_list_clock"
-                android:drawablePadding="@dimen/_3sdp"
-                android:text="999 Min"
-                android:textColor="@color/textBlack" />
+                android:layout_weight="1.6"
+                android:layout_width="0dp"
+                style="@style/valuesSmallTextViewTheme"
+                android:text="NA" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:weightSum="1"
-            app:layout_flexGrow="1">
+            android:weightSum="2"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:orientation="horizontal">
 
             <TextView
-                style="@style/valuesSmallTextViewTheme"
-                android:layout_width="wrap_content"
-                android:text="@string/works_done"
-                android:textColor="@color/detailHeader" />
+                style="@style/titleVerySmallTextViewTheme"
+                android:layout_width="0dp"
+                android:text="@string/works_done_s"
+                android:layout_weight="0.4"/>
 
             <TextView
                 android:id="@+id/textViewWorkDone"
-                style="@style/titleVerySmallTextViewTheme"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:drawablePadding="@dimen/_3sdp"
-                android:text="999 Min"
-                android:textColor="@color/textBlack" />
+                style="@style/valuesSmallTextViewTheme"
+                android:layout_weight="1.6"
+                android:layout_width="0dp"
+                android:text="NA" />
         </LinearLayout>
 
     </com.google.android.flexbox.FlexboxLayout>

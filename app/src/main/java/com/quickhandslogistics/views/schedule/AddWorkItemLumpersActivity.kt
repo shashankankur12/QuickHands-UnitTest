@@ -13,10 +13,7 @@ import com.quickhandslogistics.adapters.schedule.AddWorkItemLumperAdapter
 import com.quickhandslogistics.contracts.schedule.AddWorkItemLumpersContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.presenters.schedule.AddWorkItemLumpersPresenter
-import com.quickhandslogistics.utils.AppUtils
-import com.quickhandslogistics.utils.CustomDialogWarningListener
-import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
@@ -55,11 +52,11 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
             workItemId = it.getString(ARG_WORK_ITEM_ID, "")
             workItemType = it.getString(ARG_WORK_ITEM_TYPE, "")
 
-            if (isAddLumper) {
+//            if (isAddLumper) {
                 setupToolbar(getString(R.string.add_lumpers))
-            } else {
-                setupToolbar(getString(R.string.update_lumpers))
-            }
+//            } else {
+//                setupToolbar(getString(R.string.update_lumpers))
+//            }
         }
 
         initializeUI()
@@ -76,6 +73,11 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
                 showLumpersData(permanentLumpersList, temporaryLumpersList)
             }
         } ?: run {
+            if (!ConnectionDetector.isNetworkConnected(activity)) {
+                ConnectionDetector.createSnackBar(activity)
+                return
+            }
+
             addWorkItemLumpersPresenter.fetchLumpersList()
         }
 
@@ -112,10 +114,12 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
         buttonAdd.setOnClickListener(this)
         editTextSearch.addTextChangedListener(this)
         imageViewCancel.setOnClickListener(this)
+        buttonCancelRequest.setOnClickListener(this)
     }
 
     private fun invalidateEmptyView() {
         if (addWorkItemLumperAdapter.itemCount == 0) {
+//            isDataSave(true)
             textViewEmptyData.visibility = View.VISIBLE
             if (addWorkItemLumperAdapter.isSearchEnabled()) {
                 textViewEmptyData.text = getString(R.string.no_record_found_info_message)
@@ -123,26 +127,52 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
                 textViewEmptyData.text = getString(R.string.empty_add_work_item_lumpers_info_message)
             }
         } else {
+//            if (isListUpdated())isDataSave(false) else isDataSave(true)
             textViewEmptyData.visibility = View.GONE
             textViewEmptyData.text = getString(R.string.empty_add_work_item_lumpers_info_message)
         }
     }
 
+    private fun isListUpdated(): Boolean {
+        var selectedLumperIdsList = addWorkItemLumperAdapter.getSelectedLumper()
+        var isUpdated =false
+        if (!assignedLumpersList.size.equals(selectedLumperIdsList.size)){
+            isUpdated=true
+        }else {
+            for (assignedLumper in assignedLumpersList) {
+                for (selectedLumperId in selectedLumperIdsList) {
+                    isUpdated = !assignedLumper.id!!.equals(selectedLumperId)
+                }
+            }
+        }
+        return isUpdated
+    }
+
     private fun showConfirmationDialog() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         val selectedLumperIdsList = addWorkItemLumperAdapter.getSelectedLumper()
         if (selectedLumperIdsList.size > 0) {
-            CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
-                override fun onConfirmClick() {
+//            CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
+//                override fun onConfirmClick() {
                     assignLumpersToWorkItem(selectedLumperIdsList)
-                }
-
-                override fun onCancelClick() {
-                }
-            })
+//                }
+//
+//                override fun onCancelClick() {
+//                }
+//            })
         }
     }
 
     private fun assignLumpersToWorkItem(selectedLumperIdsList: ArrayList<String>) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         val tempLumperIds = ArrayList<String>()
         for (lumper in temporaryLumpersList) {
             if (selectedLumperIdsList.contains(lumper.id!!)) {
@@ -155,9 +185,15 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
 
     /** Native Views Listeners */
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         view?.let {
             when (view.id) {
                 buttonAdd.id -> showConfirmationDialog()
+                buttonCancelRequest.id -> onBackPressed()
                 imageViewCancel.id -> {
                     editTextSearch.setText("")
                     AppUtils.hideSoftKeyboard(activity)
@@ -183,6 +219,11 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
     }
 
     override fun showLumpersData(permanentLumpers: ArrayList<EmployeeData>, temporaryLumpers: ArrayList<EmployeeData>) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         this.permanentLumpersList = permanentLumpers
         this.temporaryLumpersList = temporaryLumpers
 
@@ -195,6 +236,7 @@ class AddWorkItemLumpersActivity : BaseActivity(), View.OnClickListener, TextWat
 
     override fun lumperAssignmentFinished() {
         setResult(RESULT_OK)
+//        isDataSave(true)
         onBackPressed()
     }
 

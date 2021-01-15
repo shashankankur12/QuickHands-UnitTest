@@ -1,9 +1,12 @@
 package com.quickhandslogistics.models.lumperSheet
 
 import android.util.Log
+import com.quickhandslogistics.contracts.attendance.TimeClockAttendanceContract
 import com.quickhandslogistics.contracts.lumperSheet.LumperWorkDetailContract
 import com.quickhandslogistics.data.BaseResponse
+import com.quickhandslogistics.data.attendance.AttendanceDetail
 import com.quickhandslogistics.data.lumperSheet.LumperWorkDetailAPIResponse
+import com.quickhandslogistics.models.attendance.TimeClockAttendanceModel
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.DataManager.createMultiPartBody
 import com.quickhandslogistics.network.DataManager.createRequestBody
@@ -62,5 +65,24 @@ class LumperWorkDetailModel : LumperWorkDetailContract.Model {
                     onFinishedListener.onFailure()
                 }
             })
+    }
+
+    override fun saveLumpersAttendanceList(
+        attendanceDetailList: List<AttendanceDetail>, onFinishedListener: LumperWorkDetailContract.Model.OnFinishedListener
+    ) {
+        val dateString = DateUtils.getCurrentDateStringByEmployeeShift()
+
+        DataManager.getService().saveAttendanceDetails(getAuthToken(), dateString, attendanceDetailList).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessSaveDate()
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Log.e(TimeClockAttendanceModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
     }
 }

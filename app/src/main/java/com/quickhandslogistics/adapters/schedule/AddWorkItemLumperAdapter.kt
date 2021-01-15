@@ -53,6 +53,7 @@ class AddWorkItemLumperAdapter(
         private val textViewEmployeeId: CustomTextView = view.textViewEmployeeId
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
         private val textViewShiftHours: CustomTextView = view.textViewShiftHours
+        private val viewAttendanceStatus: View = view.viewAttendanceStatus
         private val imageViewAdd: ImageView = view.imageViewAdd
 
         fun bind(employeeData: EmployeeData) {
@@ -61,6 +62,8 @@ class AddWorkItemLumperAdapter(
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
             textViewShiftHours.text = UIUtils.getDisplayShiftHours(employeeData)
+            viewAttendanceStatus.setBackgroundResource(if (employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
+
 
             if (selectedLumperIdsList.contains(employeeData.id!!)) {
                 imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick)

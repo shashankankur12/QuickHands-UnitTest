@@ -5,8 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".views.LeadProfileActivity">
 
-    <include layout="@layout/layout_toolbar" />
+    <include layout="@layout/lead_profile_header" />
 
-    <include layout="@layout/content_lead_profile" />
+    <include layout="@layout/content_lead_profile"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:elevation="0dp">
+
+    <include layout="@layout/custome_dashbord_toolbar"/>
+
+    <!--<androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_43ssp"
+        android:background="?attr/colorPrimary"
+        app:contentInsetStart="0dp"
+        app:buttonGravity="center_vertical"
+        app:titleTextAppearance="@style/ToolbarTitleTextAppearance"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        android:minHeight="?attr/actionBarSize"
+        app:titleTextColor="@color/textBlack">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_gravity="end"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/headerLogoImage"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:visibility="gone"
+                android:src="@drawable/qhl_thumb_logo_white"
+                android:foregroundGravity="right"
+                />
+            &lt;!&ndash; android:layout_centerVertical="true"&ndash;&gt;
+
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>-->
+
+</com.google.android.material.appbar.AppBarLayout>

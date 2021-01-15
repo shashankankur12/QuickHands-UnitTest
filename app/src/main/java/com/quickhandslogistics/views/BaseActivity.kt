@@ -6,6 +6,9 @@ import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.BitmapFactory
+import android.graphics.Shader
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.MotionEvent
@@ -17,14 +20,17 @@ import com.franmontiel.localechanger.utils.ActivityRecreationHelper
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.BaseContract
 import com.quickhandslogistics.network.DataManager
+import com.quickhandslogistics.utils.CustomDialogWarningListener
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SharedPref
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import okhttp3.Dispatcher
 
+
 open class BaseActivity : AppCompatActivity(), BaseContract.View {
 
     lateinit var sharedPref: SharedPref
+    private var isDataSave=true
 
     protected lateinit var activity: Activity
 
@@ -36,8 +42,12 @@ open class BaseActivity : AppCompatActivity(), BaseContract.View {
 
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        overridePendingTransition(R.anim.anim_prev_slide_in, R.anim.anim_prev_slide_out)
+        if (isDataSave) {
+            super.onBackPressed()
+            overridePendingTransition(R.anim.anim_prev_slide_in, R.anim.anim_prev_slide_out)
+        } else {
+            showLeavePopup()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -76,8 +86,18 @@ open class BaseActivity : AppCompatActivity(), BaseContract.View {
 
         if (showBackButton) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_arrow)
+            if (title.equals(getString(R.string.my_profile)) || title.equals(getString(R.string.lumper_profile)))
+                supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_arrow_white)
+            else if(title.equals(getString(R.string.lumper_contact))){
+                val background = BitmapDrawable(BitmapFactory.decodeResource(resources, R.drawable.header_background))
+                background.tileModeX = Shader.TileMode.REPEAT
+                supportActionBar?.setBackgroundDrawable(background)
+            }else supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_arrow)
         }
+    }
+
+    protected fun isDataSave(isDataSave: Boolean) {
+       this.isDataSave= isDataSave
     }
 
     fun startIntent(className: Class<*>, bundle: Bundle? = null, isFinish: Boolean = false, flags: Array<Int>? = null, requestCode: Int? = null) {
@@ -121,6 +141,20 @@ open class BaseActivity : AppCompatActivity(), BaseContract.View {
             }
             return@setOnTouchListener false
         }
+    }
+
+    private fun showLeavePopup() {
+        CustomProgressBar.getInstance().showLeaveDialog(
+            getString(R.string.discard_leave_alert_message),
+            activity,
+            object : CustomDialogWarningListener {
+                override fun onConfirmClick() {
+                    isDataSave=true
+                    onBackPressed()
+                }
+                override fun onCancelClick() {
+                }
+            })
     }
 
     /** Presenter Listeners */

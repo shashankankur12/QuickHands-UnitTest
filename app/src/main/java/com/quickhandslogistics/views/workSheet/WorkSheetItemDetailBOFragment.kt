@@ -12,12 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.common.ContainerDetailAdapter
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
+import com.quickhandslogistics.data.schedule.ScheduleWorkItem
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.buildingOperations.BuildingOperationsActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETERS
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.ConnectionDetector
 import kotlinx.android.synthetic.main.fragment_work_sheet_item_detail_bo.*
 
 class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
@@ -26,12 +28,12 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var containerDetailAdapter: ContainerDetailAdapter
 
-    private var workItemDetail: WorkItemDetail? = null
+    private var workItemDetail: ScheduleWorkItem? = null
 
     companion object {
         private const val WORK_DETALS = "WORK_DETALS"
         @JvmStatic
-        fun newInstance(allWorkItem: WorkItemDetail?) = WorkSheetItemDetailBOFragment()
+        fun newInstance(allWorkItem: ScheduleWorkItem?) = WorkSheetItemDetailBOFragment()
             .apply {
                 arguments = Bundle().apply {
                     if(allWorkItem!=null){
@@ -44,7 +46,7 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            workItemDetail = it.getParcelable<WorkItemDetail>(WORK_DETALS)
+            workItemDetail = it.getParcelable<ScheduleWorkItem>(WORK_DETALS)
         }
     }
 
@@ -88,11 +90,16 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
+            if (!ConnectionDetector.isNetworkConnected(activity)) {
+                ConnectionDetector.createSnackBar(activity)
+                return
+            }
+
             onFragmentInteractionListener?.fetchWorkItemDetail(changeResultCode = true)
         }
     }
 
-    fun showBuildingOperationsData(workItemDetail: WorkItemDetail) {
+    fun showBuildingOperationsData(workItemDetail: ScheduleWorkItem) {
         this.workItemDetail = workItemDetail
         workItemDetail.status?.let { status ->
             if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED || status == AppConstant.WORK_ITEM_STATUS_CANCELLED) {
@@ -112,6 +119,11 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
 
     /** Native Views Listeners */
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         view?.let {
             when (view.id) {
                 buttonUpdate.id -> {

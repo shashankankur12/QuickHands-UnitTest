@@ -17,7 +17,6 @@ class AttendanceDetail() : Parcelable {
     @SerializedName("eveningPunchOut")
     @Expose
     var eveningPunchOut: String? = null
-
     @SerializedName("lunchPunchIn")
     @Expose
     var lunchPunchIn: String? = null

@@ -75,5 +75,8 @@ interface AppConstant {
         const val LANGUAGE_ENGLISH_CODE = "en-US"
         const val LANGUAGE_SPANISH_CODE = "es"
 
+
+        const val VIEW_DETAILS = "VIEW_DETAILS"
+
     }
 }

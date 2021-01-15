@@ -31,11 +31,14 @@
             android:id="@+id/radioButtonPdf"
             style="@style/valuesTextViewTheme"
             android:layout_width="wrap_content"
+            android:button="@drawable/custome_radio_button"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:text="@string/pdf" />
 
         <RadioButton
             android:id="@+id/radioButtonExcel"
             style="@style/valuesTextViewTheme"
+            android:button="@drawable/custome_radio_button"
             android:layout_width="wrap_content"
             android:text="@string/excel" />
     </RadioGroup>

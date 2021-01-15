@@ -28,15 +28,70 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewCompanyName" />
 
-    <com.quickhandslogistics.controls.CustomTextView
-        android:id="@+id/textViewTotalCount"
-        style="@style/valuesTextViewTheme"
+    <LinearLayout
+        android:id="@+id/shiftLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginStart="@dimen/_12ssp"
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginEnd="@dimen/_12ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemsDate" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemsDate" >
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewWorkItemShift"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewWorkItemDept"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/countNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="@dimen/_12ssp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginEnd="@dimen/_12ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shiftLayout" >
+
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewTotalCount"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewGroupNote"
+            app:layout_constraintTop_toBottomOf="@+id/shiftLayout" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <com.quickhandslogistics.controls.CustomTextView
+                android:id="@+id/textViewGroupNote"
+                style="@style/noteTextViewTheme"
+                android:layout_width="wrap_content"
+                android:text="@string/customer_notes"
+                android:layout_gravity="start"
+                android:textColor="@color/scheduleDetail"
+                app:layout_constraintStart_toEndOf="@+id/textViewTotalCount"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/shiftLayout" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/flexboxLayoutCounts"
@@ -47,10 +102,9 @@
         app:flexWrap="wrap"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTotalCount">
-
+        app:layout_constraintTop_toBottomOf="@+id/countNote">
         <com.quickhandslogistics.controls.CustomTextView
-            android:id="@+id/textViewDropsCount"
+            android:id="@+id/textViewOutBoundsCount"
             style="@style/blueChipTheme"
             android:layout_marginTop="@dimen/_6sdp" />
 
@@ -62,9 +116,10 @@
             android:layout_marginEnd="@dimen/_4ssp" />
 
         <com.quickhandslogistics.controls.CustomTextView
-            android:id="@+id/textViewOutBoundsCount"
+            android:id="@+id/textViewDropsCount"
             style="@style/blueChipTheme"
             android:layout_marginTop="@dimen/_6sdp" />
+
     </com.google.android.flexbox.FlexboxLayout>
 
     <LinearLayout

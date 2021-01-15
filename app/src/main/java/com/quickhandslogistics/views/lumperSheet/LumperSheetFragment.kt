@@ -34,6 +34,8 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     private var selectedDate: Date = Date()
     private var tempLumperIds: ArrayList<String> =ArrayList()
     private var dateString: String ?=null
+    private var shift: String =""
+    private var dept: String =""
     private var datePosition: Int = 0
     private var isSavedState: Boolean = false
 
@@ -48,6 +50,9 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         const val SHEET_SUBMITTED = "SHEET_SUBMITTED"
         const val TEMP_LUMPER_SHEET = "TEMP_LUMPER_SHEET"
         const val SELECTED_DATE_POSITION = "SELECTED_DATE_POSITION"
+        const val HEADER_DEPT = "HEADER_DEPT"
+        const val HEADER_SHIFT = "HEADER_SHIFT"
+        const val TEMP_LUMPER = "TEMP_LUMPER"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,9 +112,15 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
                 lumperInfoList = savedInstanceState.getParcelableArrayList(LUMPER_INFO_LIST)!!
                 showLumperSheetData(lumperInfoList, sheetSubmitted, selectedDate, tempLumperIds)
             }
+            if (savedInstanceState.containsKey(HEADER_SHIFT)) {
+                shift = savedInstanceState.getString(HEADER_SHIFT)!!
+            }
+            if (savedInstanceState.containsKey(HEADER_DEPT)) {
+                dept = savedInstanceState.getString(HEADER_DEPT)!!
+            }
             if (savedInstanceState.containsKey(DATE_STRING_HEADER)) {
                 dateString = savedInstanceState.getString(DATE_STRING_HEADER)!!
-                showDateString(dateString!!)
+                showDateString(dateString!!, shift,dept)
             }
 
         } ?: run {
@@ -136,12 +147,20 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
             outState.putString(DATE_STRING_HEADER, dateString)
         if (datePosition != null)
             outState.putInt(SELECTED_DATE_POSITION, datePosition)
+        if (dept != null)
+            outState.putString(HEADER_DEPT, dept)
+        if (shift != null)
+            outState.putString(HEADER_SHIFT, shift)
         super.onSaveInstanceState(outState)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
+            if (!ConnectionDetector.isNetworkConnected(activity)) {
+                ConnectionDetector.createSnackBar(activity)
+                return
+            }
             lumperSheetPresenter.getLumpersSheetByDate(Date(selectedTime))
         }
     }
@@ -161,6 +180,11 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     }
 
     private fun showConfirmationDialog() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         CustomProgressBar.getInstance().showWarningDialog(
             getString(R.string.submit_lumper_sheet_alert_message), fragmentActivity!!, object : CustomDialogWarningListener {
                 override fun onConfirmClick() {
@@ -173,6 +197,11 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     }
 
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         view?.let {
             when (view.id) {
                 imageViewCancel.id -> {
@@ -200,9 +229,17 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
-    override fun showDateString(dateString: String) {
+    override fun showDateString(dateString: String, shift: String , dept : String) {
         this.dateString=dateString
+        this.shift=shift
+        this.dept=dept
+
         textViewDate.text = UIUtils.getSpannedText(dateString)
+        textViewDate.visibility = View.GONE
+        textViewHeaderShift.visibility = View.GONE
+        textViewHeaderDept.visibility = View.GONE
+        textViewHeaderShift.text = UIUtils.getSpannedText(shift)
+        textViewHeaderDept.text = UIUtils.getSpannedText(dept)
     }
 
     override fun showLumperSheetData(mlumperInfoList: ArrayList<LumpersInfo>, msheetSubmitted: Boolean, mselectedDate: Date, mtempLumperIds: ArrayList<String>) {
@@ -212,6 +249,23 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         tempLumperIds = mtempLumperIds
 
         selectedTime = selectedDate.time
+
+
+        var signedData :ArrayList<LumpersInfo> = ArrayList()
+        var unSignedData :ArrayList<LumpersInfo> = ArrayList()
+        var sortedData :ArrayList<LumpersInfo> = ArrayList()
+
+        lumperInfoList.forEach {
+            if (ValueUtils.getDefaultOrValue(it.sheetSigned))
+                signedData.add(it)
+            else unSignedData.add(it)
+        }
+
+
+        sortedData.addAll(ScheduleUtils.sortLumperList(unSignedData))
+        sortedData.addAll(ScheduleUtils.sortLumperList(signedData))
+
+
 
         var isSignatureLeft = 0
         for (lumperInfo in lumperInfoList) {
@@ -232,7 +286,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
             buttonSubmit.visibility = View.GONE
         }
 
-        lumperSheetAdapter.updateLumperSheetData(lumperInfoList, tempLumperIds)
+        lumperSheetAdapter.updateLumperSheetData(sortedData, tempLumperIds)
         if (lumperInfoList.size > 0) {
             textViewEmptyData.visibility = View.GONE
             recyclerViewLumpersSheet.visibility = View.VISIBLE
@@ -243,6 +297,11 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     }
 
     override fun sheetSubmittedSuccessfully() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.lumper_sheet_success_message), fragmentActivity!!, object : CustomDialogListener {
             override fun onConfirmClick() {
                 lumperSheetPresenter.getLumpersSheetByDate(Date(selectedTime))
@@ -256,14 +315,25 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
 
     /** Adapter Listeners */
     override fun onItemClick(lumperInfo: LumpersInfo) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         val bundle = Bundle()
         bundle.putParcelable(ARG_LUMPER_INFO, lumperInfo)
+        bundle.putStringArrayList(TEMP_LUMPER, tempLumperIds)
         bundle.putLong(ScheduleFragment.ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
         startIntent(LumperWorkDetailActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }
 
     /** Calendar Listeners */
     override fun onSelectCalendarDate(date: Date, selected: Boolean, position: Int) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         if (!isSavedState)
             lumperSheetPresenter.getLumpersSheetByDate(date)
         isSavedState = false

@@ -1,5 +1,6 @@
 package com.quickhandslogistics.views.lumpers
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -82,6 +83,11 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
                 showDateString(dateString!!)
             }
         } ?: run {
+            if (!ConnectionDetector.isNetworkConnected(activity)) {
+                ConnectionDetector.createSnackBar(activity)
+                return
+            }
+
             lumpersPresenter.fetchLumpersList()
         }
     }
@@ -105,16 +111,21 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
             if (lumpersAdapter.isSearchEnabled()) {
                 textViewEmptyData.text = getString(R.string.no_record_found_info_message)
             } else {
-                textViewEmptyData.text = getString(R.string.empty_lumpers_list_info_message)
+                textViewEmptyData.text = getString(R.string.empty_lumper_list_message)
             }
         } else {
             textViewEmptyData.visibility = View.GONE
-            textViewEmptyData.text = getString(R.string.empty_lumpers_list_info_message)
+            textViewEmptyData.text = getString(R.string.empty_lumper_list_message)
         }
     }
 
     /** Native Views Listeners */
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         view?.let {
             when (view.id) {
                 imageViewCancel.id -> {
@@ -126,6 +137,11 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     }
 
     override fun onRefresh() {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         swipeRefreshLayoutLumpers.isRefreshing = false
         lumpersPresenter.fetchLumpersList()
     }
@@ -164,12 +180,22 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
 
     /** Adapter Listeners */
     override fun onItemClick(employeeData: EmployeeData) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         val bundle = Bundle()
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
         startIntent(LumperDetailActivity::class.java, bundle = bundle)
     }
 
     override fun onPhoneViewClick(lumperName: String, phone: String) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
         CustomProgressBar.getInstance().showWarningDialog(String.format(getString(R.string.call_lumper_alert_message), lumperName),
             fragmentActivity!!, object : CustomDialogWarningListener {
                 override fun onConfirmClick() {
