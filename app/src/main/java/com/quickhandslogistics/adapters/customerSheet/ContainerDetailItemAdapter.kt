@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.utils.ScheduleUtils
 import kotlinx.android.synthetic.main.item_container_detail_item.view.*
 import java.util.*
 
@@ -17,10 +18,10 @@ class ContainerDetailItemAdapter(buildingOps: HashMap<String, String>?, paramete
 
     init {
         parameters?.let {
-            parameters.sortWith(Comparator { value1: String, value2: String ->
-                value1.toLowerCase().compareTo(value2.toLowerCase())
-            })
-            this.parameters.addAll(parameters)
+//            parameters.sortWith(Comparator { value1: String, value2: String ->
+//                value1.toLowerCase().compareTo(value2.toLowerCase())
+//            })
+            this.parameters.addAll(ScheduleUtils.sortAccordingly(it))
         }
 
         buildingOps?.let {
@@ -34,7 +35,7 @@ class ContainerDetailItemAdapter(buildingOps: HashMap<String, String>?, paramete
     }
 
     override fun getItemCount(): Int {
-        return if (parameters.size > 3) 3 else parameters.size
+        return parameters.size
     }
 
     private fun getItem(position: Int): Pair<String, String?> {

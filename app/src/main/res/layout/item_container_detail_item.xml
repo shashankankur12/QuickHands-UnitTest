@@ -4,12 +4,11 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/_3ssp"
-    android:paddingBottom="@dimen/_3ssp">
+    android:padding="@dimen/_4sdp">
 
     <TextView
         android:id="@+id/textViewHeader"
-        style="@style/valuesTextViewTheme"
+        style="@style/titleVerySmallTextViewTheme"
         android:layout_width="0dp"
         android:ellipsize="end"
         android:maxLines="1"
@@ -22,7 +21,7 @@
 
     <TextView
         android:id="@+id/textViewValue"
-        style="@style/titleSmallTextViewTheme"
+        style="@style/valuesSmallTextViewTheme"
         android:layout_width="0dp"
         android:ellipsize="end"
         android:gravity="end"

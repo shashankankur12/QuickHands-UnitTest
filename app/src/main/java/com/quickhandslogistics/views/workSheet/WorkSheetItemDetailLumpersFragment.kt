@@ -15,9 +15,7 @@ import com.quickhandslogistics.adapters.workSheet.WorkSheetItemDetailLumpersAdap
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailLumpersContract
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
-import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleWorkItem
-import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.ConnectionDetector
@@ -167,6 +165,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         buttonAddLumpers.visibility = View.GONE
     }
 
+
     private fun showAddLumpersScreen() {
         workItemDetail?.let { workItemDetail ->
             val bundle = Bundle()
@@ -219,5 +218,12 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_TIMING_DATA, timingData)
         bundle.putStringArrayList(TEMP_LUMPER_IDS, tempLumperIds)
         startIntent(AddLumperTimeWorkSheetItemActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
+    }
+
+    override fun onRemoveLumperClick(employeeData: LumperAttendanceData, adapterPosition: Int) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
     }
 }

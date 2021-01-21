@@ -36,6 +36,10 @@ interface AppConstant {
         const val WORK_ITEM_STATUS_COMPLETED = "COMPLETED"
         const val WORK_ITEM_STATUS_CANCELLED = "CANCELLED"
         const val WORK_ITEM_STATUS_SCHEDULED = "SCHEDULED"
+        const val WORK_ITEM_SHOW_MORE = "SHOW MORE STATUS"
+        const val WORK_ITEM_SHOW_LESS = "SHOW LESS STATUS"
+        const val WORK_ITEM_STATUS_UNFINISHED = "UNFINISHED"
+        const val WORK_ITEM_STATUS_NOT_OPEN = "NOT-OPEN"
 
         // Employee Department Enums
         const val EMPLOYEE_DEPARTMENT_INBOUND = "INBOUND"

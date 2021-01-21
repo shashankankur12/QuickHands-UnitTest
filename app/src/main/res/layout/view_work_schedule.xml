@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/loading"
+    android:layout_width="@dimen/alert_width"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_background"
+    android:padding="10dp">
+    <TextView
+        android:id="@+id/title_text"
+        style="@style/dialogTitleTextViewThemeBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="@string/dialog_default_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/schedule_item_background">
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutSide"
+                    android:layout_width="@dimen/_6ssp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/schedule_item_stroke_in_progress"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:padding="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <TextView
+                        android:id="@+id/textViewBuildingName"
+                        style="@style/titleBigTextViewThemeHeader"
+                        android:layout_width="0dp"
+                        android:textStyle="normal"
+                        app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textViewStatus"
+                        style="@style/baseChipTheme"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.quickhandslogistics.controls.CustomTextView
+                        android:id="@+id/textViewScheduleType"
+                        style="@style/valuesTextViewTheme"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/textViewScheduleTypeStartTime"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewBuildingName" />
+                    <com.quickhandslogistics.controls.CustomTextView
+                        android:id="@+id/textViewScheduleTypeStartTime"
+                        style="@style/valuesTextViewTheme"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        app:layout_constraintStart_toEndOf="@+id/textViewScheduleType"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewBuildingName" />
+
+                    <com.quickhandslogistics.controls.CustomTextView
+                        android:id="@+id/textViewScheduleTypeLiveLoad"
+                        style="@style/valuesTextViewTheme"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:layout_width="0dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/textViewScheduleTypeLiveLoadStartTime"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />
+                    <com.quickhandslogistics.controls.CustomTextView
+                        android:id="@+id/textViewScheduleTypeLiveLoadStartTime"
+                        style="@style/valuesTextViewTheme"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        app:layout_constraintStart_toEndOf="@+id/textViewScheduleTypeLiveLoad"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />
+
+                    <com.quickhandslogistics.controls.CustomTextView
+                        android:id="@+id/textViewScheduleTypeDrops"
+                        style="@style/valuesTextViewTheme"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:layout_width="0dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/textViewScheduleTypeDropsStartTime"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTypeLiveLoad" />
+                    <com.quickhandslogistics.controls.CustomTextView
+                        android:id="@+id/textViewScheduleTypeDropsStartTime"
+                        style="@style/valuesTextViewTheme"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:layout_width="0dp"
+                        app:layout_constraintStart_toEndOf="@+id/textViewScheduleTypeDrops"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTypeLiveLoad" />
+
+                    <com.quickhandslogistics.controls.CustomTextView
+                        android:id="@+id/textViewWorkItemsCount"
+                        style="@style/valuesTextViewTheme"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        app:layout_constraintEnd_toStartOf="@+id/textViewWorkItemsLeadName"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTypeDrops" />
+
+                    <com.quickhandslogistics.controls.CustomTextView
+                        android:id="@+id/textViewWorkItemsLeadName"
+                        style="@style/valuesTextViewTheme"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        app:layout_constraintStart_toEndOf="@+id/textViewWorkItemsCount"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTypeDrops" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12ssp"
+                android:gravity="center">
+
+
+                <Button
+                    android:id="@+id/confirm_button"
+                    style="@style/dialog_blue_button"
+                    android:background="@drawable/round_button_red_selector"
+                    android:text="@string/dialog_ok" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+</LinearLayout>

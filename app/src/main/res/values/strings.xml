@@ -28,6 +28,10 @@
     <string name="cancel_all_work_schedules">Today\'s Work Cancel</string>
     <string name="cancel_request">Cancel Request</string>
     <string name="cancelled">Cancelled</string>
+    <string name="show_more">Show more status</string>
+    <string name="show_less">Show less status</string>
+    <string name="unfinished">Unfinished</string>
+    <string name="not_open">Not-Open</string>
     <string name="cancelled_description">(Customer cancelled a schedule container)</string>
     <string name="psuse_time_description">(Lumper has to pause work on this container to work on another but will return.)</string>
     <string name="cancelled_s">Cancelled: %s</string>
@@ -40,6 +44,8 @@
     <string name="complete">Complete</string>
     <string name="completed">Completed</string>
     <string name="completed_description">(All work on container is done)</string>
+    <string name="unfinished_description">(Work start but not finish during this shift)</string>
+    <string name="not_done_description">(No work was done on container and shift ended)</string>
     <string name="completed_s">Completed: %s</string>
     <string name="contact_info">Contact Info</string>
     <string name="container_no_s">Container No: %s</string>
@@ -243,7 +249,7 @@
     <string name="complete_a">Complete %s</string>
     <string name="submitted">Submitted</string>
     <string name="requirement">Requirements</string>
-
+    <string name="view_schedule">View Work Scheduled</string>
     <string name="cancel_header_details">Remove <![CDATA[<b><font color=#e30913> %s</font></b>]]> from <![CDATA[<b><font color=#e30913> %s</font></b>]]> schedule</string>
 
     <!--No Record Messages-->

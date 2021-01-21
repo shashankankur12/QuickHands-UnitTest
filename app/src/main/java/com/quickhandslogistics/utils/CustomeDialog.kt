@@ -2,12 +2,14 @@ package com.quickhandslogistics.utils
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.res.Resources
 import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -141,6 +143,51 @@ object CustomeDialog : AppConstant {
         individualNoteText.text= individualNote
         groupNoteText.text= groupNote
         titleTextView.text = title
+        confirm.setOnClickListener { dialog.dismiss() }
+        dialog.show()
+    }
+
+    fun showWorkScheduleDialog(activity: Activity?, resources: Resources, title: String?) {
+        mActivity = activity
+        val dialog =
+                getDialog(R.layout.view_work_schedule, activity)
+        //        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        val window = dialog.window
+        window!!.setLayout(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        window.setBackgroundDrawableResource(android.R.color.transparent)
+        val titleTextView = dialog.findViewById<TextView>(R.id.title_text)
+        val textViewBuildingName = dialog.findViewById<TextView>(R.id.textViewBuildingName)
+        val textViewStatus = dialog.findViewById<TextView>(R.id.textViewStatus)
+        val textViewScheduleType = dialog.findViewById<TextView>(R.id.textViewScheduleType)
+        val textViewScheduleTypeStartTime = dialog.findViewById<TextView>(R.id.textViewScheduleTypeStartTime)
+        val textViewScheduleTypeLiveLoad = dialog.findViewById<TextView>(R.id.textViewScheduleTypeLiveLoad)
+        val textViewScheduleTypeLiveLoadStartTime = dialog.findViewById<TextView>(R.id.textViewScheduleTypeLiveLoadStartTime)
+        val textViewScheduleTypeDrops = dialog.findViewById<TextView>(R.id.textViewScheduleTypeDrops)
+        val textViewScheduleTypeDropsStartTime = dialog.findViewById<TextView>(R.id.textViewScheduleTypeDropsStartTime)
+        val textViewWorkItemsCount = dialog.findViewById<TextView>(R.id.textViewWorkItemsCount)
+        val textViewWorkItemsLeadName = dialog.findViewById<TextView>(R.id.textViewWorkItemsLeadName)
+        val relativeLayoutSide = dialog.findViewById<RelativeLayout>(R.id.relativeLayoutSide)
+        val confirm = dialog.findViewById<Button>(R.id.confirm_button)
+
+
+        titleTextView.text = title
+        textViewBuildingName.text = UIUtils.getSpannableText(resources.getString(R.string.department_full),/*UIUtils.getDisplayEmployeeDepartment(leadProfile)*/ "")
+        textViewScheduleType.text = String.format(resources.getString(R.string.out_bound_s),/*scheduleDetail.scheduleTypes?.outbounds?.size.toString()*/ "")
+        textViewScheduleTypeLiveLoad.text = String.format(resources.getString(R.string.live_load_s),""/*scheduleDetail.scheduleTypes?.liveLoads?.size.toString()*/)
+        textViewScheduleTypeDrops.text = String.format(resources.getString(R.string.drops_s),""/*scheduleDetail.scheduleTypes?.drops?.size.toString()*/)
+        textViewWorkItemsCount.text = String.format(resources.getString(R.string.total_containers_s), ""/*scheduleDetail.totalNumberOfWorkItems*/)
+        val leadName= String.format("%s %s","",""/*leadProfile!!.firstName, leadProfile!!.lastName*/)
+        textViewWorkItemsLeadName.text = String.format(resources.getString(R.string.lead_name),leadName)
+//        if (scheduleDetail.scheduleTypes?.outbounds!!.size>0 && !scheduleDetail.scheduleTypes?.outbounds!![0].startTime.isNullOrEmpty())
+//            textViewScheduleTypeStartTime.text=DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.outbounds!![0].startTime)!!.toLong())
+//        if (scheduleDetail.scheduleTypes?.liveLoads!!.size>0 && !scheduleDetail.scheduleTypes?.liveLoads!![0].startTime.isNullOrEmpty())
+//            textViewScheduleTypeLiveLoadStartTime.text=DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.liveLoads!![0].startTime)!!.toLong())
+//        if (scheduleDetail.scheduleTypes?.drops!!.size>0 && !scheduleDetail.scheduleTypes?.drops!![0].startTime.isNullOrEmpty())
+//            textViewScheduleTypeDropsStartTime.text=DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.drops!![0].startTime)!!.toLong())
+        ScheduleUtils.changeStatusUIByValue(resources, AppConstant.VIEW_DETAILS, textViewStatus, relativeLayoutSide)
         confirm.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }

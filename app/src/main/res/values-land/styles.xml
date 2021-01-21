@@ -248,6 +248,16 @@
         <item name="android:textColor">@color/button_negative_selector</item>
         <item name="android:textSize">@dimen/_12ssp</item>
     </style>
+    <style name="scheduleTextViewTheme" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:drawableEnd">@drawable/ic_work_schedule_calendar</item>
+        <item name="android:textColor">@color/blue_button_navigate_selector</item>
+        <item name="android:textSize">@dimen/_11ssp</item>
+    </style>
     <!---->
 
     <!--ImageView Styles-->

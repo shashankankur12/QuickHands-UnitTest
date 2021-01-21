@@ -237,7 +237,7 @@
                         <RelativeLayout
                             android:id="@+id/layoutEditTimeClock"
                             android:layout_width="wrap_content"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             android:layout_height="wrap_content"
                             android:clickable="true" >
                             <ImageView
@@ -245,7 +245,7 @@
                                 android:layout_height="@dimen/_18sdp"
                                 android:layout_centerInParent="true"
                                 android:src="@drawable/ic_edit"
-                                android:tint="@color/detailHeader" />
+                                app:tint="@color/detailHeader" />
 
                         </RelativeLayout>
                     </com.google.android.flexbox.FlexboxLayout>
@@ -275,7 +275,7 @@
                             android:id="@+id/layoutEditLumerNote"
                             android:layout_width="wrap_content"
                             android:padding="@dimen/_8sdp"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             android:layout_height="wrap_content"
                             android:clickable="true" >
                             <ImageView
@@ -283,7 +283,7 @@
                                 android:layout_height="@dimen/_18sdp"
                                 android:layout_centerInParent="true"
                                 android:src="@drawable/ic_edit"
-                                android:tint="@color/detailHeader" />
+                                app:tint="@color/detailHeader" />
 
                         </RelativeLayout>
                     </LinearLayout>

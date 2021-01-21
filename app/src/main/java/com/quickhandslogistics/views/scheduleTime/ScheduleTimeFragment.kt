@@ -147,6 +147,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         textViewScheduleLumperTime.setOnClickListener(this)
         buttonYes.setOnClickListener(this)
         buttonNo.setOnClickListener(this)
+        textViewScheduleView.setOnClickListener(this)
 
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarScheduleTime, availableDates, this)
         savedInstanceState?.also {
@@ -345,6 +346,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                     editTime()
                 }
                 buttonYes.id-> {showConfirmationDialog(CANCEL_SCHEDULE_LUMPER)}
+                textViewScheduleView.id ->{showViewScheduleDialog()   }
             }
         }
     }
@@ -482,6 +484,10 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     override fun showLoginScreen() {
         startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
+    }
+
+    private fun showViewScheduleDialog() {
+        CustomeDialog.showWorkScheduleDialog(activity, resources,"Lead Notes ")
     }
 
     /** Calendar Listeners */
