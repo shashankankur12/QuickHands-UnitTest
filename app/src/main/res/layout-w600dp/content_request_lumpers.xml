@@ -36,15 +36,17 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:id="@+id/textViewTotalRequestCount"
+            android:textColor="@color/textBlack"
             android:layout_gravity="start"
-            style="@style/valuesTextViewTheme"
+            style="@style/valuesSmallTextViewThemeHeader"
             android:text="@string/total_lumpers_requested" />
 
         <com.quickhandslogistics.controls.CustomTextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:id="@+id/textViewTotalCount"
-            style="@style/valuesTextViewTheme"
+            android:textColor="@color/textBlack"
+            style="@style/valuesSmallTextViewThemeHeader"
             android:text="@string/total_lumpers_assigned_s" />
 
     </LinearLayout>
@@ -53,9 +55,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/white_background"
-        android:paddingStart="@dimen/_12ssp"
-        android:paddingTop="@dimen/_10ssp"
-        android:paddingEnd="@dimen/_12ssp"
+        android:paddingStart="@dimen/_10ssp"
+        android:paddingTop="@dimen/_8ssp"
+        android:paddingEnd="@dimen/_10ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -106,7 +108,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_marginEnd="@dimen/_5sdp"
-                android:text="@string/create_new_request" />
+                android:text="@string/new_request" />
 
             <Button
                 android:id="@+id/buttonCancelRequest"

@@ -17,6 +17,7 @@ import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_DATE_TIME_DISPLAY
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL_Week
 import com.quickhandslogistics.utils.DateUtils.Companion.changeUTCDateStringToLocalDateString
+import com.quickhandslogistics.utils.UIUtils
 import kotlinx.android.synthetic.main.item_request_lumpers.view.*
 
 class RequestLumpersAdapter(private val resources: Resources, private val isPastDate: Boolean, private val onAdapterClick: RequestLumpersContract.View.OnAdapterItemClickListener) :
@@ -48,15 +49,20 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
         private val textViewRequestedAt: TextView = view.textViewRequestedAt
         private val textViewNote: TextView = view.textViewNote
         private val textViewUpdateRequest: TextView = view.textViewUpdateRequest
+        private val textViewRequestStart: TextView = view.textViewRequestStart
+        private val textViewNoteForLumper: TextView = view.textViewNoteForLumper
+        private val textViewLumperAssigned: TextView = view.textViewLumperAssigned
         private val textViewCancelRequest: TextView = view.textViewCancelRequest
         private val linearLayoutNotes: LinearLayout = view.linearLayoutNotes
 
         fun bind(requestLumpersRecord: RequestLumpersRecord) {
             textViewRequestedLumpersCount.text = String.format(resources.getString(R.string.requested_lumpers_s), requestLumpersRecord.requestedLumpersCount)
-            textViewRequestedAt.text = String.format(
+            textViewRequestedAt.text = UIUtils.getSpannedText(String.format(
                 resources.getString(R.string.requested_maded_s),
                 changeUTCDateStringToLocalDateString(PATTERN_API_RESPONSE, PATTERN_NORMAL_Week, requestLumpersRecord.createdAt!!)
-            )
+            ))
+            textViewRequestStart.text = UIUtils.getSpannedText(String.format(resources.getString(R.string.start_time_bold), "11:22 pm"))
+            textViewLumperAssigned.text = UIUtils.getSpannedText(String.format(resources.getString(R.string.lumpers_dm_assigned_bold), "1/3"))
             textViewNote.text = requestLumpersRecord.notesForDM
 
             when (requestLumpersRecord.requestStatus) {

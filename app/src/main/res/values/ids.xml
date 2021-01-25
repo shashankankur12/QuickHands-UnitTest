@@ -7,4 +7,5 @@
     <item name="adapterPosition" type="id" />
     <item name="requirment" type="id" />
     <item name="note" type="id" />
+    <item name="lumperNote" type="id" />
 </resources>
