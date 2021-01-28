@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".views.LeadProfileActivity">
 
-    <include layout="@layout/lead_profile_header" />
+    <include
+        layout="@layout/lead_profile_header"
+        android:layout_height="wrap_content" />
 
     <include layout="@layout/content_lead_profile"
         android:layout_marginTop="@dimen/_50sdp"
