@@ -38,5 +38,19 @@ object ValueUtils {
             false
         }
     }
+
+    fun getHoursFromMinutes(minutes:String?) : String {
+        minutes?.let {
+            return (it.toDouble() / 60).toString()
+        }
+        return "0"
+    }
+
+    fun getRemainingMinutes(minutes:String?) : String {
+        minutes?.let {
+            return (it.toDouble() % 60).toString()
+        }
+        return "0"
+    }
 }
 

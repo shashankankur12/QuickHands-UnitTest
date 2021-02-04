@@ -84,10 +84,15 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         }
 
         employeeTimingData?.let { timingDetail ->
-            val waitingTime = ValueUtils.getDefaultOrValue(timingDetail.waitingTime)
-            if (waitingTime.isNotEmpty() && waitingTime.toInt() != 0) {
-                editTextWaitingTime.setText(waitingTime)
+            val waitingTimeHours = ValueUtils.getHoursFromMinutes(timingDetail.waitingTime)
+            val waitingTimeMinutes = ValueUtils.getRemainingMinutes(timingDetail.waitingTime)
+            if (waitingTimeHours.isNotEmpty() && 0.0 != waitingTimeHours.toDouble()) {
+                editTextWaitingTime.setText(waitingTimeHours)
                 editTextWaitingTime.isEnabled = false
+            }
+            if (waitingTimeMinutes.isNotEmpty() && 0.0 != waitingTimeMinutes.toDouble()) {
+                editTextWaitingTimeMinutes.setText(waitingTimeMinutes)
+                editTextWaitingTimeMinutes.isEnabled = false
             }
             if(!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt()!=0){
                 partWorkDone= timingDetail.partWorkDone!!.toInt()
@@ -97,36 +102,62 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
 
             updateTimingsDetails(timingDetail)
         }
-        if (!totalCases.isNullOrEmpty()&& isNumeric(totalCases)){
+        if (totalCases.isNotEmpty() && isNumeric(totalCases)) {
             editTextTotalCases.setText(totalCases)
-            editTextTotalCases.isEnabled=false
+            editTextTotalCases.isEnabled = false
             editTextCasesLumpers.addTextChangedListener(this)
-            if (partWorkDone>0){
+            if (partWorkDone > 0) {
                 getPercent(partWorkDone.toString(), totalCases)
             }
 
-        }else{
-            editTextTotalCases.isEnabled=false
-            editTextCasesLumpers.isEnabled=false
+        } else {
+            editTextTotalCases.isEnabled = false
+            editTextCasesLumpers.isEnabled = false
         }
 
-        editTextWaitingTime.addTextChangedListener(object : TextWatcher{
-            override fun afterTextChanged(p0: Editable?) {
+        editTextWaitingTime.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(editable: Editable?) {
+                val inputHour = editable?.toString()
+                if (!inputHour.isNullOrBlank()) {
+                    if (24 <= inputHour.toInt()) {
+                        editTextWaitingTime.text = null
+                        editTextWaitingTime.error = getString(R.string.invalid_hour_message)
+                        editTextWaitingTime.requestFocus()
+                    }
+                }
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
             override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (text.isNullOrEmpty())isDataSave(true) else isDataSave(false)
+                isDataSave(text.isNullOrEmpty())
+            }
+        })
+
+        editTextWaitingTimeMinutes.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(editable: Editable?) {
+                val inputMinutes = editable?.toString()
+                if (!inputMinutes.isNullOrEmpty()) {
+                    if (60 < inputMinutes.toInt()) {
+                        editTextWaitingTimeMinutes.text = null
+                        editTextWaitingTimeMinutes.error = getString(R.string.invalid_hour_minutes)
+                        editTextWaitingTimeMinutes.requestFocus()
+                    }
+                }
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                isDataSave(text.isNullOrEmpty())
             }
         })
 
         updateButtonsUI()
-        if(!totalCases.isNullOrEmpty() && partWorkDone!=0) lumpercaseVisibility()
+        if (totalCases.isNotEmpty() && partWorkDone != 0) lumpercaseVisibility()
         toggleSaveButtonVisibility()
-
-
         buttonStartTime.setOnClickListener(this)
         buttonEndTime.setOnClickListener(this)
         buttonBreakInTime.setOnClickListener(this)
@@ -134,8 +165,6 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         buttonSave.setOnClickListener(this)
         buttonCancelRequest.setOnClickListener(this)
     }
-
-
 
     private fun updateTimingsDetails(timingDetail: LumpersTimeSchedule) {
         initialStartTime = updateInitialTime(timingDetail.startTime, buttonStartTime)
@@ -181,11 +210,11 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun toggleSaveButtonVisibility() {
-        buttonSave.isEnabled = editTextWaitingTime.isEnabled || buttonStartTime.isEnabled || buttonEndTime.isEnabled || buttonBreakInTime.isEnabled || buttonBreakOutTime.isEnabled || editTextCasesLumpers.isEnabled
+        buttonSave.isEnabled = editTextWaitingTime.isEnabled ||editTextWaitingTimeMinutes.isEnabled || buttonStartTime.isEnabled || buttonEndTime.isEnabled || buttonBreakInTime.isEnabled || buttonBreakOutTime.isEnabled || editTextCasesLumpers.isEnabled
     }
 
     private fun lumpercaseVisibility() {
-        editTextCasesLumpers.isEnabled = editTextWaitingTime.isEnabled || buttonStartTime.isEnabled || buttonEndTime.isEnabled || buttonBreakInTime.isEnabled || buttonBreakOutTime.isEnabled
+        editTextCasesLumpers.isEnabled = editTextWaitingTime.isEnabled || editTextWaitingTimeMinutes.isEnabled || buttonStartTime.isEnabled || buttonEndTime.isEnabled || buttonBreakInTime.isEnabled || buttonBreakOutTime.isEnabled
     }
 
     private fun updateInitialTime(dateStamp: String?, buttonTime: Button): Long {
@@ -285,19 +314,14 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             ConnectionDetector.createSnackBar(activity)
             return
         }
-//        CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
-//            override fun onConfirmClick() {
-                val waitingTime = editTextWaitingTime.text.toString()
+        val waitingTimeHours = editTextWaitingTime.text.toString()
+        val waitingTimeMinutes = editTextWaitingTimeMinutes.text.toString()
+        val waitingTime = ((waitingTimeHours.toInt() * 60) + waitingTimeMinutes.toInt()).toString()
 
-                addLumperTimeWorkSheetItemPresenter.saveLumperTimings(
-                    employeeData?.id!!, workItemId, selectedStartTime, selectedEndTime,
-                    selectedBreakInTime, selectedBreakOutTime, waitingTime,partWorkDone
-                )
-//            }
-//
-//            override fun onCancelClick() {
-//            }
-//        })
+        addLumperTimeWorkSheetItemPresenter.saveLumperTimings(
+                employeeData?.id!!, workItemId, selectedStartTime, selectedEndTime,
+                selectedBreakInTime, selectedBreakOutTime, waitingTime, partWorkDone
+        )
     }
 
     /** Native Views Listeners */
