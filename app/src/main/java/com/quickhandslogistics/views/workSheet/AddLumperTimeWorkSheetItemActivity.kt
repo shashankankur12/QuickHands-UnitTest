@@ -139,7 +139,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             override fun afterTextChanged(editable: Editable?) {
                 val inputMinutes = editable?.toString()
                 if (!inputMinutes.isNullOrEmpty()) {
-                    if (60 < inputMinutes.toInt()) {
+                    if (60 <= inputMinutes.toInt()) {
                         editTextWaitingTimeMinutes.text = null
                         editTextWaitingTimeMinutes.error = getString(R.string.invalid_hour_minutes)
                         editTextWaitingTimeMinutes.requestFocus()
