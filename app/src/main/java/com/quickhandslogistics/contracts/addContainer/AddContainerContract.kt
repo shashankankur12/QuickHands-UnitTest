@@ -1,12 +1,11 @@
 package com.quickhandslogistics.contracts.addContainer
 
 import com.quickhandslogistics.contracts.BaseContract
-import com.quickhandslogistics.data.common.AllLumpersResponse
-import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.addContainer.ContainerDetails
 
 interface AddContainerContract {
     interface Model {
-        fun addTodayWorkContainer(selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String, onFinishedListener: OnFinishedListener)
+        fun addTodayWorkContainer(uploadContainer: ArrayList<ContainerDetails>, liveLoadContainer: ArrayList<ContainerDetails>, dropOffContainer: ArrayList<ContainerDetails>, onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccessAddTodayWorkContainer()
@@ -15,14 +14,16 @@ interface AddContainerContract {
 
     interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
-        fun cancellingWorkScheduleFinished()
+        fun addWorkScheduleFinished()
         fun showLoginScreen()
         interface OnAdapterItemClickListener {
-            fun onLumperSelectionChanged()
+            fun removeItemFromList(position: Int, item: ContainerDetails)
+            fun addQuantity(adapterPosition: Int, item: ContainerDetails, quantity: String)
+            fun addTimeInList(position: Int, timeInMilli: ContainerDetails, timeInMilli1: String)
         }
     }
 
     interface Presenter : BaseContract.Presenter {
-        fun addTodayWorkContainer(selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String)
+        fun addTodayWorkContainer(uploadContainer: ArrayList<ContainerDetails>, liveLoadContainer: ArrayList<ContainerDetails>, dropOffContainer: ArrayList<ContainerDetails>)
     }
 }

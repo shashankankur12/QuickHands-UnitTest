@@ -9,10 +9,12 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
-import java.util.*
+import com.quickhandslogistics.adapters.addContainer.AddScheduleDialogAdapter
+import com.quickhandslogistics.data.addContainer.ContainerDetails
 
 object CustomeDialog : AppConstant {
     private var mActivity: Activity? = null
@@ -33,7 +35,11 @@ object CustomeDialog : AppConstant {
         return dialog
     }
 
-    fun showGroupNoteDialog(activity: Activity?, title: String?, customerGroupNote: Triple<Pair<ArrayList<String>?, ArrayList<String>?>?, ArrayList<String>?, ArrayList<String>?>) {
+    fun showGroupNoteDialog(
+        activity: Activity?,
+        title: String?,
+        customerGroupNote: Triple<Pair<ArrayList<String>?, ArrayList<String>?>?, ArrayList<String>?, ArrayList<String>?>
+    ) {
         mActivity = activity
         val dialog =
             getDialog(R.layout.custome_alert_dialog, activity)
@@ -107,8 +113,47 @@ object CustomeDialog : AppConstant {
         dialog.show()
     }
 
+    fun showAddNoteDialog(activity: Activity, title: String?, uploadContainer: ArrayList<ContainerDetails>, liveLoadContainer: ArrayList<ContainerDetails>, dropOffContainer: ArrayList<ContainerDetails>,  iDialogOnClick: IDialogOnClick) {
+        mActivity = activity
+        val dialog =
+            getDialog(R.layout.add_container_custome_dialog, activity)
+        //        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        val window = dialog.window
+        window!!.setLayout(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        window.setBackgroundDrawableResource(android.R.color.transparent)
+        val titleTextView = dialog.findViewById<TextView>(R.id.title_text)
+        val recyclerViewSchedule = dialog.findViewById<RecyclerView>(R.id.recycler_view_schedules)
+        val addButton = dialog.findViewById<Button>(R.id.add_button)
+        val cancelButton = dialog.findViewById<Button>(R.id.cancel_button)
+        var mAllScheduleList: ArrayList<ContainerDetails> = ArrayList()
+        mAllScheduleList.addAll(uploadContainer)
+        mAllScheduleList.addAll(liveLoadContainer)
+        mAllScheduleList.addAll(dropOffContainer)
 
-    fun showLeadNoteDialog(activity: Activity?, title: String?, individualNote: String?, groupNote: String?) {
+
+        recyclerViewSchedule.apply {
+            val linearLayoutManager = LinearLayoutManager(activity)
+            layoutManager = linearLayoutManager
+             val mWeeklyNoteAdapter = AddScheduleDialogAdapter(mAllScheduleList, activity)
+            adapter = mWeeklyNoteAdapter
+        }
+
+        titleTextView.text = title
+        cancelButton.setOnClickListener { dialog.dismiss() }
+        addButton.setOnClickListener { iDialogOnClick.onSendRequest(dialog) }
+
+        dialog.show()
+    }
+
+    fun showLeadNoteDialog(
+        activity: Activity?,
+        title: String?,
+        individualNote: String?,
+        groupNote: String?
+    ) {
         mActivity = activity
         val dialog =
             getDialog(R.layout.lead_note_dialog, activity)
@@ -146,5 +191,7 @@ object CustomeDialog : AppConstant {
     }
 
 
-    interface IDialogOnClick
+    interface IDialogOnClick{
+        fun onSendRequest( dialog: Dialog)
+    }
 }

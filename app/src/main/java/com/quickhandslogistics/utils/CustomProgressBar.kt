@@ -151,6 +151,19 @@ class CustomProgressBar {
         updateButtonsUI(progressDialog, activityContext)
     }
 
+
+    fun showErrorWarningDialog(message: String = "", activityContext: Context) {
+        val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.WARNING_TYPE)
+        progressDialog.titleText = ""
+        progressDialog.showTitleText(false)
+        progressDialog.contentText = message.capitalize()
+        progressDialog.confirmText = activityContext.getString(R.string.ok)
+        progressDialog.show()
+        progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
+        progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
+        updateButtonsUI(progressDialog, activityContext)
+    }
+
     fun showLogoutDialog(message: String = "", activityContext: Context, listener: CustomDialogWarningListener) {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.WARNING_TYPE)
         progressDialog.titleText = activityContext.getString(R.string.are_you_sure_alert_message)

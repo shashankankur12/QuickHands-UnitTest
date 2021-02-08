@@ -1,5 +1,6 @@
 package com.quickhandslogistics.adapters.addContainer
 
+import android.app.Activity
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.res.Resources
@@ -16,6 +17,7 @@ import com.quickhandslogistics.data.addContainer.ContainerDetails
 import com.quickhandslogistics.utils.AppConstant.Companion.WORKSHEET_WORK_ITEM_INBOUND
 import com.quickhandslogistics.utils.AppConstant.Companion.WORKSHEET_WORK_ITEM_LIVE
 import com.quickhandslogistics.utils.AppConstant.Companion.WORKSHEET_WORK_ITEM_OUTBOUND
+import com.quickhandslogistics.utils.ConnectionDetector
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.ValueUtils
 import com.quickhandslogistics.views.addContainer.AddContainerActivity
@@ -24,14 +26,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class AddContainerAdapter(
-    private val onAdapterClick: AddContainerActivity,
-    private val resources: Resources,
-    private val context: Context
-) :
-
-
-    RecyclerView.Adapter<AddContainerAdapter.ViewHolder>() {
+class AddContainerAdapter(private val onAdapterClick: AddContainerActivity, private val resources: Resources, private val context: Context) : RecyclerView.Adapter<AddContainerAdapter.ViewHolder>() {
     private var containerDetails: ArrayList<ContainerDetails> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -74,10 +69,9 @@ class AddContainerAdapter(
                 editTextStartTime.setText(DateUtils.convertMillisecondsToTimeString(containerDetails.startTime?.toLong()!!))
             else editTextStartTime.setText("")
 
-//            if (containerDetails.workItemType.equals(WORKSHEET_WORK_ITEM_INBOUND))
-//                editTextQuantity.setText(ValueUtils.getDefaultOrValue(containerDetails.numberOfDrops))
-//            else editTextQuantity.setText(ValueUtils.getDefaultOrValue(containerDetails.sequence))
-
+            if (containerDetails.workItemType.equals(WORKSHEET_WORK_ITEM_INBOUND))
+                editTextQuantity.setText(ValueUtils.getDefaultOrValue(containerDetails.numberOfDrops))
+            else editTextQuantity.setText(ValueUtils.getDefaultOrValue(containerDetails.sequence))
 
             textViewRemove.setOnClickListener(this)
             editTextStartTime.setOnClickListener(this)
@@ -86,10 +80,16 @@ class AddContainerAdapter(
         }
 
         override fun onClick(view: View?) {
+            if (!ConnectionDetector.isNetworkConnected(context)) {
+                ConnectionDetector.createSnackBar(context as Activity?)
+                return
+            }
+
             view?.let {
                 when (view.id) {
                     textViewRemove.id -> {
-                        removeContainerData(adapterPosition)
+                        val item = getItem(adapterPosition)
+                        removeContainerData(adapterPosition,item)
                     }
                     editTextStartTime.id -> {
                         var timeInMillis: Long = 0
@@ -109,9 +109,7 @@ class AddContainerAdapter(
             }
         }
 
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-        }
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             val item = getItem(adapterPosition)
@@ -119,21 +117,16 @@ class AddContainerAdapter(
                 containerDetails[adapterPosition].numberOfDrops = s.toString()
             else containerDetails[adapterPosition].sequence = s.toString()
 
-//           notifyDataSetChanged()
+            onAdapterClick.addQuantity(adapterPosition, item, s.toString())
         }
 
-        override fun afterTextChanged(s: Editable?) {
-
-
-        }
+        override fun afterTextChanged(s: Editable?) {}
     }
 
 
     private fun editTime(timeInMillis: Long, position: Int) {
         val calendar = Calendar.getInstance()
-
         calendar.timeInMillis = timeInMillis
-
         val mHour = calendar.get(Calendar.HOUR_OF_DAY)
         val mMinute = calendar.get(Calendar.MINUTE)
 
@@ -141,24 +134,29 @@ class AddContainerAdapter(
             context, TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                 calendar.set(Calendar.MINUTE, minute)
-                containerDetails[position].startTime = calendar.timeInMillis.toString()
-                notifyDataSetChanged()
+            addStartTime(position, calendar.timeInMillis.toString())
+
             }, mHour, mMinute, false
         ).show()
 
 
     }
 
-    fun addContainerData(workItemType: String) {
-        val containerDetails = ContainerDetails()
-        containerDetails.isDisabled = true
-        containerDetails.readonlypermission = true
-        containerDetails.workItemType = workItemType
-        this.containerDetails.add(containerDetails)
+    private fun addStartTime(position: Int, timeInMilli: String) {
+        val item= getItem(position)
+        onAdapterClick.addTimeInList(position,item,timeInMilli)
+        containerDetails[position].startTime = timeInMilli
         notifyDataSetChanged()
     }
 
-    fun removeContainerData(position: Int) {
+    fun addContainerData(workItemType: String, containerList: ArrayList<ContainerDetails>) {
+        this.containerDetails.clear()
+        this.containerDetails.addAll(containerList)
+        notifyDataSetChanged()
+    }
+
+    fun removeContainerData(position: Int, item: ContainerDetails) {
+        onAdapterClick.removeItemFromList(position,item)
         containerDetails.removeAt(position)
         notifyDataSetChanged()
     }
@@ -167,32 +165,4 @@ class AddContainerAdapter(
         return containerDetails
     }
 
-    fun getContainerStartTime(): Boolean {
-        var isUpdate= false
-        containerDetails.forEach {
-            if (it.startTime.isNullOrEmpty()){
-                isUpdate=true
-            } else if (it.startTime.equals("0"))
-                isUpdate=true
-        }
-      return isUpdate
-
-    }
-
-    fun getContainerQuantity(): Boolean {
-        var isUpdate= false
-        containerDetails.forEach {
-            if (it.workItemType.equals(WORKSHEET_WORK_ITEM_INBOUND)){
-                if (it.numberOfDrops.isNullOrEmpty()){
-                    isUpdate=true
-                }
-            }else {
-                if (it.sequence.isNullOrEmpty()){
-                    isUpdate=true
-                }
-            }
-        }
-        return isUpdate
-
-    }
 }

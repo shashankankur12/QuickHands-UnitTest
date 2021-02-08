@@ -183,7 +183,7 @@
     <string name="start_and_end_time"><![CDATA[Start & End Time]]></string>
     <string name="start_time">Start Time</string>
     <string name="start_time_s">Start Time: %s</string>
-    <string name="start_time_add_container">Start Time:</string>
+    <string name="start_time_add_container">Schedule Time:</string>
     <string name="submit">Submit</string>
     <string name="add">Add</string>
     <string name="success">Success</string>
@@ -327,6 +327,7 @@
     <string name="cancel_schedule_lumper_invalidate_message">You can cancel lumper after two hours of start time!!!</string>
     <string name="edit_schedule_lumper_invalidate_message">You can update lumper after two hours of start time!!!</string>
     <string name="updtae_status_after_signature_message">Customer signature submitted You can\'t update the status</string>
+    <string name="add_container_error_message">A container card has partial information. Fill it completely or remove it before you can Add. \n</string>
 
     <!--Info Messages-->
     <string name="enter_employee_id_info_message">Employee ID</string>

@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:background="@color/appBackground"
         android:paddingHorizontal="@dimen/_25ssp"
-        android:paddingBottom="@dimen/_12sdp"
+        android:paddingBottom="@dimen/_10sdp"
         android:text="@string/add_container_header_message"
         android:textColor="@color/colorTextGrey"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +28,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_6sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/buttonAdd"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,8 +41,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingStart="@dimen/_16ssp"
-            android:paddingTop="@dimen/_8ssp"
-            android:paddingEnd="@dimen/_16ssp">
+            android:paddingTop="@dimen/_6ssp"
+            android:paddingEnd="@dimen/_12ssp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layoutOutBound"
@@ -89,7 +89,7 @@
                         android:background="@drawable/container_background"
                         android:text="+"
                         android:textAlignment="center"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -152,7 +152,7 @@
                         android:background="@drawable/container_background"
                         android:text="+"
                         android:textAlignment="center"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -215,7 +215,7 @@
                         android:background="@drawable/container_background"
                         android:text="+"
                         android:textAlignment="center"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

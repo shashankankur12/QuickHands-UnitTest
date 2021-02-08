@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/_8sdp"
+    android:layout_marginTop="@dimen/_6sdp"
     android:background="@drawable/schedule_item_background"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
@@ -37,7 +37,7 @@
             android:id="@+id/textViewRemove"
             style="@style/baseChipTheme"
             android:text="X"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_11sdp"
             android:textStyle="bold"
             android:textAlignment="center"
             android:background="@drawable/add_container_item_status"
@@ -83,6 +83,7 @@
             android:textSize="@dimen/_10ssp"
             android:layout_marginStart="@dimen/_2sdp"
             android:focusable="false"
+            android:layout_marginEnd="@dimen/_30sdp"
             app:layout_constraintTop_toBottomOf="@+id/textViewRemove"
             app:layout_constraintStart_toEndOf="@+id/textViewStartTime"
             app:layout_constraintEnd_toEndOf="parent"
