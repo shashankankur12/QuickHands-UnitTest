@@ -1,7 +1,7 @@
 package com.quickhandslogistics.contracts.customerContact
 
 import com.quickhandslogistics.contracts.BaseContract
-import com.quickhandslogistics.data.dashboard.LeadProfileData
+import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
 
@@ -13,14 +13,14 @@ interface CustomerContactContract {
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(response: LumperListAPIResponse)
-            fun onSuccessGetHeaderInfo(leadProfileData: LeadProfileData?)
+            fun onSuccessGetHeaderInfo(leadProfileData: BuildingDetailData?)
         }
     }
 
     interface View : BaseContract.View {
-        fun showHeaderInfo(leadProfileData: LeadProfileData?)
+        fun showHeaderInfo(leadProfileData: BuildingDetailData?)
         fun showAPIErrorMessage(message: String)
-        fun showLumpersData(employeeDataList: ArrayList<EmployeeData>)
+        fun showCustomerContactData(employeeDataList: ArrayList<EmployeeData>)
         fun showLoginScreen()
 
         interface OnAdapterItemClickListener {

@@ -3,24 +3,25 @@ package com.quickhandslogistics.views.customerContact
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.telephony.PhoneNumberUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.customerContact.CustomerContactAdapter
 import com.quickhandslogistics.contracts.customerContact.CustomerContactContract
-import com.quickhandslogistics.data.dashboard.LeadProfileData
+import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.presenters.customerContact.CustomerContactPresenter
-import com.quickhandslogistics.utils.ConnectionDetector
-import com.quickhandslogistics.utils.CustomDialogWarningListener
-import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
+import com.quickhandslogistics.views.lumpers.LumpersFragment
+import kotlinx.android.synthetic.main.content_customer_contact_header.*
 import kotlinx.android.synthetic.main.fragment_customer_contect.*
 import kotlinx.android.synthetic.main.fragment_lumpers.*
 import kotlinx.android.synthetic.main.fragment_lumpers.textViewEmptyData
@@ -29,10 +30,11 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
         CustomerContactContract.View.OnAdapterItemClickListener{
     private lateinit var customerContactPresenter: CustomerContactPresenter
     private lateinit var customerContactAdapter: CustomerContactAdapter
+    private var buildingDetailData: BuildingDetailData? =null
 
     companion object {
-        const val CUSTOMER_DETAIL_LIST = "CUSTOMER_DETAIL_LIST"
-        const val DATE_SELECTED = "DATE_SELECTED"
+        const val CUSTOMER_CONTACT_LIST = "CUSTOMER_CONTACT_LIST"
+        const val HEADER_INFO = "HEADER_INFO"
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +64,29 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
                 invalidateEmptyView()
             }
         })
+
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey(CUSTOMER_CONTACT_LIST)) {
+
+            }
+
+            if (savedInstanceState.containsKey(HEADER_INFO))
+                buildingDetailData=savedInstanceState.getParcelable(HEADER_INFO)
+            showHeaderInfo(buildingDetailData)
+        } ?: run {
+            if (!ConnectionDetector.isNetworkConnected(activity)) {
+                ConnectionDetector.createSnackBar(activity)
+                return
+            }
+
+            customerContactPresenter.fetchCustomerContactList()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (buildingDetailData != null)
+            outState.putParcelable(HEADER_INFO,buildingDetailData )
+        super.onSaveInstanceState(outState)
     }
 
     private fun invalidateEmptyView() {
@@ -79,8 +104,14 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
         customerContactPresenter.onDestroy()
     }
 
-    override fun showHeaderInfo(leadProfileData: LeadProfileData?) {
-
+    override fun showHeaderInfo(buildingDetailData: BuildingDetailData?) {
+        this.buildingDetailData=buildingDetailData
+        buildingDetailData?.let {
+            textViewCustomerName.text=it.buildingName!!.capitalize()
+            textViewCompanyName.text=it.buildingAddress!!.capitalize() +","+it.buildingCity+", "+it.buildingState +" "+it .buildingZipcode
+            textViewCompanyContact.text=   PhoneNumberUtils.formatNumber(it.phone, "US")
+        }
+        activity?.let { Glide.with(it).load(R.drawable.building_image).into(circleImageViewProfile) }
     }
 
     override fun showAPIErrorMessage(message: String) {
@@ -89,7 +120,7 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
-    override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
+    override fun showCustomerContactData(employeeDataList: ArrayList<EmployeeData>) {
 
     }
 

@@ -20,9 +20,7 @@ import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
-import kotlinx.android.synthetic.main.fragment_customer_contect.*
-import kotlinx.android.synthetic.main.fragment_customer_contect.textViewEmptyData
-import kotlinx.android.synthetic.main.fragment_lumpers.*
+import kotlinx.android.synthetic.main.fragment_qhl_contact.*
 
 class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClickListener,
     QhlContactContract.View.OnAdapterItemClickListener {
@@ -31,8 +29,8 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
     private lateinit var qhlContactAdapter: QhlContactAdapter
 
     companion object {
-        const val CUSTOMER_DETAIL_LIST = "CUSTOMER_DETAIL_LIST"
-        const val DATE_SELECTED = "DATE_SELECTED"
+        const val QHL_CONTACT_LIST = "QHL_CONTACT_LIST"
+        const val HEADER_INFO = "HEADER_INFO"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +47,7 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        customerListContact.apply {
+        recyclerViewQhlContact.apply {
             val linearLayoutManager = LinearLayoutManager(fragmentActivity!!)
             layoutManager = linearLayoutManager
             val dividerItemDecoration = DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
@@ -86,9 +84,9 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
     }
 
     override fun showAPIErrorMessage(message: String) {
-        customerListContact.visibility = View.GONE
+        recyclerViewQhlContact.visibility = View.GONE
         textViewEmptyData.visibility = View.VISIBLE
-        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+        SnackBarFactory.createSnackBar(fragmentActivity!!, mainRootLayout, message)
     }
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {

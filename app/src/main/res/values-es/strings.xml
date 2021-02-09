@@ -244,7 +244,7 @@
     <string name="submitted">Submitted</string>
     <string name="requirement">Requirements</string>
     <string name="customer_contect">Customer Contact</string>
-    <string name="qhl_contect">QHL Contact</string>
+    <string name="qhl_contect">QHL Contacts</string>
     <string name="cancel_header_details">Remove <![CDATA[<b><font color=#e30913> %s</font></b>]]> from <![CDATA[<b><font color=#e30913> %s</font></b>]]> schedule</string>
 
     <!--No Record Messages-->

@@ -16,7 +16,8 @@ import retrofit2.Response
 class CustomerContactModel(private val sharedPref: SharedPref) : CustomerContactContract.Model{
     override fun fetchHeaderInfo(onFinishedListener: CustomerContactContract.Model.OnFinishedListener) {
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
-        onFinishedListener.onSuccessGetHeaderInfo(leadProfile)
+        val buildingDetails=leadProfile?.buildingDetailData
+        onFinishedListener.onSuccessGetHeaderInfo(buildingDetails)
     }
 
     override fun fetchCustomerContactList(onFinishedListener: CustomerContactContract.Model.OnFinishedListener) {

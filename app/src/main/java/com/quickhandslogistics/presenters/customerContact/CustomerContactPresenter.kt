@@ -5,7 +5,7 @@ import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.customerContact.CustomerContactContract
 import com.quickhandslogistics.data.ErrorResponse
-import com.quickhandslogistics.data.dashboard.LeadProfileData
+import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.models.customerContact.CustomerContactModel
 import com.quickhandslogistics.utils.AppConstant
@@ -20,9 +20,9 @@ class CustomerContactPresenter(private var customerContactContractView: Customer
     }
 
     override fun fetchCustomerContactList() {
-        customerContactContractView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+//        customerContactContractView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         customerContactModel.fetchHeaderInfo(this)
-        customerContactModel.fetchCustomerContactList(this)
+//        customerContactModel.fetchCustomerContactList(this)
     }
 
     /** Model Result Listeners */
@@ -30,8 +30,8 @@ class CustomerContactPresenter(private var customerContactContractView: Customer
 
     }
 
-    override fun onSuccessGetHeaderInfo(leadProfileData: LeadProfileData?) {
-        customerContactContractView?.showHeaderInfo(leadProfileData)
+    override fun onSuccessGetHeaderInfo(buildingDetails: BuildingDetailData?) {
+        customerContactContractView?.showHeaderInfo(buildingDetails)
     }
 
     override fun onFailure(message: String) {
