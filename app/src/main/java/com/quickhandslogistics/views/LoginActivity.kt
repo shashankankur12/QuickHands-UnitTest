@@ -4,17 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
 import android.view.View
+import com.google.android.material.snackbar.Snackbar
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.LoginContract
 import com.quickhandslogistics.presenters.LoginPresenter
-import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.utils.AppUtils
 import com.quickhandslogistics.utils.ConnectionDetector
+import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
 
     private lateinit var loginPresenter: LoginPresenter
+    private var snackBar: Snackbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +28,7 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
 
         loginPresenter = LoginPresenter(this, resources, sharedPref)
         loginPresenter.loadEmployeeId()
+        snackBar = SnackBarFactory.createShortSnackBar(activity, mainConstraintLayout, getString(R.string.press_back_again_to_exit), isShow = false)
     }
 
     override fun onDestroy() {
@@ -90,5 +93,13 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
         }
 
         startIntent(DashBoardActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
+    }
+
+    override fun onBackPressed() {
+        snackBar?.also { snackBar ->
+            if (snackBar.isShown) super.onBackPressed() else snackBar.show()
+        } ?: run {
+            super.onBackPressed()
+        }
     }
 }

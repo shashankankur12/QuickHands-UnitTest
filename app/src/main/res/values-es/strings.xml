@@ -357,4 +357,6 @@
     <string name="hours_h">Hours (H)</string>
     <string name="invalid_hour_message">Hour(s) can\'t be greater than 23</string>
     <string name="invalid_hour_minutes">Minutes(s) can\'t be greater than 59</string>
+    <string name="total_pause_colon">Total Pause : </string>
+    <string name="content_description">imageView</string>
 </resources>

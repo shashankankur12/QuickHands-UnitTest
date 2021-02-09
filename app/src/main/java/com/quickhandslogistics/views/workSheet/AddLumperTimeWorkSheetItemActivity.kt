@@ -190,7 +190,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private fun getPauseTimeCalculate() {
         if (selectedBreakInTime > 0 && selectedBreakOutTime > 0) {
             totalPauseTime.visibility = View.VISIBLE
-            val dateString = String.format(getString(R.string.total_pause_time), DateUtils.getDateTimeCalculetedLong(selectedBreakInTime, selectedBreakOutTime))
+            val dateString = String.format(getString(R.string.total_pause_time), DateUtils.getDateTimeCalculatedLong(selectedBreakInTime, selectedBreakOutTime))
             totalPauseTime.text = dateString
         } else totalPauseTime.visibility = View.GONE
     }
@@ -198,7 +198,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private fun getTimeCalculate() {
         if (selectedStartTime > 0 && selectedEndTime > 0) {
             totalWorkTime.visibility = View.VISIBLE
-            val dateString = String.format(getString(R.string.total_time), DateUtils.getDateTimeCalculetedLong(selectedStartTime, selectedEndTime))
+            val dateString = String.format(getString(R.string.total_time), DateUtils.getDateTimeCalculatedLong(selectedStartTime, selectedEndTime))
             totalWorkTime.text = dateString
         } else totalWorkTime.visibility = View.GONE
     }
@@ -314,9 +314,10 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             ConnectionDetector.createSnackBar(activity)
             return
         }
-        val waitingTimeHours = editTextWaitingTime.text.toString()
-        val waitingTimeMinutes = editTextWaitingTimeMinutes.text.toString()
-        val waitingTime = ((waitingTimeHours.toInt() * 60) + waitingTimeMinutes.toInt()).toString()
+        val waitingTimeHours = editTextWaitingTime?.text.toString()
+        val waitingTimeMinutes = editTextWaitingTimeMinutes?.text.toString()
+        val waitingTime = ((if (waitingTimeHours.isEmpty()) 0 else waitingTimeHours.toInt() * 60) +
+                if (waitingTimeMinutes.isEmpty()) 0 else waitingTimeMinutes.toInt()).toString()
 
         addLumperTimeWorkSheetItemPresenter.saveLumperTimings(
                 employeeData?.id!!, workItemId, selectedStartTime, selectedEndTime,
