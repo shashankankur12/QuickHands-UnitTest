@@ -10,13 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.customerContact.CustomerContactContract
-import com.quickhandslogistics.contracts.lumpers.LumpersContract
 import com.quickhandslogistics.controls.CustomTextView
 import com.quickhandslogistics.data.lumpers.EmployeeData
-import com.quickhandslogistics.utils.UIUtils
-import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_customer_contact_layout.view.*
-import java.util.*
 import kotlin.collections.ArrayList
 
 class CustomerContactAdapter(var adapterItemClickListener: CustomerContactContract.View.OnAdapterItemClickListener) : Adapter<CustomerContactAdapter.ViewHolder>() {

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.qhlContact.QhlContactFragment">
+    tools:context=".views.customerContact.CustomerContactFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,7 +12,7 @@
 
         <include
             android:id="@+id/layoutHeader"
-            layout="@layout/content_qhl_contact_header" />
+            layout="@layout/content_lupmer_contect_header" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,8 +22,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_6sdp"
                 android:background="@color/colorTextGrey"
                 android:paddingHorizontal="@dimen/_10sdp">
 
@@ -32,7 +32,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/qhl_contect"
+                    android:text="Building Contacts"
+                    android:textAllCaps="true"
                     android:textColor="@color/textWhite"
                     android:textStyle="normal" />
 

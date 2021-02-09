@@ -191,8 +191,8 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             it.addItem(NavDrawer.AppNavDrawerItem(ReportsFragment(), R.drawable.report_icon, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.reports), showTabName)))
 
             it.addItem(NavDrawer.AppNavDrawerItem(LumpersFragment(), R.drawable.ic_sidemenu_lumpers, R.id.linearLayoutThirdItems, isShowOnLaunch(getString(R.string.lumper_contact), showTabName)))
-            it.addItem(NavDrawer.AppNavDrawerItem(QhlContactFragment(), R.drawable.ic_sidemenu_lumpers, R.id.linearLayoutThirdItems, isShowOnLaunch(getString(R.string.qhl_contect), showTabName)))
-            it.addItem(NavDrawer.AppNavDrawerItem(CustomerContactFragment(), R.drawable.ic_sidemenu_lumpers, R.id.linearLayoutThirdItems, isShowOnLaunch(getString(R.string.customer_contect), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(QhlContactFragment(), R.drawable.ic_thumbs_up, R.id.linearLayoutThirdItems, isShowOnLaunch(getString(R.string.qhl_contect), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(CustomerContactFragment(), R.drawable.ic_house, R.id.linearLayoutThirdItems, isShowOnLaunch(getString(R.string.customer_contect), showTabName)))
 
             it.addItem(NavDrawer.AppNavDrawerItem(SettingsFragment(), R.drawable.ic_sidemenu_settings, R.id.linearLayoutBottomItems, isShowOnLaunch(getString(R.string.settings), showTabName)))
             it.addItem(NavDrawer.AppNavDrawerItem(null, R.drawable.ic_sidemenu_logout, R.id.linearLayoutBottomItems, isShowOnLaunch(getString(R.string.logout), showTabName)))

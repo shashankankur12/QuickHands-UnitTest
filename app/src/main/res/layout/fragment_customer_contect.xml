@@ -33,6 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="Building Contacts"
+                    android:textAllCaps="true"
                     android:textColor="@color/textWhite"
                     android:textStyle="normal" />
 
