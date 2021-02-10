@@ -16,16 +16,15 @@ import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.CustomProgressBar
 import kotlinx.android.synthetic.main.item_select_status.view.*
-import kotlinx.android.synthetic.main.item_select_status.view.textViewStatus
 import kotlinx.android.synthetic.main.item_show_less_more.view.*
 
 class WorkSheetItemStatusAdapter(private val resources: Resources, private val onAdapterClick: WorkSheetItemDetailContract.View.OnAdapterItemClickListener) :
-    Adapter<RecyclerView.ViewHolder>() {
+        Adapter<RecyclerView.ViewHolder>() {
 
     private var statusList: LinkedHashMap<String, String> = LinkedHashMap()
     private var initialDisplayStatus: String = ""
     private var selectedDisplayStatus: String = ""
-    private var isCompleted: Boolean=false
+    private var isCompleted: Boolean = false
     private val ShowMoreLess = 4
     private val NormalView = 1
 
@@ -39,17 +38,13 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-
-        var viewHolder: RecyclerView.ViewHolder
-        if (viewType==ShowMoreLess){
+        return if (viewType == ShowMoreLess) {
             val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_show_less_more, parent, false)
-            viewHolder= ViewHolder2(view, parent.context)
-        }else{
+            ViewHolder2(view, parent.context)
+        } else {
             val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_select_status, parent, false)
-            viewHolder= ViewHolder1(view, parent.context)
+            ViewHolder1(view, parent.context)
         }
-        return viewHolder
-
     }
 
     override fun getItemCount(): Int {
@@ -63,18 +58,14 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (position.equals(4)){
-            return ShowMoreLess
-        }else{
-            return NormalView
-        }
+        return if (position == 4) ShowMoreLess else NormalView
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder.itemViewType.equals(ShowMoreLess)){
+        if (ShowMoreLess == holder.itemViewType) {
             val categoryViewHolder: ViewHolder2 = holder as ViewHolder2
             categoryViewHolder.bind2(getItem(position))
-        }else {
+        } else {
             val categoryViewHolder: ViewHolder1 = holder as ViewHolder1
             categoryViewHolder.bind1(getItem(position))
         }
@@ -167,11 +158,7 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
             view?.let {
                 when (view.id) {
                     textView.id -> {
-                        if (statusList.size.equals(5))
-                            updateShowMoreStatusList()
-                            else
-                            updateShowLessStatusList()
-
+                        if (5 == statusList.size) updateShowMoreStatusList() else updateShowLessStatusList()
                     }
                 }
             }
@@ -193,24 +180,24 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
 
     fun updateShowMoreStatusList() {
         this.statusList.clear()
-        this.statusList.put(resources.getString(R.string.scheduled), AppConstant.WORK_ITEM_STATUS_SCHEDULED)
-        this.statusList.put(resources.getString(R.string.in_progress), AppConstant.WORK_ITEM_STATUS_IN_PROGRESS)
-        this.statusList.put(resources.getString(R.string.on_hold), AppConstant.WORK_ITEM_STATUS_ON_HOLD)
-        this.statusList.put(resources.getString(R.string.completed), AppConstant.WORK_ITEM_STATUS_COMPLETED)
-        this.statusList.put(resources.getString(R.string.show_less), AppConstant.WORK_ITEM_SHOW_LESS)
-        this.statusList.put(resources.getString(R.string.unfinished), AppConstant.WORK_ITEM_STATUS_UNFINISHED)
-        this.statusList.put(resources.getString(R.string.not_open), AppConstant.WORK_ITEM_STATUS_NOT_OPEN)
-        this.statusList.put(resources.getString(R.string.cancelled), AppConstant.WORK_ITEM_STATUS_CANCELLED)
+        this.statusList[resources.getString(R.string.scheduled)] = AppConstant.WORK_ITEM_STATUS_SCHEDULED
+        this.statusList[resources.getString(R.string.in_progress)] = AppConstant.WORK_ITEM_STATUS_IN_PROGRESS
+        this.statusList[resources.getString(R.string.on_hold)] = AppConstant.WORK_ITEM_STATUS_ON_HOLD
+        this.statusList[resources.getString(R.string.completed)] = AppConstant.WORK_ITEM_STATUS_COMPLETED
+        this.statusList[resources.getString(R.string.show_less)] = AppConstant.WORK_ITEM_SHOW_LESS
+        this.statusList[resources.getString(R.string.unfinished)] = AppConstant.WORK_ITEM_STATUS_UNFINISHED
+        this.statusList[resources.getString(R.string.not_open)] = AppConstant.WORK_ITEM_STATUS_NOT_OPEN
+        this.statusList[resources.getString(R.string.cancelled)] = AppConstant.WORK_ITEM_STATUS_CANCELLED
         notifyDataSetChanged()
     }
 
     fun updateShowLessStatusList() {
         this.statusList.clear()
-        this.statusList.put(resources.getString(R.string.scheduled), AppConstant.WORK_ITEM_STATUS_SCHEDULED)
-        this.statusList.put(resources.getString(R.string.in_progress), AppConstant.WORK_ITEM_STATUS_IN_PROGRESS)
-        this.statusList.put(resources.getString(R.string.on_hold), AppConstant.WORK_ITEM_STATUS_ON_HOLD)
-        this.statusList.put(resources.getString(R.string.completed), AppConstant.WORK_ITEM_STATUS_COMPLETED)
-        this.statusList.put(resources.getString(R.string.show_more), AppConstant.WORK_ITEM_SHOW_MORE)
+        this.statusList[resources.getString(R.string.scheduled)] = AppConstant.WORK_ITEM_STATUS_SCHEDULED
+        this.statusList[resources.getString(R.string.in_progress)] = AppConstant.WORK_ITEM_STATUS_IN_PROGRESS
+        this.statusList[resources.getString(R.string.on_hold)] = AppConstant.WORK_ITEM_STATUS_ON_HOLD
+        this.statusList[resources.getString(R.string.completed)] = AppConstant.WORK_ITEM_STATUS_COMPLETED
+        this.statusList[resources.getString(R.string.show_more)] = AppConstant.WORK_ITEM_SHOW_MORE
         notifyDataSetChanged()
     }
 }

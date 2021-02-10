@@ -17,12 +17,13 @@
         app:layout_constraintEnd_toStartOf="@id/textViewDescription"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textViewDescription"
         style="@style/valuesVerySmallTextViewTheme"
         android:layout_width="0dp"
-        android:textColor="@color/textBlack"
         android:layout_marginHorizontal="@dimen/_8sdp"
+        android:textColor="@color/textBlack"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/imageViewAdd"
         app:layout_constraintStart_toEndOf="@+id/textViewStatus"
@@ -36,4 +37,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

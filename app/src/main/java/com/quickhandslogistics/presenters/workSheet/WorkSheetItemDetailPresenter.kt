@@ -1,5 +1,6 @@
 package com.quickhandslogistics.presenters.workSheet
 
+import android.content.Context
 import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
@@ -33,6 +34,10 @@ class WorkSheetItemDetailPresenter(private var workSheetItemDetailView: WorkShee
     override fun updateWorkItemNotes(workItemId: String, notesQHLCustomer: String, notesQHL: String) {
         workSheetItemDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         workSheetItemDetailModel.updateWorkItemNotes(workItemId, notesQHLCustomer, notesQHL, this)
+    }
+
+    override fun showUnFinishedContainer(context: Context) {
+        workSheetItemDetailModel.showUnFinishedContainer(context)
     }
 
     /** Model Result Listeners */
