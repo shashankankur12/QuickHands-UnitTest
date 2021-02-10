@@ -1,11 +1,18 @@
 package com.quickhandslogistics.data.workSheet
 
-data class UpdateLumperTimeRequest(val lumperId: String, val workItemId: String, val timingDetails: TimingDetails, var partWork : Int? = null)
+import com.google.gson.annotations.SerializedName
+
+data class UpdateLumperTimeRequest(
+    @SerializedName("lumperId") val lumperId: String,
+    @SerializedName("workItemId") val workItemId: String,
+    @SerializedName("timingDetails") val timingDetails: TimingDetails,
+    @SerializedName("partWork") var partWork: Int? = null
+)
 
 class TimingDetails {
-    var startTime: Long? = null
-    var endTime: Long? = null
-    var breakTimeStart: Long? = null
-    var breakTimeEnd: Long? = null
-    var waitingTime: Int? = null
+    @SerializedName("startTime") var startTime: Long? = null
+    @SerializedName("endTime") var endTime: Long? = null
+    @SerializedName("breakTimeStart") var breakTimeStart: Long? = null
+    @SerializedName("breakTimeEnd") var breakTimeEnd: Long? = null
+    @SerializedName("waitingTime") var waitingTime: Int? = null
 }
