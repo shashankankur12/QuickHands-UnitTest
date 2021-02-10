@@ -49,7 +49,6 @@
         android:background="@drawable/notes_item_background"
         android:orientation="vertical"
         android:padding="@dimen/_8sdp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewRequestedAt"
@@ -99,11 +98,20 @@
         android:layout_width="0dp"
         android:layout_marginHorizontal="@dimen/_5sdp"
         android:text="@string/lumpers_dm_assigned"
-
-        app:layout_constraintBottom_toTopOf="@+id/textViewUpdateRequest"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewNoteForLumper" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewTempLumperInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textViewUpdateRequest"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLumperAssigned"/>
 
     <TextView
         android:id="@+id/textViewUpdateRequest"
@@ -112,13 +120,13 @@
         android:layout_gravity="end"
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginBottom="@dimen/_4sdp"
-        android:drawableStart="@drawable/ic_edit_red"
+        android:drawableStart="@drawable/edit_icon_selector"
         android:text="@string/update_request"
         android:textSize="@dimen/_11ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textViewCancelRequest"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLumperAssigned" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewTempLumperInfo" />
 
     <TextView
         android:id="@+id/textViewCancelRequest"
@@ -127,11 +135,11 @@
         android:layout_gravity="end"
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginBottom="@dimen/_4sdp"
-        android:drawableStart="@drawable/ic_cancel_red"
+        android:drawableStart="@drawable/cancel_icon_selector"
         android:text="@string/cancel_request"
         android:textSize="@dimen/_11ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewUpdateRequest"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLumperAssigned" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewTempLumperInfo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

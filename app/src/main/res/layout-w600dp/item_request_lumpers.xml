@@ -98,10 +98,20 @@
         android:layout_marginTop="@dimen/_1sdp"
         android:layout_marginHorizontal="@dimen/_3sdp"
         android:text="@string/lumpers_dm_assigned"
-        app:layout_constraintBottom_toTopOf="@+id/textViewUpdateRequest"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewNoteForLumper" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewTempLumperInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:layout_marginHorizontal="@dimen/_3sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textViewUpdateRequest"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLumperAssigned"/>
 
     <TextView
         android:id="@+id/textViewUpdateRequest"
@@ -116,7 +126,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textViewCancelRequest"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLumperAssigned" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewTempLumperInfo" />
 
     <TextView
         android:id="@+id/textViewCancelRequest"
@@ -131,5 +141,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewUpdateRequest"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLumperAssigned" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewTempLumperInfo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

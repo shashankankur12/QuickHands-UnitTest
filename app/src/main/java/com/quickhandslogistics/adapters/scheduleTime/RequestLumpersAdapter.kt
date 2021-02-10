@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
@@ -14,7 +15,6 @@ import com.quickhandslogistics.contracts.scheduleTime.RequestLumpersContract
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
-import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_DATE_TIME_DISPLAY
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL_Week
 import com.quickhandslogistics.utils.DateUtils.Companion.changeUTCDateStringToLocalDateString
 import com.quickhandslogistics.utils.UIUtils
@@ -54,6 +54,7 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
         private val textViewLumperAssigned: TextView = view.textViewLumperAssigned
         private val textViewCancelRequest: TextView = view.textViewCancelRequest
         private val linearLayoutNotes: LinearLayout = view.linearLayoutNotes
+        private val recyclerViewTempLumperInfo: RecyclerView = view.recyclerViewTempLumperInfo
 
         fun bind(requestLumpersRecord: RequestLumpersRecord) {
             textViewRequestedLumpersCount.text = String.format(resources.getString(R.string.requested_lumpers_s), requestLumpersRecord.requestedLumpersCount)
@@ -62,8 +63,23 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
                 changeUTCDateStringToLocalDateString(PATTERN_API_RESPONSE, PATTERN_NORMAL_Week, requestLumpersRecord.createdAt!!)
             ))
             textViewRequestStart.text = UIUtils.getSpannedText(String.format(resources.getString(R.string.start_time_bold), "11:22 pm"))
-            textViewLumperAssigned.text = UIUtils.getSpannedText(String.format(resources.getString(R.string.lumpers_dm_assigned_bold), "1/3"))
+
+            var assignedCount= if (requestLumpersRecord.lumpersAllocated.isNullOrEmpty()) 0 else requestLumpersRecord.lumpersAllocated!!.size
+            var ratioCount= String.format("%s/%s",assignedCount,requestLumpersRecord.requestedLumpersCount)
+            textViewLumperAssigned.text = UIUtils.getSpannedText(String.format(resources.getString(R.string.lumpers_dm_assigned_bold), ratioCount))
             textViewNote.text = requestLumpersRecord.notesForDM
+
+            if (!requestLumpersRecord.lumpersAllocated.isNullOrEmpty()) {
+                recyclerViewTempLumperInfo.visibility=View.VISIBLE
+                recyclerViewTempLumperInfo.apply {
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = RequestLumperInfoAdaptor(resources, requestLumpersRecord.lumpersAllocated!!
+                    )
+                }
+            }else{
+                recyclerViewTempLumperInfo.visibility=View.GONE
+            }
+
 
             when (requestLumpersRecord.requestStatus) {
                 AppConstant.REQUEST_LUMPERS_STATUS_PENDING -> {
@@ -91,11 +107,12 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
             textViewUpdateRequest.setOnClickListener(this)
             textViewCancelRequest.setOnClickListener(this)
             linearLayoutNotes.setOnClickListener(this)
+            textViewNoteForLumper.setOnClickListener(this)
         }
 
         private fun changeUpdateUIVisibility(isShow: Boolean) {
-            textViewUpdateRequest.visibility = if (isShow) View.VISIBLE else View.GONE
-            textViewCancelRequest.visibility = if (isShow) View.VISIBLE else View.GONE
+            textViewUpdateRequest.isEnabled = isShow
+            textViewCancelRequest.isEnabled = isShow
         }
 
         override fun onClick(view: View?) {
@@ -104,6 +121,10 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
                     linearLayoutNotes.id -> {
                         val record = getItem(adapterPosition)
                         onAdapterClick.onNotesItemClick(record.notesForDM)
+                    }
+                    textViewNoteForLumper.id -> {
+                        val record = getItem(adapterPosition)
+                        onAdapterClick.onNotesItemClick("record.notesForDM")
                     }
                     textViewUpdateRequest.id -> {
                         val record = getItem(adapterPosition)

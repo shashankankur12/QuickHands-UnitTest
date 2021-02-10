@@ -49,6 +49,7 @@
             android:id="@+id/editTextLumpersRequired"
             style="@style/valueEditTextTheme"
             android:inputType="number"
+            android:textAlignment="textEnd"
             android:maxLength="2" />
     </LinearLayout>
 
