@@ -86,20 +86,13 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         employeeTimingData?.let { timingDetail ->
             val waitingTimeHours = ValueUtils.getHoursFromMinutes(timingDetail.waitingTime)
             val waitingTimeMinutes = ValueUtils.getRemainingMinutes(timingDetail.waitingTime)
-            if (waitingTimeHours.isNotEmpty() && 0.0 != waitingTimeHours.toDouble()) {
-                editTextWaitingTime.setText(waitingTimeHours)
-                editTextWaitingTime.isEnabled = false
-            }
-            if (waitingTimeMinutes.isNotEmpty() && 0.0 != waitingTimeMinutes.toDouble()) {
-                editTextWaitingTimeMinutes.setText(waitingTimeMinutes)
-                editTextWaitingTimeMinutes.isEnabled = false
-            }
-            if(!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt()!=0){
-                partWorkDone= timingDetail.partWorkDone!!.toInt()
+            if (waitingTimeHours.isNotEmpty()) editTextWaitingTime.setText(waitingTimeHours)
+            if (waitingTimeMinutes.isNotEmpty()) editTextWaitingTimeMinutes.setText(waitingTimeMinutes)
+            if (!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt() != 0) {
+                partWorkDone = timingDetail.partWorkDone!!.toInt()
                 lumpercaseVisibility()
                 editTextCasesLumpers.setText(partWorkDone.toString())
             }
-
             updateTimingsDetails(timingDetail)
         }
         if (totalCases.isNotEmpty() && isNumeric(totalCases)) {
