@@ -29,9 +29,9 @@ class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.V
         scheduleTimeModel.fetchSchedulesTimeByDate(date, this)
     }
 
-    override fun cancelScheduleLumpers(lumperId: String, date: Date) {
+    override fun cancelScheduleLumpers(lumperId: String, date: Date, cancelReason: String) {
         scheduleTimeView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        scheduleTimeModel.cancelScheduleLumpers(lumperId, date, this)
+        scheduleTimeModel.cancelScheduleLumpers(lumperId, date,cancelReason, this)
     }
 
     override fun editScheduleLumpers(

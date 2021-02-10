@@ -331,6 +331,7 @@
     <string name="something_went_wrong_message">Something went wrong, Please try again after sometime!!!</string>
     <string name="cancel_schedule_lumper_invalidate_message">You can cancel lumper after two hours of start time!!!</string>
     <string name="edit_schedule_lumper_invalidate_message">You can update lumper after two hours of start time!!!</string>
+    <string name="cancel_reason_schedule_lumper"><![CDATA[Please enter reason for cancellation.]]></string>
     <string name="updtae_status_after_signature_message">Customer signature submitted You can\'t update the status</string>
 
     <!--Info Messages-->

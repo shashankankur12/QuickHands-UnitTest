@@ -373,9 +373,12 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         if (type.equals(CANCEL_SCHEDULE_LUMPER)){
             val requestLumperId = buttonYes.getTag(R.id.requestLumperId) as String?
             val requestLumperDate = textViewTitle.getTag(R.id.cancelLumperDay) as String?
-            if (!requestLumperId.isNullOrEmpty() && !requestLumperDate.isNullOrEmpty()) {
+            val cancelReason = editTextReason.text.toString()
+            if (!requestLumperId.isNullOrEmpty() && !requestLumperDate.isNullOrEmpty()&& !cancelReason.isNullOrEmpty()) {
                 closeBottomSheet()
-                scheduleTimePresenter.cancelScheduleLumpers(requestLumperId, selectedDate/*DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, requestLumperDate)*/)
+                scheduleTimePresenter.cancelScheduleLumpers(requestLumperId, selectedDate, cancelReason/*DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, requestLumperDate)*/)
+            }else if (cancelReason.isNullOrEmpty()){
+                CustomProgressBar.getInstance().showErrorDialog(getString(R.string.cancel_reason_schedule_lumper), activity!!)
             }
         }
         else if(type.equals(EDIT_SCHEDULE_LUMPER)) {

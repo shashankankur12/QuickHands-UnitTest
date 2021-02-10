@@ -5,13 +5,12 @@ import com.quickhandslogistics.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeNoteRequest
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ScheduleTimeContract {
     interface Model {
         fun fetchHeaderInfo(selectedDate: Date, onFinishedListener: OnFinishedListener)
         fun fetchSchedulesTimeByDate(selectedDate: Date, onFinishedListener: OnFinishedListener)
-        fun cancelScheduleLumpers(lumperId: String, date: Date, onFinishedListener:OnFinishedListener)
+        fun cancelScheduleLumpers(lumperId: String, date: Date, cancelReason: String, onFinishedListener: OnFinishedListener)
         fun editScheduleLumpers(
             lumperId: String,
             date: Date,
@@ -59,7 +58,7 @@ class ScheduleTimeContract {
 
     interface Presenter : BaseContract.Presenter {
         fun getSchedulesTimeByDate(date: Date)
-        fun cancelScheduleLumpers(lumperId: String, date: Date)
+        fun cancelScheduleLumpers(lumperId: String, date: Date, cancelReason: String)
         fun editScheduleLumpers(
             lumperId: String,
             date: Date,
