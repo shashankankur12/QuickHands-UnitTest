@@ -58,11 +58,11 @@ class AddContainerAdapter(private val onAdapterClick: AddContainerActivity, priv
         fun bind(containerDetails: ContainerDetails) {
             when {
                 containerDetails.workItemType.equals(WORKSHEET_WORK_ITEM_OUTBOUND) -> textViewContainerType.text =
-                    resources.getString(R.string.out_bound)
+                    resources.getString(R.string.out_bound_added)
                 containerDetails.workItemType.equals(WORKSHEET_WORK_ITEM_LIVE) -> textViewContainerType.text =
-                    resources.getString(R.string.live_load)
+                    resources.getString(R.string.live_load_added)
                 containerDetails.workItemType.equals(WORKSHEET_WORK_ITEM_INBOUND) -> textViewContainerType.text =
-                    resources.getString(R.string.drop)
+                    resources.getString(R.string.drop_added)
             }
 
             if (containerDetails.startTime != null)
