@@ -487,7 +487,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     }
 
     private fun showViewScheduleDialog() {
-        CustomeDialog.showWorkScheduleDialog(activity, resources,"Lead Notes ")
+        CustomeDialog.showWorkScheduleDialog(activity, resources,"Lead Notes ", selectedDate)
     }
 
     /** Calendar Listeners */

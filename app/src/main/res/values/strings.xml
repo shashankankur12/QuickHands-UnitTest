@@ -74,6 +74,7 @@
     <string name="drop">Drop</string>
     <string name="drops_s">Drops: %s</string>
     <string name="drops_value">Drop: %s</string>
+    <string name="unfinished_drop">Unfinished: %s</string>
     <string name="edit_parameters">Edit Parameters</string>
     <string name="email_address">Email Address</string>
     <string name="employee_id">Employee ID</string>

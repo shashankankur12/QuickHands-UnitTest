@@ -127,7 +127,30 @@
                 android:layout_width="wrap_content"
                 android:layout_alignParentRight="true"
                 android:textColor="@color/textBlack"
-                android:layout_marginStart="@dimen/_8ssp" />
+                android:layout_marginStart="@dimen/_8ssp"
+                app:drawableTint="@color/scheduleDetail" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layoutScheduleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingStart="@dimen/_10ssp"
+            android:paddingEnd="@dimen/_10ssp"
+            android:paddingTop="@dimen/_3ssp"
+            android:background="@drawable/white_background"
+            android:paddingBottom="@dimen/_3ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutWorkScheduleInfo">
+            <TextView
+                android:layout_gravity="end"
+                android:id="@+id/textViewScheduleView"
+                style="@style/scheduleTextViewTheme"
+                android:layout_width="wrap_content"
+                android:text="@string/view_schedule"
+                android:layout_alignParentRight="true" />
 
         </RelativeLayout>
 
@@ -142,7 +165,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutWorkScheduleInfo">
+            app:layout_constraintTop_toBottomOf="@+id/layoutScheduleView">
 
             <RelativeLayout
                 android:layout_width="match_parent"
