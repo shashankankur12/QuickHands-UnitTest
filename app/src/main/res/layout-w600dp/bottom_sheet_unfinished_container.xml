@@ -31,6 +31,7 @@
         android:layout_marginEnd="@dimen/_10sdp"
         android:background="@drawable/schedule_item_background_rect"
         android:paddingStart="@dimen/_15sdp"
+        android:gravity="center"
         android:paddingTop="@dimen/_2sdp"
         android:paddingEnd="@dimen/_15sdp"
         android:paddingBottom="@dimen/_2sdp"

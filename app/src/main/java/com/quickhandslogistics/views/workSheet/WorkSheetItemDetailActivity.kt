@@ -3,6 +3,7 @@ package com.quickhandslogistics.views.workSheet
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -237,6 +238,10 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
     override fun showLoginScreen() {
         startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
+    }
+
+    override fun onUnfinishedBottomSheetSubmitClick() {
+        Toast.makeText(applicationContext, "submit button clicked", Toast.LENGTH_SHORT).show()
     }
 
     /** Adapter Listeners */

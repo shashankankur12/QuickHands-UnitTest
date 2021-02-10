@@ -37,7 +37,7 @@ class WorkSheetItemDetailPresenter(private var workSheetItemDetailView: WorkShee
     }
 
     override fun showUnFinishedContainer(context: Context) {
-        workSheetItemDetailModel.showUnFinishedContainer(context)
+        workSheetItemDetailModel.showUnFinishedContainer(context, workSheetItemDetailView)
     }
 
     /** Model Result Listeners */
