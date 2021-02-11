@@ -9,10 +9,13 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.adapters.addContainer.AddScheduleDialogAdapter
+import com.quickhandslogistics.data.addContainer.ContainerDetails
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
 import java.util.*
 
@@ -35,11 +38,7 @@ object CustomeDialog : AppConstant {
         return dialog
     }
 
-    fun showGroupNoteDialog(
-        activity: Activity?,
-        title: String?,
-        customerGroupNote: Triple<Pair<ArrayList<String>?, ArrayList<String>?>?, ArrayList<String>?, ArrayList<String>?>
-    ) {
+    fun showGroupNoteDialog(activity: Activity?, title: String?, customerGroupNote: Triple<Pair<ArrayList<String>?, ArrayList<String>?>?, ArrayList<String>?, ArrayList<String>?>) {
         mActivity = activity
         val dialog =
             getDialog(R.layout.custome_alert_dialog, activity)
@@ -113,7 +112,59 @@ object CustomeDialog : AppConstant {
         dialog.show()
     }
 
-    fun showAddNoteDialog(activity: Activity, title: String?, uploadContainer: ArrayList<ContainerDetails>, liveLoadContainer: ArrayList<ContainerDetails>, dropOffContainer: ArrayList<ContainerDetails>,  iDialogOnClick: IDialogOnClick) {
+    fun showWorkScheduleDialog(activity: Activity?, resources: Resources, title: String?, selectedDate: Date) {
+        mActivity = activity
+        val dialog =
+                getDialog(R.layout.view_work_schedule, activity)
+        //        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        val window = dialog.window
+        window!!.setLayout(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        window.setBackgroundDrawableResource(android.R.color.transparent)
+        val titleTextView = dialog.findViewById<TextView>(R.id.title_text)
+        val textViewScheduleType = dialog.findViewById<TextView>(R.id.textViewScheduleType)
+        val textViewStatus = dialog.findViewById<TextView>(R.id.textViewStatus)
+        val textViewScheduleOutBound = dialog.findViewById<TextView>(R.id.textViewScheduleOutBound)
+        val textViewScheduleOutBoundStartTime = dialog.findViewById<TextView>(R.id.textViewScheduleOutBoundStartTime)
+        val textViewScheduleLiveLoad = dialog.findViewById<TextView>(R.id.textViewScheduleLiveLoad)
+        val textViewScheduleLiveLoadStartTime = dialog.findViewById<TextView>(R.id.textViewScheduleLiveLoadStartTime)
+        val textViewScheduleDrops = dialog.findViewById<TextView>(R.id.textViewScheduleDrops)
+        val textViewScheduleDropsStartTime = dialog.findViewById<TextView>(R.id.textViewScheduleDropsStartTime)
+        val textViewScheduleUnfinished = dialog.findViewById<TextView>(R.id.textViewScheduleUnfinished)
+        val textViewScheduleUnfinishedStartTime = dialog.findViewById<TextView>(R.id.textViewScheduleUnfinishedStartTime)
+        val textViewWorkItemsCount = dialog.findViewById<TextView>(R.id.textViewWorkItemsCount)
+        val textViewWorkItemsLeadName = dialog.findViewById<TextView>(R.id.textViewWorkItemsLeadName)
+        val relativeLayoutSide = dialog.findViewById<RelativeLayout>(R.id.relativeLayoutSide)
+        val confirm = dialog.findViewById<Button>(R.id.confirm_button)
+
+
+        titleTextView.text = DateUtils.getDateString(PATTERN_NORMAL,selectedDate)
+        textViewScheduleType.text = UIUtils.getSpannableText(resources.getString(R.string.department_full),/*UIUtils.getDisplayEmployeeDepartment(leadProfile)*/ "Receiving")
+        textViewScheduleOutBound.text = String.format(resources.getString(R.string.out_bound_s),/*scheduleDetail.scheduleTypes?.outbounds?.size.toString()*/ "2")
+        textViewScheduleLiveLoad.text = String.format(resources.getString(R.string.live_load_s),"4"/*scheduleDetail.scheduleTypes?.liveLoads?.size.toString()*/)
+        textViewScheduleDrops.text = String.format(resources.getString(R.string.drops_s),"3"/*scheduleDetail.scheduleTypes?.drops?.size.toString()*/)
+        textViewScheduleUnfinished.text = String.format(resources.getString(R.string.unfinished_drop),"2"/*scheduleDetail.scheduleTypes?.drops?.size.toString()*/)
+        textViewWorkItemsCount.text = String.format(resources.getString(R.string.total_containers_s), "100"/*scheduleDetail.totalNumberOfWorkItems*/)
+
+        val leadName= String.format("%s %s","Shashank",""/*leadProfile!!.firstName, leadProfile!!.lastName*/)
+        textViewWorkItemsLeadName.text = String.format(resources.getString(R.string.lead_name),leadName)
+
+//        if (scheduleDetail.scheduleTypes?.outbounds!!.size>0 && !scheduleDetail.scheduleTypes?.outbounds!![0].startTime.isNullOrEmpty())
+        textViewScheduleOutBoundStartTime.text=/*DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.outbounds!![0].startTime)!!.toLong())*/"12:12 AM"
+//        if (scheduleDetail.scheduleTypes?.liveLoads!!.size>0 && !scheduleDetail.scheduleTypes?.liveLoads!![0].startTime.isNullOrEmpty())
+        textViewScheduleLiveLoadStartTime.text=/*DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.liveLoads!![0].startTime)!!.toLong())*/ "12:33 AM"
+//        if (scheduleDetail.scheduleTypes?.drops!!.size>0 && !scheduleDetail.scheduleTypes?.drops!![0].startTime.isNullOrEmpty())
+        textViewScheduleDropsStartTime.text=/*DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.drops!![0].startTime)!!.toLong())*/ "09:45 PM"
+        textViewScheduleUnfinishedStartTime.text=/*DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.drops!![0].startTime)!!.toLong())*/ "09:00 PM"
+
+        ScheduleUtils.changeStatusUIByValue(resources, AppConstant.WORK_ITEM_STATUS_SCHEDULED, textViewStatus, relativeLayoutSide)
+        confirm.setOnClickListener { dialog.dismiss() }
+        dialog.show()
+    }
+
+    fun showAddNoteDialog(activity: Activity, title: String?, uploadContainer: ArrayList<ContainerDetails>, liveLoadContainer: ArrayList<ContainerDetails>, dropOffContainer: ArrayList<ContainerDetails>, iDialogOnClick: IDialogOnClick) {
         mActivity = activity
         val dialog =
             getDialog(R.layout.add_container_custome_dialog, activity)
@@ -148,12 +199,7 @@ object CustomeDialog : AppConstant {
         dialog.show()
     }
 
-    fun showLeadNoteDialog(
-        activity: Activity?,
-        title: String?,
-        individualNote: String?,
-        groupNote: String?
-    ) {
+    fun showLeadNoteDialog(activity: Activity?, title: String?, individualNote: String?, groupNote: String?) {
         mActivity = activity
         val dialog =
             getDialog(R.layout.lead_note_dialog, activity)

@@ -120,8 +120,8 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageViewMessage"
             android:layout_width="@dimen/_20ssp"
-            android:layout_height="@dimen/_20ssp"
-            android:src="@drawable/ic_lumper_message"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_message"
             android:layout_marginBottom="@dimen/_1sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -373,6 +373,4 @@
     <string name="break_end_greater_work_start_warning_message">Break\'s End Time should be greater than Work\'s Start Time</string>
     <string name="break_end_greater_break_start_warning_message">Break\'s End Time should be greater than Break\'s Start Time</string>
     <string name="break_end_less_work_end_warning_message">Break\'s End Time should be less than Work\'s End Time</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
