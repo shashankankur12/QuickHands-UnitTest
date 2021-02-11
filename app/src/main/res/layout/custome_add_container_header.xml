@@ -2,7 +2,7 @@
 <com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_35ssp"
+    android:layout_height="@dimen/_60ssp"
     app:elevation="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,9 +12,11 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/headerBackImage"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:paddingVertical="@dimen/_10sdp"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
@@ -22,6 +24,7 @@
                 android:layout_height="@dimen/_20ssp"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_1sdp"
+                android:padding="@dimen/_3sdp"
                 android:src="@drawable/ic_back_arrow"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -34,26 +37,25 @@
             style="@style/titleBigTextViewThemeHeader"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/_6sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:textColor="@color/textBlack"
+            android:text="@string/add_container"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/headerBackImage"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.quickhandslogistics.controls.CustomTextView
-            android:id="@+id/textViewDate"
-            style="@style/titleVerySmallTextViewTheme"
+        <TextView
+            android:id="@+id/textSubHeader"
+            style="@style/detailTextHeader"
             android:layout_width="0dp"
-            android:layout_marginTop="@dimen/_1sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textAlignment="viewEnd"
-            android:textColor="@color/textBlack"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:text="@string/add_container_header_message"
+            android:textColor="@color/colorTextGrey"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textViewToolbar"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/headerBackImage"
+            app:layout_constraintTop_toBottomOf="@+id/textViewToolbar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.appbar.AppBarLayout>

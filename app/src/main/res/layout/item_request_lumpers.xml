@@ -102,6 +102,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewNoteForLumper" />
 
+    <TextView
+        android:id="@+id/textViewRequestCancelledAt"
+        style="@style/valuesSmallTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/buttonRed"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLumperAssigned" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewTempLumperInfo"
         android:layout_width="match_parent"
@@ -111,7 +122,7 @@
         android:layout_marginHorizontal="@dimen/_5sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/textViewUpdateRequest"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLumperAssigned"/>
+        app:layout_constraintTop_toBottomOf="@+id/textViewRequestCancelledAt"/>
 
     <TextView
         android:id="@+id/textViewUpdateRequest"

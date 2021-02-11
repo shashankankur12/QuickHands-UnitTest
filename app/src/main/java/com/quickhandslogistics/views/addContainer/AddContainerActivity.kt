@@ -22,6 +22,8 @@ import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.activity_add_container.*
+import kotlinx.android.synthetic.main.custome_add_container_header.*
+
 
 
 class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerContract.View.OnAdapterItemClickListener, AddContainerContract.View {
@@ -43,7 +45,7 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_container)
-        setupToolbar(getString(R.string.add_container))
+        setUpCustomToolbar()
 
         initializeUI()
         addContainerPresenter = AddContainerPresenter(this, resources)
@@ -66,6 +68,12 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
 
         }
 
+    }
+
+    private fun setUpCustomToolbar() {
+        textViewToolbar.text= getString(R.string.add_container)
+        textSubHeader.text= getString(R.string.add_container_header_message)
+        headerBackImage.setOnClickListener(this)
     }
 
     fun initializeUI() {
@@ -180,14 +188,12 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
     private fun updateUiVisibility() {
         if (!outBoundList.isNullOrEmpty() || !dropOffList.isNullOrEmpty() || !liveLoadList.isNullOrEmpty()) {
             buttonAdd.isEnabled = checkOutBound()&& checkLiveLoad()&& checkDropOff()
-            textViewAddDrop.isEnabled = dropOffList.size <= 0
             isDataSave(false)
         } else {
             buttonAdd.isEnabled = false
             isDataSave(true)
         }
-
-
+        textViewAddDrop.isEnabled = dropOffList.size <= 0
     }
 
     private fun checkDropOff(): Boolean {
@@ -285,6 +291,7 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
                     )
                     updateUiVisibility()
                 }
+                headerBackImage.id->{super.onBackPressed()}
             }
         }
 

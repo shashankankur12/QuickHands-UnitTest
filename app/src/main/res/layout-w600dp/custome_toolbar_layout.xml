@@ -9,34 +9,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-       <androidx.constraintlayout.widget.ConstraintLayout
-           android:layout_width="wrap_content"
-           android:layout_height="match_parent"
-           android:id="@+id/headerBackImage"
-           app:layout_constraintBottom_toBottomOf="parent"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent">
-           <ImageView
-               android:layout_width="@dimen/_20ssp"
-               android:layout_height="@dimen/_20ssp"
-               android:layout_marginStart="@dimen/_10sdp"
-               android:layout_marginTop="@dimen/_1sdp"
-               android:src="@drawable/ic_back_arrow"
-               app:layout_constraintStart_toStartOf="parent"
-               app:layout_constraintTop_toTopOf="parent"
-               app:layout_constraintBottom_toBottomOf="parent"
-               />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/headerBackImage"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-       </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:layout_width="@dimen/_20ssp"
+                android:layout_height="@dimen/_20ssp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_1sdp"
+                android:src="@drawable/ic_back_arrow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewToolbar"
             style="@style/titleBigTextViewThemeHeader"
             android:layout_width="wrap_content"
-            android:text="@string/add"
             android:layout_marginStart="@dimen/_6sdp"
+            android:textColor="@color/textBlack"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/headerBackImage"
             app:layout_constraintTop_toTopOf="parent" />
@@ -45,11 +43,11 @@
             android:id="@+id/textViewDate"
             style="@style/titleVerySmallTextViewTheme"
             android:layout_width="0dp"
+            android:layout_marginTop="@dimen/_1sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:ellipsize="end"
             android:maxLines="1"
             android:textAlignment="viewEnd"
-            android:layout_marginTop="@dimen/_1sdp"
             android:textColor="@color/textBlack"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"

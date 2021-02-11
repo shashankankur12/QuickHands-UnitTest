@@ -9,19 +9,14 @@
 
     <include
         android:id="@+id/header"
-        layout="@layout/layout_toolbar" />
+        layout="@layout/custome_add_container_header" />
 
-    <TextView
-        android:id="@+id/textHeader"
-        style="@style/detailTextHeader"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/appBackground"
-        android:paddingHorizontal="@dimen/_25ssp"
-        android:paddingBottom="@dimen/_10sdp"
-        android:text="@string/add_container_header_message"
-        android:textColor="@color/colorTextGrey"
+    <View
+        android:id="@+id/viewLine"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
         app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/editTextBackground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header" />
 
@@ -33,7 +28,7 @@
         app:layout_constraintBottom_toTopOf="@+id/buttonAdd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textHeader">
+        app:layout_constraintTop_toBottomOf="@+id/viewLine">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/nestedScrollView"

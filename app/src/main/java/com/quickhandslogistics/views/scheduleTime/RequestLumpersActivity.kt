@@ -59,14 +59,13 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_request_lumpers)
-
+        setUpToolBarLayout()
         intent.extras?.let { bundle ->
             selectedTime = bundle.getLong(ARG_SELECTED_DATE_MILLISECONDS, 0)
             scheduledLumpersCount = bundle.getInt(ARG_SCHEDULED_LUMPERS_COUNT, 0)
 
             isPastDate = !DateUtils.isFutureDate(selectedTime) && !DateUtils.isCurrentDate(selectedTime)
         }
-        setUpToolBarLayout()
 
         initializeUI()
 
@@ -90,7 +89,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     private fun setUpToolBarLayout() {
         textViewToolbar.setText(R.string.request_lumpers)
         textViewDate.visibility=View.VISIBLE
-        textViewDate.text = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, Date(selectedTime))
+        textViewDate.text = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, Date())
         headerBackImage.setOnClickListener(this)
     }
 

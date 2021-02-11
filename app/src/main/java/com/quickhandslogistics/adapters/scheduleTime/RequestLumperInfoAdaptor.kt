@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.utils.DateUtils
 import kotlinx.android.synthetic.main.item_request_lumper_info.view.*
+import java.util.*
 
 
 class RequestLumperInfoAdaptor(private val resources: Resources, val lumpersAllocated: List<String>) :
@@ -38,7 +40,11 @@ class RequestLumperInfoAdaptor(private val resources: Resources, val lumpersAllo
 
         fun bind(lumpersAllocated: String) {
             val countNumber =adapterPosition+1
-            textViewLumperInfo.text= "$countNumber $lumpersAllocated "
+            val lumperName= "namit"
+            val lumperId="ADC001"
+            val time= DateUtils.getDateString( DateUtils.PATTERN_NORMAL_Week, Date())
+
+            textViewLumperInfo.text= String.format(resources.getString(R.string.requested_lumper_info),countNumber, lumperName.capitalize(), lumperId, time)
         }
 
     }

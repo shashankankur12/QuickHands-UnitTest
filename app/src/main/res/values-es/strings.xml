@@ -257,8 +257,11 @@
     <string name="note_for_requested_lumper">Note for Requested Lumpers: </string>
     <string name="lumpers_dm_assigned">Lumpers DM Assigned: %s</string>
     <string name="lumpers_dm_assigned_bold"><![CDATA[<b> Lumpers DM Assigned:</b>]]> %s</string>
+    <string name="request_cancelled_bold"><![CDATA[<b> Request Cancelled:</b>]]> %s</string>
+    <string name="request_not_approved_bold"><![CDATA[<b> Request Not Approved:</b>]]> %s</string>
     <string name="date_day">Date</string>
     <string name="complete_a">Complete %s</string>
+    <string name="requested_lumper_info">%s. %s (Emp ID:%s): %s</string>
     <string name="submitted">Submitted</string>
     <string name="requirement">Requirements</string>
     <string name="view_schedule">View Work Scheduled</string>
@@ -371,7 +374,7 @@
     <string name="sign_in_info_message">Sign in by entering the details below.</string>
     <string name="work_sheet_lumper_message">Lumpers have been Clocked-In</string>
     <string name="work_sheet_cancel_header_message">Clock-In all lumpers who are present before submitting. Add a note if needed</string>
-    <string name="add_container_header_message">Add Container to today\'s schedule</string>
+    <string name="add_container_header_message">Add containers to today\'s schedule</string>
 
     <!--Lumper Timing Warnings-->
     <string name="work_start_less_work_end_warning_message">Work\'s Start Time should be less than End Time</string>

@@ -52,16 +52,15 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
         private val textViewRequestStart: TextView = view.textViewRequestStart
         private val textViewNoteForLumper: TextView = view.textViewNoteForLumper
         private val textViewLumperAssigned: TextView = view.textViewLumperAssigned
+        private val textViewRequestCancelledAt: TextView = view.textViewRequestCancelledAt
         private val textViewCancelRequest: TextView = view.textViewCancelRequest
         private val linearLayoutNotes: LinearLayout = view.linearLayoutNotes
         private val recyclerViewTempLumperInfo: RecyclerView = view.recyclerViewTempLumperInfo
 
         fun bind(requestLumpersRecord: RequestLumpersRecord) {
             textViewRequestedLumpersCount.text = String.format(resources.getString(R.string.requested_lumpers_s), requestLumpersRecord.requestedLumpersCount)
-            textViewRequestedAt.text = UIUtils.getSpannedText(String.format(
-                resources.getString(R.string.requested_maded_s),
-                changeUTCDateStringToLocalDateString(PATTERN_API_RESPONSE, PATTERN_NORMAL_Week, requestLumpersRecord.createdAt!!)
-            ))
+            textViewRequestedAt.text = UIUtils.getSpannedText(String.format(resources.getString(R.string.requested_maded_s), changeUTCDateStringToLocalDateString(PATTERN_API_RESPONSE, PATTERN_NORMAL_Week, requestLumpersRecord.createdAt!!)))
+            textViewRequestStart.text = UIUtils.getSpannedText(String.format(resources.getString(R.string.start_time_bold), "11:22 pm"))
             textViewRequestStart.text = UIUtils.getSpannedText(String.format(resources.getString(R.string.start_time_bold), "11:22 pm"))
 
             var assignedCount= if (requestLumpersRecord.lumpersAllocated.isNullOrEmpty()) 0 else requestLumpersRecord.lumpersAllocated!!.size
@@ -86,21 +85,27 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
                     textViewStatus.text = resources.getString(R.string.pending)
                     textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
                     changeUpdateUIVisibility(!isPastDate)
+                    textViewRequestCancelledAt.visibility= View.GONE
                 }
                 AppConstant.REQUEST_LUMPERS_STATUS_APPROVED -> {
                     textViewStatus.text = resources.getString(R.string.complete)
                     textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
                     changeUpdateUIVisibility(false)
+                    textViewRequestCancelledAt.visibility= View.GONE
                 }
                 AppConstant.REQUEST_LUMPERS_STATUS_REJECTED -> {
                     textViewStatus.text = resources.getString(R.string.not_approved)
                     textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
                     changeUpdateUIVisibility(false)
+                    textViewRequestCancelledAt.visibility= View.VISIBLE
+                    showCancelledTime(requestLumpersRecord.updatedAt, false)
                 }
                 AppConstant.REQUEST_LUMPERS_STATUS_CANCELLED -> {
                     textViewStatus.text = resources.getString(R.string.cancelled)
                     textViewStatus.setBackgroundResource(R.drawable.chip_background_cancelled)
                     changeUpdateUIVisibility(false)
+                    textViewRequestCancelledAt.visibility= View.VISIBLE
+                    showCancelledTime(requestLumpersRecord.updatedAt, true)
                 }
             }
 
@@ -113,6 +118,14 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
         private fun changeUpdateUIVisibility(isShow: Boolean) {
             textViewUpdateRequest.isEnabled = isShow
             textViewCancelRequest.isEnabled = isShow
+        }
+
+        private fun showCancelledTime(cancelAt: String?, isShow: Boolean) {
+             val textHeading= if(isShow) resources.getString(R.string.request_cancelled_bold) else resources.getString(R.string.request_not_approved_bold)
+            cancelAt?.let {
+                textViewRequestCancelledAt.text = UIUtils.getSpannedText(String.format(textHeading, changeUTCDateStringToLocalDateString(PATTERN_API_RESPONSE, PATTERN_NORMAL_Week, it)))
+
+            }
         }
 
         override fun onClick(view: View?) {
