@@ -7,6 +7,7 @@
     android:background="@drawable/schedule_item_background"
     android:paddingStart="@dimen/_10sdp"
     android:paddingTop="@dimen/_10sdp"
+    android:paddingBottom="@dimen/_5sdp"
     android:paddingEnd="@dimen/_10sdp">
 
     <TextView
@@ -31,11 +32,13 @@
 
     <TextView
         android:id="@+id/textViewRequestedAt"
-        style="@style/valuesTextViewTheme"
-        android:layout_width="wrap_content"
+        style="@style/valuesSmallTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginHorizontal="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_4sdp"
         android:text="@string/requested_maded_s"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewRequestedLumpersCount" />
 
     <LinearLayout
@@ -46,25 +49,69 @@
         android:background="@drawable/notes_item_background"
         android:orientation="vertical"
         android:padding="@dimen/_8sdp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewUpdateRequest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewRequestedAt"
         app:layout_goneMarginBottom="@dimen/_10ssp">
 
         <TextView
-            style="@style/titleSmallTextViewTheme"
+            style="@style/titleSmallerTextViewTheme"
             android:text="@string/notes_for_qhl_dm"
             android:textColor="@color/scheduleDetail" />
 
         <TextView
             android:id="@+id/textViewNote"
-            style="@style/valuesTextViewTheme"
+            style="@style/valuesSmallTextViewTheme"
             android:layout_marginTop="@dimen/_2sdp"
             android:ellipsize="end"
             android:maxLines="3"
             android:text="@string/request_help_message" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textViewRequestStart"
+        style="@style/valuesSmallTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:text="@string/start_time_s"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutNotes" />
+
+    <TextView
+        android:id="@+id/textViewNoteForLumper"
+        style="@style/noteTextViewTheme"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:textColor="@color/scheduleDetail"
+        android:text="@string/note_for_requested_lumper"
+        android:textStyle="bold"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRequestStart" />
+
+    <TextView
+        android:id="@+id/textViewLumperAssigned"
+        style="@style/valuesSmallTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:text="@string/lumpers_dm_assigned"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNoteForLumper" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewTempLumperInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textViewUpdateRequest"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLumperAssigned"/>
 
     <TextView
         android:id="@+id/textViewUpdateRequest"
@@ -73,13 +120,13 @@
         android:layout_gravity="end"
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginBottom="@dimen/_4sdp"
-        android:drawableStart="@drawable/ic_edit_red"
+        android:drawableStart="@drawable/edit_icon_selector"
         android:text="@string/update_request"
         android:textSize="@dimen/_11ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textViewCancelRequest"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutNotes" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewTempLumperInfo" />
 
     <TextView
         android:id="@+id/textViewCancelRequest"
@@ -88,11 +135,11 @@
         android:layout_gravity="end"
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginBottom="@dimen/_4sdp"
-        android:drawableStart="@drawable/ic_cancel_red"
+        android:drawableStart="@drawable/cancel_icon_selector"
         android:text="@string/cancel_request"
         android:textSize="@dimen/_11ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewUpdateRequest"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutNotes" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewTempLumperInfo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

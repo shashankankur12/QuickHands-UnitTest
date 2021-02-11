@@ -51,7 +51,8 @@
     <string name="container_no_s">Container No: %s</string>
     <string name="container_details">Container Detail</string>
     <string name="containers">Containers</string>
-    <string name="create_new_request">New Request</string>
+    <string name="create_new_request">Create A New Request</string>
+    <string name="new_request">New Request</string>
     <string name="current_time">Current Time: </string>
     <string name="custom">Custom</string>
     <string name="customer_details">Customer Details</string>
@@ -156,7 +157,7 @@
     <string name="reports">Reports</string>
     <string name="reset_password">Reset Password</string>
     <string name="request_lumpers">Request Lumpers</string>
-    <string name="requested_maded_s">Requested Maded: %s</string>
+    <string name="requested_maded_s"><![CDATA[<b> Requested Maded:</b>]]> %s</string>
     <string name="requested_lumpers_s">Requested Lumpers: %s</string>
     <string name="role">Role</string>
     <string name="role_lead">Role : </string>
@@ -195,6 +196,7 @@
     <string name="start_time">Start Time</string>
     <string name="start_time_s">Start Time: %s</string>
     <string name="start_time_add_container">Schedule Time:</string>
+    <string name="start_time_bold"><![CDATA[<b>Start Time: </b>]]> %s</string>
     <string name="submit">Submit</string>
     <string name="add">Add</string>
     <string name="success">Success</string>
@@ -252,6 +254,9 @@
     <string name="custom_scheduleds">Custom Date Scheduled Container</string>
     <string name="individual_note">Individual Note</string>
     <string name="date">Date: <![CDATA[<b> %s</b>]]></string>
+    <string name="note_for_requested_lumper">Note for Requested Lumpers:</string>
+    <string name="lumpers_dm_assigned">Lumpers DM Assigned: %s</string>
+    <string name="lumpers_dm_assigned_bold"><![CDATA[<b> Lumpers DM Assigned:</b>]]> %s</string>
     <string name="date_day">Date</string>
     <string name="complete_a">Complete %s</string>
     <string name="submitted">Submitted</string>
@@ -336,6 +341,10 @@
     <string name="assign_work_done_message">You haven\'t enter work done. Please enter work done, before changing the container status to complete.</string>
     <string name="password_short_length_message">Please enter Password of at-least 8 characters</string>
     <string name="request_help_message"><![CDATA[Enter Number of Lumpers and Notes for DM.]]></string>
+    <string name="request_lumper_number_message"><![CDATA[Enter number of lumpers.]]></string>
+    <string name="request_lumper_DM_note_message"><![CDATA[Enter note for DM.]]></string>
+    <string name="request_lumper_lumper_note_message"><![CDATA[Enter note for lumpers.]]></string>
+    <string name="request_lumper_start_time_message"><![CDATA[Enter start time for lumpers.]]></string>
     <string name="request_valid_message"><![CDATA[Please enter valid number of additional lumpers needed.]]></string>
     <string name="something_went_wrong_message">Something went wrong, Please try again after sometime!!!</string>
     <string name="cancel_schedule_lumper_invalidate_message">You can cancel lumper after two hours of start time!!!</string>
@@ -349,6 +358,7 @@
     <string name="enter_password_info_message">Password</string>
     <string name="forgot_password_info_message">Enter the following information to receive an email with a  link to reset your password.</string>
     <string name="no_of_lumpers_needed">No. of Additional Lumpers Needed</string>
+    <string name="additional_lumpers_needed">Additional Lumpers Needed</string>
     <string name="no_record_found_info_message">No Record Found</string>
     <string name="custome_report_message">Enter a Date Range first. Then available workers will appear for selection.</string>
     <string name="notes_by_customer">Notes by Customer</string>
@@ -356,6 +366,7 @@
     <string name="notes_for_scheduled_lumpers">Notes for Scheduled Lumpers…</string>
     <string name="notes_for_qhl">Notes for QHL</string>
     <string name="notes_for_qhl_dm">Notes for QHL District Manager</string>
+    <string name="notes_for_request_lumper">Notes for Request Lumpers</string>
     <string name="notification_off_info_message">Notification are turned off from the app Settings. Click to update.</string>
     <string name="search_info_message">Search by Name…</string>
     <string name="sign_in_info_message">Sign in by entering the details below.</string>

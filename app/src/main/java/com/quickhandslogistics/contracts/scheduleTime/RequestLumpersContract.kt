@@ -9,7 +9,7 @@ import kotlin.collections.ArrayList
 class RequestLumpersContract {
     interface Model {
         fun fetchAllRequestsByDate(selectedDate: Date, onFinishedListener: OnFinishedListener)
-        fun createNewRequestForLumpers(requiredLumperCount: String, notesDM: String, date: Date, onFinishedListener: OnFinishedListener)
+        fun createNewRequestForLumpers(requiredLumperCount: String, notesDM: String, date: Date, noteLumper :String, onFinishedListener: OnFinishedListener)
         fun cancelRequestForLumpers(requestId: String, date: Date, onFinishedListener: OnFinishedListener)
         fun updateRequestForLumpers(requestId: String, requiredLumperCount: String, notesDM: String, date: Date, onFinishedListener: OnFinishedListener)
 
@@ -36,7 +36,12 @@ class RequestLumpersContract {
 
     interface Presenter : BaseContract.Presenter {
         fun fetchAllRequestsByDate(selectedDate: Date)
-        fun createNewRequestForLumpers(requiredLumperCount: String, notesDM: String, date: Date)
+        fun createNewRequestForLumpers(
+            requiredLumperCount: String,
+            notesDM: String,
+            date: Date,
+            noteLumper: String
+        )
         fun cancelRequestForLumpers(requestId: String, date: Date)
         fun updateRequestForLumpers(requestId: String, requiredLumperCount: String, notesDM: String, date: Date)
     }

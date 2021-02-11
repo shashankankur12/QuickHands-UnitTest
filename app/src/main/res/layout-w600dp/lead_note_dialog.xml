@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/loading"
+    android:layout_width="450dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_background"
+    android:padding="10dp">
+    <TextView
+        android:id="@+id/title_text"
+        style="@style/dialogTitleTextViewThemeBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="@string/dialog_default_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/layoutIndividualNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:gravity="center_vertical"
+                android:visibility="visible"
+                android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/gray_btn_bg_color"
+                    android:layout_height="@dimen/_1sdp"/>
+
+                <TextView
+                    style="@style/dialogTitleTextViewThemeBold"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:text="@string/individual_note" />
+                <TextView
+                    style="@style/dialogContentTextViewThemeBold"
+                    android:layout_width="match_parent"
+                    android:id="@+id/individual_note"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:text="@string/daily_scheduled" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutGroupNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/gray_btn_bg_color"
+                    android:layout_height="@dimen/_1sdp"/>
+
+                <TextView
+                    style="@style/dialogTitleTextViewThemeBold"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:text="@string/group_notes" />
+
+                <TextView
+                    style="@style/dialogContentTextViewThemeBold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/groupNote"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:layout_marginHorizontal="20dp"
+                    android:text="@string/group_notes" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/gray_btn_bg_color"
+                    android:layout_height="@dimen/_1sdp"/>
+
+
+                <Button
+                    android:id="@+id/confirm_button"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    style="@style/dialog_blue_button"
+                    android:background="@drawable/round_button_red_selector"
+                    android:text="@string/dialog_ok" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+</LinearLayout>

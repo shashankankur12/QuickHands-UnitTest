@@ -35,6 +35,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:visibility="gone"
+            android:text="@string/add"
             android:textColor="@color/textBlack"
             android:layout_marginEnd="@dimen/_5sdp"
             android:layout_alignParentEnd="true"
