@@ -13,6 +13,8 @@
         android:id="@+id/title_text"
         style="@style/dialogTitleTextViewThemeBold"
         android:layout_width="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginHorizontal="15dp"
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:text="@string/dialog_default_title" />

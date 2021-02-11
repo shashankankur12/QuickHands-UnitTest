@@ -15,6 +15,7 @@ import com.quickhandslogistics.controls.NavDrawer
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.presenters.DashBoardPresenter
 import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.views.addContainer.AddContainerActivity
 import com.quickhandslogistics.views.attendance.TimeClockAttendanceFragment
 import com.quickhandslogistics.views.customerSheet.CustomerSheetFragment
 import com.quickhandslogistics.views.lumperSheet.LumperSheetFragment
@@ -98,6 +99,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             when (selectedFragmentTitle) {
                 getString(R.string.today_s_work_sheet) -> {
                     menu.findItem(R.id.actionCancelAllWork).isVisible = isCancelAllScheduleVisible
+                    menu.findItem(R.id.actionAddContainer).isVisible = true
                 }
                 getString(R.string.scheduled_lumpers) -> {
                     menu.findItem(R.id.actionNotes).isVisible = scheduleTimeNotes.isNotEmpty()
@@ -114,6 +116,9 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             }
             R.id.actionCancelAllWork -> {
                 startIntent(AllWorkScheduleCancelActivity::class.java, requestCode = AppConstant.REQUEST_CODE_CHANGED)
+            }
+            R.id.actionAddContainer -> {
+                startIntent(AddContainerActivity::class.java, requestCode = AppConstant.REQUEST_CODE_CHANGED)
             }
         }
         return super.onOptionsItemSelected(item)
