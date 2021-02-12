@@ -20,7 +20,6 @@ import com.quickhandslogistics.presenters.customerContact.CustomerContactPresent
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
-import com.quickhandslogistics.views.lumpers.LumpersFragment
 import kotlinx.android.synthetic.main.content_customer_contact_header.*
 import kotlinx.android.synthetic.main.fragment_customer_contect.*
 import kotlinx.android.synthetic.main.fragment_lumpers.*
@@ -54,7 +53,7 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
             layoutManager = linearLayoutManager
             val dividerItemDecoration = DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            customerContactAdapter = CustomerContactAdapter(this@CustomerContactFragment)
+            customerContactAdapter = CustomerContactAdapter(resources,this@CustomerContactFragment)
             adapter = customerContactAdapter
         }
 

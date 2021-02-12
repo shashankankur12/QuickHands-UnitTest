@@ -1,6 +1,8 @@
 package com.quickhandslogistics.adapters.qhlContact
 
 import android.content.Context
+import android.content.res.Resources
+import android.telephony.PhoneNumberUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +14,11 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.qhlContact.QhlContactContract
 import com.quickhandslogistics.controls.CustomTextView
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import kotlinx.android.synthetic.main.content_customer_contact_header.*
 import kotlinx.android.synthetic.main.item_customer_contact_layout.view.*
 import kotlin.collections.ArrayList
 
-class QhlContactAdapter(var adapterItemClickListener: QhlContactContract.View.OnAdapterItemClickListener) : Adapter<QhlContactAdapter.ViewHolder>() {
+class QhlContactAdapter(val resources: Resources, var adapterItemClickListener: QhlContactContract.View.OnAdapterItemClickListener) : Adapter<QhlContactAdapter.ViewHolder>() {
     private var items: ArrayList<EmployeeData> = ArrayList()
     private var filteredItems: ArrayList<EmployeeData> = ArrayList()
 
@@ -33,7 +36,7 @@ class QhlContactAdapter(var adapterItemClickListener: QhlContactContract.View.On
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//        holder.bind(getItem(position))
+        holder.bind(/*getItem(position)*/)
     }
 
     inner class ViewHolder(view: View, private val context: Context) : RecyclerView.ViewHolder(view), View.OnClickListener {
@@ -44,10 +47,20 @@ class QhlContactAdapter(var adapterItemClickListener: QhlContactContract.View.On
         private val textViewEmployeeShift: CustomTextView = view.textViewEmployeeShift
         private val textViewEmail: CustomTextView = view.textViewEmail
         private val textVieWContact: CustomTextView = view.textVieWContact
+        private val textViewMessageTime: TextView = view.textViewMessageTime
         private val imageViewCall: ImageView = view.imageViewCall
 
-        fun bind(employeeData: EmployeeData) {
 
+        fun bind(/*employeeData: EmployeeData*/) {
+            val mobilenumber ="8090889709"
+
+            textViewCustomerName.text= "Namit"
+            textViewEmployeeRole.text= "Manager"
+            textViewEmployeeTitle.text= "Shipping"
+            textViewEmployeeShift.text= String.format(resources.getString(R.string.shift_normal),"Day")
+            textViewEmail.text= "namit@yopmail.com"
+            textViewMessageTime.text= "12:22 PM"
+            textVieWContact.text= PhoneNumberUtils.formatNumber(mobilenumber, "US")
 
             imageViewCall.setOnClickListener(this)
             itemView.setOnClickListener(this)

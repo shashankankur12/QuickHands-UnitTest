@@ -268,6 +268,8 @@
     <string name="customer_contect">Customer Contact</string>
     <string name="qhl_contect">QHL Contacts</string>
     <string name="cancel_header_details">Remove <![CDATA[<b><font color=#e30913> %s</font></b>]]> from <![CDATA[<b><font color=#e30913> %s</font></b>]]> schedule</string>
+    <string name="cancel_all_schedule_lumper">Cancel All Lumpers</string>
+    <string name="shift_normal">Shift: %s</string>
 
     <!--No Record Messages-->
     <string name="empty_add_work_item_lumpers_info_message">This building doesn\'t have any lumpers present for the selected date. Please mark lumpers attendance in \'Time-Clock Attendance\' section for selecting them. \n</string>

@@ -1,6 +1,8 @@
 package com.quickhandslogistics.adapters.customerContact
 
 import android.content.Context
+import android.content.res.Resources
+import android.telephony.PhoneNumberUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +15,10 @@ import com.quickhandslogistics.contracts.customerContact.CustomerContactContract
 import com.quickhandslogistics.controls.CustomTextView
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import kotlinx.android.synthetic.main.item_customer_contact_layout.view.*
+
 import kotlin.collections.ArrayList
 
-class CustomerContactAdapter(var adapterItemClickListener: CustomerContactContract.View.OnAdapterItemClickListener) : Adapter<CustomerContactAdapter.ViewHolder>() {
+class CustomerContactAdapter(val resources: Resources, var adapterItemClickListener: CustomerContactContract.View.OnAdapterItemClickListener) : Adapter<CustomerContactAdapter.ViewHolder>() {
     private var items: ArrayList<EmployeeData> = ArrayList()
     private var filteredItems: ArrayList<EmployeeData> = ArrayList()
 
@@ -33,12 +36,13 @@ class CustomerContactAdapter(var adapterItemClickListener: CustomerContactContra
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//        holder.bind(getItem(position))
+        holder.bind(/*getItem(position)*/)
     }
 
     inner class ViewHolder(view: View, private val context: Context) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
         private val textViewCustomerName: TextView = view.textViewCustomerName
+        private val textViewMessageTime: TextView = view.textViewMessageTime
         private val textViewEmployeeRole: CustomTextView = view.textViewEmployeeRole
         private val textViewEmployeeTitle: CustomTextView = view.textViewEmployeeTitle
         private val textViewEmployeeShift: CustomTextView = view.textViewEmployeeShift
@@ -46,8 +50,16 @@ class CustomerContactAdapter(var adapterItemClickListener: CustomerContactContra
         private val textVieWContact: CustomTextView = view.textVieWContact
         private val imageViewCall: ImageView = view.imageViewCall
 
-        fun bind(employeeData: EmployeeData) {
+        fun bind(/*employeeData: EmployeeData*/) {
+            val mobilenumber ="0908897096"
 
+            textViewCustomerName.text= "Namit"
+            textViewEmployeeRole.text= "Manager"
+            textViewEmployeeTitle.text= "Shipping"
+            textViewEmployeeShift.text= String.format(resources.getString(R.string.shift_normal),"Day")
+            textViewEmail.text= "namit@yopmail.com"
+            textVieWContact.text= PhoneNumberUtils.formatNumber(mobilenumber, "US")
+            textViewMessageTime.text= "12:22 PM"
 
             imageViewCall.setOnClickListener(this)
             itemView.setOnClickListener(this)

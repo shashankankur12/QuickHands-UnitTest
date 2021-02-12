@@ -266,6 +266,8 @@
     <string name="requirement">Requirements</string>
     <string name="customer_contect">Customer Contact</string>
     <string name="qhl_contect">QHL Contacts</string>
+    <string name="cancel_all_schedule_lumper">Cancel All Lumpers</string>
+    <string name="shift_normal">Shift: %s</string>
 
     <string name="view_schedule">View Work Scheduled</string>
     <string name="cancel_header_details">Remove <![CDATA[<b><font color=#e30913> %s</font></b>]]> from <![CDATA[<b><font color=#e30913> %s</font></b>]]> schedule</string>
@@ -314,7 +316,7 @@
     <string name="reports_generate_success_message">Report has been generated Successfully. Please check the notification bar to see the downloading. \n</string>
     <string name="request_cancelled_success_message">Request cancelled successfully</string>
     <string name="request_lumpers_alert_message">You want to submit this lumper request</string>
-    <string name="cancel_request_lumper">You want to cancel this schedule lumper</string>
+    <string name="cancel_request_lumper">You want to cancel schedule lumpers</string>
     <string name="edit_schedule_lumper_message">You want to update info of this lumper</string>
     <string name="request_placed_success_message">Request placed successfully</string>
     <string name="request_cancel_success_message">Cancel successfully</string>

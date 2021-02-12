@@ -52,7 +52,7 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
             layoutManager = linearLayoutManager
             val dividerItemDecoration = DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            qhlContactAdapter = QhlContactAdapter(this@QhlContactFragment)
+            qhlContactAdapter = QhlContactAdapter(resources, this@QhlContactFragment)
             adapter = qhlContactAdapter
         }
 
