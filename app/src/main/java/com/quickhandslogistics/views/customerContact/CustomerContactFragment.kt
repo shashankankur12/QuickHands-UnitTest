@@ -3,7 +3,6 @@ package com.quickhandslogistics.views.customerContact
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.telephony.PhoneNumberUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -108,7 +107,7 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
         buildingDetailData?.let {
             textViewCustomerName.text=it.buildingName!!.capitalize()
             textViewCompanyName.text=it.buildingAddress!!.capitalize() +","+it.buildingCity+", "+it.buildingState +" "+it .buildingZipcode
-            textViewCompanyContact.text=   PhoneNumberUtils.formatNumber(it.phone, "US")
+            textViewCompanyContact.text= it.phone?.let { it1 -> UIUtils.formetMobileNumber(it1) }
         }
         activity?.let { Glide.with(it).load(R.drawable.building_image).into(circleImageViewProfile) }
     }

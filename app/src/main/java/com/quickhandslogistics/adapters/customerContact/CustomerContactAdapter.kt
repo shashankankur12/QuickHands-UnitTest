@@ -2,7 +2,6 @@ package com.quickhandslogistics.adapters.customerContact
 
 import android.content.Context
 import android.content.res.Resources
-import android.telephony.PhoneNumberUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.customerContact.CustomerContactContract
 import com.quickhandslogistics.controls.CustomTextView
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.utils.UIUtils
 import kotlinx.android.synthetic.main.item_customer_contact_layout.view.*
 
 import kotlin.collections.ArrayList
@@ -58,7 +58,8 @@ class CustomerContactAdapter(val resources: Resources, var adapterItemClickListe
             textViewEmployeeTitle.text= "Shipping"
             textViewEmployeeShift.text= String.format(resources.getString(R.string.shift_normal),"Day")
             textViewEmail.text= "namit@yopmail.com"
-            textVieWContact.text= PhoneNumberUtils.formatNumber(mobilenumber, "US")
+//            textVieWContact.text= PhoneNumberUtils.formatNumber(mobilenumber, "US")
+            textVieWContact.text= UIUtils.formetMobileNumber(mobilenumber)
             textViewMessageTime.text= "12:22 PM"
 
             imageViewCall.setOnClickListener(this)

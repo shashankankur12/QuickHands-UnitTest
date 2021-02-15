@@ -21,6 +21,7 @@ import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeRequest
 import com.quickhandslogistics.presenters.scheduleTime.EditScheduleTimePresenter
 import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity.Companion.ARG_LUMPERS_LIST
@@ -34,6 +35,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_edit_schedule_time_note.*
 import kotlinx.android.synthetic.main.content_edit_schedule_time.*
 import kotlinx.android.synthetic.main.content_edit_schedule_time.buttonCancelNote
 import kotlinx.android.synthetic.main.content_edit_schedule_time.buttonSubmit
+import kotlinx.android.synthetic.main.custome_toolbar_layout.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -59,8 +61,9 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_schedule_time)
-        setupToolbar(getString(R.string.schedule_lumpers))
+//        setupToolbar(getString(R.string.schedule_lumpers))
 
+        setUpCustomToolbar()
         intent.extras?.let { bundle ->
             selectedTime = bundle.getLong(ARG_SELECTED_DATE_MILLISECONDS, 0)
             scheduleTimeList = bundle.getParcelableArrayList<ScheduleTimeDetail>(ARG_SCHEDULED_TIME_LIST) as ArrayList<ScheduleTimeDetail>
@@ -83,6 +86,12 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             editScheduleTimePresenter.getHeaderDateString(Date(selectedTime))
             initializeUI(scheduleTimeList)
         }
+    }
+
+    private fun setUpCustomToolbar() {
+        headerBackImage.setOnClickListener(this)
+        textViewToolbar.text=getString(R.string.schedule_lumpers)
+        textViewDate.text=DateUtils.getDateString(PATTERN_NORMAL, Date())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -255,6 +264,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
+                headerBackImage.id -> onBackPressed()
                 imageViewAddLumpers.id -> showChooseLumpersScreen()
                 bottomSheetBackgroundEditSchedule.id -> closeBottomSheet()
                 buttonCancelDialog.id -> closeBottomSheet()
@@ -310,7 +320,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
             editTextDMNotes.setText(noteForLumper)
             buttonSubmit.setTag(R.id.adapterPosition, adapterPosition)
         } ?: run {
-            textViewTitle.text = getString(R.string.add_notes)
+            textViewTitle.text = getString(R.string.add_note_popup)
             editTextDMNotes.setText("")
             buttonSubmit.setTag(R.id.adapterPosition, adapterPosition)
         }
@@ -348,7 +358,7 @@ class EditScheduleTimeActivity : BaseActivity(), View.OnClickListener, TextWatch
     /** Presenter Listeners */
     override fun showDateString(dateString: String) {
         this.dateString = dateString
-        textViewDate.text = UIUtils.getSpannedText(dateString)
+//        textViewDate.text = UIUtils.getSpannedText(dateString)
     }
 
     override fun showAPIErrorMessage(message: String) {

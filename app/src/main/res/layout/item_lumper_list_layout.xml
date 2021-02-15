@@ -81,7 +81,7 @@
         android:layout_height="0dp"
         android:layout_margin="@dimen/_1sdp"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/hypertext_color"
+        android:background="@color/message_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/constraintLayoutMessage">
         <de.hdodenhof.circleimageview.CircleImageView
@@ -114,7 +114,7 @@
         android:layout_height="0dp"
         android:layout_margin="@dimen/_1sdp"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/hypertext_color"
+        android:background="@color/message_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
         <de.hdodenhof.circleimageview.CircleImageView

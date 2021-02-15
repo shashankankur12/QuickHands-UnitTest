@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
@@ -74,9 +75,9 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
         private val textViewAddStartTime: TextView = view.textViewAddStartTime
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
         private val imageViewCancel: ImageView = view.imageViewCancel
-        private val layoutScheduleTime: RelativeLayout = view.layoutScheduleTime
+        private val layoutScheduleTime: View? = view.layoutScheduleTime
         private val viewAttendanceStatus: View = view.viewAttendanceStatus
-        private val layoutScheduleNote: LinearLayout = view.layoutScheduleNote
+        private val layoutScheduleNote: TextView = view.textViewScheduleNote
 
         fun bind(scheduleTimeDetail: ScheduleTimeDetail) {
             scheduleTimeDetail.lumperInfo?.let { employeeData ->
@@ -105,7 +106,7 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
 
             textViewAddStartTime.setOnClickListener(this)
             itemView.setOnClickListener(this)
-            layoutScheduleTime.setOnClickListener(this)
+            layoutScheduleTime?.setOnClickListener(this)
             imageViewCancel.setOnClickListener(this)
             layoutScheduleNote.setOnClickListener(this)
         }
@@ -116,7 +117,7 @@ class EditScheduleTimeAdapter(scheduleTimeList: ArrayList<ScheduleTimeDetail>, p
                     textViewAddStartTime.id -> {
                         onAdapterClick.onAddStartTimeClick(adapterPosition, 0)
                     }
-                    layoutScheduleTime.id -> {
+                    layoutScheduleTime?.id -> {
                         var timeInMillis: Long = 0
                         val scheduleTimeDetail = getItem(adapterPosition)
                         if (scheduledLumpersIdsTimeMap.containsKey(scheduleTimeDetail.lumperInfo?.id!!)) {

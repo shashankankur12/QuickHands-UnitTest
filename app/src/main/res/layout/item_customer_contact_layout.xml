@@ -96,7 +96,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="@dimen/_50sdp"
         android:layout_height="0dp"
-        android:background="@color/hypertext_color"
+        android:background="@color/message_background"
         app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/constraintViewCall"
         app:layout_constraintEnd_toEndOf="parent"

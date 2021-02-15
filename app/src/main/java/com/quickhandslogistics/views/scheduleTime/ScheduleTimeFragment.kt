@@ -239,7 +239,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         when(operation){
             EDIT_SCHEDULE_LUMPER->{
                 record.let {
-                    textViewTitle.text = getString(R.string.edit_schedule_lumper)
+                    textViewTitle.text = getString(R.string.edit_time_note)
                     linearLayoutCancelLumper.visibility=View.GONE
                     linearLayoutEditLumper.visibility=View.VISIBLE
                     setLumperDetails(it)
