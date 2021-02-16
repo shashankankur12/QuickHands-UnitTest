@@ -42,11 +42,11 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_17sdp"
             android:src="@drawable/ic_cancel"
-            android:tint="@color/colorLightGrey"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/editTextSearch"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/editTextSearch" />
+            app:layout_constraintTop_toTopOf="@+id/editTextSearch"
+            app:tint="@color/colorLightGrey" />
 
         <View
             android:id="@+id/appBarView"
@@ -134,9 +134,8 @@
             android:layout_height="0dp"
             android:background="@drawable/white_background"
             android:orientation="vertical"
-            android:paddingStart="@dimen/_12ssp"
+            android:paddingHorizontal="@dimen/_12ssp"
             android:paddingTop="@dimen/_6ssp"
-            android:paddingEnd="@dimen/_12ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

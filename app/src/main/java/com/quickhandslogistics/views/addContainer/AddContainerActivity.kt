@@ -3,7 +3,9 @@ package com.quickhandslogistics.views.addContainer
 
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -199,8 +201,20 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
     private fun checkDropOff(): Boolean {
         var isDropOffChecked=false
         if (dropOffList.size>0){
-            dropOffList.forEach{
-                isDropOffChecked = !(it.numberOfDrops.isNullOrEmpty() || it.startTime.isNullOrEmpty())
+//            dropOffList.forEach{
+//                if (it.numberOfDrops.isNullOrEmpty() || it.startTime.isNullOrEmpty()){
+//                    isDropOffChecked= false
+//                    return@forEach
+//
+//                }else isDropOffChecked=true
+////                isDropOffChecked = !(it.numberOfDrops.isNullOrEmpty() || it.startTime.isNullOrEmpty())
+//            }
+            for (dropOffData in dropOffList) {
+                if (dropOffData.numberOfDrops.isNullOrEmpty() || dropOffData.startTime.isNullOrEmpty()){
+                    isDropOffChecked= false
+                    break
+
+                }else isDropOffChecked=true
             }
         } else isDropOffChecked=true
         return isDropOffChecked
@@ -209,8 +223,22 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
     private fun checkLiveLoad(): Boolean {
         var liveLoadChecked=false
         if (liveLoadList.size>0){
-            liveLoadList.forEach{
-                liveLoadChecked = !(it.sequence.isNullOrEmpty() || it.startTime.isNullOrEmpty())
+//            liveLoadList.forEach{
+//
+//                if (it.numberOfDrops.isNullOrEmpty() || it.startTime.isNullOrEmpty()){
+//                    liveLoadChecked= false
+//                    return@forEach
+//
+//                }else liveLoadChecked=true
+////                liveLoadChecked = !(it.sequence.isNullOrEmpty() || it.startTime.isNullOrEmpty())
+//            }
+
+            for (liveLoad in liveLoadList) {
+                if (liveLoad.sequence.isNullOrEmpty() || liveLoad.startTime.isNullOrEmpty()){
+                    liveLoadChecked= false
+                    break
+
+                }else liveLoadChecked=true
             }
         }else liveLoadChecked=true
         return liveLoadChecked
@@ -219,10 +247,26 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
     private fun checkOutBound(): Boolean {
         var outBoundChecked= false
         if (outBoundList.size>0){
-            outBoundList.forEach{
-                outBoundChecked = !(it.sequence.isNullOrEmpty() || it.startTime.isNullOrEmpty())
+//            outBoundList.forEach{
+//
+//                if (it.numberOfDrops.isNullOrEmpty() || it.startTime.isNullOrEmpty()){
+//                    outBoundChecked= false
+//                    return@forEach
+//
+//                }else outBoundChecked=true
+//
+////                outBoundChecked = !(it.sequence.isNullOrEmpty() || it.startTime.isNullOrEmpty())
+//            }
+
+            for (outBoundData in outBoundList) {
+                if (outBoundData.sequence.isNullOrEmpty() || outBoundData.startTime.isNullOrEmpty()){
+                    outBoundChecked= false
+                    break
+
+                }else outBoundChecked=true
             }
         }else outBoundChecked= true
+
       return outBoundChecked
     }
 
@@ -291,7 +335,9 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
                     )
                     updateUiVisibility()
                 }
-                headerBackImage.id->{super.onBackPressed()}
+                headerBackImage.id -> {
+                    super.onBackPressed()
+                }
             }
         }
 
@@ -317,9 +363,15 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
     override fun removeItemFromList(position: Int, item: ContainerDetails) {
         item.workItemType.let {
             when (it){
-                WORKSHEET_WORK_ITEM_OUTBOUND->{outBoundList.removeAt(position)}
-                WORKSHEET_WORK_ITEM_LIVE->{liveLoadList.removeAt(position)}
-                WORKSHEET_WORK_ITEM_INBOUND->{dropOffList.removeAt(position)}
+                WORKSHEET_WORK_ITEM_OUTBOUND -> {
+                    outBoundList.removeAt(position)
+                }
+                WORKSHEET_WORK_ITEM_LIVE -> {
+                    liveLoadList.removeAt(position)
+                }
+                WORKSHEET_WORK_ITEM_INBOUND -> {
+                    dropOffList.removeAt(position)
+                }
                 else -> {}
             }
         }
@@ -330,9 +382,15 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
     override fun addQuantity(adapterPosition: Int, item: ContainerDetails, quantity: String) {
         item.workItemType.let {
             when (it){
-                WORKSHEET_WORK_ITEM_OUTBOUND->{outBoundList [adapterPosition].sequence=quantity}
-                WORKSHEET_WORK_ITEM_LIVE->{liveLoadList[adapterPosition].sequence=quantity}
-                WORKSHEET_WORK_ITEM_INBOUND->{dropOffList[adapterPosition].numberOfDrops=quantity}
+                WORKSHEET_WORK_ITEM_OUTBOUND -> {
+                    outBoundList[adapterPosition].sequence = quantity
+                }
+                WORKSHEET_WORK_ITEM_LIVE -> {
+                    liveLoadList[adapterPosition].sequence = quantity
+                }
+                WORKSHEET_WORK_ITEM_INBOUND -> {
+                    dropOffList[adapterPosition].numberOfDrops = quantity
+                }
                 else -> {}
             }
         }
@@ -343,9 +401,15 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
     override fun addTimeInList(position: Int, item: ContainerDetails, timeInMilli1: String) {
         item.workItemType.let {
             when (it){
-                WORKSHEET_WORK_ITEM_OUTBOUND->{outBoundList [position].startTime=timeInMilli1}
-                WORKSHEET_WORK_ITEM_LIVE->{liveLoadList[position].startTime=timeInMilli1}
-                WORKSHEET_WORK_ITEM_INBOUND->{dropOffList[position].startTime=timeInMilli1}
+                WORKSHEET_WORK_ITEM_OUTBOUND -> {
+                    outBoundList[position].startTime = timeInMilli1
+                }
+                WORKSHEET_WORK_ITEM_LIVE -> {
+                    liveLoadList[position].startTime = timeInMilli1
+                }
+                WORKSHEET_WORK_ITEM_INBOUND -> {
+                    dropOffList[position].startTime = timeInMilli1
+                }
                 else -> {}
             }
         }
