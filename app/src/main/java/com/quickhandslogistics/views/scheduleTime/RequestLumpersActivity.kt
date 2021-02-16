@@ -235,16 +235,16 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         val noteLumper = editTextLumperNotes.text.toString()
         when {
             requiredLumperCount.isEmpty() -> {
-                CustomProgressBar.getInstance().showInfoDialog(getString(R.string.requirement),getString(R.string.request_lumper_number_message), activity)
+                CustomProgressBar.getInstance().showValidationErrorDialog(getString(R.string.request_lumper_number_message), activity)
             }
             notesDM.isEmpty() -> {
-                CustomProgressBar.getInstance().showInfoDialog(getString(R.string.requirement),getString(R.string.request_lumper_DM_note_message), activity)
+                CustomProgressBar.getInstance().showValidationErrorDialog(getString(R.string.request_lumper_DM_note_message), activity)
             }
             noteLumper.isEmpty() -> {
-                CustomProgressBar.getInstance().showInfoDialog(getString(R.string.requirement),getString(R.string.request_lumper_lumper_note_message), activity)
+                CustomProgressBar.getInstance().showValidationErrorDialog(getString(R.string.request_lumper_lumper_note_message), activity)
             }
             requiredLumperCount.toInt()==0 -> {
-                CustomProgressBar.getInstance().showMessageDialog(getString(R.string.request_valid_message), activity)
+                CustomProgressBar.getInstance().showValidationErrorDialog(getString(R.string.request_valid_message), activity)
             }
             else -> {
                 showSubmitRequestConfirmationDialog(requiredLumperCount, notesDM, noteLumper)
@@ -366,7 +366,8 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     /** Adapter Listeners */
     override fun onNotesItemClick(notes: String?) {
         notes?.let {
-            CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), notes, activity)
+//            CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), notes, activity)
+            CustomeDialog.showNoteDialog(activity,getString(R.string.note),notes)
         }
     }
 

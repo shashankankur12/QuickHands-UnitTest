@@ -20,9 +20,9 @@ class QhlContactPresenter(private var customerContactContractView: QhlContactCon
     }
 
     override fun fetchQhlContactList() {
-        customerContactContractView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        qhlContactModel.fetchHeaderInfo(this)
-        qhlContactModel.fetchQhlContactList(this)
+//        customerContactContractView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        qhlContactModel.fetchQhlHeaderInfo(this)
+//        qhlContactModel.fetchQhlContactList(this)
     }
 
     /** Model Result Listeners */
@@ -31,7 +31,7 @@ class QhlContactPresenter(private var customerContactContractView: QhlContactCon
     }
 
     override fun onSuccessGetHeaderInfo(leadProfileData: LeadProfileData?) {
-
+        customerContactContractView?.showQhlHeaderInfo(leadProfileData)
     }
 
     override fun onFailure(message: String) {

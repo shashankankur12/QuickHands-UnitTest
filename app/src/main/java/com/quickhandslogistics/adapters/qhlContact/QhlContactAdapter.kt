@@ -14,6 +14,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.qhlContact.QhlContactContract
 import com.quickhandslogistics.controls.CustomTextView
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.utils.UIUtils
 import kotlinx.android.synthetic.main.content_customer_contact_header.*
 import kotlinx.android.synthetic.main.item_customer_contact_layout.view.*
 import kotlin.collections.ArrayList
@@ -60,7 +61,7 @@ class QhlContactAdapter(val resources: Resources, var adapterItemClickListener: 
             textViewEmployeeShift.text= String.format(resources.getString(R.string.shift_normal),"Day")
             textViewEmail.text= "namit@yopmail.com"
             textViewMessageTime.text= "12:22 PM"
-            textVieWContact.text= PhoneNumberUtils.formatNumber(mobilenumber, "US")
+            textVieWContact.text= UIUtils.formetMobileNumber(mobilenumber)
 
             imageViewCall.setOnClickListener(this)
             itemView.setOnClickListener(this)

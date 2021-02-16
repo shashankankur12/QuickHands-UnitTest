@@ -12,14 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.qhlContact.QhlContactAdapter
 import com.quickhandslogistics.contracts.qhlContact.QhlContactContract
+import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.presenters.qhlContact.QhlContactPresenter
-import com.quickhandslogistics.utils.ConnectionDetector
-import com.quickhandslogistics.utils.CustomDialogWarningListener
-import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
+import com.quickhandslogistics.views.customerContact.CustomerContactFragment
 import kotlinx.android.synthetic.main.fragment_qhl_contact.*
 
 class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClickListener,
@@ -62,6 +61,29 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
                 invalidateEmptyView()
             }
         })
+
+        savedInstanceState?.also {
+            if (savedInstanceState.containsKey(QHL_CONTACT_LIST)) {
+
+            }
+
+            if (savedInstanceState.containsKey(HEADER_INFO)){
+
+            }
+            showQhlHeaderInfo(null)
+
+        } ?: run {
+            if (!ConnectionDetector.isNetworkConnected(activity)) {
+                ConnectionDetector.createSnackBar(activity)
+                return
+            }
+
+            qhlContactPresenter.fetchQhlContactList()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
     }
 
     private fun invalidateEmptyView() {
@@ -79,8 +101,13 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
         qhlContactPresenter.onDestroy()
     }
 
-    override fun showDateString(dateString: String) {
-
+    override fun showQhlHeaderInfo(leadProfileData: LeadProfileData?) {
+        textViewQhlOfficeName.text= "QHL Office"
+        textViewQhlAddress.text= "963 Fake St. Colton, CA 92316"
+        textViewQhlOfficeTime.text= String.format(getString(R.string.hours), "8:00 AM","5:00 PM")
+        textViewQhlOfficeTime.text= String.format(getString(R.string.hours), "8:00 AM","5:00 PM")
+        textViewQHlEmail.text= "Operation@QHL.com"
+        textViewQHLContact.text= UIUtils.formetMobileNumber("8090889709")
     }
 
     override fun showAPIErrorMessage(message: String) {
@@ -89,7 +116,7 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainRootLayout, message)
     }
 
-    override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {
+    override fun qhlContactList(employeeDataList: ArrayList<EmployeeData>) {
 
     }
 
@@ -126,6 +153,5 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
             })
 
     }
-
 
 }

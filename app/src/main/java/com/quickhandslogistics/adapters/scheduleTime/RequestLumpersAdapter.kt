@@ -60,13 +60,12 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
         fun bind(requestLumpersRecord: RequestLumpersRecord) {
             textViewRequestedLumpersCount.text = String.format(resources.getString(R.string.requested_lumpers_s), requestLumpersRecord.requestedLumpersCount)
             textViewRequestedAt.text = UIUtils.getSpannedText(String.format(resources.getString(R.string.requested_maded_s), changeUTCDateStringToLocalDateString(PATTERN_API_RESPONSE, PATTERN_NORMAL_Week, requestLumpersRecord.createdAt!!)))
-            textViewRequestStart.text = UIUtils.getSpannedText(String.format(resources.getString(R.string.start_time_bold), "11:22 pm"))
-            textViewRequestStart.text = UIUtils.getSpannedText(String.format(resources.getString(R.string.start_time_bold), "11:22 pm"))
+            textViewRequestStart.text = UIUtils.getSpannedText(String.format(resources.getString(R.string.start_time_bold), "11:22 PM"))
 
-            var assignedCount= if (requestLumpersRecord.lumpersAllocated.isNullOrEmpty()) 0 else requestLumpersRecord.lumpersAllocated!!.size
-            var ratioCount= String.format("%s/%s",assignedCount,requestLumpersRecord.requestedLumpersCount)
+            val assignedCount= if (requestLumpersRecord.lumpersAllocated.isNullOrEmpty()) 0 else requestLumpersRecord.lumpersAllocated!!.size
+            val ratioCount= String.format("%s/%s",assignedCount,requestLumpersRecord.requestedLumpersCount)
             textViewLumperAssigned.text = UIUtils.getSpannedText(String.format(resources.getString(R.string.lumpers_dm_assigned_bold), ratioCount))
-            textViewNote.text = requestLumpersRecord.notesForDM
+            textViewNote.text = requestLumpersRecord.notesForDM?.capitalize()
 
             if (!requestLumpersRecord.lumpersAllocated.isNullOrEmpty()) {
                 recyclerViewTempLumperInfo.visibility=View.VISIBLE
@@ -137,7 +136,7 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
                     }
                     textViewNoteForLumper.id -> {
                         val record = getItem(adapterPosition)
-                        onAdapterClick.onNotesItemClick("record.notesForDM")
+                        onAdapterClick.onNotesItemClick("Dummy note for requested lumper.")
                     }
                     textViewUpdateRequest.id -> {
                         val record = getItem(adapterPosition)

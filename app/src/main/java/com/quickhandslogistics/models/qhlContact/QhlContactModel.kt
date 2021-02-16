@@ -15,7 +15,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class QhlContactModel(private val sharedPref: SharedPref) : QhlContactContract.Model{
-    override fun fetchHeaderInfo(onFinishedListener: QhlContactContract.Model.OnFinishedListener) {
+    override fun fetchQhlHeaderInfo(onFinishedListener: QhlContactContract.Model.OnFinishedListener) {
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
         onFinishedListener.onSuccessGetHeaderInfo(leadProfile)
     }

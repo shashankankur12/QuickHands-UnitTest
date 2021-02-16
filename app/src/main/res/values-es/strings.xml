@@ -274,6 +274,7 @@
     <string name="heading_lead_notes">Lead Notes:</string>
     <string name="heading_add_note">Add Note:</string>
     <string name="add_note_popup">Add Note</string>
+    <string name="hours">Hours: %s - %s</string>
 
     <!--No Record Messages-->
     <string name="empty_add_work_item_lumpers_info_message">This building doesn\'t have any lumpers present for the selected date. Please mark lumpers attendance in \'Time-Clock Attendance\' section for selecting them. \n</string>
@@ -349,9 +350,9 @@
     <string name="assign_work_done_message">You haven\'t enter work done. Please enter work done, before changing the container status to complete. \n</string>
     <string name="password_short_length_message">Please enter Password of at-least 8 characters</string>
     <string name="request_help_message"><![CDATA[Enter Number of Lumpers and Notes for DM.]]></string>
-    <string name="request_lumper_number_message"><![CDATA[Enter Number of Lumpers.]]></string>
-    <string name="request_lumper_DM_note_message"><![CDATA[Enter note for DM.]]></string>
-    <string name="request_lumper_lumper_note_message"><![CDATA[Enter note for requested lumpers.]]></string>
+    <string name="request_lumper_number_message"><![CDATA[Please enter number of needed lumper.]]></string>
+    <string name="request_lumper_DM_note_message"><![CDATA[Please enter notes for QHL DM.]]></string>
+    <string name="request_lumper_lumper_note_message"><![CDATA[Please enter notes for requested lumpers.]]></string>
     <string name="request_lumper_start_time_message"><![CDATA[Enter start time for lumpers.]]></string>
     <string name="request_valid_message"><![CDATA[Please enter valid number of additional lumpers needed.]]></string>
     <string name="something_went_wrong_message">Something went wrong, Please try again after sometime!!!</string>
@@ -374,7 +375,7 @@
     <string name="notes_for_scheduled_lumpers">Notes for Scheduled Lumpers…</string>
     <string name="notes_for_qhl">Notes for QHL</string>
     <string name="notes_for_qhl_dm">Notes for QHL District Manager</string>
-    <string name="notes_for_request_lumper">Notes for Request Lumpers</string>
+    <string name="notes_for_request_lumper">Notes for Requested Lumpers</string>
     <string name="notification_off_info_message">Notification are turned off from the app Settings. Click to update.</string>
     <string name="search_info_message">Search by Name…</string>
     <string name="sign_in_info_message">Sign in by entering the details below.</string>

@@ -121,7 +121,7 @@
             android:id="@+id/imageViewMessage"
             android:layout_width="@dimen/_20ssp"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_message"
+            android:src="@drawable/ic_message_chat"
             android:layout_marginBottom="@dimen/_1sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

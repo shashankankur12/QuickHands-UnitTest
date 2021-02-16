@@ -103,9 +103,9 @@
         app:layout_constraintTop_toTopOf="parent">
         <ImageView
             android:id="@+id/imageViewCall"
-            android:layout_width="@dimen/_20ssp"
+            android:layout_width="@dimen/_22ssp"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_message"
+            android:src="@drawable/ic_message_chat"
             android:layout_marginTop="@dimen/_15sdp"
             app:layout_constraintBottom_toTopOf="@+id/textViewMessageTime"
             app:layout_constraintEnd_toEndOf="parent"

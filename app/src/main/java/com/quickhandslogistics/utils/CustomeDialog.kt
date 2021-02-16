@@ -236,6 +236,26 @@ object CustomeDialog : AppConstant {
         dialog.show()
     }
 
+    fun showNoteDialog(activity: Activity?, title: String?, groupNote: String?) {
+        mActivity = activity
+        val dialog =
+            getDialog(R.layout.comman_note_dialog, activity)
+        //        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        val window = dialog.window
+        window!!.setLayout(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        window.setBackgroundDrawableResource(android.R.color.transparent)
+        val titleTextView = dialog.findViewById<TextView>(R.id.title_text)
+        val note: TextView = dialog.findViewById(R.id.individual_note)
+        val confirm = dialog.findViewById<Button>(R.id.confirm_button)
+
+        note.text= groupNote?.capitalize()
+        titleTextView.text = title
+        confirm.setOnClickListener { dialog.dismiss() }
+        dialog.show()
+    }
 
     interface IDialogOnClick{
         fun onSendRequest( dialog: Dialog)
