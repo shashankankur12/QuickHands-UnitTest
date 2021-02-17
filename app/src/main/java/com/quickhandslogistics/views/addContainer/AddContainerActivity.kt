@@ -86,7 +86,7 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
                     activity,
                     linearLayoutManager.orientation
             )
-            addItemDecoration(dividerItemDecoration)
+//            addItemDecoration(dividerItemDecoration)
             addOutBoundContainerAdapter = AddContainerAdapter(
                     this@AddContainerActivity,
                     resources,
@@ -102,7 +102,7 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
                     activity,
                     linearLayoutManager.orientation
             )
-            addItemDecoration(dividerItemDecoration)
+//            addItemDecoration(dividerItemDecoration)
             addLiveContainerAdapter = AddContainerAdapter(
                     this@AddContainerActivity,
                     resources,
@@ -118,7 +118,7 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
                     activity,
                     linearLayoutManager.orientation
             )
-            addItemDecoration(dividerItemDecoration)
+//            addItemDecoration(dividerItemDecoration)
             addDropContainerAdapter = AddContainerAdapter(
                     this@AddContainerActivity,
                     resources,
