@@ -250,50 +250,53 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
             return
         }
 
-        if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
-            val filledParameterCount = ScheduleUtils.getFilledBuildingParametersCounts(workItemDetail)
-            val parameters = ScheduleUtils.getBuildingParametersList(workItemDetail.buildingDetailData)
+        if(status != AppConstant.WORK_ITEM_STATUS_UNFINISHED && status != AppConstant.WORK_ITEM_STATUS_NOT_OPEN) {
 
-            if (workItemDetail.buildingOps.isNullOrEmpty() || filledParameterCount != parameters.size) {
-                CustomProgressBar.getInstance().showErrorDialog(getString(R.string.fill_building_parameters_message), activity)
-                closeBottomSheet()
-                return
-            } else if (workItemDetail.assignedLumpersList.isNullOrEmpty()) {
-                CustomProgressBar.getInstance().showErrorDialog(getString(R.string.assign_lumpers_message), activity)
-                closeBottomSheet()
-                return
-            }else {
-                if (lumpersTimeSchedule.isNullOrEmpty()|| lumpersTimeSchedule.size< workItemDetail!!.assignedLumpersList!!.size ){
-                   var message =getString(R.string.assign_lumpers_endtime_starttime_message)
-                    CustomProgressBar.getInstance().showErrorDialog(message, this.activity)
+            if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
+                val filledParameterCount = ScheduleUtils.getFilledBuildingParametersCounts(workItemDetail)
+                val parameters = ScheduleUtils.getBuildingParametersList(workItemDetail.buildingDetailData)
+
+                if (workItemDetail.buildingOps.isNullOrEmpty() || filledParameterCount != parameters.size) {
+                    CustomProgressBar.getInstance().showErrorDialog(getString(R.string.fill_building_parameters_message), activity)
                     closeBottomSheet()
                     return
-                }else if(!lumpersTimeSchedule.isNullOrEmpty()) {
-                    var message =getStartTimeCount(lumpersTimeSchedule)
-                    if (!message.isNullOrEmpty()) {
+                } else if (workItemDetail.assignedLumpersList.isNullOrEmpty()) {
+                    CustomProgressBar.getInstance().showErrorDialog(getString(R.string.assign_lumpers_message), activity)
+                    closeBottomSheet()
+                    return
+                } else {
+                    if (lumpersTimeSchedule.isNullOrEmpty() || lumpersTimeSchedule.size < workItemDetail!!.assignedLumpersList!!.size) {
+                        var message = getString(R.string.assign_lumpers_endtime_starttime_message)
                         CustomProgressBar.getInstance().showErrorDialog(message, this.activity)
                         closeBottomSheet()
                         return
+                    } else if (!lumpersTimeSchedule.isNullOrEmpty()) {
+                        var message = getStartTimeCount(lumpersTimeSchedule)
+                        if (!message.isNullOrEmpty()) {
+                            CustomProgressBar.getInstance().showErrorDialog(message, this.activity)
+                            closeBottomSheet()
+                            return
+                        }
                     }
+
                 }
-
             }
-        }
 
-        var message = getString(R.string.change_status_alert_message)
-        if (status == AppConstant.WORK_ITEM_STATUS_CANCELLED || status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
-            message = getString(R.string.change_status_permanently_alert_message)
-        }
+            var message = getString(R.string.change_status_alert_message)
+            if (status == AppConstant.WORK_ITEM_STATUS_CANCELLED || status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
+                message = getString(R.string.change_status_permanently_alert_message)
+            }
 //        CustomProgressBar.getInstance().showWarningDialog(message, activity, object : CustomDialogWarningListener {
 //            override fun onConfirmClick() {
-                closeBottomSheet()
-                workSheetItemDetailPresenter.changeWorkItemStatus(workItemId, status)
+            closeBottomSheet()
+            workSheetItemDetailPresenter.changeWorkItemStatus(workItemId, status)
 //            }
 //
 //            override fun onCancelClick() {
 //                workSheetItemStatusAdapter?.updateInitialStatus(textViewStatus.text.toString(), workItemDetail.isCompleted!!)
 //            }
 //        })
+        }
     }
 
     private fun getStartTimeCount(lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>): String {

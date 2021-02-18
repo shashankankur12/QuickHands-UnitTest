@@ -30,10 +30,10 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
     private val NormalView = 1
 
     init {
-        statusList[resources.getString(R.string.scheduled)] = AppConstant.WORK_ITEM_STATUS_SCHEDULED
+        statusList[resources.getString(R.string.schedule_s)] = AppConstant.WORK_ITEM_STATUS_SCHEDULED
         statusList[resources.getString(R.string.in_progress)] = AppConstant.WORK_ITEM_STATUS_IN_PROGRESS
         statusList[resources.getString(R.string.on_hold)] = AppConstant.WORK_ITEM_STATUS_ON_HOLD
-        statusList[resources.getString(R.string.completed)] = AppConstant.WORK_ITEM_STATUS_COMPLETED
+        statusList[resources.getString(R.string.complete)] = AppConstant.WORK_ITEM_STATUS_COMPLETED
 //        statusList[resources.getString(R.string.cancelled)] = AppConstant.WORK_ITEM_STATUS_CANCELLED
         statusList[resources.getString(R.string.show_more)] = AppConstant.WORK_ITEM_SHOW_MORE
     }
@@ -91,14 +91,14 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
 
             when (pair.first) {
                 resources.getString(R.string.in_progress) -> {
-                    textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_green_light))
+                    textViewStatus.setTextColor(ContextCompat.getColor(context, R.color.in_progress))
                     textViewDescription.text = resources.getString(R.string.in_progress_description)
                 }
                 resources.getString(R.string.on_hold) -> {
                     textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_orange_dark))
                     textViewDescription.text = resources.getString(R.string.on_hold_description)
                 }
-                resources.getString(R.string.scheduled) -> {
+                resources.getString(R.string.schedule_s) -> {
                     textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_blue_light))
                     textViewDescription.text = resources.getString(R.string.scheduled_description)
                 }
@@ -106,12 +106,12 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
                     textViewStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_dark))
                     textViewDescription.text = resources.getString(R.string.cancelled_description)
                 }
-                resources.getString(R.string.completed) -> {
+                resources.getString(R.string.complete) -> {
                     textViewStatus.setTextColor(ContextCompat.getColor(context, R.color.buildingTitle))
                     textViewDescription.text = resources.getString(R.string.completed_description)
                 }
                 resources.getString(R.string.unfinished) -> {
-                    textViewStatus.setTextColor(ContextCompat.getColor(context, R.color.color_yellow))
+                    textViewStatus.setTextColor(ContextCompat.getColor(context, R.color.unfinished))
                     textViewDescription.text = resources.getString(R.string.unfinished_description)
                 }
                 resources.getString(R.string.not_open) -> {
@@ -179,9 +179,17 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
     }
 
     fun updateInitialStatus(initialStatus: String, isCompleted: Boolean) {
-        this.initialDisplayStatus = initialStatus
+        if (initialStatus.equals(resources.getString(R.string.scheduled))){
+            this.initialDisplayStatus = resources.getString(R.string.schedule_s)
+            selectedDisplayStatus = resources.getString(R.string.schedule_s)
+        }else if (initialStatus.equals(resources.getString(R.string.completed))){
+            this.initialDisplayStatus = resources.getString(R.string.complete)
+            selectedDisplayStatus = resources.getString(R.string.complete)
+        }else{
+            this.initialDisplayStatus = initialStatus
+            selectedDisplayStatus = initialStatus
+        }
         this.isCompleted = isCompleted
-        selectedDisplayStatus = initialStatus
         notifyDataSetChanged()
     }
 
@@ -193,10 +201,10 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
 
     fun updateShowMoreStatusList() {
         this.statusList.clear()
-        this.statusList.put(resources.getString(R.string.scheduled), AppConstant.WORK_ITEM_STATUS_SCHEDULED)
+        this.statusList.put(resources.getString(R.string.schedule_s), AppConstant.WORK_ITEM_STATUS_SCHEDULED)
         this.statusList.put(resources.getString(R.string.in_progress), AppConstant.WORK_ITEM_STATUS_IN_PROGRESS)
         this.statusList.put(resources.getString(R.string.on_hold), AppConstant.WORK_ITEM_STATUS_ON_HOLD)
-        this.statusList.put(resources.getString(R.string.completed), AppConstant.WORK_ITEM_STATUS_COMPLETED)
+        this.statusList.put(resources.getString(R.string.complete), AppConstant.WORK_ITEM_STATUS_COMPLETED)
         this.statusList.put(resources.getString(R.string.show_less), AppConstant.WORK_ITEM_SHOW_LESS)
         this.statusList.put(resources.getString(R.string.unfinished), AppConstant.WORK_ITEM_STATUS_UNFINISHED)
         this.statusList.put(resources.getString(R.string.not_open), AppConstant.WORK_ITEM_STATUS_NOT_OPEN)
@@ -206,10 +214,10 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
 
     fun updateShowLessStatusList() {
         this.statusList.clear()
-        this.statusList.put(resources.getString(R.string.scheduled), AppConstant.WORK_ITEM_STATUS_SCHEDULED)
+        this.statusList.put(resources.getString(R.string.schedule_s), AppConstant.WORK_ITEM_STATUS_SCHEDULED)
         this.statusList.put(resources.getString(R.string.in_progress), AppConstant.WORK_ITEM_STATUS_IN_PROGRESS)
         this.statusList.put(resources.getString(R.string.on_hold), AppConstant.WORK_ITEM_STATUS_ON_HOLD)
-        this.statusList.put(resources.getString(R.string.completed), AppConstant.WORK_ITEM_STATUS_COMPLETED)
+        this.statusList.put(resources.getString(R.string.complete), AppConstant.WORK_ITEM_STATUS_COMPLETED)
         this.statusList.put(resources.getString(R.string.show_more), AppConstant.WORK_ITEM_SHOW_MORE)
         notifyDataSetChanged()
     }

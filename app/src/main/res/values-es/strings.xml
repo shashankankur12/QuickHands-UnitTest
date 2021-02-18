@@ -350,11 +350,11 @@
     <string name="assign_work_done_message">You haven\'t enter work done. Please enter work done, before changing the container status to complete. \n</string>
     <string name="password_short_length_message">Please enter Password of at-least 8 characters</string>
     <string name="request_help_message"><![CDATA[Enter Number of Lumpers and Notes for DM.]]></string>
-    <string name="request_lumper_number_message"><![CDATA[Please enter number of needed lumper.]]></string>
-    <string name="request_lumper_DM_note_message"><![CDATA[Please enter notes for QHL DM.]]></string>
-    <string name="request_lumper_lumper_note_message"><![CDATA[Please enter notes for requested lumpers.]]></string>
-    <string name="request_lumper_start_time_message"><![CDATA[Enter start time for lumpers.]]></string>
-    <string name="request_valid_message"><![CDATA[Please enter valid number of additional lumpers needed.]]></string>
+    <string name="request_lumper_number_message"><![CDATA[Please enter number of needed lumper.\n]]></string>
+    <string name="request_lumper_DM_note_message"><![CDATA[Please enter notes for QHL DM. \n]]></string>
+    <string name="request_lumper_lumper_note_message"><![CDATA[Please enter notes for requested lumpers. \n]]></string>
+    <string name="request_lumper_start_time_message"><![CDATA[Enter start time for lumpers. \n]]></string>
+    <string name="request_valid_message"><![CDATA[Please enter valid number of additional lumpers needed. \n]]></string>
     <string name="something_went_wrong_message">Something went wrong, Please try again after sometime!!!</string>
     <string name="cancel_schedule_lumper_invalidate_message">You can cancel lumper after two hours of start time!!!</string>
     <string name="edit_schedule_lumper_invalidate_message">You can update lumper after two hours of start time!!!</string>

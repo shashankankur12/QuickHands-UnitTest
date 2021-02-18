@@ -29,6 +29,8 @@
     <color name="startTimeBackground">#ecf0f6</color>
     <color name="fabBackgroundOverlay">#5C000000</color>
     <color name="online">#53d769</color>
+    <color name="in_progress">#00AE1D</color>
+    <color name="unfinished">#94A300</color>
     <color name="hypertext_color">#6597E3</color>
     <color name="message_background">#4B97E6</color>
     <color name="dark_sky_blue">#3776B6</color>
