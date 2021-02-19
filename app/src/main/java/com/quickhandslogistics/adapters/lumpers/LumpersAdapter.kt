@@ -4,7 +4,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
@@ -49,9 +51,10 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
         private val textViewEmployeeId: CustomTextView = view.textViewEmployeeId
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
         private val textViewShiftHours: CustomTextView = view.textViewShiftHours
-        private val imageViewCall: CircleImageView = view.imageViewCall
+        private val imageViewCall: ImageView = view.imageViewCall
         private val viewAttendanceStatus: View = view.viewAttendanceStatus
-        private val constraintLayoutCall: View = view.constraintLayoutCall
+        private val constraintLayoutCall: ConstraintLayout = view.constraintLayoutCall
+        private val constraintLayoutMessage: ConstraintLayout = view.constraintLayoutMessage
 
         fun bind(employeeData: EmployeeData) {
             UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)

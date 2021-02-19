@@ -86,6 +86,7 @@
         android:text="(2233)-456-342"
         android:textColor="@color/hypertext_color"
         app:emptyDataVisibility="empty_gone"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/constraintViewCall"
         app:layout_constraintStart_toEndOf="@+id/textViewEmail"

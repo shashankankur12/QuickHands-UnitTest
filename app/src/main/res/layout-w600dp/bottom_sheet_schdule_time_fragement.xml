@@ -193,7 +193,7 @@
 
             <TextView
                 style="@style/titleTextViewTheme"
-                android:text="@string/note" />
+                android:text="@string/note_header" />
 
             <EditText
                 android:id="@+id/editTextNote"
@@ -201,7 +201,7 @@
 
             <TextView
                 style="@style/titleTextViewTheme"
-                android:text="@string/group_notes" />
+                android:text="@string/group_note" />
 
             <EditText
                 android:id="@+id/editTextNoteGroup"
