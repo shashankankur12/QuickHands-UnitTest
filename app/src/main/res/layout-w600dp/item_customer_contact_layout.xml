@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/textViewCustomerName"
+        style="@style/titleSmallTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:text="John Snow"
+        android:textColor="@color/textBlack"
+        app:layout_constraintEnd_toStartOf="@id/constraintViewCall"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.quickhandslogistics.controls.CustomTextView
+        android:id="@+id/textViewEmployeeRole"
+        style="@style/valuesSmallTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:text="Role"
+        android:textColor="@color/textBlack"
+        app:emptyDataVisibility="empty_gone"
+        app:layout_constraintEnd_toStartOf="@id/textViewEmployeeTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCustomerName" />
+
+    <com.quickhandslogistics.controls.CustomTextView
+        android:id="@+id/textViewEmployeeTitle"
+        style="@style/valuesSmallTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:text="Title"
+        android:textColor="@color/textBlack"
+        app:emptyDataVisibility="empty_gone"
+        app:layout_constraintStart_toEndOf="@+id/textViewEmployeeRole"
+        app:layout_constraintEnd_toStartOf="@id/textViewEmployeeShift"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCustomerName" />
+
+    <com.quickhandslogistics.controls.CustomTextView
+        android:id="@+id/textViewEmployeeShift"
+        style="@style/valuesSmallTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:text="Shift"
+        android:textColor="@color/textBlack"
+        app:emptyDataVisibility="empty_gone"
+        app:layout_constraintStart_toEndOf="@+id/textViewEmployeeTitle"
+        app:layout_constraintEnd_toStartOf="@id/constraintViewCall"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCustomerName" />
+
+    <com.quickhandslogistics.controls.CustomTextView
+        android:id="@+id/textViewEmail"
+        style="@style/valuesSmallTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:text="namit@yopmail.com"
+        android:textColor="@color/hypertext_color"
+        app:emptyDataVisibility="empty_gone"
+        app:layout_constraintEnd_toStartOf="@id/textVieWContact"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewEmployeeRole" />
+    <com.quickhandslogistics.controls.CustomTextView
+        android:id="@+id/textVieWContact"
+        style="@style/valuesSmallTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:text="(2233)-456-342"
+        android:textAlignment="center"
+        android:textColor="@color/hypertext_color"
+        app:emptyDataVisibility="empty_gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/constraintViewCall"
+        app:layout_constraintStart_toEndOf="@+id/textViewEmail"
+        app:layout_constraintTop_toBottomOf="@id/textViewEmployeeRole" />
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="0dp"
+        android:background="@color/message_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/constraintViewCall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/imageViewCall"
+            android:layout_width="@dimen/_18ssp"
+            android:layout_height="@dimen/_18ssp"
+            android:src="@drawable/ic_message_chat"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintBottom_toTopOf="@+id/textViewMessageTime"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewMessageTime"
+            style="@style/valuesVerySmallTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="13:12 AM"
+            android:textColor="@color/textWhite"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewCall"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

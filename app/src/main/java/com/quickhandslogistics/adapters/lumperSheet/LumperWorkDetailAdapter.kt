@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.customerSheet.ContainerDetailItemAdapter
@@ -19,11 +19,11 @@ import com.quickhandslogistics.utils.ValueUtils.isNumeric
 import kotlinx.android.synthetic.main.item_lumper_work_detail.view.*
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.isNullOrEmpty
+
 
 class LumperWorkDetailAdapter(
-    private val resources: Resources, private val sharedPref: SharedPref,
-    private var adapterItemClickListener: LumperWorkDetailContract.View.OnAdapterItemClickListener
+        private val resources: Resources, private val sharedPref: SharedPref,
+        private var adapterItemClickListener: LumperWorkDetailContract.View.OnAdapterItemClickListener
 ) :
     RecyclerView.Adapter<LumperWorkDetailAdapter.ViewHolder>() {
 
@@ -67,7 +67,7 @@ class LumperWorkDetailAdapter(
 
         init {
             recyclerViewBO.apply {
-                layoutManager = LinearLayoutManager(context)
+                layoutManager = GridLayoutManager(context, 2)
             }
 
             parameters = ScheduleUtils.getBuildingParametersList(sharedPref)
@@ -115,7 +115,7 @@ class LumperWorkDetailAdapter(
                 val startTime = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.startTime)
                 val endTime = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.endTime)
                 if (startTime.isNotEmpty() && endTime.isNotEmpty())
-                    textViewWorkTime.text = String.format("%s - %s : %s",  startTime ,  endTime ,DateUtils.getDateTimeCalculeted(timingDetail.startTime!!, timingDetail.endTime!!))
+                    textViewWorkTime.text = String.format("%s - %s : %s", startTime, endTime, DateUtils.getDateTimeCalculeted(timingDetail.startTime!!, timingDetail.endTime!!))
                 else textViewWorkTime.text = String.format("%s - %s", if (startTime.isNotEmpty()) startTime else "NA", if (endTime.isNotEmpty()) endTime else "NA")
 
                 val waitingTime = ValueUtils.getDefaultOrValue(timingDetail.waitingTime)
@@ -129,7 +129,7 @@ class LumperWorkDetailAdapter(
                 val breakTimeEnd = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeEnd)
 
                 if (breakTimeStart.isNotEmpty() && breakTimeEnd.isNotEmpty())
-                    textViewBreakTime.text = String.format("%s - %s :%s", breakTimeStart , breakTimeEnd,DateUtils.getDateTimeCalculeted(timingDetail.breakTimeStart!!, timingDetail.breakTimeEnd!!))
+                    textViewBreakTime.text = String.format("%s - %s :%s", breakTimeStart, breakTimeEnd, DateUtils.getDateTimeCalculeted(timingDetail.breakTimeStart!!, timingDetail.breakTimeEnd!!))
                 else textViewBreakTime.text = String.format("%s - %s", if (breakTimeStart.isNotEmpty()) breakTimeStart else "NA", if (breakTimeEnd.isNotEmpty()) breakTimeEnd else "NA")
 
                 if (!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt()!=0) {

@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -62,6 +63,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
         private val textViewBreakTime: TextView = view.textViewBreakTime
         private val textViewWorkDone: TextView = view.textViewWorkDone
         private val viewAttendanceStatus: View = view.viewAttendanceStatus
+        private val imageViewCancelLumper: ImageView = view.imageViewCancelLumper
 
         fun bind(employeeData: LumperAttendanceData) {
             UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
@@ -111,6 +113,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
             changeAddButtonVisibility()
             textViewAddTime.setOnClickListener(this)
             linearLayoutLumperTime.setOnClickListener(this)
+            imageViewCancelLumper.setOnClickListener(this)
         }
 
         private fun ishaseClockOut(lumperAttendance: LumperAttendanceData) {
@@ -142,6 +145,10 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
                         val employeeData = getItem(adapterPosition)
                         val timingData = timingsData[employeeData.id]
                         onAdapterClick.onAddTimeClick(employeeData, timingData)
+                    }
+                    imageViewCancelLumper.id->{
+                        val employeeData = getItem(adapterPosition)
+                        onAdapterClick.onRemoveLumperClick(employeeData, adapterPosition)
                     }
                 }
             }

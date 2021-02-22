@@ -15,10 +15,13 @@ import com.quickhandslogistics.controls.NavDrawer
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.presenters.DashBoardPresenter
 import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.views.addContainer.AddContainerActivity
 import com.quickhandslogistics.views.attendance.TimeClockAttendanceFragment
+import com.quickhandslogistics.views.customerContact.CustomerContactFragment
 import com.quickhandslogistics.views.customerSheet.CustomerSheetFragment
 import com.quickhandslogistics.views.lumperSheet.LumperSheetFragment
 import com.quickhandslogistics.views.lumpers.LumpersFragment
+import com.quickhandslogistics.views.qhlContact.QhlContactFragment
 import com.quickhandslogistics.views.reports.ReportsFragment
 import com.quickhandslogistics.views.schedule.ScheduleFragment
 import com.quickhandslogistics.views.scheduleTime.ScheduleTimeFragment
@@ -98,6 +101,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             when (selectedFragmentTitle) {
                 getString(R.string.today_s_work_sheet) -> {
                     menu.findItem(R.id.actionCancelAllWork).isVisible = isCancelAllScheduleVisible
+                    menu.findItem(R.id.actionAddContainer).isVisible = true
                 }
                 getString(R.string.scheduled_lumpers) -> {
                     menu.findItem(R.id.actionNotes).isVisible = scheduleTimeNotes.isNotEmpty()
@@ -114,6 +118,9 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             }
             R.id.actionCancelAllWork -> {
                 startIntent(AllWorkScheduleCancelActivity::class.java, requestCode = AppConstant.REQUEST_CODE_CHANGED)
+            }
+            R.id.actionAddContainer -> {
+                startIntent(AddContainerActivity::class.java, requestCode = AppConstant.REQUEST_CODE_CHANGED)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -160,6 +167,10 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
                     tabName = getString(R.string.reports)
                 is TimeClockAttendanceFragment->
                     tabName = getString(R.string.time_clock)
+                is CustomerContactFragment->
+                    tabName = getString(R.string.customer_contect)
+                is QhlContactFragment->
+                    tabName = getString(R.string.qhl_contect)
             }
         }
         outState.putString(TAB_NAME, tabName)
@@ -185,6 +196,8 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             it.addItem(NavDrawer.AppNavDrawerItem(ReportsFragment(), R.drawable.report_icon, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.reports), showTabName)))
 
             it.addItem(NavDrawer.AppNavDrawerItem(LumpersFragment(), R.drawable.ic_sidemenu_lumpers, R.id.linearLayoutThirdItems, isShowOnLaunch(getString(R.string.lumper_contact), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(QhlContactFragment(), R.drawable.ic_thumbs_up, R.id.linearLayoutThirdItems, isShowOnLaunch(getString(R.string.qhl_contect), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(CustomerContactFragment(), R.drawable.ic_house, R.id.linearLayoutThirdItems, isShowOnLaunch(getString(R.string.customer_contect), showTabName)))
 
             it.addItem(NavDrawer.AppNavDrawerItem(SettingsFragment(), R.drawable.ic_sidemenu_settings, R.id.linearLayoutBottomItems, isShowOnLaunch(getString(R.string.settings), showTabName)))
             it.addItem(NavDrawer.AppNavDrawerItem(null, R.drawable.ic_sidemenu_logout, R.id.linearLayoutBottomItems, isShowOnLaunch(getString(R.string.logout), showTabName)))
@@ -279,6 +292,16 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             textViewToolbar.setTextColor(resources.getColor(android.R.color.white))
             toolbar.setNavigationIcon(R.drawable.ic_hamburger)
             headerLogoImage.visibility=View.VISIBLE
+        }else if(title.equals(getString(R.string.customer_contect))){
+            toolbar.background = ContextCompat.getDrawable(this, R.drawable.header_background_lumper)
+            textViewToolbar.setTextColor(resources.getColor(android.R.color.white))
+            toolbar.setNavigationIcon(R.drawable.ic_hamburger)
+            headerLogoImage.visibility=View.GONE
+        }else if(title.equals(getString(R.string.qhl_contect))){
+            toolbar.setBackgroundColor(resources.getColor(R.color.textWhite));
+            textViewToolbar.setTextColor(resources.getColor(android.R.color.white))
+            toolbar.setNavigationIcon(R.drawable.ic_sidemenu)
+            headerLogoImage.visibility=View.GONE
         }else{
             toolbar.setBackgroundColor(resources.getColor(R.color.colorPrimary));
             textViewToolbar.setTextColor(resources.getColor(android.R.color.black))
@@ -286,7 +309,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             headerLogoImage.visibility=View.GONE
 
         }
-        if (title.equals(getString(R.string.today_s_work_sheet))|| title.equals(getString(R.string.customer_sheet)) || title.equals(getString(R.string.reports))|| title.equals(getString(R.string.lumper_contact))|| title.equals(getString(R.string.settings))){
+        if (title.equals(getString(R.string.today_s_work_sheet))|| title.equals(getString(R.string.customer_sheet)) || title.equals(getString(R.string.reports))|| title.equals(getString(R.string.lumper_contact))|| title.equals(getString(R.string.settings)) || title.equals(getString(R.string.customer_contect)) || title.equals(getString(R.string.qhl_contect))){
             textViewDate.visibility=View.GONE
             textViewDate.text = ""
         }else{

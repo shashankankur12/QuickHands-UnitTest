@@ -33,7 +33,7 @@ class RequestLumpersModel : RequestLumpersContract.Model {
         })
     }
 
-    override fun createNewRequestForLumpers(requiredLumperCount: String, notesDM: String, date: Date, onFinishedListener: RequestLumpersContract.Model.OnFinishedListener) {
+    override fun createNewRequestForLumpers(requiredLumperCount: String, notesDM: String, date: Date, noteLumper :String, onFinishedListener: RequestLumpersContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, date)
         val request = RequestLumpersRequest(requiredLumperCount.toInt(), notesDM, dateString)
 

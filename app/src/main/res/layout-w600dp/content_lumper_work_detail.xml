@@ -249,7 +249,7 @@
                                 android:layout_height="@dimen/_15sdp"
                                 android:layout_centerInParent="true"
                                 android:src="@drawable/ic_edit"
-                                android:tint="@color/detailHeader" />
+                                app:tint="@color/detailHeader" />
 
                         </RelativeLayout>
                     </com.google.android.flexbox.FlexboxLayout>
@@ -286,7 +286,7 @@
                                 android:layout_height="@dimen/_15sdp"
                                 android:layout_centerInParent="true"
                                 android:src="@drawable/ic_edit"
-                                android:tint="@color/detailHeader" />
+                                app:tint="@color/detailHeader" />
 
                         </RelativeLayout>
                     </LinearLayout>

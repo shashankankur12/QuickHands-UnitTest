@@ -54,73 +54,61 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="start"
-        app:constraint_referenced_ids="layoutEnd" />
+        app:constraint_referenced_ids="layoutScheduleTime,textViewScheduleNote" />
 
-    <LinearLayout
-        android:id="@+id/layoutEnd"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutScheduleTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/labelBarrier"
         app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:id="@+id/textViewAddStartTime"
+            style="@style/addTextViewTheme"
+            android:text="@string/add_start_time"
+            android:padding="@dimen/_1sdp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="visible"
+            android:textSize="@dimen/_9ssp" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/textViewScheduleTime"
+            style="@style/valuesTextViewTheme"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:id="@+id/layoutScheduleTime"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/textViewScheduleTime"
-                    style="@style/valuesTextViewTheme"
-                    android:layout_width="wrap_content"
-                    android:textColor="@color/textBlack"
-                    android:visibility="gone" />
+            android:textColor="@color/textBlack"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-                <TextView
-                    android:id="@+id/textViewAddStartTime"
-                    style="@style/addTextViewTheme"
-                    android:visibility="gone"
-                    android:text="@string/add_start_time" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </RelativeLayout>
+    <TextView
+        android:id="@+id/textViewScheduleNote"
+        style="@style/noteTextViewTheme"
+        android:textColor="@color/black_button_navigate_selector"
+        android:layout_width="wrap_content"
+        android:text="@string/heading_add_note"
+        android:padding="@dimen/_1sdp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLumperName"
+        app:layout_constraintStart_toEndOf="@+id/labelBarrier"
+        android:textSize="@dimen/_9ssp"/>
 
-            <LinearLayout
-                android:id="@+id/layoutScheduleNote"
-                android:layout_width="wrap_content"
-                android:layout_gravity="end"
-                android:paddingTop="@dimen/_1ssp"
-                android:visibility="visible"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/textViewScheduleNote"
-                    style="@style/valuesTextViewTheme"
-                    android:layout_width="wrap_content"
-                    android:textColor="@color/textBlack"
-                    android:text="@string/add_notes"/>
-                <ImageView
-                    android:id="@+id/imageViewNote"
-                    android:layout_width="@dimen/_18ssp"
-                    android:layout_height="@dimen/_18ssp"
-                    android:tint="@color/buttonRed"
-                    android:src="@drawable/ic_notes"/>
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imageViewCancel"
-            android:layout_width="@dimen/_20ssp"
-            android:layout_marginStart="@dimen/_10ssp"
-            android:layout_marginEnd="@dimen/_10ssp"
-            android:layout_gravity="center_vertical"
-            android:layout_height="@dimen/_20ssp"
-            android:src="@drawable/ic_clear"/>
-
-    </LinearLayout>
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/labelBarrier2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="right"
+        app:constraint_referenced_ids="layoutScheduleTime,textViewScheduleNote" />
+    <ImageView
+        android:id="@+id/imageViewCancel"
+        android:layout_width="@dimen/_20ssp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/_3ssp"
+        android:layout_marginEnd="@dimen/_5ssp"
+        android:layout_gravity="center_vertical"
+        app:layout_constraintStart_toEndOf="@+id/labelBarrier2"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_clear"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

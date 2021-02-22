@@ -18,11 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="LockedOrientationActivity">
-        <activity android:name=".views.schedule.WorkScheduleActivity"></activity>
+        <activity android:name=".views.addContainer.AddContainerActivity"></activity>
+        <activity android:name=".views.schedule.WorkScheduleActivity" />
         <activity android:name=".views.buildingOperations.BuildingOperationsActivity" />
         <activity
             android:name=".views.common.AddSignatureActivity"
-            android:configChanges="orientation"/>
+            android:configChanges="orientation" />
         <activity android:name=".views.common.BuildingOperationsViewActivity" />
         <activity android:name=".views.scheduleTime.ChooseLumpersActivity" />
         <activity android:name=".views.common.DisplayLumpersListActivity" />

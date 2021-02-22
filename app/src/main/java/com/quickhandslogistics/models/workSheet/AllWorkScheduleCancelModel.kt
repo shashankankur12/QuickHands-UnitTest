@@ -34,9 +34,7 @@ class AllWorkScheduleCancelModel : AllWorkScheduleCancelContract.Model {
         })
     }
 
-    override fun cancelAllWorkSchedules(
-        selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String, onFinishedListener: AllWorkScheduleCancelContract.Model.OnFinishedListener
-    ) {
+    override fun cancelAllWorkSchedules(selectedLumperIdsList: ArrayList<String>, notesQHL: String, notesCustomer: String, onFinishedListener: AllWorkScheduleCancelContract.Model.OnFinishedListener) {
         val request = CancelAllSchedulesRequest(selectedLumperIdsList, notesQHL, notesCustomer)
         val day = DateUtils.getCurrentDateStringByEmployeeShift()
 

@@ -45,7 +45,7 @@ class ScheduleTimeModel(private val sharedPref: SharedPref) : ScheduleTimeContra
         })
     }
 
-    override fun cancelScheduleLumpers(lumperId: String, date: Date, onFinishedListener: ScheduleTimeContract.Model.OnFinishedListener) {
+    override fun cancelScheduleLumpers(lumperId: String, date: Date, cancelReason: String, onFinishedListener: ScheduleTimeContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, date)
 
         DataManager.getService().cancelScheduleLumper(getAuthToken(), lumperId, dateString).enqueue(object : Callback<BaseResponse> {

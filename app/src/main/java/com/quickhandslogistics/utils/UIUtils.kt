@@ -140,5 +140,18 @@ object UIUtils {
         val activeNetwork = cm.activeNetworkInfo
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting
     }
+
+    fun formetMobileNumber(original: String): String? {
+        val isbnStr = StringBuilder()
+        for (i in original.indices) {
+            when (i) {
+                0 -> { isbnStr.append("(") }
+                3 -> { isbnStr.append(") ") }
+                6 -> { isbnStr.append(" - ") }
+            }
+            isbnStr.append(original[i])
+        }
+        return isbnStr.toString()
+    }
 }
 

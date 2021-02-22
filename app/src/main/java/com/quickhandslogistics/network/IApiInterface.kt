@@ -1,6 +1,7 @@
 package com.quickhandslogistics.network
 
 import com.quickhandslogistics.data.BaseResponse
+import com.quickhandslogistics.data.addContainer.AddContainerRequest
 import com.quickhandslogistics.data.attendance.AttendanceDetail
 import com.quickhandslogistics.data.attendance.GetAttendanceAPIResponse
 import com.quickhandslogistics.data.buildingOperations.BuildingOperationAPIResponse
@@ -62,6 +63,10 @@ interface IApiInterface {
     @PUT("schedule/lumper/{workItemId}")
     fun assignLumpers(
         @Header("Authorization") auth: String, @Path("workItemId") workItemId: String, @Body request: AssignLumpersRequest
+    ): Call<BaseResponse>
+
+    @POST("customer/schedules/add")
+    fun addSchedulesWorkItem(@Header("Authorization") auth: String, @Body request: AddContainerRequest
     ): Call<BaseResponse>
     /////////////////////////////////////////////////////////////
 
