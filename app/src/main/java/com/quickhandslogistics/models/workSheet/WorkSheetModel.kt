@@ -44,4 +44,22 @@ class WorkSheetModel(private val sharedPref: SharedPref) : WorkSheetContract.Mod
             }
         })
     }
+
+    override fun saveGroupNoteData(onFinishedListener: WorkSheetContract.Model.OnFinishedListener, cancelled: ArrayList<String>, customerNote: String, qhlNote: String) {
+
+
+        DataManager.getService().getWorkSheetList(getAuthToken(), customerNote).enqueue(object : Callback<WorkSheetListAPIResponse> {
+            override fun onResponse(call: Call<WorkSheetListAPIResponse>, response: Response<WorkSheetListAPIResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessSaveGroupNoteWorkSheet(response.body()!!.message!!)
+                }
+            }
+
+            override fun onFailure(call: Call<WorkSheetListAPIResponse>, t: Throwable) {
+                Log.e(WorkSheetModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
+    }
+
 }

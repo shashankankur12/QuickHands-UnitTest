@@ -130,6 +130,7 @@
     <string name="notes">Notes</string>
     <string name="group_notes">Group Notes</string>
     <string name="group_note">Group Note :</string>
+    <string name="group_note_header">Group Note</string>
     <string name="notifications">Notifications</string>
     <string name="ok">OK</string>
     <string name="on_hold">On-Hold</string>
@@ -276,6 +277,7 @@
     <string name="view_schedule">View Work Scheduled</string>
     <string name="cancel_header_details">Remove <![CDATA[<b><font color=#e30913> %s</font></b>]]> from <![CDATA[<b><font color=#e30913> %s</font></b>]]> schedule</string>
     <string name="hours">Hours: %s - %s</string>
+    <string name="add_group_note_message">Add a Note for this group of container</string>
 
     <!--No Record Messages-->
     <string name="empty_add_work_item_lumpers_info_message">No Lumpers are available. Go to Time-Clock section and clock them in.</string>
@@ -362,6 +364,8 @@
     <string name="cancel_reason_schedule_lumper"><![CDATA[Please enter reason for cancellation.]]></string>
     <string name="updtae_status_after_signature_message">Customer signature submitted You can\'t update the status</string>
     <string name="add_container_error_message">A container card has partial information. Fill it completely or remove it before you can Add.  \n</string>
+    <string name="group_customer_note_error_message">Please enter customer note.  \n</string>
+    <string name="group_qhl_note_error_message">Please enter QHL note.  \n</string>
 
     <!--Info Messages-->
     <string name="enter_employee_id_info_message">Employee ID</string>

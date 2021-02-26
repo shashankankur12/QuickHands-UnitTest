@@ -16,20 +16,17 @@ import com.quickhandslogistics.contracts.workSheet.WorkSheetItemContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
-import com.quickhandslogistics.data.workSheet.WorkSheetListAPIResponse
-import com.quickhandslogistics.views.BaseFragment
-import com.quickhandslogistics.views.common.DisplayLumpersListActivity
-import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
-import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.ConnectionDetector
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.ScheduleUtils
-import com.quickhandslogistics.views.customerSheet.CustomerSheetContainersFragment
-import kotlinx.android.synthetic.main.fragment_work_sheet_item.*
-import kotlin.collections.ArrayList
+import com.quickhandslogistics.views.BaseFragment
+import com.quickhandslogistics.views.common.DisplayLumpersListActivity
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
+import kotlinx.android.synthetic.main.content_work_sheet_item.*
 
-class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapterItemClickListener {
+class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapterItemClickListener, View.OnClickListener, View.OnLongClickListener {
 
     private var onFragmentInteractionListener: WorkSheetContract.View.OnFragmentInteractionListener? = null
 
@@ -101,20 +98,35 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
             override fun onChanged() {
                 super.onChanged()
                 textViewEmptyData.visibility = if (workSheetItemAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                textViewAddGroupNote.visibility = if (workSheetItemAdapter.itemCount > 0 && workItemType== getString(R.string.cancel)) View.VISIBLE else View.GONE
+                textViewShowGroupNote.visibility = if (workSheetItemAdapter.itemCount > 0 && workItemType== getString(R.string.cancel)) View.VISIBLE else View.GONE
             }
         })
 
         textViewEmptyData.text = when (workItemType) {
             getString(R.string.ongoing) -> getString(R.string.empty_containers_list_ongoing_info_message)
-            getString(R.string.cancelled) -> getString(R.string.empty_containers_list_cancelled_info_message)
+            getString(R.string.cancel) -> getString(R.string.empty_containers_list_cancelled_info_message)
             else -> getString(R.string.empty_containers_list_completed_info_message)
         }
         when(workItemType){
-            getString(R.string.ongoing) ->  updateWorkItemsList(onGoingWorkItems)
-            getString(R.string.cancelled) ->  updateWorkItemsList(cancelledWorkItems)
-            else ->updateWorkItemsList(completedWorkItems)
+            getString(R.string.ongoing) -> {
+                updateWorkItemsList(onGoingWorkItems)
+
+            }
+            getString(R.string.cancel) ->  {
+                updateWorkItemsList(cancelledWorkItems)
+
+            }
+            else -> {
+                updateWorkItemsList(completedWorkItems)
+
+            }
 
         }
+
+        textViewAddGroupNote.setOnClickListener(this)
+        textViewShowGroupNote.setOnClickListener(this)
+        textViewShowGroupNote.setOnLongClickListener(this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -127,6 +139,7 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
     fun updateWorkItemsList(workItemsList: ArrayList<WorkItemDetail>) {
         workSheetItemAdapter.updateList(workItemsList)
     }
+
 
     /** Adapter Listeners */
     override fun onItemClick(workItemId: String, workItemTypeDisplayName: String) {
@@ -163,5 +176,31 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
             CustomProgressBar.getInstance().showInfoDialog(title, it, fragmentActivity!!)
         }
 
+    }
+
+    override fun onClick(view: View?) {
+        when(view!!.id){
+            textViewAddGroupNote.id->{
+                onFragmentInteractionListener?.showBottomSheetGroupNote()
+            }
+            textViewShowGroupNote.id->{
+                onFragmentInteractionListener?.showGroupNote()
+            }
+        }
+    }
+
+    override fun onLongClick(view: View?): Boolean {
+        view?.let {
+            return when (view.id) {
+                textViewShowGroupNote.id -> {
+                    onFragmentInteractionListener?.removeGroupNote()
+                    return true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
+        return false
     }
 }

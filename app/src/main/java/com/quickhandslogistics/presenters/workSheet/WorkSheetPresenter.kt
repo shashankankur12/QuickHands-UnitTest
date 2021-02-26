@@ -26,6 +26,11 @@ class WorkSheetPresenter(private var workSheetView: WorkSheetContract.View?, pri
         workSheetModel.fetchWorkSheetList(this)
     }
 
+    override fun saveGroupNoteData(cancelled: ArrayList<String>, customerNote: String, qhlNote: String) {
+//        workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+//        workSheetModel.saveGroupNoteData(this, cancelled, customerNote, qhlNote)
+    }
+
     /** Model Result Listeners */
     override fun onFailure(message: String) {
         workSheetView?.hideProgressDialog()
@@ -73,5 +78,11 @@ class WorkSheetPresenter(private var workSheetView: WorkSheetContract.View?, pri
 
     override fun onSuccessGetHeaderInfo(companyName: String, date: String, shift: String, dept: String) {
         workSheetView?.showHeaderInfo(companyName, date, shift, dept)
+    }
+
+    override fun onSuccessSaveGroupNoteWorkSheet(message: String) {
+        workSheetView?.hideProgressDialog()
+        workSheetView?.successGroupNoteSave(message)
+
     }
 }
