@@ -398,4 +398,13 @@
     <string name="break_end_greater_work_start_warning_message">Break\'s End Time should be greater than Work\'s Start Time</string>
     <string name="break_end_greater_break_start_warning_message">Break\'s End Time should be greater than Break\'s Start Time</string>
     <string name="break_end_less_work_end_warning_message">Break\'s End Time should be less than Work\'s End Time</string>
+    <string name="unfinished_container">Unfinished Container</string>
+    <string name="unfinished_bottom_sheet_text">Fill out the following fields to indicate when the work on this container will be completed</string>
+    <string name="date_for_completion">Date for Completion</string>
+    <string name="minutes_m">Minutes (M)</string>
+    <string name="hours_h">Hours (H)</string>
+    <string name="invalid_hour_message">Hour(s) can\'t be greater than 24</string>
+    <string name="invalid_hour_minutes">Minutes(s) can\'t be greater than 60</string>
+    <string name="total_pause_colon">Total Pause : </string>
+    <string name="content_description">imageView</string>
 </resources>

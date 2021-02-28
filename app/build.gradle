@@ -28,6 +28,12 @@ android {
     }
 
     buildTypes {
+        applicationVariants.all { variant ->
+            variant.outputs.all {
+                def flavor = variant.name
+                outputFileName = "quick_hands_${flavor}_${versionName}.apk"
+            }
+        }
         debug {
             buildConfigField "String", "API_BASE_URL", DEBUG_API_URL
         }

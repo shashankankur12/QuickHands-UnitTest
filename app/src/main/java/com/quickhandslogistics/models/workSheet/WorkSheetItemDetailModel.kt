@@ -1,6 +1,10 @@
 package com.quickhandslogistics.models.workSheet
 
+import android.content.Context
 import android.util.Log
+import android.widget.Button
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.schedule.WorkItemDetailAPIResponse
@@ -64,5 +68,16 @@ class WorkSheetItemDetailModel : WorkSheetItemDetailContract.Model {
                 onFinishedListener.onFailure()
             }
         })
+    }
+
+    override fun showUnFinishedContainer(context:Context, contractView:WorkSheetItemDetailContract.View?) {
+        val unFinishedBottomSheet = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
+        unFinishedBottomSheet.setContentView(R.layout.bottom_sheet_unfinished_container)
+        unFinishedBottomSheet.findViewById<Button>(R.id.buttonCancelBottomSheet)?.setOnClickListener { unFinishedBottomSheet.dismiss() }
+        unFinishedBottomSheet.findViewById<Button>(R.id.buttonSubmit)?.setOnClickListener {
+            unFinishedBottomSheet.dismiss()
+            contractView?.onUnfinishedBottomSheetSubmitClick()
+        }
+        unFinishedBottomSheet.show()
     }
 }

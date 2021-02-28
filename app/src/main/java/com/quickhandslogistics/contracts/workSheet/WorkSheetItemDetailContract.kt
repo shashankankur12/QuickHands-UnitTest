@@ -1,8 +1,8 @@
 package com.quickhandslogistics.contracts.workSheet
 
+import android.content.Context
 import com.quickhandslogistics.contracts.BaseContract
 import com.quickhandslogistics.data.schedule.ScheduleWorkItem
-import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.schedule.WorkItemDetailAPIResponse
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 
@@ -11,6 +11,7 @@ class WorkSheetItemDetailContract {
         fun fetchWorkItemDetail(workItemId: String, onFinishedListener: OnFinishedListener)
         fun changeWorkItemStatus(workItemId: String, status: String, onFinishedListener: OnFinishedListener)
         fun updateWorkItemNotes(workItemId: String, notesQHLCustomer: String, notesQHL: String, onFinishedListener: OnFinishedListener)
+        fun showUnFinishedContainer(context: Context, contractView: View?)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(response: WorkItemDetailAPIResponse)
@@ -25,6 +26,7 @@ class WorkSheetItemDetailContract {
         fun statusChangedSuccessfully()
         fun notesSavedSuccessfully()
         fun showLoginScreen()
+        fun onUnfinishedBottomSheetSubmitClick()
 
         interface OnAdapterItemClickListener {
             fun onSelectStatus(status: String)
@@ -41,5 +43,6 @@ class WorkSheetItemDetailContract {
         fun fetchWorkItemDetail(workItemId: String)
         fun changeWorkItemStatus(workItemId: String, status: String)
         fun updateWorkItemNotes(workItemId: String, notesQHLCustomer: String, notesQHL: String)
+        fun showUnFinishedContainer(context: Context)
     }
 }
