@@ -44,6 +44,7 @@
         android:text="Title"
         android:textColor="@color/textBlack"
         app:emptyDataVisibility="empty_gone"
+        android:textAlignment="center"
         app:layout_constraintStart_toEndOf="@+id/textViewEmployeeRole"
         app:layout_constraintEnd_toStartOf="@id/textViewEmployeeShift"
         app:layout_constraintTop_toBottomOf="@+id/textViewCustomerName" />
@@ -55,6 +56,7 @@
         android:layout_marginTop="@dimen/_2sdp"
         android:layout_marginEnd="@dimen/_5sdp"
         android:text="Shift"
+        android:textAlignment="center"
         android:textColor="@color/textBlack"
         app:emptyDataVisibility="empty_gone"
         app:layout_constraintStart_toEndOf="@+id/textViewEmployeeTitle"
@@ -79,15 +81,16 @@
     <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textVieWContact"
         style="@style/valuesSmallTextViewTheme"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_marginTop="@dimen/_2sdp"
         android:layout_marginEnd="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_8sdp"
         android:text="(2233)-456-342"
         android:textColor="@color/hypertext_color"
         app:emptyDataVisibility="empty_gone"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textAlignment="textEnd"
+
         app:layout_constraintEnd_toStartOf="@id/constraintViewCall"
         app:layout_constraintStart_toEndOf="@+id/textViewEmail"
         app:layout_constraintTop_toBottomOf="@id/textViewEmployeeRole" />

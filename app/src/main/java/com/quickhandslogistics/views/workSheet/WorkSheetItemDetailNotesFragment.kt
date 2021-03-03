@@ -63,6 +63,7 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
         addNotesTouchListener(editTextQHLNotes)
 
         buttonSubmit.setOnClickListener(this)
+        addImageButton.setOnClickListener(this)
         editTextQHLCustomerNotes.addTextChangedListener(this)
         editTextQHLNotes.addTextChangedListener(this)
         workItemDetail?.let { showNotesData(it) }
@@ -123,8 +124,13 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
         view?.let {
             when (view.id) {
                 buttonSubmit.id -> saveWorkItemNotes()
+                addImageButton.id -> imageCapture()
             }
         }
+    }
+
+    private fun imageCapture() {
+
     }
 
     override fun afterTextChanged(text: Editable?) {

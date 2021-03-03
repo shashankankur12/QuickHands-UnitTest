@@ -5,6 +5,7 @@
     android:id="@+id/mainRootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/textWhite"
     tools:context=".views.qhlContact.QhlContactFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,21 +16,27 @@
         <include
             android:id="@+id/layoutHeader"
             layout="@layout/content_qhl_contact_header" />
+        <View
+            android:layout_width="match_parent"
+            android:id="@+id/viewBar"
+            android:layout_height="@dimen/_10sdp"
+            android:background="@color/gray_btn_bg_color"
+            app:layout_constraintTop_toBottomOf="@+id/layoutHeader"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/gray_btn_bg_color"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutHeader">
+            app:layout_constraintTop_toBottomOf="@+id/viewBar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layoutHeaderInfo"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:background="@color/colorTextGrey"
                 android:paddingHorizontal="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -54,7 +61,6 @@
                 android:id="@+id/constraintQHLInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/white_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layoutHeaderInfo">
@@ -67,7 +73,6 @@
                     android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
-                    android:text="John Snow"
                     android:textColor="@color/textBlack"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -80,7 +85,6 @@
                     android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_2sdp"
                     android:layout_marginEnd="@dimen/_2sdp"
-                    android:text="Role"
                     android:textColor="@color/textBlack"
                     app:emptyDataVisibility="empty_gone"
                     app:layout_constraintEnd_toStartOf="@id/textViewQhlOfficeTime"
@@ -93,7 +97,6 @@
                     android:layout_width="0dp"
                     android:layout_marginTop="@dimen/_2sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
-                    android:text="Title"
                     android:textColor="@color/textBlack"
                     app:emptyDataVisibility="empty_gone"
                     app:layout_constraintStart_toEndOf="@+id/textViewQhlAddress"
@@ -108,7 +111,6 @@
                     android:layout_marginTop="@dimen/_2sdp"
                     android:layout_marginEnd="@dimen/_2sdp"
                     android:layout_marginBottom="@dimen/_8sdp"
-                    android:text="namit@yopmail.com"
                     android:textColor="@color/hypertext_color"
                     app:emptyDataVisibility="empty_gone"
                     app:layout_constraintEnd_toStartOf="@id/textViewQHLContact"
@@ -122,13 +124,23 @@
                     android:layout_marginTop="@dimen/_2sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:layout_marginBottom="@dimen/_8sdp"
-                    android:text="(2233)-456-342"
                     android:textColor="@color/hypertext_color"
                     app:emptyDataVisibility="empty_gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
+
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textViewQHlEmail"
                     app:layout_constraintTop_toBottomOf="@id/textViewQhlAddress" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:id="@+id/viewBar2"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_8ssp"
+                    android:background="@color/gray_btn_bg_color"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewQHlEmail"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -137,7 +149,6 @@
                 android:id="@+id/recyclerViewQhlContact"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:background="@drawable/white_background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -147,8 +158,7 @@
                 android:id="@+id/textViewEmptyData"
                 style="@style/noRecordTextViewTheme"
                 android:layout_centerInParent="true"
-                android:background="@drawable/white_background"
-                android:text="@string/empty_lumper_list_message"
+                android:text="@string/empty_contact_list_message"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

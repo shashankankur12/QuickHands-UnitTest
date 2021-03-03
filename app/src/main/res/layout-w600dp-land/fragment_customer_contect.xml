@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/mainConstraintLayout"
+    android:background="@color/textWhite"
     tools:context=".views.customerContact.CustomerContactFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,19 +15,25 @@
         <include
             android:id="@+id/layoutHeader"
             layout="@layout/content_customer_contact_header" />
+        <View
+            android:layout_width="match_parent"
+            android:id="@+id/viewBar"
+            android:layout_height="@dimen/_6sdp"
+            android:background="@color/gray_btn_bg_color"
+            app:layout_constraintTop_toBottomOf="@+id/layoutHeader"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/gray_btn_bg_color"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutHeader">
+            app:layout_constraintTop_toBottomOf="@+id/viewBar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_building_contact"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_25sdp"
-                android:layout_marginTop="@dimen/_6sdp"
                 android:background="@color/colorTextGrey"
                 android:paddingHorizontal="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +59,6 @@
                 android:id="@+id/customerListContact"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:background="@drawable/white_background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -61,8 +68,7 @@
                 android:id="@+id/textViewEmptyData"
                 style="@style/noRecordTextViewTheme"
                 android:layout_centerInParent="true"
-                android:background="@drawable/white_background"
-                android:text="@string/empty_lumper_list_message"
+                android:text="@string/empty_contact_list_message"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

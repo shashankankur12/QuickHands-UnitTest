@@ -1,5 +1,6 @@
 package com.quickhandslogistics.views.workSheet
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -241,10 +242,6 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
-    override fun onUnfinishedBottomSheetSubmitClick() {
-        Toast.makeText(applicationContext, "submit button clicked", Toast.LENGTH_SHORT).show()
-    }
-
     /** Adapter Listeners */
     override fun onSelectStatus(status: String) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {
@@ -282,7 +279,12 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
             }
         } else if (AppConstant.WORK_ITEM_STATUS_UNFINISHED == status) {
             closeBottomSheet()
-            workSheetItemDetailPresenter.showUnFinishedContainer(this)
+            CustomBottomSheetDialog.unfinishedBottomSheetDialog(activity,  object : CustomBottomSheetDialog.IDialogOnClick {
+                override fun onSendRequest(dialog: Dialog) {
+                    Toast.makeText(applicationContext, "submit button clicked", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                }
+            })
             return
         }
 

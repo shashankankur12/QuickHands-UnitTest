@@ -6,19 +6,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.qhlContact.QhlContactAdapter
 import com.quickhandslogistics.contracts.qhlContact.QhlContactContract
-import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.qhlContact.QhlOfficeInfo
 import com.quickhandslogistics.presenters.qhlContact.QhlContactPresenter
 import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.ScheduleUtils.sortEmployeesAttendanceList
+import com.quickhandslogistics.utils.ScheduleUtils.sortEmployeesList
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
-import com.quickhandslogistics.views.customerContact.CustomerContactFragment
 import kotlinx.android.synthetic.main.fragment_qhl_contact.*
 
 class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClickListener,
@@ -89,10 +91,10 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
     private fun invalidateEmptyView() {
         if (qhlContactAdapter.itemCount == 0) {
             textViewEmptyData.visibility = View.VISIBLE
-            textViewEmptyData.text = getString(R.string.empty_lumper_list_message)
+            textViewEmptyData.text = getString(R.string.empty_contact_list_message)
         } else {
             textViewEmptyData.visibility = View.GONE
-            textViewEmptyData.text = getString(R.string.empty_lumper_list_message)
+            textViewEmptyData.text = getString(R.string.empty_contact_list_message)
         }
     }
 
@@ -101,13 +103,18 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
         qhlContactPresenter.onDestroy()
     }
 
-    override fun showQhlHeaderInfo(leadProfileData: LeadProfileData?) {
-        textViewQhlOfficeName.text= "QHL Office"
-        textViewQhlAddress.text= "963 Fake St. Colton, CA 92316"
-        textViewQhlOfficeTime.text= String.format(getString(R.string.hours), "8:00 AM","5:00 PM")
-        textViewQhlOfficeTime.text= String.format(getString(R.string.hours), "8:00 AM","5:00 PM")
-        textViewQHlEmail.text= "Operation@QHL.com"
-        textViewQHLContact.text= UIUtils.formetMobileNumber("8090889709")
+    override fun showQhlHeaderInfo(leadProfileData: QhlOfficeInfo?) {
+        leadProfileData?.let {
+            val phone=it.phone?.replace("+1", "")?.replace("-", "")
+            val open=if ( !it.opens.isNullOrEmpty())  it.opens else getString(R.string.na)
+            val close=if ( !it.closes.isNullOrEmpty())  it.closes else getString(R.string.na)
+
+            textViewQhlOfficeName.text= getString(R.string.qhl_office)
+            textViewQhlAddress.text= if(!it.address.isNullOrEmpty())it.address?.capitalize() else getString(R.string.na)
+            textViewQhlOfficeTime.text= String.format(getString(R.string.hours), open,close)
+            textViewQHlEmail.text= if(!it.email.isNullOrEmpty())it.email else getString(R.string.na)
+            textViewQHLContact.text= if(!phone.isNullOrEmpty())UIUtils.formetMobileNumber(phone.trim()) else getString(R.string.na)
+        }
     }
 
     override fun showAPIErrorMessage(message: String) {
@@ -116,8 +123,26 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainRootLayout, message)
     }
 
-    override fun qhlContactList(employeeDataList: ArrayList<EmployeeData>) {
+    override fun qhlContactList(qhlContactList: ArrayList<EmployeeData>) {
 
+        val qhlMangerList: ArrayList<EmployeeData> = ArrayList()
+        val qhlLeadList: ArrayList<EmployeeData> = ArrayList()
+        val sortedList: ArrayList<EmployeeData> = ArrayList()
+
+        qhlContactList.forEach {
+            if (it.role?.equals(AppConstant.LEADS)!!){
+                qhlLeadList.add(it)
+            }else if (it.role?.equals(AppConstant.DISTRICT_MANAGER)!!){
+                qhlMangerList.add(it)
+            }
+        }
+
+        sortEmployeesList(qhlMangerList)
+        sortEmployeesList(qhlLeadList)
+        sortedList.addAll(qhlMangerList)
+        sortedList.addAll(qhlLeadList)
+
+        qhlContactAdapter.updateLumpersData(sortedList)
     }
 
     override fun showLoginScreen() {
@@ -141,16 +166,7 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
             ConnectionDetector.createSnackBar(activity)
             return
         }
-
-        CustomProgressBar.getInstance().showWarningDialog(String.format(getString(R.string.call_lumper_alert_message), lumperName),
-            fragmentActivity!!, object : CustomDialogWarningListener {
-                override fun onConfirmClick() {
-                    startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))
-                }
-
-                override fun onCancelClick() {
-                }
-            })
+        Toast.makeText(context,lumperName,Toast.LENGTH_SHORT).show()
 
     }
 

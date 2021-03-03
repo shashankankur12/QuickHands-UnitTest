@@ -16,6 +16,8 @@ import com.quickhandslogistics.data.lumperSheet.LumperSheetListAPIResponse
 import com.quickhandslogistics.data.lumperSheet.LumperWorkDetailAPIResponse
 import com.quickhandslogistics.data.lumperSheet.SubmitLumperSheetRequest
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
+import com.quickhandslogistics.data.qhlContact.QhlContactListResponse
+import com.quickhandslogistics.data.qhlContact.QhlOfficeInfoResponse
 import com.quickhandslogistics.data.reports.ReportRequest
 import com.quickhandslogistics.data.reports.ReportResponse
 import com.quickhandslogistics.data.schedule.*
@@ -200,4 +202,19 @@ interface IApiInterface {
     @GET("employees/lead/lumpers/date-range")
     fun getAllLumpersSelectedDates(@Header("Authorization") auth: String, @Query("dayStart") dayStart: String, @Query("dayEnd") dayEnd: String): Call<LumperListAPIResponse>
     /////////////////////////////////////////////////////////////
+
+    //QHL Contact////////////////////////////////////////////////
+    @GET("employees/lead/qhl-contacts")
+    fun getQhlContactList(@Header("Authorization") auth: String): Call<QhlContactListResponse>
+
+    @GET("employees/admin/office")
+    fun getQhlOfficeInfo(@Header("Authorization") auth: String): Call<QhlOfficeInfoResponse>
+    ////////////////////////////////////////////////////////////
+
+    //Customer Contact/////////////////////////////////////////
+    @GET("employees/lead/customer-contacts")
+    fun getCustomerContactList(@Header("Authorization") auth: String): Call<QhlContactListResponse>
+    ////////////////////////////////////////////////////////////
+
+
 }

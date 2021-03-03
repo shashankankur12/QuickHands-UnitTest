@@ -278,6 +278,8 @@
     <string name="cancel_header_details">Remove <![CDATA[<b><font color=#e30913> %s</font></b>]]> from <![CDATA[<b><font color=#e30913> %s</font></b>]]> schedule</string>
     <string name="hours">Hours: %s - %s</string>
     <string name="add_group_note_message">Add a Note for this group of container</string>
+    <string name="qhl_office">QHL Office</string>
+    <string name="na">N/A</string>
 
     <!--No Record Messages-->
     <string name="empty_add_work_item_lumpers_info_message">No Lumpers are available. Go to Time-Clock section and clock them in.</string>
@@ -300,6 +302,7 @@
     <string name="empty_containers_list_cancelled_info_message">There are no Cancelled containers.</string>
     <string name="empty_containers_list_completed_info_message">There are no Completed containers.</string>
     <string name="empty_lumper_list_message">There are no lumpers assigned to this shift/department. Please contact your District Manager.</string>
+    <string name="empty_contact_list_message">There are no contact available. Please contact in QHL Office.</string>
 
     <!--Alert Messages-->
     <string name="are_you_sure_alert_message">Are you sure?</string>

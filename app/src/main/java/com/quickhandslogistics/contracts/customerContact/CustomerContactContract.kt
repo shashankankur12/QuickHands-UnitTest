@@ -4,6 +4,7 @@ import com.quickhandslogistics.contracts.BaseContract
 import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
+import com.quickhandslogistics.data.qhlContact.QhlContactListResponse
 
 interface CustomerContactContract {
 
@@ -12,7 +13,7 @@ interface CustomerContactContract {
         fun fetchCustomerContactList(onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
-            fun onSuccess(response: LumperListAPIResponse)
+            fun onSuccess(response: QhlContactListResponse)
             fun onSuccessGetHeaderInfo(leadProfileData: BuildingDetailData?)
         }
     }

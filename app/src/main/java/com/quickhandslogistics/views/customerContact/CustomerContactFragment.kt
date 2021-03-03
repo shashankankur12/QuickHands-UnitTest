@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,8 +22,8 @@ import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.content_customer_contact_header.*
 import kotlinx.android.synthetic.main.fragment_customer_contect.*
-import kotlinx.android.synthetic.main.fragment_lumpers.*
-import kotlinx.android.synthetic.main.fragment_lumpers.textViewEmptyData
+
+import java.time.DayOfWeek
 
 class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, View.OnClickListener,
         CustomerContactContract.View.OnAdapterItemClickListener{
@@ -90,10 +91,10 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
     private fun invalidateEmptyView() {
         if (customerContactAdapter.itemCount == 0) {
             textViewEmptyData.visibility = View.VISIBLE
-            textViewEmptyData.text = getString(R.string.empty_lumper_list_message)
+            textViewEmptyData.text = getString(R.string.empty_contact_list_message)
         } else {
             textViewEmptyData.visibility = View.GONE
-            textViewEmptyData.text = getString(R.string.empty_lumper_list_message)
+            textViewEmptyData.text = getString(R.string.empty_contact_list_message)
         }
     }
 
@@ -105,9 +106,10 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
     override fun showHeaderInfo(buildingDetailData: BuildingDetailData?) {
         this.buildingDetailData=buildingDetailData
         buildingDetailData?.let {
+            val phone=it.phone?.replace("+1", "")?.replace("-", "")
             textViewCustomerName.text=it.buildingName!!.capitalize()
             textViewCompanyName.text=it.buildingAddress!!.capitalize() +","+it.buildingCity+", "+it.buildingState +" "+it .buildingZipcode
-            textViewCompanyContact.text= it.phone?.let { it1 -> UIUtils.formetMobileNumber(it1) }
+            textViewCompanyContact.text= if(!phone.isNullOrEmpty())UIUtils.formetMobileNumber(phone.trim()) else getString(R.string.na)
         }
         activity?.let { Glide.with(it).load(R.drawable.building_image).into(circleImageViewProfile) }
     }
@@ -118,8 +120,55 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
         SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
-    override fun showCustomerContactData(employeeDataList: ArrayList<EmployeeData>) {
+    override fun showCustomerContactData(customerContactList: ArrayList<EmployeeData>) {
+        val qhlMangerList: ArrayList<EmployeeData> = ArrayList()
+        val qhlSuperVisorList: ArrayList<EmployeeData> = ArrayList()
+        val sortedList: ArrayList<EmployeeData> = ArrayList()
 
+        customerContactList.forEach {
+            if (it.role?.equals(AppConstant.MANAGER)!!){
+                qhlMangerList.add(it)
+            }else if (it.role?.equals(AppConstant.SUPERVISOR)!!){
+                qhlSuperVisorList.add(it)
+            }
+        }
+
+
+//        sortedList.addAll(sortedListByShift(qhlMangerList))
+//        sortedList.addAll(sortedListByShift(qhlSuperVisorList))
+        sortedList.addAll(qhlMangerList)
+        sortedList.addAll(qhlSuperVisorList)
+
+        customerContactAdapter.updateLumpersData(sortedList)
+
+    }
+
+    private fun sortedListByShift(sortedList: java.util.ArrayList<EmployeeData>): ArrayList<EmployeeData> {
+        val dayShiftList: ArrayList<EmployeeData> = ArrayList()
+        val swingShiftList: ArrayList<EmployeeData> = ArrayList()
+        val nightShiftList: ArrayList<EmployeeData> = ArrayList()
+        val sortedList: ArrayList<EmployeeData> = ArrayList()
+
+
+        sortedList.forEach {
+            if (it.shift.equals(AppConstant.EMPLOYEE_SHIFT_MORNING)){
+                dayShiftList.add(it)
+            } else if (it.shift.equals(AppConstant.EMPLOYEE_SHIFT_SWING)){
+                swingShiftList.add(it)
+            } else if (it.shift.equals(AppConstant.EMPLOYEE_SHIFT_NIGHT)){
+                nightShiftList.add(it)
+            }
+        }
+
+        ScheduleUtils.sortEmployeesList(dayShiftList)
+        ScheduleUtils.sortEmployeesList(swingShiftList)
+        ScheduleUtils.sortEmployeesList(nightShiftList)
+
+        sortedList.addAll(dayShiftList)
+        sortedList.addAll(swingShiftList)
+        sortedList.addAll(nightShiftList)
+
+        return sortedList;
     }
 
     override fun showLoginScreen() {
@@ -144,15 +193,7 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
             return
         }
 
-        CustomProgressBar.getInstance().showWarningDialog(String.format(getString(R.string.call_lumper_alert_message), lumperName),
-                fragmentActivity!!, object : CustomDialogWarningListener {
-            override fun onConfirmClick() {
-                startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))
-            }
-
-            override fun onCancelClick() {
-            }
-        })
+        Toast.makeText(context,lumperName, Toast.LENGTH_SHORT).show()
 
     }
 

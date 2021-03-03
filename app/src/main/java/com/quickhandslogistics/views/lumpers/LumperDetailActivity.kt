@@ -74,8 +74,8 @@ class LumperDetailActivity : BaseActivity(), View.OnClickListener {
             } else textViewCompanyName.visibility = View.GONE
 
             textViewEmailAddress.text = if (!employeeData.email.isNullOrEmpty()) employeeData.email else "---"
-            val phoneNumber = UIUtils.getDisplayPhoneNumber(employeeData)
-            textViewPhoneNumber.text = if (phoneNumber.isNotEmpty()) phoneNumber else "---"
+            val phoneNumber =if (!employeeData.phone.isNullOrEmpty())UIUtils.formetMobileNumber(employeeData.phone!!)else "---"
+            textViewPhoneNumber.text = phoneNumber
 
             textViewEmployeeId.text = if (!employeeData.employeeId.isNullOrEmpty()) employeeData.employeeId else "---"
             textViewRole.text = if (!employeeData.role.isNullOrEmpty()) employeeData.role!!.capitalize() else "---"

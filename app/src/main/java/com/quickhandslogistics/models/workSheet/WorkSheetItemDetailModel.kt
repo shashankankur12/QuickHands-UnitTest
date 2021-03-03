@@ -69,15 +69,4 @@ class WorkSheetItemDetailModel : WorkSheetItemDetailContract.Model {
             }
         })
     }
-
-    override fun showUnFinishedContainer(context:Context, contractView:WorkSheetItemDetailContract.View?) {
-        val unFinishedBottomSheet = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
-        unFinishedBottomSheet.setContentView(R.layout.bottom_sheet_unfinished_container)
-        unFinishedBottomSheet.findViewById<Button>(R.id.buttonCancelBottomSheet)?.setOnClickListener { unFinishedBottomSheet.dismiss() }
-        unFinishedBottomSheet.findViewById<Button>(R.id.buttonSubmit)?.setOnClickListener {
-            unFinishedBottomSheet.dismiss()
-            contractView?.onUnfinishedBottomSheetSubmitClick()
-        }
-        unFinishedBottomSheet.show()
-    }
 }

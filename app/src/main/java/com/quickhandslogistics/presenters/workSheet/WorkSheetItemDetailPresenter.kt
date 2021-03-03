@@ -36,10 +36,6 @@ class WorkSheetItemDetailPresenter(private var workSheetItemDetailView: WorkShee
         workSheetItemDetailModel.updateWorkItemNotes(workItemId, notesQHLCustomer, notesQHL, this)
     }
 
-    override fun showUnFinishedContainer(context: Context) {
-        workSheetItemDetailModel.showUnFinishedContainer(context, workSheetItemDetailView)
-    }
-
     /** Model Result Listeners */
     override fun onFailure(message: String) {
         workSheetItemDetailView?.hideProgressDialog()

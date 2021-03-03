@@ -2,8 +2,10 @@ package com.quickhandslogistics.models.customerContact
 
 import android.util.Log
 import com.quickhandslogistics.contracts.customerContact.CustomerContactContract
+import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
+import com.quickhandslogistics.data.qhlContact.QhlContactListResponse
 import com.quickhandslogistics.models.lumpers.LumpersModel
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.utils.AppConstant
@@ -21,16 +23,15 @@ class CustomerContactModel(private val sharedPref: SharedPref) : CustomerContact
     }
 
     override fun fetchCustomerContactList(onFinishedListener: CustomerContactContract.Model.OnFinishedListener) {
-        val dateString = DateUtils.getCurrentDateStringByEmployeeShift()
 
-        DataManager.getService().getAllLumpersData(DataManager.getAuthToken(), dateString).enqueue(object : Callback<LumperListAPIResponse> {
-            override fun onResponse(call: Call<LumperListAPIResponse>, response: Response<LumperListAPIResponse>) {
+        DataManager.getService().getCustomerContactList(DataManager.getAuthToken()).enqueue(object : Callback<QhlContactListResponse> {
+            override fun onResponse(call: Call<QhlContactListResponse>, response: Response<QhlContactListResponse>) {
                 if (DataManager.isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onSuccess(response.body()!!)
                 }
             }
 
-            override fun onFailure(call: Call<LumperListAPIResponse>, t: Throwable) {
+            override fun onFailure(call: Call<QhlContactListResponse>, t: Throwable) {
                 Log.e(LumpersModel::class.simpleName, t.localizedMessage!!)
                 onFinishedListener.onFailure()
             }

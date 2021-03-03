@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
@@ -28,7 +29,7 @@ class CustomerContactAdapter(val resources: Resources, var adapterItemClickListe
     }
 
     override fun getItemCount(): Int {
-        return  /*items.size*/ 3
+        return  items.size
     }
 
     private fun getItem(position: Int): EmployeeData {
@@ -36,7 +37,7 @@ class CustomerContactAdapter(val resources: Resources, var adapterItemClickListe
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(/*getItem(position)*/)
+        holder.bind(getItem(position))
     }
 
     inner class ViewHolder(view: View, private val context: Context) : RecyclerView.ViewHolder(view), View.OnClickListener {
@@ -49,20 +50,19 @@ class CustomerContactAdapter(val resources: Resources, var adapterItemClickListe
         private val textViewEmail: CustomTextView = view.textViewEmail
         private val textVieWContact: CustomTextView = view.textVieWContact
         private val imageViewCall: ImageView = view.imageViewCall
+        private val constraintViewCall: ConstraintLayout = view.constraintViewCall
 
-        fun bind(/*employeeData: EmployeeData*/) {
-            val mobilenumber ="0908897096"
-
-            textViewCustomerName.text= "Namit"
-            textViewEmployeeRole.text= "Manager"
-            textViewEmployeeTitle.text= "Shipping"
-            textViewEmployeeShift.text= String.format(resources.getString(R.string.shift_normal),"Day")
-            textViewEmail.text= "namit@yopmail.com"
-//            textVieWContact.text= PhoneNumberUtils.formatNumber(mobilenumber, "US")
-            textVieWContact.text= UIUtils.formetMobileNumber(mobilenumber)
+        fun bind(item: EmployeeData) {
+            val leadName= String.format("%s %s",item!!.firstName, item!!.lastName)
+            textViewCustomerName.text= if(!leadName.isNullOrEmpty())leadName.capitalize() else resources.getString(R.string.na)
+            textViewEmployeeRole.text= if(!item.role.isNullOrEmpty())item.role?.capitalize() else resources.getString(R.string.na)
+            textViewEmployeeTitle.text= if(!item.department.isNullOrEmpty())item.department?.capitalize() else resources.getString(R.string.na)
+            textViewEmployeeShift.text= if(!item.shift.isNullOrEmpty())item.shift?.capitalize() else resources.getString(R.string.na)
+            textViewEmail.text= if(!item.email.isNullOrEmpty())item.email else resources.getString(R.string.na)
             textViewMessageTime.text= "12:22 PM"
+            textVieWContact.text=if(!item.phone.isNullOrEmpty())UIUtils.formetMobileNumber(item.phone!!) else resources.getString(R.string.na)
 
-            imageViewCall.setOnClickListener(this)
+            constraintViewCall.setOnClickListener(this)
             itemView.setOnClickListener(this)
         }
 
@@ -74,10 +74,10 @@ class CustomerContactAdapter(val resources: Resources, var adapterItemClickListe
 //                        adapterItemClickListener.onItemClick(lumperData)
                     }
                     imageViewCall.id -> {
-//                        val lumperData = getItem(adapterPosition)
-//                        lumperData.phone?.let { phone ->
-//                            adapterItemClickListener.onPhoneViewClick(textViewLumperName.text.toString(), phone)
-//                        }
+                        val item = getItem(adapterPosition)
+                        item.phone?.let { phone ->
+                            adapterItemClickListener.onPhoneViewClick(item.firstName!! , phone)
+                        }
                     }
                     else -> {
                     }

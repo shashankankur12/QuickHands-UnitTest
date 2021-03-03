@@ -42,12 +42,12 @@ interface AppConstant {
         const val WORK_ITEM_STATUS_NOT_OPEN = "NOT-OPEN"
 
         // Employee Department Enums
-        const val EMPLOYEE_DEPARTMENT_INBOUND = "INBOUND"
-        const val EMPLOYEE_DEPARTMENT_OUTBOUND = "OUTBOUND"
-        const val EMPLOYEE_DEPARTMENT_BOTH = "BOTH"
+            const val EMPLOYEE_DEPARTMENT_INBOUND = "RECEIVING"
+        const val EMPLOYEE_DEPARTMENT_OUTBOUND = "SHIPPING"
+        const val EMPLOYEE_DEPARTMENT_BOTH = "OPERATION"
 
         // Employee Swift Enums
-        const val EMPLOYEE_SHIFT_MORNING = "morning"
+        const val EMPLOYEE_SHIFT_MORNING = "day"
         const val EMPLOYEE_SHIFT_SWING = "swing"
         const val EMPLOYEE_SHIFT_NIGHT = "night"
 
@@ -81,6 +81,13 @@ interface AppConstant {
 
 
         const val VIEW_DETAILS = "VIEW_DETAILS"
+
+        //roles
+        const val LEADS = "lead"
+        const val DISTRICT_MANAGER = "District Manager"
+        const val MANAGER = "manager"
+        const val SUPERVISOR = "supervisor"
+        const val LUMPER = "lumper"
 
     }
 }

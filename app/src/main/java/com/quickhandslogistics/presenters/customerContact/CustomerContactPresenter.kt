@@ -7,6 +7,7 @@ import com.quickhandslogistics.contracts.customerContact.CustomerContactContract
 import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
+import com.quickhandslogistics.data.qhlContact.QhlContactListResponse
 import com.quickhandslogistics.models.customerContact.CustomerContactModel
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
@@ -20,14 +21,16 @@ class CustomerContactPresenter(private var customerContactContractView: Customer
     }
 
     override fun fetchCustomerContactList() {
-//        customerContactContractView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        customerContactContractView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         customerContactModel.fetchHeaderInfo(this)
-//        customerContactModel.fetchCustomerContactList(this)
+        customerContactModel.fetchCustomerContactList(this)
     }
 
     /** Model Result Listeners */
-    override fun onSuccess(response: LumperListAPIResponse) {
-
+    override fun onSuccess(response: QhlContactListResponse) {
+        customerContactContractView?.hideProgressDialog()
+        val customerContactList=response.qhlContactList
+        customerContactList?.let { customerContactContractView?.showCustomerContactData(it) }
     }
 
     override fun onSuccessGetHeaderInfo(buildingDetails: BuildingDetailData?) {
