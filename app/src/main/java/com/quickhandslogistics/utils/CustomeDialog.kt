@@ -3,20 +3,25 @@ package com.quickhandslogistics.utils
 import android.app.Activity
 import android.app.Dialog
 import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
+import com.jsibbold.zoomage.ZoomageView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.addContainer.AddScheduleDialogAdapter
 import com.quickhandslogistics.data.addContainer.ContainerDetails
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
+import java.io.File
 import java.util.*
 
 object CustomeDialog : AppConstant {
@@ -199,7 +204,7 @@ object CustomeDialog : AppConstant {
         dialog.show()
     }
 
-    fun showLeadNoteDialog(activity: Activity?, title: String?, individualNote: String?, groupNote: String?) {
+    fun showLeadNoteDialog(activity: Activity?, title: String?, individualNote: String?, groupNote: String?, individualHeader: String, groupHeader: String) {
         mActivity = activity
         val dialog =
             getDialog(R.layout.lead_note_dialog, activity)
@@ -215,6 +220,8 @@ object CustomeDialog : AppConstant {
         val layoutGroupNote = dialog.findViewById<LinearLayout>(R.id.layoutGroupNote)
         val individualNoteText: TextView = dialog.findViewById(R.id.individual_note)
         val groupNoteText: TextView = dialog.findViewById(R.id.groupNote)
+        val individualNoteHeader: TextView = dialog.findViewById(R.id.individual_note_header)
+        val groupNoteHeader: TextView = dialog.findViewById(R.id.group_note_header)
         val confirm = dialog.findViewById<Button>(R.id.confirm_button)
 
         if(individualNote.isNullOrEmpty() || individualNote.equals("NA")){
@@ -229,6 +236,8 @@ object CustomeDialog : AppConstant {
             layoutGroupNote.visibility=View.VISIBLE
         }
 
+        individualNoteHeader.text=individualHeader
+        groupNoteHeader.text=groupHeader
         individualNoteText.text= individualNote
         groupNoteText.text= groupNote
         titleTextView.text = title
@@ -255,6 +264,39 @@ object CustomeDialog : AppConstant {
         titleTextView.text = title
         confirm.setOnClickListener { dialog.dismiss() }
         dialog.show()
+    }
+
+     fun openZoomImageDialog(url: String, activity: Activity) {
+        val dialog = getDialog(R.layout.dialog_zoom_image, activity)
+
+        val window = dialog.window
+        window!!.setLayout(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT
+        )
+        window.setBackgroundDrawableResource(android.R.color.transparent)
+        val imageClose = dialog.findViewById<ImageView>(R.id.image_close)
+        val imageView: ZoomageView = dialog.findViewById(R.id.imageView)
+        val progressBar = dialog.findViewById<ProgressBar>(R.id.progress_bar)
+        progressBar.visibility=View.VISIBLE
+        val file = File(url)
+        Glide.with(activity)
+            .load(file.path)
+            .addListener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                    return false
+                }
+
+                override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                    progressBar.visibility=View.GONE
+                    return false
+                }
+
+            })
+            .into(imageView)
+        dialog.setCancelable(true)
+        dialog.show()
+        imageClose.setOnClickListener { dialog.dismiss() }
     }
 
     interface IDialogOnClick{

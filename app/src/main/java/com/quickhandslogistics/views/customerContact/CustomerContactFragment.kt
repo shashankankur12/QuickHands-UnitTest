@@ -22,14 +22,17 @@ import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.content_customer_contact_header.*
 import kotlinx.android.synthetic.main.fragment_customer_contect.*
-
-import java.time.DayOfWeek
+import kotlinx.android.synthetic.main.fragment_customer_contect.mainConstraintLayout
+import kotlinx.android.synthetic.main.fragment_customer_contect.textViewEmptyData
+import kotlinx.android.synthetic.main.fragment_lumpers.*
 
 class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, View.OnClickListener,
         CustomerContactContract.View.OnAdapterItemClickListener{
     private lateinit var customerContactPresenter: CustomerContactPresenter
     private lateinit var customerContactAdapter: CustomerContactAdapter
     private var buildingDetailData: BuildingDetailData? =null
+    private var customerContactList: ArrayList<EmployeeData> = ArrayList()
+    private var phone: String ?=null
 
     companion object {
         const val CUSTOMER_CONTACT_LIST = "CUSTOMER_CONTACT_LIST"
@@ -66,12 +69,14 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
 
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(CUSTOMER_CONTACT_LIST)) {
-
+                customerContactList = savedInstanceState.getSerializable(CUSTOMER_CONTACT_LIST) as ArrayList<EmployeeData>
+                showCustomerContactData(customerContactList)
             }
 
-            if (savedInstanceState.containsKey(HEADER_INFO))
-                buildingDetailData=savedInstanceState.getParcelable(HEADER_INFO)
-            showHeaderInfo(buildingDetailData)
+            if (savedInstanceState.containsKey(HEADER_INFO)) {
+                buildingDetailData = savedInstanceState.getParcelable(HEADER_INFO)
+                showHeaderInfo(buildingDetailData)
+            }
         } ?: run {
             if (!ConnectionDetector.isNetworkConnected(activity)) {
                 ConnectionDetector.createSnackBar(activity)
@@ -80,11 +85,15 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
 
             customerContactPresenter.fetchCustomerContactList()
         }
+        textViewCompanyContact.setOnClickListener(this)
     }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         if (buildingDetailData != null)
             outState.putParcelable(HEADER_INFO,buildingDetailData )
+
+        outState.putSerializable(CUSTOMER_CONTACT_LIST, customerContactList)
         super.onSaveInstanceState(outState)
     }
 
@@ -106,10 +115,10 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
     override fun showHeaderInfo(buildingDetailData: BuildingDetailData?) {
         this.buildingDetailData=buildingDetailData
         buildingDetailData?.let {
-            val phone=it.phone?.replace("+1", "")?.replace("-", "")
+            phone=it.phone?.replace("+1", "")?.replace("-", "")?.trim()
             textViewCustomerName.text=it.buildingName!!.capitalize()
             textViewCompanyName.text=it.buildingAddress!!.capitalize() +","+it.buildingCity+", "+it.buildingState +" "+it .buildingZipcode
-            textViewCompanyContact.text= if(!phone.isNullOrEmpty())UIUtils.formetMobileNumber(phone.trim()) else getString(R.string.na)
+            textViewCompanyContact.text= if(!phone.isNullOrEmpty())UIUtils.formetMobileNumber(phone!!) else getString(R.string.na)
         }
         activity?.let { Glide.with(it).load(R.drawable.building_image).into(circleImageViewProfile) }
     }
@@ -121,6 +130,7 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
     }
 
     override fun showCustomerContactData(customerContactList: ArrayList<EmployeeData>) {
+        this.customerContactList=customerContactList
         val qhlMangerList: ArrayList<EmployeeData> = ArrayList()
         val qhlSuperVisorList: ArrayList<EmployeeData> = ArrayList()
         val sortedList: ArrayList<EmployeeData> = ArrayList()
@@ -175,17 +185,23 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
         startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
-    override fun onClick(v: View?) {
-
-    }
-
-    override fun onItemClick(employeeData: EmployeeData) {
+    override fun onClick(view: View?) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {
             ConnectionDetector.createSnackBar(activity)
             return
         }
 
+        view?.let {
+            when (view.id) {
+                textViewCompanyContact.id -> {
+                    if (!phone.isNullOrEmpty())
+                        startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))
+                }
+            }
+        }
     }
+
+    override fun onItemClick(employeeData: EmployeeData) {}
 
     override fun onPhoneViewClick(lumperName: String, phone: String) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {
@@ -193,9 +209,26 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
             return
         }
 
-        Toast.makeText(context,lumperName, Toast.LENGTH_SHORT).show()
-
+        startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))
     }
 
+    override fun onEmailViewClick(lumperName: String, email: String) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
 
+        val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", email, null))
+        startActivity(Intent.createChooser(emailIntent, "Send email..."))
+    }
+
+    override fun onChatViewClick(employeeData: EmployeeData) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
+        Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
+
+    }
 }

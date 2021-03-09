@@ -16,9 +16,11 @@ import com.quickhandslogistics.contracts.qhlContact.QhlContactContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.qhlContact.QhlOfficeInfo
 import com.quickhandslogistics.presenters.qhlContact.QhlContactPresenter
-import com.quickhandslogistics.utils.*
-import com.quickhandslogistics.utils.ScheduleUtils.sortEmployeesAttendanceList
+import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.ConnectionDetector
 import com.quickhandslogistics.utils.ScheduleUtils.sortEmployeesList
+import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.UIUtils
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.fragment_qhl_contact.*
@@ -28,6 +30,10 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
 
     private lateinit var qhlContactPresenter: QhlContactPresenter
     private lateinit var qhlContactAdapter: QhlContactAdapter
+    private var leadProfileData: QhlOfficeInfo? =null
+    private var qhlContactList: ArrayList<EmployeeData> = ArrayList()
+    private var phone: String ?=null
+    private var email: String =""
 
     companion object {
         const val QHL_CONTACT_LIST = "QHL_CONTACT_LIST"
@@ -66,13 +72,15 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
 
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(QHL_CONTACT_LIST)) {
-
+                qhlContactList = savedInstanceState.getSerializable(QHL_CONTACT_LIST) as ArrayList<EmployeeData>
+                qhlContactList(qhlContactList)
             }
 
             if (savedInstanceState.containsKey(HEADER_INFO)){
-
+                leadProfileData = savedInstanceState.getParcelable(HEADER_INFO)
+                showQhlHeaderInfo(null)
             }
-            showQhlHeaderInfo(null)
+
 
         } ?: run {
             if (!ConnectionDetector.isNetworkConnected(activity)) {
@@ -82,9 +90,15 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
 
             qhlContactPresenter.fetchQhlContactList()
         }
+        textViewQHLContact.setOnClickListener(this)
+        textViewQHlEmail.setOnClickListener(this)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        if (leadProfileData != null)
+            outState.putParcelable(HEADER_INFO, leadProfileData)
+
+        outState.putSerializable(QHL_CONTACT_LIST, qhlContactList)
         super.onSaveInstanceState(outState)
     }
 
@@ -104,16 +118,18 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
     }
 
     override fun showQhlHeaderInfo(leadProfileData: QhlOfficeInfo?) {
+       this.leadProfileData=leadProfileData
         leadProfileData?.let {
-            val phone=it.phone?.replace("+1", "")?.replace("-", "")
+            phone=it.phone?.replace("+1", "")?.replace("-", "")?.trim()
             val open=if ( !it.opens.isNullOrEmpty())  it.opens else getString(R.string.na)
             val close=if ( !it.closes.isNullOrEmpty())  it.closes else getString(R.string.na)
+            email= leadProfileData.email!!
 
             textViewQhlOfficeName.text= getString(R.string.qhl_office)
             textViewQhlAddress.text= if(!it.address.isNullOrEmpty())it.address?.capitalize() else getString(R.string.na)
             textViewQhlOfficeTime.text= String.format(getString(R.string.hours), open,close)
             textViewQHlEmail.text= if(!it.email.isNullOrEmpty())it.email else getString(R.string.na)
-            textViewQHLContact.text= if(!phone.isNullOrEmpty())UIUtils.formetMobileNumber(phone.trim()) else getString(R.string.na)
+            textViewQHLContact.text= if(!phone.isNullOrEmpty())UIUtils.formetMobileNumber(phone!!) else getString(R.string.na)
         }
     }
 
@@ -124,6 +140,7 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
     }
 
     override fun qhlContactList(qhlContactList: ArrayList<EmployeeData>) {
+        this.qhlContactList=qhlContactList
 
         val qhlMangerList: ArrayList<EmployeeData> = ArrayList()
         val qhlLeadList: ArrayList<EmployeeData> = ArrayList()
@@ -149,25 +166,57 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
         startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
-    override fun onClick(v: View?) {
-
-    }
-
-    override fun onItemClick(employeeData: EmployeeData) {
+    override fun onClick(view: View?) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {
             ConnectionDetector.createSnackBar(activity)
             return
         }
 
+        view?.let {
+            when (view.id) {
+                textViewQHLContact.id -> {
+                    if (!phone.isNullOrEmpty())
+                        startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))
+                }
+                textViewQHlEmail.id -> {
+                    if (email.isNotEmpty()) {
+                        val emailIntent =
+                            Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", email, null))
+                        startActivity(Intent.createChooser(emailIntent, "Send email..."))
+                    }
+                }
+            }
+        }
     }
+
+    override fun onItemClick(employeeData: EmployeeData) {}
 
     override fun onPhoneViewClick(lumperName: String, phone: String) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {
             ConnectionDetector.createSnackBar(activity)
             return
         }
-        Toast.makeText(context,lumperName,Toast.LENGTH_SHORT).show()
 
+
+        startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))
+    }
+
+    override fun onEmailViewClick(lumperName: String, email: String) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
+        val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", email, null))
+        startActivity(Intent.createChooser(emailIntent, "Send email..."))
+    }
+
+    override fun onChatViewClick(employeeData: EmployeeData) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+        Toast.makeText(context,"clicked",Toast.LENGTH_SHORT).show()
     }
 
 }

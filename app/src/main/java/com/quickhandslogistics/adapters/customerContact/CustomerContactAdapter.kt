@@ -64,20 +64,29 @@ class CustomerContactAdapter(val resources: Resources, var adapterItemClickListe
 
             constraintViewCall.setOnClickListener(this)
             itemView.setOnClickListener(this)
+            textViewEmail.setOnClickListener(this)
+            textVieWContact.setOnClickListener(this)
         }
 
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
-                    itemView.id -> {
-//                        val lumperData = getItem(adapterPosition)
-//                        adapterItemClickListener.onItemClick(lumperData)
-                    }
-                    imageViewCall.id -> {
+                    textVieWContact.id -> {
                         val item = getItem(adapterPosition)
                         item.phone?.let { phone ->
                             adapterItemClickListener.onPhoneViewClick(item.firstName!! , phone)
                         }
+                    }
+                    textViewEmail.id -> {
+                        val item = getItem(adapterPosition)
+                        item.email?.let { email ->
+                            adapterItemClickListener.onEmailViewClick(item.firstName!! , email)
+                        }
+                    }
+                    constraintViewCall.id -> {
+                        val item = getItem(adapterPosition)
+                        adapterItemClickListener.onChatViewClick(item)
+
                     }
                     else -> {
                     }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -328,11 +329,12 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     }
 
     override fun showGroupNote() {
+        CustomeDialog.showLeadNoteDialog(activity, "Group Notes ", "Note for Customer", "Note for Qhl", resources.getString(R.string.notes_for_customer), resources.getString(R.string.notes_for_qhl))
 
     }
 
     override fun removeGroupNote() {
-
+        Toast.makeText(context, "long press", Toast.LENGTH_SHORT).show()
     }
 
     override fun onClick(view: View?) {

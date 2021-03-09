@@ -528,7 +528,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             return
         }
 
-        CustomeDialog.showLeadNoteDialog(activity, "Lead Notes ", item.notesForLumper,notes)
+        CustomeDialog.showLeadNoteDialog(activity, "Lead Notes ", item.notesForLumper,notes, resources.getString(R.string.individual_note), resources.getString(R.string.group_notes))
 //        CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), notes, fragmentActivity!!)
     }
 

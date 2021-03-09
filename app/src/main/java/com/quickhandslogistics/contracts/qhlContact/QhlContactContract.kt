@@ -28,6 +28,8 @@ interface QhlContactContract {
         interface OnAdapterItemClickListener {
             fun onItemClick(employeeData: EmployeeData)
             fun onPhoneViewClick(lumperName: String, phone: String)
+            fun onEmailViewClick(lumperName: String, email: String)
+            fun onChatViewClick(employeeData: EmployeeData)
         }
     }
 

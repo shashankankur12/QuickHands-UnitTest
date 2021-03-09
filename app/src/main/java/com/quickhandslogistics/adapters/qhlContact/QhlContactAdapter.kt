@@ -62,6 +62,8 @@ class QhlContactAdapter(val resources: Resources, var adapterItemClickListener: 
             textVieWContact.text=if(!item.phone.isNullOrEmpty())UIUtils.formetMobileNumber(item.phone!!) else resources.getString(R.string.na)
 
             constraintViewCall.setOnClickListener(this)
+            textVieWContact.setOnClickListener(this)
+            textViewEmail.setOnClickListener(this)
             itemView.setOnClickListener(this)
         }
 
@@ -70,12 +72,25 @@ class QhlContactAdapter(val resources: Resources, var adapterItemClickListener: 
                 when (view.id) {
                     itemView.id -> {
                     }
-                    imageViewCall.id -> {
+                    textVieWContact.id -> {
                         val item = getItem(adapterPosition)
                         item.phone?.let { phone ->
                             adapterItemClickListener.onPhoneViewClick(item.firstName!! , phone)
                         }
                     }
+                    textViewEmail.id -> {
+                        val item = getItem(adapterPosition)
+                        item.email?.let { email ->
+                            adapterItemClickListener.onEmailViewClick(item.firstName!! , email)
+                        }
+                    }
+                    constraintViewCall.id -> {
+                        val item = getItem(adapterPosition)
+
+                            adapterItemClickListener.onChatViewClick(item)
+
+                    }
+
                     else -> {
                     }
                 }

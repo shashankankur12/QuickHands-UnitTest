@@ -3,7 +3,6 @@ package com.quickhandslogistics.contracts.customerContact
 import com.quickhandslogistics.contracts.BaseContract
 import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.lumpers.EmployeeData
-import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.data.qhlContact.QhlContactListResponse
 
 interface CustomerContactContract {
@@ -27,6 +26,8 @@ interface CustomerContactContract {
         interface OnAdapterItemClickListener {
             fun onItemClick(employeeData: EmployeeData)
             fun onPhoneViewClick(lumperName: String, phone: String)
+            fun onEmailViewClick(lumperName: String, email: String)
+            fun onChatViewClick(employeeData: EmployeeData)
         }
     }
 

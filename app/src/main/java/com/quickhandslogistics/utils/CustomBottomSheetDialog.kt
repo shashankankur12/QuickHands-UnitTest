@@ -8,6 +8,8 @@ import android.widget.Button
 import android.widget.TextView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.quickhandslogistics.R
+import com.quickhandslogistics.data.dashboard.LeadProfileData
+import com.quickhandslogistics.utils.DateUtils.Companion.sharedPref
 import kotlinx.android.synthetic.main.bottom_sheet_schdule_time_fragement.*
 import kotlinx.android.synthetic.main.customer_sheet_contner.*
 import java.util.*
@@ -19,8 +21,13 @@ object CustomBottomSheetDialog {
         unFinishedBottomSheet.setContentView(R.layout.bottom_sheet_unfinished_container)
         val dateForCompletionText=unFinishedBottomSheet.findViewById<TextView>(R.id.dateForCompletionText)
         val startTimeText=unFinishedBottomSheet.findViewById<TextView>(R.id.startTimeText)
+        val departmentText=unFinishedBottomSheet.findViewById<TextView>(R.id.departmentText)
+        val shiftText=unFinishedBottomSheet.findViewById<TextView>(R.id.shiftText)
 
+        val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
 
+        shiftText?.text= leadProfile?.shift?.capitalize()
+        departmentText?.text =  UIUtils.getDisplayEmployeeDepartment(leadProfile)
 
         dateForCompletionText?.text= DateUtils.getDateString(DateUtils.PATTERN_MONTH_DAY_DISPLAY, Date())
         dateForCompletionText?.setOnClickListener {
