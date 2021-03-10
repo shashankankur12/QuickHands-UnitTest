@@ -180,7 +180,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         textViewDropsCount.text = String.format(getString(R.string.drops_s), workItemTypeCounts.second)
         textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
         textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
-        textViewUnfinishedCount.text = String.format(getString(R.string.unfinished_s), workItemTypeCounts.third)
+        textViewUnfinishedCount.text = String.format(getString(R.string.unfinished_s), 0)
 
 
         return Triple(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!))
@@ -261,7 +261,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         textViewLiveLoadsCount.text = String.format(getString(R.string.live_loads_s), workItemTypeCounts.first)
         textViewDropsCount.text = String.format(getString(R.string.drops_s), workItemTypeCounts.second)
         textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
-        textViewUnfinishedCount.text = String.format(getString(R.string.unfinished_s), workItemTypeCounts.third)
+        textViewUnfinishedCount.text = String.format(getString(R.string.unfinished_s), 0)
 
         adapter?.updateWorkItemsList(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!))
     }
@@ -274,13 +274,13 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
 
         workItemsList.forEach {
             when {
-                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> {
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> {
                     liveList.add(it)
                 }
-                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> {
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> {
                     inboundList.add(it)
                 }
-                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> {
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> {
                     outBoundList.add(it)
                 }
             }

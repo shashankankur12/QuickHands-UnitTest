@@ -9,12 +9,13 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.data.schedule.ScheduleWorkItem
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
+import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 import com.quickhandslogistics.views.workSheet.WorkSheetItemDetailBOFragment
 import com.quickhandslogistics.views.workSheet.WorkSheetItemDetailLumpersFragment
 import com.quickhandslogistics.views.workSheet.WorkSheetItemDetailNotesFragment
 
 class WorkSheetItemDetailPagerAdapter(
-    fragmentManager: FragmentManager, private val resources: Resources, allWorkItem: ScheduleWorkItem?=null,
+    fragmentManager: FragmentManager, private val resources: Resources, allWorkItem: WorkItemContainerDetails?=null,
     tempLumperIds: ArrayList<String>?= null, lumperTimeSchedule: ArrayList<LumpersTimeSchedule>?= null
 ) :
     FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -41,7 +42,7 @@ class WorkSheetItemDetailPagerAdapter(
         return null
     }
 
-    fun showWorkItemData(workItemDetail: ScheduleWorkItem, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?, tempLumperIds: ArrayList<String>) {
+    fun showWorkItemData(workItemDetail: WorkItemContainerDetails, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?, tempLumperIds: ArrayList<String>) {
         buildingOperationsFragment.showBuildingOperationsData(workItemDetail)
         lumpersFragment.showLumpersData(workItemDetail, lumpersTimeSchedule, tempLumperIds)
         notesFragment.showNotesData(workItemDetail)

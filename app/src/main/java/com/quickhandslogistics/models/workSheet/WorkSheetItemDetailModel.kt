@@ -20,7 +20,7 @@ import retrofit2.Response
 class WorkSheetItemDetailModel : WorkSheetItemDetailContract.Model {
 
     override fun fetchWorkItemDetail(workItemId: String, onFinishedListener: WorkSheetItemDetailContract.Model.OnFinishedListener) {
-        DataManager.getService().getWorkItemDetail(getAuthToken(), workItemId).enqueue(object : Callback<WorkItemDetailAPIResponse> {
+        DataManager.getService().getWorkItemContainerDetail(getAuthToken(), workItemId).enqueue(object : Callback<WorkItemDetailAPIResponse> {
             override fun onResponse(call: Call<WorkItemDetailAPIResponse>, response: Response<WorkItemDetailAPIResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onSuccess(response.body()!!)

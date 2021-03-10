@@ -54,13 +54,17 @@ interface IApiInterface {
     @GET("schedule/unscheduled")
     fun getUnSchedulesList(@Header("Authorization") auth: String): Call<UnScheduleListAPIResponse>
 
-    @GET("schedule/identity/{scheduleIdentityId}")
+    @GET("schedule/{scheduleIdentityId}")
     fun getScheduleDetail(
         @Header("Authorization") auth: String, @Path("scheduleIdentityId") scheduleIdentityId: String, @Query("day") day: String
     ): Call<ScheduleDetailAPIResponse>
 
     @GET("schedule/{workItemId}")
     fun getWorkItemDetail(@Header("Authorization") auth: String, @Path("workItemId") workItemId: String): Call<WorkItemDetailAPIResponse>
+
+
+    @GET("schedule/work-item/{workItemId}")
+    fun getWorkItemContainerDetail(@Header("Authorization") auth: String, @Path("workItemId") workItemId: String): Call<WorkItemDetailAPIResponse>
 
     @PUT("schedule/lumper/{workItemId}")
     fun assignLumpers(

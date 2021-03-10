@@ -21,7 +21,6 @@ import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
 import com.quickhandslogistics.views.workSheet.WorkSheetItemDetailActivity
 import kotlinx.android.synthetic.main.content_work_sheet_item.*
-import kotlinx.android.synthetic.main.fragment_work_sheet_item.*
 
 class WorkScheduleItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapterItemClickListener {
 
@@ -174,7 +173,7 @@ class WorkScheduleItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAd
         }
 
         workItemDetail.scheduleNote?.let {
-            val title= ScheduleUtils.scheduleTypeNotePopupTitle(workItemDetail, resources)
+            val title= ScheduleUtils.scheduleTypeNotePopupTitle(workItemDetail.schedule, resources)
             CustomProgressBar.getInstance().showInfoDialog(title, it, fragmentActivity!!)
         }
 

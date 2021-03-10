@@ -18,7 +18,7 @@ class WorkScheduleModel (private val sharedPref: SharedPref) : WorkScheduleContr
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
 
         var companyName = ""
-        leadProfile?.buildingDetailData?.customerDetail?.companyName?.let { name ->
+        leadProfile?.buildingDetailData?.customerDetail?.name?.let { name ->
             companyName = name
         }
         val date = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, date)

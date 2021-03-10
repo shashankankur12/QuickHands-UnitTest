@@ -1,43 +1,93 @@
-package com.quickhandslogistics.data.schedule
+package com.quickhandslogistics.data.workSheet
 
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.data.attendance.AttendanceDetail
 import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.lumpers.EmployeeData
-import com.quickhandslogistics.data.workSheet.WorkItemScheduleDetails
+import com.quickhandslogistics.utils.ScheduleUtils
 
-class WorkItemDetail() : Parcelable {
+class WorkItemContainerDetails() : Parcelable {
     @SerializedName("id")
     @Expose
     var id: String? = null
-
-    @SerializedName("workItemType")
-    @Expose
-    var workItemType: String? = null
 
     @SerializedName("type")
     @Expose
     var type: String? = null
 
-    @SerializedName("sequence")
+    @SerializedName("shift")
     @Expose
-    var sequence: Int? = null
+    var shift: String? = null
 
     @SerializedName("quantity")
     @Expose
     var quantity: Int? = null
 
-    @SerializedName("createdBy")
+    @SerializedName("department")
     @Expose
-    var createdBy: String? = null
+    var department: String? = null
+
+    @SerializedName("day")
+    @Expose
+    var day: String? = null
 
     @SerializedName("startTime")
     @Expose
     var startTime: String? = null
+
+    @SerializedName("isScheduledByLead")
+    @Expose
+    var isScheduledByLead: Boolean? = null
+
+    @SerializedName("status")
+    @Expose
+    var status: String? = null
+
+    @SerializedName("buildingThisWorkItemAssignedTo")
+    @Expose
+    var buildingThisWorkItemAssignedTo: String? = null
+
+    @SerializedName("notesQHL")
+    @Expose
+    var notesQHL: String? = null
+
+    @SerializedName("notesQHLCustomer")
+    @Expose
+    var notesQHLCustomer: String? = null
+
+    @SerializedName("isCompleted")
+    @Expose
+    var isCompleted: Boolean? = null
+
+    @SerializedName("buildingOps")
+    @Expose
+    var buildingOps: HashMap<String, String>? = null
+
+    @SerializedName("created_at")
+    @Expose
+    var createdAt: String? = null
+
+    @SerializedName("updated_at")
+    @Expose
+    var updatedAt: String? = null
+
+    @SerializedName("schedule")
+    @Expose
+    var schedule: WorkItemScheduleDetails? = null
+
+    @SerializedName("lumperThisWorkItemAssignedTo")
+    @Expose
+    var assignedLumpersList: ArrayList<EmployeeData>? = null
+        get() = ScheduleUtils.sortEmployeesList(field)
+
+
+
+
+
+
 
     @SerializedName("scheduleIdentity")
     @Expose
@@ -54,22 +104,6 @@ class WorkItemDetail() : Parcelable {
     @Expose
     var endDateForThisWorkItem: String? = null
 
-    @SerializedName("status")
-    @Expose
-    var status: String? = null
-
-    @SerializedName("notesQHL")
-    @Expose
-    var notesQHL: String? = null
-
-    @SerializedName("notesQHLCustomer")
-    @Expose
-    var notesQHLCustomer: String? = null
-
-    @SerializedName("isScheduledByLead")
-    @Expose
-    var isScheduledByLead: Boolean? = null
-
     @SerializedName("scheduleForWeek")
     @Expose
     var scheduleForWeek: Boolean? = null
@@ -82,50 +116,22 @@ class WorkItemDetail() : Parcelable {
     @Expose
     var specificDates: List<Any>? = null
 
-    @SerializedName("isCompleted")
-    @Expose
-    var isCompleted: Boolean? = null
-
-    @SerializedName("created_at")
-    @Expose
-    var createdAt: String? = null
-
-    @SerializedName("updated_at")
-    @Expose
-    var updatedAt: String? = null
-
     @SerializedName("numberOfDrops")
     @Expose
     var numberOfDrops: Int? = null
-
-    @SerializedName("buildingThisWorkItemAssignedTo")
-    @Expose
-    var buildingDetailData: BuildingDetailData? = null
-
-    @SerializedName("schedule")
-    @Expose
-    var schedule: WorkItemScheduleDetails? = null
-
-    @SerializedName("lumperThisWorkItemAssignedTo")
-    @Expose
-    var assignedLumpersList: ArrayList<EmployeeData>? = null
-        get() = ScheduleUtils.sortEmployeesList(field)
-
     @SerializedName("lumperAttendance")
     @Expose
     var attendanceDetail: AttendanceDetail? = null
 
-    @SerializedName("buildingOps")
-    @Expose
-    var buildingOps: HashMap<String, String>? = null
+
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
-        workItemType = parcel.readString()
+        department = parcel.readString()
         type = parcel.readString()
-        sequence = parcel.readValue(Int::class.java.classLoader) as? Int
+        shift = parcel.readString()
         quantity = parcel.readValue(Int::class.java.classLoader) as? Int
-        createdBy = parcel.readString()
+        day = parcel.readString()
         startTime = parcel.readString()
         scheduleIdentity = parcel.readString()
         scheduledFrom = parcel.readString()
@@ -141,7 +147,7 @@ class WorkItemDetail() : Parcelable {
         createdAt = parcel.readString()
         updatedAt = parcel.readString()
         numberOfDrops = parcel.readValue(Int::class.java.classLoader) as? Int
-        buildingDetailData = parcel.readParcelable(BuildingDetailData::class.java.classLoader)
+        buildingThisWorkItemAssignedTo = parcel.readString()
         schedule = parcel.readParcelable(BuildingDetailData::class.java.classLoader)
         assignedLumpersList = parcel.createTypedArrayList(EmployeeData)
         attendanceDetail = parcel.readParcelable(AttendanceDetail::class.java.classLoader)
@@ -149,24 +155,13 @@ class WorkItemDetail() : Parcelable {
 //        readFromParcel(parcel)
     }
 
-    private fun readFromParcel(parcel: Parcel) {
-        val count = parcel.readInt()
-        for (i in 0 until count) {
-            val value1 = parcel.readString()
-            val value2 = parcel.readString()
-            if (!value1.isNullOrEmpty() && !value2.isNullOrEmpty()) {
-                buildingOps?.put(value1, value2)
-            }
-        }
-    }
-
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
-        parcel.writeString(workItemType)
+        parcel.writeString(department)
         parcel.writeString(type)
-        parcel.writeValue(sequence)
+        parcel.writeString(shift )
         parcel.writeValue(quantity)
-        parcel.writeString(createdBy)
+        parcel.writeString(day)
         parcel.writeString(startTime)
         parcel.writeString(scheduleIdentity)
         parcel.writeString(scheduledFrom)
@@ -182,7 +177,7 @@ class WorkItemDetail() : Parcelable {
         parcel.writeString(createdAt)
         parcel.writeString(updatedAt)
         parcel.writeValue(numberOfDrops)
-        parcel.writeParcelable(buildingDetailData, flags)
+        parcel.writeString(buildingThisWorkItemAssignedTo)
         parcel.writeParcelable(schedule, flags)
         parcel.writeTypedList(assignedLumpersList)
         parcel.writeParcelable(attendanceDetail, flags)
@@ -199,12 +194,12 @@ class WorkItemDetail() : Parcelable {
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<WorkItemDetail> {
-        override fun createFromParcel(parcel: Parcel): WorkItemDetail {
-            return WorkItemDetail(parcel)
+    companion object CREATOR : Parcelable.Creator<WorkItemContainerDetails> {
+        override fun createFromParcel(parcel: Parcel): WorkItemContainerDetails {
+            return WorkItemContainerDetails(parcel)
         }
 
-        override fun newArray(size: Int): Array<WorkItemDetail?> {
+        override fun newArray(size: Int): Array<WorkItemContainerDetails?> {
             return arrayOfNulls(size)
         }
     }

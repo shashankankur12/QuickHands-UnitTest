@@ -171,8 +171,8 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
             return
         }
 
-        workItemDetail.scheduleNote?.let {
-            val title= ScheduleUtils.scheduleTypeNotePopupTitle(workItemDetail, resources)
+        workItemDetail.schedule?.scheduleNote?.let {
+            val title= ScheduleUtils.scheduleTypeNotePopupTitle(workItemDetail.schedule, resources)
             CustomProgressBar.getInstance().showInfoDialog(title, it, fragmentActivity!!)
         }
 

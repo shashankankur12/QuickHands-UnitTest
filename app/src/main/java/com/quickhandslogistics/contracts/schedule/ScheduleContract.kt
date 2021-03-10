@@ -1,11 +1,11 @@
 package com.quickhandslogistics.contracts.schedule
 
 import com.quickhandslogistics.contracts.BaseContract
-import com.quickhandslogistics.contracts.lumperSheet.LumperSheetContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
-import com.quickhandslogistics.data.schedule.ScheduleDetail
+import com.quickhandslogistics.data.schedule.ScheduleDetailData
 import com.quickhandslogistics.data.schedule.ScheduleListAPIResponse
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ScheduleContract {
     interface Model {
@@ -20,13 +20,13 @@ class ScheduleContract {
 
     interface View : BaseContract.View {
         fun showDateString(dateString: String)
-        fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<ScheduleDetail>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int)
+        fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<ScheduleDetailData>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int)
         fun showAPIErrorMessage(message: String)
         fun showEmptyData()
         fun showLoginScreen()
 
         interface OnAdapterItemClickListener {
-            fun onScheduleItemClick(scheduleDetail: ScheduleDetail)
+            fun onScheduleItemClick(scheduleDetail: ScheduleDetailData)
             fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>)
         }
     }

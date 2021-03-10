@@ -10,6 +10,7 @@ interface AppConstant {
         const val PREFERENCE_EMPLOYEE_ID = "pref_emp_id"
         const val PREFERENCE_LANGUAGE = "pref_language"
         const val PREFERENCE_BUILDING_ID = "pref_building_id"
+        const val PREFERENCE_BUILDING_DETAILS = "pref_building_details"
         const val PREFERENCE_REGISTRATION_TOKEN = "pref_registration_token"
         const val PREFERENCE_NOTIFICATION = "pref_notification"
 
@@ -58,9 +59,9 @@ interface AppConstant {
         const val REQUEST_LUMPERS_STATUS_CANCELLED = "cancelled"
 
         //Worksheet
-        const val WORKSHEET_WORK_ITEM_LIVE = "live"
-        const val WORKSHEET_WORK_ITEM_OUTBOUND = "outbound"
-        const val WORKSHEET_WORK_ITEM_INBOUND = "drop"
+        const val WORKSHEET_WORK_ITEM_LIVE = "LIVE"
+        const val WORKSHEET_WORK_ITEM_OUTBOUND = "OUTBOUND"
+        const val WORKSHEET_WORK_ITEM_INBOUND = "DROP"
 
 
         // Attendance
@@ -70,7 +71,7 @@ interface AppConstant {
         const val ATTENDANCE_LUNCH_PUNCH_IN = "ATTENDANCE_LUNCH_PUNCH_IN"
         const val ATTENDANCE_LUNCH_PUNCH_OUT = "ATTENDANCE_LUNCH_PUNCH_OUT"
 
-        const val NOTES_NOT_AVAILABLE = "NA"
+        const val NOTES_NOT_AVAILABLE = "N/A"
 
         const val REQUEST_CODE_CHANGED = 101
 

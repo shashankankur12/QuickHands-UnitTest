@@ -19,7 +19,7 @@ class WorkSheetModel(private val sharedPref: SharedPref) : WorkSheetContract.Mod
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
 
         var companyName = ""
-        leadProfile?.buildingDetailData?.customerDetail?.companyName?.let { name ->
+        leadProfile?.buildingDetailData?.customerDetail?.name?.let { name ->
             companyName = name
         }
         val date = DateUtils.getCurrentDateStringByEmployeeShift(pattern = DateUtils.PATTERN_NORMAL)

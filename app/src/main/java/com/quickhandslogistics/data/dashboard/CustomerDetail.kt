@@ -14,6 +14,10 @@ class CustomerDetail() : Parcelable {
     @Expose
     var companyName: String? = null
 
+    @SerializedName("name")
+    @Expose
+    var name: String? = null
+
     @SerializedName("companyAdminName")
     @Expose
     var companyAdminName: String? = null
@@ -76,6 +80,7 @@ class CustomerDetail() : Parcelable {
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
+        name = parcel.readString()
         companyName = parcel.readString()
         companyAdminName = parcel.readString()
         companyState = parcel.readString()
@@ -95,6 +100,7 @@ class CustomerDetail() : Parcelable {
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
+        parcel.writeString(name)
         parcel.writeString(companyName)
         parcel.writeString(companyAdminName)
         parcel.writeString(companyState)

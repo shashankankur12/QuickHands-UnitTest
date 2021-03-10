@@ -21,6 +21,7 @@ import com.quickhandslogistics.adapters.workSheet.WorkSheetDetailsNoteImageAdapt
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailNoteImageContract
 import com.quickhandslogistics.data.schedule.ScheduleWorkItem
+import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.ConnectionDetector
 import com.quickhandslogistics.utils.CustomeDialog
@@ -37,7 +38,7 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
     private lateinit var workSheetItemDetailNotesImageAdapter: WorkSheetDetailsNoteImageAdapter
     private var imageStringArray = ArrayList<String>()
 
-    private var workItemDetail: ScheduleWorkItem? = null
+    private var workItemDetail: WorkItemContainerDetails? = null
     private var isDataChanged: Boolean =false
     private var timeStamp = ""
     private var imageFileName = ""
@@ -49,7 +50,7 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
     companion object {
         private const val NOTE_WORK_DETALS = "NOTE_WORK_DETALS"
         @JvmStatic
-        fun newInstance(allWorkItem: ScheduleWorkItem?) = WorkSheetItemDetailNotesFragment()
+        fun newInstance(allWorkItem: WorkItemContainerDetails?) = WorkSheetItemDetailNotesFragment()
             .apply {
                 arguments = Bundle().apply {
                     if(allWorkItem!=null){
@@ -69,7 +70,7 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            workItemDetail = it.getParcelable<ScheduleWorkItem>(NOTE_WORK_DETALS)
+            workItemDetail = it.getParcelable<WorkItemContainerDetails>(NOTE_WORK_DETALS)
         }
     }
 
@@ -102,7 +103,7 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
         workItemDetail?.let { showNotesData(it) }
     }
 
-    fun showNotesData(workItemDetail: ScheduleWorkItem) {
+    fun showNotesData(workItemDetail: WorkItemContainerDetails) {
         this.workItemDetail = workItemDetail
 
         if (!workItemDetail.notesQHLCustomer.isNullOrEmpty() && workItemDetail.notesQHLCustomer != AppConstant.NOTES_NOT_AVAILABLE) {

@@ -12,8 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.common.ContainerDetailAdapter
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
+import com.quickhandslogistics.data.dashboard.BuildingDetailData
+import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.schedule.ScheduleWorkItem
 import com.quickhandslogistics.data.schedule.WorkItemDetail
+import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
+import com.quickhandslogistics.presenters.LeadProfilePresenter
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.buildingOperations.BuildingOperationsActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETERS
@@ -28,12 +32,13 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var containerDetailAdapter: ContainerDetailAdapter
 
-    private var workItemDetail: ScheduleWorkItem? = null
+    private var workItemDetail: WorkItemContainerDetails? = null
+    private var buildingDetailData: ArrayList<String>? = null
 
     companion object {
         private const val WORK_DETALS = "WORK_DETALS"
         @JvmStatic
-        fun newInstance(allWorkItem: ScheduleWorkItem?) = WorkSheetItemDetailBOFragment()
+        fun newInstance(allWorkItem: WorkItemContainerDetails?) = WorkSheetItemDetailBOFragment()
             .apply {
                 arguments = Bundle().apply {
                     if(allWorkItem!=null){
@@ -46,7 +51,7 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            workItemDetail = it.getParcelable<ScheduleWorkItem>(WORK_DETALS)
+            workItemDetail = it.getParcelable<WorkItemContainerDetails>(WORK_DETALS)
         }
     }
 
@@ -85,6 +90,7 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
 
         buttonUpdate.setOnClickListener(this)
         workItemDetail?.let { showBuildingOperationsData(it) }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -99,7 +105,7 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-    fun showBuildingOperationsData(workItemDetail: ScheduleWorkItem) {
+    fun showBuildingOperationsData(workItemDetail: WorkItemContainerDetails) {
         this.workItemDetail = workItemDetail
         workItemDetail.status?.let { status ->
             if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED || status == AppConstant.WORK_ITEM_STATUS_CANCELLED) {
@@ -109,7 +115,11 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
             }
         }
 
-        containerDetailAdapter.updateData(workItemDetail.buildingOps, workItemDetail.buildingDetailData?.parameters)
+        buildingDetailData = sharedPref.getClassObject(AppConstant.PREFERENCE_BUILDING_DETAILS, ArrayList::class.java) as ArrayList<String>?
+
+        buildingDetailData?.let {
+            containerDetailAdapter.updateData(workItemDetail.buildingOps, buildingDetailData)
+        }
     }
 
     fun showEmptyData() {
@@ -127,11 +137,18 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
         view?.let {
             when (view.id) {
                 buttonUpdate.id -> {
-                    val bundle = Bundle()
-                    bundle.putString(ARG_WORK_ITEM_ID, workItemDetail?.id)
-                    bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, workItemDetail?.buildingDetailData?.parameters)
-                    startIntent(BuildingOperationsActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
+                    buildingDetailData?.let {
+                        val bundle = Bundle()
+                        bundle.putString(ARG_WORK_ITEM_ID, workItemDetail?.id)
+                        bundle.putStringArrayList(ARG_BUILDING_PARAMETERS, buildingDetailData)
+                        startIntent(
+                            BuildingOperationsActivity::class.java,
+                            bundle = bundle,
+                            requestCode = AppConstant.REQUEST_CODE_CHANGED
+                        )
+                    }
                 }
+                else -> {}
             }
         }
     }

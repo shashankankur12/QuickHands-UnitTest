@@ -12,7 +12,6 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.common.LumperImagesAdapter
 import com.quickhandslogistics.contracts.common.LumperImagesContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemContract
-import com.quickhandslogistics.controls.OverlapDecoration
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.utils.DateUtils
@@ -66,11 +65,11 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
         fun bind(workItemDetail: WorkItemDetail) {
             textViewStartTime.text = String.format(resources.getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
 
-            val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.workItemType, resources)
+            val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.type, resources)
             when (workItemTypeDisplayName) {
-                resources.getString(R.string.drops) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.no_of_drops_s), workItemDetail.sequence)
-                resources.getString(R.string.live_loads) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.live_load_s), workItemDetail.sequence)
-                else -> textViewNoOfDrops.text = String.format(resources.getString(R.string.out_bound_s), workItemDetail.sequence)
+                resources.getString(R.string.drops) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.no_of_drops_s), workItemDetail.quantity)
+                resources.getString(R.string.live_loads) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.live_load_s), workItemDetail.quantity)
+                else -> textViewNoOfDrops.text = String.format(resources.getString(R.string.out_bound_s), workItemDetail.quantity)
             }
 
             var doorValue: String? = null
@@ -82,12 +81,12 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
 
             textViewDoor.text = String.format(resources.getString(R.string.door_s), if (!doorValue.isNullOrEmpty()) doorValue else "---")
             textViewContainer.text = String.format(resources.getString(R.string.container_no_s), if (!containerNumberValue.isNullOrEmpty()) containerNumberValue else "---")
-            if (!workItemDetail.scheduleNote.isNullOrEmpty()){
+            if (!workItemDetail.schedule?.scheduleNote.isNullOrEmpty()){
                 textViewWorkSheetNote.visibility=View.VISIBLE
-                textViewWorkSheetNote.text=ScheduleUtils.getscheduleTypeNote(workItemDetail, resources)
+                textViewWorkSheetNote.text=ScheduleUtils.getscheduleTypeNote(workItemDetail.schedule, resources)
             }else textViewWorkSheetNote.visibility=View.GONE
-            textViewWorkSheetNote.text=ScheduleUtils.getscheduleTypeNote(workItemDetail, resources)
-            textViewWorkSheetNote.isEnabled=(!workItemDetail.scheduleNote.isNullOrEmpty() && !getItem(adapterPosition).scheduleNote!!.equals("NA"))
+            textViewWorkSheetNote.text=ScheduleUtils.getscheduleTypeNote(workItemDetail.schedule, resources)
+            textViewWorkSheetNote.isEnabled=(!workItemDetail.schedule?.scheduleNote.isNullOrEmpty() && !getItem(adapterPosition).schedule?.scheduleNote!!.equals("NA"))
 
             workItemDetail.assignedLumpersList?.let { imagesList ->
                 recyclerViewLumpersImagesList.adapter = LumperImagesAdapter(imagesList, sharedPref,this@ViewHolder)
@@ -102,11 +101,11 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
                 when (view.id) {
                     itemView.id -> {
                         val workItemDetail = getItem(adapterPosition)
-                        val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.workItemType, resources)
+                        val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.type, resources)
                         adapterItemClickListener.onItemClick(workItemDetail.id!!, workItemTypeDisplayName)
                     }
                     textViewWorkSheetNote.id->{
-                        if (!getItem(adapterPosition).scheduleNote.isNullOrEmpty() && !getItem(adapterPosition).scheduleNote!!.equals("NA"))
+                        if (!getItem(adapterPosition).schedule?.scheduleNote.isNullOrEmpty() && !getItem(adapterPosition).schedule?.scheduleNote!!.equals("NA"))
                         adapterItemClickListener.onNoteClick(getItem(adapterPosition))
                     }
                 }

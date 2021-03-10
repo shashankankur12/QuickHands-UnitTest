@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
@@ -17,7 +16,7 @@ import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
-import com.quickhandslogistics.data.schedule.ScheduleDetail
+import com.quickhandslogistics.data.schedule.ScheduleDetailData
 import com.quickhandslogistics.presenters.schedule.SchedulePresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
@@ -25,6 +24,7 @@ import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract.View.OnAdapterItemClickListener, CalendarUtils.CalendarSelectionListener {
@@ -36,7 +36,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     private var selectedTime: Long = 0
     private var currentDatePosition: Int = 0
     private lateinit var availableDates: List<Date>
-    private var workItemsList: ArrayList<ScheduleDetail> = ArrayList<ScheduleDetail>()
+    private var workItemsList: ArrayList<ScheduleDetailData> = ArrayList<ScheduleDetailData>()
     private var selectedDate: Date = Date()
     private var dateString: String? = null
     private var isSavedState: Boolean = false
@@ -243,7 +243,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
     }
 
-    override fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<ScheduleDetail>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int) {
+    override fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<ScheduleDetailData>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int) {
         this.selectedDate = selectedDate
         this.workItemsList = workItemsList
         this.currentPageIndex = currentPageIndex
@@ -279,18 +279,18 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     }
 
     /** Adapter Listeners */
-    override fun onScheduleItemClick(scheduleDetail: ScheduleDetail) {
+    override fun onScheduleItemClick(scheduleDetail: ScheduleDetailData) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {
             ConnectionDetector.createSnackBar(activity)
             return
         }
 
-        val bundle = Bundle()
-        bundle.putBoolean(ARG_ALLOW_UPDATE, DateUtils.isCurrentDate(selectedTime))
-        bundle.putBoolean(ARG_IS_FUTURE_DATE, DateUtils.isFutureDate(selectedTime))
-        bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleDetail.scheduleIdentity)
-        bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
-        startIntent(WorkScheduleActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
+//        val bundle = Bundle()
+//        bundle.putBoolean(ARG_ALLOW_UPDATE, DateUtils.isCurrentDate(selectedTime))
+//        bundle.putBoolean(ARG_IS_FUTURE_DATE, DateUtils.isFutureDate(selectedTime))
+//        bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleDetail.scheduleIdentity)
+//        bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
+//        startIntent(WorkScheduleActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }
 
     override fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>) {
