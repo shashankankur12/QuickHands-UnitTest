@@ -4,21 +4,33 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.schedule.WorkSchedulePagerAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
 import com.quickhandslogistics.contracts.schedule.WorkScheduleContract
 import com.quickhandslogistics.data.customerSheet.CustomerSheetData
-import com.quickhandslogistics.data.schedule.ScheduleDetail
-import com.quickhandslogistics.data.schedule.WorkItemDetail
+import com.quickhandslogistics.data.schedule.ScheduleDetailData
+import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 import com.quickhandslogistics.presenters.schedule.WorkSchedulePresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
+import kotlinx.android.synthetic.main.content_work_sheet.*
 import kotlinx.android.synthetic.main.work_schedule_container.*
+import kotlinx.android.synthetic.main.work_schedule_container.swipe_pull_refresh
+import kotlinx.android.synthetic.main.work_schedule_container.tabLayoutWorkSheet
+import kotlinx.android.synthetic.main.work_schedule_container.textViewCompanyName
+import kotlinx.android.synthetic.main.work_schedule_container.textViewDropsCount
+import kotlinx.android.synthetic.main.work_schedule_container.textViewGroupNote
+import kotlinx.android.synthetic.main.work_schedule_container.textViewLiveLoadsCount
+import kotlinx.android.synthetic.main.work_schedule_container.textViewOutBoundsCount
+import kotlinx.android.synthetic.main.work_schedule_container.textViewTotalCount
+import kotlinx.android.synthetic.main.work_schedule_container.textViewUnfinishedCount
+import kotlinx.android.synthetic.main.work_schedule_container.textViewWorkItemDept
+import kotlinx.android.synthetic.main.work_schedule_container.textViewWorkItemShift
+import kotlinx.android.synthetic.main.work_schedule_container.textViewWorkItemsDate
+import kotlinx.android.synthetic.main.work_schedule_container.viewPagerWorkSheet
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -30,7 +42,7 @@ View.OnClickListener   {
 
     private lateinit var workSheetPresenter: WorkSchedulePresenter
     private var adapter: WorkSchedulePagerAdapter? = null
-    private var data: ScheduleDetail = ScheduleDetail()
+    private var data: ScheduleDetailData = ScheduleDetailData()
     private lateinit var date: String
     private lateinit var shift: String
     private lateinit var dept: String
@@ -81,9 +93,7 @@ View.OnClickListener   {
                 showHeaderInfo(companyName, date, shift, dept)
             }
             if (savedInstanceState.containsKey(WORKSHEET_DETAIL)) {
-                data = savedInstanceState.getParcelable<ScheduleDetail>(
-                    WORKSHEET_DETAIL
-                ) as ScheduleDetail
+                data = savedInstanceState.getParcelable<ScheduleDetailData>(WORKSHEET_DETAIL) as ScheduleDetailData
                 showWorkSheets(data)
 
                 val allWorkItemLists = createDifferentListData(data)
@@ -135,7 +145,7 @@ View.OnClickListener   {
 
 
     private fun initializeViewPager(
-        allWorkItemLists: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>? = null,
+        allWorkItemLists: Triple<ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>>? = null,
         customerSheetData: CustomerSheetData? = null, selectedTime: Long? = null
     ) {
         adapter = if (allWorkItemLists != null) {
@@ -159,23 +169,25 @@ View.OnClickListener   {
             viewPagerWorkSheet.pagingEnabled =true        }
     }
 
-    private fun createDifferentListData(data: ScheduleDetail): Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>> {
+    private fun createDifferentListData(data: ScheduleDetailData): Triple<ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>> {
 
-        textViewTotalCount.text = String.format(getString(R.string.total_containers_s), data.totalNumberOfWorkItems)
+        val totalContainers=data?.liveLoads?.size!!+ data?.drops?.size!! + data?.outbounds?.size!!
+        textViewTotalCount.text = String.format(getString(R.string.total_containers_s), totalContainers)
 
 
-        textViewLiveLoadsCount.text = String.format(getString(R.string.live_loads_s), data?.scheduleTypes?.liveLoads?.size)
-        textViewDropsCount.text = String.format(getString(R.string.drops_s), data?.scheduleTypes?.drops?.size)
-        textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), data?.scheduleTypes?.outbounds?.size)
+        textViewLiveLoadsCount.text = String.format(getString(R.string.live_loads_s), data?.liveLoads?.size)
+        textViewDropsCount.text = String.format(getString(R.string.drops_s), data?.drops?.size)
+        textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), data?.outbounds?.size)
+        textViewUnfinishedCount.text = String.format(getString(R.string.unfinished_s), 0)
 
-        var allWorkItem:ArrayList<WorkItemDetail> = ArrayList()
-        data?.scheduleTypes?.outbounds?.let { allWorkItem.addAll(it) }
-        data?.scheduleTypes?.liveLoads?.let { allWorkItem.addAll(it) }
-        data?.scheduleTypes?.drops?.let { allWorkItem.addAll(it) }
+        var allWorkItem:ArrayList<WorkItemContainerDetails> = ArrayList()
+        data?.outbounds?.let { allWorkItem.addAll(it) }
+        data?.liveLoads?.let { allWorkItem.addAll(it) }
+        data?.drops?.let { allWorkItem.addAll(it) }
 
-        var onGoingWorkItems:ArrayList<WorkItemDetail> = ArrayList()
-        var cancelled:ArrayList<WorkItemDetail> = ArrayList()
-        var completed:ArrayList<WorkItemDetail> = ArrayList()
+        var onGoingWorkItems:ArrayList<WorkItemContainerDetails> = ArrayList()
+        var cancelled:ArrayList<WorkItemContainerDetails> = ArrayList()
+        var completed:ArrayList<WorkItemContainerDetails> = ArrayList()
 
         allWorkItem.forEach {
             when {
@@ -206,6 +218,7 @@ View.OnClickListener   {
         textViewLiveLoadsCount.text = ""
         textViewDropsCount.text = ""
         textViewOutBoundsCount.text = ""
+        textViewUnfinishedCount.text = ""
         adapter?.updateWorkItemsList(ArrayList(), ArrayList(), ArrayList(), selectedTime)
     }
 
@@ -217,27 +230,29 @@ View.OnClickListener   {
         onFragmentInteractionListener?.invalidateCancelAllSchedulesOption(false)
     }
 
-    override fun showWorkSheets(data: ScheduleDetail?) {
+    override fun showWorkSheets(data: ScheduleDetailData) {
         this.data = data!!
         swipe_pull_refresh?.isRefreshing = false
 
         customerGroupNote= ScheduleUtils.getGroupNoteListWorkSchedule(data)
         textViewGroupNote.isEnabled = (customerGroupNote!=null&& (customerGroupNote.first.first.size>0 ||customerGroupNote.second.size>0|| customerGroupNote.third.size>0||customerGroupNote.first.second.size>0 ))
 
-        textViewTotalCount.text = String.format(getString(R.string.total_containers_s), data?.totalNumberOfWorkItems)
+        val totalContainers=data?.liveLoads?.size!!+ data?.drops?.size!! + data?.outbounds?.size!!
+        textViewTotalCount.text = String.format(getString(R.string.total_containers_s), totalContainers)
 
-        textViewLiveLoadsCount.text = String.format(getString(R.string.live_loads_s), data?.scheduleTypes?.liveLoads?.size)
-        textViewDropsCount.text = String.format(getString(R.string.drops_s), data?.scheduleTypes?.drops?.size)
-        textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), data?.scheduleTypes?.outbounds?.size)
+        textViewLiveLoadsCount.text = String.format(getString(R.string.live_loads_s), data?.liveLoads?.size)
+        textViewDropsCount.text = String.format(getString(R.string.drops_s), data.drops?.size)
+        textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), data?.outbounds?.size)
+        textViewUnfinishedCount.text = String.format(getString(R.string.unfinished_s), 0)
 
-        var allWorkItem:ArrayList<WorkItemDetail> = ArrayList()
-        data?.scheduleTypes?.outbounds?.let { allWorkItem.addAll(it) }
-        data?.scheduleTypes?.liveLoads?.let { allWorkItem.addAll(it) }
-        data?.scheduleTypes?.drops?.let { allWorkItem.addAll(it) }
+        var allWorkItem:ArrayList<WorkItemContainerDetails> = ArrayList()
+        data?.outbounds?.let { allWorkItem.addAll(it) }
+        data?.liveLoads?.let { allWorkItem.addAll(it) }
+        data?.drops?.let { allWorkItem.addAll(it) }
 
-        var onGoingWorkItems:ArrayList<WorkItemDetail> = ArrayList()
-        var cancelled:ArrayList<WorkItemDetail> = ArrayList()
-        var completed:ArrayList<WorkItemDetail> = ArrayList()
+        var onGoingWorkItems:ArrayList<WorkItemContainerDetails> = ArrayList()
+        var cancelled:ArrayList<WorkItemContainerDetails> = ArrayList()
+        var completed:ArrayList<WorkItemContainerDetails> = ArrayList()
 
         allWorkItem.forEach {
             when {
@@ -260,21 +275,21 @@ View.OnClickListener   {
 
     }
 
-    private fun getSortList(workItemsList: ArrayList<WorkItemDetail>): ArrayList<WorkItemDetail> {
-        var inboundList: ArrayList<WorkItemDetail> = ArrayList()
-        var outBoundList: ArrayList<WorkItemDetail> = ArrayList()
-        var liveList: ArrayList<WorkItemDetail> = ArrayList()
-        var sortedList: ArrayList<WorkItemDetail> = ArrayList()
+    private fun getSortList(workItemsList: ArrayList<WorkItemContainerDetails>): ArrayList<WorkItemContainerDetails> {
+        var inboundList: ArrayList<WorkItemContainerDetails> = ArrayList()
+        var outBoundList: ArrayList<WorkItemContainerDetails> = ArrayList()
+        var liveList: ArrayList<WorkItemContainerDetails> = ArrayList()
+        var sortedList: ArrayList<WorkItemContainerDetails> = ArrayList()
 
         workItemsList.forEach {
             when {
-                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> {
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> {
                     liveList.add(it)
                 }
-                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> {
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> {
                     inboundList.add(it)
                 }
-                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> {
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> {
                     outBoundList.add(it)
                 }
             }

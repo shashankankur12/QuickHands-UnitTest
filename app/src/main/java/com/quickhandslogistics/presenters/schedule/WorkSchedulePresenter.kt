@@ -5,7 +5,7 @@ import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.schedule.WorkScheduleContract
 import com.quickhandslogistics.data.ErrorResponse
-import com.quickhandslogistics.data.schedule.ScheduleDetailAPIResponse
+import com.quickhandslogistics.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.models.schedule.WorkScheduleModel
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
@@ -46,7 +46,7 @@ class WorkSchedulePresenter (private var workSheetView: WorkScheduleContract.Vie
         }
     }
 
-    override fun onSuccessFetchWorkSheet(scheduleDetailAPIResponse: ScheduleDetailAPIResponse) {
+    override fun onSuccessFetchWorkSheet(scheduleDetailAPIResponse: ScheduleListAPIResponse) {
         workSheetView?.hideProgressDialog()
 //        workSheetListAPIResponse.data?.let { data ->
 //
@@ -68,7 +68,11 @@ class WorkSchedulePresenter (private var workSheetView: WorkScheduleContract.Vie
 //            })
 //
 //
-            workSheetView?.showWorkSheets(scheduleDetailAPIResponse.data?.schedules)
+            scheduleDetailAPIResponse.data!!.scheduleDetailsList?.get(0)?.let { it1 ->
+                workSheetView?.showWorkSheets(it1)
+            }
+
+
 //        }
     }
 

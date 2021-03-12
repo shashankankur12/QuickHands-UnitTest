@@ -29,7 +29,7 @@ class ScheduleModel(private val sharedPref: SharedPref) : ScheduleContract.Model
     override fun fetchSchedulesByDate(selectedDate: Date, pageIndex: Int, onFinishedListener: ScheduleContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
 
-        DataManager.getService().getSchedulesList(getAuthToken(), dateString, pageIndex, AppConstant.API_PAGE_SIZE).enqueue(object : Callback<ScheduleListAPIResponse> {
+        DataManager.getService().getSchedulesList(getAuthToken(), dateString,  pageIndex, AppConstant.API_PAGE_SIZE).enqueue(object : Callback<ScheduleListAPIResponse> {
             override fun onResponse(call: Call<ScheduleListAPIResponse>, response: Response<ScheduleListAPIResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onSuccess(selectedDate, response.body()!!, pageIndex)

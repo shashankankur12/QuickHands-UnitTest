@@ -51,6 +51,14 @@ interface IApiInterface {
         @Query("page") page: Int, @Query("pageSize") pageSize: Int
     ): Call<ScheduleListAPIResponse>
 
+
+    @GET("schedule/lookup/date")
+    fun getSchedulesDetails(
+        @Header("Authorization") auth: String, @Query("date") date: String, @Query("department") department: String,
+        @Query("page") page: Int, @Query("pageSize") pageSize: Int
+    ): Call<ScheduleListAPIResponse>
+
+
     @GET("schedule/unscheduled")
     fun getUnSchedulesList(@Header("Authorization") auth: String): Call<UnScheduleListAPIResponse>
 

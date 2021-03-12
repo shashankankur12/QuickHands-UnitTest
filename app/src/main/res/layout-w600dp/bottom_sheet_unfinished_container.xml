@@ -9,35 +9,30 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/materialTextView"
+        style="@style/titleBigTextViewTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/scheduleItemBackground"
         android:gravity="center"
-        android:padding="@dimen/_10sdp"
+        android:padding="@dimen/_8sdp"
         android:text="@string/unfinished_container"
         android:textColor="@color/textBlack"
-        android:textSize="@dimen/_18sdp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/unfinishedBottomSheetText"
+        style="@style/valuesTextViewTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
         android:background="@drawable/schedule_item_background_rect"
-        android:paddingStart="@dimen/_15sdp"
-        android:gravity="center"
-        android:paddingTop="@dimen/_2sdp"
-        android:paddingEnd="@dimen/_15sdp"
-        android:paddingBottom="@dimen/_2sdp"
+        android:paddingHorizontal="@dimen/_15sdp"
+        android:paddingVertical="@dimen/_2sdp"
         android:text="@string/unfinished_bottom_sheet_text"
         android:textColor="@color/buildingTitle"
-        android:textSize="@dimen/_12sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialTextView" />
@@ -54,35 +49,28 @@
         app:layout_constraintStart_toStartOf="@id/unfinishedBottomSheetText"
         app:layout_constraintTop_toBottomOf="@id/unfinishedBottomSheetText">
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/dateOfCompletionHeading"
+            style="@style/titleTextViewTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/schedule_item_background"
-            android:paddingStart="@dimen/_15sdp"
-            android:paddingTop="@dimen/_2sdp"
-            android:textStyle="bold"
-            android:paddingEnd="@dimen/_15sdp"
-            android:paddingBottom="@dimen/_2sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_15sdp"
             android:text="@string/date_for_completion"
             android:textColor="@color/buildingTitle"
-            android:textSize="@dimen/_13sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/dateForCompletionText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/schedule_item_background"
             android:gravity="end"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingTop="@dimen/_2sdp"
-            android:paddingEnd="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_2sdp"
-            android:textColor="@color/buildingTitle"
-            android:textSize="@dimen/_11sdp"
+            android:paddingHorizontal="@dimen/_6sdp"
+            style="@style/valuesTextViewTheme"
             app:layout_constraintBottom_toBottomOf="@id/dateOfCompletionHeading"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/dateOfCompletionHeading"
@@ -102,35 +90,28 @@
         app:layout_constraintStart_toStartOf="@+id/dateOfCompletionLayout"
         app:layout_constraintTop_toBottomOf="@id/dateOfCompletionLayout">
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/departmentHeading"
+            style="@style/titleTextViewTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/schedule_item_background"
-            android:paddingStart="@dimen/_15sdp"
-            android:paddingTop="@dimen/_2sdp"
-            android:paddingEnd="@dimen/_15sdp"
-            android:paddingBottom="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_15sdp"
+            android:paddingVertical="@dimen/_2sdp"
             android:text="@string/department"
             android:textColor="@color/buildingTitle"
-            android:textSize="@dimen/_13sdp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/departmentText"
+            style="@style/valuesTextViewTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/schedule_item_background"
             android:gravity="end"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingTop="@dimen/_2sdp"
-            android:paddingEnd="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_2sdp"
-            android:textColor="@color/buildingTitle"
-            android:textSize="@dimen/_11sdp"
+            android:paddingHorizontal="@dimen/_6sdp"
             app:layout_constraintBottom_toBottomOf="@id/departmentHeading"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/departmentHeading"
@@ -150,35 +131,28 @@
         app:layout_constraintStart_toStartOf="@+id/dateOfCompletionLayout"
         app:layout_constraintTop_toBottomOf="@id/departmentLayout">
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/shiftHeading"
+            style="@style/titleTextViewTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/schedule_item_background"
-            android:paddingStart="@dimen/_15sdp"
-            android:paddingTop="@dimen/_2sdp"
-            android:paddingEnd="@dimen/_15sdp"
-            android:paddingBottom="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_15sdp"
+            android:paddingVertical="@dimen/_2sdp"
             android:text="@string/shift"
             android:textColor="@color/buildingTitle"
-            android:textSize="@dimen/_13sdp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/shiftText"
+            style="@style/valuesTextViewTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/schedule_item_background"
             android:gravity="end"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingTop="@dimen/_2sdp"
-            android:paddingEnd="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_2sdp"
-            android:textColor="@color/buildingTitle"
-            android:textSize="@dimen/_11sdp"
+            android:paddingHorizontal="@dimen/_6sdp"
             app:layout_constraintBottom_toBottomOf="@id/shiftHeading"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/shiftHeading"
@@ -198,35 +172,28 @@
         app:layout_constraintStart_toStartOf="@+id/dateOfCompletionLayout"
         app:layout_constraintTop_toBottomOf="@id/shiftLayout">
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/startTimeHeading"
+            style="@style/titleTextViewTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/schedule_item_background"
-            android:paddingStart="@dimen/_15sdp"
-            android:paddingTop="@dimen/_2sdp"
-            android:paddingEnd="@dimen/_15sdp"
-            android:paddingBottom="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_15sdp"
+            android:paddingVertical="@dimen/_2sdp"
             android:text="@string/start_time"
             android:textColor="@color/buildingTitle"
-            android:textSize="@dimen/_13sdp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/startTimeText"
+            style="@style/valuesTextViewTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/schedule_item_background"
             android:gravity="end"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingTop="@dimen/_2sdp"
-            android:paddingEnd="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_2sdp"
-            android:textColor="@color/buildingTitle"
-            android:textSize="@dimen/_11sdp"
+            android:paddingHorizontal="@dimen/_6sdp"
             app:layout_constraintBottom_toBottomOf="@id/startTimeHeading"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/startTimeHeading"
@@ -239,8 +206,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:padding="@dimen/_4sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/startTimeLayout">
 

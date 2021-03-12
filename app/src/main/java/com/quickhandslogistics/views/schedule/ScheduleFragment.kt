@@ -249,9 +249,10 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         this.currentPageIndex = currentPageIndex
 
         selectedTime = selectedDate.time
+        if(!workItemsList[0].liveLoads.isNullOrEmpty()|| !workItemsList[0].drops.isNullOrEmpty() || !workItemsList[0].outbounds.isNullOrEmpty())
         scheduleAdapter.updateList(workItemsList, currentPageIndex)
 
-        if (!workItemsList.isNullOrEmpty()) {
+        if (!workItemsList.isNullOrEmpty() && (!workItemsList[0].liveLoads.isNullOrEmpty()|| !workItemsList[0].drops.isNullOrEmpty() || !workItemsList[0].outbounds.isNullOrEmpty())) {
             textViewEmptyData.visibility = View.GONE
             recyclerViewSchedule.visibility = View.VISIBLE
         } else {
@@ -285,12 +286,12 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
             return
         }
 
-//        val bundle = Bundle()
-//        bundle.putBoolean(ARG_ALLOW_UPDATE, DateUtils.isCurrentDate(selectedTime))
-//        bundle.putBoolean(ARG_IS_FUTURE_DATE, DateUtils.isFutureDate(selectedTime))
-//        bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleDetail.scheduleIdentity)
-//        bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
-//        startIntent(WorkScheduleActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
+        val bundle = Bundle()
+        bundle.putBoolean(ARG_ALLOW_UPDATE, DateUtils.isCurrentDate(selectedTime))
+        bundle.putBoolean(ARG_IS_FUTURE_DATE, DateUtils.isFutureDate(selectedTime))
+        bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleDetail.scheduleIdentity)
+        bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
+        startIntent(WorkScheduleActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }
 
     override fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>) {

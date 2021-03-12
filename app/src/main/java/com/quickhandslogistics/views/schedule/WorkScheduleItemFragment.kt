@@ -10,29 +10,32 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.adapters.schedule.ScheduleWorkSheetItemAdapter
 import com.quickhandslogistics.adapters.workSheet.WorkSheetItemAdapter
+import com.quickhandslogistics.contracts.schedule.ScheduleWorkItemContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
+import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
 import com.quickhandslogistics.views.workSheet.WorkSheetItemDetailActivity
 import kotlinx.android.synthetic.main.content_work_sheet_item.*
 
-class WorkScheduleItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapterItemClickListener {
+class WorkScheduleItemFragment : BaseFragment(), ScheduleWorkItemContract.View.OnAdapterItemClickListener {
 
     private var onFragmentInteractionListener: WorkSheetContract.View.OnFragmentInteractionListener? = null
 
     private var workItemType: String = ""
     private var selectedTime: Long = 0
-    private var onGoingWorkItems = java.util.ArrayList<WorkItemDetail>()
-    private var cancelledWorkItems = java.util.ArrayList<WorkItemDetail>()
-    private var completedWorkItems = java.util.ArrayList<WorkItemDetail>()
+    private var onGoingWorkItems = java.util.ArrayList<WorkItemContainerDetails>()
+    private var cancelledWorkItems = java.util.ArrayList<WorkItemContainerDetails>()
+    private var completedWorkItems = java.util.ArrayList<WorkItemContainerDetails>()
 
-    private lateinit var workSheetItemAdapter: WorkSheetItemAdapter
+    private lateinit var workSheetItemAdapter: ScheduleWorkSheetItemAdapter
 
     companion object {
         private const val ARG_WORK_ITEM_TYPE = "ARG_WORK_ITEM_TYPE"
@@ -44,7 +47,7 @@ class WorkScheduleItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAd
         @JvmStatic
         fun newInstance(
             workItemType: String,
-            allWorkItemLists: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>?,
+            allWorkItemLists: Triple<ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>>?,
             selectedTime: Long?
         ) = WorkScheduleItemFragment()
             .apply {
@@ -93,7 +96,7 @@ class WorkScheduleItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAd
         recyclerViewWorkSheet.apply {
             layoutManager = LinearLayoutManager(fragmentActivity!!)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            workSheetItemAdapter = WorkSheetItemAdapter(resources, sharedPref, this@WorkScheduleItemFragment)
+            workSheetItemAdapter = ScheduleWorkSheetItemAdapter(resources, sharedPref, this@WorkScheduleItemFragment)
             adapter = workSheetItemAdapter
         }
 
@@ -130,7 +133,7 @@ class WorkScheduleItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAd
         }
     }
 
-    fun updateWorkItemsList(workItemsList: ArrayList<WorkItemDetail>, selectedTime: Long) {
+    fun updateWorkItemsList(workItemsList: ArrayList<WorkItemContainerDetails>, selectedTime: Long) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {
             ConnectionDetector.createSnackBar(activity)
             return
@@ -166,7 +169,7 @@ class WorkScheduleItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAd
         startIntent(DisplayLumpersListActivity::class.java, bundle = bundle)
     }
 
-    override fun onNoteClick(workItemDetail: WorkItemDetail) {
+    override fun onNoteClick(workItemDetail: WorkItemContainerDetails) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {
             ConnectionDetector.createSnackBar(activity)
             return
