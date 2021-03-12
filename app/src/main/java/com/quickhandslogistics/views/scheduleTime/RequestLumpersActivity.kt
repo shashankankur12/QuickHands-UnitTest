@@ -26,6 +26,7 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SEL
 import kotlinx.android.synthetic.main.activity_request_lumpers.*
 import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.*
 import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.textViewTitle
+import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.content_request_lumpers.*
 import kotlinx.android.synthetic.main.custome_toolbar_layout.*
 import java.util.*
@@ -303,7 +304,9 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
 
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
-        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
+        if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            CustomProgressBar.getInstance().showValidationErrorDialog(message, activity!!)
+        } else SnackBarFactory.createSnackBar(activity!!, frameLayoutMain, message)
     }
 
     override fun showAllRequests(records: ArrayList<RequestLumpersRecord>) {

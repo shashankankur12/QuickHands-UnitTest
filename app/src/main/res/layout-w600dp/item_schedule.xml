@@ -94,13 +94,31 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTypeLiveLoad" />
 
         <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewScheduleTypeUnfinished"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/_4sdp"
+            app:layout_constraintEnd_toStartOf="@+id/textViewScheduleTypeUnfinishedStartTime"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTypeDrops" />
+
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewScheduleTypeUnfinishedStartTime"
+            style="@style/valuesTextViewTheme"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_width="0dp"
+            app:layout_constraintStart_toEndOf="@+id/textViewScheduleTypeUnfinished"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTypeDrops" />
+
+        <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewWorkItemsCount"
             style="@style/valuesTextViewTheme"
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/_4sdp"
             app:layout_constraintEnd_toStartOf="@+id/textViewWorkItemsLeadName"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTypeDrops" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTypeUnfinished" />
 
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewWorkItemsLeadName"
@@ -109,7 +127,7 @@
             android:layout_marginTop="@dimen/_4sdp"
             app:layout_constraintStart_toEndOf="@+id/textViewWorkItemsCount"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTypeDrops" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTypeUnfinished" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circleImageViewArrow"

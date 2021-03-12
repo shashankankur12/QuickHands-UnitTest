@@ -155,6 +155,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabGravity="fill"
+            app:tabMode="scrollable"
+            app:tabMaxWidth="0dp"
             app:tabIndicatorColor="@color/buttonRed"
             app:tabIndicatorFullWidth="false"
             app:tabPadding="@dimen/_6sdp"

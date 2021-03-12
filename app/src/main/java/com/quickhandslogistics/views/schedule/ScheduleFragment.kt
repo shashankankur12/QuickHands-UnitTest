@@ -22,6 +22,7 @@ import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
+import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -266,7 +267,10 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     override fun showAPIErrorMessage(message: String) {
         recyclerViewSchedule.visibility = View.GONE
         textViewEmptyData.visibility = View.VISIBLE
-        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+
+        if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
+        } else SnackBarFactory.createSnackBar(fragmentActivity!!, frameLayoutMain, message)
     }
 
     override fun showEmptyData() {
@@ -289,7 +293,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         val bundle = Bundle()
         bundle.putBoolean(ARG_ALLOW_UPDATE, DateUtils.isCurrentDate(selectedTime))
         bundle.putBoolean(ARG_IS_FUTURE_DATE, DateUtils.isFutureDate(selectedTime))
-        bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleDetail.scheduleIdentity)
+        bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleDetail.scheduleDepartment)
         bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
         startIntent(WorkScheduleActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }

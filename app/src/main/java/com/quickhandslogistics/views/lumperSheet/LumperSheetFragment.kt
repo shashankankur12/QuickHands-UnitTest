@@ -20,6 +20,7 @@ import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment
+import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -226,7 +227,9 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
 
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
-        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+        if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
+        } else SnackBarFactory.createSnackBar(fragmentActivity!!, frameLayoutMain, message)
     }
 
     override fun showDateString(dateString: String, shift: String , dept : String) {

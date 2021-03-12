@@ -16,13 +16,11 @@ import com.quickhandslogistics.contracts.qhlContact.QhlContactContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.qhlContact.QhlOfficeInfo
 import com.quickhandslogistics.presenters.qhlContact.QhlContactPresenter
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.ConnectionDetector
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.utils.ScheduleUtils.sortEmployeesList
-import com.quickhandslogistics.utils.SnackBarFactory
-import com.quickhandslogistics.utils.UIUtils
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
+import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.fragment_qhl_contact.*
 
 class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClickListener,
@@ -136,7 +134,10 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
     override fun showAPIErrorMessage(message: String) {
         recyclerViewQhlContact.visibility = View.GONE
         textViewEmptyData.visibility = View.VISIBLE
-        SnackBarFactory.createSnackBar(fragmentActivity!!, mainRootLayout, message)
+
+        if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
+        } else SnackBarFactory.createSnackBar(fragmentActivity!!, frameLayoutMain, message)
     }
 
     override fun qhlContactList(qhlContactList: ArrayList<EmployeeData>) {

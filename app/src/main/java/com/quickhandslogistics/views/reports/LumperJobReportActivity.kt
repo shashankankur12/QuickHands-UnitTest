@@ -17,6 +17,7 @@ import com.quickhandslogistics.presenters.reports.LumperJobReportPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
+import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.content_lumper_job_report.*
 import kotlinx.android.synthetic.main.layout_date_filter.*
 import kotlinx.android.synthetic.main.layout_report_type.*
@@ -346,7 +347,9 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
 
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
-        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
+        if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            CustomProgressBar.getInstance().showValidationErrorDialog(message, activity!!)
+        } else SnackBarFactory.createSnackBar(activity!!, frameLayoutMain, message)
     }
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {

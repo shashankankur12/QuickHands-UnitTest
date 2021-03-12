@@ -90,5 +90,9 @@ interface AppConstant {
         const val SUPERVISOR = "supervisor"
         const val LUMPER = "lumper"
 
+
+        const val ERROR_MESSAGE = "You don't seem to have a building assigned yet!"
+
+
     }
 }

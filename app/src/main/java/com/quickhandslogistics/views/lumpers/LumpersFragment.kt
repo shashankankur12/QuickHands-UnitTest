@@ -22,6 +22,7 @@ import com.quickhandslogistics.presenters.lumpers.LumpersPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
+import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.fragment_lumpers.*
 
 class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.OnClickListener,
@@ -164,9 +165,12 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     }
 
     override fun showAPIErrorMessage(message: String) {
+        if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
+        } else SnackBarFactory.createSnackBar(fragmentActivity!!, frameLayoutMain, message)
+
         recyclerViewLumpers.visibility = View.GONE
         textViewEmptyData.visibility = View.VISIBLE
-        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {

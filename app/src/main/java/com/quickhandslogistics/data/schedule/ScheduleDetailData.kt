@@ -53,6 +53,7 @@ class ScheduleDetailData() : Parcelable {
 
     var commonStatus: String = ""
     var scheduleTypeNames: String = ""
+    var scheduleDepartment: String = ""
     var allAssignedLumpers: ArrayList<EmployeeData> = ArrayList()
 
     constructor(parcel: Parcel) : this() {
@@ -68,6 +69,7 @@ class ScheduleDetailData() : Parcelable {
         totalNumberOfWorkItems = parcel.readValue(Int::class.java.classLoader) as? Int
         commonStatus = parcel.readString()!!
         scheduleTypeNames = parcel.readString()!!
+        scheduleDepartment = parcel.readString()!!
         allAssignedLumpers = parcel.createTypedArrayList(EmployeeData)!!
     }
 
@@ -84,6 +86,7 @@ class ScheduleDetailData() : Parcelable {
         parcel.writeValue(totalNumberOfWorkItems)
         parcel.writeString(commonStatus)
         parcel.writeString(scheduleTypeNames)
+        parcel.writeString(scheduleDepartment)
         parcel.writeTypedList(allAssignedLumpers)
     }
 

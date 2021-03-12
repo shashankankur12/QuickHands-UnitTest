@@ -24,6 +24,7 @@ import com.quickhandslogistics.utils.ScheduleUtils.getGroupNoteList
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.bottom_work_sheet_item.*
+import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.content_work_sheet.*
 import kotlinx.android.synthetic.main.fragment_work_sheet.*
 
@@ -197,6 +198,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         textViewDropsCount.text = ""
         textViewOutBoundsCount.text = ""
         textViewUnfinishedCount.text = ""
+        textViewGroupNote.isEnabled=false
         adapter?.updateWorkItemsList(ArrayList(), ArrayList(), ArrayList())
     }
 
@@ -224,7 +226,10 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
 
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
-        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+        if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
+        } else SnackBarFactory.createSnackBar(fragmentActivity!!, frameLayoutMain, message)
+
         swipe_pull_refresh?.isRefreshing = false
         resetUI()
         onFragmentInteractionListener?.invalidateCancelAllSchedulesOption(false)

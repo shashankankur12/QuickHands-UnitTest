@@ -34,6 +34,7 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCH
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.textViewTitle
 import kotlinx.android.synthetic.main.bottom_sheet_schdule_time_fragement.*
+import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.content_schedule_time_fragment.*
 import kotlinx.android.synthetic.main.fragment_schedule_time.*
 import java.util.*
@@ -433,7 +434,10 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     override fun showAPIErrorMessage(message: String) {
         recyclerViewScheduleTime.visibility = View.GONE
         textViewEmptyData.visibility = View.VISIBLE
-        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+
+        if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
+        } else SnackBarFactory.createSnackBar(fragmentActivity!!, frameLayoutMain, message)
     }
 
     override fun showScheduleTimeData(mSelectedDate: Date, mScheduleTimeDetailList: ArrayList<ScheduleTimeDetail>, mTempLumperIds: ArrayList<String>, notes: String?) {

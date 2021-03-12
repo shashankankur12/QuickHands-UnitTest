@@ -21,6 +21,7 @@ import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.content_customer_contact_header.*
+import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.fragment_customer_contect.*
 import kotlinx.android.synthetic.main.fragment_customer_contect.mainConstraintLayout
 import kotlinx.android.synthetic.main.fragment_customer_contect.textViewEmptyData
@@ -126,7 +127,9 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
     override fun showAPIErrorMessage(message: String) {
         customerListContact.visibility = View.GONE
         textViewEmptyData.visibility = View.VISIBLE
-        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+        if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
+        } else SnackBarFactory.createSnackBar(fragmentActivity!!, frameLayoutMain, message)
     }
 
     override fun showCustomerContactData(customerContactList: ArrayList<EmployeeData>) {

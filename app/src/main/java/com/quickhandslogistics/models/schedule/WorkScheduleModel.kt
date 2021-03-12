@@ -28,13 +28,13 @@ class WorkScheduleModel (private val sharedPref: SharedPref) : WorkScheduleContr
         onFinishedListener.onSuccessGetHeaderInfo(companyName, date, shiftDetail,deptDetail)
     }
 
-    override fun fetchScheduleDetail(scheduleIdentityId: String, selectedDate: Date, onFinishedListener: WorkScheduleContract.Model.OnFinishedListener) {
+    override fun fetchScheduleDetail(scheduleDepartment: String, selectedDate: Date, onFinishedListener: WorkScheduleContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
 
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
         val deptDetail =  UIUtils.getDisplayEmployeeDepartment(leadProfile).toUpperCase()
 
-        DataManager.getService().getSchedulesDetails(DataManager.getAuthToken(), dateString, deptDetail, 1, AppConstant.API_PAGE_SIZE)
+        DataManager.getService().getSchedulesDetails(DataManager.getAuthToken(), dateString, scheduleDepartment, 1, AppConstant.API_PAGE_SIZE)
             .enqueue(object : Callback<ScheduleListAPIResponse> {
                 override fun onResponse(call: Call<ScheduleListAPIResponse>, response: Response<ScheduleListAPIResponse>) {
                     if (DataManager.isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {

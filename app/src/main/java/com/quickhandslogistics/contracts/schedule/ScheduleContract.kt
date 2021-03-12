@@ -13,7 +13,12 @@ class ScheduleContract {
         fun fetchSchedulesByDate(selectedDate: Date, pageIndex: Int, onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
-            fun onSuccess(selectedDate: Date, scheduleListAPIResponse: ScheduleListAPIResponse, currentPageIndex: Int)
+            fun onSuccess(
+                selectedDate: Date,
+                scheduleListAPIResponse: ScheduleListAPIResponse,
+                currentPageIndex: Int,
+                deptDetail: String
+            )
             fun onSuccessGetHeaderInfo(dateString: String)
         }
     }

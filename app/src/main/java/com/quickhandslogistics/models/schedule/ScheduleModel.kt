@@ -1,17 +1,13 @@
 package com.quickhandslogistics.models.schedule
 
 import android.util.Log
-import com.quickhandslogistics.contracts.lumperSheet.LumperSheetContract
 import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.DataManager.getAuthToken
 import com.quickhandslogistics.network.DataManager.isSuccessResponse
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.utils.ScheduleUtils
-import com.quickhandslogistics.utils.SharedPref
+import com.quickhandslogistics.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,7 +28,9 @@ class ScheduleModel(private val sharedPref: SharedPref) : ScheduleContract.Model
         DataManager.getService().getSchedulesList(getAuthToken(), dateString,  pageIndex, AppConstant.API_PAGE_SIZE).enqueue(object : Callback<ScheduleListAPIResponse> {
             override fun onResponse(call: Call<ScheduleListAPIResponse>, response: Response<ScheduleListAPIResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
-                    onFinishedListener.onSuccess(selectedDate, response.body()!!, pageIndex)
+                    val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+                    val deptDetail =  UIUtils.getDisplayEmployeeDepartment(leadProfile)
+                    onFinishedListener.onSuccess(selectedDate, response.body()!!, pageIndex, deptDetail)
                 }
             }
 
