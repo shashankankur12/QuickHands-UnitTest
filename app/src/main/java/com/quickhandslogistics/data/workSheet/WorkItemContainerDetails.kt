@@ -86,9 +86,7 @@ class WorkItemContainerDetails() : Parcelable {
 
 
 
-
-
-
+    //useless will remove when no need
     @SerializedName("scheduleIdentity")
     @Expose
     var scheduleIdentity: String? = null
@@ -123,6 +121,7 @@ class WorkItemContainerDetails() : Parcelable {
     @Expose
     var attendanceDetail: AttendanceDetail? = null
 
+    ////////////////////////////////////
 
 
     constructor(parcel: Parcel) : this() {

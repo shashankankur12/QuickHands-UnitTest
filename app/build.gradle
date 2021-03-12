@@ -40,7 +40,6 @@ android {
         staging {
             buildConfigField "String", "API_BASE_URL", STAGING_API_URL
             signingConfig signingConfigs.staging
-            debuggable true
         }
         release {
             minifyEnabled false
@@ -56,10 +55,6 @@ android {
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
-
-    lintOptions {
-        abortOnError false
     }
 }
 
