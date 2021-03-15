@@ -129,7 +129,7 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
         textViewEmptyData.visibility = View.VISIBLE
         if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
             CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
-        } else SnackBarFactory.createSnackBar(fragmentActivity!!, frameLayoutMain, message)
+        } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
     override fun showCustomerContactData(customerContactList: ArrayList<EmployeeData>) {

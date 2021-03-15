@@ -306,7 +306,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     override fun showAPIErrorMessage(message: String) {
         if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
             CustomProgressBar.getInstance().showValidationErrorDialog(message, activity!!)
-        } else SnackBarFactory.createSnackBar(activity!!, frameLayoutMain, message)
+        } else SnackBarFactory.createSnackBar(activity!!, mainConstraintLayout, message)
     }
 
     override fun showAllRequests(records: ArrayList<RequestLumpersRecord>) {

@@ -36,11 +36,10 @@ import kotlinx.android.synthetic.main.bottom_sheet_customer_sheet_fragement.imag
 import kotlinx.android.synthetic.main.bottom_sheet_customer_sheet_fragement.layoutSignature
 import kotlinx.android.synthetic.main.bottom_sheet_customer_sheet_fragement.textViewAddSignature
 import kotlinx.android.synthetic.main.bottom_sheet_customer_sheet_fragement.textViewSignature
-import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.customer_sheet_content.*
 import kotlinx.android.synthetic.main.customer_sheet_content.textViewBuildingName
 import kotlinx.android.synthetic.main.customer_sheet_contner.*
-import kotlinx.android.synthetic.main.fragment_customer_sheet.bottomSheetBackground
+import kotlinx.android.synthetic.main.fragment_customer_sheet.*
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
@@ -243,7 +242,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
     override fun showAPIErrorMessage(message: String) {
         if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
             CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
-        } else SnackBarFactory.createSnackBar(fragmentActivity!!, frameLayoutMain, message)
+        } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
 
         // Reset Whole Screen Data
         textViewCompanyName.text = ""

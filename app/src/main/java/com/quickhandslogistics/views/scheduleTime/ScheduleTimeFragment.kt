@@ -437,7 +437,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
         if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
             CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
-        } else SnackBarFactory.createSnackBar(fragmentActivity!!, frameLayoutMain, message)
+        } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
     override fun showScheduleTimeData(mSelectedDate: Date, mScheduleTimeDetailList: ArrayList<ScheduleTimeDetail>, mTempLumperIds: ArrayList<String>, notes: String?) {

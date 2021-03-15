@@ -356,7 +356,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
     override fun showAPIErrorMessage(message: String) {
         if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
             CustomProgressBar.getInstance().showValidationErrorDialog(message, activity!!)
-        } else SnackBarFactory.createSnackBar(activity!!, frameLayoutMain, message)
+        } else SnackBarFactory.createSnackBar(activity!!, mainConstraintLayout, message)
     }
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {

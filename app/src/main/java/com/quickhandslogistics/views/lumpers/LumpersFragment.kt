@@ -167,7 +167,7 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
     override fun showAPIErrorMessage(message: String) {
         if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
             CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
-        } else SnackBarFactory.createSnackBar(fragmentActivity!!, frameLayoutMain, message)
+        } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
 
         recyclerViewLumpers.visibility = View.GONE
         textViewEmptyData.visibility = View.VISIBLE

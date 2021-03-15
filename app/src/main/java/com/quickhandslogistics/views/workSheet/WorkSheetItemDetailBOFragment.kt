@@ -107,6 +107,8 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
 
     fun showBuildingOperationsData(workItemDetail: WorkItemContainerDetails) {
         this.workItemDetail = workItemDetail
+        buildingDetailData = sharedPref.getClassObject(AppConstant.PREFERENCE_BUILDING_DETAILS, ArrayList::class.java) as ArrayList<String>?
+
         workItemDetail.status?.let { status ->
             if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED || status == AppConstant.WORK_ITEM_STATUS_CANCELLED) {
                 buttonUpdate.visibility = View.GONE
@@ -114,12 +116,10 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
                 buttonUpdate.visibility = View.VISIBLE
             }
         }
-
-        buildingDetailData = sharedPref.getClassObject(AppConstant.PREFERENCE_BUILDING_DETAILS, ArrayList::class.java) as ArrayList<String>?
-
-        buildingDetailData?.let {
+        if (buildingDetailData!=null)
             containerDetailAdapter.updateData(workItemDetail.buildingOps, buildingDetailData)
-        }
+        else showEmptyData()
+
     }
 
     fun showEmptyData() {

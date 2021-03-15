@@ -464,7 +464,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     override fun showAPIErrorMessage(message: String) {
         if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
             CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
-        } else SnackBarFactory.createSnackBar(fragmentActivity!!, frameLayoutMain, message)
+        } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainCoordinatorLayout, message)
 
         if (message.equals(getString(R.string.attendece_api_error_message))){
             recyclerViewLumpers.visibility = View.VISIBLE

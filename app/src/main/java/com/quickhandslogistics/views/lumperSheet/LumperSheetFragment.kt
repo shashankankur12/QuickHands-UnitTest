@@ -229,7 +229,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     override fun showAPIErrorMessage(message: String) {
         if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
             CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
-        } else SnackBarFactory.createSnackBar(fragmentActivity!!, frameLayoutMain, message)
+        } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
     override fun showDateString(dateString: String, shift: String , dept : String) {

@@ -137,7 +137,7 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
 
         if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
             CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
-        } else SnackBarFactory.createSnackBar(fragmentActivity!!, frameLayoutMain, message)
+        } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainRootLayout, message)
     }
 
     override fun qhlContactList(qhlContactList: ArrayList<EmployeeData>) {
