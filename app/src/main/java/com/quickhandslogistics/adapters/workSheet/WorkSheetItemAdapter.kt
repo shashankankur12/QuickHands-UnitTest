@@ -83,9 +83,9 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
             textViewContainer.text = String.format(resources.getString(R.string.container_no_s), if (!containerNumberValue.isNullOrEmpty()) containerNumberValue else "---")
             if (!workItemDetail.schedule?.scheduleNote.isNullOrEmpty()){
                 textViewWorkSheetNote.visibility=View.VISIBLE
-                textViewWorkSheetNote.text=ScheduleUtils.getscheduleTypeNote(workItemDetail.schedule, resources)
+                textViewWorkSheetNote.text=ScheduleUtils.scheduleTypeNote(workItemDetail.schedule, resources)
             }else textViewWorkSheetNote.visibility=View.GONE
-            textViewWorkSheetNote.text=ScheduleUtils.getscheduleTypeNote(workItemDetail.schedule, resources)
+            textViewWorkSheetNote.text=ScheduleUtils.scheduleTypeNote(workItemDetail.schedule, resources)
             textViewWorkSheetNote.isEnabled=(!workItemDetail.schedule?.scheduleNote.isNullOrEmpty() && !getItem(adapterPosition).schedule?.scheduleNote!!.equals("NA"))
 
             workItemDetail.assignedLumpersList?.let { imagesList ->

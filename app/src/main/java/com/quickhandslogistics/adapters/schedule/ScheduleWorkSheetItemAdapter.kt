@@ -12,9 +12,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.common.LumperImagesAdapter
 import com.quickhandslogistics.contracts.common.LumperImagesContract
 import com.quickhandslogistics.contracts.schedule.ScheduleWorkItemContract
-import com.quickhandslogistics.contracts.workSheet.WorkSheetItemContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
-import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.ScheduleUtils
@@ -85,9 +83,9 @@ class ScheduleWorkSheetItemAdapter(private val resources: Resources, private val
             textViewContainer.text = String.format(resources.getString(R.string.container_no_s), if (!containerNumberValue.isNullOrEmpty()) containerNumberValue else "---")
             if (!workItemDetail.schedule?.scheduleNote.isNullOrEmpty()){
                 textViewWorkSheetNote.visibility=View.VISIBLE
-                textViewWorkSheetNote.text=ScheduleUtils.getscheduleTypeNote(workItemDetail.schedule, resources)
+                textViewWorkSheetNote.text=ScheduleUtils.scheduleTypeNote(workItemDetail.schedule, resources)
             }else textViewWorkSheetNote.visibility=View.GONE
-            textViewWorkSheetNote.text=ScheduleUtils.getscheduleTypeNote(workItemDetail.schedule, resources)
+            textViewWorkSheetNote.text=ScheduleUtils.scheduleTypeNote(workItemDetail.schedule, resources)
             textViewWorkSheetNote.isEnabled=(!workItemDetail.schedule?.scheduleNote.isNullOrEmpty() && !getItem(adapterPosition).schedule?.scheduleNote!!.equals("NA"))
 
             workItemDetail.assignedLumpersList?.let { imagesList ->

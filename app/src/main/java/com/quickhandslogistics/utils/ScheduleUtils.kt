@@ -67,8 +67,8 @@ object ScheduleUtils {
         var workItemTypeDisplayName = ""
         workItemType?.let {
             workItemTypeDisplayName = when (workItemType) {
-                "live" -> resources.getString(R.string.live_load)
-                "drop" -> resources.getString(R.string.drop)
+                "LIVE" -> resources.getString(R.string.live_load)
+                "DROP" -> resources.getString(R.string.drop)
                 else -> resources.getString(R.string.out_bound)
             }
         }
@@ -81,9 +81,9 @@ object ScheduleUtils {
         var outBoundsCount = 0
 
         for (workItemDetail in list) {
-            when (workItemDetail.workItemType) {
-                "live" -> liveLoadsCount++
-                "drop" -> dropsCount++
+            when (workItemDetail.type) {
+                "LIVE" -> liveLoadsCount++
+                "DROP" -> dropsCount++
                 else -> outBoundsCount++
             }
         }
@@ -360,59 +360,49 @@ object ScheduleUtils {
         return UIUtils.getSpannedText(formetString)
     }
 
-    fun getscheduleTypeNote(workItemDetail: WorkItemScheduleDetails?, resources: Resources): String {
-          var noteType=  resources.getString(R.string.daily)
-        if (workItemDetail?.scheduleForWeek!!){
-            noteType= resources.getString(R.string.weekly)
-        }else if (workItemDetail.scheduleForMonth!!){
-            noteType= resources.getString(R.string.monthly)
-        }else if (workItemDetail.specificDates!!.isNotEmpty()){
-            noteType= resources.getString(R.string.custom_s)
-        }
-        return noteType
-    }
     fun scheduleTypeNote(workItemDetail: WorkItemScheduleDetails?, resources: Resources): String {
-        var noteType=  resources.getString(R.string.daily)
-        if (workItemDetail?.scheduleForWeek!!){
-            noteType= resources.getString(R.string.weekly)
-        }else if (workItemDetail.scheduleForMonth!!){
-            noteType= resources.getString(R.string.monthly)
-        }else if (workItemDetail.specificDates!!.isNotEmpty()){
-            noteType= resources.getString(R.string.custom_s)
+        return when(workItemDetail?.type) {
+            AppConstant.SCHEDULE_WORK_ITEM_WEEKLY -> {
+                resources.getString(R.string.weekly)
+            }
+            AppConstant.SCHEDULE_WORK_ITEM_MONTHLY -> {
+                resources.getString(R.string.monthly)
+            }
+            AppConstant.SCHEDULE_WORK_ITEM_CUSTOM -> {
+                resources.getString(R.string.custom_s)
+            }
+            AppConstant.SCHEDULE_WORK_ITEM_DAY -> {
+                resources.getString(R.string.daily)
+            }
+            else -> ""
         }
-        return noteType
-    }
-    fun scheduleTypeNotePopupTitle(workItemDetail: WorkItemScheduleDetails?, resources: Resources): String {
-        var noteType=  resources.getString(R.string.daily_scheduled)
-        if (workItemDetail?.scheduleForWeek!!){
-            noteType= resources.getString(R.string.weekly_scheduled)
-        }else if (workItemDetail?.scheduleForMonth!!){
-            noteType= resources.getString(R.string.monthly_scheduled)
-        } else if (workItemDetail?.specificDates!!.isNotEmpty()){
-            noteType= resources.getString(R.string.custom_scheduled)
-        }
-        return noteType
-    }
 
+    }
 
     fun scheduleNotePopupTitle(workItemDetail: WorkItemScheduleDetails?, resources: Resources): String {
-        var noteType=  resources.getString(R.string.daily_scheduled)
-        if (workItemDetail?.scheduleForWeek!!){
-            noteType= resources.getString(R.string.weekly_scheduled)
-        }else if (workItemDetail.scheduleForMonth!!){
-            noteType= resources.getString(R.string.monthly_scheduled)
-        }else if (workItemDetail.specificDates!!.isNotEmpty()){
-            noteType= resources.getString(R.string.custom_scheduled)
+        return when (workItemDetail?.type){
+            AppConstant.SCHEDULE_WORK_ITEM_WEEKLY -> {
+                resources.getString(R.string.weekly_scheduled)
+            }
+           AppConstant.SCHEDULE_WORK_ITEM_MONTHLY -> {
+                resources.getString(R.string.monthly_scheduled)
+            }
+            AppConstant.SCHEDULE_WORK_ITEM_CUSTOM -> {
+                resources.getString(R.string.custom_scheduled)
+            }
+            AppConstant.SCHEDULE_WORK_ITEM_DAY -> {
+                resources.getString(R.string.daily_scheduled)
+            }
+            else -> ""
         }
-        return noteType
     }
 
     fun getGroupNoteList(workItemData: WorkSheetListAPIResponse.Data): Triple<Pair<ArrayList<String>,ArrayList<String>>, ArrayList<String>, ArrayList<String>>  {
-         var dailyNoteList: ArrayList<String> = ArrayList()
-         var weeklyNoteList: ArrayList<String> = ArrayList()
-         var monthlyNoteList: ArrayList<String> = ArrayList()
-         var customNoteList: ArrayList<String> = ArrayList()
-         var workItemDetail: ArrayList<WorkItemDetail> = ArrayList()
+        val dailyNoteList: ArrayList<String> = ArrayList()
+        val weeklyNoteList: ArrayList<String> = ArrayList()
+        val monthlyNoteList: ArrayList<String> = ArrayList()
+        val customNoteList: ArrayList<String> = ArrayList()
+        val workItemDetail: ArrayList<WorkItemDetail> = ArrayList()
 
         workItemData?.let{
             workItemDetail.addAll(it.cancelled!!)
@@ -424,80 +414,72 @@ object ScheduleUtils {
 
         workItemDetail.forEach { workItemData ->
             workItemData.schedule?.let {
-                when {
-                    it.scheduleForWeek!! -> {
-                        if (!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
-                            if (!weeklyNoteList.contains(it.scheduleNote!!))
-                                weeklyNoteList.add(it.scheduleNote!!)
-                    }
-                    it.scheduleForMonth!! -> {
-                        if (!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
-                            if (!monthlyNoteList.contains(it.scheduleNote!!))
-                                monthlyNoteList.add(it.scheduleNote!!)
-                    }
-                    !it.specificDates.isNullOrEmpty() -> {
-                        if (!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
-                            if (!customNoteList.contains(it.scheduleNote!!))
-                                customNoteList.add(it.scheduleNote!!)
-                    }
-                    else -> {
+                when (it.type) {
+                    AppConstant.SCHEDULE_WORK_ITEM_DAY-> {
                         if (!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
                             if (!dailyNoteList.contains(it.scheduleNote!!))
                                 dailyNoteList.add(it.scheduleNote!!)
                     }
+                   AppConstant.SCHEDULE_WORK_ITEM_WEEKLY -> {
+                        if (!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
+                            if (!weeklyNoteList.contains(it.scheduleNote!!))
+                                weeklyNoteList.add(it.scheduleNote!!)
+                    }
+                   AppConstant.SCHEDULE_WORK_ITEM_MONTHLY -> {
+                        if (!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
+                            if (!monthlyNoteList.contains(it.scheduleNote!!))
+                                monthlyNoteList.add(it.scheduleNote!!)
+                    }
+                    AppConstant.SCHEDULE_WORK_ITEM_CUSTOM-> {
+                        if (!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
+                            if (!customNoteList.contains(it.scheduleNote!!))
+                                customNoteList.add(it.scheduleNote!!)
+                    }
                 }
             }
         }
-
-
         return Triple(Pair(dailyNoteList, customNoteList),weeklyNoteList ,monthlyNoteList)
     }
 
-
-
     fun getGroupNoteListWorkSchedule(workItemData: ScheduleDetailData?): Triple<Pair<ArrayList<String>,ArrayList<String>>, ArrayList<String>, ArrayList<String>>  {
-        var dailyNoteList: ArrayList<String> = ArrayList()
-        var weeklyNoteList: ArrayList<String> = ArrayList()
-        var monthlyNoteList: ArrayList<String> = ArrayList()
-        var customNoteList: ArrayList<String> = ArrayList()
-        var workItemDetail: ArrayList<WorkItemContainerDetails> = ArrayList()
+        val dailyNoteList: ArrayList<String> = ArrayList()
+        val weeklyNoteList: ArrayList<String> = ArrayList()
+        val monthlyNoteList: ArrayList<String> = ArrayList()
+        val customNoteList: ArrayList<String> = ArrayList()
+        val workItemDetail: ArrayList<WorkItemContainerDetails> = ArrayList()
 
         workItemData?.let{
             workItemDetail.addAll(it?.liveLoads!!)
             workItemDetail.addAll(it?.outbounds!!)
             workItemDetail.addAll(it?.drops!!)
-
         }
 
         workItemDetail.forEach{workItemData ->
             workItemData.schedule?.let {
-                when {
-                    it.scheduleForWeek!! -> {
-                        if (!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
-                            if (!weeklyNoteList.contains(it.scheduleNote!!))
-                                weeklyNoteList.add(it.scheduleNote!!)
-                    }
-                    it.scheduleForMonth!! -> {
-                        if (!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
-                            if (!monthlyNoteList.contains(it.scheduleNote!!))
-                                monthlyNoteList.add(it.scheduleNote!!)
-                    }
-                    !it.specificDates.isNullOrEmpty() -> {
-                        if (!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
-                            if (!customNoteList.contains(it.scheduleNote!!))
-                                customNoteList.add(it.scheduleNote!!)
-                    }
-                    else -> {
+                when (it.type) {
+                    AppConstant.SCHEDULE_WORK_ITEM_DAY -> {
                         if (!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
                             if (!dailyNoteList.contains(it.scheduleNote!!))
                                 dailyNoteList.add(it.scheduleNote!!)
                     }
+                    AppConstant.SCHEDULE_WORK_ITEM_WEEKLY -> {
+                        if (!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
+                            if (!weeklyNoteList.contains(it.scheduleNote!!))
+                                weeklyNoteList.add(it.scheduleNote!!)
+                    }
+                    AppConstant.SCHEDULE_WORK_ITEM_MONTHLY  -> {
+                        if (!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
+                            if (!monthlyNoteList.contains(it.scheduleNote!!))
+                                monthlyNoteList.add(it.scheduleNote!!)
+                    }
+                    AppConstant.SCHEDULE_WORK_ITEM_CUSTOM -> {
+                        if (!it.scheduleNote.isNullOrEmpty() && !it.scheduleNote.equals("NA"))
+                            if (!customNoteList.contains(it.scheduleNote!!))
+                                customNoteList.add(it.scheduleNote!!)
+                    }
                 }
             }
-
         }
-
-
         return Triple(Pair(dailyNoteList, customNoteList),weeklyNoteList ,monthlyNoteList)
     }
 

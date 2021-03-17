@@ -63,6 +63,12 @@ interface AppConstant {
         const val WORKSHEET_WORK_ITEM_OUTBOUND = "OUTBOUND"
         const val WORKSHEET_WORK_ITEM_INBOUND = "DROP"
 
+        //schedule type
+        const val SCHEDULE_WORK_ITEM_DAY = "DAILY"
+        const val SCHEDULE_WORK_ITEM_WEEKLY = "WEEKLY"
+        const val SCHEDULE_WORK_ITEM_MONTHLY = "MONTHLY"
+        const val SCHEDULE_WORK_ITEM_CUSTOM = "CUSTOM"
+
 
         // Attendance
         const val ATTENDANCE_IS_PRESENT = "ATTENDANCE_IS_PRESENT"

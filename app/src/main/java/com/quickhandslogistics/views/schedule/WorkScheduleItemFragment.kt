@@ -175,8 +175,8 @@ class WorkScheduleItemFragment : BaseFragment(), ScheduleWorkItemContract.View.O
             return
         }
 
-        workItemDetail.scheduleNote?.let {
-            val title= ScheduleUtils.scheduleTypeNotePopupTitle(workItemDetail.schedule, resources)
+        workItemDetail.schedule?.scheduleNote?.let {
+            val title= ScheduleUtils.scheduleNotePopupTitle(workItemDetail.schedule, resources)
             CustomProgressBar.getInstance().showInfoDialog(title, it, fragmentActivity!!)
         }
 
