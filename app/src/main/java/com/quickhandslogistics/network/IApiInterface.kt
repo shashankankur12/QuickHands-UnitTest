@@ -90,7 +90,7 @@ interface IApiInterface {
 
     @POST("schedule/{workItemId}/operations")
     fun saveBuildingOperationsDetail(
-        @Header("Authorization") auth: String, @Path("workItemId") workItemId: String, @Body request: HashMap<String, String>
+        @Header("Authorization") auth: String, @Path("workItemId") workItemId: String, @Body request: BuildingOperationRequest
     ): Call<BaseResponse>
     /////////////////////////////////////////////////////////////
 

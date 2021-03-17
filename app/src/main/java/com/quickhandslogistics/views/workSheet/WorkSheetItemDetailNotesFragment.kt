@@ -119,10 +119,12 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
                 editTextQHLCustomerNotes.isEnabled = false
                 editTextQHLNotes.isEnabled = false
                 buttonSubmit.visibility = View.GONE
+                addImageButton.visibility = View.GONE
             } else {
                 editTextQHLCustomerNotes.isEnabled = true
                 editTextQHLNotes.isEnabled = true
                 buttonSubmit.visibility = View.VISIBLE
+                addImageButton.visibility = View.VISIBLE
             }
         }
     }
