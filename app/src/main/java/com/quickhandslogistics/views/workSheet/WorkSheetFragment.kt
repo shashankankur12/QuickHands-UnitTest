@@ -14,6 +14,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.workSheet.WorkSheetPagerAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetContract
+import com.quickhandslogistics.controls.Quintuple
 import com.quickhandslogistics.data.customerSheet.CustomerSheetData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
@@ -24,7 +25,6 @@ import com.quickhandslogistics.utils.ScheduleUtils.getGroupNoteList
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.bottom_work_sheet_item.*
-import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.content_work_sheet.*
 import kotlinx.android.synthetic.main.fragment_work_sheet.*
 
@@ -149,10 +149,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         onFragmentInteractionListener = null
     }
 
-    private fun initializeViewPager(
-        allWorkItemLists: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>? = null,
-        customerSheetData: CustomerSheetData? = null, selectedTime: Long? = null
-    ) {
+    private fun initializeViewPager(allWorkItemLists: Quintuple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>? = null, customerSheetData: CustomerSheetData? = null, selectedTime: Long? = null) {
         adapter = if (allWorkItemLists != null) {
             WorkSheetPagerAdapter(childFragmentManager, resources, allWorkItemLists)
         } else {
@@ -163,7 +160,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         tabLayoutWorkSheet.setupWithViewPager(viewPagerWorkSheet)
     }
 
-    private fun createDifferentListData(data: WorkSheetListAPIResponse.Data): Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>> {
+    private fun createDifferentListData(data: WorkSheetListAPIResponse.Data): Quintuple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>> {
         val onGoingWorkItems = ArrayList<WorkItemDetail>()
         onGoingWorkItems.addAll(data.inProgress!!)
         onGoingWorkItems.addAll(data.onHold!!)
@@ -180,11 +177,10 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         textViewLiveLoadsCount.text = String.format(getString(R.string.live_loads_s), workItemTypeCounts.first)
         textViewDropsCount.text = String.format(getString(R.string.drops_s), workItemTypeCounts.second)
         textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
-        textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
-        textViewUnfinishedCount.text = String.format(getString(R.string.unfinished_s), 0)
+        textViewUnfinishedCount.text = String.format(getString(R.string.unfinished_s), data.unfinished?.size)
 
 
-        return Triple(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!))
+        return Quintuple(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!), getSortList(data.unfinished!!), getSortList(data.unfinished!!))
     }
 
     private fun resetUI() {
@@ -199,7 +195,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         textViewOutBoundsCount.text = ""
         textViewUnfinishedCount.text = ""
         textViewGroupNote.isEnabled=false
-        adapter?.updateWorkItemsList(ArrayList(), ArrayList(), ArrayList())
+        adapter?.updateWorkItemsList(ArrayList(), ArrayList(), ArrayList(), ArrayList())
     }
 
 
@@ -268,7 +264,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
         textViewUnfinishedCount.text = String.format(getString(R.string.unfinished_s), 0)
 
-        adapter?.updateWorkItemsList(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!))
+        adapter?.updateWorkItemsList(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!), getSortList(data.unfinished!!))
     }
 
     private fun getSortList(workItemsList: ArrayList<WorkItemDetail>): ArrayList<WorkItemDetail> {

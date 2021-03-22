@@ -13,6 +13,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.workSheet.WorkSheetItemAdapter
 import com.quickhandslogistics.contracts.workSheet.WorkSheetContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemContract
+import com.quickhandslogistics.controls.Quintuple
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
@@ -34,6 +35,8 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
     private var onGoingWorkItems = java.util.ArrayList<WorkItemDetail>()
     private var cancelledWorkItems = java.util.ArrayList<WorkItemDetail>()
     private var completedWorkItems = java.util.ArrayList<WorkItemDetail>()
+    private var unfinishedWorkItems = java.util.ArrayList<WorkItemDetail>()
+    private var notDoneWorkItems = java.util.ArrayList<WorkItemDetail>()
 
     private lateinit var workSheetItemAdapter: WorkSheetItemAdapter
 
@@ -42,10 +45,11 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
         private const val ARG_ONGOING_ITEMS = "ARG_ONGOING_ITEMS"
         private const val ARG_CANCELLED_ITEMS = "ARG_CANCELLED_ITEMS"
         private const val ARG_COMPLETED_ITEMS = "ARG_COMPLETED_ITEMS"
+        private const val ARG_UNFINISHED_ITEMS = "ARG_UNFINISHED_ITEMS"
+        private const val ARG_NOT_DONE_ITEMS = "ARG_NOT_DONE_ITEMS"
 
         @JvmStatic
-        fun newInstance(
-            workItemType: String, allWorkItemLists: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>?) = WorkSheetItemFragment()
+        fun newInstance(workItemType: String, allWorkItemLists: Quintuple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>?) = WorkSheetItemFragment()
             .apply {
                 arguments = Bundle().apply {
                     putString(ARG_WORK_ITEM_TYPE, workItemType)
@@ -53,6 +57,8 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
                         putParcelableArrayList(ARG_ONGOING_ITEMS, allWorkItemLists.first)
                         putParcelableArrayList(ARG_CANCELLED_ITEMS, allWorkItemLists.second)
                         putParcelableArrayList(ARG_COMPLETED_ITEMS, allWorkItemLists.third)
+                        putParcelableArrayList(ARG_UNFINISHED_ITEMS, allWorkItemLists.fourth)
+                        putParcelableArrayList(ARG_NOT_DONE_ITEMS, allWorkItemLists.fifth)
                     }
                 }
             }
@@ -70,12 +76,15 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
         arguments?.let {
             workItemType = it.getString(ARG_WORK_ITEM_TYPE, "")
             if (it.containsKey(ARG_ONGOING_ITEMS))
-            onGoingWorkItems = it.getParcelableArrayList(ARG_ONGOING_ITEMS)!!
+                onGoingWorkItems = it.getParcelableArrayList(ARG_ONGOING_ITEMS)!!
             if (it.containsKey(ARG_CANCELLED_ITEMS))
-            cancelledWorkItems = it.getParcelableArrayList(ARG_CANCELLED_ITEMS)!!
+                cancelledWorkItems = it.getParcelableArrayList(ARG_CANCELLED_ITEMS)!!
             if (it.containsKey(ARG_COMPLETED_ITEMS))
-
-            completedWorkItems = it.getParcelableArrayList(ARG_COMPLETED_ITEMS)!!
+                completedWorkItems = it.getParcelableArrayList(ARG_COMPLETED_ITEMS)!!
+            if (it.containsKey(ARG_UNFINISHED_ITEMS))
+                unfinishedWorkItems = it.getParcelableArrayList(ARG_UNFINISHED_ITEMS)!!
+            if (it.containsKey(ARG_NOT_DONE_ITEMS))
+                notDoneWorkItems = it.getParcelableArrayList(ARG_NOT_DONE_ITEMS)!!
         }
     }
 
@@ -97,31 +106,39 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
             RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                textViewEmptyData.visibility = if (workSheetItemAdapter.itemCount == 0) View.VISIBLE else View.GONE
-                textViewAddGroupNote.visibility = if (workSheetItemAdapter.itemCount > 0 && workItemType== getString(R.string.cancel)) View.VISIBLE else View.GONE
-                textViewShowGroupNote.visibility = if (workSheetItemAdapter.itemCount > 0 && workItemType== getString(R.string.cancel)) View.VISIBLE else View.GONE
+                textViewEmptyData.visibility =
+                    if (workSheetItemAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                textViewAddGroupNote.visibility =
+                    if (workSheetItemAdapter.itemCount > 0 && workItemType == getString(R.string.cancel)) View.VISIBLE else View.GONE
+                textViewShowGroupNote.visibility =
+                    if (workSheetItemAdapter.itemCount > 0 && workItemType == getString(R.string.cancel)) View.VISIBLE else View.GONE
             }
         })
 
         textViewEmptyData.text = when (workItemType) {
             getString(R.string.ongoing) -> getString(R.string.empty_containers_list_ongoing_info_message)
             getString(R.string.cancel) -> getString(R.string.empty_containers_list_cancelled_info_message)
-            else -> getString(R.string.empty_containers_list_completed_info_message)
+            getString(R.string.complete) -> getString(R.string.empty_containers_list_completed_info_message)
+            getString(R.string.unfinished) -> getString(R.string.empty_containers_list_unfinished_info_message)
+            else -> getString(R.string.empty_containers_list_not_done_info_message)
         }
-        when(workItemType){
+        when (workItemType) {
             getString(R.string.ongoing) -> {
                 updateWorkItemsList(onGoingWorkItems)
 
             }
-            getString(R.string.cancel) ->  {
+            getString(R.string.cancel) -> {
                 updateWorkItemsList(cancelledWorkItems)
 
             }
-            else -> {
+            getString(R.string.complete) -> {
                 updateWorkItemsList(completedWorkItems)
 
             }
-
+            getString(R.string.unfinished) -> {
+                updateWorkItemsList(unfinishedWorkItems)
+            }
+            else -> updateWorkItemsList(notDoneWorkItems)
         }
 
         textViewAddGroupNote.setOnClickListener(this)

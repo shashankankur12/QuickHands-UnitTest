@@ -301,6 +301,8 @@
     <string name="empty_containers_list_ongoing_info_message">There are no Ongoing containers.</string>
     <string name="empty_containers_list_cancelled_info_message">There are no Cancelled containers.</string>
     <string name="empty_containers_list_completed_info_message">There are no Completed containers.</string>
+    <string name="empty_containers_list_unfinished_info_message">There are no Unfinished containers.</string>
+    <string name="empty_containers_list_not_done_info_message">There are no Not-Done containers.</string>
     <string name="empty_lumper_list_message">There are no lumpers assigned to this shift/department. Please contact your District Manager.</string>
     <string name="empty_contact_list_message">There are no contact available. Please contact in QHL Office.</string>
 

@@ -15,6 +15,7 @@ import com.quickhandslogistics.adapters.workSheet.WorkSheetItemAdapter
 import com.quickhandslogistics.contracts.schedule.ScheduleWorkItemContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemContract
+import com.quickhandslogistics.controls.Quintuple
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
@@ -34,6 +35,8 @@ class WorkScheduleItemFragment : BaseFragment(), ScheduleWorkItemContract.View.O
     private var onGoingWorkItems = java.util.ArrayList<WorkItemContainerDetails>()
     private var cancelledWorkItems = java.util.ArrayList<WorkItemContainerDetails>()
     private var completedWorkItems = java.util.ArrayList<WorkItemContainerDetails>()
+    private var unfinishedWorkItems = java.util.ArrayList<WorkItemContainerDetails>()
+    private var notDoneWorkItems = java.util.ArrayList<WorkItemContainerDetails>()
 
     private lateinit var workSheetItemAdapter: ScheduleWorkSheetItemAdapter
 
@@ -42,12 +45,14 @@ class WorkScheduleItemFragment : BaseFragment(), ScheduleWorkItemContract.View.O
         private const val ARG_ONGOING_ITEMS = "ARG_ONGOING_ITEMS"
         private const val ARG_CANCELLED_ITEMS = "ARG_CANCELLED_ITEMS"
         private const val ARG_COMPLETED_ITEMS = "ARG_COMPLETED_ITEMS"
+        private const val ARG_UNFINISHED_ITEMS = "ARG_UNFINISHED_ITEMS"
+        private const val ARG_NOT_DONE_ITEMS = "ARG_NOT_DONE_ITEMS"
         private const val ARG_SELECTED_TIME = "ARG_SELECTED_TIME"
 
         @JvmStatic
         fun newInstance(
             workItemType: String,
-            allWorkItemLists: Triple<ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>>?,
+            allWorkItemLists: Quintuple<ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>>?,
             selectedTime: Long?
         ) = WorkScheduleItemFragment()
             .apply {
@@ -57,6 +62,8 @@ class WorkScheduleItemFragment : BaseFragment(), ScheduleWorkItemContract.View.O
                         putParcelableArrayList(ARG_ONGOING_ITEMS, allWorkItemLists.first)
                         putParcelableArrayList(ARG_CANCELLED_ITEMS, allWorkItemLists.second)
                         putParcelableArrayList(ARG_COMPLETED_ITEMS, allWorkItemLists.third)
+                        putParcelableArrayList(ARG_UNFINISHED_ITEMS, allWorkItemLists.fourth)
+                        putParcelableArrayList(ARG_NOT_DONE_ITEMS, allWorkItemLists.fifth)
                     }
                     if(selectedTime!= null){
                         putLong(ARG_SELECTED_TIME, selectedTime)
@@ -83,6 +90,10 @@ class WorkScheduleItemFragment : BaseFragment(), ScheduleWorkItemContract.View.O
                 cancelledWorkItems = it.getParcelableArrayList(ARG_CANCELLED_ITEMS)!!
             if (it.containsKey(ARG_COMPLETED_ITEMS))
                 completedWorkItems = it.getParcelableArrayList(ARG_COMPLETED_ITEMS)!!
+            if (it.containsKey(ARG_UNFINISHED_ITEMS))
+                unfinishedWorkItems = it.getParcelableArrayList(ARG_UNFINISHED_ITEMS)!!
+            if (it.containsKey(ARG_NOT_DONE_ITEMS))
+                notDoneWorkItems = it.getParcelableArrayList(ARG_NOT_DONE_ITEMS)!!
         }
     }
 
@@ -110,13 +121,17 @@ class WorkScheduleItemFragment : BaseFragment(), ScheduleWorkItemContract.View.O
 
         textViewEmptyData.text = when (workItemType) {
             getString(R.string.ongoing) -> getString(R.string.empty_containers_list_ongoing_info_message)
-            getString(R.string.cancelled) -> getString(R.string.empty_containers_list_cancelled_info_message)
-            else -> getString(R.string.empty_containers_list_completed_info_message)
+            getString(R.string.cancel) -> getString(R.string.empty_containers_list_cancelled_info_message)
+            getString(R.string.complete) -> getString(R.string.empty_containers_list_completed_info_message)
+            getString(R.string.unfinished) -> getString(R.string.empty_containers_list_unfinished_info_message)
+            else -> getString(R.string.empty_containers_list_not_done_info_message)
         }
         when(workItemType){
             getString(R.string.ongoing) ->  updateWorkItemsList(onGoingWorkItems, selectedTime)
-            getString(R.string.cancelled) ->  updateWorkItemsList(cancelledWorkItems, selectedTime)
-            else ->updateWorkItemsList(completedWorkItems, selectedTime)
+            getString(R.string.cancel) ->  updateWorkItemsList(cancelledWorkItems, selectedTime)
+            getString(R.string.complete) ->updateWorkItemsList(completedWorkItems, selectedTime)
+            getString(R.string.unfinished) ->updateWorkItemsList(unfinishedWorkItems, selectedTime)
+            getString(R.string.not_open) ->updateWorkItemsList(notDoneWorkItems, selectedTime)
 
         }
     }

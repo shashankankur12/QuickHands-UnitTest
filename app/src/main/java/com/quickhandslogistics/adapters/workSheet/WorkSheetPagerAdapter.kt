@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.quickhandslogistics.R
+import com.quickhandslogistics.controls.Quintuple
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.views.workSheet.WorkSheetItemFragment
 import kotlin.collections.ArrayList
@@ -13,7 +14,7 @@ import kotlin.collections.ArrayList
 class WorkSheetPagerAdapter(
     childFragmentManager: FragmentManager,
     private val resources: Resources,
-    allWorkItemLists: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>? =null
+    allWorkItemLists: Quintuple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>? =null
 ) :
     FragmentStatePagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
@@ -21,8 +22,8 @@ class WorkSheetPagerAdapter(
     private var onGoingWorkItemsCount = if (!allWorkItemLists?.first.isNullOrEmpty())allWorkItemLists?.first?.size else 0
     private var cancelledWorkItemsCount = if (!allWorkItemLists?.second.isNullOrEmpty())allWorkItemLists?.second?.size else 0
     private var completedWorkItemsCount = if (!allWorkItemLists?.third.isNullOrEmpty())allWorkItemLists?.third?.size else 0
-    private var unfinishedWorkItemsCount = if (!allWorkItemLists?.third.isNullOrEmpty())allWorkItemLists?.third?.size else 0
-    private var notOpenWorkItemsCount = if (!allWorkItemLists?.third.isNullOrEmpty())allWorkItemLists?.third?.size else 0
+    private var unfinishedWorkItemsCount = if (!allWorkItemLists?.third.isNullOrEmpty())allWorkItemLists?.fourth?.size else 0
+    private var notOpenWorkItemsCount = if (!allWorkItemLists?.third.isNullOrEmpty())allWorkItemLists?.fifth?.size else 0
 
     private var ongoingFragment = WorkSheetItemFragment.newInstance(resources.getString(tabTitles[0]), allWorkItemLists)
     private var completedFragment = WorkSheetItemFragment.newInstance(resources.getString(tabTitles[1]), allWorkItemLists)
@@ -48,18 +49,23 @@ class WorkSheetPagerAdapter(
         return null
     }
 
-    fun updateWorkItemsList(onGoingWorkItems: ArrayList<WorkItemDetail>, cancelledWorkItems: ArrayList<WorkItemDetail>, completedWorkItems: ArrayList<WorkItemDetail>) {
+    fun updateWorkItemsList(
+        onGoingWorkItems: ArrayList<WorkItemDetail>,
+        cancelledWorkItems: ArrayList<WorkItemDetail>,
+        completedWorkItems: ArrayList<WorkItemDetail>,
+        unfinishedWorkItems: ArrayList<WorkItemDetail>
+    ) {
         onGoingWorkItemsCount = onGoingWorkItems.size
         cancelledWorkItemsCount = cancelledWorkItems.size
         completedWorkItemsCount = completedWorkItems.size
-        unfinishedWorkItemsCount = completedWorkItems.size
-        notOpenWorkItemsCount = completedWorkItems.size
+        unfinishedWorkItemsCount = unfinishedWorkItems.size
+        notOpenWorkItemsCount = unfinishedWorkItems.size
 
         ongoingFragment.updateWorkItemsList(onGoingWorkItems)
         cancelledFragment.updateWorkItemsList(cancelledWorkItems)
         completedFragment.updateWorkItemsList(completedWorkItems)
-        unfinishedFragment.updateWorkItemsList(completedWorkItems)
-        notOpenFragment.updateWorkItemsList(completedWorkItems)
+        unfinishedFragment.updateWorkItemsList(unfinishedWorkItems)
+        notOpenFragment.updateWorkItemsList(unfinishedWorkItems)
 
         notifyDataSetChanged()
     }

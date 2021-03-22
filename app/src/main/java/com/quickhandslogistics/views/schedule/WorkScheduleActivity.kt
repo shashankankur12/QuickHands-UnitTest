@@ -9,6 +9,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.schedule.WorkSchedulePagerAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
 import com.quickhandslogistics.contracts.schedule.WorkScheduleContract
+import com.quickhandslogistics.controls.Quintuple
 import com.quickhandslogistics.data.customerSheet.CustomerSheetData
 import com.quickhandslogistics.data.schedule.ScheduleDetailData
 import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
@@ -16,21 +17,7 @@ import com.quickhandslogistics.presenters.schedule.WorkSchedulePresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
-import kotlinx.android.synthetic.main.content_work_sheet.*
 import kotlinx.android.synthetic.main.work_schedule_container.*
-import kotlinx.android.synthetic.main.work_schedule_container.swipe_pull_refresh
-import kotlinx.android.synthetic.main.work_schedule_container.tabLayoutWorkSheet
-import kotlinx.android.synthetic.main.work_schedule_container.textViewCompanyName
-import kotlinx.android.synthetic.main.work_schedule_container.textViewDropsCount
-import kotlinx.android.synthetic.main.work_schedule_container.textViewGroupNote
-import kotlinx.android.synthetic.main.work_schedule_container.textViewLiveLoadsCount
-import kotlinx.android.synthetic.main.work_schedule_container.textViewOutBoundsCount
-import kotlinx.android.synthetic.main.work_schedule_container.textViewTotalCount
-import kotlinx.android.synthetic.main.work_schedule_container.textViewUnfinishedCount
-import kotlinx.android.synthetic.main.work_schedule_container.textViewWorkItemDept
-import kotlinx.android.synthetic.main.work_schedule_container.textViewWorkItemShift
-import kotlinx.android.synthetic.main.work_schedule_container.textViewWorkItemsDate
-import kotlinx.android.synthetic.main.work_schedule_container.viewPagerWorkSheet
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -145,7 +132,7 @@ View.OnClickListener   {
 
 
     private fun initializeViewPager(
-        allWorkItemLists: Triple<ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>>? = null,
+        allWorkItemLists: Quintuple<ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>>? = null,
         customerSheetData: CustomerSheetData? = null, selectedTime: Long? = null
     ) {
         adapter = if (allWorkItemLists != null) {
@@ -169,7 +156,7 @@ View.OnClickListener   {
             viewPagerWorkSheet.pagingEnabled =true        }
     }
 
-    private fun createDifferentListData(data: ScheduleDetailData): Triple<ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>> {
+    private fun createDifferentListData(data: ScheduleDetailData): Quintuple<ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>> {
 
         val totalContainers=data?.liveLoads?.size!!+ data?.drops?.size!! + data?.outbounds?.size!!
         textViewTotalCount.text = String.format(getString(R.string.total_containers_s), totalContainers)
@@ -178,7 +165,6 @@ View.OnClickListener   {
         textViewLiveLoadsCount.text = String.format(getString(R.string.live_loads_s), data?.liveLoads?.size)
         textViewDropsCount.text = String.format(getString(R.string.drops_s), data?.drops?.size)
         textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), data?.outbounds?.size)
-        textViewUnfinishedCount.text = String.format(getString(R.string.unfinished_s), 0)
 
         var allWorkItem:ArrayList<WorkItemContainerDetails> = ArrayList()
         data?.outbounds?.let { allWorkItem.addAll(it) }
@@ -188,6 +174,8 @@ View.OnClickListener   {
         var onGoingWorkItems:ArrayList<WorkItemContainerDetails> = ArrayList()
         var cancelled:ArrayList<WorkItemContainerDetails> = ArrayList()
         var completed:ArrayList<WorkItemContainerDetails> = ArrayList()
+        var unfinished:ArrayList<WorkItemContainerDetails> = ArrayList()
+        var notDone:ArrayList<WorkItemContainerDetails> = ArrayList()
 
         allWorkItem.forEach {
             when {
@@ -197,14 +185,22 @@ View.OnClickListener   {
                 it.status.equals(AppConstant.WORK_ITEM_STATUS_CANCELLED) -> {
                     cancelled.add(it)
                 }
-                it.status.equals(AppConstant.WORK_ITEM_STATUS_IN_PROGRESS) || it.status.equals(AppConstant.WORK_ITEM_STATUS_SCHEDULED) ||it.status.equals(AppConstant.WORK_ITEM_STATUS_ON_HOLD) -> {
+                it.status.equals(AppConstant.WORK_ITEM_STATUS_UNFINISHED) -> {
+                    unfinished.add(it)
+                }
+                it.status.equals(AppConstant.WORK_ITEM_STATUS_NOT_OPEN) -> {
+                    notDone.add(it)
+                }
+                it.status.equals(AppConstant.WORK_ITEM_STATUS_IN_PROGRESS) || it.status.equals(
+                    AppConstant.WORK_ITEM_STATUS_SCHEDULED
+                ) || it.status.equals(AppConstant.WORK_ITEM_STATUS_ON_HOLD) -> {
                     onGoingWorkItems.add(it)
                 }
             }
         }
+        textViewUnfinishedCount.text = String.format(getString(R.string.unfinished_s), unfinished.size)
 
-
-        return Triple(getSortList(onGoingWorkItems), getSortList(cancelled), getSortList(completed))
+        return Quintuple(getSortList(onGoingWorkItems), getSortList(cancelled), getSortList(completed), getSortList(unfinished), getSortList(notDone))
 
     }
 
@@ -219,7 +215,7 @@ View.OnClickListener   {
         textViewDropsCount.text = ""
         textViewOutBoundsCount.text = ""
         textViewUnfinishedCount.text = ""
-        adapter?.updateWorkItemsList(ArrayList(), ArrayList(), ArrayList(), selectedTime)
+        adapter?.updateWorkItemsList(ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), selectedTime)
     }
 
     /** Presenter Listeners */
@@ -243,7 +239,6 @@ View.OnClickListener   {
         textViewLiveLoadsCount.text = String.format(getString(R.string.live_loads_s), data?.liveLoads?.size)
         textViewDropsCount.text = String.format(getString(R.string.drops_s), data.drops?.size)
         textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), data?.outbounds?.size)
-        textViewUnfinishedCount.text = String.format(getString(R.string.unfinished_s), 0)
 
         var allWorkItem:ArrayList<WorkItemContainerDetails> = ArrayList()
         data?.outbounds?.let { allWorkItem.addAll(it) }
@@ -253,6 +248,8 @@ View.OnClickListener   {
         var onGoingWorkItems:ArrayList<WorkItemContainerDetails> = ArrayList()
         var cancelled:ArrayList<WorkItemContainerDetails> = ArrayList()
         var completed:ArrayList<WorkItemContainerDetails> = ArrayList()
+        var unfinished:ArrayList<WorkItemContainerDetails> = ArrayList()
+        var notOpen:ArrayList<WorkItemContainerDetails> = ArrayList()
 
         allWorkItem.forEach {
             when {
@@ -262,17 +259,22 @@ View.OnClickListener   {
                 it.status.equals(AppConstant.WORK_ITEM_STATUS_CANCELLED) -> {
                     cancelled.add(it)
                 }
-                it.status.equals(AppConstant.WORK_ITEM_STATUS_IN_PROGRESS) || it.status.equals(AppConstant.WORK_ITEM_STATUS_SCHEDULED) ||it.status.equals(AppConstant.WORK_ITEM_STATUS_ON_HOLD) -> {
+                it.status.equals(AppConstant.WORK_ITEM_STATUS_UNFINISHED) -> {
+                    unfinished.add(it)
+                }
+                it.status.equals(AppConstant.WORK_ITEM_STATUS_NOT_OPEN) -> {
+                    notOpen.add(it)
+                }
+                it.status.equals(AppConstant.WORK_ITEM_STATUS_IN_PROGRESS) || it.status.equals(
+                    AppConstant.WORK_ITEM_STATUS_SCHEDULED
+                ) || it.status.equals(AppConstant.WORK_ITEM_STATUS_ON_HOLD) -> {
                     onGoingWorkItems.add(it)
                 }
             }
         }
+        textViewUnfinishedCount.text = String.format(getString(R.string.unfinished_s), unfinished.size)
 
-
-
-
-        adapter?.updateWorkItemsList(getSortList(onGoingWorkItems), getSortList(cancelled!!), getSortList(completed!!), selectedTime)
-
+        adapter?.updateWorkItemsList(getSortList(onGoingWorkItems), getSortList(cancelled!!), getSortList(completed!!), getSortList(unfinished), getSortList(notOpen), selectedTime)
     }
 
     private fun getSortList(workItemsList: ArrayList<WorkItemContainerDetails>): ArrayList<WorkItemContainerDetails> {
