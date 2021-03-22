@@ -7,12 +7,14 @@ class WorkSheetContract {
     interface Model {
         fun fetchHeaderInfo(onFinishedListener: OnFinishedListener)
         fun fetchWorkSheetList(onFinishedListener: OnFinishedListener)
-        fun saveGroupNoteData(onFinishedListener: OnFinishedListener, cancelled: ArrayList<String>, customerNote: String, qhlNote: String)
+        fun saveGroupNoteData(onFinishedListener: OnFinishedListener,containerIds: ArrayList<String>, containerType: String, customerNote: String, qhlNote: String)
+        fun removeNote(onFinishedListener: OnFinishedListener, id: String)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccessFetchWorkSheet(workSheetListAPIResponse: WorkSheetListAPIResponse)
             fun onSuccessGetHeaderInfo(companyName: String, date: String, shift:String, dept: String)
             fun onSuccessSaveGroupNoteWorkSheet(message: String)
+            fun onSuccessRemoveNote(message: String)
         }
     }
 
@@ -29,14 +31,15 @@ class WorkSheetContract {
 
         interface OnFragmentInteractionListener {
             fun fetchWorkSheetList()
-            fun showBottomSheetGroupNote()
-            fun showGroupNote()
-            fun removeGroupNote()
+            fun showBottomSheetGroupNote(containerIds: ArrayList<String>, containerType: String)
+            fun showGroupNote(noteForCustomer: String, noteForQHL: String)
+            fun removeGroupNote(id: String?)
         }
     }
 
     interface Presenter : BaseContract.Presenter {
         fun fetchWorkSheetList()
-        fun saveGroupNoteData(cancelled: ArrayList<String>, customerNote: String, qhlNote: String)
+        fun saveGroupNoteData(containerIds: ArrayList<String>, containerType: String, customerNote: String, qhlNote: String)
+        fun removeNote(id: String)
     }
 }

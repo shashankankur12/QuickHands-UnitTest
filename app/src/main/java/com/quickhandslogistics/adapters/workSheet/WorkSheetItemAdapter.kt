@@ -122,4 +122,8 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
         this.workItemsList = workItemsList
         notifyDataSetChanged()
     }
+
+    fun getItemList(): ArrayList<WorkItemDetail> {
+        return workItemsList
+    }
 }

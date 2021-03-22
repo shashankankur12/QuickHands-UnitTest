@@ -26,9 +26,14 @@ class WorkSheetPresenter(private var workSheetView: WorkSheetContract.View?, pri
         workSheetModel.fetchWorkSheetList(this)
     }
 
-    override fun saveGroupNoteData(cancelled: ArrayList<String>, customerNote: String, qhlNote: String) {
-//        workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-//        workSheetModel.saveGroupNoteData(this, cancelled, customerNote, qhlNote)
+    override fun saveGroupNoteData(containerIds: ArrayList<String>, containerType: String, customerNote: String, qhlNote: String) {
+        workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        workSheetModel.saveGroupNoteData(this, containerIds, containerType, customerNote, qhlNote)
+    }
+
+    override fun removeNote (id: String) {
+        workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        workSheetModel.removeNote(this, id)
     }
 
     /** Model Result Listeners */
@@ -84,5 +89,10 @@ class WorkSheetPresenter(private var workSheetView: WorkSheetContract.View?, pri
         workSheetView?.hideProgressDialog()
         workSheetView?.successGroupNoteSave(message)
 
+    }
+
+    override fun onSuccessRemoveNote(message: String) {
+        workSheetView?.hideProgressDialog()
+        workSheetView?.successGroupNoteSave(message)
     }
 }

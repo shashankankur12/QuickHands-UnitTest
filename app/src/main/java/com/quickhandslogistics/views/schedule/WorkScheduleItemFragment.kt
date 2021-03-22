@@ -11,14 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.schedule.ScheduleWorkSheetItemAdapter
-import com.quickhandslogistics.adapters.workSheet.WorkSheetItemAdapter
 import com.quickhandslogistics.contracts.schedule.ScheduleWorkItemContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetContract
-import com.quickhandslogistics.contracts.workSheet.WorkSheetItemContract
 import com.quickhandslogistics.controls.Quintuple
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.lumpers.EmployeeData
-import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment

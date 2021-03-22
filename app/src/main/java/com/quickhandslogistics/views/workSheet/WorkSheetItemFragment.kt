@@ -17,6 +17,7 @@ import com.quickhandslogistics.controls.Quintuple
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
+import com.quickhandslogistics.data.workSheet.ContainerGroupNote
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.ConnectionDetector
 import com.quickhandslogistics.utils.CustomProgressBar
@@ -37,6 +38,7 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
     private var completedWorkItems = java.util.ArrayList<WorkItemDetail>()
     private var unfinishedWorkItems = java.util.ArrayList<WorkItemDetail>()
     private var notDoneWorkItems = java.util.ArrayList<WorkItemDetail>()
+    private var groupNotes: ContainerGroupNote? =null
 
     private lateinit var workSheetItemAdapter: WorkSheetItemAdapter
 
@@ -47,9 +49,14 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
         private const val ARG_COMPLETED_ITEMS = "ARG_COMPLETED_ITEMS"
         private const val ARG_UNFINISHED_ITEMS = "ARG_UNFINISHED_ITEMS"
         private const val ARG_NOT_DONE_ITEMS = "ARG_NOT_DONE_ITEMS"
+        private const val ARG_NOTE_DATA = "ARG_NOTE_DATA"
 
         @JvmStatic
-        fun newInstance(workItemType: String, allWorkItemLists: Quintuple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>?) = WorkSheetItemFragment()
+        fun newInstance(
+            workItemType: String,
+            allWorkItemLists: Quintuple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>?,
+            containerGroupNote: ContainerGroupNote?=null
+        ) = WorkSheetItemFragment()
             .apply {
                 arguments = Bundle().apply {
                     putString(ARG_WORK_ITEM_TYPE, workItemType)
@@ -60,6 +67,9 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
                         putParcelableArrayList(ARG_UNFINISHED_ITEMS, allWorkItemLists.fourth)
                         putParcelableArrayList(ARG_NOT_DONE_ITEMS, allWorkItemLists.fifth)
                     }
+                   if (containerGroupNote!=null){
+                      putParcelable(ARG_NOTE_DATA, containerGroupNote)
+                   }
                 }
             }
     }
@@ -85,6 +95,9 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
                 unfinishedWorkItems = it.getParcelableArrayList(ARG_UNFINISHED_ITEMS)!!
             if (it.containsKey(ARG_NOT_DONE_ITEMS))
                 notDoneWorkItems = it.getParcelableArrayList(ARG_NOT_DONE_ITEMS)!!
+
+            if (it.containsKey(ARG_NOTE_DATA))
+                groupNotes = it.getParcelable<ContainerGroupNote>(ARG_NOTE_DATA) as ContainerGroupNote
         }
     }
 
@@ -108,10 +121,11 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
                 super.onChanged()
                 textViewEmptyData.visibility =
                     if (workSheetItemAdapter.itemCount == 0) View.VISIBLE else View.GONE
-                textViewAddGroupNote.visibility =
-                    if (workSheetItemAdapter.itemCount > 0 && workItemType == getString(R.string.cancel)) View.VISIBLE else View.GONE
-                textViewShowGroupNote.visibility =
-                    if (workSheetItemAdapter.itemCount > 0 && workItemType == getString(R.string.cancel)) View.VISIBLE else View.GONE
+                setVisibility()
+//                textViewAddGroupNote.visibility =
+//                    if (workSheetItemAdapter.itemCount > 0 && (workItemType == getString(R.string.cancel) ||workItemType == getString(R.string.unfinished)||workItemType == getString(R.string.not_open))) View.VISIBLE else View.GONE
+//                textViewShowGroupNote.visibility =
+//                    if (workSheetItemAdapter.itemCount > 0 && (workItemType == getString(R.string.cancel)||workItemType == getString(R.string.unfinished)||workItemType == getString(R.string.not_open))) View.VISIBLE else View.GONE
             }
         })
 
@@ -125,10 +139,9 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
         when (workItemType) {
             getString(R.string.ongoing) -> {
                 updateWorkItemsList(onGoingWorkItems)
-
             }
             getString(R.string.cancel) -> {
-                updateWorkItemsList(cancelledWorkItems)
+                updateWorkItemsList(cancelledWorkItems,groupNotes)
 
             }
             getString(R.string.complete) -> {
@@ -136,7 +149,7 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
 
             }
             getString(R.string.unfinished) -> {
-                updateWorkItemsList(unfinishedWorkItems)
+                updateWorkItemsList(unfinishedWorkItems,groupNotes)
             }
             else -> updateWorkItemsList(notDoneWorkItems)
         }
@@ -146,6 +159,36 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
         textViewShowGroupNote.setOnLongClickListener(this)
     }
 
+    fun setVisibility() {
+        if (workSheetItemAdapter.getItemList().size > 0 && (workItemType == getString(R.string.cancel))) {
+            if (groupNotes != null) {
+                textViewAddGroupNote.visibility = View.GONE
+                textViewShowGroupNote.visibility = View.VISIBLE
+            } else {
+                textViewAddGroupNote.visibility = View.VISIBLE
+                textViewShowGroupNote.visibility = View.GONE
+            }
+        } else if (workSheetItemAdapter.getItemList().size > 0 && (workItemType == getString(R.string.unfinished))) {
+            if (groupNotes != null) {
+                textViewAddGroupNote.visibility = View.GONE
+                textViewShowGroupNote.visibility = View.VISIBLE
+            } else {
+                textViewAddGroupNote.visibility = View.VISIBLE
+                textViewShowGroupNote.visibility = View.GONE
+            }
+        } else if (workSheetItemAdapter.getItemList().size > 0 && (workItemType == getString(R.string.not_open))) {
+            if (groupNotes != null) {
+                textViewAddGroupNote.visibility = View.GONE
+                textViewShowGroupNote.visibility = View.VISIBLE
+            } else {
+                textViewAddGroupNote.visibility = View.VISIBLE
+                textViewShowGroupNote.visibility = View.GONE
+            }
+        }else{
+            textViewAddGroupNote.visibility = View.GONE
+            textViewShowGroupNote.visibility = View.GONE
+        }
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
@@ -153,7 +196,9 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
         }
     }
 
-    fun updateWorkItemsList(workItemsList: ArrayList<WorkItemDetail>) {
+    fun updateWorkItemsList(
+        workItemsList: ArrayList<WorkItemDetail>, notOpenNotes: ContainerGroupNote?= null) {
+        this.groupNotes=notOpenNotes
         workSheetItemAdapter.updateList(workItemsList)
     }
 
@@ -198,10 +243,33 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
     override fun onClick(view: View?) {
         when(view!!.id){
             textViewAddGroupNote.id->{
-                onFragmentInteractionListener?.showBottomSheetGroupNote()
+                val containerIds:ArrayList<String> = ArrayList()
+                var containerType:String =""
+                when (workItemType) {
+                    getString(R.string.cancel) -> {
+                        containerType="CANCELLED"
+                    }
+                    getString(R.string.unfinished) -> {
+                        containerType="UNFINISHED"
+                    }
+                    getString(R.string.not_open) -> {
+                        containerType="NOTOPEN"
+                    }
+                }
+                workSheetItemAdapter.getItemList().forEach {
+                    it.id?.let { it1 -> containerIds.add(it1) }
+                }
+
+                if (!containerIds.isNullOrEmpty())
+                onFragmentInteractionListener?.showBottomSheetGroupNote(containerIds, containerType)
             }
             textViewShowGroupNote.id->{
-                onFragmentInteractionListener?.showGroupNote()
+                groupNotes?.let {
+                    val noteForCustomer= if(!it.noteForCustomer.isNullOrEmpty()) it.noteForCustomer?.capitalize()else "N/A"
+                    val noteForQhl= if(!it.noteForQHL.isNullOrEmpty()) it.noteForQHL?.capitalize()else "N/A"
+                    onFragmentInteractionListener?.showGroupNote(noteForCustomer!!, noteForQhl!!)
+                }
+
             }
         }
     }
@@ -210,7 +278,9 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
         view?.let {
             return when (view.id) {
                 textViewShowGroupNote.id -> {
-                    onFragmentInteractionListener?.removeGroupNote()
+                    groupNotes?.let {
+                    onFragmentInteractionListener?.removeGroupNote(it.id)
+                    }
                     return true
                 }
                 else -> {

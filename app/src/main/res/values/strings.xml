@@ -343,6 +343,7 @@
     <string name="time_clock_fill_alert_message">Don\'t forget to Clock Out all the lumpers in \'Time-Clock\' before submitting Lumper Sheet.</string>
     <string name="use_external_storage_alert_message">Please allow storage permission in the app settings, so that you could download \'Reports\'</string>
     <string name="warning_alert_message">You want to make these changes</string>
+    <string name="warning_alert_message_group_note">You want to delete this group note.</string>
     <string name="discard_leave_alert_message">Discard information and Leave?</string>
     <string name="attendece_start_time_over_message">Start time is over for this shift</string>
     <string name="attendece_api_error_message">All morning punch in must be from today only</string>

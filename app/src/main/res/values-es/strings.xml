@@ -324,6 +324,7 @@
     <string name="generate_report_alert_message">You want to generate report</string>
     <string name="language_change_alert_message">You want to change the language</string>
     <string name="logout_alert_message">You want to logout</string>
+    <string name="warning_alert_message_group_note">You want to delete this group note.</string>
     <string name="clear_time_alert_message">Clear Time?</string>
     <string name="leave_alert_message">You want to leave this page</string>
     <string name="lumper_sheet_success_message">Lumper Sheet submitted successfully</string>

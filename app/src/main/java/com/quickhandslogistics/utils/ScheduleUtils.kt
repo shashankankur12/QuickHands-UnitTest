@@ -125,6 +125,18 @@ object ScheduleUtils {
                 relativeLayoutSide?.setBackgroundResource(R.drawable.schedule_item_stroke_completed)
                 setStatusViewEditable(isEditable, textViewStatus)
             }
+            AppConstant.WORK_ITEM_STATUS_UNFINISHED -> {
+                textViewStatus.text = resources.getString(R.string.unfinished)
+                textViewStatus.setBackgroundResource(R.drawable.yellow_clip_background)
+                relativeLayoutSide?.setBackgroundResource(R.drawable.schedule_item_stroke_unfinished)
+                setStatusViewEditable(isEditable, textViewStatus)
+            }
+            AppConstant.WORK_ITEM_STATUS_NOT_OPEN -> {
+                textViewStatus.text = resources.getString(R.string.not_open)
+                textViewStatus.setBackgroundResource(R.drawable.chip_background_not_open)
+                relativeLayoutSide?.setBackgroundResource(R.drawable.schedule_item_stroke_not_open)
+                setStatusViewEditable(isEditable, textViewStatus)
+            }
             AppConstant.VIEW_DETAILS -> {
                 textViewStatus.text = resources.getString(R.string.view_details)
                 textViewStatus.setBackgroundResource(R.drawable.chip_background_scheduled)

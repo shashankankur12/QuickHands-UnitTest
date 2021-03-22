@@ -281,8 +281,8 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
             closeBottomSheet()
             CustomBottomSheetDialog.unfinishedBottomSheetDialog(activity,  object : CustomBottomSheetDialog.IDialogOnClick {
                 override fun onSendRequest(dialog: Dialog) {
-                    Toast.makeText(applicationContext, "submit button clicked", Toast.LENGTH_SHORT).show()
                     dialog.dismiss()
+                    workSheetItemDetailPresenter.changeWorkItemStatus(workItemId, status)
                 }
             })
             return

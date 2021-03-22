@@ -5,6 +5,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.quickhandslogistics.data.BaseResponse
+import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import java.io.Serializable
 
@@ -44,6 +45,19 @@ class WorkSheetListAPIResponse : BaseResponse() {
         var unfinished: ArrayList<WorkItemDetail>? = null
             get() = if (!field.isNullOrEmpty()) field else ArrayList()
 
+
+        @SerializedName("cancelledNotes")
+        @Expose
+        var containerGroupNote: ContainerGroupNote? = null
+
+        @SerializedName("unfinishedNotes")
+        @Expose
+        var unfinishedNotes: ContainerGroupNote? = null
+
+        @SerializedName("notOpenNotes")
+        @Expose
+        var notOpenNotes: ContainerGroupNote? = null
+
         constructor(parcel: Parcel) : this() {
             cancelled = parcel.createTypedArrayList(WorkItemDetail)
             onHold = parcel.createTypedArrayList(WorkItemDetail)
@@ -51,6 +65,9 @@ class WorkSheetListAPIResponse : BaseResponse() {
             scheduled = parcel.createTypedArrayList(WorkItemDetail)
             completed = parcel.createTypedArrayList(WorkItemDetail)
             unfinished = parcel.createTypedArrayList(WorkItemDetail)
+            containerGroupNote= parcel.readValue(ContainerGroupNote::class.java.classLoader) as ContainerGroupNote?
+            unfinishedNotes= parcel.readValue(ContainerGroupNote::class.java.classLoader) as ContainerGroupNote?
+            notOpenNotes= parcel.readValue(ContainerGroupNote::class.java.classLoader) as ContainerGroupNote?
         }
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -60,6 +77,9 @@ class WorkSheetListAPIResponse : BaseResponse() {
             parcel.writeTypedList(scheduled)
             parcel.writeTypedList(completed)
             parcel.writeTypedList(unfinished)
+            parcel.writeValue(containerGroupNote)
+            parcel.writeValue(unfinishedNotes)
+            parcel.writeValue(notOpenNotes)
         }
 
         override fun describeContents(): Int {

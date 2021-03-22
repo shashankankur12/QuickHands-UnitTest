@@ -3,7 +3,10 @@ package com.quickhandslogistics.models.workSheet
 import android.util.Log
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.workSheet.WorkSheetContract
+import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.dashboard.LeadProfileData
+import com.quickhandslogistics.data.workSheet.CancelAllSchedulesRequest
+import com.quickhandslogistics.data.workSheet.SaveNoteWorkItemRequest
 import com.quickhandslogistics.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.DataManager.getAuthToken
@@ -45,17 +48,31 @@ class WorkSheetModel(private val sharedPref: SharedPref) : WorkSheetContract.Mod
         })
     }
 
-    override fun saveGroupNoteData(onFinishedListener: WorkSheetContract.Model.OnFinishedListener, cancelled: ArrayList<String>, customerNote: String, qhlNote: String) {
-
-
-        DataManager.getService().getWorkSheetList(getAuthToken(), customerNote).enqueue(object : Callback<WorkSheetListAPIResponse> {
-            override fun onResponse(call: Call<WorkSheetListAPIResponse>, response: Response<WorkSheetListAPIResponse>) {
+    override fun saveGroupNoteData(onFinishedListener: WorkSheetContract.Model.OnFinishedListener, containerIds: ArrayList<String>, containerType: String, customerNote: String, qhlNote: String) {
+        val dateString = DateUtils.getCurrentDateStringByEmployeeShift()
+        val request = SaveNoteWorkItemRequest( containerIds, containerType, customerNote, qhlNote)
+        DataManager.getService().saveGroupNoteSchedules(getAuthToken(), dateString, request).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onSuccessSaveGroupNoteWorkSheet(response.body()!!.message!!)
                 }
             }
 
-            override fun onFailure(call: Call<WorkSheetListAPIResponse>, t: Throwable) {
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Log.e(WorkSheetModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
+    }
+    override fun removeNote(onFinishedListener: WorkSheetContract.Model.OnFinishedListener, id: String) {
+        DataManager.getService().saveGroupNoteSchedules(getAuthToken(), id).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessRemoveNote(response.body()!!.message!!)
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
                 Log.e(WorkSheetModel::class.simpleName, t.localizedMessage!!)
                 onFinishedListener.onFailure()
             }

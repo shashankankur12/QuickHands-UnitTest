@@ -155,6 +155,14 @@ interface IApiInterface {
     fun cancelAllSchedules(
         @Header("Authorization") auth: String, @Path("day") day: String, @Body request: CancelAllSchedulesRequest
     ): Call<BaseResponse>
+
+    @POST("schedule/notes")
+    fun saveGroupNoteSchedules(@Header("Authorization") auth: String, @Query("day") day: String, @Body request: SaveNoteWorkItemRequest
+    ): Call<BaseResponse>
+
+    @DELETE("schedule/notes")
+    fun saveGroupNoteSchedules(@Header("Authorization") auth: String, @Query("id") id: String): Call<BaseResponse>
+
     /////////////////////////////////////////////////////////////
 
     // Customer Sheet /////////////////////////////////////////////////
