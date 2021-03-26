@@ -62,16 +62,12 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(LUMPER_TIME_SCHEDULE)) {
-                lumpersTimeSchedule =
-                        savedInstanceState.getParcelableArrayList(
-                                LUMPER_TIME_SCHEDULE
-                        )!!
+                lumpersTimeSchedule = savedInstanceState.getParcelableArrayList(LUMPER_TIME_SCHEDULE)!!
             }
             if (savedInstanceState.containsKey(TEMP_LUMPER_ID_LIST)) tempLumperIds =
                     savedInstanceState.getStringArrayList(TEMP_LUMPER_ID_LIST)!!
             if (savedInstanceState.containsKey(WORK_DETAIL_LIST)) {
-                workItemDetail =
-                        savedInstanceState.getParcelable(WORK_DETAIL_LIST)!!
+                workItemDetail = savedInstanceState.getParcelable(WORK_DETAIL_LIST)!!
 //                showWorkItemDetail(workItemDetail, lumpersTimeSchedule, tempLumperIds)
                 val allWorkItemLists = createDifferentListData(workItemDetail)
                 initializeUI(allWorkItemLists, tempLumperIds, lumpersTimeSchedule)

@@ -74,9 +74,9 @@ interface IApiInterface {
     @GET("schedule/work-item/{workItemId}")
     fun getWorkItemContainerDetail(@Header("Authorization") auth: String, @Path("workItemId") workItemId: String): Call<WorkItemDetailAPIResponse>
 
-    @PUT("schedule/lumper/{workItemId}")
+    @PUT("schedule/lumper")
     fun assignLumpers(
-        @Header("Authorization") auth: String, @Path("workItemId") workItemId: String, @Body request: AssignLumpersRequest
+        @Header("Authorization") auth: String, @Query("containerId") containerId: String, @Body request: AssignLumpersRequest
     ): Call<BaseResponse>
 
     @POST("customer/schedules/add")
