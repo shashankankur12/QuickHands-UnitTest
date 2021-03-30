@@ -130,6 +130,7 @@
     <string name="notes">Notes</string>
     <string name="group_notes">Group Notes</string>
     <string name="group_note">Group Note :</string>
+    <string name="group_note_header">Group Note</string>
     <string name="notifications">Notifications</string>
     <string name="ok">OK</string>
     <string name="on_hold">On-Hold</string>
@@ -276,6 +277,9 @@
     <string name="heading_add_note">Add Note:</string>
     <string name="add_note_popup">Add Note</string>
     <string name="hours">Hours: %s - %s</string>
+    <string name="add_group_note_message">Add a Note for this group of container</string>
+    <string name="qhl_office">QHL Office</string>
+    <string name="na">N/A</string>
 
     <!--No Record Messages-->
     <string name="empty_add_work_item_lumpers_info_message">This building doesn\'t have any lumpers present for the selected date. Please mark lumpers attendance in \'Time-Clock Attendance\' section for selecting them. \n</string>
@@ -294,11 +298,16 @@
     <string name="empty_containers_list_info_message">This building doesn\'t have any containers scheduled for the selected date.</string>
     <string name="empty_schedules_list_info_message">No Work Scheduled</string>
     <string name="empty_schedule_time_list_info_message">No Lumpers Scheduled</string>
-    <string name="empty_containers_list_ongoing_info_message">You don\'t have any Ongoing containers scheduled for the selected date.</string>
-    <string name="empty_containers_list_cancelled_info_message">You don\'t have any Cancelled containers scheduled for the selected date.</string>
-    <string name="empty_containers_list_completed_info_message">You don\'t have any Completed containers scheduled for the selected date.</string>
+    <string name="empty_containers_list_ongoing_info_message">There are no Ongoing containers.</string>
+    <string name="empty_containers_list_cancelled_info_message">There are no Cancelled containers.</string>
+    <string name="empty_containers_list_completed_info_message">There are no Completed containers.</string>
+    <string name="empty_containers_list_unfinished_info_message">There are no Unfinished containers.</string>
+    <string name="empty_containers_list_not_done_info_message">There are no Not-Done containers.</string>
     <string name="empty_lumper_list_message">There are no lumpers assigned to this shift/department. Please contact your District Manager.</string>
     <string name="attendece_api_error_message">All morning punch in must be from today only</string>
+    <string name="group_customer_note_error_message">Please enter customer note.  \n</string>
+    <string name="group_qhl_note_error_message">Please enter QHL note.  \n</string>
+    <string name="empty_contact_list_message">There are no contact available. Please contact in QHL Office.</string>
 
     <!--Alert Messages-->
     <string name="are_you_sure_alert_message">Are you sure?</string>
@@ -315,6 +324,7 @@
     <string name="generate_report_alert_message">You want to generate report</string>
     <string name="language_change_alert_message">You want to change the language</string>
     <string name="logout_alert_message">You want to logout</string>
+    <string name="warning_alert_message_group_note">You want to delete this group note.</string>
     <string name="clear_time_alert_message">Clear Time?</string>
     <string name="leave_alert_message">You want to leave this page</string>
     <string name="lumper_sheet_success_message">Lumper Sheet submitted successfully</string>
@@ -394,4 +404,13 @@
     <string name="break_end_greater_work_start_warning_message">Break\'s End Time should be greater than Work\'s Start Time</string>
     <string name="break_end_greater_break_start_warning_message">Break\'s End Time should be greater than Break\'s Start Time</string>
     <string name="break_end_less_work_end_warning_message">Break\'s End Time should be less than Work\'s End Time</string>
+    <string name="unfinished_container">Unfinished Container</string>
+    <string name="unfinished_bottom_sheet_text">Fill out the following fields to indicate when the work on this container will be completed</string>
+    <string name="date_for_completion">Date for Completion</string>
+    <string name="minutes_m">Minutes (M)</string>
+    <string name="hours_h">Hours (H)</string>
+    <string name="invalid_hour_message">Hour(s) can\'t be greater than 23</string>
+    <string name="invalid_hour_minutes">Minutes(s) can\'t be greater than 59</string>
+    <string name="total_pause_colon">Total Pause : </string>
+    <string name="content_description">imageView</string>
 </resources>

@@ -10,6 +10,7 @@ interface AppConstant {
         const val PREFERENCE_EMPLOYEE_ID = "pref_emp_id"
         const val PREFERENCE_LANGUAGE = "pref_language"
         const val PREFERENCE_BUILDING_ID = "pref_building_id"
+        const val PREFERENCE_BUILDING_DETAILS = "pref_building_details"
         const val PREFERENCE_REGISTRATION_TOKEN = "pref_registration_token"
         const val PREFERENCE_NOTIFICATION = "pref_notification"
 
@@ -42,12 +43,12 @@ interface AppConstant {
         const val WORK_ITEM_STATUS_NOT_OPEN = "NOT-OPEN"
 
         // Employee Department Enums
-        const val EMPLOYEE_DEPARTMENT_INBOUND = "INBOUND"
-        const val EMPLOYEE_DEPARTMENT_OUTBOUND = "OUTBOUND"
-        const val EMPLOYEE_DEPARTMENT_BOTH = "BOTH"
+            const val EMPLOYEE_DEPARTMENT_INBOUND = "RECEIVING"
+        const val EMPLOYEE_DEPARTMENT_OUTBOUND = "SHIPPING"
+        const val EMPLOYEE_DEPARTMENT_BOTH = "OPERATION"
 
         // Employee Swift Enums
-        const val EMPLOYEE_SHIFT_MORNING = "morning"
+        const val EMPLOYEE_SHIFT_MORNING = "day"
         const val EMPLOYEE_SHIFT_SWING = "swing"
         const val EMPLOYEE_SHIFT_NIGHT = "night"
 
@@ -58,9 +59,15 @@ interface AppConstant {
         const val REQUEST_LUMPERS_STATUS_CANCELLED = "cancelled"
 
         //Worksheet
-        const val WORKSHEET_WORK_ITEM_LIVE = "live"
-        const val WORKSHEET_WORK_ITEM_OUTBOUND = "outbound"
-        const val WORKSHEET_WORK_ITEM_INBOUND = "drop"
+        const val WORKSHEET_WORK_ITEM_LIVE = "LIVE"
+        const val WORKSHEET_WORK_ITEM_OUTBOUND = "OUTBOUND"
+        const val WORKSHEET_WORK_ITEM_INBOUND = "DROP"
+
+        //schedule type
+        const val SCHEDULE_WORK_ITEM_DAY = "DAILY"
+        const val SCHEDULE_WORK_ITEM_WEEKLY = "WEEKLY"
+        const val SCHEDULE_WORK_ITEM_MONTHLY = "MONTHLY"
+        const val SCHEDULE_WORK_ITEM_CUSTOM = "CUSTOM"
 
 
         // Attendance
@@ -70,7 +77,7 @@ interface AppConstant {
         const val ATTENDANCE_LUNCH_PUNCH_IN = "ATTENDANCE_LUNCH_PUNCH_IN"
         const val ATTENDANCE_LUNCH_PUNCH_OUT = "ATTENDANCE_LUNCH_PUNCH_OUT"
 
-        const val NOTES_NOT_AVAILABLE = "NA"
+        const val NOTES_NOT_AVAILABLE = "N/A"
 
         const val REQUEST_CODE_CHANGED = 101
 
@@ -81,6 +88,17 @@ interface AppConstant {
 
 
         const val VIEW_DETAILS = "VIEW_DETAILS"
+
+        //roles
+        const val LEADS = "lead"
+        const val DISTRICT_MANAGER = "District Manager"
+        const val MANAGER = "manager"
+        const val SUPERVISOR = "supervisor"
+        const val LUMPER = "lumper"
+
+
+        const val ERROR_MESSAGE = "You don't seem to have a building assigned yet!"
+
 
     }
 }

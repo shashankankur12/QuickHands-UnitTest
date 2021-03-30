@@ -1,10 +1,9 @@
 package com.quickhandslogistics.contracts.workSheet
 
 import com.quickhandslogistics.contracts.BaseContract
-import com.quickhandslogistics.data.schedule.ScheduleWorkItem
-import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.schedule.WorkItemDetailAPIResponse
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
+import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 
 class WorkSheetItemDetailContract {
     interface Model {
@@ -21,7 +20,7 @@ class WorkSheetItemDetailContract {
 
     interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
-        fun showWorkItemDetail(workItemDetail: ScheduleWorkItem, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?, tempLumperIds: ArrayList<String>)
+        fun showWorkItemDetail(container: WorkItemContainerDetails)
         fun statusChangedSuccessfully()
         fun notesSavedSuccessfully()
         fun showLoginScreen()

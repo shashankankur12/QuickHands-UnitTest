@@ -14,7 +14,7 @@
         android:background="@android:color/white"
         tools:context=".views.LoginActivity">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutLogo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -28,16 +28,26 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:id="@+id/imageView6"
                 android:layout_width="@dimen/_230sdp"
                 android:layout_height="@dimen/_45sdp"
-                android:src="@drawable/ic_splash_logo" />
+                android:contentDescription="@string/content_description"
+                android:src="@drawable/ic_splash_logo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:layout_width="@dimen/_230sdp"
                 android:layout_height="@dimen/_115sdp"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:src="@drawable/login_illustration" />
-        </LinearLayout>
+                android:layout_marginTop="@dimen/_30sdp"
+                android:contentDescription="@string/content_description"
+                android:src="@drawable/login_illustration"
+                app:layout_constraintEnd_toEndOf="@+id/imageView6"
+                app:layout_constraintStart_toStartOf="@+id/imageView6"
+                app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -108,6 +118,9 @@
                 android:text="@string/forgot_password_question_mark"
                 android:textSize="@dimen/_10ssp"
                 android:textStyle="bold" />
+
         </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.core.widget.NestedScrollView>

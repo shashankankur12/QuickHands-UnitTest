@@ -130,6 +130,7 @@
     <string name="notes">Notes</string>
     <string name="group_notes">Group Notes</string>
     <string name="group_note">Group Note :</string>
+    <string name="group_note_header">Group Note</string>
     <string name="notifications">Notifications</string>
     <string name="ok">OK</string>
     <string name="on_hold">On-Hold</string>
@@ -276,6 +277,9 @@
     <string name="view_schedule">View Work Scheduled</string>
     <string name="cancel_header_details">Remove <![CDATA[<b><font color=#e30913> %s</font></b>]]> from <![CDATA[<b><font color=#e30913> %s</font></b>]]> schedule</string>
     <string name="hours">Hours: %s - %s</string>
+    <string name="add_group_note_message">Add a Note for this group of container</string>
+    <string name="qhl_office">QHL Office</string>
+    <string name="na">N/A</string>
 
     <!--No Record Messages-->
     <string name="empty_add_work_item_lumpers_info_message">No Lumpers are available. Go to Time-Clock section and clock them in.</string>
@@ -297,7 +301,10 @@
     <string name="empty_containers_list_ongoing_info_message">There are no Ongoing containers.</string>
     <string name="empty_containers_list_cancelled_info_message">There are no Cancelled containers.</string>
     <string name="empty_containers_list_completed_info_message">There are no Completed containers.</string>
+    <string name="empty_containers_list_unfinished_info_message">There are no Unfinished containers.</string>
+    <string name="empty_containers_list_not_done_info_message">There are no Not-Done containers.</string>
     <string name="empty_lumper_list_message">There are no lumpers assigned to this shift/department. Please contact your District Manager.</string>
+    <string name="empty_contact_list_message">There are no contact available. Please contact in QHL Office.</string>
 
     <!--Alert Messages-->
     <string name="are_you_sure_alert_message">Are you sure?</string>
@@ -336,6 +343,7 @@
     <string name="time_clock_fill_alert_message">Don\'t forget to Clock Out all the lumpers in \'Time-Clock\' before submitting Lumper Sheet.</string>
     <string name="use_external_storage_alert_message">Please allow storage permission in the app settings, so that you could download \'Reports\'</string>
     <string name="warning_alert_message">You want to make these changes</string>
+    <string name="warning_alert_message_group_note">You want to delete this group note.</string>
     <string name="discard_leave_alert_message">Discard information and Leave?</string>
     <string name="attendece_start_time_over_message">Start time is over for this shift</string>
     <string name="attendece_api_error_message">All morning punch in must be from today only</string>
@@ -362,6 +370,8 @@
     <string name="cancel_reason_schedule_lumper"><![CDATA[Please enter reason for cancellation.]]></string>
     <string name="updtae_status_after_signature_message">Customer signature submitted You can\'t update the status</string>
     <string name="add_container_error_message">A container card has partial information. Fill it completely or remove it before you can Add.  \n</string>
+    <string name="group_customer_note_error_message">Please enter customer note.  \n</string>
+    <string name="group_qhl_note_error_message">Please enter QHL note.  \n</string>
 
     <!--Info Messages-->
     <string name="enter_employee_id_info_message">Employee ID</string>
@@ -394,4 +404,13 @@
     <string name="break_end_greater_work_start_warning_message">Break\'s End Time should be greater than Work\'s Start Time</string>
     <string name="break_end_greater_break_start_warning_message">Break\'s End Time should be greater than Break\'s Start Time</string>
     <string name="break_end_less_work_end_warning_message">Break\'s End Time should be less than Work\'s End Time</string>
+    <string name="unfinished_container">Unfinished Container</string>
+    <string name="unfinished_bottom_sheet_text">Fill out the following fields to indicate when the work on this container will be completed</string>
+    <string name="date_for_completion">Date for Completion</string>
+    <string name="minutes_m">Minutes (M)</string>
+    <string name="hours_h">Hours (H)</string>
+    <string name="invalid_hour_message">Hour(s) can\'t be greater than 24</string>
+    <string name="invalid_hour_minutes">Minutes(s) can\'t be greater than 60</string>
+    <string name="total_pause_colon">Total Pause : </string>
+    <string name="content_description">imageView</string>
 </resources>

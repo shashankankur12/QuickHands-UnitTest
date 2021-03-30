@@ -104,21 +104,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/countNote">
+
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewUnfinishedCount"
+            style="@style/darkYellowChipTheme"
+            android:textSize="@dimen/_9ssp"
+            android:layout_marginTop="@dimen/_6sdp" />
+
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewOutBoundsCount"
             style="@style/blueChipTheme"
-            android:layout_marginTop="@dimen/_6sdp" />
+            android:textSize="@dimen/_9ssp"
+            android:layout_marginStart="@dimen/_2ssp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginEnd="@dimen/_2ssp" />
 
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewLiveLoadsCount"
             style="@style/blueChipTheme"
-            android:layout_marginStart="@dimen/_4ssp"
+            android:textSize="@dimen/_9ssp"
             android:layout_marginTop="@dimen/_6sdp"
-            android:layout_marginEnd="@dimen/_4ssp" />
+            android:layout_marginEnd="@dimen/_2ssp" />
 
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewDropsCount"
             style="@style/blueChipTheme"
+            android:textSize="@dimen/_9ssp"
             android:layout_marginTop="@dimen/_6sdp" />
 
     </com.google.android.flexbox.FlexboxLayout>
@@ -144,6 +155,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabGravity="fill"
+            app:tabMode="scrollable"
+            app:tabMaxWidth="0dp"
             app:tabIndicatorColor="@color/buttonRed"
             app:tabIndicatorFullWidth="false"
             app:tabPadding="@dimen/_6sdp"

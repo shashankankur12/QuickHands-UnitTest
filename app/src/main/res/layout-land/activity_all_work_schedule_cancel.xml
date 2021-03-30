@@ -95,24 +95,33 @@
                     android:visibility="gone" />
             </RelativeLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:background="@drawable/schedule_item_background"
                 android:orientation="vertical"
                 android:padding="@dimen/_10sdp">
-
-                <TextView
-                    style="@style/titleTextViewTheme"
-                    android:text="@string/notes_for_customer" />
 
                 <EditText
                     android:id="@+id/editTextCustomerNotes"
-                    style="@style/notesEditTextTheme" />
-            </LinearLayout>
+                    style="@style/notesEditTextTheme"
+                    android:importantForAutofill="no"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/customerNotesTitle"
+                    tools:ignore="LabelFor" />
 
-            <LinearLayout
+                <TextView
+                    android:id="@+id/customerNotesTitle"
+                    style="@style/titleTextViewTheme"
+                    android:text="@string/notes_for_customer"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -120,20 +129,28 @@
                 android:orientation="vertical"
                 android:padding="@dimen/_10sdp">
 
-                <TextView
-                    style="@style/titleTextViewTheme"
-                    android:text="@string/notes_for_qhl" />
-
                 <EditText
                     android:id="@+id/editTextQHLNotes"
-                    style="@style/notesEditTextTheme" />
-            </LinearLayout>
+                    style="@style/notesEditTextTheme"
+                    android:importantForAutofill="no"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/notesForQHLTitle"
+                    tools:ignore="LabelFor" />
+
+                <TextView
+                    android:id="@+id/notesForQHLTitle"
+                    style="@style/titleTextViewTheme"
+                    android:text="@string/notes_for_qhl"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:id="@+id/layoutSaveCancelButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
                 android:orientation="horizontal">
 

@@ -256,7 +256,9 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
 
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
-        SnackBarFactory.createSnackBar(activity, frameLayoutMain, message)
+        if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            CustomProgressBar.getInstance().showValidationErrorDialog(message, activity)
+        } else SnackBarFactory.createSnackBar(activity, frameLayoutMain, message)
     }
 
     override fun showLeadProfile(leadProfileData: LeadProfileData) {

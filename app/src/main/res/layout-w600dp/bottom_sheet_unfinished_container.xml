@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:minHeight="@dimen/_250sdp"
+    android:background="@color/textWhite"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/materialTextView"
+        style="@style/titleBigTextViewTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/scheduleItemBackground"
+        android:gravity="center"
+        android:padding="@dimen/_8sdp"
+        android:text="@string/unfinished_container"
+        android:textColor="@color/textBlack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/unfinishedBottomSheetText"
+        style="@style/valuesTextViewTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:background="@drawable/schedule_item_background_rect"
+        android:paddingHorizontal="@dimen/_15sdp"
+        android:paddingVertical="@dimen/_2sdp"
+        android:text="@string/unfinished_bottom_sheet_text"
+        android:textColor="@color/buildingTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialTextView" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/dateOfCompletionLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:paddingTop="@dimen/_2sdp"
+        android:paddingBottom="@dimen/_2sdp"
+        android:background="@drawable/schedule_item_background_rect"
+        app:layout_constraintEnd_toEndOf="@id/unfinishedBottomSheetText"
+        app:layout_constraintStart_toStartOf="@id/unfinishedBottomSheetText"
+        app:layout_constraintTop_toBottomOf="@id/unfinishedBottomSheetText">
+
+        <TextView
+            android:id="@+id/dateOfCompletionHeading"
+            style="@style/titleTextViewTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/schedule_item_background"
+            android:paddingVertical="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_15sdp"
+            android:text="@string/date_for_completion"
+            android:textColor="@color/buildingTitle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/dateForCompletionText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/schedule_item_background"
+            android:gravity="end"
+            android:paddingHorizontal="@dimen/_6sdp"
+            style="@style/valuesTextViewTheme"
+            app:layout_constraintBottom_toBottomOf="@id/dateOfCompletionHeading"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/dateOfCompletionHeading"
+            app:layout_constraintTop_toTopOf="@id/dateOfCompletionHeading" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/departmentLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@drawable/schedule_item_background_rect"
+        android:paddingTop="@dimen/_2sdp"
+        android:paddingBottom="@dimen/_2sdp"
+        app:layout_constraintEnd_toEndOf="@+id/dateOfCompletionLayout"
+        app:layout_constraintStart_toStartOf="@+id/dateOfCompletionLayout"
+        app:layout_constraintTop_toBottomOf="@id/dateOfCompletionLayout">
+
+        <TextView
+            android:id="@+id/departmentHeading"
+            style="@style/titleTextViewTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/schedule_item_background"
+            android:paddingHorizontal="@dimen/_15sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="@string/department"
+            android:textColor="@color/buildingTitle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/departmentText"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/schedule_item_background"
+            android:gravity="end"
+            android:paddingHorizontal="@dimen/_6sdp"
+            app:layout_constraintBottom_toBottomOf="@id/departmentHeading"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/departmentHeading"
+            app:layout_constraintTop_toTopOf="@id/departmentHeading" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/shiftLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@drawable/schedule_item_background_rect"
+        android:paddingTop="@dimen/_2sdp"
+        android:paddingBottom="@dimen/_2sdp"
+        app:layout_constraintEnd_toEndOf="@+id/dateOfCompletionLayout"
+        app:layout_constraintStart_toStartOf="@+id/dateOfCompletionLayout"
+        app:layout_constraintTop_toBottomOf="@id/departmentLayout">
+
+        <TextView
+            android:id="@+id/shiftHeading"
+            style="@style/titleTextViewTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/schedule_item_background"
+            android:paddingHorizontal="@dimen/_15sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="@string/shift"
+            android:textColor="@color/buildingTitle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/shiftText"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/schedule_item_background"
+            android:gravity="end"
+            android:paddingHorizontal="@dimen/_6sdp"
+            app:layout_constraintBottom_toBottomOf="@id/shiftHeading"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/shiftHeading"
+            app:layout_constraintTop_toTopOf="@id/shiftHeading" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/startTimeLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@drawable/schedule_item_background_rect"
+        android:paddingTop="@dimen/_2sdp"
+        android:paddingBottom="@dimen/_2sdp"
+        app:layout_constraintEnd_toEndOf="@+id/dateOfCompletionLayout"
+        app:layout_constraintStart_toStartOf="@+id/dateOfCompletionLayout"
+        app:layout_constraintTop_toBottomOf="@id/shiftLayout">
+
+        <TextView
+            android:id="@+id/startTimeHeading"
+            style="@style/titleTextViewTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/schedule_item_background"
+            android:paddingHorizontal="@dimen/_15sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="@string/start_time"
+            android:textColor="@color/buildingTitle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/startTimeText"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/schedule_item_background"
+            android:gravity="end"
+            android:paddingHorizontal="@dimen/_6sdp"
+            app:layout_constraintBottom_toBottomOf="@id/startTimeHeading"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/startTimeHeading"
+            app:layout_constraintTop_toTopOf="@id/startTimeHeading" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutSaveCancelButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/_4sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startTimeLayout">
+
+        <Button
+            android:id="@+id/buttonSubmit"
+            style="@style/positiveRoundButtonTheme"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_weight="1"
+            android:text="@string/save"
+            app:layout_constraintEnd_toStartOf="@+id/buttonCancelBottomSheet"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/buttonCancelBottomSheet"
+            style="@style/negativeRoundButtonTheme"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_weight="1"
+            android:text="@string/cancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/buttonSubmit" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

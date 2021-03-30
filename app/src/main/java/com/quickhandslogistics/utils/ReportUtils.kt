@@ -78,6 +78,22 @@ object ReportUtils {
         picker.show()
     }
 
+    fun showDatePicker(startDate1: Date?, context: Context, listener: OnDateSetListener) {
+        val calendar = Calendar.getInstance()
+        startDate1?.let { date ->
+            calendar.time = date
+        }
+        val picker = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+            calendar.set(year, month, dayOfMonth)
+            listener.onDateSet(calendar.time)
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+
+        val startCalendar = Calendar.getInstance()
+        picker.datePicker.minDate = startCalendar.timeInMillis
+
+        picker.show()
+    }
+
     interface OnDateSetListener {
         fun onDateSet(selected: Date)
     }

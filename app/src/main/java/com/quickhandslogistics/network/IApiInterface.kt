@@ -16,6 +16,8 @@ import com.quickhandslogistics.data.lumperSheet.LumperSheetListAPIResponse
 import com.quickhandslogistics.data.lumperSheet.LumperWorkDetailAPIResponse
 import com.quickhandslogistics.data.lumperSheet.SubmitLumperSheetRequest
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
+import com.quickhandslogistics.data.qhlContact.QhlContactListResponse
+import com.quickhandslogistics.data.qhlContact.QhlOfficeInfoResponse
 import com.quickhandslogistics.data.reports.ReportRequest
 import com.quickhandslogistics.data.reports.ReportResponse
 import com.quickhandslogistics.data.schedule.*
@@ -49,10 +51,18 @@ interface IApiInterface {
         @Query("page") page: Int, @Query("pageSize") pageSize: Int
     ): Call<ScheduleListAPIResponse>
 
+
+    @GET("schedule/lookup/date")
+    fun getSchedulesDetails(
+        @Header("Authorization") auth: String, @Query("date") date: String, @Query("department") department: String,
+        @Query("page") page: Int, @Query("pageSize") pageSize: Int
+    ): Call<ScheduleListAPIResponse>
+
+
     @GET("schedule/unscheduled")
     fun getUnSchedulesList(@Header("Authorization") auth: String): Call<UnScheduleListAPIResponse>
 
-    @GET("schedule/identity/{scheduleIdentityId}")
+    @GET("schedule/{scheduleIdentityId}")
     fun getScheduleDetail(
         @Header("Authorization") auth: String, @Path("scheduleIdentityId") scheduleIdentityId: String, @Query("day") day: String
     ): Call<ScheduleDetailAPIResponse>
@@ -60,9 +70,13 @@ interface IApiInterface {
     @GET("schedule/{workItemId}")
     fun getWorkItemDetail(@Header("Authorization") auth: String, @Path("workItemId") workItemId: String): Call<WorkItemDetailAPIResponse>
 
-    @PUT("schedule/lumper/{workItemId}")
+
+    @GET("schedule/work-item/{workItemId}")
+    fun getWorkItemContainerDetail(@Header("Authorization") auth: String, @Path("workItemId") workItemId: String): Call<WorkItemDetailAPIResponse>
+
+    @PUT("schedule/lumper")
     fun assignLumpers(
-        @Header("Authorization") auth: String, @Path("workItemId") workItemId: String, @Body request: AssignLumpersRequest
+        @Header("Authorization") auth: String, @Query("containerId") containerId: String, @Body request: AssignLumpersRequest
     ): Call<BaseResponse>
 
     @POST("customer/schedules/add")
@@ -76,7 +90,7 @@ interface IApiInterface {
 
     @POST("schedule/{workItemId}/operations")
     fun saveBuildingOperationsDetail(
-        @Header("Authorization") auth: String, @Path("workItemId") workItemId: String, @Body request: HashMap<String, String>
+        @Header("Authorization") auth: String, @Path("workItemId") workItemId: String, @Body request: BuildingOperationRequest
     ): Call<BaseResponse>
     /////////////////////////////////////////////////////////////
 
@@ -141,6 +155,14 @@ interface IApiInterface {
     fun cancelAllSchedules(
         @Header("Authorization") auth: String, @Path("day") day: String, @Body request: CancelAllSchedulesRequest
     ): Call<BaseResponse>
+
+    @POST("schedule/notes")
+    fun saveGroupNoteSchedules(@Header("Authorization") auth: String, @Query("day") day: String, @Body request: SaveNoteWorkItemRequest
+    ): Call<BaseResponse>
+
+    @DELETE("schedule/notes")
+    fun saveGroupNoteSchedules(@Header("Authorization") auth: String, @Query("id") id: String): Call<BaseResponse>
+
     /////////////////////////////////////////////////////////////
 
     // Customer Sheet /////////////////////////////////////////////////
@@ -200,4 +222,19 @@ interface IApiInterface {
     @GET("employees/lead/lumpers/date-range")
     fun getAllLumpersSelectedDates(@Header("Authorization") auth: String, @Query("dayStart") dayStart: String, @Query("dayEnd") dayEnd: String): Call<LumperListAPIResponse>
     /////////////////////////////////////////////////////////////
+
+    //QHL Contact////////////////////////////////////////////////
+    @GET("employees/lead/qhl-contacts")
+    fun getQhlContactList(@Header("Authorization") auth: String): Call<QhlContactListResponse>
+
+    @GET("employees/admin/office")
+    fun getQhlOfficeInfo(@Header("Authorization") auth: String): Call<QhlOfficeInfoResponse>
+    ////////////////////////////////////////////////////////////
+
+    //Customer Contact/////////////////////////////////////////
+    @GET("employees/lead/customer-contacts")
+    fun getCustomerContactList(@Header("Authorization") auth: String): Call<QhlContactListResponse>
+    ////////////////////////////////////////////////////////////
+
+
 }

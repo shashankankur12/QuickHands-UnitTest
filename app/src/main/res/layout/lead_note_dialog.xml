@@ -38,6 +38,7 @@
                     android:layout_height="@dimen/_1sdp"/>
 
                 <TextView
+                    android:id="@+id/individual_note_header"
                     style="@style/dialogTitleTextViewThemeBold"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_width="match_parent"
@@ -68,6 +69,7 @@
                     android:layout_height="@dimen/_1sdp"/>
 
                 <TextView
+                    android:id="@+id/group_note_header"
                     style="@style/dialogTitleTextViewThemeBold"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_width="match_parent"

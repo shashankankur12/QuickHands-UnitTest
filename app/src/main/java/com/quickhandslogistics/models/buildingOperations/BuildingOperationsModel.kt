@@ -4,6 +4,7 @@ import android.util.Log
 import com.quickhandslogistics.contracts.buildingOperations.BuildingOperationsContract
 import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.buildingOperations.BuildingOperationAPIResponse
+import com.quickhandslogistics.data.workSheet.BuildingOperationRequest
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.DataManager.getAuthToken
 import com.quickhandslogistics.network.DataManager.isSuccessResponse
@@ -31,7 +32,9 @@ class BuildingOperationsModel : BuildingOperationsContract.Model {
     override fun saveBuildingOperationDetails(
         workItemId: String, data: HashMap<String, String>, onFinishedListener: BuildingOperationsContract.Model.OnFinishedListener
     ) {
-        DataManager.getService().saveBuildingOperationsDetail(getAuthToken(), workItemId, data).enqueue(object : Callback<BaseResponse> {
+
+        val buildingParameter= BuildingOperationRequest(data)
+        DataManager.getService().saveBuildingOperationsDetail(getAuthToken(), workItemId, buildingParameter).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onSuccessSaveBuildingOperations()

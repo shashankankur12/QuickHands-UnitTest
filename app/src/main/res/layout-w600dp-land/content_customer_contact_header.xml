@@ -27,33 +27,42 @@
 
     <TextView
         android:id="@+id/textViewCustomerName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_20sdp"
         android:textColor="@color/textBlack"
         style="@style/titleTextViewTheme"
+        android:textAlignment="viewEnd"
+        android:layout_marginStart="@dimen/_4ssp"
+        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutHeaderBackground" />
 
     <TextView
         android:id="@+id/textViewCompanyName"
         style="@style/valuesSmallTextViewThemeHeader"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_20sdp"
         android:textColor="@color/textBlack"
+        android:textAlignment="viewEnd"
+        android:layout_marginStart="@dimen/_4ssp"
+        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewCustomerName" />
 
     <TextView
         android:id="@+id/textViewCompanyContact"
         style="@style/valuesSmallTextViewTheme"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_20sdp"
         android:layout_marginBottom="@dimen/_8sdp"
         android:textColor="@color/hypertext_color"
+        android:textAlignment="viewEnd"
+        android:layout_marginStart="@dimen/_4ssp"
+        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewCompanyName" />

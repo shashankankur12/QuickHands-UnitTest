@@ -112,7 +112,7 @@ object UIUtils {
         employeeData?.let {
             if (!employeeData.department.isNullOrEmpty()) {
                 displayDepartment = when (employeeData.department) {
-                    AppConstant.EMPLOYEE_DEPARTMENT_BOTH -> "Operations "
+                    AppConstant.EMPLOYEE_DEPARTMENT_BOTH -> "Operation "
                     AppConstant.EMPLOYEE_DEPARTMENT_INBOUND -> "Receiving "
                     AppConstant.EMPLOYEE_DEPARTMENT_OUTBOUND -> "Shipping"
                     else -> employeeData.department!!

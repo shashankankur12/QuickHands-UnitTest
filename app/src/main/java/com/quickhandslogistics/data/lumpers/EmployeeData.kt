@@ -23,6 +23,10 @@ open class EmployeeData() : Parcelable {
     @Expose
     var lastName: String? = null
 
+    @SerializedName("fullName")
+    @Expose
+    var fullName: String? = null
+
     @SerializedName("phone")
     @Expose
     var phone: String? = null
@@ -120,6 +124,7 @@ open class EmployeeData() : Parcelable {
         email = parcel.readString()
         firstName = parcel.readString()
         lastName = parcel.readString()
+        fullName = parcel.readString()
         phone = parcel.readString()
         department = parcel.readString()
         isActive = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
@@ -151,6 +156,7 @@ open class EmployeeData() : Parcelable {
         parcel.writeString(email)
         parcel.writeString(firstName)
         parcel.writeString(lastName)
+        parcel.writeString(fullName)
         parcel.writeString(phone)
         parcel.writeString(department)
         parcel.writeValue(isActive)

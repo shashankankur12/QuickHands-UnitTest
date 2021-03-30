@@ -15,8 +15,8 @@ import com.quickhandslogistics.adapters.workSheet.WorkSheetItemDetailLumpersAdap
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailLumpersContract
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
-import com.quickhandslogistics.data.schedule.ScheduleWorkItem
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
+import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.ConnectionDetector
 import com.quickhandslogistics.views.BaseFragment
@@ -33,7 +33,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
 
     private lateinit var workSheetItemDetailLumpersAdapter: WorkSheetItemDetailLumpersAdapter
 
-    private var workItemDetail: ScheduleWorkItem? = null
+    private var workItemDetail: WorkItemContainerDetails? = null
     private  var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule> = ArrayList<LumpersTimeSchedule>()
     private var tempLumperIds: ArrayList<String> = ArrayList()
 
@@ -44,7 +44,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         const val TOTAL_CASES = "TOTAL_CASES"
         @JvmStatic
         fun newInstance(
-            allWorkItem: ScheduleWorkItem?,
+            allWorkItem: WorkItemContainerDetails?,
             lumperTimeSchedule: ArrayList<LumpersTimeSchedule>?,
             tempLumperIds: ArrayList<String>?
         ) = WorkSheetItemDetailLumpersFragment()
@@ -70,7 +70,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         super.onCreate(savedInstanceState)
         arguments?.let {
             if (it.containsKey(LUMPER_WORK_DETALS))
-            workItemDetail = it.getParcelable<ScheduleWorkItem>(LUMPER_WORK_DETALS)
+            workItemDetail = it.getParcelable<WorkItemContainerDetails>(LUMPER_WORK_DETALS)
             if (it.containsKey(LUMPER_SCHEDULE))
                 lumpersTimeSchedule = it.getParcelableArrayList(LUMPER_SCHEDULE)!!
             if (it.containsKey(LUMPER_WORK_DETALS))
@@ -117,7 +117,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         }
     }
 
-    fun showLumpersData(workItemDetail: ScheduleWorkItem, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?, tempLumperIds: ArrayList<String>) {
+    fun showLumpersData(workItemDetail: WorkItemContainerDetails, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?, tempLumperIds: ArrayList<String>) {
         this.workItemDetail = workItemDetail
         this.tempLumperIds=tempLumperIds
 
@@ -155,14 +155,14 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
     }
 
     fun showEmptyData() {
-        workSheetItemDetailLumpersAdapter.updateList(
-            ArrayList(),
-            LinkedHashMap(),
-            tempLumperIds = ArrayList(),
-            totalCases = getTotalCases(workItemDetail?.buildingOps),
-            isCompleted = workItemDetail!!.isCompleted
-        )
-        buttonAddLumpers.visibility = View.GONE
+//        workSheetItemDetailLumpersAdapter.updateList(
+//            ArrayList(),
+//            LinkedHashMap(),
+//            tempLumperIds = ArrayList(),
+//            totalCases = getTotalCases(workItemDetail?.buildingOps),
+//            isCompleted = workItemDetail!!.isCompleted
+//        )
+//        buttonAddLumpers.visibility = View.GONE
     }
 
 
@@ -170,7 +170,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         workItemDetail?.let { workItemDetail ->
             val bundle = Bundle()
             bundle.putString(ARG_WORK_ITEM_ID, workItemDetail.id)
-            bundle.putString(ARG_WORK_ITEM_TYPE, workItemDetail.workItemType)
+            bundle.putString(ARG_WORK_ITEM_TYPE, workItemDetail.type)
             if (workItemDetail.assignedLumpersList.isNullOrEmpty()) {
                 bundle.putBoolean(AddWorkItemLumpersActivity.ARG_IS_ADD_LUMPER, true)
             } else {

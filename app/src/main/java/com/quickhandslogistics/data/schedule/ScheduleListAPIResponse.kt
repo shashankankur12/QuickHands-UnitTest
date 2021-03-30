@@ -13,6 +13,6 @@ class ScheduleListAPIResponse : BaseResponse() {
     inner class Data : PaginationResponse() {
         @SerializedName("records")
         @Expose
-        var scheduleDetailsList: ArrayList<ScheduleDetail>? = null
+        var scheduleDetailsList: ArrayList<ScheduleDetailData>? = null
     }
 }

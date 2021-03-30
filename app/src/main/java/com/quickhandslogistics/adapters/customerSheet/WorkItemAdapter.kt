@@ -89,9 +89,9 @@ class WorkItemAdapter(
 
         workItemDetail.forEach {
             when {
-                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> dropItem.add(it)
-                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> outboundItme.add(it)
-                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> liveLodeItem.add(it)
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> dropItem.add(it)
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> outboundItme.add(it)
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> liveLodeItem.add(it)
             }
         }
         itemType.add(outboundItme)

@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.data.schedule.WorkItemDetail
+import com.quickhandslogistics.utils.AppConstant
 import kotlin.collections.ArrayList
 
 class CustomerNoteAdaptet(
@@ -57,8 +58,8 @@ class CustomerNoteAdaptet(
             if (!workItemDetail.notesQHL.isNullOrEmpty()){
 
                 textViewItemContainerNote.text=workItemDetail.notesQHL
-                textViewItemDoor.text=if(!workItemDetail.buildingOps.isNullOrEmpty()) workItemDetail.buildingOps!![parameters[0]] else "NA"
-                textViewItemContainer.text= if(!workItemDetail.buildingOps.isNullOrEmpty())workItemDetail.buildingOps!![parameters[1]] else "NA"
+                textViewItemDoor.text=if(!workItemDetail.buildingOps.isNullOrEmpty()) workItemDetail.buildingOps!![parameters[0]] else AppConstant.NOTES_NOT_AVAILABLE
+                textViewItemContainer.text= if(!workItemDetail.buildingOps.isNullOrEmpty())workItemDetail.buildingOps!![parameters[1]] else AppConstant.NOTES_NOT_AVAILABLE
 
             }
 

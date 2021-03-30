@@ -9,6 +9,7 @@ import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.DataManager.getAuthToken
 import com.quickhandslogistics.network.DataManager.isSuccessResponse
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_BUILDING_DETAILS
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_LEAD_PROFILE
 import com.quickhandslogistics.utils.SharedPref
 import retrofit2.Call
@@ -39,6 +40,8 @@ class DashBoardModel(private val sharedPref: SharedPref) : DashBoardContract.Mod
 
     override fun processLeadProfileData(leadProfileData: LeadProfileData, onFinishedListener: DashBoardContract.Model.OnFinishedListener) {
         sharedPref.setClassObject(PREFERENCE_LEAD_PROFILE, leadProfileData)
+        leadProfileData.buildingDetailData?.parameters?.let {
+            sharedPref.setClassObject(PREFERENCE_BUILDING_DETAILS, it) }
         sharedPref.setString(AppConstant.PREFERENCE_BUILDING_ID, leadProfileData.buildingDetailData?.id)
         onFinishedListener.onLoadLeadProfile(leadProfileData)
     }

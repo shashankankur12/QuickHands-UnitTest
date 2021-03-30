@@ -28,6 +28,7 @@ import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.DashBoardActivity
 import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.bottom_sheet_add_attendance_time.*
+import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.content_time_clock_attendance.*
 import kotlinx.android.synthetic.main.fragment_time_clock_attendance.*
 
@@ -461,7 +462,10 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
-        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+        if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
+        } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainCoordinatorLayout, message)
+
         if (message.equals(getString(R.string.attendece_api_error_message))){
             recyclerViewLumpers.visibility = View.VISIBLE
             textViewEmptyData.visibility = View.GONE
