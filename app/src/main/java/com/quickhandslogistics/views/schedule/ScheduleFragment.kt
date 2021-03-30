@@ -221,7 +221,6 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         textViewDate.visibility = View.GONE
 
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
-
         if (leadProfile?.buildingDetailData != null) {
             textViewBuildingName.text = leadProfile?.buildingDetailData?.buildingName!!.capitalize()
             textViewDept.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), UIUtils.getDisplayEmployeeDepartment(leadProfile))

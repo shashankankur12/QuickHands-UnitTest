@@ -17,30 +17,29 @@ import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.utils.UIUtils
 import kotlinx.android.synthetic.main.item_customer_contact_layout.view.*
 
-import kotlin.collections.ArrayList
-
 class CustomerContactAdapter(val resources: Resources, var adapterItemClickListener: CustomerContactContract.View.OnAdapterItemClickListener) : Adapter<CustomerContactAdapter.ViewHolder>() {
     private var items: ArrayList<EmployeeData> = ArrayList()
-    private var filteredItems: ArrayList<EmployeeData> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_customer_contact_layout, parent, false)
+        val view: View = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_customer_contact_layout, parent, false)
         return ViewHolder(view, parent.context)
     }
 
     override fun getItemCount(): Int {
-        return  items.size
+        return items.size
     }
 
     private fun getItem(position: Int): EmployeeData {
-        return  items[position]
+        return items[position]
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    inner class ViewHolder(view: View, private val context: Context) : RecyclerView.ViewHolder(view), View.OnClickListener {
+    inner class ViewHolder(view: View, private val context: Context) :
+        RecyclerView.ViewHolder(view), View.OnClickListener {
 
         private val textViewCustomerName: TextView = view.textViewCustomerName
         private val textViewMessageTime: TextView = view.textViewMessageTime
@@ -53,15 +52,26 @@ class CustomerContactAdapter(val resources: Resources, var adapterItemClickListe
         private val constraintViewCall: ConstraintLayout = view.constraintViewCall
 
         fun bind(item: EmployeeData) {
-            val leadName= String.format("%s %s",item!!.firstName, item!!.lastName)
-            val shift= if(!item.shift.isNullOrEmpty())item.shift?.capitalize() else resources.getString(R.string.na)
-            textViewCustomerName.text= if(!leadName.isNullOrEmpty())leadName.capitalize() else resources.getString(R.string.na)
-            textViewEmployeeRole.text= if(!item.role.isNullOrEmpty())item.role?.capitalize() else resources.getString(R.string.na)
-            textViewEmployeeTitle.text= if(!item.department.isNullOrEmpty())item.department?.capitalize() else resources.getString(R.string.na)
-            textViewEmployeeShift.text= String.format(resources.getString(R.string.shift_normal),shift)
-            textViewEmail.text= if(!item.email.isNullOrEmpty())item.email else resources.getString(R.string.na)
-            textViewMessageTime.text= "12:22 PM"
-            textVieWContact.text=if(!item.phone.isNullOrEmpty())UIUtils.formetMobileNumber(item.phone!!) else resources.getString(R.string.na)
+            val leadName = String.format("%s %s", item.firstName, item.lastName)
+            val shift =
+                if (!item.shift.isNullOrEmpty()) item.shift?.capitalize() else resources.getString(R.string.na)
+            textViewCustomerName.text =
+                if (!leadName.isNullOrEmpty()) leadName.capitalize() else resources.getString(R.string.na)
+            textViewEmployeeRole.text =
+                if (!item.role.isNullOrEmpty()) item.role?.capitalize() else resources.getString(R.string.na)
+            textViewEmployeeTitle.text =
+                if (!item.department.isNullOrEmpty()) item.department?.capitalize() else resources.getString(
+                    R.string.na
+                )
+            textViewEmployeeShift.text =
+                String.format(resources.getString(R.string.shift_normal), shift)
+            textViewEmail.text =
+                if (!item.email.isNullOrEmpty()) item.email else resources.getString(R.string.na)
+            textViewMessageTime.text = "12:22 PM"
+            textVieWContact.text =
+                if (!item.phone.isNullOrEmpty()) UIUtils.formetMobileNumber(item.phone!!) else resources.getString(
+                    R.string.na
+                )
 
             constraintViewCall.setOnClickListener(this)
             itemView.setOnClickListener(this)
@@ -75,13 +85,13 @@ class CustomerContactAdapter(val resources: Resources, var adapterItemClickListe
                     textVieWContact.id -> {
                         val item = getItem(adapterPosition)
                         item.phone?.let { phone ->
-                            adapterItemClickListener.onPhoneViewClick(item.firstName!! , phone)
+                            adapterItemClickListener.onPhoneViewClick(item.firstName!!, phone)
                         }
                     }
                     textViewEmail.id -> {
                         val item = getItem(adapterPosition)
                         item.email?.let { email ->
-                            adapterItemClickListener.onEmailViewClick(item.firstName!! , email)
+                            adapterItemClickListener.onEmailViewClick(item.firstName!!, email)
                         }
                     }
                     constraintViewCall.id -> {

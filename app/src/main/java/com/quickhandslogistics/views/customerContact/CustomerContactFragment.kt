@@ -21,31 +21,26 @@ import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.content_customer_contact_header.*
-import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.fragment_customer_contect.*
-import kotlinx.android.synthetic.main.fragment_customer_contect.mainConstraintLayout
-import kotlinx.android.synthetic.main.fragment_customer_contect.textViewEmptyData
-import kotlinx.android.synthetic.main.fragment_lumpers.*
 
-class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, View.OnClickListener,
-        CustomerContactContract.View.OnAdapterItemClickListener{
+class CustomerContactFragment : BaseFragment(), CustomerContactContract.View, View.OnClickListener, CustomerContactContract.View.OnAdapterItemClickListener {
     private lateinit var customerContactPresenter: CustomerContactPresenter
     private lateinit var customerContactAdapter: CustomerContactAdapter
-    private var buildingDetailData: BuildingDetailData? =null
+    private var buildingDetailData: BuildingDetailData? = null
     private var customerContactList: ArrayList<EmployeeData> = ArrayList()
-    private var phone: String ?=null
+    private var phone: String? = null
 
     companion object {
         const val CUSTOMER_CONTACT_LIST = "CUSTOMER_CONTACT_LIST"
         const val HEADER_INFO = "HEADER_INFO"
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         customerContactPresenter = CustomerContactPresenter(this, resources, sharedPref)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_customer_contect, container, false)
     }
 
@@ -55,13 +50,15 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
         customerListContact.apply {
             val linearLayoutManager = LinearLayoutManager(fragmentActivity!!)
             layoutManager = linearLayoutManager
-            val dividerItemDecoration = DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
+            val dividerItemDecoration =
+                DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            customerContactAdapter = CustomerContactAdapter(resources,this@CustomerContactFragment)
+            customerContactAdapter = CustomerContactAdapter(resources, this@CustomerContactFragment)
             adapter = customerContactAdapter
         }
 
-        customerContactAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+        customerContactAdapter.registerAdapterDataObserver(object :
+            RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
                 invalidateEmptyView()
@@ -70,7 +67,8 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
 
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(CUSTOMER_CONTACT_LIST)) {
-                customerContactList = savedInstanceState.getSerializable(CUSTOMER_CONTACT_LIST) as ArrayList<EmployeeData>
+                customerContactList =
+                    savedInstanceState.getSerializable(CUSTOMER_CONTACT_LIST) as ArrayList<EmployeeData>
                 showCustomerContactData(customerContactList)
             }
 
@@ -92,7 +90,7 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
 
     override fun onSaveInstanceState(outState: Bundle) {
         if (buildingDetailData != null)
-            outState.putParcelable(HEADER_INFO,buildingDetailData )
+            outState.putParcelable(HEADER_INFO, buildingDetailData)
 
         outState.putSerializable(CUSTOMER_CONTACT_LIST, customerContactList)
         super.onSaveInstanceState(outState)
@@ -114,14 +112,18 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
     }
 
     override fun showHeaderInfo(buildingDetailData: BuildingDetailData?) {
-        this.buildingDetailData=buildingDetailData
+        this.buildingDetailData = buildingDetailData
         buildingDetailData?.let {
-            phone=it.phone?.replace("+1", "")?.replace("-", "")?.trim()
-            textViewCustomerName.text=it.buildingName!!.capitalize()
-            textViewCompanyName.text=it.buildingAddress!!.capitalize() +","+it.buildingCity+", "+it.buildingState +" "+it .buildingZipcode
-            textViewCompanyContact.text= if(!phone.isNullOrEmpty())UIUtils.formetMobileNumber(phone!!) else getString(R.string.na)
+            phone = it.phone?.replace("+1", "")?.replace("-", "")?.trim()
+            textViewCustomerName.text = it.buildingName!!.capitalize()
+            textViewCompanyName.text =
+                it.buildingAddress!!.capitalize() + "," + it.buildingCity + ", " + it.buildingState + " " + it.buildingZipcode
+            textViewCompanyContact.text =
+                if (!phone.isNullOrEmpty()) UIUtils.formetMobileNumber(phone!!) else getString(R.string.na)
         }
-        activity?.let { Glide.with(it).load(R.drawable.building_image).into(circleImageViewProfile) }
+        activity?.let {
+            Glide.with(it).load(R.drawable.building_image).into(circleImageViewProfile)
+        }
     }
 
     override fun showAPIErrorMessage(message: String) {
@@ -133,59 +135,30 @@ class CustomerContactFragment  : BaseFragment(), CustomerContactContract.View, V
     }
 
     override fun showCustomerContactData(customerContactList: ArrayList<EmployeeData>) {
-        this.customerContactList=customerContactList
+        this.customerContactList = customerContactList
         val qhlMangerList: ArrayList<EmployeeData> = ArrayList()
         val qhlSuperVisorList: ArrayList<EmployeeData> = ArrayList()
         val sortedList: ArrayList<EmployeeData> = ArrayList()
 
         customerContactList.forEach {
-            if (it.role?.equals(AppConstant.MANAGER)!!){
+            if (it.role?.equals(AppConstant.MANAGER)!!) {
                 qhlMangerList.add(it)
-            }else if (it.role?.equals(AppConstant.SUPERVISOR)!!){
+            } else if (it.role?.equals(AppConstant.SUPERVISOR)!!) {
                 qhlSuperVisorList.add(it)
             }
         }
-
-
-//        sortedList.addAll(sortedListByShift(qhlMangerList))
-//        sortedList.addAll(sortedListByShift(qhlSuperVisorList))
         sortedList.addAll(qhlMangerList)
         sortedList.addAll(qhlSuperVisorList)
-
         customerContactAdapter.updateLumpersData(sortedList)
 
     }
 
-    private fun sortedListByShift(sortedList: java.util.ArrayList<EmployeeData>): ArrayList<EmployeeData> {
-        val dayShiftList: ArrayList<EmployeeData> = ArrayList()
-        val swingShiftList: ArrayList<EmployeeData> = ArrayList()
-        val nightShiftList: ArrayList<EmployeeData> = ArrayList()
-        val sortedList: ArrayList<EmployeeData> = ArrayList()
-
-
-        sortedList.forEach {
-            if (it.shift.equals(AppConstant.EMPLOYEE_SHIFT_MORNING)){
-                dayShiftList.add(it)
-            } else if (it.shift.equals(AppConstant.EMPLOYEE_SHIFT_SWING)){
-                swingShiftList.add(it)
-            } else if (it.shift.equals(AppConstant.EMPLOYEE_SHIFT_NIGHT)){
-                nightShiftList.add(it)
-            }
-        }
-
-        ScheduleUtils.sortEmployeesList(dayShiftList)
-        ScheduleUtils.sortEmployeesList(swingShiftList)
-        ScheduleUtils.sortEmployeesList(nightShiftList)
-
-        sortedList.addAll(dayShiftList)
-        sortedList.addAll(swingShiftList)
-        sortedList.addAll(nightShiftList)
-
-        return sortedList;
-    }
-
     override fun showLoginScreen() {
-        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
+        startIntent(
+            LoginActivity::class.java,
+            isFinish = true,
+            flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK)
+        )
     }
 
     override fun onClick(view: View?) {
