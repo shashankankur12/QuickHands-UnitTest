@@ -72,6 +72,9 @@ class CustomerSheetPresenter(private var workSheetView: CustomerSheetContract.Vi
             scheduleDetails.completed?.sortWith(Comparator { workItem1, workItem2 ->
                 workItem1.startTime!!.compareTo(workItem2.startTime!!)
             })
+            scheduleDetails.unfinished?.sortWith(Comparator { workItem1, workItem2 ->
+                workItem1.startTime!!.compareTo(workItem2.startTime!!)
+            })
 
             workSheetView?.showCustomerSheets(scheduleDetails, customerSheetListAPIResponse.data?.customerSheet, selectedDate)
         }

@@ -6,11 +6,13 @@ import android.os.Build
 import android.telephony.PhoneNumberUtils
 import android.text.Html
 import android.text.Spanned
+import android.text.TextUtils
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
+import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import de.hdodenhof.circleimageview.CircleImageView
@@ -152,6 +154,19 @@ object UIUtils {
             isbnStr.append(original[i])
         }
         return isbnStr.toString()
+    }
+
+    fun capitalizeString(value: String?): String {
+        return if (!TextUtils.isEmpty(value)) value?.toLowerCase()?.capitalize()!! else ""
+    }
+
+    fun buildingFullAddress(buildingDetailData: BuildingDetailData?): String {
+        var fullAddress = ""
+        buildingDetailData?.let {
+            fullAddress =
+                "${capitalizeString(it.buildingName)} \n${capitalizeString(it.buildingAddress)} \n ${capitalizeString(it.buildingCity)}, ${it.buildingState}  ${it.buildingZipcode}"
+        }
+        return fullAddress
     }
 }
 

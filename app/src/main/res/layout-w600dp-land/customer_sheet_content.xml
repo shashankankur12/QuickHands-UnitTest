@@ -1,172 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.otaliastudios.zoom.ZoomLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/zoomLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@drawable/white_background"
+    app:alignment="top"
+    app:minZoom="1"
+    app:minZoomType="zoom"
+    app:transformationGravity="center">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_8sdp"
-        android:padding="@dimen/_5sdp"
-        android:orientation="vertical"
-        android:background="@drawable/customer_sheet_background"
-        android:elevation="@dimen/_5sdp">
-        <LinearLayout
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:id="@+id/layoutHeaderInfo"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:background="@drawable/customer_sheet_background"
+            android:elevation="@dimen/_5sdp"
+            android:fitsSystemWindows="true"
+            android:minWidth="@dimen/_550sdp"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
             <ImageView
-                android:layout_width="@dimen/_60sdp"
-                android:layout_height="wrap_content"
                 android:id="@+id/imageLogoImage"
-                android:layout_weight=".1"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_splash_logo"/>
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_splash_logo"
+                app:layout_constraintBottom_toTopOf="@+id/labelBarrier"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/headerTextView"
-                android:layout_width="wrap_content"
                 style="@style/titleSmallTextViewTheme"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/customer_sheet"
                 android:layout_gravity="center"
+                android:text="@string/customer_sheet"
                 android:textAlignment="center"
-                android:textColor="@color/textBlack"/>
+                android:textColor="@color/textBlack"
+                app:layout_constraintBottom_toTopOf="@+id/labelBarrier"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/textViewBuildingName"
-                android:layout_weight=".4"
                 style="@style/valuesVerySmallTextViewTheme"
-                android:layout_width="0dp"
-                android:layout_gravity="center"
-                android:text="@string/attendance_saved_success_message"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
                 android:textColor="@color/textBlack"
-                android:layout_height="wrap_content"/>
+                app:layout_constraintBottom_toTopOf="@+id/labelBarrier"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layoutBarInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@color/buildingTitle"
-            android:paddingVertical="@dimen/_2sdp"
-            android:paddingHorizontal="@dimen/_5sdp">
-            <TextView
-                android:id="@+id/textViewHeaderBar"
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/labelBarrier"
                 android:layout_width="wrap_content"
-                style="@style/valuesSmallTextViewTheme"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textWhite"
-                android:layout_weight="1"/>
-            <TextView
-                android:id="@+id/textViewShiftName"
-                style="@style/valuesSmallTextViewTheme"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:layout_gravity="end"
-                android:textColor="@color/textWhite"/>
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="imageLogoImage,textViewBuildingName,headerTextView" />
 
-            <TextView
-                android:id="@+id/textViewDepartmentName"
-                style="@style/valuesSmallTextViewTheme"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:layout_gravity="end"
-                android:textColor="@color/textWhite"/>
-
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycelrViewItem"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:nestedScrollingEnabled="false"/>
-        <LinearLayout
-            android:id="@+id/layoutBarCustomerDetail"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:visibility="gone"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp">
-            <LinearLayout
-                android:layout_width="match_parent"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutBarInfo"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingVertical="@dimen/_2sdp"
-                android:id="@+id/layoutBarCustomerDetailHeader"
-                android:background="@color/buttonRed"
-                android:paddingHorizontal="@dimen/_5sdp">
+                android:background="@color/buildingTitle"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/labelBarrier">
+
+                <TextView
+                    android:id="@+id/textViewHeaderBar"
+                    style="@style/valuesSmallTextViewTheme"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:gravity="start"
+                    android:padding="@dimen/_2sdp"
+                    android:textColor="@color/textWhite"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewShiftName"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textViewShiftName"
+                    style="@style/valuesSmallTextViewTheme"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_2sdp"
+                    android:textColor="@color/textWhite"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewDepartmentName"
+                    app:layout_constraintStart_toEndOf="@+id/textViewHeaderBar"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textViewDepartmentName"
+                    style="@style/valuesSmallTextViewTheme"
+                    android:layout_width="0dp"
+                    android:layout_marginEnd="@dimen/_2sdp"
+                    android:gravity="end"
+                    android:padding="@dimen/_2sdp"
+                    android:textColor="@color/textWhite"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textViewShiftName"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewItem"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutBarInfo" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutBarCustomerDetail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewItem">
+
+
                 <TextView
                     android:id="@+id/textViewCustomerSection"
-                    android:layout_width="match_parent"
                     style="@style/valuesSmallTextViewTheme"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:background="@color/buttonRed"
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    android:text="@string/customer_section"
                     android:textColor="@color/textWhite"
-                    android:text="@string/customer_section"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
-            <ImageView
-                android:layout_width="@dimen/_60sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:id="@+id/imageViewCustomerSignature"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginStart="@dimen/_5sdp"/>
-            <TextView
-                android:id="@+id/textViewCustomerName"
-                android:layout_width="wrap_content"
-                style="@style/titleVerySmallTextViewTheme"
-                android:layout_height="wrap_content"
-                android:textColor="@color/textBlack"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:text="@string/customer_details"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingVertical="@dimen/_2sdp"
-                android:orientation="vertical"
-                android:id="@+id/layoutBarCustomerNote"
-                android:paddingHorizontal="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_7sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewCustomerName">
+                <ImageView
+                    android:id="@+id/imageViewCustomerSignature"
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewCustomerSection" />
+
+                <TextView
+                    android:id="@+id/textViewCustomerName"
+                    style="@style/titleVerySmallTextViewTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:textColor="@color/textBlack"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewCustomerSignature" />
+
+
                 <TextView
                     android:id="@+id/textViewCustomerNoteHeader"
-                    android:layout_width="match_parent"
                     style="@style/valuesSmallTextViewTheme"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    android:paddingVertical="@dimen/_2sdp"
+                    android:text="@string/notes"
                     android:textColor="@color/textBlack"
-                    android:text="@string/notes"/>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:background="@color/gray_btn_bg_color"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewCustomerName" />
+
+                <View
                     android:id="@+id/viewLine"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewCustomerNoteHeader"/>
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/gray_btn_bg_color"
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    android:paddingVertical="@dimen/_2sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewCustomerNoteHeader" />
+
                 <TextView
                     android:id="@+id/textViewCustomerNote"
-                    android:layout_width="match_parent"
                     style="@style/valuesVerySmallTextViewTheme"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_2sdp"
                     android:layout_marginBottom="@dimen/_5sdp"
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    android:paddingVertical="@dimen/_2sdp"
                     android:textColor="@color/textBlack"
-                    android:text="@string/notes"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/viewLine" />
 
-            </LinearLayout>
 
-        </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-</FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.otaliastudios.zoom.ZoomLayout>

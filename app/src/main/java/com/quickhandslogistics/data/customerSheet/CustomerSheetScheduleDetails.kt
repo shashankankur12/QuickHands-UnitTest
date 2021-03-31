@@ -33,12 +33,18 @@ class CustomerSheetScheduleDetails() : Parcelable {
     var completed: ArrayList<WorkItemDetail>? = null
         get() = if (!field.isNullOrEmpty()) field else ArrayList()
 
+    @SerializedName("unfinished")
+    @Expose
+    var unfinished: ArrayList<WorkItemDetail>? = null
+        get() = if (!field.isNullOrEmpty()) field else ArrayList()
+
     constructor(parcel: Parcel) : this() {
         cancelled = parcel.createTypedArrayList(WorkItemDetail)
         onHold = parcel.createTypedArrayList(WorkItemDetail)
         inProgress = parcel.createTypedArrayList(WorkItemDetail)
         scheduled = parcel.createTypedArrayList(WorkItemDetail)
         completed = parcel.createTypedArrayList(WorkItemDetail)
+        unfinished = parcel.createTypedArrayList(WorkItemDetail)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -47,6 +53,7 @@ class CustomerSheetScheduleDetails() : Parcelable {
         parcel.writeTypedList(inProgress)
         parcel.writeTypedList(scheduled)
         parcel.writeTypedList(completed)
+        parcel.writeTypedList(unfinished)
     }
 
     override fun describeContents(): Int {
