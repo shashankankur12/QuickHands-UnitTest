@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -184,12 +183,13 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         workSheetItemDetailPagerAdapter?.showEmptyData()
     }
 
-    override fun showWorkItemDetail(workItemDetail: WorkItemContainerDetails) {
+    override fun showWorkItemDetail(workItemDetail: WorkItemContainerDetails, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?) {
         this.lumpersTimeSchedule = lumpersTimeSchedule!!
 
         this.workItemDetail = workItemDetail
         this.tempLumperIds = tempLumperIds
-        textViewStartTime.text = String.format(getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
+        textViewStartTime.text = String.format(getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(
+            workItemDetail.startTime))
         if (!workItemDetail.schedule?.scheduleNote.isNullOrEmpty() && !workItemDetail.schedule?.scheduleNote.equals("NA")) {
             textViewWorkSheetNote1.isEnabled = true
             textViewWorkSheetNote1.text = ScheduleUtils.scheduleTypeNote(workItemDetail.schedule, resources)

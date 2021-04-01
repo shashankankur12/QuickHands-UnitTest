@@ -19,9 +19,9 @@ class WorkItemDetailAPIResponse : BaseResponse() {
 //        @Expose
 //        var workItemDetail: ScheduleWorkItem? = null
 //
-//        @SerializedName("lumpersTimeSchedule")
-//        @Expose
-//        var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>? = null
+        @SerializedName("lumpersTimeSchedule")
+        @Expose
+        var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>? = null
 //
 //        @SerializedName("tempLumperIds")
 //        @Expose

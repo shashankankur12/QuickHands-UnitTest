@@ -20,7 +20,10 @@ class WorkSheetItemDetailContract {
 
     interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
-        fun showWorkItemDetail(container: WorkItemContainerDetails)
+        fun showWorkItemDetail(
+            container: WorkItemContainerDetails,
+            lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?
+        )
         fun statusChangedSuccessfully()
         fun notesSavedSuccessfully()
         fun showLoginScreen()

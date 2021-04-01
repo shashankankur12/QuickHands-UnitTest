@@ -89,7 +89,7 @@ class ScheduleWorkSheetItemAdapter(private val resources: Resources, private val
             textViewWorkSheetNote.isEnabled=(!workItemDetail.schedule?.scheduleNote.isNullOrEmpty() && !getItem(adapterPosition).schedule?.scheduleNote!!.equals("NA"))
 
             workItemDetail.assignedLumpersList?.let { imagesList ->
-                recyclerViewLumpersImagesList.adapter = LumperImagesAdapter(imagesList, sharedPref,this@ViewHolder)
+//                recyclerViewLumpersImagesList.adapter = LumperImagesAdapter(imagesList, sharedPref,this@ViewHolder)
             }
 
             ScheduleUtils.changeStatusUIByValue(resources, workItemDetail.status, textViewStatus, relativeLayoutSide)

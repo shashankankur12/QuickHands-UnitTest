@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class UpdateLumperTimeRequest(
     @SerializedName("lumperId") val lumperId: String,
-    @SerializedName("workItemId") val workItemId: String,
+    @SerializedName("containerId") val workItemId: String,
     @SerializedName("timingDetails") val timingDetails: TimingDetails,
     @SerializedName("partWork") var partWork: Int? = null
 )

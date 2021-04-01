@@ -57,7 +57,7 @@ class WorkSheetItemDetailPresenter(private var workSheetItemDetailView: WorkShee
     override fun onSuccess(response: WorkItemDetailAPIResponse) {
         workSheetItemDetailView?.hideProgressDialog()
         response.data?.container?.let { container ->
-            workSheetItemDetailView?.showWorkItemDetail(container)
+            workSheetItemDetailView?.showWorkItemDetail(container, response.data?.lumpersTimeSchedule)
         }
     }
 

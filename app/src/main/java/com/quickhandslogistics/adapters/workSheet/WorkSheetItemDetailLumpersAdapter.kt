@@ -156,13 +156,13 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
         }
     }
 
-    fun updateList(lumperList: ArrayList<EmployeeData>?, timingsData: LinkedHashMap<String, LumpersTimeSchedule>, status: String? = "", tempLumperIds: ArrayList<String>, totalCases: String?, isCompleted: Boolean?) {
+    fun updateList(lumperList: ArrayList<LumperAttendanceData>?, timingsData: LinkedHashMap<String, LumpersTimeSchedule>, status: String? = "", tempLumperIds: ArrayList<String>, totalCases: String?, isCompleted: Boolean?) {
         this.timingsData.clear()
         this.lumperList.clear()
-//        lumperList?.let {
-//            this.lumperList.addAll(lumperList)
-//            this.timingsData.putAll(timingsData)
-//        }
+        lumperList?.let {
+            this.lumperList.addAll(lumperList)
+            this.timingsData.putAll(timingsData)
+        }
         this.workItemStatus = getDefaultOrValue(status)
         this.totalCases=getDefaultOrValue(totalCases)
         this.isCompleted= getDefaultOrValue(isCompleted)

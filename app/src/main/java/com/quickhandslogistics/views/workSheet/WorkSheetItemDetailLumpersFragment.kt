@@ -155,14 +155,14 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
     }
 
     fun showEmptyData() {
-//        workSheetItemDetailLumpersAdapter.updateList(
-//            ArrayList(),
-//            LinkedHashMap(),
-//            tempLumperIds = ArrayList(),
-//            totalCases = getTotalCases(workItemDetail?.buildingOps),
-//            isCompleted = workItemDetail!!.isCompleted
-//        )
-//        buttonAddLumpers.visibility = View.GONE
+        workSheetItemDetailLumpersAdapter.updateList(
+            ArrayList(),
+            LinkedHashMap(),
+            tempLumperIds = ArrayList(),
+            totalCases = getTotalCases(workItemDetail?.buildingOps),
+            isCompleted = workItemDetail!!.isCompleted
+        )
+        buttonAddLumpers.visibility = View.GONE
     }
 
 
@@ -214,7 +214,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         bundle.putString(ARG_WORK_ITEM_ID, workItemDetail?.id)
         bundle.putString(TOTAL_CASES, getTotalCases(workItemDetail?.buildingOps))
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
-        bundle.putBoolean(ARG_LUMPER_PRESENT, employeeData?.attendanceDetail?.isPresent!!)
+//        bundle.putBoolean(ARG_LUMPER_PRESENT, employeeData?.attendanceDetail?.isPresent!!)
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_TIMING_DATA, timingData)
         bundle.putStringArrayList(TEMP_LUMPER_IDS, tempLumperIds)
         startIntent(AddLumperTimeWorkSheetItemActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
