@@ -1,6 +1,7 @@
 package com.quickhandslogistics.adapters.workSheet
 
 import android.content.Context
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,12 +22,13 @@ import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.convertDateStringToTime
 import com.quickhandslogistics.utils.ScheduleUtils.calculatePercent
 import com.quickhandslogistics.utils.UIUtils
+import com.quickhandslogistics.utils.ValueUtils
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import com.quickhandslogistics.utils.ValueUtils.isNumeric
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_work_item_detail_lumper_time.view.*
 
-class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetItemDetailLumpersContract.View.OnAdapterItemClickListener) :
+class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, private var onAdapterClick: WorkSheetItemDetailLumpersContract.View.OnAdapterItemClickListener) :
     Adapter<WorkSheetItemDetailLumpersAdapter.ViewHolder>() {
 
     private var workItemStatus = ""
@@ -85,35 +87,21 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
             if (timingsData.containsKey(employeeData.id)) {
                 val timingDetail = timingsData[employeeData.id]
                 timingDetail?.let {
-                    val startTime = convertDateStringToTime(
-                        DateUtils.PATTERN_API_RESPONSE,
-                        timingDetail.startTime
-                    )
-                    val endTime = convertDateStringToTime(
-                        DateUtils.PATTERN_API_RESPONSE,
-                        timingDetail.endTime
-                    )
+                    val startTime = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.startTime)
+                    val endTime = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.endTime)
                     if (startTime.isNotEmpty() && endTime.isNotEmpty())
-                        textViewWorkTime.text = String.format(
-                            "%s - %s : %s",
-                            startTime,
-                            endTime,
-                            DateUtils.getDateTimeCalculeted(
-                                timingDetail.startTime!!,
-                                timingDetail.endTime!!
-                            )
-                        )
-                    else textViewWorkTime.text = String.format(
-                        "%s - %s",
-                        if (startTime.isNotEmpty()) startTime else "NA",
-                        if (endTime.isNotEmpty()) endTime else "NA"
+                        textViewWorkTime.text = String.format("%s - %s : %s", startTime, endTime, DateUtils.getDateTimeCalculeted(timingDetail.startTime!!, timingDetail.endTime!!))
+                    else textViewWorkTime.text = String.format("%s - %s", if (startTime.isNotEmpty()) startTime else AppConstant.NOTES_NOT_AVAILABLE,
+                        if (endTime.isNotEmpty()) endTime else AppConstant.NOTES_NOT_AVAILABLE
                     )
 
                     val waitingTime = getDefaultOrValue(timingDetail.waitingTime)
                     if (waitingTime.isNotEmpty() && waitingTime.toInt() != 0) {
-                        textViewWaitingTime.text = String.format("%s Min", waitingTime)
+                        val waitingTimeHours = ValueUtils.getHoursFromMinutes(timingDetail.waitingTime)
+                        val waitingTimeMinutes = ValueUtils.getRemainingMinutes(timingDetail.waitingTime)
+                        textViewWaitingTime.text = String.format("%s H %s M", waitingTimeHours, waitingTimeMinutes )
                     } else {
-                        textViewWaitingTime.text = "NA"
+                        textViewWaitingTime.text = AppConstant.NOTES_NOT_AVAILABLE
                     }
 
                     var mBreakTimeList = getBreakTimeList(timingDetail.breakTimes)
@@ -123,26 +111,17 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
 
                     if (!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt() != 0) {
                         if (!totalCases.isNullOrEmpty() && isNumeric(totalCases)) {
-                            val parcetage = String.format(
-                                "%.2f",
-                                calculatePercent(timingDetail.partWorkDone!!, totalCases)
-                            ) + "%"
-                            textViewWorkDone.text = String.format(
-                                "%s / %s : %s",
-                                timingDetail.partWorkDone,
-                                totalCases,
-                                parcetage
-                            )
-                        }
+                            val parcetage = String.format("%.2f", calculatePercent(timingDetail.partWorkDone!!, totalCases)) + "%"
+                            textViewWorkDone.text = String.format("%s / %s : %s", timingDetail.partWorkDone, totalCases, parcetage) }
                     } else {
-                        textViewWorkDone.text = "NA"
+                        textViewWorkDone.text = AppConstant.NOTES_NOT_AVAILABLE
                     }
                 }
             } else {
-                textViewWorkTime.text = "NA - NA"
-                textViewWaitingTime.text = "NA"
-                textViewWorkDone.text = "NA"
-                textViewBreakTime.text = "NA - NA"
+                textViewWorkTime.text = "${AppConstant.NOTES_NOT_AVAILABLE} - ${AppConstant.NOTES_NOT_AVAILABLE}"
+                textViewWaitingTime.text = AppConstant.NOTES_NOT_AVAILABLE
+                textViewWorkDone.text = AppConstant.NOTES_NOT_AVAILABLE
+                textViewBreakTime.text = "${AppConstant.NOTES_NOT_AVAILABLE} - ${AppConstant.NOTES_NOT_AVAILABLE}"
             }
 
             changeAddButtonVisibility()
@@ -192,18 +171,14 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
         }
 
         private fun showPauseTimeDuration(
-            mBreakTimeList: ArrayList<PauseTimeRequest>, textViewBreakTime: TextView
+            mBreakTimeList: ArrayList<PauseTimeRequest>,
+            textViewBreakTime: TextView
         ) {
-            mBreakTimeList.forEachIndexed { index, pauseTime ->
-                val pauseTimeIn = pauseTime.startTime
-                val pauseTimeOut = pauseTime.endTime
-                val pauseTimeInStr =
-                    DateUtils.convertMillisecondsToTimeString(pauseTimeIn?.toLong()!!)
-                val pauseTimeOutStr =
-                    DateUtils.convertMillisecondsToTimeString(pauseTimeOut?.toLong()!!)
-                if (index != 0) textViewBreakTime.append("\n")
-                textViewBreakTime.append("$pauseTimeInStr - $pauseTimeOutStr")
+            var dateTime: Long = 0
+            for (pauseTime in mBreakTimeList) {
+                dateTime += (pauseTime.endTime!! - pauseTime.startTime!!)
             }
+            textViewBreakTime.text = "${DateUtils.getDateTimeCalculatedLong(dateTime)}"
         }
 
         private fun changeAddButtonVisibility() {

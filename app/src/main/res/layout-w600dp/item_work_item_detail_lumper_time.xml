@@ -19,8 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/ic_cancel"
-        android:layout_marginEnd="@dimen/_10sdp"
+        android:src="@drawable/ic_clear"
+        android:layout_marginEnd="@dimen/_6sdp"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <View
@@ -44,14 +44,6 @@
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageViewCancelLumper"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/ic_clear"
-        android:layout_marginEnd="@dimen/_10sdp"
-        app:layout_constraintTop_toTopOf="parent"/>
 
     <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewEmployeeId"
@@ -90,14 +82,20 @@
                 style="@style/titleVerySmallTextViewTheme"
                 android:layout_width="0dp"
                 android:text="@string/work_time_s"
-                android:layout_weight=".4" />
+                android:layout_weight=".5" />
 
             <TextView
                 android:id="@+id/textViewWorkTime"
-                android:layout_weight="1.6"
+                android:layout_weight="1.5"
                 android:layout_width="0dp"
                 style="@style/valuesSmallTextViewTheme"
                 android:text="NA - NA" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_edit"
+                android:layout_marginEnd="@dimen/_5sdp"
+                app:tint="@color/buildingTitle" />
         </LinearLayout>
 
         <LinearLayout
@@ -110,13 +108,13 @@
                 style="@style/titleVerySmallTextViewTheme"
                 android:layout_width="0dp"
                 android:text="@string/break_time_s"
-                android:layout_weight=".4" />
+                android:layout_weight=".5" />
 
             <TextView
                 android:id="@+id/textViewBreakTime"
                 android:layout_width="0dp"
                 style="@style/valuesSmallTextViewTheme"
-                android:layout_weight="1.6"
+                android:layout_weight="1.5"
                 android:text="NA - NA" />
         </LinearLayout>
 
@@ -131,11 +129,11 @@
                 style="@style/titleVerySmallTextViewTheme"
                 android:layout_width="0dp"
                 android:text="@string/waiting_time_s"
-                android:layout_weight="0.4"/>
+                android:layout_weight="0.5"/>
 
             <TextView
                 android:id="@+id/textViewWaitingTime"
-                android:layout_weight="1.6"
+                android:layout_weight="1.5"
                 android:layout_width="0dp"
                 style="@style/valuesSmallTextViewTheme"
                 android:text="NA" />
@@ -152,12 +150,12 @@
                 style="@style/titleVerySmallTextViewTheme"
                 android:layout_width="0dp"
                 android:text="@string/works_done_s"
-                android:layout_weight="0.4"/>
+                android:layout_weight="0.5"/>
 
             <TextView
                 android:id="@+id/textViewWorkDone"
                 style="@style/valuesSmallTextViewTheme"
-                android:layout_weight="1.6"
+                android:layout_weight="1.5"
                 android:layout_width="0dp"
                 android:text="NA" />
         </LinearLayout>
@@ -168,7 +166,7 @@
         android:id="@+id/textViewAddTime"
         style="@style/addTextViewTheme"
         android:text="@string/add_time"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayoutLumperTime" />
 

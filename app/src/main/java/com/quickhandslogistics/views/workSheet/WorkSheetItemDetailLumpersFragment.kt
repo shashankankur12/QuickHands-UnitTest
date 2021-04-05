@@ -89,7 +89,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
             layoutManager = linearLayoutManager
             val dividerItemDecoration = DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            workSheetItemDetailLumpersAdapter = WorkSheetItemDetailLumpersAdapter(this@WorkSheetItemDetailLumpersFragment)
+            workSheetItemDetailLumpersAdapter = WorkSheetItemDetailLumpersAdapter( resources, this@WorkSheetItemDetailLumpersFragment)
             adapter = workSheetItemDetailLumpersAdapter
         }
 

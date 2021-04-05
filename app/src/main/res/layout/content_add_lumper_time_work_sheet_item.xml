@@ -149,10 +149,11 @@
 
                 <TextView
                     android:id="@+id/totalWorkTime"
-                    style="@style/valuesSmallTextViewThemeHeader"
+                    style="@style/valuesSmallTextViewTheme"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:gravity="center_horizontal"
                     android:visibility="gone"
+                    android:textColor="@color/textBlack"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/layoutWorkTime" />
@@ -233,12 +234,12 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
+                    style="@style/valuesTextViewTheme"
                     android:id="@+id/totalPauseTimeDurationTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:textSize="@dimen/_14sdp"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -246,10 +247,11 @@
 
                 <TextView
                     android:id="@+id/totalPauseTime"
-                    style="@style/valuesSmallTextViewThemeHeader"
+                    style="@style/valuesSmallTextViewTheme"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:gravity="center_horizontal"
                     android:visibility="gone"
+                    android:textColor="@color/textBlack"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/totalPauseTimeDurationTextView" />
