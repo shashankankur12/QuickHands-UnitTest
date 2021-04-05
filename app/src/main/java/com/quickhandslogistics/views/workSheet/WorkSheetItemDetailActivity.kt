@@ -179,12 +179,13 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
-
         workSheetItemDetailPagerAdapter?.showEmptyData()
     }
 
     override fun showWorkItemDetail(workItemDetail: WorkItemContainerDetails, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?) {
-        this.lumpersTimeSchedule = lumpersTimeSchedule!!
+        lumpersTimeSchedule?.let {
+            this.lumpersTimeSchedule = it
+        }
 
         this.workItemDetail = workItemDetail
         this.tempLumperIds = tempLumperIds
@@ -329,5 +330,9 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
     override fun dataChanged(isChanged: Boolean) {
         if (isChanged) isDataSave(false) else isDataSave(true)
+    }
+
+    override fun removeLumperFromSchedule(id: String) {
+        workSheetItemDetailPresenter.removeLumper(id, workItemId)
     }
 }

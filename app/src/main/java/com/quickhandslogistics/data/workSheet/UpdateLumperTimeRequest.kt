@@ -15,4 +15,5 @@ class TimingDetails {
     @SerializedName("breakTimeStart") var breakTimeStart: Long? = null
     @SerializedName("breakTimeEnd") var breakTimeEnd: Long? = null
     @SerializedName("waitingTime") var waitingTime: Int? = null
+    @SerializedName("breakTimes") var breakTimeRequests: ArrayList<PauseTimeRequest>? = null
 }

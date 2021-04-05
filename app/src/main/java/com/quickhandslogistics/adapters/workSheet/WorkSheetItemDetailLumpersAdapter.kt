@@ -13,8 +13,9 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailLumpersContract
 import com.quickhandslogistics.controls.CustomTextView
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
-import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
+import com.quickhandslogistics.data.workSheet.PauseTime
+import com.quickhandslogistics.data.workSheet.PauseTimeRequest
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.convertDateStringToTime
@@ -67,8 +68,16 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
         private val imageViewCancelLumper: ImageView = view.imageViewCancelLumper
 
         fun bind(employeeData: LumperAttendanceData) {
-            UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
-            UIUtils.updateProfileBorder(context, tempLumperIds.contains(employeeData.id), circleImageViewProfile)
+            UIUtils.showEmployeeProfileImage(
+                context,
+                employeeData.profileImageUrl,
+                circleImageViewProfile
+            )
+            UIUtils.updateProfileBorder(
+                context,
+                tempLumperIds.contains(employeeData.id),
+                circleImageViewProfile
+            )
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
             ishaseClockOut(employeeData)
@@ -76,11 +85,29 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
             if (timingsData.containsKey(employeeData.id)) {
                 val timingDetail = timingsData[employeeData.id]
                 timingDetail?.let {
-                    val startTime = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.startTime)
-                    val endTime = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.endTime)
+                    val startTime = convertDateStringToTime(
+                        DateUtils.PATTERN_API_RESPONSE,
+                        timingDetail.startTime
+                    )
+                    val endTime = convertDateStringToTime(
+                        DateUtils.PATTERN_API_RESPONSE,
+                        timingDetail.endTime
+                    )
                     if (startTime.isNotEmpty() && endTime.isNotEmpty())
-                        textViewWorkTime.text = String.format("%s - %s : %s",  startTime ,  endTime ,DateUtils.getDateTimeCalculeted(timingDetail.startTime!!, timingDetail.endTime!!))
-                    else textViewWorkTime.text = String.format("%s - %s", if (startTime.isNotEmpty()) startTime else "NA", if (endTime.isNotEmpty()) endTime else "NA")
+                        textViewWorkTime.text = String.format(
+                            "%s - %s : %s",
+                            startTime,
+                            endTime,
+                            DateUtils.getDateTimeCalculeted(
+                                timingDetail.startTime!!,
+                                timingDetail.endTime!!
+                            )
+                        )
+                    else textViewWorkTime.text = String.format(
+                        "%s - %s",
+                        if (startTime.isNotEmpty()) startTime else "NA",
+                        if (endTime.isNotEmpty()) endTime else "NA"
+                    )
 
                     val waitingTime = getDefaultOrValue(timingDetail.waitingTime)
                     if (waitingTime.isNotEmpty() && waitingTime.toInt() != 0) {
@@ -89,16 +116,23 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
                         textViewWaitingTime.text = "NA"
                     }
 
-                    val breakTimeStart = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeStart)
-                    val breakTimeEnd = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeEnd)
-                    if (breakTimeStart.isNotEmpty() && breakTimeEnd.isNotEmpty())
-                        textViewBreakTime.text = String.format("%s - %s :%s", breakTimeStart , breakTimeEnd,DateUtils.getDateTimeCalculeted(timingDetail.breakTimeStart!!, timingDetail.breakTimeEnd!!))
-                    else textViewBreakTime.text = String.format("%s - %s", if (breakTimeStart.isNotEmpty()) breakTimeStart else "NA", if (breakTimeEnd.isNotEmpty()) breakTimeEnd else "NA")
+                    var mBreakTimeList = getBreakTimeList(timingDetail.breakTimes)
+                    if (mBreakTimeList.isNotEmpty()) {
+                        showPauseTimeDuration(mBreakTimeList, textViewBreakTime)
+                    } else textViewBreakTime.text = AppConstant.NOTES_NOT_AVAILABLE
 
                     if (!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt() != 0) {
                         if (!totalCases.isNullOrEmpty() && isNumeric(totalCases)) {
-                            val parcetage = String.format("%.2f", calculatePercent(timingDetail.partWorkDone!!, totalCases)) + "%"
-                            textViewWorkDone.text = String.format("%s / %s : %s", timingDetail.partWorkDone, totalCases, parcetage)
+                            val parcetage = String.format(
+                                "%.2f",
+                                calculatePercent(timingDetail.partWorkDone!!, totalCases)
+                            ) + "%"
+                            textViewWorkDone.text = String.format(
+                                "%s / %s : %s",
+                                timingDetail.partWorkDone,
+                                totalCases,
+                                parcetage
+                            )
                         }
                     } else {
                         textViewWorkDone.text = "NA"
@@ -125,6 +159,50 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
                     viewAttendanceStatus.setBackgroundResource( R.drawable.offline_dot)
 
                 }else viewAttendanceStatus.setBackgroundResource( R.drawable.offline_dot)
+            }
+        }
+
+        private fun getBreakTimeList(breakTimes: ArrayList<PauseTime>?): ArrayList<PauseTimeRequest> {
+            val pauseTimeList: ArrayList<PauseTimeRequest> = ArrayList()
+            breakTimes?.let {
+                it.forEach {
+                    val breakTime = PauseTimeRequest()
+                    breakTime.startTime = convertInitialTime(it.startTime)
+                    breakTime.endTime = convertInitialTime(it.endTime)
+                    pauseTimeList.add(breakTime)
+                }
+            }
+            return pauseTimeList
+        }
+
+        private fun convertInitialTime(dateStamp: String?): Long {
+            var milliseconds: Long = 0
+            val time = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, dateStamp)
+            if (time.isNotEmpty()) {
+                val currentDateString = DateUtils.convertUTCDateStringToLocalDateString(
+                    DateUtils.PATTERN_API_RESPONSE,
+                    dateStamp
+                )
+                milliseconds = DateUtils.getMillisecondsFromDateString(
+                    DateUtils.PATTERN_API_RESPONSE,
+                    currentDateString
+                )
+            }
+            return milliseconds
+        }
+
+        private fun showPauseTimeDuration(
+            mBreakTimeList: ArrayList<PauseTimeRequest>, textViewBreakTime: TextView
+        ) {
+            mBreakTimeList.forEachIndexed { index, pauseTime ->
+                val pauseTimeIn = pauseTime.startTime
+                val pauseTimeOut = pauseTime.endTime
+                val pauseTimeInStr =
+                    DateUtils.convertMillisecondsToTimeString(pauseTimeIn?.toLong()!!)
+                val pauseTimeOutStr =
+                    DateUtils.convertMillisecondsToTimeString(pauseTimeOut?.toLong()!!)
+                if (index != 0) textViewBreakTime.append("\n")
+                textViewBreakTime.append("$pauseTimeInStr - $pauseTimeOutStr")
             }
         }
 

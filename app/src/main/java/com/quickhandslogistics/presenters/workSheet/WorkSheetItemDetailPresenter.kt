@@ -35,6 +35,11 @@ class WorkSheetItemDetailPresenter(private var workSheetItemDetailView: WorkShee
         workSheetItemDetailModel.updateWorkItemNotes(workItemId, notesQHLCustomer, notesQHL, this)
     }
 
+    override fun removeLumper(lumperId: String, workItemId: String) {
+        workSheetItemDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        workSheetItemDetailModel.removeLumper(lumperId, workItemId, this)
+    }
+
     /** Model Result Listeners */
     override fun onFailure(message: String) {
         workSheetItemDetailView?.hideProgressDialog()

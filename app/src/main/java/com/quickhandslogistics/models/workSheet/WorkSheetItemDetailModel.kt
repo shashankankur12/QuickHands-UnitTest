@@ -1,10 +1,6 @@
 package com.quickhandslogistics.models.workSheet
 
-import android.content.Context
 import android.util.Log
-import android.widget.Button
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.schedule.WorkItemDetailAPIResponse
@@ -68,5 +64,20 @@ class WorkSheetItemDetailModel : WorkSheetItemDetailContract.Model {
                 onFinishedListener.onFailure()
             }
         })
+    }
+
+    override fun removeLumper(lumperId: String, workItemId: String, onFinishedListener: WorkSheetItemDetailContract.Model.OnFinishedListener) {
+//        DataManager.getService().updateWorkItemNotes(getAuthToken(), workItemId, lumperid).enqueue(object : Callback<BaseResponse> {
+//            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+//                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+//                    onFinishedListener.onSuccessChangeStatus(workItemId)
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+//                Log.e(WorkSheetItemDetailModel::class.simpleName, t.localizedMessage!!)
+//                onFinishedListener.onFailure()
+//            }
+//        })
     }
 }

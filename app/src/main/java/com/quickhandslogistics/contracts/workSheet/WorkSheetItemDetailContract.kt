@@ -8,8 +8,24 @@ import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 class WorkSheetItemDetailContract {
     interface Model {
         fun fetchWorkItemDetail(workItemId: String, onFinishedListener: OnFinishedListener)
-        fun changeWorkItemStatus(workItemId: String, status: String, onFinishedListener: OnFinishedListener)
-        fun updateWorkItemNotes(workItemId: String, notesQHLCustomer: String, notesQHL: String, onFinishedListener: OnFinishedListener)
+        fun changeWorkItemStatus(
+            workItemId: String,
+            status: String,
+            onFinishedListener: OnFinishedListener
+        )
+
+        fun updateWorkItemNotes(
+            workItemId: String,
+            notesQHLCustomer: String,
+            notesQHL: String,
+            onFinishedListener: OnFinishedListener
+        )
+
+        fun removeLumper(
+            lumperId: String,
+            workItemId: String,
+            onFinishedListener: OnFinishedListener
+        )
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(response: WorkItemDetailAPIResponse)
@@ -24,6 +40,7 @@ class WorkSheetItemDetailContract {
             container: WorkItemContainerDetails,
             lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?
         )
+
         fun statusChangedSuccessfully()
         fun notesSavedSuccessfully()
         fun showLoginScreen()
@@ -36,6 +53,7 @@ class WorkSheetItemDetailContract {
             fun fetchWorkItemDetail(changeResultCode: Boolean)
             fun updateWorkItemNotes(notesQHLCustomer: String, notesQHL: String)
             fun dataChanged(isChanged: Boolean)
+            fun removeLumperFromSchedule(id: String)
         }
     }
 
@@ -43,5 +61,6 @@ class WorkSheetItemDetailContract {
         fun fetchWorkItemDetail(workItemId: String)
         fun changeWorkItemStatus(workItemId: String, status: String)
         fun updateWorkItemNotes(workItemId: String, notesQHLCustomer: String, notesQHL: String)
+        fun removeLumper(lumperId: String, workItemId: String)
     }
 }

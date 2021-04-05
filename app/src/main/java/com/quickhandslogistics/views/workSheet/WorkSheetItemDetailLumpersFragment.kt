@@ -21,7 +21,6 @@ import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.ConnectionDetector
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.lumpers.LumperDetailActivity
-import com.quickhandslogistics.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_PRESENT
 import com.quickhandslogistics.views.schedule.AddWorkItemLumpersActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE
@@ -155,13 +154,13 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
     }
 
     fun showEmptyData() {
-        workSheetItemDetailLumpersAdapter.updateList(
-            ArrayList(),
-            LinkedHashMap(),
-            tempLumperIds = ArrayList(),
-            totalCases = getTotalCases(workItemDetail?.buildingOps),
-            isCompleted = workItemDetail!!.isCompleted
-        )
+//        workSheetItemDetailLumpersAdapter.updateList(
+//            ArrayList(),
+//            LinkedHashMap(),
+//            tempLumperIds = ArrayList(),
+//            totalCases = getTotalCases(workItemDetail?.buildingOps),
+//            isCompleted = workItemDetail!!.isCompleted
+//        )
         buttonAddLumpers.visibility = View.GONE
     }
 
@@ -224,6 +223,8 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         if (!ConnectionDetector.isNetworkConnected(activity)) {
             ConnectionDetector.createSnackBar(activity)
             return
+
+            employeeData.id?.let { onFragmentInteractionListener?.removeLumperFromSchedule(it) }
         }
     }
 }
