@@ -224,7 +224,22 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
             ConnectionDetector.createSnackBar(activity)
             return
 
-            employeeData.id?.let { onFragmentInteractionListener?.removeLumperFromSchedule(it) }
+        }
+
+        val tempLumperIds = ArrayList<String>()
+        val selectedLumperIdsList = ArrayList<String>()
+
+        if (!tempLumperIds.isNullOrEmpty() && tempLumperIds.contains(employeeData.id!!)) {
+            tempLumperIds.add(employeeData.id!!)
+        } else {
+            selectedLumperIdsList.add(employeeData.id!!)
+        }
+
+        employeeData.id?.let {
+            onFragmentInteractionListener?.removeLumperFromSchedule(
+                selectedLumperIdsList,
+                tempLumperIds
+            )
         }
     }
 }

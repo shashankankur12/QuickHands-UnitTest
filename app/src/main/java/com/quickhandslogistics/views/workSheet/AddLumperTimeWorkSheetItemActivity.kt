@@ -97,13 +97,13 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         employeeTimingData?.let { timingDetail ->
             val waitingTimeHours = ValueUtils.getHoursFromMinutes(timingDetail.waitingTime)
             val waitingTimeMinutes = ValueUtils.getRemainingMinutes(timingDetail.waitingTime)
-            if (waitingTimeHours.isNotEmpty() && 0.0 != waitingTimeHours.toDouble()) {
+            if (waitingTimeHours.isNotEmpty() /*&& 0.0 != waitingTimeHours.toDouble()*/) {
                 editTextWaitingTime.setText(waitingTimeHours)
-                editTextWaitingTime.isEnabled = false
+//                editTextWaitingTime.isEnabled = false
             }
-            if (waitingTimeMinutes.isNotEmpty() && 0.0 != waitingTimeMinutes.toDouble()) {
+            if (waitingTimeMinutes.isNotEmpty() /*&& 0.0 != waitingTimeMinutes.toDouble()*/) {
                 editTextWaitingTimeMinutes.setText(waitingTimeMinutes)
-                editTextWaitingTimeMinutes.isEnabled = false
+//                editTextWaitingTimeMinutes.isEnabled = false
             }
             if (!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt() != 0) {
                 partWorkDone = timingDetail.partWorkDone!!.toInt()
@@ -220,10 +220,15 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun updateButtonsUI() {
-        buttonStartTime.isEnabled = initialStartTime <= 0
-        buttonEndTime.isEnabled = initialEndTime <= 0 && selectedStartTime > 0 && checkBrackout()
-        buttonBreakInTime.isEnabled = initialBreakInTime <= 0 && selectedStartTime > 0
-        buttonBreakOutTime.isEnabled = initialBreakOutTime <= 0 && selectedBreakInTime > 0
+//        if (initialStartTime <= 0 ) {
+//            buttonStartTime.isEnabled = initialStartTime <= 0
+//            buttonEndTime.isEnabled =
+//                initialEndTime <= 0 && selectedStartTime > 0 && checkBrackout()
+//            buttonBreakInTime.isEnabled = initialBreakInTime <= 0 && selectedStartTime > 0
+//            buttonBreakOutTime.isEnabled = initialBreakOutTime <= 0 && selectedBreakInTime > 0
+//        }
+        buttonEndTime.isEnabled=selectedStartTime>0 && checkBrackout()
+        buttonBreakOutTime.isEnabled = initialBreakInTime>0 || selectedBreakInTime>0
         getTimeCalculate()
     }
 
@@ -231,9 +236,19 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         val timeRequest = PauseTimeRequest()
         if (selectedBreakInTime > 0 && selectedBreakOutTime == 0L) {
             timeRequest.startTime = selectedBreakInTime
+            for (it in mPauseTimeRequestList) {
+                if (it.startTime != null && it.endTime == null) {
+                    mPauseTimeRequestList.remove(it)
+                }
+            }
             mPauseTimeRequestList.add(timeRequest)
         } else if (selectedBreakOutTime > 0 && selectedBreakInTime == 0L) {
             timeRequest.endTime = selectedBreakOutTime
+            for (it in mPauseTimeRequestList) {
+                if (it.endTime != null && it.startTime == null) {
+                    mPauseTimeRequestList.remove(it)
+                }
+            }
             mPauseTimeRequestList.add(timeRequest)
         } else if (selectedBreakInTime > 0 && selectedBreakOutTime > 0) {
             for (it in mPauseTimeRequestList) {
@@ -279,7 +294,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             totalPauseTimeDurationTextView?.append("$pauseTimeInStr - $pauseTimeOutStr")
         }
         buttonBreakInTime.isEnabled = true
-        buttonBreakOutTime.isEnabled = false
+//        buttonBreakOutTime.isEnabled = false
         buttonBreakInTime.text = getString(R.string.pause)
     }
 
@@ -315,7 +330,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         val time = DateUtils.convertDateStringToTime(PATTERN_API_RESPONSE, dateStamp)
         if (time.isNotEmpty()) {
             buttonTime.text = time
-            buttonTime.isEnabled = false
+//            buttonTime.isEnabled = false
             val currentDateString =
                 DateUtils.convertUTCDateStringToLocalDateString(PATTERN_API_RESPONSE, dateStamp)
             milliseconds =
@@ -329,6 +344,11 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         if (selectedEndTime > 0) {
             if (!isFutureTime(selectedStartTime, selectedEndTime)) {
                 showErrorDialog(getString(R.string.work_start_less_work_end_warning_message))
+                return
+            }
+        }else if (selectedBreakInTime>0){
+            if (!isFutureTime(selectedStartTime, selectedBreakInTime)) {
+                showErrorDialog(getString(R.string.work_start_less_work_break_warning_message))
                 return
             }
         }
@@ -349,7 +369,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             buttonEndTime.text = DateUtils.convertMillisecondsToTimeString(selectedEndTime)
             updateButtonsUI()
             buttonBreakInTime.isEnabled = true
-            buttonBreakOutTime.isEnabled = false
+//            buttonBreakOutTime.isEnabled = false
             buttonBreakInTime.text = getString(R.string.pause)
             isDataSave(false)
         }
@@ -357,6 +377,17 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
 
     private fun onSelectBreakInTime(calendar: Calendar) {
         val selectedBreakInTime = calendar.timeInMillis
+        if (selectedEndTime > 0) {
+            if (!isFutureTime(selectedBreakInTime, selectedEndTime)) {
+                showErrorDialog(getString(R.string.break_start_less_end_warning_message))
+                return
+            }
+        }else if (selectedStartTime > 0) {
+            if (isFutureTime(selectedBreakInTime, selectedStartTime)) {
+                showErrorDialog(getString(R.string.break_start_greater_start_warning_message))
+                return
+            }
+        }
         selectedBreakOutTime = 0
         buttonBreakOutTime.text = getString(R.string.resume)
         this.selectedBreakInTime = selectedBreakInTime

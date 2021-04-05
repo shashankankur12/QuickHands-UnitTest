@@ -491,7 +491,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     }
 
     private fun showViewScheduleDialog() {
-        CustomeDialog.showWorkScheduleDialog(activity, resources,"Lead Notes ", selectedDate)
+        CustomerDialog.showWorkScheduleDialog(activity, resources,"Lead Notes ", selectedDate)
     }
 
     /** Calendar Listeners */
@@ -532,7 +532,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             return
         }
 
-        CustomeDialog.showLeadNoteDialog(activity, "Lead Notes ", item.notesForLumper,notes, resources.getString(R.string.individual_note), resources.getString(R.string.group_notes))
+        CustomerDialog.showLeadNoteDialog(activity, "Lead Notes ", item.notesForLumper,notes, resources.getString(R.string.individual_note), resources.getString(R.string.group_notes))
 //        CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), notes, fragmentActivity!!)
     }
 

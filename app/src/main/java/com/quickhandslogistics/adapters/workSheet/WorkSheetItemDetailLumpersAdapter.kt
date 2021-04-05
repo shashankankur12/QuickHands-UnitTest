@@ -105,7 +105,7 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
                     }
 
                     var mBreakTimeList = getBreakTimeList(timingDetail.breakTimes)
-                    if (mBreakTimeList.isNotEmpty()) {
+                    if (mBreakTimeList.isNotEmpty() && checkStartEndTime(mBreakTimeList)) {
                         showPauseTimeDuration(mBreakTimeList, textViewBreakTime)
                     } else textViewBreakTime.text = AppConstant.NOTES_NOT_AVAILABLE
 
@@ -207,6 +207,17 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
                 }
             }
         }
+    }
+
+    private fun checkStartEndTime(mBreakTimeList: ArrayList<PauseTimeRequest>): Boolean {
+        var isValid = true
+        mBreakTimeList.forEach {
+            if (it.startTime == 0L || it.endTime == 0L) {
+                isValid = false
+                return@forEach
+            }
+        }
+        return isValid
     }
 
     fun updateList(lumperList: ArrayList<LumperAttendanceData>?, timingsData: LinkedHashMap<String, LumpersTimeSchedule>, status: String? = "", tempLumperIds: ArrayList<String>, totalCases: String?, isCompleted: Boolean?) {

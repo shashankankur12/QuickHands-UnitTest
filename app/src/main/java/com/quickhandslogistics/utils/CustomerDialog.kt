@@ -1,5 +1,6 @@
 package com.quickhandslogistics.utils
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.res.Resources
@@ -24,7 +25,8 @@ import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
 import java.io.File
 import java.util.*
 
-object CustomeDialog : AppConstant {
+@SuppressLint("StaticFieldLeak")
+object CustomerDialog : AppConstant {
     private var mActivity: Activity? = null
     fun getDialog(view: Int, activity: Activity?): Dialog {
         mActivity = activity

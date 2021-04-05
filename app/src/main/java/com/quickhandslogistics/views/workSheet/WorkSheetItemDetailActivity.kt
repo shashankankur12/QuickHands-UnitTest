@@ -332,7 +332,10 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         if (isChanged) isDataSave(false) else isDataSave(true)
     }
 
-    override fun removeLumperFromSchedule(id: String) {
-        workSheetItemDetailPresenter.removeLumper(id, workItemId)
+    override fun removeLumperFromSchedule(
+        lumperIds: ArrayList<String>,
+        tempLumperIds: ArrayList<String>
+    ) {
+        workSheetItemDetailPresenter.removeLumper(lumperIds,tempLumperIds , workItemId)
     }
 }

@@ -66,6 +66,7 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
 
             constraintLayoutCall.setOnClickListener(this)
             itemView.setOnClickListener(this)
+            constraintLayoutMessage.setOnClickListener(this)
         }
 
         override fun onClick(view: View?) {
@@ -79,6 +80,12 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
                         val lumperData = getItem(adapterPosition)
                         lumperData.phone?.let { phone ->
                             adapterItemClickListener.onPhoneViewClick(textViewLumperName.text.toString(), phone)
+                        }
+                    }
+                    constraintLayoutMessage.id -> {
+                        val lumperData = getItem(adapterPosition)
+                        lumperData.email?.let { email ->
+                            adapterItemClickListener.message(textViewLumperName.text.toString(), email)
                         }
                     }
                     else -> {

@@ -3,9 +3,7 @@ package com.quickhandslogistics.views.addContainer
 
 import android.app.Dialog
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,7 +17,7 @@ import com.quickhandslogistics.utils.AppConstant.Companion.WORKSHEET_WORK_ITEM_L
 import com.quickhandslogistics.utils.AppConstant.Companion.WORKSHEET_WORK_ITEM_OUTBOUND
 import com.quickhandslogistics.utils.ConnectionDetector
 import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.CustomeDialog
+import com.quickhandslogistics.utils.CustomerDialog
 import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
@@ -276,7 +274,7 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
                 ConnectionDetector.createSnackBar(activity)
                 return
             }
-            CustomeDialog.showAddNoteDialog(activity, "ADD", outBoundList, liveLoadList, dropOffList, object : CustomeDialog.IDialogOnClick {
+            CustomerDialog.showAddNoteDialog(activity, "ADD", outBoundList, liveLoadList, dropOffList, object : CustomerDialog.IDialogOnClick {
                 override fun onSendRequest(dialog: Dialog) {
                     addContainerPresenter.addTodayWorkContainer(outBoundList, liveLoadList, dropOffList)
                     dialog.dismiss()

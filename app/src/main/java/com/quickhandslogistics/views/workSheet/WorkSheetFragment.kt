@@ -344,7 +344,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     }
 
     override fun showGroupNote(noteForCustomer: String, noteForQHL: String) {
-        CustomeDialog.showLeadNoteDialog(activity, "Group Notes ",noteForCustomer , noteForQHL, resources.getString(R.string.notes_for_customer), resources.getString(R.string.notes_for_qhl))
+        CustomerDialog.showLeadNoteDialog(activity, "Group Notes ",noteForCustomer , noteForQHL, resources.getString(R.string.notes_for_customer), resources.getString(R.string.notes_for_qhl))
 
     }
 
@@ -374,7 +374,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
                 }
 
                 if (customerGroupNote!=null&& (customerGroupNote.first.first.size>0 ||customerGroupNote.second.size>0|| customerGroupNote.third.size>0|| customerGroupNote.first.second.size>0))
-                CustomeDialog.showGroupNoteDialog(activity, "Customer Notes :", customerGroupNote)
+                CustomerDialog.showGroupNoteDialog(activity, "Customer Notes :", customerGroupNote)
 
             }
 

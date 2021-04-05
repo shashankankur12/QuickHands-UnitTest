@@ -370,7 +370,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     override fun onNotesItemClick(notes: String?) {
         notes?.let {
 //            CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), notes, activity)
-            CustomeDialog.showNoteDialog(activity,getString(R.string.note),notes)
+            CustomerDialog.showNoteDialog(activity,getString(R.string.note),notes)
         }
     }
 

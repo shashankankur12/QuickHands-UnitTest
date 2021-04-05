@@ -17,7 +17,10 @@ import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.UIUtils
 import kotlinx.android.synthetic.main.item_customer_contact_layout.view.*
 
-class QhlContactAdapter(val resources: Resources, var adapterItemClickListener: QhlContactContract.View.OnAdapterItemClickListener) : Adapter<QhlContactAdapter.ViewHolder>() {
+class QhlContactAdapter(
+    val resources: Resources,
+    var adapterItemClickListener: QhlContactContract.View.OnAdapterItemClickListener
+) : Adapter<QhlContactAdapter.ViewHolder>() {
     private var items: ArrayList<EmployeeData> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -56,13 +59,16 @@ class QhlContactAdapter(val resources: Resources, var adapterItemClickListener: 
             val leadName = String.format("%s %s", item.firstName, item.lastName)
             val shift =
                 if (!item.shift.isNullOrEmpty()) item.shift?.capitalize() else resources.getString(R.string.na)
+            val dept =
+                if (!item.department.isNullOrEmpty()) UIUtils.getDisplayEmployeeDepartment(item) else resources.getString(
+                    R.string.na
+                )
             textViewCustomerName.text =
                 if (!leadName.isNullOrEmpty()) leadName.capitalize() else resources.getString(R.string.na)
             textViewEmployeeRole.text =
                 if (!item.role.isNullOrEmpty()) item.role?.capitalize() else resources.getString(R.string.na)
             textViewEmployeeTitle.text =
-                if (!item.department.isNullOrEmpty()) item.department?.toLowerCase()
-                    ?.capitalize() else resources.getString(R.string.na)
+                String.format(resources.getString(R.string.department_noraml), dept)
             textViewEmployeeShift.text =
                 String.format(resources.getString(R.string.shift_normal), shift)
             textViewEmail.text =

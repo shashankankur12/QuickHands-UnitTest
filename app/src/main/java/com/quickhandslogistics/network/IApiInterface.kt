@@ -74,9 +74,13 @@ interface IApiInterface {
     @GET("schedule/work-item/{workItemId}")
     fun getWorkItemContainerDetail(@Header("Authorization") auth: String, @Path("workItemId") workItemId: String): Call<WorkItemDetailAPIResponse>
 
-    @PUT("schedule/lumper")
+    @PUT("schedule/lumpers")
     fun assignLumpers(
         @Header("Authorization") auth: String, @Query("containerId") containerId: String, @Body request: AssignLumpersRequest
+    ): Call<BaseResponse>
+
+    @HTTP(method = "DELETE", path = "schedule/lumpers", hasBody = true)
+    fun removeLumperFromWork(@Header("Authorization") auth: String, @Query("containerId") containerId: String, @Body request: AssignLumpersRequest
     ): Call<BaseResponse>
 
     @POST("customer/schedules/add")

@@ -44,7 +44,6 @@
         android:text="Title"
         android:textColor="@color/textBlack"
         app:emptyDataVisibility="empty_gone"
-        android:textAlignment="center"
         app:layout_constraintStart_toEndOf="@+id/textViewEmployeeRole"
         app:layout_constraintEnd_toStartOf="@id/textViewEmployeeShift"
         app:layout_constraintTop_toBottomOf="@+id/textViewCustomerName" />
@@ -56,7 +55,6 @@
         android:layout_marginTop="@dimen/_1sdp"
         android:layout_marginEnd="@dimen/_5sdp"
         android:text="Shift"
-        android:textAlignment="center"
         android:textColor="@color/textBlack"
         app:emptyDataVisibility="empty_gone"
         app:layout_constraintStart_toEndOf="@+id/textViewEmployeeTitle"

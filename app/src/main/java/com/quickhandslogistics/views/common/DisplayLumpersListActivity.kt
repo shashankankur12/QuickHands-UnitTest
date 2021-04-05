@@ -110,4 +110,7 @@ class DisplayLumpersListActivity : BaseActivity(), View.OnClickListener, TextWat
             }
         })
     }
+
+    override fun message(name: String, mNumber: String) {
+    }
 }

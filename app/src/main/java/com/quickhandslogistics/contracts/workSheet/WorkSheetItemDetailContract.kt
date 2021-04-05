@@ -21,11 +21,7 @@ class WorkSheetItemDetailContract {
             onFinishedListener: OnFinishedListener
         )
 
-        fun removeLumper(
-            lumperId: String,
-            workItemId: String,
-            onFinishedListener: OnFinishedListener
-        )
+        fun removeLumper(lumperIds: ArrayList<String>, tempLumperIds: ArrayList<String>, workItemId: String, onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(response: WorkItemDetailAPIResponse)
@@ -53,7 +49,7 @@ class WorkSheetItemDetailContract {
             fun fetchWorkItemDetail(changeResultCode: Boolean)
             fun updateWorkItemNotes(notesQHLCustomer: String, notesQHL: String)
             fun dataChanged(isChanged: Boolean)
-            fun removeLumperFromSchedule(id: String)
+            fun removeLumperFromSchedule(lumperIds: ArrayList<String>, tempLumperIds: ArrayList<String>)
         }
     }
 
@@ -61,6 +57,6 @@ class WorkSheetItemDetailContract {
         fun fetchWorkItemDetail(workItemId: String)
         fun changeWorkItemStatus(workItemId: String, status: String)
         fun updateWorkItemNotes(workItemId: String, notesQHLCustomer: String, notesQHL: String)
-        fun removeLumper(lumperId: String, workItemId: String)
+        fun removeLumper(lumperIds: ArrayList<String>, tempLumperIds: ArrayList<String>, workItemId: String)
     }
 }

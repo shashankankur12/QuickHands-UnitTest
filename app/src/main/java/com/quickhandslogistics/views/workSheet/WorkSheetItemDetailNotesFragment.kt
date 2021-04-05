@@ -20,11 +20,10 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.workSheet.WorkSheetDetailsNoteImageAdapter
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailNoteImageContract
-import com.quickhandslogistics.data.schedule.ScheduleWorkItem
 import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.ConnectionDetector
-import com.quickhandslogistics.utils.CustomeDialog
+import com.quickhandslogistics.utils.CustomerDialog
 import com.quickhandslogistics.utils.PermissionUtil
 import com.quickhandslogistics.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_work_sheet_item_detail_notes.*
@@ -261,6 +260,6 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
     }
 
     override fun onImageClick(imageUrl: String) {
-       CustomeDialog.openZoomImageDialog(imageUrl,activity!!)
+       CustomerDialog.openZoomImageDialog(imageUrl,activity!!)
     }
 }

@@ -65,6 +65,7 @@
     <string name="day">Day</string>
     <string name="department">Department</string>
     <string name="department_lead">Dept :</string>
+    <string name="department_noraml">Dept: %s</string>
     <string name="department_full">Department : <![CDATA[<b> %s </b>]]></string>
     <string name="title_lead">Title :</string>
     <string name="dept_bold"><![CDATA[<b>Dept: </b>]]></string>
@@ -304,7 +305,7 @@
     <string name="empty_containers_list_unfinished_info_message">There are no Unfinished containers.</string>
     <string name="empty_containers_list_not_done_info_message">There are no Not-Done containers.</string>
     <string name="empty_lumper_list_message">There are no lumpers assigned to this shift/department. Please contact your District Manager.</string>
-    <string name="empty_contact_list_message">There are no contact available. Please contact in QHL Office.</string>
+    <string name="empty_contact_list_message">There are no contact.\n Please inform your district manager.</string>
 
     <!--Alert Messages-->
     <string name="are_you_sure_alert_message">Are you sure?</string>
@@ -396,10 +397,13 @@
 
     <!--Lumper Timing Warnings-->
     <string name="work_start_less_work_end_warning_message">Work\'s Start Time should be less than End Time</string>
+    <string name="work_start_less_work_break_warning_message">Work\'s Start Time should be less than Break\'s Start time Time</string>
     <string name="work_end_greater_work_start_warning_message">Work\'s End Time should be greater than Work\'s Start Time</string>
     <string name="work_end_greater_break_start_warning_message">Work\'s End Time should be greater than Break\'s Start Time</string>
     <string name="break_start_greater_work_start_warning_message">Break\'s Start Time should be greater than Work\'s Start Time</string>
     <string name="break_start_less_break_end_warning_message">Break\'s Start Time should be less than Break\'s End Time</string>
+    <string name="break_start_less_end_warning_message">Break\'s Start Time should be less than End Time</string>
+    <string name="break_start_greater_start_warning_message">Break\'s Start Time should be greater than Start Time</string>
     <string name="break_start_less_work_end_warning_message">Break\'s Start Time should be less than Work\'s End Time</string>
     <string name="break_end_greater_work_start_warning_message">Break\'s End Time should be greater than Work\'s Start Time</string>
     <string name="break_end_greater_break_start_warning_message">Break\'s End Time should be greater than Break\'s Start Time</string>

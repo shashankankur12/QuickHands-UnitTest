@@ -3,6 +3,7 @@ package com.quickhandslogistics.models.workSheet
 import android.util.Log
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.data.BaseResponse
+import com.quickhandslogistics.data.schedule.AssignLumpersRequest
 import com.quickhandslogistics.data.schedule.WorkItemDetailAPIResponse
 import com.quickhandslogistics.data.workSheet.ChangeStatusRequest
 import com.quickhandslogistics.data.workSheet.UpdateNotesRequest
@@ -66,18 +67,20 @@ class WorkSheetItemDetailModel : WorkSheetItemDetailContract.Model {
         })
     }
 
-    override fun removeLumper(lumperId: String, workItemId: String, onFinishedListener: WorkSheetItemDetailContract.Model.OnFinishedListener) {
-//        DataManager.getService().updateWorkItemNotes(getAuthToken(), workItemId, lumperid).enqueue(object : Callback<BaseResponse> {
-//            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
-//                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
-//                    onFinishedListener.onSuccessChangeStatus(workItemId)
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-//                Log.e(WorkSheetItemDetailModel::class.simpleName, t.localizedMessage!!)
-//                onFinishedListener.onFailure()
-//            }
-//        })
+    override fun removeLumper(lumperIds: ArrayList<String>, tempLumperIds: ArrayList<String>, workItemId: String, onFinishedListener: WorkSheetItemDetailContract.Model.OnFinishedListener) {
+
+        val request = AssignLumpersRequest(lumperIds, tempLumperIds)
+        DataManager.getService().removeLumperFromWork(getAuthToken(), workItemId, request).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessChangeStatus(workItemId)
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Log.e(WorkSheetItemDetailModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
     }
 }

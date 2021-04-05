@@ -42,7 +42,6 @@
         android:layout_marginTop="@dimen/_1sdp"
         android:layout_marginEnd="@dimen/_2sdp"
         android:text="Title"
-        android:paddingHorizontal="@dimen/_12sdp"
         android:textColor="@color/textBlack"
         app:emptyDataVisibility="empty_gone"
         app:layout_constraintStart_toEndOf="@+id/textViewEmployeeRole"
