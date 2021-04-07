@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.addContainer.AddContainerContract
+import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.addContainer.ContainerDetails
 import com.quickhandslogistics.models.addContainer.AddContainerModel
@@ -15,9 +16,14 @@ class AddContainerPresenter(private var addContainerContractView: AddContainerCo
     private val addContainerModel = AddContainerModel()
     
     /** View Listeners */
-    override fun addTodayWorkContainer(uploadContainer: ArrayList<ContainerDetails>, liveLoadContainer: ArrayList<ContainerDetails>, dropOffContainer: ArrayList<ContainerDetails>) {
+    override fun addTodayWorkContainer(
+        uploadContainer: ArrayList<ContainerDetails>,
+        liveLoadContainer: ArrayList<ContainerDetails>,
+        dropOffContainer: ArrayList<ContainerDetails>,
+        scheduleNote: String
+    ) {
         addContainerContractView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        addContainerModel.addTodayWorkContainer(uploadContainer, liveLoadContainer, dropOffContainer, this)
+        addContainerModel.addTodayWorkContainer(scheduleNote,uploadContainer, liveLoadContainer, dropOffContainer, this)
     }
 
     override fun onDestroy() {
@@ -25,9 +31,12 @@ class AddContainerPresenter(private var addContainerContractView: AddContainerCo
     }
 
     /** Model Result Listeners */
-    override fun onSuccessAddTodayWorkContainer() {
+    override fun onSuccessAddTodayWorkContainer(response: BaseResponse?) {
         addContainerContractView?.hideProgressDialog()
-        addContainerContractView?.addWorkScheduleFinished()
+        response?.let {
+            addContainerContractView?.addWorkScheduleFinished(it.message)
+        }
+
     }
 
     override fun onFailure(message: String) {

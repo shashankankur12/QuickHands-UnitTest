@@ -12,8 +12,7 @@ class ContainerDetails() : Parcelable {
     @Expose
     var startTime: String? = null
 
-    @SerializedName("workItemType")
-    @Expose
+    @Transient
     var workItemType: String? = null
 
     @SerializedName("sequence")
@@ -24,22 +23,11 @@ class ContainerDetails() : Parcelable {
     @Expose
     var numberOfDrops: String? = null
 
-    @SerializedName("isDisabled")
-    @Expose
-    var isDisabled: Boolean? = null
-
-    @SerializedName("readonlypermission")
-    @Expose
-    var readonlypermission: Boolean? = null
-
-
     constructor(parcel: Parcel) : this() {
         startTime = parcel.readString()
         workItemType = parcel.readString()
         sequence = parcel.readString()
         numberOfDrops = parcel.readString()
-        isDisabled = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        readonlypermission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
 
     }
 
@@ -48,8 +36,6 @@ class ContainerDetails() : Parcelable {
         parcel.writeString(workItemType)
         parcel.writeString(sequence)
         parcel.writeString(numberOfDrops)
-        parcel.writeValue(isDisabled)
-        parcel.writeValue(readonlypermission)
     }
 
     override fun describeContents(): Int {

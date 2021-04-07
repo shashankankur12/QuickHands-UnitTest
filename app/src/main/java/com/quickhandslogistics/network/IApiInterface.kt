@@ -83,7 +83,7 @@ interface IApiInterface {
     fun removeLumperFromWork(@Header("Authorization") auth: String, @Query("containerId") containerId: String, @Body request: AssignLumpersRequest
     ): Call<BaseResponse>
 
-    @POST("customer/schedules/add")
+        @POST("employees/lead/add-schedule")
     fun addSchedulesWorkItem(@Header("Authorization") auth: String, @Body request: AddContainerRequest
     ): Call<BaseResponse>
     /////////////////////////////////////////////////////////////

@@ -225,6 +225,30 @@
                 android:nestedScrollingEnabled="false"
                 app:layout_constraintTop_toBottomOf="@+id/layoutDrop" />
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutSchedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/schedule_item_background"
+                android:padding="@dimen/_10sdp"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewDrop">
+
+                <TextView
+                    android:id="@+id/headerScheduleNote"
+                    style="@style/titleTextViewTheme"
+                    android:text="@string/schedule_note_header"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <EditText
+                    android:id="@+id/editTextScheduleNote"
+                    style="@style/notesEditTextTheme"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/headerScheduleNote"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
@@ -59,7 +60,7 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
 
         private val textViewLumperName: TextView = view.textViewLumperName
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
-        private val linearLayoutLumperTime: LinearLayout = view.linearLayoutLumperTime as LinearLayout
+        private val linearLayoutLumperTime: ConstraintLayout = view.linearLayoutLumperTime as ConstraintLayout
         private val textViewEmployeeId: CustomTextView = view.textViewEmployeeId
         private val textViewAddTime: TextView = view.textViewAddTime
         private val textViewWorkTime: TextView = view.textViewWorkTime
@@ -90,7 +91,7 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
                     val startTime = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.startTime)
                     val endTime = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.endTime)
                     if (startTime.isNotEmpty() && endTime.isNotEmpty())
-                        textViewWorkTime.text = String.format("%s - %s : %s", startTime, endTime, DateUtils.getDateTimeCalculeted(timingDetail.startTime!!, timingDetail.endTime!!))
+                        textViewWorkTime.text = String.format("%s - %s ; %s", startTime, endTime, DateUtils.getDateTimeCalculeted(timingDetail.startTime!!, timingDetail.endTime!!))
                     else textViewWorkTime.text = String.format("%s - %s", if (startTime.isNotEmpty()) startTime else AppConstant.NOTES_NOT_AVAILABLE,
                         if (endTime.isNotEmpty()) endTime else AppConstant.NOTES_NOT_AVAILABLE
                     )
@@ -112,7 +113,7 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
                     if (!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt() != 0) {
                         if (!totalCases.isNullOrEmpty() && isNumeric(totalCases)) {
                             val parcetage = String.format("%.2f", calculatePercent(timingDetail.partWorkDone!!, totalCases)) + "%"
-                            textViewWorkDone.text = String.format("%s / %s : %s", timingDetail.partWorkDone, totalCases, parcetage) }
+                            textViewWorkDone.text = String.format("%s / %s ; %s", timingDetail.partWorkDone, totalCases, parcetage) }
                     } else {
                         textViewWorkDone.text = AppConstant.NOTES_NOT_AVAILABLE
                     }

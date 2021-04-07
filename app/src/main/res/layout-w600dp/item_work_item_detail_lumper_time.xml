@@ -59,7 +59,7 @@
         app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
         app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayoutLumperTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -72,95 +72,100 @@
         app:layout_constraintStart_toEndOf="@id/circleImageViewProfile"
         app:layout_constraintTop_toBottomOf="@id/textViewEmployeeId">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/workTimeHeader"
+            style="@style/titleVerySmallTextViewTheme"
+            android:layout_width="@dimen/_60ssp"
+            android:text="@string/work_time_s"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewWorkTime"
+            />
+
+        <TextView
+            android:id="@+id/textViewWorkTime"
+            android:layout_width="0dp"
+            style="@style/valuesSmallTextViewTheme"
+            android:text="NA - NA"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/workTimeHeader"
+            app:layout_constraintEnd_toStartOf="@+id/edit_icon"/>
+        <ImageView
+            android:id="@+id/edit_icon"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal">
+            android:src="@drawable/ic_edit"
+            android:layout_marginEnd="@dimen/_5sdp"
+            app:tint="@color/buildingTitle"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textViewWorkTime"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-            <TextView
-                style="@style/titleVerySmallTextViewTheme"
-                android:layout_width="0dp"
-                android:text="@string/work_time_s"
-                android:layout_weight=".5" />
+        <TextView
+            android:id="@+id/breakTimeHeader"
+            style="@style/titleVerySmallTextViewTheme"
+            android:layout_width="@dimen/_60ssp"
+            android:text="@string/break_time_s"
 
-            <TextView
-                android:id="@+id/textViewWorkTime"
-                android:layout_weight="1.5"
-                android:layout_width="0dp"
-                style="@style/valuesSmallTextViewTheme"
-                android:text="NA - NA" />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_edit"
-                android:layout_marginEnd="@dimen/_5sdp"
-                app:tint="@color/buildingTitle" />
-        </LinearLayout>
+            android:layout_marginTop="@dimen/_2sdp"
+            app:layout_constraintTop_toBottomOf="@+id/workTimeHeader"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewBreakTime"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:orientation="horizontal">
-            <TextView
-                style="@style/titleVerySmallTextViewTheme"
-                android:layout_width="0dp"
-                android:text="@string/break_time_s"
-                android:layout_weight=".5" />
+        <TextView
+            android:id="@+id/textViewBreakTime"
+            android:layout_width="0dp"
+            style="@style/valuesSmallTextViewTheme"
+            android:text="NA - NA"
+            android:layout_marginTop="@dimen/_2sdp"
+            app:layout_constraintTop_toBottomOf="@+id/workTimeHeader"
+            app:layout_constraintStart_toEndOf="@+id/breakTimeHeader"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-            <TextView
-                android:id="@+id/textViewBreakTime"
-                android:layout_width="0dp"
-                style="@style/valuesSmallTextViewTheme"
-                android:layout_weight="1.5"
-                android:text="NA - NA" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/waitingTimeHeader"
+            style="@style/titleVerySmallTextViewTheme"
+            android:layout_width="@dimen/_60ssp"
+            android:text="@string/waiting_time_s"
+            android:layout_marginTop="@dimen/_2sdp"
+            app:layout_constraintTop_toBottomOf="@+id/breakTimeHeader"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewWaitingTime"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:weightSum="2"
-            android:orientation="horizontal">
+        <TextView
+            android:id="@+id/textViewWaitingTime"
+            android:layout_width="0dp"
+            style="@style/valuesSmallTextViewTheme"
+            android:text="NA"
+            android:layout_marginTop="@dimen/_2sdp"
+            app:layout_constraintTop_toBottomOf="@+id/breakTimeHeader"
+            app:layout_constraintStart_toEndOf="@+id/waitingTimeHeader"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-            <TextView
-                style="@style/titleVerySmallTextViewTheme"
-                android:layout_width="0dp"
-                android:text="@string/waiting_time_s"
-                android:layout_weight="0.5"/>
+        <TextView
+            android:id="@+id/workDoneHeader"
+            style="@style/titleVerySmallTextViewTheme"
+            android:layout_width="@dimen/_60ssp"
+            android:text="@string/works_done_s"
+            android:layout_marginTop="@dimen/_2sdp"
+            app:layout_constraintTop_toBottomOf="@+id/waitingTimeHeader"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewWorkDone"/>
 
-            <TextView
-                android:id="@+id/textViewWaitingTime"
-                android:layout_weight="1.5"
-                android:layout_width="0dp"
-                style="@style/valuesSmallTextViewTheme"
-                android:text="NA" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/textViewWorkDone"
+            style="@style/valuesSmallTextViewTheme"
+            android:layout_width="0dp"
+            android:text="NA"
+            android:layout_marginTop="@dimen/_2sdp"
+            app:layout_constraintTop_toBottomOf="@+id/waitingTimeHeader"
+            app:layout_constraintStart_toEndOf="@+id/workDoneHeader"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/titleVerySmallTextViewTheme"
-                android:layout_width="0dp"
-                android:text="@string/works_done_s"
-                android:layout_weight="0.5"/>
-
-            <TextView
-                android:id="@+id/textViewWorkDone"
-                style="@style/valuesSmallTextViewTheme"
-                android:layout_weight="1.5"
-                android:layout_width="0dp"
-                android:text="NA" />
-        </LinearLayout>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/textViewAddTime"

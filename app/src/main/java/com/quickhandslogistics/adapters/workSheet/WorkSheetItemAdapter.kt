@@ -81,7 +81,7 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
 
             textViewDoor.text = String.format(resources.getString(R.string.door_s), if (!doorValue.isNullOrEmpty()) doorValue else "---")
             textViewContainer.text = String.format(resources.getString(R.string.container_no_s), if (!containerNumberValue.isNullOrEmpty()) containerNumberValue else "---")
-            if (!workItemDetail.schedule?.scheduleNote.isNullOrEmpty()){
+            if (workItemDetail.schedule!=null){
                 textViewWorkSheetNote.visibility=View.VISIBLE
                 textViewWorkSheetNote.text=ScheduleUtils.scheduleTypeNote(workItemDetail.schedule, resources)
             }else textViewWorkSheetNote.visibility=View.GONE

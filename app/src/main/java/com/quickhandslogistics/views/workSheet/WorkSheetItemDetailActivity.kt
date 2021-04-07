@@ -191,12 +191,10 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         this.tempLumperIds = tempLumperIds
         textViewStartTime.text = String.format(getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(
             workItemDetail.startTime))
-        if (!workItemDetail.schedule?.scheduleNote.isNullOrEmpty() && !workItemDetail.schedule?.scheduleNote.equals("NA")) {
-            textViewWorkSheetNote1.isEnabled = true
+        if (workItemDetail.schedule!=null) {
             textViewWorkSheetNote1.text = ScheduleUtils.scheduleTypeNote(workItemDetail.schedule, resources)
-        } else {
-            textViewWorkSheetNote1.isEnabled = false
         }
+        textViewWorkSheetNote1.isEnabled=!workItemDetail.schedule?.scheduleNote.isNullOrEmpty() && !workItemDetail.schedule?.scheduleNote.equals("NA")
 
         when (workItemTypeDisplayName) {
             getString(R.string.drops) -> textViewDropItems.text = String.format(getString(R.string.no_of_drops_s), workItemDetail.quantity)
@@ -332,10 +330,15 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         if (isChanged) isDataSave(false) else isDataSave(true)
     }
 
-    override fun removeLumperFromSchedule(
-        lumperIds: ArrayList<String>,
-        tempLumperIds: ArrayList<String>
-    ) {
-        workSheetItemDetailPresenter.removeLumper(lumperIds,tempLumperIds , workItemId)
+    override fun removeLumperFromSchedule(lumperIds: ArrayList<String>, tempLumperIds: ArrayList<String>) {
+
+        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.remove_lumper_warning),activity, object : CustomDialogWarningListener {
+                override fun onConfirmClick() {
+                    workSheetItemDetailPresenter.removeLumper(lumperIds, tempLumperIds, workItemId)
+                }
+
+                override fun onCancelClick() {
+                }
+            })
     }
 }

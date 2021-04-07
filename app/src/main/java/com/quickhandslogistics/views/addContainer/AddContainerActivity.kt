@@ -12,13 +12,10 @@ import com.quickhandslogistics.adapters.addContainer.AddContainerAdapter
 import com.quickhandslogistics.contracts.addContainer.AddContainerContract
 import com.quickhandslogistics.data.addContainer.ContainerDetails
 import com.quickhandslogistics.presenters.addContainer.AddContainerPresenter
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.utils.AppConstant.Companion.WORKSHEET_WORK_ITEM_INBOUND
 import com.quickhandslogistics.utils.AppConstant.Companion.WORKSHEET_WORK_ITEM_LIVE
 import com.quickhandslogistics.utils.AppConstant.Companion.WORKSHEET_WORK_ITEM_OUTBOUND
-import com.quickhandslogistics.utils.ConnectionDetector
-import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.CustomerDialog
-import com.quickhandslogistics.utils.SnackBarFactory
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.activity_add_container.*
@@ -274,9 +271,10 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
                 ConnectionDetector.createSnackBar(activity)
                 return
             }
+            val scheduleNote=editTextScheduleNote.text.toString()
             CustomerDialog.showAddNoteDialog(activity, "ADD", outBoundList, liveLoadList, dropOffList, object : CustomerDialog.IDialogOnClick {
                 override fun onSendRequest(dialog: Dialog) {
-                    addContainerPresenter.addTodayWorkContainer(outBoundList, liveLoadList, dropOffList)
+                    addContainerPresenter.addTodayWorkContainer(outBoundList, liveLoadList, dropOffList,scheduleNote)
                     dialog.dismiss()
                 }
             })
@@ -299,8 +297,6 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
                 }
                 textViewAddOutBound.id -> {
                     val containerDetails = ContainerDetails()
-                    containerDetails.isDisabled = true
-                    containerDetails.readonlypermission = true
                     containerDetails.workItemType = WORKSHEET_WORK_ITEM_OUTBOUND
                     outBoundList.add(containerDetails)
                     addOutBoundContainerAdapter.addContainerData(
@@ -311,8 +307,6 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
                 textViewAddLiveLode.id -> {
 
                     val containerDetails = ContainerDetails()
-                    containerDetails.isDisabled = true
-                    containerDetails.readonlypermission = true
                     containerDetails.workItemType = WORKSHEET_WORK_ITEM_LIVE
                     liveLoadList.add(containerDetails)
                     addLiveContainerAdapter.addContainerData(
@@ -323,8 +317,6 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
                 }
                 textViewAddDrop.id -> {
                     val containerDetails = ContainerDetails()
-                    containerDetails.isDisabled = true
-                    containerDetails.readonlypermission = true
                     containerDetails.workItemType = WORKSHEET_WORK_ITEM_INBOUND
                     dropOffList.add(containerDetails)
                     addDropContainerAdapter.addContainerData(
@@ -346,10 +338,16 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
     }
 
-    override fun addWorkScheduleFinished() {
-        setResult(RESULT_OK)
-        isDataSave(true)
-        onBackPressed()
+    override fun addWorkScheduleFinished(message: String) {
+        CustomProgressBar.getInstance().showSuccessDialog(message, activity, object :
+            CustomDialogListener {
+            override fun onConfirmClick() {
+                setResult(RESULT_OK)
+                isDataSave(true)
+                onBackPressed()
+            }
+        })
+
     }
 
     override fun showLoginScreen() {
