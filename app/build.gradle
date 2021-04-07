@@ -5,6 +5,15 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
+    signingConfigs {
+        staging {
+            storeFile file('../staging_keystore.jks')
+            storePassword STAGING_KEYSTORE_PASSWORD
+            keyAlias STAGING_KEY_ALIAS_NAME
+            keyPassword STAGING_KEY_ALIAS_PASSWORD
+        }
+    }
+
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
     defaultConfig {
@@ -12,20 +21,11 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 2
-        versionName "1.0.33"
+        versionName "1.0.34"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         lintOptions {
             checkReleaseBuilds false
-        }
-    }
-
-    signingConfigs {
-        staging {
-            storeFile file('../staging_keystore.jks')
-            storePassword STAGING_KEYSTORE_PASSWORD
-            keyAlias STAGING_KEY_ALIAS_NAME
-            keyPassword STAGING_KEY_ALIAS_PASSWORD
         }
     }
 
@@ -36,17 +36,25 @@ android {
                 outputFileName = "quick_hands_${flavor}_${versionName}.apk"
             }
         }
-        debug {
-            buildConfigField "String", "API_BASE_URL", DEBUG_API_URL
+
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "default"
+    productFlavors {
+        devlopment {
+            buildConfigField "String", "API_BASE_URL", DEV_API_URL
+        }
+        qa {
+            buildConfigField "String", "API_BASE_URL", QA_API_URL
         }
         staging {
             buildConfigField "String", "API_BASE_URL", STAGING_API_URL
             signingConfig signingConfigs.staging
-        }
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "API_BASE_URL", API_URL
         }
     }
 

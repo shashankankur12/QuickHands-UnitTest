@@ -283,6 +283,7 @@
     <string name="add_group_note_message">Add a Note for this group of container</string>
     <string name="qhl_office">QHL Office</string>
     <string name="na">N/A</string>
+    <string name="added">(Added)</string>
 
     <!--No Record Messages-->
     <string name="empty_add_work_item_lumpers_info_message">This building doesn\'t have any lumpers present for the selected date. Please mark lumpers attendance in \'Time-Clock Attendance\' section for selecting them. \n</string>

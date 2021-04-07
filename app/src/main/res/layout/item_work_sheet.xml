@@ -35,12 +35,23 @@
         <TextView
             android:id="@+id/textViewNoOfDrops"
             style="@style/titleBigTextViewTheme"
-            android:layout_width="0dp"
-            android:layout_marginEnd="@dimen/_4sdp"
+            android:layout_width="wrap_content"
             android:clickable="false"
             android:text="Container Number :"
-            app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewIsScheduleLead"
+            style="@style/titleBigTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_marginHorizontal="@dimen/_4sdp"
+            android:clickable="false"
+            android:visibility="gone"
+            android:text="@string/added"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
+            app:layout_constraintStart_toEndOf="@+id/textViewNoOfDrops"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout

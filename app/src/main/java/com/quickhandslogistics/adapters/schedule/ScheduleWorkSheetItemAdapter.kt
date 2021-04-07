@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
-import com.quickhandslogistics.adapters.common.LumperImagesAdapter
 import com.quickhandslogistics.contracts.common.LumperImagesContract
 import com.quickhandslogistics.contracts.schedule.ScheduleWorkItemContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
@@ -50,6 +49,7 @@ class ScheduleWorkSheetItemAdapter(private val resources: Resources, private val
         private val textViewContainer: TextView = itemView.textViewContainer
         private val textViewStatus: TextView = itemView.textViewStatus
         private val textViewWorkSheetNote: TextView = itemView.textViewWorkSheetNote
+        private val textViewIsScheduleLead: TextView = itemView.textViewIsScheduleLead
         private val relativeLayoutSide: RelativeLayout = itemView.relativeLayoutSide
         private val recyclerViewLumpersImagesList: RecyclerView = itemView.recyclerViewLumpersImagesList
 
@@ -81,16 +81,18 @@ class ScheduleWorkSheetItemAdapter(private val resources: Resources, private val
 
             textViewDoor.text = String.format(resources.getString(R.string.door_s), if (!doorValue.isNullOrEmpty()) doorValue else "---")
             textViewContainer.text = String.format(resources.getString(R.string.container_no_s), if (!containerNumberValue.isNullOrEmpty()) containerNumberValue else "---")
-            if (!workItemDetail.schedule?.scheduleNote.isNullOrEmpty()){
-                textViewWorkSheetNote.visibility=View.VISIBLE
-                textViewWorkSheetNote.text=ScheduleUtils.scheduleTypeNote(workItemDetail.schedule, resources)
-            }else textViewWorkSheetNote.visibility=View.GONE
+            if (workItemDetail.schedule != null) {
+                textViewWorkSheetNote.visibility = View.VISIBLE
+                textViewWorkSheetNote.text =
+                    ScheduleUtils.scheduleTypeNote(workItemDetail.schedule, resources)
+            } else textViewWorkSheetNote.visibility = View.GONE
             textViewWorkSheetNote.text=ScheduleUtils.scheduleTypeNote(workItemDetail.schedule, resources)
             textViewWorkSheetNote.isEnabled=(!workItemDetail.schedule?.scheduleNote.isNullOrEmpty() && !getItem(adapterPosition).schedule?.scheduleNote!!.equals("NA"))
 
             workItemDetail.assignedLumpersList?.let { imagesList ->
 //                recyclerViewLumpersImagesList.adapter = LumperImagesAdapter(imagesList, sharedPref,this@ViewHolder)
             }
+            textViewIsScheduleLead.visibility = if (workItemDetail.isScheduledByLead!!) View.VISIBLE else View.GONE
 
             ScheduleUtils.changeStatusUIByValue(resources, workItemDetail.status, textViewStatus, relativeLayoutSide)
             textViewWorkSheetNote.setOnClickListener(this)

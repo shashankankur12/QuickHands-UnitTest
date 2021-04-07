@@ -101,6 +101,8 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         if (!workItemDetail.status.isNullOrEmpty()) {
             updateStatusBackground(workItemDetail.status!!)
         }
+
+        textViewIsScheduleLead.visibility=if (workItemDetail.isScheduledByLead!!) View.VISIBLE else View.GONE
         return workItemDetail
     }
 
@@ -205,6 +207,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         if (!workItemDetail.status.isNullOrEmpty()) {
             updateStatusBackground(workItemDetail.status!!)
         }
+        textViewIsScheduleLead.visibility=if (workItemDetail.isScheduledByLead!!) View.VISIBLE else View.GONE
 
         workSheetItemDetailPagerAdapter?.showWorkItemData(workItemDetail, lumpersTimeSchedule, tempLumperIds)
     }

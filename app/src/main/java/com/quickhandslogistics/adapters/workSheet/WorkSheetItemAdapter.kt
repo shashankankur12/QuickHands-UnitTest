@@ -50,6 +50,7 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
         private val textViewContainer: TextView = itemView.textViewContainer
         private val textViewStatus: TextView = itemView.textViewStatus
         private val textViewWorkSheetNote: TextView = itemView.textViewWorkSheetNote
+        private val textViewIsScheduleLead: TextView = itemView.textViewIsScheduleLead
         private val relativeLayoutSide: RelativeLayout = itemView.relativeLayoutSide
         private val recyclerViewLumpersImagesList: RecyclerView = itemView.recyclerViewLumpersImagesList
 
@@ -91,6 +92,7 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
             workItemDetail.assignedLumpersList?.let { imagesList ->
                 recyclerViewLumpersImagesList.adapter = LumperImagesAdapter(imagesList, sharedPref,this@ViewHolder)
             }
+            textViewIsScheduleLead.visibility=if (workItemDetail.isScheduledByLead!!) View.VISIBLE else View.GONE
 
             ScheduleUtils.changeStatusUIByValue(resources, workItemDetail.status, textViewStatus, relativeLayoutSide)
             textViewWorkSheetNote.setOnClickListener(this)
