@@ -281,9 +281,9 @@ object CustomerDialog : AppConstant {
         val imageView: ZoomageView = dialog.findViewById(R.id.imageView)
         val progressBar = dialog.findViewById<ProgressBar>(R.id.progress_bar)
         progressBar.visibility=View.VISIBLE
-        val file = File(url)
+
         Glide.with(activity)
-            .load(file.path)
+            .load(url)
             .addListener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
                     return false

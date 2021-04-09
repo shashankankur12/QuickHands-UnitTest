@@ -1,5 +1,6 @@
 package com.quickhandslogistics.network
 
+import com.quickhandslogistics.contracts.workSheet.UploadImageResponse
 import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.addContainer.AddContainerRequest
 import com.quickhandslogistics.data.attendance.AttendanceDetail
@@ -69,7 +70,6 @@ interface IApiInterface {
 
     @GET("schedule/{workItemId}")
     fun getWorkItemDetail(@Header("Authorization") auth: String, @Path("workItemId") workItemId: String): Call<WorkItemDetailAPIResponse>
-
 
     @GET("schedule/work-item/{workItemId}")
     fun getWorkItemContainerDetail(@Header("Authorization") auth: String, @Path("workItemId") workItemId: String): Call<WorkItemDetailAPIResponse>
@@ -239,6 +239,12 @@ interface IApiInterface {
     @GET("employees/lead/customer-contacts")
     fun getCustomerContactList(@Header("Authorization") auth: String): Call<QhlContactListResponse>
     ////////////////////////////////////////////////////////////
+
+    //Upload Image/////////////////////////////////////////////
+    @Multipart
+    @POST("employees/upload/image")
+    fun uploadImage(@Header("Authorization") auth: String, @Part image: MultipartBody.Part): Call<UploadImageResponse>
+    ///////////////////////////////////////////////////////////
 
 
 }

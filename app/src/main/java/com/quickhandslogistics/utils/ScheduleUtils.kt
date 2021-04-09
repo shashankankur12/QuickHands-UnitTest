@@ -13,7 +13,6 @@ import com.quickhandslogistics.data.lumperSheet.LumpersInfo
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.data.schedule.ScheduleDetailData
-import com.quickhandslogistics.data.schedule.ScheduleWorkItem
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
@@ -506,9 +505,9 @@ object ScheduleUtils {
         return parameters
     }
 
-    fun getFilledBuildingParametersCounts(workItemDetail: ScheduleWorkItem): Int {
+    fun getFilledBuildingParametersCounts(workItemDetail: WorkItemContainerDetails, buildingDetailData: BuildingDetailData?): Int {
         var count = 0
-        val parameters = ScheduleUtils.getBuildingParametersList(workItemDetail.buildingDetailData)
+        val parameters = getBuildingParametersList(buildingDetailData)
 
         workItemDetail.buildingOps?.let {
             for (key in it.keys) {

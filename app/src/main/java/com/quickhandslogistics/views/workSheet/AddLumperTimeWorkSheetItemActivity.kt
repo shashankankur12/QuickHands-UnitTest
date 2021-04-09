@@ -97,11 +97,11 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         employeeTimingData?.let { timingDetail ->
             val waitingTimeHours = ValueUtils.getHoursFromMinutes(timingDetail.waitingTime)
             val waitingTimeMinutes = ValueUtils.getRemainingMinutes(timingDetail.waitingTime)
-            if (waitingTimeHours.isNotEmpty() && (0.0 != waitingTimeHours.toDouble() || 0.0 != waitingTimeMinutes.toDouble())) {
+            if (waitingTimeHours.isNotEmpty() /*&& (0.0 != waitingTimeHours.toDouble() || 0.0 != waitingTimeMinutes.toDouble())*/) {
                 editTextWaitingTime.setText(waitingTimeHours)
 //                editTextWaitingTime.isEnabled = false
             }
-            if (waitingTimeMinutes.isNotEmpty() && (0.0 != waitingTimeMinutes.toDouble() || 0.0 != waitingTimeHours.toDouble())) {
+            if (waitingTimeMinutes.isNotEmpty() /*&& (0.0 != waitingTimeMinutes.toDouble() || 0.0 != waitingTimeHours.toDouble())*/) {
                 editTextWaitingTimeMinutes.setText(waitingTimeMinutes)
 //                editTextWaitingTimeMinutes.isEnabled = false
             }
@@ -129,18 +129,11 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         editTextWaitingTime.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(editable: Editable?) {
                 val inputHour = editable?.toString()
-                val inputMinutes = editTextWaitingTimeMinutes.text.toString()
                 if (!inputHour.isNullOrBlank()) {
                     if (24 <= inputHour.toInt()) {
                         editTextWaitingTime.text = null
                         editTextWaitingTime.error = getString(R.string.invalid_hour_message)
                         editTextWaitingTime.requestFocus()
-                    }else if (inputHour.toInt() == 0){
-                        if (!inputMinutes.isNullOrEmpty()&& inputMinutes.toInt()==0){
-                            editTextWaitingTime.text = null
-                            editTextWaitingTime.error = "Minute(s) and Hour(s) should greater then zero"
-                            editTextWaitingTime.requestFocus()
-                        }
                     }
                 }
             }
@@ -156,18 +149,11 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         editTextWaitingTimeMinutes.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(editable: Editable?) {
                 val inputMinutes = editable?.toString()
-                val inputHour = editTextWaitingTime.text.toString()
                 if (!inputMinutes.isNullOrEmpty()) {
                     if (60 <= inputMinutes.toInt()) {
                         editTextWaitingTimeMinutes.text = null
                         editTextWaitingTimeMinutes.error = getString(R.string.invalid_hour_minutes)
                         editTextWaitingTimeMinutes.requestFocus()
-                    }else if (inputMinutes.toInt() == 0){
-                        if (!inputHour.isNullOrEmpty()&& inputHour.toInt()==0){
-                            editTextWaitingTimeMinutes.text = null
-                            editTextWaitingTimeMinutes.error = "Minute(s) and Hour(s) should greater then zero"
-                            editTextWaitingTimeMinutes.requestFocus()
-                        }
                     }
                 }
             }

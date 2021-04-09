@@ -98,6 +98,8 @@ interface AppConstant {
 
 
         const val ERROR_MESSAGE = "You don't seem to have a building assigned yet!"
+        const val MILTI_PART_FORM_DATA = "image"
+        const val IMAGE_PARAM = "file"
 
 
     }

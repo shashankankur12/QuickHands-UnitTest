@@ -21,10 +21,8 @@ import com.quickhandslogistics.adapters.workSheet.WorkSheetDetailsNoteImageAdapt
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailNoteImageContract
 import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.ConnectionDetector
-import com.quickhandslogistics.utils.CustomerDialog
-import com.quickhandslogistics.utils.PermissionUtil
+import com.quickhandslogistics.network.DataManager
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_work_sheet_item_detail_notes.*
 import java.io.File
@@ -36,9 +34,9 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
     private var onFragmentInteractionListener: WorkSheetItemDetailContract.View.OnFragmentInteractionListener? = null
     private lateinit var workSheetItemDetailNotesImageAdapter: WorkSheetDetailsNoteImageAdapter
     private var imageStringArray = ArrayList<String>()
-
     private var workItemDetail: WorkItemContainerDetails? = null
     private var isDataChanged: Boolean =false
+    private var isCompleteOrCancel: Boolean =false
     private var timeStamp = ""
     private var imageFileName = ""
     private val myBitmap: Bitmap? = null
@@ -48,6 +46,9 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
 
     companion object {
         private const val NOTE_WORK_DETALS = "NOTE_WORK_DETALS"
+        private const val SCHEDULE_CUSTOMER_NOTE = "SCHEDULE_CUSTOMER_NOTE"
+        private const val SCHEDULE_QHL_NOTE = "SCHEDULE_QHL_NOTE"
+        private const val SCHEDULE_ATTACHMENT_LIST = "SCHEDULE_ATTACHMENT_LIST"
         @JvmStatic
         fun newInstance(allWorkItem: WorkItemContainerDetails?) = WorkSheetItemDetailNotesFragment()
             .apply {
@@ -99,8 +100,10 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
         addImageButton.setOnClickListener(this)
         editTextQHLCustomerNotes.addTextChangedListener(this)
         editTextQHLNotes.addTextChangedListener(this)
+
         workItemDetail?.let { showNotesData(it) }
     }
+
 
     fun showNotesData(workItemDetail: WorkItemContainerDetails) {
         this.workItemDetail = workItemDetail
@@ -119,12 +122,19 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
                 editTextQHLNotes.isEnabled = false
                 buttonSubmit.visibility = View.GONE
                 addImageButton.visibility = View.GONE
+                isCompleteOrCancel=true
             } else {
                 editTextQHLCustomerNotes.isEnabled = true
                 editTextQHLNotes.isEnabled = true
                 buttonSubmit.visibility = View.VISIBLE
                 addImageButton.visibility = View.VISIBLE
+                isCompleteOrCancel=false
             }
+        }
+
+        workItemDetail.attachmentsList?.let {
+            imageStringArray= it as ArrayList<String>
+            workSheetItemDetailNotesImageAdapter.updateList(imageStringArray, isCompleteOrCancel)
         }
     }
 
@@ -139,8 +149,9 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
                 workItemDetail?.let {
                     val notesQHLCustomer = editTextQHLCustomerNotes.text.toString()
                     val notesQHL = editTextQHLNotes.text.toString()
+                    val noteImageArrayList=workSheetItemDetailNotesImageAdapter.getImageArrayList()
 
-                    onFragmentInteractionListener?.updateWorkItemNotes(notesQHLCustomer, notesQHL)
+                    onFragmentInteractionListener?.updateWorkItemNotes(notesQHLCustomer, notesQHL, noteImageArrayList)
                 }
 //            }
 //
@@ -196,16 +207,18 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
             when (requestCode) {
                 MY_PERMISSIONS_REQUEST_CAMERA -> {
                     mImgFile = File(mPictureImagePath)
-                    imageStringArray.add(mPictureImagePath)
                     if (mImgFile!!.exists()) {
                         imageFileName = "$timeStamp.jpg"
-
+                        val newImage: String? = ImageUtils.resizeAndCompressImageBeforeSend(fragmentActivity!!, mImgFile!!.absolutePath, imageFileName)
+                        val optimizedFile = File(newImage)
+                        val body = DataManager.createMultiPartBodyImage(optimizedFile.absoluteFile, AppConstant.IMAGE_PARAM)
+                        onFragmentInteractionListener?.uploadNoteImage(body)
                     }
-                    workSheetItemDetailNotesImageAdapter.updateList(imageStringArray)
                 }
             }
         }
     }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -230,9 +243,7 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
             }
             if (!workItemDetail?.notesQHL.isNullOrEmpty() && workItemDetail!!.notesQHL != AppConstant.NOTES_NOT_AVAILABLE)
                 notesQHLBefore=workItemDetail!!.notesQHL!!
-            if (!notesQHLCustomerBefore.equals(text.toString()) || !notesQHLBefore.equals(
-                    editTextQHLNotes.text.toString()
-                ))
+            if (!notesQHLCustomerBefore.equals(text.toString()) || !notesQHLBefore.equals(editTextQHLNotes.text.toString()))
                 onFragmentInteractionListener!!.dataChanged(false)
             else onFragmentInteractionListener!!.dataChanged(false)
 
@@ -244,9 +255,7 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
             }
             if (!workItemDetail?.notesQHLCustomer.isNullOrEmpty() && workItemDetail!!.notesQHLCustomer != AppConstant.NOTES_NOT_AVAILABLE)
                 notesQHLCustomerBefore = workItemDetail!!.notesQHLCustomer!!
-            if (!notesQHLBefore.equals(text.toString()) || !notesQHLCustomerBefore.equals(
-                    editTextQHLCustomerNotes.text.toString()
-                ))
+            if (!notesQHLBefore.equals(text.toString()) || !notesQHLCustomerBefore.equals(editTextQHLCustomerNotes.text.toString()))
                 onFragmentInteractionListener!!.dataChanged(false)
             else onFragmentInteractionListener!!.dataChanged(false)
 
@@ -262,4 +271,10 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
     override fun onImageClick(imageUrl: String) {
        CustomerDialog.openZoomImageDialog(imageUrl,activity!!)
     }
+
+    fun updateImageList(imageUrl: String) {
+        imageStringArray.add(imageUrl)
+        workSheetItemDetailNotesImageAdapter.updateList(imageStringArray, isCompleteOrCancel)
+    }
 }
+

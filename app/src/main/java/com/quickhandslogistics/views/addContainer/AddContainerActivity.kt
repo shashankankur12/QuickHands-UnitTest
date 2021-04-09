@@ -11,6 +11,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.addContainer.AddContainerAdapter
 import com.quickhandslogistics.contracts.addContainer.AddContainerContract
 import com.quickhandslogistics.data.addContainer.ContainerDetails
+import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.presenters.addContainer.AddContainerPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.utils.AppConstant.Companion.WORKSHEET_WORK_ITEM_INBOUND
@@ -183,14 +184,51 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
     }
 
     private fun updateUiVisibility() {
-        if (!outBoundList.isNullOrEmpty() || !dropOffList.isNullOrEmpty() || !liveLoadList.isNullOrEmpty()) {
-            buttonAdd.isEnabled = checkOutBound()&& checkLiveLoad()&& checkDropOff()
-            isDataSave(false)
-        } else {
-            buttonAdd.isEnabled = false
-            isDataSave(true)
+        val leadProfile = DateUtils.sharedPref.getClassObject(
+            AppConstant.PREFERENCE_LEAD_PROFILE,
+            LeadProfileData::class.java
+        ) as LeadProfileData?
+        leadProfile?.department?.let {
+            when (it) {
+                AppConstant.EMPLOYEE_DEPARTMENT_INBOUND -> {
+                    layoutOutBound.visibility = View.GONE
+                    recyclerViewOutBound.visibility = View.GONE
+                    if (!dropOffList.isNullOrEmpty() || !liveLoadList.isNullOrEmpty()) {
+                        buttonAdd.isEnabled = checkLiveLoad() && checkDropOff()
+                        isDataSave(false)
+                    } else {
+                        buttonAdd.isEnabled = false
+                        isDataSave(true)
+                    }
+                    textViewAddDrop.isEnabled = dropOffList.size <= 0
+                }
+                AppConstant.EMPLOYEE_DEPARTMENT_OUTBOUND -> {
+                    layoutLiveLode.visibility = View.GONE
+                    recyclerViewLiveLode.visibility = View.GONE
+                    layoutDrop.visibility = View.GONE
+                    recyclerViewDrop.visibility = View.GONE
+                    if (!outBoundList.isNullOrEmpty()) {
+                        buttonAdd.isEnabled = checkOutBound()
+                        isDataSave(false)
+                    } else {
+                        buttonAdd.isEnabled = false
+                        isDataSave(true)
+                    }
+                    textViewAddDrop.isEnabled = dropOffList.size <= 0
+                }
+                AppConstant.EMPLOYEE_DEPARTMENT_BOTH -> {
+                    if (!outBoundList.isNullOrEmpty() || !dropOffList.isNullOrEmpty() || !liveLoadList.isNullOrEmpty()) {
+                        buttonAdd.isEnabled = checkOutBound() && checkLiveLoad() && checkDropOff()
+                        isDataSave(false)
+                    } else {
+                        buttonAdd.isEnabled = false
+                        isDataSave(true)
+                    }
+                    textViewAddDrop.isEnabled = dropOffList.size <= 0
+                }
+            }
         }
-        textViewAddDrop.isEnabled = dropOffList.size <= 0
+
     }
 
     private fun checkDropOff(): Boolean {

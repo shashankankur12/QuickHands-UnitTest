@@ -3,12 +3,15 @@ package com.quickhandslogistics.presenters.workSheet
 import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
+import com.quickhandslogistics.contracts.workSheet.UploadImageResponse
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
+import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.schedule.WorkItemDetailAPIResponse
 import com.quickhandslogistics.models.workSheet.WorkSheetItemDetailModel
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
+import okhttp3.MultipartBody
 
 class WorkSheetItemDetailPresenter(private var workSheetItemDetailView: WorkSheetItemDetailContract.View?, private val resources: Resources) :
     WorkSheetItemDetailContract.Presenter, WorkSheetItemDetailContract.Model.OnFinishedListener {
@@ -30,14 +33,24 @@ class WorkSheetItemDetailPresenter(private var workSheetItemDetailView: WorkShee
         workSheetItemDetailModel.changeWorkItemStatus(workItemId, status, this)
     }
 
-    override fun updateWorkItemNotes(workItemId: String, notesQHLCustomer: String, notesQHL: String) {
+    override fun updateWorkItemNotes(
+        workItemId: String,
+        notesQHLCustomer: String,
+        notesQHL: String,
+        noteImageArrayList: ArrayList<String>
+    ) {
         workSheetItemDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        workSheetItemDetailModel.updateWorkItemNotes(workItemId, notesQHLCustomer, notesQHL, this)
+        workSheetItemDetailModel.updateWorkItemNotes(workItemId, notesQHLCustomer, notesQHL, noteImageArrayList, this)
     }
 
     override fun removeLumper(lumperIds: ArrayList<String>, tempLumperIds: ArrayList<String>, workItemId: String) {
         workSheetItemDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         workSheetItemDetailModel.removeLumper(lumperIds, tempLumperIds, workItemId, this)
+    }
+
+    override fun uploadNoteImage(imageFileName: MultipartBody.Part) {
+        workSheetItemDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        workSheetItemDetailModel.uploadeNoteImage(imageFileName, this)
     }
 
     /** Model Result Listeners */
@@ -74,5 +87,12 @@ class WorkSheetItemDetailPresenter(private var workSheetItemDetailView: WorkShee
     override fun onSuccessUpdateNotes(workItemId: String) {
         workSheetItemDetailView?.notesSavedSuccessfully()
         workSheetItemDetailModel.fetchWorkItemDetail(workItemId, this)
+    }
+
+    override fun onSuccessUploadImage(imageUrl: UploadImageResponse?) {
+        workSheetItemDetailView?.hideProgressDialog()
+        imageUrl?.data?.let {
+            workSheetItemDetailView?.onSuccessUploadImage(it)
+        }
     }
 }

@@ -9,9 +9,9 @@
         android:id="@+id/noteImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/dummy"
         android:scaleType="fitXY"
-        android:layout_margin="@dimen/_3ssp"
+        android:layout_margin="@dimen/_2ssp"
+        android:src="@drawable/dummy"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -19,13 +19,12 @@
         android:id="@+id/imageViewRemoveImage"
         android:layout_width="@dimen/_16sdp"
         android:layout_height="@dimen/_16sdp"
-        android:translationX="5dp"
-        android:translationY="-5dp"
+        android:translationX="6dp"
+        android:translationY="-6dp"
         android:src="@drawable/ic_cancel_red"
         app:layout_constraintTop_toTopOf="@+id/noteImage"
         app:layout_constraintEnd_toEndOf="@+id/noteImage"
         app:tint="@color/textBlack" />
-
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -35,4 +34,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

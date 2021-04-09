@@ -45,7 +45,6 @@ class WorkSheetListAPIResponse : BaseResponse() {
         var unfinished: ArrayList<WorkItemDetail>? = null
             get() = if (!field.isNullOrEmpty()) field else ArrayList()
 
-
         @SerializedName("cancelledNotes")
         @Expose
         var containerGroupNote: ContainerGroupNote? = null
