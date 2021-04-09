@@ -23,6 +23,7 @@ import com.quickhandslogistics.data.reports.ReportRequest
 import com.quickhandslogistics.data.reports.ReportResponse
 import com.quickhandslogistics.data.schedule.*
 import com.quickhandslogistics.data.scheduleTime.*
+import com.quickhandslogistics.data.scheduleTime.leadinfo.GetLeadInfoResponse
 import com.quickhandslogistics.data.workSheet.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -112,6 +113,9 @@ interface IApiInterface {
     // Schedule Lumper Time /////////////////////////////////////////////////
     @GET("employees/scheduled/lumpers")
     fun getScheduleTimeList(@Header("Authorization") auth: String, @Query("day") day: String): Call<GetScheduleTimeAPIResponse>
+
+    @GET("employees/lead/work-info")
+    fun getLeadWorkInfo(@Header("Authorization") auth: String, @Query("day") day: String): Call<GetLeadInfoResponse>
 
     @POST("employees/schedule/lumpers")
     fun saveScheduleTimeDetails(@Header("Authorization") auth: String, @Body request: ScheduleTimeRequest): Call<BaseResponse>

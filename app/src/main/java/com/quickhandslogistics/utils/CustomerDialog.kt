@@ -1,5 +1,6 @@
 package com.quickhandslogistics.utils
 
+import LeadWorkInfo
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
@@ -21,8 +22,9 @@ import com.jsibbold.zoomage.ZoomageView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.addContainer.AddScheduleDialogAdapter
 import com.quickhandslogistics.data.addContainer.ContainerDetails
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
-import java.io.File
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_TIME
 import java.util.*
 
 @SuppressLint("StaticFieldLeak")
@@ -119,52 +121,73 @@ object CustomerDialog : AppConstant {
         dialog.show()
     }
 
-    fun showWorkScheduleDialog(activity: Activity?, resources: Resources, title: String?, selectedDate: Date) {
+    fun showWorkScheduleDialog(activity: Activity?, resources: Resources, leadWorkInfo: LeadWorkInfo?) {
         mActivity = activity
         val dialog =
-                getDialog(R.layout.view_work_schedule, activity)
+            getDialog(R.layout.view_work_schedule, activity)
         //        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         val window = dialog.window
         window!!.setLayout(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
         )
         window.setBackgroundDrawableResource(android.R.color.transparent)
         val titleTextView = dialog.findViewById<TextView>(R.id.title_text)
         val textViewScheduleType = dialog.findViewById<TextView>(R.id.textViewScheduleType)
         val textViewStatus = dialog.findViewById<TextView>(R.id.textViewStatus)
         val textViewScheduleOutBound = dialog.findViewById<TextView>(R.id.textViewScheduleOutBound)
-        val textViewScheduleOutBoundStartTime = dialog.findViewById<TextView>(R.id.textViewScheduleOutBoundStartTime)
+        val textViewScheduleOutBoundStartTime =
+            dialog.findViewById<TextView>(R.id.textViewScheduleOutBoundStartTime)
         val textViewScheduleLiveLoad = dialog.findViewById<TextView>(R.id.textViewScheduleLiveLoad)
-        val textViewScheduleLiveLoadStartTime = dialog.findViewById<TextView>(R.id.textViewScheduleLiveLoadStartTime)
+        val textViewScheduleLiveLoadStartTime =
+            dialog.findViewById<TextView>(R.id.textViewScheduleLiveLoadStartTime)
         val textViewScheduleDrops = dialog.findViewById<TextView>(R.id.textViewScheduleDrops)
-        val textViewScheduleDropsStartTime = dialog.findViewById<TextView>(R.id.textViewScheduleDropsStartTime)
-        val textViewScheduleUnfinished = dialog.findViewById<TextView>(R.id.textViewScheduleUnfinished)
-        val textViewScheduleUnfinishedStartTime = dialog.findViewById<TextView>(R.id.textViewScheduleUnfinishedStartTime)
+        val textViewScheduleDropsStartTime =
+            dialog.findViewById<TextView>(R.id.textViewScheduleDropsStartTime)
+        val textViewScheduleUnfinished =
+            dialog.findViewById<TextView>(R.id.textViewScheduleUnfinished)
+        val textViewScheduleUnfinishedStartTime =
+            dialog.findViewById<TextView>(R.id.textViewScheduleUnfinishedStartTime)
         val textViewWorkItemsCount = dialog.findViewById<TextView>(R.id.textViewWorkItemsCount)
-        val textViewWorkItemsLeadName = dialog.findViewById<TextView>(R.id.textViewWorkItemsLeadName)
+        val textViewWorkItemsLeadName =
+            dialog.findViewById<TextView>(R.id.textViewWorkItemsLeadName)
         val relativeLayoutSide = dialog.findViewById<RelativeLayout>(R.id.relativeLayoutSide)
         val confirm = dialog.findViewById<Button>(R.id.confirm_button)
 
+        titleTextView.text = DateUtils.changeDateString(PATTERN_API_RESPONSE, PATTERN_NORMAL, leadWorkInfo?.date!!)
+        textViewScheduleType.text = UIUtils.getSpannableText(resources.getString(R.string.department_full), leadWorkInfo.department.toLowerCase().capitalize())
+        textViewWorkItemsCount.text = String.format(resources.getString(R.string.total_containers_s), leadWorkInfo.totalContainers)
+        textViewWorkItemsLeadName.text = String.format(resources.getString(R.string.lead_name), leadWorkInfo.lead)
+        textViewScheduleUnfinished.text = String.format(resources.getString(R.string.unfinished_drop), "2"/*scheduleDetail.scheduleTypes?.drops?.size.toString()*/)
+        textViewScheduleUnfinishedStartTime.text =/*DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.drops!![0].startTime)!!.toLong())*/"09:00 PM"
 
-        titleTextView.text = DateUtils.getDateString(PATTERN_NORMAL,selectedDate)
-        textViewScheduleType.text = UIUtils.getSpannableText(resources.getString(R.string.department_full),/*UIUtils.getDisplayEmployeeDepartment(leadProfile)*/ "Receiving")
-        textViewScheduleOutBound.text = String.format(resources.getString(R.string.out_bound_s),/*scheduleDetail.scheduleTypes?.outbounds?.size.toString()*/ "2")
-        textViewScheduleLiveLoad.text = String.format(resources.getString(R.string.live_load_s),"4"/*scheduleDetail.scheduleTypes?.liveLoads?.size.toString()*/)
-        textViewScheduleDrops.text = String.format(resources.getString(R.string.drops_s),"3"/*scheduleDetail.scheduleTypes?.drops?.size.toString()*/)
-        textViewScheduleUnfinished.text = String.format(resources.getString(R.string.unfinished_drop),"2"/*scheduleDetail.scheduleTypes?.drops?.size.toString()*/)
-        textViewWorkItemsCount.text = String.format(resources.getString(R.string.total_containers_s), "100"/*scheduleDetail.totalNumberOfWorkItems*/)
+        if (leadWorkInfo.outbounds != null) {
+            textViewScheduleOutBound.text = String.format(resources.getString(R.string.out_bound_s), leadWorkInfo.outbounds.count)
+            if (!leadWorkInfo.outbounds.time.isNullOrEmpty())
+                textViewScheduleOutBoundStartTime.text = DateUtils.changeDateString(PATTERN_API_RESPONSE, PATTERN_TIME, leadWorkInfo.outbounds.time[0])
+        }
 
-        val leadName= String.format("%s %s","Shashank",""/*leadProfile!!.firstName, leadProfile!!.lastName*/)
-        textViewWorkItemsLeadName.text = String.format(resources.getString(R.string.lead_name),leadName)
+        if (leadWorkInfo.live != null) {
+            textViewScheduleLiveLoad.text = String.format(resources.getString(R.string.live_load_s), leadWorkInfo.live.count)
+            if (!leadWorkInfo.live.time.isNullOrEmpty())
+                textViewScheduleLiveLoadStartTime.text = DateUtils.changeDateString(PATTERN_API_RESPONSE, PATTERN_TIME, leadWorkInfo.live.time[0])
+        }
 
-//        if (scheduleDetail.scheduleTypes?.outbounds!!.size>0 && !scheduleDetail.scheduleTypes?.outbounds!![0].startTime.isNullOrEmpty())
-        textViewScheduleOutBoundStartTime.text=/*DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.outbounds!![0].startTime)!!.toLong())*/"12:12 AM"
-//        if (scheduleDetail.scheduleTypes?.liveLoads!!.size>0 && !scheduleDetail.scheduleTypes?.liveLoads!![0].startTime.isNullOrEmpty())
-        textViewScheduleLiveLoadStartTime.text=/*DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.liveLoads!![0].startTime)!!.toLong())*/ "12:33 AM"
-//        if (scheduleDetail.scheduleTypes?.drops!!.size>0 && !scheduleDetail.scheduleTypes?.drops!![0].startTime.isNullOrEmpty())
-        textViewScheduleDropsStartTime.text=/*DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.drops!![0].startTime)!!.toLong())*/ "09:45 PM"
-        textViewScheduleUnfinishedStartTime.text=/*DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.drops!![0].startTime)!!.toLong())*/ "09:00 PM"
+        if (leadWorkInfo.drops != null) {
+            textViewScheduleDrops.text =
+                String.format(resources.getString(R.string.drops_s), leadWorkInfo.drops.count)
+            if (!leadWorkInfo.drops.time.isNullOrEmpty()) textViewScheduleDropsStartTime.text = DateUtils.changeDateString(PATTERN_API_RESPONSE, PATTERN_TIME, leadWorkInfo.drops.time)
+        }
+
+        if (leadWorkInfo.department == AppConstant.EMPLOYEE_DEPARTMENT_INBOUND) {
+            textViewScheduleOutBoundStartTime.visibility = View.GONE
+            textViewScheduleOutBound.visibility = View.GONE
+        } else if (leadWorkInfo.department == AppConstant.EMPLOYEE_DEPARTMENT_OUTBOUND) {
+            textViewScheduleDrops.visibility = View.GONE
+            textViewScheduleDropsStartTime.visibility = View.GONE
+            textViewScheduleLiveLoad.visibility = View.GONE
+            textViewScheduleLiveLoadStartTime.visibility = View.GONE
+        }
 
         ScheduleUtils.changeStatusUIByValue(resources, AppConstant.WORK_ITEM_STATUS_SCHEDULED, textViewStatus, relativeLayoutSide)
         confirm.setOnClickListener { dialog.dismiss() }

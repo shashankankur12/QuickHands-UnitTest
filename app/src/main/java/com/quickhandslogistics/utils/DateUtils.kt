@@ -18,7 +18,7 @@ class DateUtils {
         const val PATTERN_DATE_DISPLAY_CUSTOMER_SHEET= "MM/dd/yyyy"
         const val PATTERN_MONTH_DAY_DISPLAY = "MMMM dd, yyyy"
         const val PATTERN_DATE_TIME_DISPLAY = "dd MMM yyyy, HH:mm a"
-        private const val PATTERN_TIME = "hh:mm a"
+        const val PATTERN_TIME = "hh:mm a"
 
         var sharedPref: SharedPref = SharedPref.getInstance()
 

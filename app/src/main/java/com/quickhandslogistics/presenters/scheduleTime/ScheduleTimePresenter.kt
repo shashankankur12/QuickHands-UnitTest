@@ -5,6 +5,7 @@ import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.scheduleTime.ScheduleTimeContract
 import com.quickhandslogistics.data.ErrorResponse
+import com.quickhandslogistics.data.scheduleTime.leadinfo.GetLeadInfoResponse
 import com.quickhandslogistics.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeNoteRequest
 import com.quickhandslogistics.models.scheduleTime.ScheduleTimeModel
@@ -27,6 +28,7 @@ class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.V
         scheduleTimeView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         scheduleTimeModel.fetchHeaderInfo(date, this)
         scheduleTimeModel.fetchSchedulesTimeByDate(date, this)
+        scheduleTimeModel.fetchLeadScheduleByDate(date, this)
     }
 
     override fun cancelScheduleLumpers(lumperId: String, date: Date, cancelReason: String) {
@@ -70,6 +72,10 @@ class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.V
             scheduleTimeView?.showScheduleTimeData(selectedDate, data.scheduledLumpers!!, data.tempLumperIds!!,data.notes )
             scheduleTimeView?.showNotesData(data.notes)
         }
+    }
+
+    override fun onSuccessLeadInfo(getLeadInfoResponse: GetLeadInfoResponse) {
+        scheduleTimeView?.showLeadInfo(getLeadInfoResponse.data)
     }
 
 

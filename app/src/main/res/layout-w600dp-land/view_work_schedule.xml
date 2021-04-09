@@ -65,7 +65,7 @@
                         android:layout_width="wrap_content"
                         android:paddingHorizontal="@dimen/_1ssp"
                         android:paddingVertical="@dimen/_3ssp"
-                        android:textSize="@dimen/_8ssp"
+                        android:textSize="@dimen/_9ssp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -122,7 +122,7 @@
 
                     <com.quickhandslogistics.controls.CustomTextView
                         android:id="@+id/textViewScheduleUnfinished"
-                        style="@style/valuesSmallTextViewThemeHeader"
+                        style="@style/valuesSmallTextViewTheme"
                         android:layout_marginTop="@dimen/_1sdp"
                         android:layout_width="0dp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -133,7 +133,7 @@
                         style="@style/valuesSmallTextViewTheme"
                         android:layout_marginTop="@dimen/_1sdp"
                         android:layout_width="0dp"
-                        app:layout_constraintStart_toEndOf="@+id/textViewScheduleDrops"
+                        app:layout_constraintStart_toEndOf="@+id/textViewScheduleUnfinished"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textViewScheduleDrops" />
 

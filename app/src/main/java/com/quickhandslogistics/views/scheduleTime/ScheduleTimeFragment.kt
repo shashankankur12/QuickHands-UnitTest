@@ -1,5 +1,6 @@
 package com.quickhandslogistics.views.scheduleTime
 
+import LeadWorkInfo
 import android.app.Activity
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
@@ -44,6 +45,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     private var onFragmentInteractionListener: DashBoardContract.View.OnFragmentInteractionListener? = null
     private var scheduleTimeSelectedDate: String? = null
+    private var leadWorkInfo: LeadWorkInfo? = null
     private var selectedTime: Long = 0
     private var timeInMillis: Long = 0
     private var selectedDatePosition: Int = 0
@@ -70,6 +72,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         const val SELECTED_DATE_POSITION_SCHEDULE_TIME = "SELECTED_DATE_POSITION_SCHEDULE_TIME"
         const val EDIT_SCHEDULE_LUMPER = "EDIT_SCHEDULE_LUMPER"
         const val CANCEL_SCHEDULE_LUMPER = "CANCEL_SCHEDULE_LUMPER"
+        const val LUMPER_WORK_INFO = "LUMPER_WORK_INFO"
     }
 
     override fun onAttach(context: Context) {
@@ -154,6 +157,10 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                 dateString = savedInstanceState.getString(DATE_HEADER_SCHEDULE_TIME)!!
                 showDateString(dateString!!)
             }
+            if (savedInstanceState.containsKey(LUMPER_WORK_INFO)) {
+                leadWorkInfo = savedInstanceState.getSerializable(LUMPER_WORK_INFO)as LeadWorkInfo
+                showLeadInfo(leadWorkInfo)
+            }
             if (savedInstanceState.containsKey(NOTE_SCHEDULE_TIME)) {
                 scheduleTimeNotes = savedInstanceState.getString(NOTE_SCHEDULE_TIME)!!
                 showNotesData(scheduleTimeNotes!!)
@@ -195,6 +202,8 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             outState.putString(NOTE_SCHEDULE_TIME, scheduleTimeNotes)
         if (dateString != null)
             outState.putString(DATE_HEADER_SCHEDULE_TIME, dateString)
+        if (leadWorkInfo!=null)
+            outState.putSerializable(LUMPER_WORK_INFO, leadWorkInfo)
         super.onSaveInstanceState(outState)
     }
 
@@ -431,6 +440,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     }
 
+    override fun showLeadInfo(leadWorkInfo: LeadWorkInfo?) {
+        this.leadWorkInfo=leadWorkInfo
+        textViewScheduleView.isEnabled = leadWorkInfo != null
+    }
+
     override fun showAPIErrorMessage(message: String) {
         recyclerViewScheduleTime.visibility = View.GONE
         textViewEmptyData.visibility = View.VISIBLE
@@ -491,7 +505,9 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     }
 
     private fun showViewScheduleDialog() {
-        CustomerDialog.showWorkScheduleDialog(activity, resources,"Lead Notes ", selectedDate)
+        leadWorkInfo?.let {
+            CustomerDialog.showWorkScheduleDialog(activity, resources, leadWorkInfo)
+        }
     }
 
     /** Calendar Listeners */
