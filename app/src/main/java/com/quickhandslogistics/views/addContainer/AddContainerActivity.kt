@@ -78,11 +78,6 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
         recyclerViewOutBound.apply {
             val linearLayoutManager = LinearLayoutManager(activity)
             layoutManager = linearLayoutManager
-            val dividerItemDecoration = DividerItemDecoration(
-                    activity,
-                    linearLayoutManager.orientation
-            )
-//            addItemDecoration(dividerItemDecoration)
             addOutBoundContainerAdapter = AddContainerAdapter(
                     this@AddContainerActivity,
                     resources,
@@ -94,11 +89,6 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
         recyclerViewLiveLode.apply {
             val linearLayoutManager = LinearLayoutManager(activity)
             layoutManager = linearLayoutManager
-            val dividerItemDecoration = DividerItemDecoration(
-                    activity,
-                    linearLayoutManager.orientation
-            )
-//            addItemDecoration(dividerItemDecoration)
             addLiveContainerAdapter = AddContainerAdapter(
                     this@AddContainerActivity,
                     resources,
@@ -110,11 +100,6 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
         recyclerViewDrop.apply {
             val linearLayoutManager = LinearLayoutManager(activity)
             layoutManager = linearLayoutManager
-            val dividerItemDecoration = DividerItemDecoration(
-                    activity,
-                    linearLayoutManager.orientation
-            )
-//            addItemDecoration(dividerItemDecoration)
             addDropContainerAdapter = AddContainerAdapter(
                     this@AddContainerActivity,
                     resources,

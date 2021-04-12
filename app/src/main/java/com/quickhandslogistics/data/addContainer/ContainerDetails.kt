@@ -15,7 +15,7 @@ class ContainerDetails() : Parcelable {
     @Transient
     var workItemType: String? = null
 
-    @SerializedName("sequence")
+    @SerializedName("quantity")
     @Expose
     var sequence: String? = null
 
