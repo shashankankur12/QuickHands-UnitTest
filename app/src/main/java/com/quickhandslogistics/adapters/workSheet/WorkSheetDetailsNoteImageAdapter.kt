@@ -22,8 +22,8 @@ import kotlinx.android.synthetic.main.item_work_detail_note_image.view.*
 class WorkSheetDetailsNoteImageAdapter(private var onAdapterClick: WorkSheetItemDetailNoteImageContract.View.OnAdapterItemClickListener) :
     RecyclerView.Adapter<WorkSheetDetailsNoteImageAdapter.ViewHolder>() {
 
-    private var imageStringArray :ArrayList<String> = ArrayList()
-    private var isCompleteOrCancel: Boolean =false
+    private var imageStringArray: ArrayList<String> = ArrayList()
+    private var isCompleteOrCancel: Boolean = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context)
@@ -52,7 +52,7 @@ class WorkSheetDetailsNoteImageAdapter(private var onAdapterClick: WorkSheetItem
         private val progressBar: ProgressBar = view.progressBar
 
         fun bind(image: String) {
-            progressBar.visibility=View.VISIBLE
+            progressBar.visibility = View.VISIBLE
             Glide.with(context)
                 .load(image)
                 .addListener(object : RequestListener<Drawable> {
@@ -61,14 +61,14 @@ class WorkSheetDetailsNoteImageAdapter(private var onAdapterClick: WorkSheetItem
                     }
 
                     override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                        progressBar.visibility=View.GONE
+                        progressBar.visibility = View.GONE
                         return false
                     }
 
                 })
                 .into(noteImage)
 
-            imageViewRemoveImage.visibility=if (isCompleteOrCancel) View.GONE else View.VISIBLE
+            imageViewRemoveImage.visibility = if (isCompleteOrCancel) View.GONE else View.VISIBLE
             mainRootLayout.setOnClickListener(this)
             imageViewRemoveImage.setOnClickListener(this)
         }
@@ -77,7 +77,7 @@ class WorkSheetDetailsNoteImageAdapter(private var onAdapterClick: WorkSheetItem
             view?.let {
                 when (view.id) {
                     mainRootLayout.id -> {
-                    val imageUrl=getItem(adapterPosition)
+                        val imageUrl = getItem(adapterPosition)
                         onAdapterClick.onImageClick(imageUrl)
                     }
                     imageViewRemoveImage.id -> {
@@ -98,7 +98,7 @@ class WorkSheetDetailsNoteImageAdapter(private var onAdapterClick: WorkSheetItem
 
     fun updateList(imageStringArray: ArrayList<String>, isCompleteOrCancel: Boolean) {
         this.imageStringArray.clear()
-        this.isCompleteOrCancel=isCompleteOrCancel
+        this.isCompleteOrCancel = isCompleteOrCancel
         this.imageStringArray.addAll(imageStringArray)
         notifyDataSetChanged()
     }

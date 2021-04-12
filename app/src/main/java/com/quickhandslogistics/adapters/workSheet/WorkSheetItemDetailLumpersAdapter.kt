@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -229,8 +228,8 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
             this.timingsData.putAll(timingsData)
         }
         this.workItemStatus = getDefaultOrValue(status)
-        this.totalCases=getDefaultOrValue(totalCases)
-        this.isCompleted= getDefaultOrValue(isCompleted)
+        this.totalCases = getDefaultOrValue(totalCases)
+        this.isCompleted = getDefaultOrValue(isCompleted)
 
         this.tempLumperIds.clear()
         this.tempLumperIds.addAll(tempLumperIds)

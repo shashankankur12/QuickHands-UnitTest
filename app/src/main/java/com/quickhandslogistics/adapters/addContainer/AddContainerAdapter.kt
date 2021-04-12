@@ -121,13 +121,13 @@ class AddContainerAdapter(private val onAdapterClick: AddContainerActivity, priv
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             if (!s.toString().equals("0")) {
                 val item = getItem(adapterPosition)
-                isShowingDialog=false
+                isShowingDialog = false
                 if (item.workItemType.equals(WORKSHEET_WORK_ITEM_INBOUND))
                     containerDetails[adapterPosition].numberOfDrops = s.toString()
                 else containerDetails[adapterPosition].sequence = s.toString()
 
                 onAdapterClick.addQuantity(adapterPosition, item, s.toString())
-            }else {
+            } else {
                 if (!isShowingDialog) {
                     CustomProgressBar.getInstance().showMessageDialog(
                         resources.getString(R.string.add_container_quantity_message),
