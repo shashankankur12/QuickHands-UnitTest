@@ -9,7 +9,7 @@ class ScheduleWorkItemContract {
         interface OnAdapterItemClickListener {
             fun onItemClick(workItemId: String, workItemTypeDisplayName: String)
             fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>)
-            fun onNoteClick(workItemDetail: WorkItemContainerDetails)
+            fun onNoteClick(workItemDetail: WorkItemDetail)
         }
     }
 }

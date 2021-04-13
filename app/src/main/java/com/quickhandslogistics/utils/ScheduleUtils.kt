@@ -457,7 +457,7 @@ object ScheduleUtils {
         val weeklyNoteList: ArrayList<String> = ArrayList()
         val monthlyNoteList: ArrayList<String> = ArrayList()
         val customNoteList: ArrayList<String> = ArrayList()
-        val workItemDetail: ArrayList<WorkItemContainerDetails> = ArrayList()
+        val workItemDetail: ArrayList<WorkItemDetail> = ArrayList()
 
         workItemData?.let{
             workItemDetail.addAll(it?.liveLoads!!)
@@ -621,4 +621,26 @@ object ScheduleUtils {
             lumperList
         } else ArrayList()
     }
+
+    fun getAssignedLumperList(scheduleDetails: ScheduleDetailData): List<EmployeeData> {
+        var scheduleLumperList: ArrayList<EmployeeData> =ArrayList()
+        scheduleDetails?.let {
+            var allWorkItemList :ArrayList<WorkItemDetail> = ArrayList()
+            if (!it.outbounds.isNullOrEmpty())
+                allWorkItemList.addAll(it.outbounds!!)
+            if (!it.liveLoads.isNullOrEmpty())
+                allWorkItemList.addAll(it.liveLoads!!)
+            if (!it.drops.isNullOrEmpty())
+                allWorkItemList.addAll(it.drops!!)
+
+            allWorkItemList.forEach { workItem ->
+                workItem.assignedLumpersList?.forEach{ lumperInfo ->
+                    scheduleLumperList.add(lumperInfo)
+                }
+            }
+
+        }
+        return scheduleLumperList.distinctBy { it.id }
+    }
+
 }

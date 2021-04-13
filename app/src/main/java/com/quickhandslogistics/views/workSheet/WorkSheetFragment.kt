@@ -172,15 +172,33 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         allWorkItems.addAll(onGoingWorkItems)
         allWorkItems.addAll(data.cancelled!!)
         allWorkItems.addAll(data.completed!!)
-        textViewTotalCount.text = String.format(getString(R.string.total_containers_s), allWorkItems.size)
+        textViewTotalCount.text = UIUtils.getSpannableText(getString(R.string.total_container_bold), allWorkItems.size.toString())
 
         val workItemTypeCounts = ScheduleUtils.getWorkItemTypeCounts(allWorkItems)
 
-        textViewLiveLoadsCount.text = String.format(getString(R.string.live_loads_s), workItemTypeCounts.first)
-        textViewDropsCount.text = String.format(getString(R.string.drops_s), workItemTypeCounts.second)
-        textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
-        textViewUnfinishedCount.text = String.format(getString(R.string.unfinished_s), data.unfinished?.size)
+        if (workItemTypeCounts.first > 0) {
+            textViewLiveLoadsCount.visibility = View.VISIBLE
+            textViewLiveLoadsCount.text =
+                String.format(getString(R.string.live_loads_s), workItemTypeCounts.first)
+        } else textViewLiveLoadsCount.visibility = View.GONE
 
+        if (workItemTypeCounts.second > 0) {
+            textViewDropsCount.visibility = View.VISIBLE
+            textViewDropsCount.text =
+                String.format(getString(R.string.drops_s), workItemTypeCounts.second)
+        } else textViewDropsCount.visibility = View.GONE
+
+        if (workItemTypeCounts.third > 0) {
+            textViewOutBoundsCount.visibility = View.VISIBLE
+            textViewOutBoundsCount.text =
+                String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
+        } else textViewOutBoundsCount.visibility = View.GONE
+
+        if (data.unfinished?.size!! > 0) {
+            textViewUnfinishedCount.visibility = View.VISIBLE
+            textViewUnfinishedCount.text =
+                String.format(getString(R.string.unfinished_s), data.unfinished?.size)
+        } else textViewUnfinishedCount.visibility = View.GONE
 
         return Quintuple(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!), getSortList(data.unfinished!!), ArrayList())
     }
@@ -255,14 +273,34 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         allWorkItems.addAll(onGoingWorkItems)
         allWorkItems.addAll(data.cancelled!!)
         allWorkItems.addAll(data.completed!!)
-        textViewTotalCount.text = String.format(getString(R.string.total_containers_s), allWorkItems.size)
+        textViewTotalCount.text = UIUtils.getSpannableText(getString(R.string.total_container_bold), allWorkItems.size.toString())
 
         val workItemTypeCounts = ScheduleUtils.getWorkItemTypeCounts(allWorkItems)
 
-        textViewLiveLoadsCount.text = String.format(getString(R.string.live_loads_s), workItemTypeCounts.first)
-        textViewDropsCount.text = String.format(getString(R.string.drops_s), workItemTypeCounts.second)
-        textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
-        textViewUnfinishedCount.text = String.format(getString(R.string.unfinished_s), data.unfinished?.size)
+        if (workItemTypeCounts.first > 0) {
+            textViewLiveLoadsCount.visibility = View.VISIBLE
+            textViewLiveLoadsCount.text =
+                String.format(getString(R.string.live_loads_s), workItemTypeCounts.first)
+        } else textViewLiveLoadsCount.visibility = View.GONE
+
+        if (workItemTypeCounts.second > 0) {
+            textViewDropsCount.visibility = View.VISIBLE
+            textViewDropsCount.text =
+                String.format(getString(R.string.drops_s), workItemTypeCounts.second)
+        } else textViewDropsCount.visibility = View.GONE
+
+        if (workItemTypeCounts.third > 0) {
+            textViewOutBoundsCount.visibility = View.VISIBLE
+            textViewOutBoundsCount.text =
+                String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
+        } else textViewOutBoundsCount.visibility = View.GONE
+
+        if (data.unfinished?.size!! > 0) {
+            textViewUnfinishedCount.visibility = View.VISIBLE
+            textViewUnfinishedCount.text =
+                String.format(getString(R.string.unfinished_s), data.unfinished?.size)
+        } else textViewUnfinishedCount.visibility = View.GONE
+
 
         adapter?.updateWorkItemsList(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!), getSortList(data.unfinished!!), data.containerGroupNote, data.unfinishedNotes, data.notOpenNotes)
     }

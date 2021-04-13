@@ -26,7 +26,7 @@ class LumperImagesAdapter(var lumpersList: ArrayList<EmployeeData>, private val 
     }
 
     override fun getItemCount(): Int {
-        return if (lumpersList.size > 5) 5 else lumpersList.size
+        return if (lumpersList.size > 11) 11 else lumpersList.size
     }
 
     private fun getItem(position: Int): EmployeeData {
@@ -47,11 +47,11 @@ class LumperImagesAdapter(var lumpersList: ArrayList<EmployeeData>, private val 
         }
 
         fun bind(employeeData: EmployeeData) {
-            if (adapterPosition > 3) {
+            if (adapterPosition > 9) {
                 Glide.with(context).clear(circleImageViewProfile);
                 circleImageViewProfile.visibility = View.GONE
                 textViewNumber.visibility = View.VISIBLE
-                textViewNumber.text = "+${lumpersList.size - 4}"
+                textViewNumber.text = "+${lumpersList.size - 10}"
             } else {
                 UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
                  var buildingId =if (!sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID).isNullOrEmpty()) sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID) else ""

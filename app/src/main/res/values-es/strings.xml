@@ -68,6 +68,7 @@
     <string name="department_full">Department : <![CDATA[<b> %s </b>]]></string>
     <string name="title_lead">Title : </string>
     <string name="dept_bold"><![CDATA[<b>Dept: </b>]]></string>
+    <string name="total_container_bold"><![CDATA[<b>Total Containers: </b>]]> %s</string>
     <string name="district_manager_email">DM Email</string>
     <string name="district_manager_name">DM Name</string>
     <string name="door_s">Door: %s</string>
@@ -197,6 +198,7 @@
     <string name="start_and_end_time"><![CDATA[Start & End Time]]></string>
     <string name="start_time">Start Time</string>
     <string name="start_time_s">Start Time: %s</string>
+    <string name="date_started">Date Started: %s</string>
     <string name="start_time_add_container">Schedule Time:</string>
     <string name="start_time_bold"><![CDATA[<b>Start Time: </b>]]> %s</string>
     <string name="submit">Submit</string>

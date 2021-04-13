@@ -95,8 +95,9 @@ class ScheduleAdapter(private val resources: Resources, var adapterItemClickList
             textViewScheduleTypeUnfinishedStartTime.text=DateUtils.convertMillisecondsToTimeString((scheduleDetail.drops!![0].startTime)!!.toLong())
             ScheduleUtils.changeStatusUIByValue(resources, VIEW_DETAILS, textViewStatus, relativeLayoutSide)
 
+            val assignedLumperList=ScheduleUtils.getAssignedLumperList(scheduleDetail) as ArrayList<EmployeeData>
             recyclerViewLumpersImagesList.apply {
-                adapter = LumperImagesAdapter(scheduleDetail.allAssignedLumpers, sharedPref,this@ViewHolder)
+                adapter = LumperImagesAdapter(assignedLumperList , sharedPref,this@ViewHolder)
             }
 
             if (scheduleDetail.scheduleDepartment==(EMPLOYEE_DEPARTMENT_INBOUND)){

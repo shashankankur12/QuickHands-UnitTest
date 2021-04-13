@@ -16,7 +16,7 @@ class WorkSchedulePagerAdapter(
     childFragmentManager: FragmentManager,
     private val resources: Resources,
     selectedTime: Long?,
-    allWorkItemLists: Quintuple<ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>>? = null
+    allWorkItemLists: Quintuple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>? = null
 ) :
     FragmentStatePagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
@@ -53,11 +53,11 @@ class WorkSchedulePagerAdapter(
 
 
     fun updateWorkItemsList(
-        onGoingWorkItems: ArrayList<WorkItemContainerDetails>,
-        cancelledWorkItems: ArrayList<WorkItemContainerDetails>,
-        completedWorkItems: ArrayList<WorkItemContainerDetails>,
-        unfinishedWorkItems: ArrayList<WorkItemContainerDetails>,
-        notOpenWorkItems: ArrayList<WorkItemContainerDetails>,
+        onGoingWorkItems: ArrayList<WorkItemDetail>,
+        cancelledWorkItems: ArrayList<WorkItemDetail>,
+        completedWorkItems: ArrayList<WorkItemDetail>,
+        unfinishedWorkItems: ArrayList<WorkItemDetail>,
+        notOpenWorkItems: ArrayList<WorkItemDetail>,
         selectedTime: Long
 
     ) {

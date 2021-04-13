@@ -9,9 +9,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.adapters.common.LumperImagesAdapter
 import com.quickhandslogistics.contracts.common.LumperImagesContract
 import com.quickhandslogistics.contracts.schedule.ScheduleWorkItemContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.ScheduleUtils
@@ -21,7 +23,7 @@ import kotlinx.android.synthetic.main.item_work_sheet.view.*
 class ScheduleWorkSheetItemAdapter(private val resources: Resources, private val sharedPref: SharedPref, var adapterItemClickListener: ScheduleWorkItemContract.View.OnAdapterItemClickListener) :
     RecyclerView.Adapter<ScheduleWorkSheetItemAdapter.ViewHolder>() {
 
-    private var workItemsList: ArrayList<WorkItemContainerDetails> = ArrayList()
+    private var workItemsList: ArrayList<WorkItemDetail> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, i: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_work_sheet, parent, false)
@@ -32,7 +34,7 @@ class ScheduleWorkSheetItemAdapter(private val resources: Resources, private val
         return workItemsList.size
     }
 
-    fun getItem(position: Int): WorkItemContainerDetails {
+    fun getItem(position: Int): WorkItemDetail {
         return workItemsList[position]
     }
 
@@ -62,7 +64,7 @@ class ScheduleWorkSheetItemAdapter(private val resources: Resources, private val
             itemView.setOnClickListener(this)
         }
 
-        fun bind(workItemDetail: WorkItemContainerDetails) {
+        fun bind(workItemDetail: WorkItemDetail) {
             textViewStartTime.text = String.format(resources.getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
 
             val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.type, resources)
@@ -90,7 +92,7 @@ class ScheduleWorkSheetItemAdapter(private val resources: Resources, private val
             textViewWorkSheetNote.isEnabled=(!workItemDetail.schedule?.scheduleNote.isNullOrEmpty() && !getItem(adapterPosition).schedule?.scheduleNote!!.equals("NA"))
 
             workItemDetail.assignedLumpersList?.let { imagesList ->
-//                recyclerViewLumpersImagesList.adapter = LumperImagesAdapter(imagesList, sharedPref,this@ViewHolder)
+                recyclerViewLumpersImagesList.adapter = LumperImagesAdapter(imagesList, sharedPref,this@ViewHolder)
             }
             textViewIsScheduleLead.visibility = if (workItemDetail.isScheduledByLead!!) View.VISIBLE else View.GONE
 
@@ -119,7 +121,7 @@ class ScheduleWorkSheetItemAdapter(private val resources: Resources, private val
         }
     }
 
-    fun updateList(workItemsList: ArrayList<WorkItemContainerDetails>) {
+    fun updateList(workItemsList: ArrayList<WorkItemDetail>) {
         this.workItemsList.clear()
         this.workItemsList = workItemsList
         notifyDataSetChanged()

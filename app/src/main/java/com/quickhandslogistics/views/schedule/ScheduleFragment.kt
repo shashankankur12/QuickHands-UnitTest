@@ -37,7 +37,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     private var selectedTime: Long = 0
     private var currentDatePosition: Int = 0
     private lateinit var availableDates: List<Date>
-    private var workItemsList: ArrayList<ScheduleDetailData> = ArrayList<ScheduleDetailData>()
+    private var workItemsList: ArrayList<ScheduleDetailData> = ArrayList()
     private var selectedDate: Date = Date()
     private var dateString: String? = null
     private var isSavedState: Boolean = false
