@@ -12,6 +12,7 @@ import com.quickhandslogistics.contracts.schedule.WorkScheduleContract
 import com.quickhandslogistics.controls.Quintuple
 import com.quickhandslogistics.data.customerSheet.CustomerSheetData
 import com.quickhandslogistics.data.schedule.ScheduleDetailData
+import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 import com.quickhandslogistics.presenters.schedule.WorkSchedulePresenter
 import com.quickhandslogistics.utils.*
@@ -132,7 +133,7 @@ View.OnClickListener   {
 
 
     private fun initializeViewPager(
-        allWorkItemLists: Quintuple<ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>>? = null,
+        allWorkItemLists: Quintuple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>? = null,
         customerSheetData: CustomerSheetData? = null, selectedTime: Long? = null
     ) {
         adapter = if (allWorkItemLists != null) {
@@ -156,7 +157,7 @@ View.OnClickListener   {
             viewPagerWorkSheet.pagingEnabled =true        }
     }
 
-    private fun createDifferentListData(data: ScheduleDetailData): Quintuple<ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>> {
+    private fun createDifferentListData(data: ScheduleDetailData): Quintuple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>> {
 
         val totalContainers=data?.liveLoads?.size!!+ data?.drops?.size!! + data?.outbounds?.size!!
         textViewTotalCount.text = String.format(getString(R.string.total_containers_s), totalContainers)
@@ -166,16 +167,16 @@ View.OnClickListener   {
         textViewDropsCount.text = String.format(getString(R.string.drops_s), data?.drops?.size)
         textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), data?.outbounds?.size)
 
-        var allWorkItem:ArrayList<WorkItemContainerDetails> = ArrayList()
+        var allWorkItem:ArrayList<WorkItemDetail> = ArrayList()
         data?.outbounds?.let { allWorkItem.addAll(it) }
         data?.liveLoads?.let { allWorkItem.addAll(it) }
         data?.drops?.let { allWorkItem.addAll(it) }
 
-        var onGoingWorkItems:ArrayList<WorkItemContainerDetails> = ArrayList()
-        var cancelled:ArrayList<WorkItemContainerDetails> = ArrayList()
-        var completed:ArrayList<WorkItemContainerDetails> = ArrayList()
-        var unfinished:ArrayList<WorkItemContainerDetails> = ArrayList()
-        var notDone:ArrayList<WorkItemContainerDetails> = ArrayList()
+        var onGoingWorkItems:ArrayList<WorkItemDetail> = ArrayList()
+        var cancelled:ArrayList<WorkItemDetail> = ArrayList()
+        var completed:ArrayList<WorkItemDetail> = ArrayList()
+        var unfinished:ArrayList<WorkItemDetail> = ArrayList()
+        var notDone:ArrayList<WorkItemDetail> = ArrayList()
 
         allWorkItem.forEach {
             when {
@@ -240,16 +241,16 @@ View.OnClickListener   {
         textViewDropsCount.text = String.format(getString(R.string.drops_s), data.drops?.size)
         textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), data?.outbounds?.size)
 
-        var allWorkItem:ArrayList<WorkItemContainerDetails> = ArrayList()
+        var allWorkItem:ArrayList<WorkItemDetail> = ArrayList()
         data?.outbounds?.let { allWorkItem.addAll(it) }
         data?.liveLoads?.let { allWorkItem.addAll(it) }
         data?.drops?.let { allWorkItem.addAll(it) }
 
-        var onGoingWorkItems:ArrayList<WorkItemContainerDetails> = ArrayList()
-        var cancelled:ArrayList<WorkItemContainerDetails> = ArrayList()
-        var completed:ArrayList<WorkItemContainerDetails> = ArrayList()
-        var unfinished:ArrayList<WorkItemContainerDetails> = ArrayList()
-        var notOpen:ArrayList<WorkItemContainerDetails> = ArrayList()
+        var onGoingWorkItems:ArrayList<WorkItemDetail> = ArrayList()
+        var cancelled:ArrayList<WorkItemDetail> = ArrayList()
+        var completed:ArrayList<WorkItemDetail> = ArrayList()
+        var unfinished:ArrayList<WorkItemDetail> = ArrayList()
+        var notOpen:ArrayList<WorkItemDetail> = ArrayList()
 
         allWorkItem.forEach {
             when {
@@ -277,11 +278,11 @@ View.OnClickListener   {
         adapter?.updateWorkItemsList(getSortList(onGoingWorkItems), getSortList(cancelled!!), getSortList(completed!!), getSortList(unfinished), getSortList(notOpen), selectedTime)
     }
 
-    private fun getSortList(workItemsList: ArrayList<WorkItemContainerDetails>): ArrayList<WorkItemContainerDetails> {
-        var inboundList: ArrayList<WorkItemContainerDetails> = ArrayList()
-        var outBoundList: ArrayList<WorkItemContainerDetails> = ArrayList()
-        var liveList: ArrayList<WorkItemContainerDetails> = ArrayList()
-        var sortedList: ArrayList<WorkItemContainerDetails> = ArrayList()
+    private fun getSortList(workItemsList: ArrayList<WorkItemDetail>): ArrayList<WorkItemDetail> {
+        var inboundList: ArrayList<WorkItemDetail> = ArrayList()
+        var outBoundList: ArrayList<WorkItemDetail> = ArrayList()
+        var liveList: ArrayList<WorkItemDetail> = ArrayList()
+        var sortedList: ArrayList<WorkItemDetail> = ArrayList()
 
         workItemsList.forEach {
             when {

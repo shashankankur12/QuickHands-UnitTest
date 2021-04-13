@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
@@ -51,8 +52,11 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
         private val textViewStatus: TextView = itemView.textViewStatus
         private val textViewWorkSheetNote: TextView = itemView.textViewWorkSheetNote
         private val textViewIsScheduleLead: TextView = itemView.textViewIsScheduleLead
+        private val textViewUnfinishedDate: TextView = itemView.textViewUnfinishedDate
         private val relativeLayoutSide: RelativeLayout = itemView.relativeLayoutSide
+        private val containerUnfinishedDetails: ConstraintLayout = itemView.containerUnfinishedDetails
         private val recyclerViewLumpersImagesList: RecyclerView = itemView.recyclerViewLumpersImagesList
+        private val recyclerViewUnfinishedLumper: RecyclerView = itemView.recyclerViewUnfinishedLumper
 
         init {
             recyclerViewLumpersImagesList.apply {

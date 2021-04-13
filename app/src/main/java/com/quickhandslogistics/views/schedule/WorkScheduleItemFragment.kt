@@ -16,6 +16,7 @@ import com.quickhandslogistics.contracts.workSheet.WorkSheetContract
 import com.quickhandslogistics.controls.Quintuple
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
@@ -29,11 +30,11 @@ class WorkScheduleItemFragment : BaseFragment(), ScheduleWorkItemContract.View.O
 
     private var workItemType: String = ""
     private var selectedTime: Long = 0
-    private var onGoingWorkItems = java.util.ArrayList<WorkItemContainerDetails>()
-    private var cancelledWorkItems = java.util.ArrayList<WorkItemContainerDetails>()
-    private var completedWorkItems = java.util.ArrayList<WorkItemContainerDetails>()
-    private var unfinishedWorkItems = java.util.ArrayList<WorkItemContainerDetails>()
-    private var notDoneWorkItems = java.util.ArrayList<WorkItemContainerDetails>()
+    private var onGoingWorkItems = java.util.ArrayList<WorkItemDetail>()
+    private var cancelledWorkItems = java.util.ArrayList<WorkItemDetail>()
+    private var completedWorkItems = java.util.ArrayList<WorkItemDetail>()
+    private var unfinishedWorkItems = java.util.ArrayList<WorkItemDetail>()
+    private var notDoneWorkItems = java.util.ArrayList<WorkItemDetail>()
 
     private lateinit var workSheetItemAdapter: ScheduleWorkSheetItemAdapter
 
@@ -49,7 +50,7 @@ class WorkScheduleItemFragment : BaseFragment(), ScheduleWorkItemContract.View.O
         @JvmStatic
         fun newInstance(
             workItemType: String,
-            allWorkItemLists: Quintuple<ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>, ArrayList<WorkItemContainerDetails>>?,
+            allWorkItemLists: Quintuple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>?,
             selectedTime: Long?
         ) = WorkScheduleItemFragment()
             .apply {
@@ -145,7 +146,7 @@ class WorkScheduleItemFragment : BaseFragment(), ScheduleWorkItemContract.View.O
         }
     }
 
-    fun updateWorkItemsList(workItemsList: ArrayList<WorkItemContainerDetails>, selectedTime: Long) {
+    fun updateWorkItemsList(workItemsList: ArrayList<WorkItemDetail>, selectedTime: Long) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {
             ConnectionDetector.createSnackBar(activity)
             return
@@ -181,7 +182,7 @@ class WorkScheduleItemFragment : BaseFragment(), ScheduleWorkItemContract.View.O
         startIntent(DisplayLumpersListActivity::class.java, bundle = bundle)
     }
 
-    override fun onNoteClick(workItemDetail: WorkItemContainerDetails) {
+    override fun onNoteClick(workItemDetail: WorkItemDetail) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {
             ConnectionDetector.createSnackBar(activity)
             return

@@ -69,6 +69,7 @@
     <string name="department_full">Department : <![CDATA[<b> %s </b>]]></string>
     <string name="title_lead">Title :</string>
     <string name="dept_bold"><![CDATA[<b>Dept: </b>]]></string>
+    <string name="total_container_bold"><![CDATA[<b>Total Containers: </b>]]> %s</string>
     <string name="district_manager_email">DM Email</string>
     <string name="district_manager_name">DM Name</string>
     <string name="door_s">Door: %s</string>
@@ -259,6 +260,7 @@
     <string name="custom_scheduleds">Custom Date Scheduled Container</string>
     <string name="individual_note">Individual Note</string>
     <string name="date">Date: <![CDATA[<b> %s</b>]]></string>
+    <string name="date_started">Date Started: %s</string>
     <string name="note_for_requested_lumper">Note for Requested Lumpers:</string>
     <string name="lumpers_dm_assigned">Lumpers DM Assigned: %s</string>
     <string name="lumpers_dm_assigned_bold"><![CDATA[<b> Lumpers DM Assigned:</b>]]> %s</string>
