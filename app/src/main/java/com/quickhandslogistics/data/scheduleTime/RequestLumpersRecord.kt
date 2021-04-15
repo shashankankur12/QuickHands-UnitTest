@@ -30,6 +30,14 @@ class RequestLumpersRecord() :Parcelable {
     @Expose
     var day: String? = null
 
+    @SerializedName("notesForLumper")
+    @Expose
+    var notesForLumper: String? = null
+
+    @SerializedName("startTime")
+    @Expose
+    var startTime: String? = null
+
     @SerializedName("notesForDM")
     @Expose
     var notesForDM: String? = null
@@ -62,6 +70,8 @@ class RequestLumpersRecord() :Parcelable {
         requestStatus = parcel.readString()
         createdAt = parcel.readString()
         updatedAt = parcel.readString()
+        startTime = parcel.readString()
+        notesForLumper = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -76,6 +86,8 @@ class RequestLumpersRecord() :Parcelable {
         parcel.writeString(requestStatus)
         parcel.writeString(createdAt)
         parcel.writeString(updatedAt)
+        parcel.writeString(startTime)
+        parcel.writeString(notesForLumper)
     }
 
     override fun describeContents(): Int {

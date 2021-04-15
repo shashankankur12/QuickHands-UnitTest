@@ -86,6 +86,8 @@
                 android:layout_width="wrap_content"
                 android:text="@string/customer_notes"
                 android:layout_gravity="start"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
                 android:textColor="@color/scheduleDetail"
                 app:layout_constraintStart_toEndOf="@+id/textViewTotalCount"
                 app:layout_constraintEnd_toEndOf="parent"

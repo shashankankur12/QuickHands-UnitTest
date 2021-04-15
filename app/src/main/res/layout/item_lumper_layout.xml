@@ -72,6 +72,7 @@
         android:layout_height="@dimen/_20ssp"
         android:src="@drawable/ic_call"
         android:tint="@color/textWhite"
+        android:visibility="gone"
         app:civ_border_color="@color/online"
         app:civ_border_width="@dimen/_4sdp"
         app:civ_circle_background_color="@color/online"

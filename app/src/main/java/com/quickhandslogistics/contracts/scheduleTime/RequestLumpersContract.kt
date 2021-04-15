@@ -9,9 +9,9 @@ import kotlin.collections.ArrayList
 class RequestLumpersContract {
     interface Model {
         fun fetchAllRequestsByDate(selectedDate: Date, onFinishedListener: OnFinishedListener)
-        fun createNewRequestForLumpers(requiredLumperCount: String, notesDM: String, date: Date, noteLumper :String, onFinishedListener: OnFinishedListener)
+        fun createNewRequestForLumpers(requiredLumperCount: String, notesDM: String, date: Date, noteLumper :String, startTime: String, onFinishedListener: OnFinishedListener)
         fun cancelRequestForLumpers(requestId: String, date: Date, onFinishedListener: OnFinishedListener)
-        fun updateRequestForLumpers(requestId: String, requiredLumperCount: String, notesDM: String, date: Date, onFinishedListener: OnFinishedListener)
+        fun updateRequestForLumpers(requestId: String, requiredLumperCount: String, notesDM: String, date: Date,noteLumper :String, startTime: String, onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccessCancelRequest(date: Date)
@@ -40,9 +40,17 @@ class RequestLumpersContract {
             requiredLumperCount: String,
             notesDM: String,
             date: Date,
-            noteLumper: String
+            noteLumper: String,
+            toString: String
         )
         fun cancelRequestForLumpers(requestId: String, date: Date)
-        fun updateRequestForLumpers(requestId: String, requiredLumperCount: String, notesDM: String, date: Date)
+        fun updateRequestForLumpers(
+            requestId: String,
+            requiredLumperCount: String,
+            notesDM: String,
+            date: Date,
+            noteLumper: String,
+            toString: String
+        )
     }
 }

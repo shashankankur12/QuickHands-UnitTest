@@ -73,14 +73,14 @@ class ScheduleAdapter(private val resources: Resources, var adapterItemClickList
 
         fun bind(scheduleDetail: ScheduleDetailData) {
             val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
-            textViewBuildingName.text = UIUtils.getSpannableText(resources.getString(R.string.department_full),scheduleDetail.scheduleDepartment.toLowerCase().capitalize())
+            textViewBuildingName.text = UIUtils.getSpannableText(resources.getString(R.string.department_full),"${scheduleDetail.scheduleDepartment.toLowerCase().capitalize()}s")
             textViewScheduleType.text = String.format(resources.getString(R.string.out_bound_s),scheduleDetail.outbounds?.size.toString())
             textViewScheduleTypeLiveLoad.text = String.format(resources.getString(R.string.live_load_s),scheduleDetail.liveLoads?.size.toString())
             textViewScheduleTypeDrops.text = String.format(resources.getString(R.string.drops_s),scheduleDetail.drops?.size.toString())
             textViewScheduleTypeUnfinished.text = String.format(resources.getString(R.string.unfinished_drop),0)
             val totalContainer=(scheduleDetail.outbounds?.size!!) + (scheduleDetail.liveLoads?.size!!)+(scheduleDetail.drops?.size!!)
             textViewWorkItemsCount.text = String.format(resources.getString(R.string.total_containers_s),totalContainer)
-            leadProfile?.buildingDetailData?.leads?.let {
+            leadProfile?.buildingDetailData?.get(0)?.leads?.let {
                 val leadName= getDepartmentlead(it, scheduleDetail.scheduleDepartment)
                 textViewWorkItemsLeadName.text = String.format(resources.getString(R.string.lead_name),leadName)
             }
@@ -91,8 +91,8 @@ class ScheduleAdapter(private val resources: Resources, var adapterItemClickList
                 textViewScheduleTypeLiveLoadStartTime.text=DateUtils.convertMillisecondsToTimeString((scheduleDetail.liveLoads!![0].startTime)!!.toLong())
             if (scheduleDetail.drops!!.size>0 && !scheduleDetail.drops!![0].startTime.isNullOrEmpty())
                 textViewScheduleTypeDropsStartTime.text=DateUtils.convertMillisecondsToTimeString((scheduleDetail.drops!![0].startTime)!!.toLong())
-            if (scheduleDetail.drops!!.size>0 && !scheduleDetail.drops!![0].startTime.isNullOrEmpty())
-            textViewScheduleTypeUnfinishedStartTime.text=DateUtils.convertMillisecondsToTimeString((scheduleDetail.drops!![0].startTime)!!.toLong())
+//            if (scheduleDetail.drops!!.size>0 && !scheduleDetail.drops!![0].startTime.isNullOrEmpty())
+//            textViewScheduleTypeUnfinishedStartTime.text=DateUtils.convertMillisecondsToTimeString((scheduleDetail.drops!![0].startTime)!!.toLong())
             ScheduleUtils.changeStatusUIByValue(resources, VIEW_DETAILS, textViewStatus, relativeLayoutSide)
 
             val assignedLumperList=ScheduleUtils.getAssignedLumperList(scheduleDetail) as ArrayList<EmployeeData>

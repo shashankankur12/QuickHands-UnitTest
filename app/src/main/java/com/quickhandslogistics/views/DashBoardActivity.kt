@@ -269,9 +269,9 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             if (!leadProfileData.email.isNullOrEmpty()) leadProfileData.email else "-"
         textViewEmployeeId.text =
             if (!leadProfileData.employeeId.isNullOrEmpty()) leadProfileData.employeeId else "-"
-        if (!leadProfileData.buildingDetailData?.buildingName.isNullOrEmpty())
+        if (!leadProfileData.buildingDetailData?.get(0)?.buildingName.isNullOrEmpty())
             textViewRole.text =
-                if (!leadProfileData.role.isNullOrEmpty()) "QHL " + leadProfileData.role!!.capitalize() + " at " + leadProfileData?.buildingDetailData?.buildingName?.capitalize() else "-"
+                if (!leadProfileData.role.isNullOrEmpty()) "QHL " + leadProfileData.role!!.capitalize() + " at " + leadProfileData?.buildingDetailData?.get(0)?.buildingName?.capitalize() else "-"
         else textViewRole.text =
             if (!leadProfileData.role.isNullOrEmpty()) "QHL " + leadProfileData.role!!.capitalize() else "-"
 

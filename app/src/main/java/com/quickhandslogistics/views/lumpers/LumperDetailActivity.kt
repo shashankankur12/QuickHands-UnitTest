@@ -62,7 +62,7 @@ class LumperDetailActivity : BaseActivity(), View.OnClickListener {
             val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
             var buildingDetailData: BuildingDetailData
 
-            buildingDetailData = if(!employeeData.isTemporaryAssigned) leadProfile?.buildingDetailData!! else employeeData.buildingAssignedAsLumper!!
+            buildingDetailData = if(!employeeData.isTemporaryAssigned) leadProfile?.buildingDetailData?.get(0)!! else employeeData.buildingAssignedAsLumper?.get(0)!!
 
             UIUtils.showEmployeeProfileImage(activity, employeeData, circleImageViewProfile)
             UIUtils.updateProfileBorder(activity, employeeData.isTemporaryAssigned, circleImageViewProfile)

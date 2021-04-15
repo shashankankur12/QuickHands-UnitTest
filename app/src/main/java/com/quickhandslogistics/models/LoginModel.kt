@@ -99,7 +99,7 @@ class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
 
     override fun processLeadProfileData(leadProfileData: LeadProfileData, onFinishedListener: LoginContract.Model.OnFinishedListener) {
         sharedPref.setClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, leadProfileData)
-        sharedPref.setString(AppConstant.PREFERENCE_BUILDING_ID, leadProfileData.buildingDetailData?.id)
+        sharedPref.setString(AppConstant.PREFERENCE_BUILDING_ID, leadProfileData.buildingDetailData?.get(0)?.id)
         onFinishedListener.showNextScreen()
     }
 }

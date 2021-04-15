@@ -176,24 +176,20 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
         })
     }
 
-    private fun showSubmitRequestConfirmationDialog(
-        requiredLumperCount: String,
-        notesDM: String,
-        noteLumper: String
-    ) {
+    private fun showSubmitRequestConfirmationDialog(requiredLumperCount: String, notesDM: String, noteLumper: String, startTime: Long) {
         val requestLumperId = buttonSubmit.getTag(R.id.requestLumperId) as String?
         if (requestLumperId.isNullOrEmpty()) {
             CustomProgressBar.getInstance().showWarningDialog(getString(R.string.request_lumpers_alert_message), activity, object : CustomDialogWarningListener {
                     override fun onConfirmClick() {
                         closeBottomSheet()
-                        requestLumpersPresenter.createNewRequestForLumpers(requiredLumperCount, notesDM, Date(selectedTime), noteLumper)
+                        requestLumpersPresenter.createNewRequestForLumpers(requiredLumperCount, notesDM, Date(selectedTime), noteLumper, startTime.toString())
 
                     }
                     override fun onCancelClick() {}
                 })
         } else {
             closeBottomSheet()
-            requestLumpersPresenter.updateRequestForLumpers(requestLumperId, requiredLumperCount, notesDM, Date(selectedTime))
+            requestLumpersPresenter.updateRequestForLumpers(requestLumperId, requiredLumperCount, notesDM, Date(selectedTime), noteLumper, startTime.toString())
         }
     }
 
@@ -248,7 +244,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
                 CustomProgressBar.getInstance().showValidationErrorDialog(getString(R.string.request_valid_message), activity)
             }
             else -> {
-                showSubmitRequestConfirmationDialog(requiredLumperCount, notesDM, noteLumper)
+                showSubmitRequestConfirmationDialog(requiredLumperCount, notesDM, noteLumper, startTime)
             }
         }
     }

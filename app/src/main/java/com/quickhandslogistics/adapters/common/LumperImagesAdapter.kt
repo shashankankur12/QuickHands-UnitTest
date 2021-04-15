@@ -54,8 +54,8 @@ class LumperImagesAdapter(var lumpersList: ArrayList<EmployeeData>, private val 
                 textViewNumber.text = "+${lumpersList.size - 10}"
             } else {
                 UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
-                 var buildingId =if (!sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID).isNullOrEmpty()) sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID) else ""
-                UIUtils.updateProfileBorder(context, !buildingId.equals(employeeData.buildingIdAsLumper), circleImageViewProfile)
+//                 var buildingId =if (!sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID).isNullOrEmpty()) sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID) else ""
+//                UIUtils.updateProfileBorder(context, !buildingId.equals(employeeData.buildingIdAsLumper), circleImageViewProfile)
                 circleImageViewProfile.visibility = View.VISIBLE
                 textViewNumber.visibility = View.GONE
             }

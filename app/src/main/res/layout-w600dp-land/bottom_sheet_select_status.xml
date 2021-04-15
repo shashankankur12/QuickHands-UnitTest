@@ -14,10 +14,10 @@
 
     <TextView
         android:id="@+id/textViewSelectStatus"
-        style="@style/titleBigTextViewTheme"
+        style="@style/titleBigTextViewThemeHeader"
         android:layout_width="0dp"
         android:gravity="center"
-        android:padding="@dimen/_8ssp"
+        android:padding="@dimen/_6ssp"
         android:text="@string/select_status"
         android:textColor="@color/textBlack"
         android:background="@color/appBackground"
@@ -25,6 +25,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+<!--    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewSelectStatus">
+
+
+
+    </androidx.core.widget.NestedScrollView>-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewStatus"
         android:layout_width="match_parent"

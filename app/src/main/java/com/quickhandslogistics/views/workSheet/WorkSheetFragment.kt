@@ -16,13 +16,16 @@ import com.quickhandslogistics.contracts.workSheet.WorkSheetContract
 import com.quickhandslogistics.controls.Quintuple
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
+import com.quickhandslogistics.data.workSheet.ContainerGroupNote
 import com.quickhandslogistics.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.presenters.workSheet.WorkSheetPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.utils.ScheduleUtils.getGroupNoteList
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
+import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.*
 import kotlinx.android.synthetic.main.bottom_work_sheet_item.*
+import kotlinx.android.synthetic.main.bottom_work_sheet_item.textViewTitle
 import kotlinx.android.synthetic.main.content_work_sheet.*
 import kotlinx.android.synthetic.main.fragment_work_sheet.*
 
@@ -363,12 +366,23 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         workSheetPresenter.fetchWorkSheetList()
     }
 
-    override fun showBottomSheetGroupNote(containerIds: ArrayList<String>, containerType: String) {
+    override fun showBottomSheetGroupNote(groupNote: ContainerGroupNote?, containerIds: ArrayList<String>, containerType: String) {
         constraintLayoutWorkSheetItem.visibility=View.VISIBLE
         this.containerIds.clear()
         this.containerType=""
-        editTextQHLCustomerNotes.setText("")
-        editTextQHLNotes.setText("")
+        groupNote?.also {
+            buttonSaveGroupNote.setText(R.string.update)
+            textViewTitle.setText(R.string.update_group_notes)
+            textViewTitle.setTag(R.id.note, groupNote.id)
+            editTextQHLCustomerNotes.setText(groupNote.noteForCustomer)
+            editTextQHLNotes.setText(groupNote.noteForQHL)
+        }?:run {
+            buttonSaveGroupNote.setText(R.string.save)
+            textViewTitle.setText(R.string.group_note)
+            textViewTitle.setTag(R.id.note, "")
+            editTextQHLCustomerNotes.setText("")
+            editTextQHLNotes.setText("")
+        }
 
         this.containerType=containerType
         this.containerIds=containerIds
@@ -403,19 +417,18 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
 
     }
 
+
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
         when(view!!.id){
             textViewGroupNote.id->{
-                if (!ConnectionDetector.isNetworkConnected(activity)) {
-                    ConnectionDetector.createSnackBar(activity)
-                    return
-                }
-
                 if (customerGroupNote!=null&& (customerGroupNote.first.first.size>0 ||customerGroupNote.second.size>0|| customerGroupNote.third.size>0|| customerGroupNote.first.second.size>0))
                 CustomerDialog.showGroupNoteDialog(activity, "Customer Notes :", customerGroupNote)
 
             }
-
             bottomSheetBackground.id->{closeBottomSheet()}
             buttonCancelGroupNote.id->{closeBottomSheet()}
             buttonSaveGroupNote.id->{
@@ -434,6 +447,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     private fun saveGroupNote(cancelled: ArrayList<String>) {
         val customerNote= editTextQHLCustomerNotes.text.toString()
         val qhlNote= editTextQHLNotes.text.toString()
+        val groupNoteId = textViewTitle.getTag(R.id.note) as String?
 
         when {
             customerNote.isNullOrEmpty() -> {
@@ -444,7 +458,20 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
             }
             else -> {
                 closeBottomSheet()
-                workSheetPresenter.saveGroupNoteData(containerIds, containerType, customerNote, qhlNote)
+                if (groupNoteId.isNullOrEmpty())
+                    workSheetPresenter.saveGroupNoteData(
+                        containerIds,
+                        containerType,
+                        customerNote,
+                        qhlNote
+                    )
+                else workSheetPresenter.updateGroupNoteData(
+                    groupNoteId!!,
+                    containerIds,
+                    containerType,
+                    customerNote,
+                    qhlNote
+                )
             }
         }
     }

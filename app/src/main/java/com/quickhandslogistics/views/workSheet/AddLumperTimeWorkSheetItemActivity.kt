@@ -255,6 +255,17 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
                 if (it.endTime == null || it.startTime == null) {
                     mPauseTimeRequestList.remove(it)
                 } else {
+                    if ((it.startTime!! <=selectedBreakInTime && selectedBreakOutTime< it.endTime!!)){
+                        showErrorDialog("break in/out overriding in previous slot ")
+                        return
+                    }else if (it.startTime!! <=selectedBreakInTime && selectedBreakInTime< it.endTime!!){
+                        showErrorDialog("brake in time already available in time slot ")
+                        return
+                    }else if (it.startTime!! <=selectedBreakOutTime && selectedBreakOutTime< it.endTime!!){
+                        showErrorDialog("brake out time already available in time slot ")
+                        return
+                    }
+
                     if (it.endTime == 0L || it.startTime == 0L) {
                         mPauseTimeRequestList.remove(it)
                     } else if (it.startTime!! == selectedBreakInTime && it.endTime!! == selectedBreakOutTime) {
@@ -266,6 +277,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             timeRequest.endTime = selectedBreakOutTime
             timeRequest.startTime = selectedBreakInTime
             mPauseTimeRequestList.add(timeRequest)
+
         }
 
         if (selectedBreakInTime > 0 && selectedBreakOutTime > 0) {

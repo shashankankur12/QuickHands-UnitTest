@@ -33,9 +33,9 @@ class RequestLumpersModel : RequestLumpersContract.Model {
         })
     }
 
-    override fun createNewRequestForLumpers(requiredLumperCount: String, notesDM: String, date: Date, noteLumper :String, onFinishedListener: RequestLumpersContract.Model.OnFinishedListener) {
+    override fun createNewRequestForLumpers(requiredLumperCount: String, notesDM: String, date: Date, noteLumper :String, startTime :String, onFinishedListener: RequestLumpersContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, date)
-        val request = RequestLumpersRequest(requiredLumperCount.toInt(), notesDM, dateString)
+        val request = RequestLumpersRequest(requiredLumperCount.toInt(), notesDM, dateString, noteLumper, startTime)
 
         DataManager.getService().createRequestLumpers(getAuthToken(), request).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
@@ -68,9 +68,9 @@ class RequestLumpersModel : RequestLumpersContract.Model {
         })
     }
 
-    override fun updateRequestForLumpers(requestId: String, requiredLumperCount: String, notesDM: String, date: Date, onFinishedListener: RequestLumpersContract.Model.OnFinishedListener) {
+    override fun updateRequestForLumpers(requestId: String, requiredLumperCount: String, notesDM: String, date: Date, noteLumper: String, startTime: String, onFinishedListener: RequestLumpersContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, date)
-        val request = RequestLumpersRequest(requiredLumperCount.toInt(), notesDM, dateString)
+        val request = RequestLumpersRequest(requiredLumperCount.toInt(), notesDM, dateString, noteLumper, startTime)
 
         DataManager.getService().updateRequestLumpers(getAuthToken(), requestId, request).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {

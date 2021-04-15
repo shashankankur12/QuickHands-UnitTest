@@ -155,28 +155,32 @@ object CustomerDialog : AppConstant {
         val confirm = dialog.findViewById<Button>(R.id.confirm_button)
 
         titleTextView.text = DateUtils.changeDateString(PATTERN_API_RESPONSE, PATTERN_NORMAL, leadWorkInfo?.date!!)
-        textViewScheduleType.text = UIUtils.getSpannableText(resources.getString(R.string.department_full), leadWorkInfo.department.toLowerCase().capitalize())
+        textViewScheduleType.text = leadWorkInfo.department?.let {
+            UIUtils.getSpannableText(resources.getString(R.string.department_full),
+                it.toLowerCase().capitalize()
+            )
+        }
         textViewWorkItemsCount.text = String.format(resources.getString(R.string.total_containers_s), leadWorkInfo.totalContainers)
         textViewWorkItemsLeadName.text = String.format(resources.getString(R.string.lead_name), leadWorkInfo.lead)
-        textViewScheduleUnfinished.text = String.format(resources.getString(R.string.unfinished_drop), "2"/*scheduleDetail.scheduleTypes?.drops?.size.toString()*/)
-        textViewScheduleUnfinishedStartTime.text =/*DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.drops!![0].startTime)!!.toLong())*/"09:00 PM"
+        textViewScheduleUnfinished.text = String.format(resources.getString(R.string.unfinished_drop), "0"/*scheduleDetail.scheduleTypes?.drops?.size.toString()*/)
+        textViewScheduleUnfinishedStartTime.text =/*DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.drops!![0].startTime)!!.toLong())*/""
 
         if (leadWorkInfo.outbounds != null) {
-            textViewScheduleOutBound.text = String.format(resources.getString(R.string.out_bound_s), leadWorkInfo.outbounds.count)
-            if (!leadWorkInfo.outbounds.time.isNullOrEmpty())
-                textViewScheduleOutBoundStartTime.text = DateUtils.changeDateString(PATTERN_API_RESPONSE, PATTERN_TIME, leadWorkInfo.outbounds.time[0])
+            textViewScheduleOutBound.text = String.format(resources.getString(R.string.out_bound_s), leadWorkInfo.outbounds?.count)
+            if (!leadWorkInfo.outbounds?.time.isNullOrEmpty())
+                textViewScheduleOutBoundStartTime.text = DateUtils.changeDateString(PATTERN_API_RESPONSE, PATTERN_TIME, leadWorkInfo.outbounds?.time!![0])
         }
 
         if (leadWorkInfo.live != null) {
-            textViewScheduleLiveLoad.text = String.format(resources.getString(R.string.live_load_s), leadWorkInfo.live.count)
-            if (!leadWorkInfo.live.time.isNullOrEmpty())
-                textViewScheduleLiveLoadStartTime.text = DateUtils.changeDateString(PATTERN_API_RESPONSE, PATTERN_TIME, leadWorkInfo.live.time[0])
+            textViewScheduleLiveLoad.text = String.format(resources.getString(R.string.live_load_s), leadWorkInfo.live?.count)
+            if (!leadWorkInfo.live?.time.isNullOrEmpty())
+                textViewScheduleLiveLoadStartTime.text = DateUtils.changeDateString(PATTERN_API_RESPONSE, PATTERN_TIME, leadWorkInfo.live?.time!![0])
         }
 
         if (leadWorkInfo.drops != null) {
             textViewScheduleDrops.text =
-                String.format(resources.getString(R.string.drops_s), leadWorkInfo.drops.count)
-            if (!leadWorkInfo.drops.time.isNullOrEmpty()) textViewScheduleDropsStartTime.text = DateUtils.changeDateString(PATTERN_API_RESPONSE, PATTERN_TIME, leadWorkInfo.drops.time)
+                String.format(resources.getString(R.string.drops_s), leadWorkInfo.drops?.count)
+            if (!leadWorkInfo.drops?.time.isNullOrEmpty()) textViewScheduleDropsStartTime.text = DateUtils.changeDateString(PATTERN_API_RESPONSE, PATTERN_TIME, leadWorkInfo.drops?.time!!)
         }
 
         if (leadWorkInfo.department == AppConstant.EMPLOYEE_DEPARTMENT_INBOUND) {

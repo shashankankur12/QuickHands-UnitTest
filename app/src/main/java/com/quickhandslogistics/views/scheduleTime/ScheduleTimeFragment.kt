@@ -33,6 +33,8 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCH
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_NOTES
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
+import kotlinx.android.synthetic.main.activity_request_lumpers.*
+import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.*
 import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.textViewTitle
 import kotlinx.android.synthetic.main.bottom_sheet_schdule_time_fragement.*
 import kotlinx.android.synthetic.main.content_dashboard.*
@@ -158,7 +160,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                 showDateString(dateString!!)
             }
             if (savedInstanceState.containsKey(LUMPER_WORK_INFO)) {
-                leadWorkInfo = savedInstanceState.getSerializable(LUMPER_WORK_INFO)as LeadWorkInfo
+                leadWorkInfo = savedInstanceState.getParcelable(LUMPER_WORK_INFO)
                 showLeadInfo(leadWorkInfo)
             }
             if (savedInstanceState.containsKey(NOTE_SCHEDULE_TIME)) {
@@ -203,7 +205,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         if (dateString != null)
             outState.putString(DATE_HEADER_SCHEDULE_TIME, dateString)
         if (leadWorkInfo!=null)
-            outState.putSerializable(LUMPER_WORK_INFO, leadWorkInfo)
+            outState.putParcelable(LUMPER_WORK_INFO, leadWorkInfo)
         super.onSaveInstanceState(outState)
     }
 
@@ -246,8 +248,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     }
 
     private fun showBottomSheetWithData(record: ScheduleTimeDetail, operation: String) {
+        constraintLayoutBottomSheetScheduleLumper.visibility=View.VISIBLE
         when(operation){
             EDIT_SCHEDULE_LUMPER->{
+                editTextNote.setText("")
+                editTextNoteGroup.setText("")
                 record.let {
                     textViewTitle.text = getString(R.string.edit_time_note)
                     linearLayoutCancelLumper.visibility=View.GONE
@@ -257,6 +262,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
             }
             CANCEL_SCHEDULE_LUMPER->{
+                editTextReason.setText("")
                 record.let {
                     textViewTitle.text = getString(R.string.cancel_lumper)
                     linearLayoutCancelLumper.visibility=View.VISIBLE
@@ -312,6 +318,8 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     }
 
     private fun closeBottomSheet() {
+        AppUtils.hideSoftKeyboard(activity!!)
+        constraintLayoutBottomSheetScheduleLumper.visibility=View.GONE
         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetBackground.visibility = View.GONE
     }
@@ -366,8 +374,6 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         CustomProgressBar.getInstance().showWarningDialog(getString(R.string.cancel_request_lumper), context!!, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 closeBottomSheet()
-
-
             }
             override fun onCancelClick() {
             }
@@ -429,8 +435,8 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
 
-        if (leadProfile?.buildingDetailData != null) {
-            textViewBuildingName.text = leadProfile?.buildingDetailData?.buildingName!!.capitalize()
+        if (leadProfile?.buildingDetailData?.get(0) != null) {
+            textViewBuildingName.text = leadProfile?.buildingDetailData?.get(0)?.buildingName!!.capitalize()
             textViewDept.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), UIUtils.getDisplayEmployeeDepartment(leadProfile))
             textViewShift.text = UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile.shift?.capitalize().toString())
         } else {
@@ -442,7 +448,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     override fun showLeadInfo(leadWorkInfo: LeadWorkInfo?) {
         this.leadWorkInfo=leadWorkInfo
-        textViewScheduleView.isEnabled = leadWorkInfo != null
+        textViewScheduleView.isEnabled = leadWorkInfo != null && leadWorkInfo.totalContainers!! > 0
     }
 
     override fun showAPIErrorMessage(message: String) {

@@ -198,7 +198,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     private fun updateSelectAllSectionUI() {
         val selectedCount = lumperJobReportAdapter.getSelectedLumperIdsList().size
         if (selectedCount == lumperJobReportAdapter.itemCount && lumperJobReportAdapter.itemCount>0) {
-            imageViewSelectAll.setImageResource(R.drawable.ic_add_lumer_tick)
+            imageViewSelectAll.setImageResource(R.drawable.ic_add_lumper_green_tick)
         //    textViewSelectAll.text = getString(R.string.unselect_all)
         } else {
             imageViewSelectAll.setImageResource(R.drawable.ic_add_lumer_tick_blank)

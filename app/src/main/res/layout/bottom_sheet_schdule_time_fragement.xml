@@ -10,7 +10,7 @@
     app:behavior_hideable="false"
     app:behavior_peekHeight="0dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    tools:showIn="@layout/fragment_schedule_time">
+    tools:showIn="@layout/fragment_schedule_time" >
 
     <TextView
         android:id="@+id/textViewTitle"
@@ -184,7 +184,7 @@
             android:id="@+id/linearLayoutNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:background="@drawable/schedule_item_background"
@@ -201,6 +201,7 @@
 
             <TextView
                 style="@style/titleTextViewTheme"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:text="@string/group_note" />
 
             <EditText

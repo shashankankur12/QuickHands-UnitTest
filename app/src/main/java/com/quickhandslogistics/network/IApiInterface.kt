@@ -168,6 +168,10 @@ interface IApiInterface {
     fun saveGroupNoteSchedules(@Header("Authorization") auth: String, @Query("day") day: String, @Body request: SaveNoteWorkItemRequest
     ): Call<BaseResponse>
 
+    @PUT("schedule/notes/{noteId}")
+    fun updateGroupNoteSchedules(@Header("Authorization") auth: String, @Path("noteId") noteId: String, @Body request: UpdateGroupNoteRequest
+    ): Call<BaseResponse>
+
     @DELETE("schedule/notes")
     fun saveGroupNoteSchedules(@Header("Authorization") auth: String, @Query("id") id: String): Call<BaseResponse>
 

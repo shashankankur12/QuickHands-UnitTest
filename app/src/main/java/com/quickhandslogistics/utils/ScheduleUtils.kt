@@ -278,8 +278,8 @@ object ScheduleUtils {
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
 
         leadProfile?.buildingDetailData?.let { buildingDetailData ->
-            if (!buildingDetailData.parameters.isNullOrEmpty()) {
-                parameters.addAll(buildingDetailData.parameters!!)
+            if (!buildingDetailData[0].parameters.isNullOrEmpty()) {
+                parameters.addAll(buildingDetailData[0].parameters!!)
             }
         }
         return parameters
@@ -303,13 +303,13 @@ object ScheduleUtils {
             shiftName = name.capitalize()
             val shiftDetail = when (leadProfile.shift) {
                 AppConstant.EMPLOYEE_SHIFT_MORNING -> {
-                    leadProfile.buildingDetailData?.morningShift
+                    leadProfile.buildingDetailData?.get(0)?.morningShift
                 }
                 AppConstant.EMPLOYEE_SHIFT_SWING -> {
-                    leadProfile.buildingDetailData?.swingShift
+                    leadProfile.buildingDetailData?.get(0)?.swingShift
                 }
                 AppConstant.EMPLOYEE_SHIFT_NIGHT -> {
-                    leadProfile.buildingDetailData?.nightShift
+                    leadProfile.buildingDetailData?.get(0)?.nightShift
                 }
                 else -> null
             }

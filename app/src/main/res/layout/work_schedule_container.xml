@@ -85,6 +85,8 @@
                 style="@style/noteTextViewTheme"
                 android:layout_width="wrap_content"
                 android:text="@string/customer_notes"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
                 android:layout_gravity="start"
                 android:textColor="@color/scheduleDetail"
                 app:layout_constraintStart_toEndOf="@+id/textViewTotalCount"

@@ -155,7 +155,7 @@ class AllWorkScheduleCancelActivity : BaseActivity(), View.OnClickListener, Lump
     private fun updateSelectAllSectionUI() {
         val selectedCount = allWorkScheduleCancelAdapter.getSelectedLumper().size
         if (selectedCount == allWorkScheduleCancelAdapter.itemCount) {
-            imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick)
+            imageViewAdd.setImageResource(R.drawable.ic_add_lumper_green_tick)
         } else {
             imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick_blank)
         }

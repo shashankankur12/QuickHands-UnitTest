@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.tabs.TabLayout
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.schedule.WorkSchedulePagerAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
@@ -13,12 +14,25 @@ import com.quickhandslogistics.controls.Quintuple
 import com.quickhandslogistics.data.customerSheet.CustomerSheetData
 import com.quickhandslogistics.data.schedule.ScheduleDetailData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
-import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 import com.quickhandslogistics.presenters.schedule.WorkSchedulePresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
+import kotlinx.android.synthetic.main.content_work_sheet.*
 import kotlinx.android.synthetic.main.work_schedule_container.*
+import kotlinx.android.synthetic.main.work_schedule_container.swipe_pull_refresh
+import kotlinx.android.synthetic.main.work_schedule_container.tabLayoutWorkSheet
+import kotlinx.android.synthetic.main.work_schedule_container.textViewCompanyName
+import kotlinx.android.synthetic.main.work_schedule_container.textViewDropsCount
+import kotlinx.android.synthetic.main.work_schedule_container.textViewGroupNote
+import kotlinx.android.synthetic.main.work_schedule_container.textViewLiveLoadsCount
+import kotlinx.android.synthetic.main.work_schedule_container.textViewOutBoundsCount
+import kotlinx.android.synthetic.main.work_schedule_container.textViewTotalCount
+import kotlinx.android.synthetic.main.work_schedule_container.textViewUnfinishedCount
+import kotlinx.android.synthetic.main.work_schedule_container.textViewWorkItemDept
+import kotlinx.android.synthetic.main.work_schedule_container.textViewWorkItemShift
+import kotlinx.android.synthetic.main.work_schedule_container.textViewWorkItemsDate
+import kotlinx.android.synthetic.main.work_schedule_container.viewPagerWorkSheet
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -37,7 +51,7 @@ View.OnClickListener   {
     private lateinit var companyName: String
     private var selectedTime: Long = 0
     private var scheduleIdentity = ""
-    private lateinit var customerGroupNote:Triple<Pair<ArrayList<String>,ArrayList<String>>, ArrayList<String>, ArrayList<String>>
+    private lateinit var customerGroupNote:Triple<Pair<ArrayList<String>, ArrayList<String>>, ArrayList<String>, ArrayList<String>>
 
     companion object {
         const val WORKSHEET_DETAIL = "WORKSHEET_DETAIL"
@@ -137,9 +151,14 @@ View.OnClickListener   {
         customerSheetData: CustomerSheetData? = null, selectedTime: Long? = null
     ) {
         adapter = if (allWorkItemLists != null) {
-            WorkSchedulePagerAdapter(supportFragmentManager, resources, this.selectedTime, allWorkItemLists)
+            WorkSchedulePagerAdapter(
+                supportFragmentManager,
+                resources,
+                this.selectedTime,
+                allWorkItemLists
+            )
         } else {
-            WorkSchedulePagerAdapter(supportFragmentManager, resources,this.selectedTime)
+            WorkSchedulePagerAdapter(supportFragmentManager, resources, this.selectedTime)
         }
         viewPagerWorkSheet.offscreenPageLimit = adapter?.count!!
         viewPagerWorkSheet.adapter = adapter
@@ -153,20 +172,20 @@ View.OnClickListener   {
             viewPagerWorkSheet.pagingEnabled =false
             (tabLayoutWorkSheet.getChildAt(0) as ViewGroup).getChildAt(2).isEnabled = false
             (tabLayoutWorkSheet.getChildAt(0) as ViewGroup).getChildAt(1).isEnabled = false
-        }else{
-            viewPagerWorkSheet.pagingEnabled =true        }
+            (tabLayoutWorkSheet.getChildAt(0) as ViewGroup).getChildAt(3).isEnabled = false
+            (tabLayoutWorkSheet.getChildAt(0) as ViewGroup).getChildAt(4).isEnabled = false
+        }else if (!DateUtils.isCurrentDate(selectedTime) && !DateUtils.isFutureDate(selectedTime)) {
+            viewPagerWorkSheet.pagingEnabled =false
+            (tabLayoutWorkSheet.getChildAt(0) as ViewGroup).getChildAt(0).isEnabled = false
+            (tabLayoutWorkSheet.getChildAt(0) as ViewGroup).getChildAt(2).isEnabled = false
+            (tabLayoutWorkSheet.getChildAt(0) as ViewGroup).getChildAt(3).isEnabled = false
+            (tabLayoutWorkSheet.getChildAt(0) as ViewGroup).getChildAt(4).isEnabled = false
+            val tab: TabLayout.Tab? = tabLayoutWorkSheet.getTabAt(1)
+            tab?.select()
+        }else viewPagerWorkSheet.pagingEnabled =true
     }
 
     private fun createDifferentListData(data: ScheduleDetailData): Quintuple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>> {
-
-        val totalContainers=data?.liveLoads?.size!!+ data?.drops?.size!! + data?.outbounds?.size!!
-        textViewTotalCount.text = String.format(getString(R.string.total_containers_s), totalContainers)
-
-
-        textViewLiveLoadsCount.text = String.format(getString(R.string.live_loads_s), data?.liveLoads?.size)
-        textViewDropsCount.text = String.format(getString(R.string.drops_s), data?.drops?.size)
-        textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), data?.outbounds?.size)
-
         var allWorkItem:ArrayList<WorkItemDetail> = ArrayList()
         data?.outbounds?.let { allWorkItem.addAll(it) }
         data?.liveLoads?.let { allWorkItem.addAll(it) }
@@ -199,10 +218,43 @@ View.OnClickListener   {
                 }
             }
         }
-        textViewUnfinishedCount.text = String.format(getString(R.string.unfinished_s), unfinished.size)
 
-        return Quintuple(getSortList(onGoingWorkItems), getSortList(cancelled), getSortList(completed), getSortList(unfinished), getSortList(notDone))
+        textViewTotalCount.text = UIUtils.getSpannableText(
+            getString(R.string.total_container_bold),
+            (allWorkItem.size).toString()
+        )
 
+        val workItemTypeCounts = ScheduleUtils.getWorkItemTypeCounts(allWorkItem)
+
+        if (workItemTypeCounts.first > 0) {
+            textViewLiveLoadsCount.visibility = View.VISIBLE
+            textViewLiveLoadsCount.text =
+                String.format(getString(R.string.live_loads_s), workItemTypeCounts.first)
+        } else textViewLiveLoadsCount.visibility = View.GONE
+
+        if (workItemTypeCounts.second > 0) {
+            textViewDropsCount.visibility = View.VISIBLE
+            textViewDropsCount.text =
+                String.format(getString(R.string.drops_s), workItemTypeCounts.second)
+        } else textViewDropsCount.visibility = View.GONE
+
+        if (workItemTypeCounts.third > 0) {
+            textViewOutBoundsCount.visibility = View.VISIBLE
+            textViewOutBoundsCount.text =
+                String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
+        } else textViewOutBoundsCount.visibility = View.GONE
+
+        if (unfinished?.size!! > 0) {
+            textViewUnfinishedCount.visibility = View.VISIBLE
+            textViewUnfinishedCount.text =
+                String.format(getString(R.string.unfinished_s), unfinished?.size)
+        } else textViewUnfinishedCount.visibility = View.GONE
+
+        return Quintuple(
+            getSortList(onGoingWorkItems), getSortList(cancelled), getSortList(
+                completed
+            ), getSortList(unfinished), getSortList(notDone)
+        )
     }
 
     private fun resetUI() {
@@ -216,7 +268,14 @@ View.OnClickListener   {
         textViewDropsCount.text = ""
         textViewOutBoundsCount.text = ""
         textViewUnfinishedCount.text = ""
-        adapter?.updateWorkItemsList(ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), selectedTime)
+        adapter?.updateWorkItemsList(
+            ArrayList(),
+            ArrayList(),
+            ArrayList(),
+            ArrayList(),
+            ArrayList(),
+            selectedTime
+        )
     }
 
     /** Presenter Listeners */
@@ -230,16 +289,8 @@ View.OnClickListener   {
     override fun showWorkSheets(data: ScheduleDetailData) {
         this.data = data!!
         swipe_pull_refresh?.isRefreshing = false
-
         customerGroupNote= ScheduleUtils.getGroupNoteListWorkSchedule(data)
         textViewGroupNote.isEnabled = (customerGroupNote!=null&& (customerGroupNote.first.first.size>0 ||customerGroupNote.second.size>0|| customerGroupNote.third.size>0||customerGroupNote.first.second.size>0 ))
-
-        val totalContainers=data?.liveLoads?.size!!+ data?.drops?.size!! + data?.outbounds?.size!!
-        textViewTotalCount.text = String.format(getString(R.string.total_containers_s), totalContainers)
-
-        textViewLiveLoadsCount.text = String.format(getString(R.string.live_loads_s), data?.liveLoads?.size)
-        textViewDropsCount.text = String.format(getString(R.string.drops_s), data.drops?.size)
-        textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), data?.outbounds?.size)
 
         var allWorkItem:ArrayList<WorkItemDetail> = ArrayList()
         data?.outbounds?.let { allWorkItem.addAll(it) }
@@ -273,9 +324,43 @@ View.OnClickListener   {
                 }
             }
         }
-        textViewUnfinishedCount.text = String.format(getString(R.string.unfinished_s), unfinished.size)
 
-        adapter?.updateWorkItemsList(getSortList(onGoingWorkItems), getSortList(cancelled!!), getSortList(completed!!), getSortList(unfinished), getSortList(notOpen), selectedTime)
+        textViewTotalCount.text = UIUtils.getSpannableText(
+            getString(R.string.total_container_bold),
+            (allWorkItem.size).toString()
+        )
+
+        val workItemTypeCounts = ScheduleUtils.getWorkItemTypeCounts(allWorkItem)
+
+        if (workItemTypeCounts.first > 0) {
+            textViewLiveLoadsCount.visibility = View.VISIBLE
+            textViewLiveLoadsCount.text =
+                String.format(getString(R.string.live_loads_s), workItemTypeCounts.first)
+        } else textViewLiveLoadsCount.visibility = View.GONE
+
+        if (workItemTypeCounts.second > 0) {
+            textViewDropsCount.visibility = View.VISIBLE
+            textViewDropsCount.text =
+                String.format(getString(R.string.drops_s), workItemTypeCounts.second)
+        } else textViewDropsCount.visibility = View.GONE
+
+        if (workItemTypeCounts.third > 0) {
+            textViewOutBoundsCount.visibility = View.VISIBLE
+            textViewOutBoundsCount.text =
+                String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
+        } else textViewOutBoundsCount.visibility = View.GONE
+
+        if (unfinished?.size!! > 0) {
+            textViewUnfinishedCount.visibility = View.VISIBLE
+            textViewUnfinishedCount.text =
+                String.format(getString(R.string.unfinished_s), unfinished?.size)
+        } else textViewUnfinishedCount.visibility = View.GONE
+
+        adapter?.updateWorkItemsList(
+            getSortList(onGoingWorkItems), getSortList(cancelled!!), getSortList(
+                completed!!
+            ), getSortList(unfinished), getSortList(notOpen), selectedTime
+        )
     }
 
     private fun getSortList(workItemsList: ArrayList<WorkItemDetail>): ArrayList<WorkItemDetail> {
@@ -316,7 +401,12 @@ View.OnClickListener   {
     }
 
     override fun showLoginScreen() {
-        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
+        startIntent(
+            LoginActivity::class.java, isFinish = true, flags = arrayOf(
+                Intent.FLAG_ACTIVITY_CLEAR_TASK,
+                Intent.FLAG_ACTIVITY_NEW_TASK
+            )
+        )
     }
 
     /** Child Fragment Interaction Listeners */
@@ -331,14 +421,18 @@ View.OnClickListener   {
 
     override fun onClick(view: View?) {
         when(view!!.id){
-            textViewGroupNote.id->{
+            textViewGroupNote.id -> {
                 if (!ConnectionDetector.isNetworkConnected(activity)) {
                     ConnectionDetector.createSnackBar(activity)
                     return
                 }
 
-                if (customerGroupNote!=null&& (customerGroupNote.first.first.size>0 ||customerGroupNote.second.size>0|| customerGroupNote.third.size>0|| customerGroupNote.first.second.size>0))
-                    CustomerDialog.showGroupNoteDialog(activity, "Customer Notes :", customerGroupNote)
+                if (customerGroupNote != null && (customerGroupNote.first.first.size > 0 || customerGroupNote.second.size > 0 || customerGroupNote.third.size > 0 || customerGroupNote.first.second.size > 0))
+                    CustomerDialog.showGroupNoteDialog(
+                        activity,
+                        "Customer Notes :",
+                        customerGroupNote
+                    )
 
             }
         }

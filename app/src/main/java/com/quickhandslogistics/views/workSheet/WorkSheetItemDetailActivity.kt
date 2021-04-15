@@ -329,8 +329,8 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
         if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
             val leadProfile = DateUtils.sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
-            val filledParameterCount = ScheduleUtils.getFilledBuildingParametersCounts(workItemDetail, leadProfile?.buildingDetailData)
-            val parameters = ScheduleUtils.getBuildingParametersList(leadProfile?.buildingDetailData)
+            val filledParameterCount = ScheduleUtils.getFilledBuildingParametersCounts(workItemDetail, leadProfile?.buildingDetailData?.get(0))
+            val parameters = ScheduleUtils.getBuildingParametersList(leadProfile?.buildingDetailData?.get(0))
 
             if (workItemDetail.buildingOps.isNullOrEmpty() || filledParameterCount != parameters.size) {
                 CustomProgressBar.getInstance().showErrorDialog(getString(R.string.fill_building_parameters_message), activity)

@@ -81,7 +81,11 @@ class QhlContactAdapter(
 
             if (item.role?.equals(AppConstant.DISTRICT_MANAGER)!!) {
                 textViewEmployeeTitle.visibility = View.INVISIBLE
-            } else textViewEmployeeTitle.visibility = View.VISIBLE
+                textViewEmployeeShift.visibility = View.INVISIBLE
+            } else {
+                textViewEmployeeTitle.visibility = View.VISIBLE
+                textViewEmployeeShift.visibility = View.VISIBLE
+            }
 
             constraintViewCall.setOnClickListener(this)
             textVieWContact.setOnClickListener(this)
