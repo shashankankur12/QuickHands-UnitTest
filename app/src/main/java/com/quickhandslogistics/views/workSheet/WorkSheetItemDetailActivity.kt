@@ -92,11 +92,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     }
 
     private fun createDifferentListData(workItemDetail: WorkItemContainerDetails): WorkItemContainerDetails {
-        textViewStartTime.text = String.format(
-            getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(
-                workItemDetail.startTime
-            )
-        )
+        textViewStartTime.text = UIUtils.getSpannableText(getString(R.string.start_time_bold), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime).toString())
 
         when (workItemTypeDisplayName) {
             getString(R.string.drops) -> textViewDropItems.text = String.format(
@@ -238,10 +234,8 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
         this.workItemDetail = workItemDetail
         this.tempLumperIds = tempLumperIds
-        textViewStartTime.text = String.format(
-            getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(
-                workItemDetail.startTime
-            )
+        textViewStartTime.text = UIUtils.getSpannableText(getString(R.string.start_time_bold),
+            DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime).toString()
         )
         if (workItemDetail.schedule!=null) {
             textViewWorkSheetNote1.text = ScheduleUtils.scheduleTypeNote(

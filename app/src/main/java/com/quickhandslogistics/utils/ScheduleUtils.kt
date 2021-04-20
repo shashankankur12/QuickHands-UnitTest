@@ -322,11 +322,12 @@ object ScheduleUtils {
     }
 
      fun getSortRequestLumper(records: ArrayList<RequestLumpersRecord>): ArrayList<RequestLumpersRecord> {
-        var pendingRecords: ArrayList<RequestLumpersRecord> = ArrayList()
-        var completedRecords: ArrayList<RequestLumpersRecord> = ArrayList()
-        var rejectedRecords: ArrayList<RequestLumpersRecord> = ArrayList()
-        var cancelRecords: ArrayList<RequestLumpersRecord> = ArrayList()
-        var sortedlRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        val pendingRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        val completedRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        val rejectedRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        val cancelRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        val partialRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        val sortedlRecords: ArrayList<RequestLumpersRecord> = ArrayList()
         records.forEach {
             when {
                 it.requestStatus.equals(AppConstant.REQUEST_LUMPERS_STATUS_PENDING) -> {
@@ -341,10 +342,14 @@ object ScheduleUtils {
                 it.requestStatus.equals(AppConstant.REQUEST_LUMPERS_STATUS_CANCELLED) -> {
                     cancelRecords.add(it)
                 }
+                it.requestStatus.equals(AppConstant.REQUEST_LUMPERS_STATUS_PARTIAL) -> {
+                    partialRecords.add(it)
+                }
             }
         }
 
         sortedlRecords.addAll(getSortedDate(pendingRecords))
+        sortedlRecords.addAll(getSortedDate(partialRecords))
         sortedlRecords.addAll(getSortedDate(completedRecords))
         sortedlRecords.addAll(getSortedDate(rejectedRecords))
         sortedlRecords.addAll(getSortedDate(cancelRecords))
@@ -363,11 +368,11 @@ object ScheduleUtils {
     }
 
     fun getCancelHeaderDetails(scheduleDetails: ScheduleTimeDetail, rawString:String): Spanned? {
-        var lumperName =String.format( "%s %s", scheduleDetails.lumperInfo!!.firstName,scheduleDetails.lumperInfo!!.lastName)
-        var lumperScheduleTime =DateUtils.changeDateString(DateUtils.PATTERN_API_RESPONSE ,DateUtils.PATTERN_NORMAL,
+        val lumperName =String.format( "%s %s", scheduleDetails.lumperInfo!!.firstName,scheduleDetails.lumperInfo!!.lastName)
+        val lumperScheduleTime =DateUtils.changeDateString(DateUtils.PATTERN_API_RESPONSE ,DateUtils.PATTERN_NORMAL,
             scheduleDetails.reportingTimeAndDay!!
         )
-        var formetString= String.format(rawString, lumperName, lumperScheduleTime)
+        val formetString= String.format(rawString, lumperName, lumperScheduleTime)
         return UIUtils.getSpannedText(formetString)
     }
 

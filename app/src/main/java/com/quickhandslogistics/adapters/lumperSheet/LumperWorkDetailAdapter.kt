@@ -80,8 +80,8 @@ class LumperWorkDetailAdapter(
         fun bind(lumperDaySheet: LumperDaySheet) {
             var totalcase =""
             lumperDaySheet.workItemDetail?.let { workItemDetail ->
-                val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplay(workItemDetail.workItemType, resources)
-                textViewWorkItemType.text = workItemTypeDisplayName
+                val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplay(workItemDetail.type, resources)
+                textViewWorkItemType.text = workItemDetail.type?.toLowerCase()?.capitalize()
                 textViewStartTime.text = String.format(resources.getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
 
                 if (!workItemDetail.notesQHLCustomer.isNullOrEmpty() && workItemDetail.notesQHLCustomer != AppConstant.NOTES_NOT_AVAILABLE) {
@@ -182,9 +182,9 @@ class LumperWorkDetailAdapter(
         this.lumperDaySheetList.clear()
 
         for (lumperDaySheet in lumperDaySheetList) {
-            if (lumperDaySheet.workItemDetail?.status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
+//            if (lumperDaySheet.workItemDetail?.status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
                 this.lumperDaySheetList.add(lumperDaySheet)
-            }
+//            }
         }
         notifyDataSetChanged()
     }

@@ -14,12 +14,14 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailLumpersContract
 import com.quickhandslogistics.controls.CustomTextView
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
+import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.data.workSheet.PauseTime
 import com.quickhandslogistics.data.workSheet.PauseTimeRequest
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.convertDateStringToTime
+import com.quickhandslogistics.utils.DateUtils.Companion.sharedPref
 import com.quickhandslogistics.utils.ScheduleUtils.calculatePercent
 import com.quickhandslogistics.utils.UIUtils
 import com.quickhandslogistics.utils.ValueUtils
@@ -70,6 +72,11 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
         private val imageViewCancelLumper: ImageView = view.imageViewCancelLumper
 
         fun bind(employeeData: LumperAttendanceData) {
+            val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+            var buildingId = ""
+            leadProfile?.buildingDetailData?.get(0)?.id?.let { id ->
+                buildingId = id
+            }
             UIUtils.showEmployeeProfileImage(
                 context,
                 employeeData.profileImageUrl,
@@ -77,7 +84,7 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
             )
             UIUtils.updateProfileBorder(
                 context,
-                tempLumperIds.contains(employeeData.id),
+                buildingId != employeeData.buildingIdAsLumper,
                 circleImageViewProfile
             )
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)

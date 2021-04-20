@@ -64,7 +64,7 @@ class CustomerContactAdapter(val resources: Resources, var adapterItemClickListe
             textViewEmployeeRole.text =
                 if (!item.role.isNullOrEmpty()) item.role?.capitalize() else resources.getString(R.string.na)
             textViewEmployeeTitle.text =
-                String.format(resources.getString(R.string.department_noraml), dept)
+                String.format(resources.getString(R.string.department_noraml), dept.toLowerCase().capitalize())
             textViewEmployeeShift.text =
                 String.format(resources.getString(R.string.shift_normal), shift)
             textViewEmail.text =

@@ -1,6 +1,7 @@
 package com.quickhandslogistics.views.workSheet
 
 import android.app.Activity.RESULT_OK
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -23,6 +24,9 @@ import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailNoteImageC
 import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.AppConstant.Companion.MY_PERMISSIONS_REQUEST_CAMERA
+import com.quickhandslogistics.utils.AppConstant.Companion.MY_PERMISSIONS_REQUEST_GALLERY
+import com.quickhandslogistics.utils.ImageUtils.getImagePath
 import com.quickhandslogistics.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_work_sheet_item_detail_notes.*
 import java.io.File
@@ -42,7 +46,6 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
     private val myBitmap: Bitmap? = null
     private var mPictureImagePath = ""
     private var mImgFile: File? = null
-    private val MY_PERMISSIONS_REQUEST_CAMERA = 100
 
     companion object {
         private const val NOTE_WORK_DETALS = "NOTE_WORK_DETALS"
@@ -182,22 +185,34 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
     }
 
     private fun imageCapture() {
-        timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        imageFileName = timeStamp + ".jpg"
-        val storageDir =
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+        CustomerDialog.selectImage(fragmentActivity!!, object : CustomerDialog.IImageDialogOnClick {
+            override fun onCamera(dialog: Dialog) {
+                dialog.dismiss()
+                timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+                imageFileName = timeStamp + ".jpg"
+                val storageDir =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
 
-        mPictureImagePath = storageDir.absolutePath + "/" + imageFileName
-        val file: File = File(mPictureImagePath)
-        val outputFileUri = Uri.fromFile(file)
-        mImgFile = null
+                mPictureImagePath = storageDir.absolutePath + "/" + imageFileName
+                val file: File = File(mPictureImagePath)
+                val outputFileUri = Uri.fromFile(file)
+                mImgFile = null
 
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri)
-        val builder = VmPolicy.Builder()
-        StrictMode.setVmPolicy(builder.build())
-        startActivityForResult(cameraIntent, MY_PERMISSIONS_REQUEST_CAMERA)
+                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri)
+                val builder = VmPolicy.Builder()
+                StrictMode.setVmPolicy(builder.build())
+                startActivityForResult(cameraIntent, MY_PERMISSIONS_REQUEST_CAMERA)
+            }
 
+            override fun onGallery(dialog: Dialog) {
+                dialog.dismiss()
+                val pickPhoto =
+                    Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                startActivityForResult(pickPhoto, MY_PERMISSIONS_REQUEST_GALLERY)
+            }
+
+        })
     }
 
 
@@ -214,6 +229,14 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
                         val body = DataManager.createMultiPartBodyImage(optimizedFile.absoluteFile, AppConstant.IMAGE_PARAM)
                         onFragmentInteractionListener?.uploadNoteImage(body)
                     }
+                }
+                MY_PERMISSIONS_REQUEST_GALLERY -> {
+                    data?.data?.let {
+                        val optimizedFile = File(getImagePath(fragmentActivity!!, it))
+                        val body = DataManager.createMultiPartBodyImage(optimizedFile.absoluteFile, AppConstant.IMAGE_PARAM)
+                        onFragmentInteractionListener?.uploadNoteImage(body)
+                    }
+
                 }
             }
         }

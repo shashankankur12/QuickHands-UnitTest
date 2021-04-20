@@ -57,6 +57,7 @@ interface AppConstant {
         const val REQUEST_LUMPERS_STATUS_APPROVED = "approved"
         const val REQUEST_LUMPERS_STATUS_REJECTED = "rejected"
         const val REQUEST_LUMPERS_STATUS_CANCELLED = "cancelled"
+        const val REQUEST_LUMPERS_STATUS_PARTIAL = "partial"
 
         //Worksheet
         const val WORKSHEET_WORK_ITEM_LIVE = "LIVE"
@@ -100,6 +101,9 @@ interface AppConstant {
         const val ERROR_MESSAGE = "You don't seem to have a building assigned yet!"
         const val MILTI_PART_FORM_DATA = "image"
         const val IMAGE_PARAM = "file"
+
+        const val MY_PERMISSIONS_REQUEST_CAMERA = 100
+        const val MY_PERMISSIONS_REQUEST_GALLERY = 200
 
 
     }

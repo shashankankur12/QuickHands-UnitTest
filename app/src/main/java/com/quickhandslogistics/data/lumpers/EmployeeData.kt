@@ -11,6 +11,10 @@ open class EmployeeData() : Parcelable {
     @Expose
     var id: String? = null
 
+    @SerializedName("lumperId")
+    @Expose
+    var lumperId: String? = null
+
     @SerializedName("email")
     @Expose
     var email: String? = null
@@ -113,6 +117,14 @@ open class EmployeeData() : Parcelable {
     @Expose
     var lastDayWorked: String? = null
 
+    @SerializedName("originalBuildingId")
+    @Expose
+    var originalBuildingId: String? = null
+
+    @SerializedName("tempBuildingId")
+    @Expose
+    var tempBuildingId: String? = null
+
     @SerializedName("fullTime")
     @Expose
     var fullTime: Boolean? = null
@@ -138,6 +150,8 @@ open class EmployeeData() : Parcelable {
         shiftHours = parcel.readString()
         workSchedule = parcel.readString()
         title = parcel.readString()
+        originalBuildingId = parcel.readString()
+        tempBuildingId = parcel.readString()
         primaryBuilding = parcel.readString()
         buildingAssignedAsLumper= parcel.createTypedArrayList(BuildingDetailData)
         abilityToTravelBetweenBuildings = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
@@ -147,6 +161,7 @@ open class EmployeeData() : Parcelable {
         jobDescription = parcel.readString()
         scheduleNotes = parcel.readString()
         lastDayWorked = parcel.readString()
+        lumperId = parcel.readString()
         fullTime = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         isTemporaryAssigned = parcel.readValue(Boolean::class.java.classLoader) as Boolean
     }
@@ -170,6 +185,8 @@ open class EmployeeData() : Parcelable {
         parcel.writeString(shiftHours)
         parcel.writeString(workSchedule)
         parcel.writeString(title)
+        parcel.writeString(tempBuildingId)
+        parcel.writeString(originalBuildingId)
         parcel.writeString(primaryBuilding)
         parcel.writeValue(buildingAssignedAsLumper)
         parcel.writeValue(abilityToTravelBetweenBuildings)
@@ -179,6 +196,7 @@ open class EmployeeData() : Parcelable {
         parcel.writeString(jobDescription)
         parcel.writeString(scheduleNotes)
         parcel.writeString(lastDayWorked)
+        parcel.writeString(lumperId)
         parcel.writeValue(fullTime)
         parcel.writeValue(isTemporaryAssigned)
     }

@@ -64,17 +64,16 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
             textViewRequestStart.text = if (requestLumpersRecord.startTime!=null) UIUtils.getSpannedText(String.format(resources.getString(R.string.start_time_bold), convertMillisecondsToTimeString(
                 requestLumpersRecord.startTime?.toLong()!!))) else "N/A"
 
-            val assignedCount= if (requestLumpersRecord.lumpersAllocated.isNullOrEmpty()) 0 else requestLumpersRecord.lumpersAllocated!!.size
+            val assignedCount= if (requestLumpersRecord.tempLumpers.isNullOrEmpty()) 0 else requestLumpersRecord.tempLumpers!!.size
             val ratioCount= String.format("%s/%s",assignedCount,requestLumpersRecord.requestedLumpersCount)
             textViewLumperAssigned.text = UIUtils.getSpannedText(String.format(resources.getString(R.string.lumpers_dm_assigned_bold), ratioCount))
             textViewNote.text = requestLumpersRecord.notesForDM?.capitalize()
 
-            if (!requestLumpersRecord.lumpersAllocated.isNullOrEmpty()) {
+            if (!requestLumpersRecord.tempLumpers.isNullOrEmpty()) {
                 recyclerViewTempLumperInfo.visibility=View.VISIBLE
                 recyclerViewTempLumperInfo.apply {
                     layoutManager = LinearLayoutManager(context)
-                    adapter = RequestLumperInfoAdaptor(resources, requestLumpersRecord.lumpersAllocated!!
-                    )
+                    adapter = RequestLumperInfoAdaptor(resources, requestLumpersRecord.tempLumpers!!)
                 }
             }else{
                 recyclerViewTempLumperInfo.visibility=View.GONE
@@ -107,6 +106,12 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
                     changeUpdateUIVisibility(false)
                     textViewRequestCancelledAt.visibility= View.VISIBLE
                     showCancelledTime(requestLumpersRecord.updatedAt, true)
+                }
+                AppConstant.REQUEST_LUMPERS_STATUS_PARTIAL -> {
+                    textViewStatus.text = resources.getString(R.string.partial)
+                    textViewStatus.setBackgroundResource(R.drawable.chip_background_partial)
+                    changeUpdateUIVisibility(true)
+                    textViewRequestCancelledAt.visibility= View.GONE
                 }
             }
 

@@ -18,6 +18,7 @@ import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.SharedPref
+import com.quickhandslogistics.utils.UIUtils
 import kotlinx.android.synthetic.main.item_work_sheet.view.*
 
 class ScheduleWorkSheetItemAdapter(private val resources: Resources, private val sharedPref: SharedPref, var adapterItemClickListener: ScheduleWorkItemContract.View.OnAdapterItemClickListener) :
@@ -65,10 +66,10 @@ class ScheduleWorkSheetItemAdapter(private val resources: Resources, private val
         }
 
         fun bind(workItemDetail: WorkItemDetail) {
-            textViewStartTime.text = String.format(resources.getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
+            textViewStartTime.text =
+                (workItemDetail.startTime)?.let { UIUtils.getSpannableText(resources.getString(R.string.start_time_bold), DateUtils.convertMillisecondsToUTCTimeString(it)!!)}
 
-            val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.type, resources)
-            when (workItemTypeDisplayName) {
+            when (ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.type, resources)) {
                 resources.getString(R.string.drops) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.no_of_drops_s), workItemDetail.quantity)
                 resources.getString(R.string.live_loads) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.live_load_s), workItemDetail.quantity)
                 else -> textViewNoOfDrops.text = String.format(resources.getString(R.string.out_bound_s), workItemDetail.quantity)
@@ -81,8 +82,11 @@ class ScheduleWorkSheetItemAdapter(private val resources: Resources, private val
                 containerNumberValue = workItemDetail.buildingOps!!["Container Number"]
             }
 
-            textViewDoor.text = String.format(resources.getString(R.string.door_s), if (!doorValue.isNullOrEmpty()) doorValue else "---")
-            textViewContainer.text = String.format(resources.getString(R.string.container_no_s), if (!containerNumberValue.isNullOrEmpty()) containerNumberValue else "---")
+            textViewDoor.text =  UIUtils.getSpannableText(resources.getString(R.string.door_bold), if (!doorValue.isNullOrEmpty()) doorValue else "---")
+            textViewContainer.text = UIUtils.getSpannableText(
+                resources.getString(R.string.container_no_bold),
+                if (!containerNumberValue.isNullOrEmpty()) containerNumberValue else "---"
+            )
             if (workItemDetail.schedule != null) {
                 textViewWorkSheetNote.visibility = View.VISIBLE
                 textViewWorkSheetNote.text =

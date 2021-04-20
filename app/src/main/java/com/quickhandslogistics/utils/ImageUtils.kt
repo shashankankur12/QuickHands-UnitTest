@@ -1,9 +1,12 @@
 package com.quickhandslogistics.utils
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.AsyncTask
+import android.provider.MediaStore
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -54,7 +57,7 @@ object ImageUtils {
         }
         return context.cacheDir.toString() + filename
     }
-    fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+    private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
         // Raw height and width of image
         val height = options.outHeight
         val width = options.outWidth
@@ -74,7 +77,7 @@ object ImageUtils {
         return inSampleSize
     }
 
-    fun getResizedBitmap(image: Bitmap, maxSize: Int): Bitmap? {
+    private fun getResizedBitmap(image: Bitmap, maxSize: Int): Bitmap? {
         var width = image.width
         var height = image.height
         val bitmapRatio = width.toFloat() / height.toFloat()
@@ -86,6 +89,24 @@ object ImageUtils {
             width = (height * bitmapRatio).toInt()
         }
         return Bitmap.createScaledBitmap(image, width, height, true)
+    }
+
+    fun getImagePath(activity: Activity, uri: Uri?): String? {
+        var path: String? = null
+        try {
+            if (uri != null) {
+                val projection = arrayOf(MediaStore.Images.Media.DATA)
+                val cursor = activity.contentResolver.query(uri, projection, null, null, null)
+                    ?: return null
+                val column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                cursor.moveToFirst()
+                path = cursor.getString(column_index)
+                cursor.close()
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return path
     }
 }
 

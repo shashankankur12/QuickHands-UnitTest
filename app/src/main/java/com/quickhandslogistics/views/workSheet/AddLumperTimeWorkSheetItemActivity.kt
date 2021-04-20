@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Button
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.workSheet.AddLumperTimeWorkSheetItemContract
+import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.data.workSheet.PauseTime
@@ -51,6 +52,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private var partWorkDone: Int = 0
     private var isPartWorkDoneValid: Boolean = true
     private var isLumperPresent: Boolean = false
+    private var isTimeSelected: Boolean = false
     private lateinit var watcher: TextWatcher
     private var tempLumperIds: ArrayList<String> = ArrayList()
 
@@ -82,10 +84,16 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
 
     private fun initializeUI() {
         employeeData?.let { employeeData ->
+            val leadProfile = DateUtils.sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+            var buildingId = ""
+            leadProfile?.buildingDetailData?.get(0)?.id?.let { id ->
+                buildingId = id
+            }
+
             UIUtils.showEmployeeProfileImage(activity, employeeData, circleImageViewProfile)
             UIUtils.updateProfileBorder(
                 activity,
-                tempLumperIds.contains(employeeData.id),
+                buildingId != employeeData.buildingIdAsLumper,
                 circleImageViewProfile
             )
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
@@ -205,6 +213,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             breakTime.startTime = updateInitialTime(it.startTime, buttonBreakInTime)
             breakTime.endTime = updateInitialTime(it.endTime, buttonBreakInTime)
             mPauseTimeRequestList.add(breakTime)
+            isTimeSelected= false
         }
     }
 
@@ -237,6 +246,11 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         if (selectedBreakInTime > 0 && selectedBreakOutTime == 0L) {
             timeRequest.startTime = selectedBreakInTime
             for (it in mPauseTimeRequestList) {
+                if (isTimeSelected)
+                    if (it.startTime!! <= selectedBreakInTime && selectedBreakInTime < it.endTime!!) {
+                        showErrorDialog("brake in time already available in time slot ")
+                        return
+                    }
                 if (it.startTime != null && it.endTime == null) {
                     mPauseTimeRequestList.remove(it)
                 }
@@ -245,6 +259,11 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         } else if (selectedBreakOutTime > 0 && selectedBreakInTime == 0L) {
             timeRequest.endTime = selectedBreakOutTime
             for (it in mPauseTimeRequestList) {
+                if (isTimeSelected)
+                  if (it.startTime!! <= selectedBreakOutTime && selectedBreakOutTime < it.endTime!!) {
+                        showErrorDialog("brake out time already available in time slot ")
+                        return
+                    }
                 if (it.endTime != null && it.startTime == null) {
                     mPauseTimeRequestList.remove(it)
                 }
@@ -255,16 +274,17 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
                 if (it.endTime == null || it.startTime == null) {
                     mPauseTimeRequestList.remove(it)
                 } else {
-                    if ((it.startTime!! <=selectedBreakInTime && selectedBreakOutTime< it.endTime!!)){
-                        showErrorDialog("break in/out overriding in previous slot ")
-                        return
-                    }else if (it.startTime!! <=selectedBreakInTime && selectedBreakInTime< it.endTime!!){
-                        showErrorDialog("brake in time already available in time slot ")
-                        return
-                    }else if (it.startTime!! <=selectedBreakOutTime && selectedBreakOutTime< it.endTime!!){
-                        showErrorDialog("brake out time already available in time slot ")
-                        return
-                    }
+                    if (isTimeSelected)
+                        if ((it.startTime!! <= selectedBreakInTime && selectedBreakOutTime < it.endTime!!)) {
+                            showErrorDialog("break in/out overriding in previous slot ")
+                            return
+                        } else if (it.startTime!! <= selectedBreakInTime && selectedBreakInTime < it.endTime!!) {
+                            showErrorDialog("brake in time already available in time slot ")
+                            return
+                        } else if (it.startTime!! <= selectedBreakOutTime && selectedBreakOutTime < it.endTime!!) {
+                            showErrorDialog("brake out time already available in time slot ")
+                            return
+                        }
 
                     if (it.endTime == 0L || it.startTime == 0L) {
                         mPauseTimeRequestList.remove(it)
@@ -400,6 +420,8 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
                 return
             }
         }
+
+        isTimeSelected=true
         selectedBreakOutTime = 0
         buttonBreakOutTime.text = getString(R.string.resume)
         this.selectedBreakInTime = selectedBreakInTime
@@ -418,6 +440,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         } else if (selectedEndTime > 0 && !isFutureTime(selectedBreakOutTime, selectedEndTime)) {
             showErrorDialog(getString(R.string.break_end_less_work_end_warning_message))
         } else {
+            isTimeSelected=true
             this.selectedBreakOutTime = selectedBreakOutTime
             buttonBreakOutTime.text =
                 DateUtils.convertMillisecondsToTimeString(selectedBreakOutTime)

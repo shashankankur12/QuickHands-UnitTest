@@ -25,7 +25,6 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCH
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import kotlinx.android.synthetic.main.activity_request_lumpers.*
 import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.*
-import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.textViewTitle
 import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.content_request_lumpers.*
 import kotlinx.android.synthetic.main.custome_toolbar_layout.*
@@ -194,23 +193,28 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun showBottomSheetWithData(record: RequestLumpersRecord? = null) {
-        constraintLayoutBottomSheetRequestLumpers.visibility=View.VISIBLE
+        constraintLayoutBottomSheetRequestLumpers.visibility = View.VISIBLE
         record?.also {
             textViewTitle.text = getString(R.string.update_request)
             buttonSubmit.text = getString(R.string.update)
             val requestedLumpersCount = ValueUtils.getDefaultOrValue(record.requestedLumpersCount)
             editTextLumpersRequired.setText("$requestedLumpersCount")
             editTextDMNotes.setText(record.notesForDM)
+            editTextLumperNotes.setText(record.notesForLumper)
+            if (record.startTime != null)
+                textViewStartTime.text =
+                    DateUtils.convertMillisecondsToTimeString(record.startTime?.toLong()!!)
             buttonSubmit.setTag(R.id.requestLumperId, record.id)
             editTextLumpersRequired.setTag(R.id.requirment, requestedLumpersCount)
             editTextDMNotes.setTag(R.id.note, record.notesForDM)
+            editTextLumperNotes.setTag(R.id.note, record.notesForDM)
         } ?: run {
             textViewTitle.text = getString(R.string.create_new_request)
             buttonSubmit.text = getString(R.string.submit)
             editTextLumpersRequired.setText("")
             editTextDMNotes.setText("")
             editTextLumperNotes.setText("")
-            textViewStartTime.text = DateUtils.convertMillisecondsToTimeString(startTime)
+            textViewStartTime.text = DateUtils.convertMillisecondsToTimeString(Date().time)
             buttonSubmit.setTag(R.id.requestLumperId, "")
             editTextLumpersRequired.setTag(R.id.requirment, "")
             editTextDMNotes.setTag(R.id.note, "")

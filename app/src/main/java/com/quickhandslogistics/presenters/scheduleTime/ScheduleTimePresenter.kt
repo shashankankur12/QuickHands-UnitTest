@@ -7,12 +7,14 @@ import com.quickhandslogistics.contracts.scheduleTime.ScheduleTimeContract
 import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.scheduleTime.leadinfo.GetLeadInfoResponse
 import com.quickhandslogistics.data.scheduleTime.GetScheduleTimeAPIResponse
+import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeNoteRequest
 import com.quickhandslogistics.models.scheduleTime.ScheduleTimeModel
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 import com.quickhandslogistics.views.scheduleTime.ScheduleTimeFragment.Companion.CANCEL_SCHEDULE_LUMPER
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.View?, private val resources: Resources, sharedPref: SharedPref) :
     ScheduleTimeContract.Presenter, ScheduleTimeContract.Model.OnFinishedListener {
@@ -69,7 +71,20 @@ class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.V
         scheduleTimeView?.hideProgressDialog()
 
         scheduleTimeAPIResponse.data?.let { data ->
-            scheduleTimeView?.showScheduleTimeData(selectedDate, data.scheduledLumpers!!, data.tempLumperIds!!,data.notes )
+            val scheduleLumperList:ArrayList<ScheduleTimeDetail> =ArrayList()
+            data.permanentScheduledLumpers?.let { scheduleLumperList.addAll(it) }
+
+            data.tempScheduledLumpers?.let {
+                val iterate = it.listIterator()
+                while (iterate.hasNext()) {
+                    val oldValue = iterate.next()
+                    oldValue.lumperInfo!!.isTemporaryAssigned = true
+                    iterate.set(oldValue)
+                }
+                 scheduleLumperList.addAll(it)
+            }
+
+            scheduleTimeView?.showScheduleTimeData(selectedDate, scheduleLumperList, data.tempLumperIds!!,data.notes )
             scheduleTimeView?.showNotesData(data.notes)
         }
     }

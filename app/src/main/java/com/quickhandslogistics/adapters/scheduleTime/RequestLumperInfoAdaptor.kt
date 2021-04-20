@@ -8,12 +8,15 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.data.scheduleTime.leadinfo.RequestLumperInfo
 import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL_Week
 import kotlinx.android.synthetic.main.item_request_lumper_info.view.*
 import java.util.*
 
 
-class RequestLumperInfoAdaptor(private val resources: Resources, val lumpersAllocated: List<String>) :
+class RequestLumperInfoAdaptor(private val resources: Resources, val lumpersAllocated: List<RequestLumperInfo>) :
     RecyclerView.Adapter<RequestLumperInfoAdaptor.ViewHolder>() {
 
 
@@ -26,7 +29,7 @@ class RequestLumperInfoAdaptor(private val resources: Resources, val lumpersAllo
         return lumpersAllocated.size
     }
 
-    private fun getItem(position: Int): String {
+    private fun getItem(position: Int): RequestLumperInfo {
         return lumpersAllocated?.get(position)
     }
 
@@ -38,13 +41,18 @@ class RequestLumperInfoAdaptor(private val resources: Resources, val lumpersAllo
 
         private val textViewLumperInfo: TextView = view.textViewLumperInfo
 
-        fun bind(lumpersAllocated: String) {
-            val countNumber =adapterPosition+1
-            val lumperName= "namit"
-            val lumperId="ADC001"
-            val time= DateUtils.getDateString( DateUtils.PATTERN_NORMAL_Week, Date())
-
-            textViewLumperInfo.text= String.format(resources.getString(R.string.requested_lumper_info),countNumber, lumperName.capitalize(), lumperId, time)
+        fun bind(lumpersAllocated: RequestLumperInfo) {
+            val countNumber = adapterPosition + 1
+            val lumperName = lumpersAllocated.firstName + lumpersAllocated.lastName
+            val lumperId = lumpersAllocated.employeeId
+            val time = lumpersAllocated.updatedAt?.let { DateUtils.changeUTCDateStringToLocalDateString(PATTERN_API_RESPONSE, PATTERN_NORMAL_Week, it) }
+            textViewLumperInfo.text = String.format(
+                resources.getString(R.string.requested_lumper_info),
+                countNumber,
+                lumperName.capitalize(),
+                lumperId,
+                time
+            )
         }
 
     }

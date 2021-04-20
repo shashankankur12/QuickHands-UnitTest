@@ -5,37 +5,21 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import com.quickhandslogistics.R
-import com.quickhandslogistics.adapters.lumpers.LumperPagerAdapter
+import com.quickhandslogistics.contracts.lumpers.LumperDetailsContract
 import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.ConnectionDetector
-import com.quickhandslogistics.utils.UIUtils
+import com.quickhandslogistics.presenters.lumpers.LumpersDetailsPresenter
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
+import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.common.FullScreenImageActivity
-import kotlinx.android.synthetic.main.content_lead_profile.*
 import kotlinx.android.synthetic.main.content_lumper_detail.*
-import kotlinx.android.synthetic.main.content_lumper_detail.circleImageViewProfile
-import kotlinx.android.synthetic.main.content_lumper_detail.textViewBuildingName
-import kotlinx.android.synthetic.main.content_lumper_detail.textViewCompanyName
-import kotlinx.android.synthetic.main.content_lumper_detail.textViewDepartment
-import kotlinx.android.synthetic.main.content_lumper_detail.textViewEmailAddress
-import kotlinx.android.synthetic.main.content_lumper_detail.textViewEmployeeId
-import kotlinx.android.synthetic.main.content_lumper_detail.textViewLumperName
-import kotlinx.android.synthetic.main.content_lumper_detail.textViewPhoneNumber
-import kotlinx.android.synthetic.main.content_lumper_detail.textViewRole
-import kotlinx.android.synthetic.main.content_lumper_detail.textViewShift
-import kotlinx.android.synthetic.main.content_lumper_detail.textViewShiftHours
-import kotlinx.android.synthetic.main.content_lead_profile.textViewScheduleNote as textViewScheduleNote1
-import kotlinx.android.synthetic.main.content_lead_profile.textViewTitle as textViewTitle1
-import kotlinx.android.synthetic.main.content_lumper_detail.textViewAvailability as textViewAvailability1
-import kotlinx.android.synthetic.main.content_lumper_detail.textViewCustomerName as textViewCustomerName1
 
-class LumperDetailActivity : BaseActivity(), View.OnClickListener {
 
+class LumperDetailActivity : BaseActivity(), View.OnClickListener, LumperDetailsContract.View {
     private var employeeData: EmployeeData? = null
-    private lateinit var lumperPagerAdapter: LumperPagerAdapter
+    private lateinit var lumperDetailsPresenter: LumpersDetailsPresenter
 
     companion object {
         const val ARG_LUMPER_DATA = "ARG_LUMPER_DATA"
@@ -47,6 +31,7 @@ class LumperDetailActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lumper_detail)
         setupToolbar(title = getString(R.string.lumper_profile))
+        lumperDetailsPresenter = LumpersDetailsPresenter(this, resources, sharedPref)
 
         intent.extras?.let { it ->
             if (it.containsKey(ARG_LUMPER_DATA)) {
@@ -54,43 +39,47 @@ class LumperDetailActivity : BaseActivity(), View.OnClickListener {
             }
         }
 
-        initializeUI()
+        employeeData?.let {
+            if (it.isTemporaryAssigned)
+                lumperDetailsPresenter.fetchBuildingInfo(it.originalBuildingId)
+            else{
+                val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+                val buildingDetailData: BuildingDetailData = if(!employeeData!!.isTemporaryAssigned) leadProfile?.buildingDetailData?.get(0)!! else employeeData!!.buildingAssignedAsLumper?.get(0)!!
+                initializeUI(buildingDetailData)
+            }
+
+        }
+
+
     }
 
-    private fun initializeUI() {
+    private fun initializeUI(buildingDetailData: BuildingDetailData) {
         employeeData?.let { employeeData ->
-            val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
-            var buildingDetailData: BuildingDetailData
-
-            buildingDetailData = if(!employeeData.isTemporaryAssigned) leadProfile?.buildingDetailData?.get(0)!! else employeeData.buildingAssignedAsLumper?.get(0)!!
+//            val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+//            val buildingDetailData: BuildingDetailData = if(!employeeData.isTemporaryAssigned) leadProfile?.buildingDetailData?.get(0)!! else employeeData.buildingAssignedAsLumper?.get(0)!!
+            val phoneNumber =if (!employeeData.phone.isNullOrEmpty())UIUtils.formetMobileNumber(employeeData.phone!!)else "---"
 
             UIUtils.showEmployeeProfileImage(activity, employeeData, circleImageViewProfile)
             UIUtils.updateProfileBorder(activity, employeeData.isTemporaryAssigned, circleImageViewProfile)
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
 
             if (!buildingDetailData.buildingName.isNullOrEmpty() && !employeeData.role.isNullOrEmpty()) {
-                textViewCompanyName.text =
-                    employeeData.role!!.capitalize() + " at " + buildingDetailData?.buildingName!!.capitalize()
+                textViewCompanyName.text = "${employeeData.role!!.capitalize()} at ${buildingDetailData?.buildingName!!.capitalize()}"
             } else textViewCompanyName.visibility = View.GONE
 
             textViewEmailAddress.text = if (!employeeData.email.isNullOrEmpty()) employeeData.email else "---"
-            val phoneNumber =if (!employeeData.phone.isNullOrEmpty())UIUtils.formetMobileNumber(employeeData.phone!!)else "---"
             textViewPhoneNumber.text = phoneNumber
-
             textViewEmployeeId.text = if (!employeeData.employeeId.isNullOrEmpty()) employeeData.employeeId else "---"
             textViewRole.text = if (!employeeData.role.isNullOrEmpty()) employeeData.role!!.capitalize() else "---"
             textViewDepartment.text = if (!employeeData.department.isNullOrEmpty()) UIUtils.getDisplayEmployeeDepartment(employeeData) else "---"
             textViewTitle.text = if (!employeeData.title.isNullOrEmpty()) employeeData.title!!.capitalize() else "---"
-
             textViewShiftHours.text = if (!employeeData.shiftHours.isNullOrEmpty()) employeeData.shiftHours else "---"
             textViewShift.text = if (!employeeData.shift.isNullOrEmpty()) employeeData.shift?.capitalize() else "---"
             textViewScheduleNote.text = if (!employeeData.scheduleNotes.isNullOrEmpty()) UIUtils.getSpannedText(getString(R.string.schedule_note) + employeeData.scheduleNotes) else UIUtils.getSpannedText(getString(R.string.schedule_note_lead))
-            textViewAvailability.text = if (employeeData.fullTime!!) getString(R.string.full_time_ud) else getString(R.string.part_time_ud)
+            textViewAvailability.text = if (employeeData.fullTime == true) getString(R.string.full_time_ud) else getString(R.string.part_time_ud)
             viewAttendanceStatus.setBackgroundResource(if (employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
-
-            textViewBuildingName.text = if (!buildingDetailData?.buildingName.isNullOrEmpty()) buildingDetailData?.buildingName!!.capitalize() else "---"
-            textViewCustomerName.text = if (!buildingDetailData?.customerDetail?.companyName.isNullOrEmpty()) buildingDetailData?.customerDetail?.companyName!!.capitalize() else "---"
-
+            textViewBuildingName.text = if (!buildingDetailData.buildingName.isNullOrEmpty()) buildingDetailData.buildingName!!.capitalize() else "---"
+            textViewCustomerName.text = if (!buildingDetailData.customerDetail?.name.isNullOrEmpty()) buildingDetailData.customerDetail?.name!!.capitalize() else "---"
 
             //circleImageViewProfile.setOnClickListener(this@LumperDetailActivity)
             textViewPhoneNumber.setOnClickListener(this@LumperDetailActivity)
@@ -140,5 +129,19 @@ class LumperDetailActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
+    }
+
+    override fun showAPIErrorMessage(message: String) {
+        if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            CustomProgressBar.getInstance().showValidationErrorDialog(message, this)
+        } else SnackBarFactory.createSnackBar(this, mainConstraintLayout, message)
+    }
+
+    override fun showBuildingInfo(buildingDetailData: BuildingDetailData) {
+        initializeUI(buildingDetailData)
+    }
+
+    override fun showLoginScreen() {
+        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 }

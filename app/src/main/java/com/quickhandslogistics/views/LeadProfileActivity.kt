@@ -135,7 +135,7 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
         textViewAvailability.text = if (employeeData.fullTime!!) getString(R.string.full_time_ud) else getString(R.string.part_time_ud)
 
         textViewBuildingName.text = if (!employeeData.buildingDetailData?.get(0)?.buildingName.isNullOrEmpty()) employeeData.buildingDetailData?.get(0)?.buildingName!!.capitalize() else "---"
-        textViewCustomerName.text = if (!employeeData.buildingDetailData?.get(0)?.customerDetail?.companyAdminName.isNullOrEmpty()) employeeData.buildingDetailData?.get(0)?.customerDetail?.companyAdminName!!.capitalize() else "---"
+        textViewCustomerName.text = if (!employeeData.buildingDetailData?.get(0)?.customerDetail?.name.isNullOrEmpty()) employeeData.buildingDetailData?.get(0)?.customerDetail?.name!!.capitalize() else "---"
     }
 
 }

@@ -284,7 +284,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     private fun setLumperDetails(record: ScheduleTimeDetail) {
         UIUtils.showEmployeeProfileImage(context!!, record.lumperInfo!!.profileImageUrl, circleImageViewLumperProfile)
-        UIUtils.updateProfileBorder(context!!, tempLumperIds.contains(record.lumperInfo!!.id), circleImageViewLumperProfile)
+        UIUtils.updateProfileBorder(context!!, record.lumperInfo!!.isTemporaryAssigned, circleImageViewLumperProfile)
         textViewLumpersName.setText( UIUtils.getEmployeeFullName(record.lumperInfo!!))
         textViewLumperId.text = UIUtils.getDisplayEmployeeID(record.lumperInfo!!)
         timeInMillis= DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, record.reportingTimeAndDay)

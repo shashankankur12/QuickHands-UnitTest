@@ -117,7 +117,7 @@ class CustomerContactFragment : BaseFragment(), CustomerContactContract.View, Vi
             phone = it.phone?.replace("+1", "")?.replace("-", "")?.trim()
             textViewCustomerName.text = it.buildingName!!.capitalize()
             textViewCompanyName.text =
-                it.buildingAddress!!.capitalize() + ", " + it.buildingCity + ", " + it.buildingState + " " + it.buildingZipcode
+                it.buildingAddress!!.capitalize().trim() + " " + it.buildingCity + ", " + it.buildingState + " " + it.buildingZipcode
             textViewCompanyContact.text =
                 if (!phone.isNullOrEmpty()) UIUtils.formetMobileNumber(phone!!) else getString(R.string.na)
         }

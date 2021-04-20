@@ -29,6 +29,7 @@
     <string name="cancel_all_work_schedules">Today\'s Work Cancel</string>
     <string name="cancel_request">Cancel Request</string>
     <string name="cancelled">Cancelled</string>
+    <string name="partial">Partial</string>
     <string name="show_more">Show more status</string>
     <string name="show_less">Show less status</string>
     <string name="unfinished">Unfinished</string>
@@ -50,6 +51,7 @@
     <string name="completed_s">Completed: %s</string>
     <string name="contact_info">Contact Info</string>
     <string name="container_no_s">Container No: %s</string>
+    <string name="container_no_bold"><![CDATA[<b>Container #: </b>]]> %s</string>
     <string name="container_details">Container Detail</string>
     <string name="containers">Containers</string>
     <string name="create_new_request">Create A New Request</string>
@@ -74,6 +76,7 @@
     <string name="district_manager_email">DM Email</string>
     <string name="district_manager_name">DM Name</string>
     <string name="door_s">Door: %s</string>
+    <string name="door_bold"><![CDATA[<b>Door: </b>]]> %s</string>
     <string name="drops">Drops</string>
     <string name="drop">Drop</string>
     <string name="drop_added">Drop (Added)</string>
@@ -127,6 +130,7 @@
     <string name="my_profile">My Profile</string>
     <string name="no">No</string>
     <string name="no_of_drops_s">Drop: %s</string>
+    <string name="no_of_drops_bold"><![CDATA[<b> Drop:</b>]]> %s</string>
     <string name="no_time_logged_in_yet">No time logged in yet</string>
     <string name="note">Note</string>
     <string name="note_header">Note :</string>
@@ -287,6 +291,14 @@
     <string name="qhl_office">QHL Office</string>
     <string name="na">N/A</string>
     <string name="added">(Added)</string>
+    <string name="select_option">Select Option</string>
+    <string name="image_from_camera">Take Photo</string>
+    <string name="image_from_gallery">Choose From Gallery</string>
+    <string-array name="array_choose_image">
+        <item>Choose From Gallery</item>
+        <item>Take Photo</item>
+        <item>Cancel</item>
+    </string-array>
 
     <!--No Record Messages-->
     <string name="empty_add_work_item_lumpers_info_message">No Lumpers are available. Go to Time-Clock section and clock them in.</string>

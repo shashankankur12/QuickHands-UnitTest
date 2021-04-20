@@ -16,6 +16,7 @@ import com.quickhandslogistics.data.login.LoginResponse
 import com.quickhandslogistics.data.lumperSheet.LumperSheetListAPIResponse
 import com.quickhandslogistics.data.lumperSheet.LumperWorkDetailAPIResponse
 import com.quickhandslogistics.data.lumperSheet.SubmitLumperSheetRequest
+import com.quickhandslogistics.data.lumpers.BuildingDetailsResponse
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
 import com.quickhandslogistics.data.qhlContact.QhlContactListResponse
 import com.quickhandslogistics.data.qhlContact.QhlOfficeInfoResponse
@@ -131,7 +132,7 @@ interface IApiInterface {
         @Header("Authorization") auth: String, @Path("requestId") requestId: String, @Body request: RequestLumpersRequest
     ): Call<BaseResponse>
 
-    @POST("employees/requests/cancel")
+    @POST("employees/lumpers-request/cancel")
     fun cancelRequestLumpers(@Header("Authorization") auth: String, @Body request: CancelRequestLumpersRequest): Call<BaseResponse>
 
     @DELETE("employees/scheduled/lumpers/{lumperId}")
@@ -253,6 +254,11 @@ interface IApiInterface {
     @POST("employees/upload/image")
     fun uploadImage(@Header("Authorization") auth: String, @Part image: MultipartBody.Part): Call<UploadImageResponse>
     ///////////////////////////////////////////////////////////
+
+    //Building Details////////////////////////////////////////
+    @GET("employees/lead/buildings/{buildingId}")
+    fun getBuildingDetails(@Header("Authorization") auth: String, @Path("buildingId") buildingId: String
+    ): Call<BuildingDetailsResponse>
 
 
 }

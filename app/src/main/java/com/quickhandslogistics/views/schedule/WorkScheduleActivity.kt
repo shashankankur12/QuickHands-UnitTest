@@ -1,5 +1,6 @@
 package com.quickhandslogistics.views.schedule
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -18,8 +19,10 @@ import com.quickhandslogistics.presenters.schedule.WorkSchedulePresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.*
 import kotlinx.android.synthetic.main.content_work_sheet.*
 import kotlinx.android.synthetic.main.work_schedule_container.*
+import kotlinx.android.synthetic.main.work_schedule_container.mainConstraintLayout
 import kotlinx.android.synthetic.main.work_schedule_container.swipe_pull_refresh
 import kotlinx.android.synthetic.main.work_schedule_container.tabLayoutWorkSheet
 import kotlinx.android.synthetic.main.work_schedule_container.textViewCompanyName
@@ -276,6 +279,20 @@ View.OnClickListener   {
             ArrayList(),
             selectedTime
         )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
+            if (singleRowCalendarScheduleTime.getSelectedDates().isNotEmpty()) {
+                if (!ConnectionDetector.isNetworkConnected(activity)) {
+                    ConnectionDetector.createSnackBar(activity)
+                    return
+                }
+
+                workSheetPresenter.fetchWorkSheetList(scheduleIdentity, Date(selectedTime))
+            }
+        }
     }
 
     /** Presenter Listeners */

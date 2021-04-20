@@ -18,6 +18,7 @@ import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.SharedPref
+import com.quickhandslogistics.utils.UIUtils
 import kotlinx.android.synthetic.main.item_work_sheet.view.*
 
 class WorkSheetItemAdapter(private val resources: Resources, private val sharedPref: SharedPref, var adapterItemClickListener: WorkSheetItemContract.View.OnAdapterItemClickListener) :
@@ -68,11 +69,11 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
         }
 
         fun bind(workItemDetail: WorkItemDetail) {
-            textViewStartTime.text = String.format(resources.getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
+            textViewStartTime.text =
+               (workItemDetail.startTime)?.let { UIUtils.getSpannableText(resources.getString(R.string.start_time_bold), DateUtils.convertMillisecondsToUTCTimeString(it)!!)}
 
-            val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.type, resources)
-            when (workItemTypeDisplayName) {
-                resources.getString(R.string.drops) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.no_of_drops_s), workItemDetail.quantity)
+            when (ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.type, resources)) {
+                resources.getString(R.string.drops) -> textViewNoOfDrops.text =  UIUtils.getSpannableText(resources.getString(R.string.no_of_drops_bold), workItemDetail.quantity.toString())
                 resources.getString(R.string.live_loads) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.live_load_s), workItemDetail.quantity)
                 else -> textViewNoOfDrops.text = String.format(resources.getString(R.string.out_bound_s), workItemDetail.quantity)
             }
@@ -84,9 +85,9 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
                 containerNumberValue = workItemDetail.buildingOps!!["Container Number"]
             }
 
-            textViewDoor.text = String.format(resources.getString(R.string.door_s), if (!doorValue.isNullOrEmpty()) doorValue else "---")
-            textViewContainer.text = String.format(
-                resources.getString(R.string.container_no_s),
+            textViewDoor.text = UIUtils.getSpannableText(resources.getString(R.string.door_bold), if (!doorValue.isNullOrEmpty()) doorValue else "---")
+            textViewContainer.text = UIUtils.getSpannableText(
+                resources.getString(R.string.container_no_bold),
                 if (!containerNumberValue.isNullOrEmpty()) containerNumberValue else "---"
             )
             if (workItemDetail.schedule != null) {

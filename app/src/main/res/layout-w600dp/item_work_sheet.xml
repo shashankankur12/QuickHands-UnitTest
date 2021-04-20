@@ -64,6 +64,8 @@
             <TextView
                 android:id="@+id/textViewWorkSheetNote"
                 style="@style/noteTextViewTheme"
+                android:textStyle="bold"
+                android:textSize="@dimen/_9ssp"
                 android:layout_width="wrap_content"
                 android:textColor="@color/scheduleDetail"
                 android:text="Lead Note:" />
@@ -80,7 +82,7 @@
 
             <TextView
                 android:id="@+id/textViewUnfinishedDate"
-                style="@style/valuesTextViewTheme"
+                style="@style/valuesSmallTextViewThemeHeader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/date_started"
@@ -100,7 +102,7 @@
 
         <TextView
             android:id="@+id/textViewStartTime"
-            style="@style/valuesTextViewTheme"
+            style="@style/valuesSmallTextViewThemeHeader"
             android:text="@string/start_time_s"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -108,7 +110,7 @@
 
         <TextView
             android:id="@+id/textViewDoor"
-            style="@style/valuesTextViewTheme"
+            style="@style/valuesSmallTextViewThemeHeader"
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/_4sdp"
             android:text="@string/door_s"
@@ -119,7 +121,7 @@
 
         <TextView
             android:id="@+id/textViewContainer"
-            style="@style/valuesTextViewTheme"
+            style="@style/valuesSmallTextViewThemeHeader"
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/_4sdp"
             android:text="@string/container_no_s"
