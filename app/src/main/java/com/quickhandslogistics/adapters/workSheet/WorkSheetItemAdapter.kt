@@ -73,9 +73,9 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
                (workItemDetail.startTime)?.let { UIUtils.getSpannableText(resources.getString(R.string.start_time_bold), DateUtils.convertMillisecondsToUTCTimeString(it)!!)}
 
             when (ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.type, resources)) {
-                resources.getString(R.string.drops) -> textViewNoOfDrops.text =  UIUtils.getSpannableText(resources.getString(R.string.no_of_drops_bold), workItemDetail.quantity.toString())
-                resources.getString(R.string.live_loads) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.live_load_s), workItemDetail.quantity)
-                else -> textViewNoOfDrops.text = String.format(resources.getString(R.string.out_bound_s), workItemDetail.quantity)
+                resources.getString(R.string.drops) -> textViewNoOfDrops.text =  UIUtils.getSpannableText(resources.getString(R.string.no_of_drops_bold_has), workItemDetail.label.toString())
+                resources.getString(R.string.live_loads) -> textViewNoOfDrops.text = UIUtils.getSpannableText(resources.getString(R.string.live_load_bold_has), workItemDetail.label.toString())
+                else -> textViewNoOfDrops.text = UIUtils.getSpannableText(resources.getString(R.string.out_bound_bold_has), workItemDetail.label.toString())
             }
 
             var doorValue: String? = null

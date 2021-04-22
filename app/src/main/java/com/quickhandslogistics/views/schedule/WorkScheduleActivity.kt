@@ -17,10 +17,11 @@ import com.quickhandslogistics.data.schedule.ScheduleDetailData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.presenters.schedule.WorkSchedulePresenter
 import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.DateUtils.Companion.getDateString
 import com.quickhandslogistics.views.BaseActivity
+import com.quickhandslogistics.views.DashBoardActivity
 import com.quickhandslogistics.views.LoginActivity
 import kotlinx.android.synthetic.main.content_schedule_time_fragment.*
-import kotlinx.android.synthetic.main.content_work_sheet.*
 import kotlinx.android.synthetic.main.work_schedule_container.*
 import kotlinx.android.synthetic.main.work_schedule_container.mainConstraintLayout
 import kotlinx.android.synthetic.main.work_schedule_container.swipe_pull_refresh
@@ -79,7 +80,12 @@ View.OnClickListener   {
         workSheetPresenter = WorkSchedulePresenter(this, resources, sharedPref)
 
 
+        if(DateUtils.isFutureDate(selectedTime)){
+            buttonScheduleLumper.visibility=View.VISIBLE
+        }else buttonScheduleLumper.visibility=View.GONE
+
         textViewGroupNote.setOnClickListener(this)
+        buttonScheduleLumper.setOnClickListener(this)
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(WORKSHEET_DATE_SELECTED_HEADER)) {
                 date = savedInstanceState.getString(WORKSHEET_DATE_SELECTED_HEADER)!!
@@ -451,6 +457,19 @@ View.OnClickListener   {
                         customerGroupNote
                     )
 
+            }
+            buttonScheduleLumper.id -> {
+                if (!ConnectionDetector.isNetworkConnected(activity)) {
+                    ConnectionDetector.createSnackBar(activity)
+                    return
+                }
+
+                val bundle = Bundle()
+                bundle.putString(DashBoardActivity.ARG_SHOW_TAB_NAME, getString(R.string.scheduled_lumpers))
+                bundle.putString(DashBoardActivity.ARG_SCHEDULE_TIME_SELECTED_DATE, getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER,Date(selectedTime)))
+                bundle.putBoolean(DashBoardActivity.PRIVIOUS_TAB, true)
+                startIntent(DashBoardActivity::class.java, bundle = bundle)
+                finish()
             }
         }
     }

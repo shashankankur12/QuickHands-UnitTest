@@ -200,16 +200,16 @@ object CustomerDialog : AppConstant {
             var outBoundTime=""
             if (!leadWorkInfo.outbounds?.time.isNullOrEmpty())
                 outBoundTime = if (leadWorkInfo.live?.time!!.size>1)
-                    "${DateUtils.changeDateString(
+                    "${DateUtils.changeUTCDateStringToLocalDateString(
                         PATTERN_API_RESPONSE,
                         PATTERN_TIME,
                         leadWorkInfo.outbounds?.time!![0]
-                    )}; ${DateUtils.changeDateString(
+                    )}; ${DateUtils.changeUTCDateStringToLocalDateString(
                         PATTERN_API_RESPONSE,
                         PATTERN_TIME,
-                        leadWorkInfo.outbounds?.time!![0]
+                        leadWorkInfo.outbounds?.time!![1]
                     )} "
-                else DateUtils.changeDateString(
+                else DateUtils.changeUTCDateStringToLocalDateString(
                     PATTERN_API_RESPONSE,
                     PATTERN_TIME,
                     leadWorkInfo.outbounds?.time!![0]
@@ -225,16 +225,16 @@ object CustomerDialog : AppConstant {
             var liveTime= ""
             if (!leadWorkInfo.live?.time.isNullOrEmpty()){
                 liveTime = if (leadWorkInfo.live?.time!!.size>1)
-                    "${DateUtils.changeDateString(
+                    "${DateUtils.changeUTCDateStringToLocalDateString(
                         PATTERN_API_RESPONSE,
                         PATTERN_TIME,
                         leadWorkInfo.live?.time!![0]
-                    )}; ${DateUtils.changeDateString(
+                    )}; ${DateUtils.changeUTCDateStringToLocalDateString(
                         PATTERN_API_RESPONSE,
                         PATTERN_TIME,
-                        leadWorkInfo.live?.time!![0]
+                        leadWorkInfo.live?.time!![1]
                     )} "
-                else DateUtils.changeDateString(
+                else DateUtils.changeUTCDateStringToLocalDateString(
                     PATTERN_API_RESPONSE,
                     PATTERN_TIME,
                     leadWorkInfo.live?.time!![0]
@@ -247,7 +247,7 @@ object CustomerDialog : AppConstant {
             textViewScheduleDrops.text =
                 String.format(resources.getString(R.string.drops_s), leadWorkInfo.drops?.count)
             if (!leadWorkInfo.drops?.time.isNullOrEmpty())
-                textViewScheduleDropsStartTime.text = DateUtils.changeDateString(
+                textViewScheduleDropsStartTime.text = DateUtils.changeUTCDateStringToLocalDateString(
                     PATTERN_API_RESPONSE,
                     PATTERN_TIME,
                     leadWorkInfo.drops?.time!!

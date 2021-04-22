@@ -69,6 +69,7 @@
     <string name="department">Department</string>
     <string name="department_lead">Dept :</string>
     <string name="department_noraml">Dept: %s</string>
+    <string name="title_normal">Title: %s</string>
     <string name="department_full">Department : <![CDATA[<b> %s </b>]]></string>
     <string name="title_lead">Title :</string>
     <string name="dept_bold"><![CDATA[<b>Dept: </b>]]></string>
@@ -111,6 +112,7 @@
     <string name="last_day_worked">Last day worked</string>
     <string name="last_name">Last Name</string>
     <string name="live_load_s">Live Load: %s</string>
+    <string name="live_load_bold_has"><![CDATA[<b>Live Load: </b>]]> #%s</string>
     <string name="live_loads">Live Loads</string>
     <string name="live_load">Live Load</string>
     <string name="live_load_added">Live Load (Added)</string>
@@ -130,7 +132,8 @@
     <string name="my_profile">My Profile</string>
     <string name="no">No</string>
     <string name="no_of_drops_s">Drop: %s</string>
-    <string name="no_of_drops_bold"><![CDATA[<b> Drop:</b>]]> %s</string>
+    <string name="no_of_drops_bold"><![CDATA[<b>Drop:</b>]]> %s</string>
+    <string name="no_of_drops_bold_has"><![CDATA[<b>Drop:</b>]]> #%s</string>
     <string name="no_time_logged_in_yet">No time logged in yet</string>
     <string name="note">Note</string>
     <string name="note_header">Note :</string>
@@ -145,6 +148,7 @@
     <string name="ongoing">Ongoing</string>
     <string name="ongoing_s">Ongoing: %s</string>
     <string name="out_bound_s">Outbound:  %s</string>
+    <string name="out_bound_bold_has"><![CDATA[<b>Outbound:</b>]]> #%s</string>
     <string name="out_bounds">Outbounds</string>
     <string name="out_bound">Outbound</string>
     <string name="out_bound_added">Outbound (Added)</string>

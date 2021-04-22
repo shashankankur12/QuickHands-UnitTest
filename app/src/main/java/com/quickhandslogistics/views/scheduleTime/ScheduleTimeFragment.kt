@@ -56,6 +56,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     private var scheduleTimeNotes: String? = null
     private var dateString: String? = null
     private var isSavedState: Boolean = false
+    private var isPriviousTab: Boolean = false
     private var selectedDate: Date = Date()
     private var tempLumperIds: ArrayList<String> = ArrayList()
     private var scheduleTimeDetailList: ArrayList<ScheduleTimeDetail> = ArrayList()
@@ -90,6 +91,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
         arguments?.let { bundle ->
             scheduleTimeSelectedDate = bundle.getString(DashBoardActivity.ARG_SCHEDULE_TIME_SELECTED_DATE)
+            isPriviousTab = bundle.getBoolean(DashBoardActivity.PRIVIOUS_TAB, false)
         }
 
         // Setup Calendar Dates
@@ -471,7 +473,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         invalidateScheduleButton()
         scheduleTimeAdapter.updateLumpersData(scheduleTimeDetailList, tempLumperIds,scheduleTimeNotes,isPastDate)
 
-        if (!scheduleTimeSelectedDate.isNullOrEmpty()) {
+        if (!scheduleTimeSelectedDate.isNullOrEmpty() && !isPriviousTab) {
             scheduleTimeSelectedDate = ""
             buttonRequestLumpers.performClick()
         }

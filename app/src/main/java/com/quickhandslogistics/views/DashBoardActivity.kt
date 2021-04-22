@@ -42,6 +42,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     private var isCancelAllScheduleVisible: Boolean = false
      var isShowLeavePopup: Boolean = false
      var isPerformLogout: Boolean = false
+     var isPrivousTab: Boolean = false
 
     private lateinit var dashBoardPresenter: DashBoardPresenter
 
@@ -52,6 +53,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         const val ARG_SHOW_TAB_NAME = "ARG_SHOW_TAB_NAME"
         const val ARG_SCHEDULE_TIME_SELECTED_DATE = "ARG_SCHEDULE_TIME_SELECTED_DATE"
         const val TAB_NAME = "TAB_NAME"
+        const val PRIVIOUS_TAB = "PRIVIOUS_TAB"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,11 +64,14 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
 
         intent.extras?.also { bundle ->
             showTabName = bundle.getString(ARG_SHOW_TAB_NAME, getString(R.string.today_s_work_sheet))
+            isPrivousTab = bundle.getBoolean(PRIVIOUS_TAB, false)
 
             //if Tab is Schedule Lumper Time, then check for date
             if (showTabName == getString(R.string.scheduled_lumpers)) {
                 scheduleTimeSelectedDate = bundle.getString(ARG_SCHEDULE_TIME_SELECTED_DATE, "")
             }
+
+
         } ?: run {
             showTabName = getString(R.string.today_s_work_sheet)
         }
@@ -89,6 +94,10 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
         dashBoardPresenter.loadLeadProfileData()
 
         snackBar = SnackBarFactory.createShortSnackBar(activity, frameLayoutMain, getString(R.string.press_back_again_to_exit), isShow = false)
+    }
+
+    private fun replaceScheduleFragment() {
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -184,6 +193,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             val scheduleTimeFragment = ScheduleTimeFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_SCHEDULE_TIME_SELECTED_DATE, scheduleTimeSelectedDate)
+                    putBoolean(PRIVIOUS_TAB, isPrivousTab)
                 }
             }
 

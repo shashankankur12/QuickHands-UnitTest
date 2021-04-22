@@ -110,6 +110,7 @@
     <string name="last_day_worked">Last day worked</string>
     <string name="last_name">Last Name</string>
     <string name="live_load_s">Live Load: %s</string>
+    <string name="live_load_bold_has"><![CDATA[<b>Live Load: </b>]]> #%s</string>
     <string name="live_loads">Live Loads</string>
     <string name="live_load">Live Load</string>
     <string name="live_load_added">Live Load (Added)</string>
@@ -130,6 +131,7 @@
     <string name="no">No</string>
     <string name="no_of_drops_s">Drop: %s</string>
     <string name="no_of_drops_bold"><![CDATA[<b> Drop:</b>]]> %s</string>
+    <string name="no_of_drops_bold_has"><![CDATA[<b> Drop:</b>]]> #%s</string>
     <string name="no_time_logged_in_yet">No time logged in yet</string>
     <string name="note">Note</string>
     <string name="note_header">Note :</string>
@@ -144,6 +146,7 @@
     <string name="ongoing">Ongoing</string>
     <string name="ongoing_s">Ongoing: %s</string>
     <string name="out_bound_s">Outbound: %s</string>
+    <string name="out_bound_bold_has"><![CDATA[<b>Outbound:</b>]]> #%s</string>
     <string name="out_bounds">Outbounds</string>
     <string name="out_bound">Outbound</string>
     <string name="out_bound_added">Outbound (Added)</string>
@@ -282,6 +285,7 @@
     <string name="cancel_all_schedule_lumper">Cancel All Lumpers</string>
     <string name="shift_normal">Shift: %s</string>
     <string name="department_noraml">Dept: %s</string>
+    <string name="title_normal">Title: %s</string>
     <string name="edit_time_note">Edit Time/ Notes</string>
     <string name="heading_lead_notes">Lead Notes:</string>
     <string name="heading_add_note">Add Note:</string>

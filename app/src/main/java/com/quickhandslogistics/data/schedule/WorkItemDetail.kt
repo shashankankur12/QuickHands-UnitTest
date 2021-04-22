@@ -31,6 +31,10 @@ class WorkItemDetail() : Parcelable {
     @Expose
     var quantity: Int? = null
 
+    @SerializedName("label")
+    @Expose
+    var label: String? = null
+
     @SerializedName("createdBy")
     @Expose
     var createdBy: String? = null
@@ -123,6 +127,7 @@ class WorkItemDetail() : Parcelable {
         id = parcel.readString()
         workItemType = parcel.readString()
         type = parcel.readString()
+        label = parcel.readString()
         sequence = parcel.readValue(Int::class.java.classLoader) as? Int
         quantity = parcel.readValue(Int::class.java.classLoader) as? Int
         createdBy = parcel.readString()
@@ -164,6 +169,7 @@ class WorkItemDetail() : Parcelable {
         parcel.writeString(id)
         parcel.writeString(workItemType)
         parcel.writeString(type)
+        parcel.writeString(label)
         parcel.writeValue(sequence)
         parcel.writeValue(quantity)
         parcel.writeString(createdBy)
