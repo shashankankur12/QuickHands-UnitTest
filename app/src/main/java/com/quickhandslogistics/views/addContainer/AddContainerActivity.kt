@@ -321,6 +321,7 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
                 textViewAddOutBound.id -> {
                     val containerDetails = ContainerDetails()
                     containerDetails.workItemType = WORKSHEET_WORK_ITEM_OUTBOUND
+                    containerDetails.sequence = 1.toString()
                     outBoundList.add(containerDetails)
                     addOutBoundContainerAdapter.addContainerData(
                             WORKSHEET_WORK_ITEM_OUTBOUND, outBoundList
@@ -331,6 +332,7 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener, AddContainerC
 
                     val containerDetails = ContainerDetails()
                     containerDetails.workItemType = WORKSHEET_WORK_ITEM_LIVE
+                    containerDetails.sequence = 1.toString()
                     liveLoadList.add(containerDetails)
                     addLiveContainerAdapter.addContainerData(
                             WORKSHEET_WORK_ITEM_LIVE,

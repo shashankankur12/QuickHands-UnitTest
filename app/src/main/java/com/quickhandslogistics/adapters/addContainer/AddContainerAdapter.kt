@@ -82,6 +82,13 @@ class AddContainerAdapter(private val onAdapterClick: AddContainerActivity, priv
                     isShowingDialog=false
             }
 
+            if (containerDetails.workItemType.equals(WORKSHEET_WORK_ITEM_INBOUND)){
+                editTextQuantity.isEnabled=true
+            }
+            else {
+                editTextQuantity.isEnabled=false
+            }
+
             textViewRemove.setOnClickListener(this)
             editTextStartTime.setOnClickListener(this)
             editTextQuantity.addTextChangedListener(this)
