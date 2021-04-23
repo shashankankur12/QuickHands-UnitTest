@@ -52,4 +52,8 @@ class WorkSheetItemDetailPagerAdapter(
         buildingOperationsFragment.showEmptyData()
         lumpersFragment.showEmptyData()
     }
+
+    fun updateUploadedImage(imageUrl: String) {
+        notesFragment.updateImageList(imageUrl)
+    }
 }

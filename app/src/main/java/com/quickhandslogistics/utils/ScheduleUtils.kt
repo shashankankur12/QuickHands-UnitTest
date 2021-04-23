@@ -13,7 +13,6 @@ import com.quickhandslogistics.data.lumperSheet.LumpersInfo
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetail
 import com.quickhandslogistics.data.schedule.ScheduleDetailData
-import com.quickhandslogistics.data.schedule.ScheduleWorkItem
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
@@ -279,8 +278,8 @@ object ScheduleUtils {
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
 
         leadProfile?.buildingDetailData?.let { buildingDetailData ->
-            if (!buildingDetailData.parameters.isNullOrEmpty()) {
-                parameters.addAll(buildingDetailData.parameters!!)
+            if (!buildingDetailData[0].parameters.isNullOrEmpty()) {
+                parameters.addAll(buildingDetailData[0].parameters!!)
             }
         }
         return parameters
@@ -304,13 +303,13 @@ object ScheduleUtils {
             shiftName = name.capitalize()
             val shiftDetail = when (leadProfile.shift) {
                 AppConstant.EMPLOYEE_SHIFT_MORNING -> {
-                    leadProfile.buildingDetailData?.morningShift
+                    leadProfile.buildingDetailData?.get(0)?.morningShift
                 }
                 AppConstant.EMPLOYEE_SHIFT_SWING -> {
-                    leadProfile.buildingDetailData?.swingShift
+                    leadProfile.buildingDetailData?.get(0)?.swingShift
                 }
                 AppConstant.EMPLOYEE_SHIFT_NIGHT -> {
-                    leadProfile.buildingDetailData?.nightShift
+                    leadProfile.buildingDetailData?.get(0)?.nightShift
                 }
                 else -> null
             }
@@ -323,11 +322,12 @@ object ScheduleUtils {
     }
 
      fun getSortRequestLumper(records: ArrayList<RequestLumpersRecord>): ArrayList<RequestLumpersRecord> {
-        var pendingRecords: ArrayList<RequestLumpersRecord> = ArrayList()
-        var completedRecords: ArrayList<RequestLumpersRecord> = ArrayList()
-        var rejectedRecords: ArrayList<RequestLumpersRecord> = ArrayList()
-        var cancelRecords: ArrayList<RequestLumpersRecord> = ArrayList()
-        var sortedlRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        val pendingRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        val completedRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        val rejectedRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        val cancelRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        val partialRecords: ArrayList<RequestLumpersRecord> = ArrayList()
+        val sortedlRecords: ArrayList<RequestLumpersRecord> = ArrayList()
         records.forEach {
             when {
                 it.requestStatus.equals(AppConstant.REQUEST_LUMPERS_STATUS_PENDING) -> {
@@ -342,10 +342,14 @@ object ScheduleUtils {
                 it.requestStatus.equals(AppConstant.REQUEST_LUMPERS_STATUS_CANCELLED) -> {
                     cancelRecords.add(it)
                 }
+                it.requestStatus.equals(AppConstant.REQUEST_LUMPERS_STATUS_PARTIAL) -> {
+                    partialRecords.add(it)
+                }
             }
         }
 
         sortedlRecords.addAll(getSortedDate(pendingRecords))
+        sortedlRecords.addAll(getSortedDate(partialRecords))
         sortedlRecords.addAll(getSortedDate(completedRecords))
         sortedlRecords.addAll(getSortedDate(rejectedRecords))
         sortedlRecords.addAll(getSortedDate(cancelRecords))
@@ -364,11 +368,11 @@ object ScheduleUtils {
     }
 
     fun getCancelHeaderDetails(scheduleDetails: ScheduleTimeDetail, rawString:String): Spanned? {
-        var lumperName =String.format( "%s %s", scheduleDetails.lumperInfo!!.firstName,scheduleDetails.lumperInfo!!.lastName)
-        var lumperScheduleTime =DateUtils.changeDateString(DateUtils.PATTERN_API_RESPONSE ,DateUtils.PATTERN_NORMAL,
+        val lumperName =String.format( "%s %s", scheduleDetails.lumperInfo!!.firstName,scheduleDetails.lumperInfo!!.lastName)
+        val lumperScheduleTime =DateUtils.changeDateString(DateUtils.PATTERN_API_RESPONSE ,DateUtils.PATTERN_NORMAL,
             scheduleDetails.reportingTimeAndDay!!
         )
-        var formetString= String.format(rawString, lumperName, lumperScheduleTime)
+        val formetString= String.format(rawString, lumperName, lumperScheduleTime)
         return UIUtils.getSpannedText(formetString)
     }
 
@@ -458,7 +462,7 @@ object ScheduleUtils {
         val weeklyNoteList: ArrayList<String> = ArrayList()
         val monthlyNoteList: ArrayList<String> = ArrayList()
         val customNoteList: ArrayList<String> = ArrayList()
-        val workItemDetail: ArrayList<WorkItemContainerDetails> = ArrayList()
+        val workItemDetail: ArrayList<WorkItemDetail> = ArrayList()
 
         workItemData?.let{
             workItemDetail.addAll(it?.liveLoads!!)
@@ -506,9 +510,9 @@ object ScheduleUtils {
         return parameters
     }
 
-    fun getFilledBuildingParametersCounts(workItemDetail: ScheduleWorkItem): Int {
+    fun getFilledBuildingParametersCounts(workItemDetail: WorkItemContainerDetails, buildingDetailData: BuildingDetailData?): Int {
         var count = 0
-        val parameters = ScheduleUtils.getBuildingParametersList(workItemDetail.buildingDetailData)
+        val parameters = getBuildingParametersList(buildingDetailData)
 
         workItemDetail.buildingOps?.let {
             for (key in it.keys) {
@@ -622,4 +626,26 @@ object ScheduleUtils {
             lumperList
         } else ArrayList()
     }
+
+    fun getAssignedLumperList(scheduleDetails: ScheduleDetailData): List<EmployeeData> {
+        var scheduleLumperList: ArrayList<EmployeeData> =ArrayList()
+        scheduleDetails?.let {
+            var allWorkItemList :ArrayList<WorkItemDetail> = ArrayList()
+            if (!it.outbounds.isNullOrEmpty())
+                allWorkItemList.addAll(it.outbounds!!)
+            if (!it.liveLoads.isNullOrEmpty())
+                allWorkItemList.addAll(it.liveLoads!!)
+            if (!it.drops.isNullOrEmpty())
+                allWorkItemList.addAll(it.drops!!)
+
+            allWorkItemList.forEach { workItem ->
+                workItem.assignedLumpersList?.forEach{ lumperInfo ->
+                    scheduleLumperList.add(lumperInfo)
+                }
+            }
+
+        }
+        return scheduleLumperList.distinctBy { it.id }
+    }
+
 }

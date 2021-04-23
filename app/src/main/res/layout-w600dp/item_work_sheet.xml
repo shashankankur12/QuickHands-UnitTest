@@ -35,12 +35,23 @@
         <TextView
             android:id="@+id/textViewNoOfDrops"
             style="@style/titleBigTextViewTheme"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_marginEnd="@dimen/_4sdp"
             android:clickable="false"
             android:text="Container Number :"
-            app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/textViewIsScheduleLead"
+            style="@style/titleBigTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_marginHorizontal="@dimen/_4sdp"
+            android:clickable="false"
+            android:visibility="gone"
+            android:text="@string/added"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
+            app:layout_constraintStart_toEndOf="@+id/textViewNoOfDrops"
             app:layout_constraintTop_toTopOf="parent" />
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,23 +64,53 @@
             <TextView
                 android:id="@+id/textViewWorkSheetNote"
                 style="@style/noteTextViewTheme"
+                android:textStyle="bold"
+                android:textSize="@dimen/_9ssp"
                 android:layout_width="wrap_content"
                 android:textColor="@color/scheduleDetail"
                 android:text="Lead Note:" />
 
         </LinearLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/containerUnfinishedDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutWorksheetNote">
+
+            <TextView
+                android:id="@+id/textViewUnfinishedDate"
+                style="@style/valuesSmallTextViewThemeHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/date_started"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewUnfinishedLumper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textViewUnfinishedDate"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <TextView
             android:id="@+id/textViewStartTime"
-            style="@style/valuesTextViewTheme"
+            style="@style/valuesSmallTextViewThemeHeader"
             android:text="@string/start_time_s"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutWorksheetNote" />
+            app:layout_constraintTop_toBottomOf="@+id/containerUnfinishedDetails" />
 
         <TextView
             android:id="@+id/textViewDoor"
-            style="@style/valuesTextViewTheme"
+            style="@style/valuesSmallTextViewThemeHeader"
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/_4sdp"
             android:text="@string/door_s"
@@ -80,7 +121,7 @@
 
         <TextView
             android:id="@+id/textViewContainer"
-            style="@style/valuesTextViewTheme"
+            style="@style/valuesSmallTextViewThemeHeader"
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/_4sdp"
             android:text="@string/container_no_s"
@@ -112,8 +153,9 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewLumpersImagesList"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/circleImageViewArrow"
             android:layout_marginTop="@dimen/_6sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/labelBarrier1" />

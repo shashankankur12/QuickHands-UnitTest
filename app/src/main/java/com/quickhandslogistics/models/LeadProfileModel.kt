@@ -40,7 +40,7 @@ class LeadProfileModel(private val sharedPref: SharedPref) : LeadProfileContract
 
     override fun processLeadProfileData(leadProfileData: LeadProfileData, onFinishedListener: LeadProfileContract.Model.OnFinishedListener) {
         sharedPref.setClassObject(PREFERENCE_LEAD_PROFILE, leadProfileData)
-        sharedPref.setString(AppConstant.PREFERENCE_BUILDING_ID, leadProfileData.buildingDetailData?.id)
+        sharedPref.setString(AppConstant.PREFERENCE_BUILDING_ID, leadProfileData.buildingDetailData?.get(0)?.id)
         onFinishedListener.onLoadLeadProfile(leadProfileData)
     }
 }

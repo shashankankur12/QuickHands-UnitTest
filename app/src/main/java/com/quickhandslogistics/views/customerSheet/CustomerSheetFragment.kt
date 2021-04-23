@@ -291,7 +291,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
     private fun buildingDetails(scheduleDetails: CustomerSheetScheduleDetails, customerSheet: CustomerSheetData?) {
 
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
-        leadProfile?.buildingDetailData?.let {
+        leadProfile?.buildingDetailData?.get(0)?.let {
             textViewBuildingName.text=  it.buildingName!!.capitalize()+ " \n"+it.buildingAddress!!.capitalize() +", \n"+it.buildingCity+", "+it.buildingState +" "+it .buildingZipcode
         }
         textViewHeaderBar.text= UIUtils.getSpannableText(getString(R.string.date),DateUtils.getDateString(PATTERN_DATE_DISPLAY_CUSTOMER_SHEET, selectedDate))

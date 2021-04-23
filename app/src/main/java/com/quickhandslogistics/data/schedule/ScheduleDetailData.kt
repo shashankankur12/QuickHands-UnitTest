@@ -26,17 +26,17 @@ class ScheduleDetailData() : Parcelable {
 
     @SerializedName("live")
     @Expose
-    var liveLoads: ArrayList<WorkItemContainerDetails>? = null
+    var liveLoads: ArrayList<WorkItemDetail>? = null
         get() = if (field.isNullOrEmpty()) ArrayList() else field
 
     @SerializedName("drop")
     @Expose
-    var drops: ArrayList<WorkItemContainerDetails>? = null
+    var drops: ArrayList<WorkItemDetail>? = null
         get() = if (field.isNullOrEmpty()) ArrayList() else field
 
     @SerializedName("outbound")
     @Expose
-    var outbounds: ArrayList<WorkItemContainerDetails>? = null
+    var outbounds: ArrayList<WorkItemDetail>? = null
         get() = if (field.isNullOrEmpty()) ArrayList() else field
 
     @SerializedName("scheduleNote")
@@ -61,9 +61,9 @@ class ScheduleDetailData() : Parcelable {
         buildingName = parcel.readString()
         scheduledFrom = parcel.readString()
         endDateForCurrentWorkItem = parcel.readString()
-        liveLoads = parcel.createTypedArrayList(WorkItemContainerDetails)
-        drops = parcel.createTypedArrayList(WorkItemContainerDetails)
-        outbounds = parcel.createTypedArrayList(WorkItemContainerDetails)
+        liveLoads = parcel.createTypedArrayList(WorkItemDetail)
+        drops = parcel.createTypedArrayList(WorkItemDetail)
+        outbounds = parcel.createTypedArrayList(WorkItemDetail)
         scheduleNote = parcel.readString()
         parameters = parcel.createStringArrayList()
         totalNumberOfWorkItems = parcel.readValue(Int::class.java.classLoader) as? Int

@@ -122,7 +122,7 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
 
             if (selectedDisplayStatus == pair.first) {
                 textViewStatus.typeface = Typeface.DEFAULT_BOLD
-                imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick)
+                imageViewAdd.setImageResource(R.drawable.ic_add_lumper_green_tick)
             } else {
                 textViewStatus.typeface = Typeface.DEFAULT
                 imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick_blank)

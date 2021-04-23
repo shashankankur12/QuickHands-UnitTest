@@ -20,19 +20,13 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class ChooseLumpersAdapter(
-    private val assignedLumpersList: ArrayList<EmployeeData>, scheduleTimeList: ArrayList<ScheduleTimeDetail>,
-    private val onAdapterClick: ChooseLumpersContract.View.OnAdapterItemClickListener
-) : Adapter<ChooseLumpersAdapter.ViewHolder>() {
+class ChooseLumpersAdapter(private val assignedLumpersList: ArrayList<EmployeeData>, scheduleTimeList: ArrayList<ScheduleTimeDetail>, private val onAdapterClick: ChooseLumpersContract.View.OnAdapterItemClickListener) : Adapter<ChooseLumpersAdapter.ViewHolder>() {
 
     private var employeeDataList: ArrayList<EmployeeData> = ArrayList()
     private var filteredEmployeeDataList: ArrayList<EmployeeData> = ArrayList()
-
     private var assignedLumperIdsList: ArrayList<String> = ArrayList()
-
     private var selectedLumperIdsList: ArrayList<String> = ArrayList()
     private var selectedLumpersMap: HashMap<String, EmployeeData> = HashMap()
-
     private var searchEnabled = false
     private var searchTerm = ""
 
@@ -81,7 +75,7 @@ class ChooseLumpersAdapter(
                 imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick_disabled)
             } else {
                 if (selectedLumperIdsList.contains(employeeData.id!!)) {
-                    imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick)
+                    imageViewAdd.setImageResource(R.drawable.ic_add_lumper_green_tick)
                 } else {
                     imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick_blank)
                 }

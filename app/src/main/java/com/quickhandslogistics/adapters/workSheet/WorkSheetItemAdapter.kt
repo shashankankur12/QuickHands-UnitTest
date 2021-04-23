@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
@@ -17,6 +18,7 @@ import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.SharedPref
+import com.quickhandslogistics.utils.UIUtils
 import kotlinx.android.synthetic.main.item_work_sheet.view.*
 
 class WorkSheetItemAdapter(private val resources: Resources, private val sharedPref: SharedPref, var adapterItemClickListener: WorkSheetItemContract.View.OnAdapterItemClickListener) :
@@ -50,8 +52,12 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
         private val textViewContainer: TextView = itemView.textViewContainer
         private val textViewStatus: TextView = itemView.textViewStatus
         private val textViewWorkSheetNote: TextView = itemView.textViewWorkSheetNote
+        private val textViewIsScheduleLead: TextView = itemView.textViewIsScheduleLead
+        private val textViewUnfinishedDate: TextView = itemView.textViewUnfinishedDate
         private val relativeLayoutSide: RelativeLayout = itemView.relativeLayoutSide
+        private val containerUnfinishedDetails: ConstraintLayout = itemView.containerUnfinishedDetails
         private val recyclerViewLumpersImagesList: RecyclerView = itemView.recyclerViewLumpersImagesList
+        private val recyclerViewUnfinishedLumper: RecyclerView = itemView.recyclerViewUnfinishedLumper
 
         init {
             recyclerViewLumpersImagesList.apply {
@@ -63,13 +69,13 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
         }
 
         fun bind(workItemDetail: WorkItemDetail) {
-            textViewStartTime.text = String.format(resources.getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
+            textViewStartTime.text =
+               (workItemDetail.startTime)?.let { UIUtils.getSpannableText(resources.getString(R.string.start_time_bold), DateUtils.convertMillisecondsToUTCTimeString(it)!!)}
 
-            val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.type, resources)
-            when (workItemTypeDisplayName) {
-                resources.getString(R.string.drops) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.no_of_drops_s), workItemDetail.quantity)
-                resources.getString(R.string.live_loads) -> textViewNoOfDrops.text = String.format(resources.getString(R.string.live_load_s), workItemDetail.quantity)
-                else -> textViewNoOfDrops.text = String.format(resources.getString(R.string.out_bound_s), workItemDetail.quantity)
+            when (ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.type, resources)) {
+                resources.getString(R.string.drops) -> textViewNoOfDrops.text =  UIUtils.getSpannableText(resources.getString(R.string.no_of_drops_bold_has), workItemDetail.label.toString())
+                resources.getString(R.string.live_loads) -> textViewNoOfDrops.text = UIUtils.getSpannableText(resources.getString(R.string.live_load_bold_has), workItemDetail.label.toString())
+                else -> textViewNoOfDrops.text = UIUtils.getSpannableText(resources.getString(R.string.out_bound_bold_has), workItemDetail.label.toString())
             }
 
             var doorValue: String? = null
@@ -79,18 +85,22 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
                 containerNumberValue = workItemDetail.buildingOps!!["Container Number"]
             }
 
-            textViewDoor.text = String.format(resources.getString(R.string.door_s), if (!doorValue.isNullOrEmpty()) doorValue else "---")
-            textViewContainer.text = String.format(resources.getString(R.string.container_no_s), if (!containerNumberValue.isNullOrEmpty()) containerNumberValue else "---")
-            if (!workItemDetail.schedule?.scheduleNote.isNullOrEmpty()){
-                textViewWorkSheetNote.visibility=View.VISIBLE
-                textViewWorkSheetNote.text=ScheduleUtils.scheduleTypeNote(workItemDetail.schedule, resources)
-            }else textViewWorkSheetNote.visibility=View.GONE
+            textViewDoor.text = UIUtils.getSpannableText(resources.getString(R.string.door_bold), if (!doorValue.isNullOrEmpty()) doorValue else "---")
+            textViewContainer.text = UIUtils.getSpannableText(
+                resources.getString(R.string.container_no_bold),
+                if (!containerNumberValue.isNullOrEmpty()) containerNumberValue else "---"
+            )
+            if (workItemDetail.schedule != null) {
+                textViewWorkSheetNote.visibility = View.VISIBLE
+                textViewWorkSheetNote.text = ScheduleUtils.scheduleTypeNote(workItemDetail.schedule, resources)
+            } else textViewWorkSheetNote.visibility = View.GONE
             textViewWorkSheetNote.text=ScheduleUtils.scheduleTypeNote(workItemDetail.schedule, resources)
             textViewWorkSheetNote.isEnabled=(!workItemDetail.schedule?.scheduleNote.isNullOrEmpty() && !getItem(adapterPosition).schedule?.scheduleNote!!.equals("NA"))
 
             workItemDetail.assignedLumpersList?.let { imagesList ->
                 recyclerViewLumpersImagesList.adapter = LumperImagesAdapter(imagesList, sharedPref,this@ViewHolder)
             }
+            textViewIsScheduleLead.visibility = if (workItemDetail.isScheduledByLead!!) View.VISIBLE else View.GONE
 
             ScheduleUtils.changeStatusUIByValue(resources, workItemDetail.status, textViewStatus, relativeLayoutSide)
             textViewWorkSheetNote.setOnClickListener(this)

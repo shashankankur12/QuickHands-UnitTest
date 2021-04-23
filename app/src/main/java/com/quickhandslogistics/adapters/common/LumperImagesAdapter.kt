@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.common.LumperImagesContract
+import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SharedPref
 import com.quickhandslogistics.utils.UIUtils
 import de.hdodenhof.circleimageview.CircleImageView
@@ -26,7 +28,7 @@ class LumperImagesAdapter(var lumpersList: ArrayList<EmployeeData>, private val 
     }
 
     override fun getItemCount(): Int {
-        return if (lumpersList.size > 5) 5 else lumpersList.size
+        return if (lumpersList.size > 11) 11 else lumpersList.size
     }
 
     private fun getItem(position: Int): EmployeeData {
@@ -47,15 +49,20 @@ class LumperImagesAdapter(var lumpersList: ArrayList<EmployeeData>, private val 
         }
 
         fun bind(employeeData: EmployeeData) {
-            if (adapterPosition > 3) {
+            if (adapterPosition > 9) {
                 Glide.with(context).clear(circleImageViewProfile);
                 circleImageViewProfile.visibility = View.GONE
                 textViewNumber.visibility = View.VISIBLE
-                textViewNumber.text = "+${lumpersList.size - 4}"
+                textViewNumber.text = "+${lumpersList.size - 10}"
             } else {
+                val leadProfile = DateUtils.sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+                var buildingId = ""
+                leadProfile?.buildingDetailData?.get(0)?.id?.let { id ->
+                    buildingId = id
+                }
                 UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
-                 var buildingId =if (!sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID).isNullOrEmpty()) sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID) else ""
-                UIUtils.updateProfileBorder(context, !buildingId.equals(employeeData.buildingIdAsLumper), circleImageViewProfile)
+                UIUtils.updateProfileBorder(context,
+                    buildingId != employeeData.buildingIdAsLumper, circleImageViewProfile)
                 circleImageViewProfile.visibility = View.VISIBLE
                 textViewNumber.visibility = View.GONE
             }

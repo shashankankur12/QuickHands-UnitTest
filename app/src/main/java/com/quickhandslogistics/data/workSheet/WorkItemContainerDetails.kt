@@ -5,6 +5,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.quickhandslogistics.data.attendance.AttendanceDetail
+import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.utils.ScheduleUtils
@@ -80,8 +81,12 @@ class WorkItemContainerDetails() : Parcelable {
 
     @SerializedName("lumperThisWorkItemAssignedTo")
     @Expose
-    var assignedLumpersList: ArrayList<EmployeeData>? = null
-        get() = ScheduleUtils.sortEmployeesList(field)
+    var assignedLumpersList: ArrayList<LumperAttendanceData>? = null
+        get() = ScheduleUtils.sortEmployeesAttendanceList(field)
+
+    @SerializedName("attachments")
+    @Expose
+    var attachmentsList: List<String>? = null
 
 
 
@@ -148,8 +153,9 @@ class WorkItemContainerDetails() : Parcelable {
         numberOfDrops = parcel.readValue(Int::class.java.classLoader) as? Int
         buildingThisWorkItemAssignedTo = parcel.readString()
         schedule = parcel.readParcelable(BuildingDetailData::class.java.classLoader)
-        assignedLumpersList = parcel.createTypedArrayList(EmployeeData)
+        assignedLumpersList = parcel.readArrayList(LumperAttendanceData::class.java.classLoader) as ArrayList<LumperAttendanceData>
         attendanceDetail = parcel.readParcelable(AttendanceDetail::class.java.classLoader)
+        attachmentsList = parcel.createStringArrayList()
 //        buildingOps = HashMap()
 //        readFromParcel(parcel)
     }
@@ -180,6 +186,7 @@ class WorkItemContainerDetails() : Parcelable {
         parcel.writeParcelable(schedule, flags)
         parcel.writeTypedList(assignedLumpersList)
         parcel.writeParcelable(attendanceDetail, flags)
+        parcel.writeStringList(attachmentsList)
         /*buildingOps?.let { data ->
             parcel.writeInt(data.size)
             for (s in data.keys) {

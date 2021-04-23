@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import com.quickhandslogistics.data.lumpers.EmployeeData
 
 class LeadProfileData : EmployeeData(), Parcelable {
-    @SerializedName("buildingAssignedAsLead")
+    @SerializedName("building")
     @Expose
-    var buildingDetailData: BuildingDetailData? = null
+    var buildingDetailData: ArrayList<BuildingDetailData>? = null
 }

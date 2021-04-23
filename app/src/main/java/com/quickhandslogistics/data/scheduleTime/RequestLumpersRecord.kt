@@ -4,6 +4,8 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.scheduleTime.leadinfo.RequestLumperInfo
 
 class RequestLumpersRecord() :Parcelable {
     @SerializedName("id")
@@ -30,6 +32,14 @@ class RequestLumpersRecord() :Parcelable {
     @Expose
     var day: String? = null
 
+    @SerializedName("notesForLumper")
+    @Expose
+    var notesForLumper: String? = null
+
+    @SerializedName("startTime")
+    @Expose
+    var startTime: String? = null
+
     @SerializedName("notesForDM")
     @Expose
     var notesForDM: String? = null
@@ -50,6 +60,10 @@ class RequestLumpersRecord() :Parcelable {
     @Expose
     var updatedAt: String? = null
 
+    @SerializedName("tempLumpers")
+    @Expose
+    var tempLumpers: ArrayList<RequestLumperInfo>? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         requestedLumpersCount = parcel.readValue(Int::class.java.classLoader) as? Int
@@ -62,6 +76,9 @@ class RequestLumpersRecord() :Parcelable {
         requestStatus = parcel.readString()
         createdAt = parcel.readString()
         updatedAt = parcel.readString()
+        startTime = parcel.readString()
+        notesForLumper = parcel.readString()
+        tempLumpers = parcel.createTypedArrayList(RequestLumperInfo)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -76,6 +93,9 @@ class RequestLumpersRecord() :Parcelable {
         parcel.writeString(requestStatus)
         parcel.writeString(createdAt)
         parcel.writeString(updatedAt)
+        parcel.writeString(startTime)
+        parcel.writeString(notesForLumper)
+        parcel.writeTypedList(tempLumpers)
     }
 
     override fun describeContents(): Int {

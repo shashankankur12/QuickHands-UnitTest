@@ -31,6 +31,11 @@ class WorkSheetPresenter(private var workSheetView: WorkSheetContract.View?, pri
         workSheetModel.saveGroupNoteData(this, containerIds, containerType, customerNote, qhlNote)
     }
 
+    override fun updateGroupNoteData(groupNoteId: String, containerIds: ArrayList<String>, containerType: String, customerNote: String, qhlNote: String) {
+        workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        workSheetModel.updateGroupNoteData(this, containerIds, containerType, customerNote, qhlNote, groupNoteId)
+    }
+
     override fun removeNote (id: String) {
         workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         workSheetModel.removeNote(this, id)

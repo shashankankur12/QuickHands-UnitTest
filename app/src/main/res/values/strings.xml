@@ -6,6 +6,7 @@
     <string name="add_lumpers">Add Lumpers</string>
     <string name="add_notes">Add Notes</string>
     <string name="update_notes">Update Note</string>
+    <string name="update_group_notes">Update Group Note</string>
     <string name="add_signature">Add Signature</string>
     <string name="add_start_time">Add Start Time</string>
     <string name="add_time">Add Time</string>
@@ -28,11 +29,12 @@
     <string name="cancel_all_work_schedules">Today\'s Work Cancel</string>
     <string name="cancel_request">Cancel Request</string>
     <string name="cancelled">Cancelled</string>
+    <string name="partial">Partial</string>
     <string name="show_more">Show more status</string>
     <string name="show_less">Show less status</string>
     <string name="unfinished">Unfinished</string>
     <string name="not_open">Not-Open</string>
-    <string name="cancelled_description">(Customer cancelled a schedule container)</string>
+    <string name="cancelled_description">(Customer cancelled a scheduled container)</string>
     <string name="psuse_time_description">(Lumper has to pause work on this container to work on another but will return.)</string>
     <string name="cancelled_s">Cancelled: %s</string>
     <string name="change_language">Change Language</string>
@@ -44,11 +46,12 @@
     <string name="complete">Complete</string>
     <string name="completed">Completed</string>
     <string name="completed_description">(All work on container is done)</string>
-    <string name="unfinished_description">(Work start but not finish during this shift)</string>
+    <string name="unfinished_description">(Work started but not finished during this shift)</string>
     <string name="not_done_description">(No work was done on container and shift ended)</string>
     <string name="completed_s">Completed: %s</string>
     <string name="contact_info">Contact Info</string>
     <string name="container_no_s">Container No: %s</string>
+    <string name="container_no_bold"><![CDATA[<b>Container #: </b>]]> %s</string>
     <string name="container_details">Container Detail</string>
     <string name="containers">Containers</string>
     <string name="create_new_request">Create A New Request</string>
@@ -65,12 +68,16 @@
     <string name="day">Day</string>
     <string name="department">Department</string>
     <string name="department_lead">Dept :</string>
+    <string name="department_noraml">Dept: %s</string>
+    <string name="title_normal">Title: %s</string>
     <string name="department_full">Department : <![CDATA[<b> %s </b>]]></string>
     <string name="title_lead">Title :</string>
     <string name="dept_bold"><![CDATA[<b>Dept: </b>]]></string>
+    <string name="total_container_bold"><![CDATA[<b>Total Containers: </b>]]> %s</string>
     <string name="district_manager_email">DM Email</string>
     <string name="district_manager_name">DM Name</string>
     <string name="door_s">Door: %s</string>
+    <string name="door_bold"><![CDATA[<b>Door: </b>]]> %s</string>
     <string name="drops">Drops</string>
     <string name="drop">Drop</string>
     <string name="drop_added">Drop (Added)</string>
@@ -105,6 +112,7 @@
     <string name="last_day_worked">Last day worked</string>
     <string name="last_name">Last Name</string>
     <string name="live_load_s">Live Load: %s</string>
+    <string name="live_load_bold_has"><![CDATA[<b>Live Load: </b>]]> #%s</string>
     <string name="live_loads">Live Loads</string>
     <string name="live_load">Live Load</string>
     <string name="live_load_added">Live Load (Added)</string>
@@ -124,6 +132,8 @@
     <string name="my_profile">My Profile</string>
     <string name="no">No</string>
     <string name="no_of_drops_s">Drop: %s</string>
+    <string name="no_of_drops_bold"><![CDATA[<b>Drop:</b>]]> %s</string>
+    <string name="no_of_drops_bold_has"><![CDATA[<b>Drop:</b>]]> #%s</string>
     <string name="no_time_logged_in_yet">No time logged in yet</string>
     <string name="note">Note</string>
     <string name="note_header">Note :</string>
@@ -138,6 +148,7 @@
     <string name="ongoing">Ongoing</string>
     <string name="ongoing_s">Ongoing: %s</string>
     <string name="out_bound_s">Outbound:  %s</string>
+    <string name="out_bound_bold_has"><![CDATA[<b>Outbound:</b>]]> #%s</string>
     <string name="out_bounds">Outbounds</string>
     <string name="out_bound">Outbound</string>
     <string name="out_bound_added">Outbound (Added)</string>
@@ -187,6 +198,8 @@
     <string name="shift_hours_lead">Shift Hours : </string>
     <string name="schedule_note_lead"><![CDATA[<b>Schedule Notes : </b> ---]]></string>
     <string name="schedule_note"><![CDATA[<b>Schedule Notes : </b>]]></string>
+    <string name="schedule_note_header">Schedule Notes</string>
+    <string name="number">1234567890</string>
     <string name="shift_time">Shift Time</string>
     <string name="sign_in">Sign In</string>
     <string name="signature">Signature</string>
@@ -221,7 +234,7 @@
     <string name="waiting_time_s">Waiting Time :</string>
     <string name="works_done">Work Done</string>
     <string name="works_done_s">Work Done :</string>
-    <string name="waiting_time_in_min">Waiting Time (in Min.)</string>
+    <string name="waiting_time_in_min">Waiting Time</string>
     <string name="week">Week</string>
     <string name="work_item_detail">Work Item Detail</string>
     <string name="work_items_s">Work Items: %s</string>
@@ -256,6 +269,7 @@
     <string name="custom_scheduleds">Custom Date Scheduled Container</string>
     <string name="individual_note">Individual Note</string>
     <string name="date">Date: <![CDATA[<b> %s</b>]]></string>
+    <string name="date_started">Date Started: %s</string>
     <string name="note_for_requested_lumper">Note for Requested Lumpers:</string>
     <string name="lumpers_dm_assigned">Lumpers DM Assigned: %s</string>
     <string name="lumpers_dm_assigned_bold"><![CDATA[<b> Lumpers DM Assigned:</b>]]> %s</string>
@@ -280,6 +294,15 @@
     <string name="add_group_note_message">Add a Note for this group of container</string>
     <string name="qhl_office">QHL Office</string>
     <string name="na">N/A</string>
+    <string name="added">(Added)</string>
+    <string name="select_option">Select Option</string>
+    <string name="image_from_camera">Take Photo</string>
+    <string name="image_from_gallery">Choose From Gallery</string>
+    <string-array name="array_choose_image">
+        <item>Choose From Gallery</item>
+        <item>Take Photo</item>
+        <item>Cancel</item>
+    </string-array>
 
     <!--No Record Messages-->
     <string name="empty_add_work_item_lumpers_info_message">No Lumpers are available. Go to Time-Clock section and clock them in.</string>
@@ -304,7 +327,8 @@
     <string name="empty_containers_list_unfinished_info_message">There are no Unfinished containers.</string>
     <string name="empty_containers_list_not_done_info_message">There are no Not-Done containers.</string>
     <string name="empty_lumper_list_message">There are no lumpers assigned to this shift/department. Please contact your District Manager.</string>
-    <string name="empty_contact_list_message">There are no contact available. Please contact in QHL Office.</string>
+    <string name="empty_contact_list_message">There are no contact.\n Please inform your district manager.</string>
+    <string name="add_container_quantity_message">Container Quantity should be greater then zero.</string>
 
     <!--Alert Messages-->
     <string name="are_you_sure_alert_message">Are you sure?</string>
@@ -372,6 +396,7 @@
     <string name="add_container_error_message">A container card has partial information. Fill it completely or remove it before you can Add.  \n</string>
     <string name="group_customer_note_error_message">Please enter customer note.  \n</string>
     <string name="group_qhl_note_error_message">Please enter QHL note.  \n</string>
+    <string name="lumper_waiting_message">Waiting time should be greater the zero</string>
 
     <!--Info Messages-->
     <string name="enter_employee_id_info_message">Employee ID</string>
@@ -396,16 +421,19 @@
 
     <!--Lumper Timing Warnings-->
     <string name="work_start_less_work_end_warning_message">Work\'s Start Time should be less than End Time</string>
+    <string name="work_start_less_work_break_warning_message">Work\'s Start Time should be less than Break\'s Start time Time</string>
     <string name="work_end_greater_work_start_warning_message">Work\'s End Time should be greater than Work\'s Start Time</string>
     <string name="work_end_greater_break_start_warning_message">Work\'s End Time should be greater than Break\'s Start Time</string>
     <string name="break_start_greater_work_start_warning_message">Break\'s Start Time should be greater than Work\'s Start Time</string>
     <string name="break_start_less_break_end_warning_message">Break\'s Start Time should be less than Break\'s End Time</string>
+    <string name="break_start_less_end_warning_message">Break\'s Start Time should be less than End Time</string>
+    <string name="break_start_greater_start_warning_message">Break\'s Start Time should be greater than Start Time</string>
     <string name="break_start_less_work_end_warning_message">Break\'s Start Time should be less than Work\'s End Time</string>
     <string name="break_end_greater_work_start_warning_message">Break\'s End Time should be greater than Work\'s Start Time</string>
     <string name="break_end_greater_break_start_warning_message">Break\'s End Time should be greater than Break\'s Start Time</string>
     <string name="break_end_less_work_end_warning_message">Break\'s End Time should be less than Work\'s End Time</string>
     <string name="unfinished_container">Unfinished Container</string>
-    <string name="unfinished_bottom_sheet_text">Fill out the following fields to indicate when the work on this container will be completed</string>
+    <string name="unfinished_bottom_sheet_text">Fill out the following fields to indicate when the work on this container will be completed.</string>
     <string name="date_for_completion">Date for Completion</string>
     <string name="minutes_m">Minutes (M)</string>
     <string name="hours_h">Hours (H)</string>
@@ -413,4 +441,5 @@
     <string name="invalid_hour_minutes">Minutes(s) can\'t be greater than 60</string>
     <string name="total_pause_colon">Total Pause : </string>
     <string name="content_description">imageView</string>
+    <string name="remove_lumper_warning">You want to remove this lumper.</string>
 </resources>

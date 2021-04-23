@@ -1,14 +1,20 @@
 package com.quickhandslogistics.utils
 
+import LeadWorkInfo
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
+import android.provider.MediaStore
+import android.provider.MediaStore.ACTION_IMAGE_CAPTURE
 import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -20,11 +26,14 @@ import com.jsibbold.zoomage.ZoomageView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.addContainer.AddScheduleDialogAdapter
 import com.quickhandslogistics.data.addContainer.ContainerDetails
+import com.quickhandslogistics.utils.AppConstant.Companion.MY_PERMISSIONS_REQUEST_GALLERY
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
-import java.io.File
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_TIME
 import java.util.*
 
-object CustomeDialog : AppConstant {
+@SuppressLint("StaticFieldLeak")
+object CustomerDialog : AppConstant {
     private var mActivity: Activity? = null
     fun getDialog(view: Int, activity: Activity?): Dialog {
         mActivity = activity
@@ -43,7 +52,11 @@ object CustomeDialog : AppConstant {
         return dialog
     }
 
-    fun showGroupNoteDialog(activity: Activity?, title: String?, customerGroupNote: Triple<Pair<ArrayList<String>?, ArrayList<String>?>?, ArrayList<String>?, ArrayList<String>?>) {
+    fun showGroupNoteDialog(
+        activity: Activity?,
+        title: String?,
+        customerGroupNote: Triple<Pair<ArrayList<String>?, ArrayList<String>?>?, ArrayList<String>?, ArrayList<String>?>
+    ) {
         mActivity = activity
         val dialog =
             getDialog(R.layout.custome_alert_dialog, activity)
@@ -117,59 +130,158 @@ object CustomeDialog : AppConstant {
         dialog.show()
     }
 
-    fun showWorkScheduleDialog(activity: Activity?, resources: Resources, title: String?, selectedDate: Date) {
+    fun showWorkScheduleDialog(
+        activity: Activity?,
+        resources: Resources,
+        leadWorkInfo: LeadWorkInfo?
+    ) {
         mActivity = activity
         val dialog =
-                getDialog(R.layout.view_work_schedule, activity)
+            getDialog(R.layout.view_work_schedule, activity)
         //        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         val window = dialog.window
         window!!.setLayout(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
         )
         window.setBackgroundDrawableResource(android.R.color.transparent)
         val titleTextView = dialog.findViewById<TextView>(R.id.title_text)
         val textViewScheduleType = dialog.findViewById<TextView>(R.id.textViewScheduleType)
         val textViewStatus = dialog.findViewById<TextView>(R.id.textViewStatus)
         val textViewScheduleOutBound = dialog.findViewById<TextView>(R.id.textViewScheduleOutBound)
-        val textViewScheduleOutBoundStartTime = dialog.findViewById<TextView>(R.id.textViewScheduleOutBoundStartTime)
+        val textViewScheduleOutBoundStartTime =
+            dialog.findViewById<TextView>(R.id.textViewScheduleOutBoundStartTime)
         val textViewScheduleLiveLoad = dialog.findViewById<TextView>(R.id.textViewScheduleLiveLoad)
-        val textViewScheduleLiveLoadStartTime = dialog.findViewById<TextView>(R.id.textViewScheduleLiveLoadStartTime)
+        val textViewScheduleLiveLoadStartTime =
+            dialog.findViewById<TextView>(R.id.textViewScheduleLiveLoadStartTime)
         val textViewScheduleDrops = dialog.findViewById<TextView>(R.id.textViewScheduleDrops)
-        val textViewScheduleDropsStartTime = dialog.findViewById<TextView>(R.id.textViewScheduleDropsStartTime)
-        val textViewScheduleUnfinished = dialog.findViewById<TextView>(R.id.textViewScheduleUnfinished)
-        val textViewScheduleUnfinishedStartTime = dialog.findViewById<TextView>(R.id.textViewScheduleUnfinishedStartTime)
+        val textViewScheduleDropsStartTime =
+            dialog.findViewById<TextView>(R.id.textViewScheduleDropsStartTime)
+        val textViewScheduleUnfinished =
+            dialog.findViewById<TextView>(R.id.textViewScheduleUnfinished)
+        val textViewScheduleUnfinishedStartTime =
+            dialog.findViewById<TextView>(R.id.textViewScheduleUnfinishedStartTime)
         val textViewWorkItemsCount = dialog.findViewById<TextView>(R.id.textViewWorkItemsCount)
-        val textViewWorkItemsLeadName = dialog.findViewById<TextView>(R.id.textViewWorkItemsLeadName)
+        val textViewWorkItemsLeadName =
+            dialog.findViewById<TextView>(R.id.textViewWorkItemsLeadName)
         val relativeLayoutSide = dialog.findViewById<RelativeLayout>(R.id.relativeLayoutSide)
         val confirm = dialog.findViewById<Button>(R.id.confirm_button)
 
+        titleTextView.text = DateUtils.changeDateString(
+            PATTERN_API_RESPONSE,
+            PATTERN_NORMAL,
+            leadWorkInfo?.date!!
+        )
+        textViewScheduleType.text = leadWorkInfo.department?.let {
+            UIUtils.getSpannableText(
+                resources.getString(R.string.department_full),
+                it.toLowerCase().capitalize()
+            )
+        }
+        textViewWorkItemsCount.text = String.format(
+            resources.getString(R.string.total_containers_s),
+            leadWorkInfo.totalContainers
+        )
+        textViewWorkItemsLeadName.text = String.format(
+            resources.getString(R.string.lead_name),
+            leadWorkInfo.lead
+        )
+        textViewScheduleUnfinished.text = String.format(
+            resources.getString(R.string.unfinished_drop),
+            "0"/*scheduleDetail.scheduleTypes?.drops?.size.toString()*/
+        )
+        textViewScheduleUnfinishedStartTime.text =/*DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.drops!![0].startTime)!!.toLong())*/""
 
-        titleTextView.text = DateUtils.getDateString(PATTERN_NORMAL,selectedDate)
-        textViewScheduleType.text = UIUtils.getSpannableText(resources.getString(R.string.department_full),/*UIUtils.getDisplayEmployeeDepartment(leadProfile)*/ "Receiving")
-        textViewScheduleOutBound.text = String.format(resources.getString(R.string.out_bound_s),/*scheduleDetail.scheduleTypes?.outbounds?.size.toString()*/ "2")
-        textViewScheduleLiveLoad.text = String.format(resources.getString(R.string.live_load_s),"4"/*scheduleDetail.scheduleTypes?.liveLoads?.size.toString()*/)
-        textViewScheduleDrops.text = String.format(resources.getString(R.string.drops_s),"3"/*scheduleDetail.scheduleTypes?.drops?.size.toString()*/)
-        textViewScheduleUnfinished.text = String.format(resources.getString(R.string.unfinished_drop),"2"/*scheduleDetail.scheduleTypes?.drops?.size.toString()*/)
-        textViewWorkItemsCount.text = String.format(resources.getString(R.string.total_containers_s), "100"/*scheduleDetail.totalNumberOfWorkItems*/)
+        if (leadWorkInfo.outbounds != null) {
+            textViewScheduleOutBound.text = String.format(
+                resources.getString(R.string.out_bound_s),
+                leadWorkInfo.outbounds?.count
+            )
+            var outBoundTime=""
+            if (!leadWorkInfo.outbounds?.time.isNullOrEmpty())
+                outBoundTime = if (leadWorkInfo.live?.time!!.size>1)
+                    "${DateUtils.changeUTCDateStringToLocalDateString(
+                        PATTERN_API_RESPONSE,
+                        PATTERN_TIME,
+                        leadWorkInfo.outbounds?.time!![0]
+                    )}; ${DateUtils.changeUTCDateStringToLocalDateString(
+                        PATTERN_API_RESPONSE,
+                        PATTERN_TIME,
+                        leadWorkInfo.outbounds?.time!![1]
+                    )} "
+                else DateUtils.changeUTCDateStringToLocalDateString(
+                    PATTERN_API_RESPONSE,
+                    PATTERN_TIME,
+                    leadWorkInfo.outbounds?.time!![0]
+                )
+                textViewScheduleOutBoundStartTime.text = outBoundTime
+        }
 
-        val leadName= String.format("%s %s","Shashank",""/*leadProfile!!.firstName, leadProfile!!.lastName*/)
-        textViewWorkItemsLeadName.text = String.format(resources.getString(R.string.lead_name),leadName)
+        if (leadWorkInfo.live != null) {
+            textViewScheduleLiveLoad.text = String.format(
+                resources.getString(R.string.live_load_s),
+                leadWorkInfo.live?.count
+            )
+            var liveTime= ""
+            if (!leadWorkInfo.live?.time.isNullOrEmpty()){
+                liveTime = if (leadWorkInfo.live?.time!!.size>1)
+                    "${DateUtils.changeUTCDateStringToLocalDateString(
+                        PATTERN_API_RESPONSE,
+                        PATTERN_TIME,
+                        leadWorkInfo.live?.time!![0]
+                    )}; ${DateUtils.changeUTCDateStringToLocalDateString(
+                        PATTERN_API_RESPONSE,
+                        PATTERN_TIME,
+                        leadWorkInfo.live?.time!![1]
+                    )} "
+                else DateUtils.changeUTCDateStringToLocalDateString(
+                    PATTERN_API_RESPONSE,
+                    PATTERN_TIME,
+                    leadWorkInfo.live?.time!![0]
+                )
+            }
+                textViewScheduleLiveLoadStartTime.text = liveTime
+        }
 
-//        if (scheduleDetail.scheduleTypes?.outbounds!!.size>0 && !scheduleDetail.scheduleTypes?.outbounds!![0].startTime.isNullOrEmpty())
-        textViewScheduleOutBoundStartTime.text=/*DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.outbounds!![0].startTime)!!.toLong())*/"12:12 AM"
-//        if (scheduleDetail.scheduleTypes?.liveLoads!!.size>0 && !scheduleDetail.scheduleTypes?.liveLoads!![0].startTime.isNullOrEmpty())
-        textViewScheduleLiveLoadStartTime.text=/*DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.liveLoads!![0].startTime)!!.toLong())*/ "12:33 AM"
-//        if (scheduleDetail.scheduleTypes?.drops!!.size>0 && !scheduleDetail.scheduleTypes?.drops!![0].startTime.isNullOrEmpty())
-        textViewScheduleDropsStartTime.text=/*DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.drops!![0].startTime)!!.toLong())*/ "09:45 PM"
-        textViewScheduleUnfinishedStartTime.text=/*DateUtils.convertMillisecondsToTimeString((scheduleDetail.scheduleTypes?.drops!![0].startTime)!!.toLong())*/ "09:00 PM"
+        if (leadWorkInfo.drops != null) {
+            textViewScheduleDrops.text =
+                String.format(resources.getString(R.string.drops_s), leadWorkInfo.drops?.count)
+            if (!leadWorkInfo.drops?.time.isNullOrEmpty())
+                textViewScheduleDropsStartTime.text = DateUtils.changeUTCDateStringToLocalDateString(
+                    PATTERN_API_RESPONSE,
+                    PATTERN_TIME,
+                    leadWorkInfo.drops?.time!!
+                )
+        }
 
-        ScheduleUtils.changeStatusUIByValue(resources, AppConstant.WORK_ITEM_STATUS_SCHEDULED, textViewStatus, relativeLayoutSide)
+        if (leadWorkInfo.department == AppConstant.EMPLOYEE_DEPARTMENT_INBOUND) {
+            textViewScheduleOutBoundStartTime.visibility = View.GONE
+            textViewScheduleOutBound.visibility = View.GONE
+        } else if (leadWorkInfo.department == AppConstant.EMPLOYEE_DEPARTMENT_OUTBOUND) {
+            textViewScheduleDrops.visibility = View.GONE
+            textViewScheduleDropsStartTime.visibility = View.GONE
+            textViewScheduleLiveLoad.visibility = View.GONE
+            textViewScheduleLiveLoadStartTime.visibility = View.GONE
+        }
+
+        ScheduleUtils.changeStatusUIByValue(
+            resources,
+            AppConstant.WORK_ITEM_STATUS_SCHEDULED,
+            textViewStatus,
+            relativeLayoutSide
+        )
         confirm.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 
-    fun showAddNoteDialog(activity: Activity, title: String?, uploadContainer: ArrayList<ContainerDetails>, liveLoadContainer: ArrayList<ContainerDetails>, dropOffContainer: ArrayList<ContainerDetails>, iDialogOnClick: IDialogOnClick) {
+    fun showAddNoteDialog(
+        activity: Activity,
+        title: String?,
+        uploadContainer: ArrayList<ContainerDetails>,
+        liveLoadContainer: ArrayList<ContainerDetails>,
+        dropOffContainer: ArrayList<ContainerDetails>,
+        iDialogOnClick: IDialogOnClick
+    ) {
         mActivity = activity
         val dialog =
             getDialog(R.layout.add_container_custome_dialog, activity)
@@ -204,7 +316,14 @@ object CustomeDialog : AppConstant {
         dialog.show()
     }
 
-    fun showLeadNoteDialog(activity: Activity?, title: String?, individualNote: String?, groupNote: String?, individualHeader: String, groupHeader: String) {
+    fun showLeadNoteDialog(
+        activity: Activity?,
+        title: String?,
+        individualNote: String?,
+        groupNote: String?,
+        individualHeader: String,
+        groupHeader: String
+    ) {
         mActivity = activity
         val dialog =
             getDialog(R.layout.lead_note_dialog, activity)
@@ -279,16 +398,27 @@ object CustomeDialog : AppConstant {
         val imageView: ZoomageView = dialog.findViewById(R.id.imageView)
         val progressBar = dialog.findViewById<ProgressBar>(R.id.progress_bar)
         progressBar.visibility=View.VISIBLE
-        val file = File(url)
+
         Glide.with(activity)
-            .load(file.path)
+            .load(url)
             .addListener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
                     return false
                 }
 
-                override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                    progressBar.visibility=View.GONE
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    progressBar.visibility = View.GONE
                     return false
                 }
 
@@ -299,7 +429,38 @@ object CustomeDialog : AppConstant {
         imageClose.setOnClickListener { dialog.dismiss() }
     }
 
+    fun selectImage(activity: Activity, iImageDialogOnClick: IImageDialogOnClick) {
+        try {
+            val options: Array<out String> =
+                activity.resources.getStringArray(R.array.array_choose_image)
+            val builder = AlertDialog.Builder(activity)
+            builder.setTitle(activity.getString(R.string.select_option))
+            builder.setItems(options) { dialog, item ->
+                when {
+                    options[item] == activity.getString(R.string.image_from_camera) -> {
+                        iImageDialogOnClick.onCamera(dialog as Dialog)
+                    }
+                    options[item] == activity.getString(R.string.image_from_gallery) -> {
+                        iImageDialogOnClick.onGallery(dialog as Dialog)
+                    }
+                    options[item] == activity.getString(R.string.cancel) -> {
+                        dialog.dismiss()
+                    }
+                }
+            }
+            builder.show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+
     interface IDialogOnClick{
-        fun onSendRequest( dialog: Dialog)
+        fun onSendRequest(dialog: Dialog)
+    }
+
+    interface IImageDialogOnClick{
+        fun onCamera(dialog: Dialog)
+        fun onGallery(dialog: Dialog)
     }
 }

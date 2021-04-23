@@ -49,9 +49,9 @@
 
         <ImageView
             android:id="@+id/imageViewAdd"
-            android:layout_alignParentEnd="true"
             android:layout_width="@dimen/_22sdp"
             android:layout_height="@dimen/_22sdp"
+            android:layout_alignParentEnd="true"
             android:src="@drawable/ic_add_lumer_tick_blank" />
 
     </RelativeLayout>

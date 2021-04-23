@@ -31,14 +31,9 @@ class RequestLumpersPresenter(private var requestLumpersView: RequestLumpersCont
         requestLumpersModel.fetchAllRequestsByDate(selectedDate, this)
     }
 
-    override fun createNewRequestForLumpers(
-        requiredLumperCount: String,
-        notesDM: String,
-        date: Date,
-        noteLumper: String
-    ) {
+    override fun createNewRequestForLumpers(requiredLumperCount: String, notesDM: String, date: Date, noteLumper: String, startTime: String) {
         requestLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        requestLumpersModel.createNewRequestForLumpers(requiredLumperCount, notesDM, date, noteLumper,this)
+        requestLumpersModel.createNewRequestForLumpers(requiredLumperCount, notesDM, date, noteLumper, startTime, this)
     }
 
     override fun cancelRequestForLumpers(requestId: String, date: Date) {
@@ -46,9 +41,16 @@ class RequestLumpersPresenter(private var requestLumpersView: RequestLumpersCont
         requestLumpersModel.cancelRequestForLumpers(requestId, date, this)
     }
 
-    override fun updateRequestForLumpers(requestId: String, requiredLumperCount: String, notesDM: String, date: Date) {
+    override fun updateRequestForLumpers(
+        requestId: String,
+        requiredLumperCount: String,
+        notesDM: String,
+        date: Date,
+        noteLumper: String,
+        startTime: String
+    ) {
         requestLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        requestLumpersModel.updateRequestForLumpers(requestId, requiredLumperCount, notesDM, date, this)
+        requestLumpersModel.updateRequestForLumpers(requestId, requiredLumperCount, notesDM, date, noteLumper, startTime, this)
     }
 
     /** Model Result Listeners */

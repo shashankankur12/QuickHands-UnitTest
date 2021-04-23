@@ -189,7 +189,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
     private fun updateSelectAllSectionUI() {
         val selectedCount = timeClockReportAdapter.getSelectedLumperIdsList().size
         if (selectedCount == timeClockReportAdapter.itemCount && timeClockReportAdapter.itemCount>0) {
-            imageViewSelectAll.setImageResource(R.drawable.ic_add_lumer_tick)
+            imageViewSelectAll.setImageResource(R.drawable.ic_add_lumper_green_tick)
           //  textViewSelectAll.text = getString(R.string.unselect_all)
         } else {
             imageViewSelectAll.setImageResource(R.drawable.ic_add_lumer_tick_blank)

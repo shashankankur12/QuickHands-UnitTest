@@ -17,6 +17,7 @@ import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL_Week
 import com.quickhandslogistics.utils.DateUtils.Companion.changeUTCDateStringToLocalDateString
+import com.quickhandslogistics.utils.DateUtils.Companion.convertMillisecondsToTimeString
 import com.quickhandslogistics.utils.UIUtils
 import kotlinx.android.synthetic.main.item_request_lumpers.view.*
 
@@ -60,19 +61,19 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
         fun bind(requestLumpersRecord: RequestLumpersRecord) {
             textViewRequestedLumpersCount.text = String.format(resources.getString(R.string.requested_lumpers_s), requestLumpersRecord.requestedLumpersCount)
             textViewRequestedAt.text = UIUtils.getSpannedText(String.format(resources.getString(R.string.requested_maded_s), changeUTCDateStringToLocalDateString(PATTERN_API_RESPONSE, PATTERN_NORMAL_Week, requestLumpersRecord.createdAt!!)))
-            textViewRequestStart.text = UIUtils.getSpannedText(String.format(resources.getString(R.string.start_time_bold), "11:22 PM"))
+            textViewRequestStart.text = if (requestLumpersRecord.startTime!=null) UIUtils.getSpannedText(String.format(resources.getString(R.string.start_time_bold), convertMillisecondsToTimeString(
+                requestLumpersRecord.startTime?.toLong()!!))) else "N/A"
 
-            val assignedCount= if (requestLumpersRecord.lumpersAllocated.isNullOrEmpty()) 0 else requestLumpersRecord.lumpersAllocated!!.size
+            val assignedCount= if (requestLumpersRecord.tempLumpers.isNullOrEmpty()) 0 else requestLumpersRecord.tempLumpers!!.size
             val ratioCount= String.format("%s/%s",assignedCount,requestLumpersRecord.requestedLumpersCount)
             textViewLumperAssigned.text = UIUtils.getSpannedText(String.format(resources.getString(R.string.lumpers_dm_assigned_bold), ratioCount))
             textViewNote.text = requestLumpersRecord.notesForDM?.capitalize()
 
-            if (!requestLumpersRecord.lumpersAllocated.isNullOrEmpty()) {
+            if (!requestLumpersRecord.tempLumpers.isNullOrEmpty()) {
                 recyclerViewTempLumperInfo.visibility=View.VISIBLE
                 recyclerViewTempLumperInfo.apply {
                     layoutManager = LinearLayoutManager(context)
-                    adapter = RequestLumperInfoAdaptor(resources, requestLumpersRecord.lumpersAllocated!!
-                    )
+                    adapter = RequestLumperInfoAdaptor(resources, requestLumpersRecord.tempLumpers!!)
                 }
             }else{
                 recyclerViewTempLumperInfo.visibility=View.GONE
@@ -106,6 +107,12 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
                     textViewRequestCancelledAt.visibility= View.VISIBLE
                     showCancelledTime(requestLumpersRecord.updatedAt, true)
                 }
+                AppConstant.REQUEST_LUMPERS_STATUS_PARTIAL -> {
+                    textViewStatus.text = resources.getString(R.string.partial)
+                    textViewStatus.setBackgroundResource(R.drawable.chip_background_partial)
+                    changeUpdateUIVisibility(true)
+                    textViewRequestCancelledAt.visibility= View.GONE
+                }
             }
 
             textViewUpdateRequest.setOnClickListener(this)
@@ -136,7 +143,7 @@ class RequestLumpersAdapter(private val resources: Resources, private val isPast
                     }
                     textViewNoteForLumper.id -> {
                         val record = getItem(adapterPosition)
-                        onAdapterClick.onNotesItemClick("Dummy note for requested lumper.")
+                        onAdapterClick.onNotesItemClick(record.notesForLumper)
                     }
                     textViewUpdateRequest.id -> {
                         val record = getItem(adapterPosition)

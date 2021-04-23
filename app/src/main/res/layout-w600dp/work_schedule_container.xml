@@ -86,6 +86,8 @@
                 android:layout_width="wrap_content"
                 android:text="@string/customer_notes"
                 android:layout_gravity="start"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
                 android:textColor="@color/scheduleDetail"
                 app:layout_constraintStart_toEndOf="@+id/textViewTotalCount"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -145,7 +147,7 @@
         android:paddingStart="@dimen/_12ssp"
         android:paddingTop="@dimen/_2ssp"
         android:paddingEnd="@dimen/_12ssp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/buttonScheduleLumper"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/flexboxLayoutCounts">
@@ -184,5 +186,15 @@
 
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonScheduleLumper"
+        style="@style/positiveRoundButtonTheme"
+        android:layout_marginBottom="@dimen/_8sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/schedule_lumpers" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

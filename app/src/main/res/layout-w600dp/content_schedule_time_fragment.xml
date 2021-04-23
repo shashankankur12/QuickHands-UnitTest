@@ -124,6 +124,8 @@
                 android:layout_gravity="end"
                 android:id="@+id/textViewScheduleView"
                 style="@style/scheduleTextViewTheme"
+                android:enabled="false"
+                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:text="@string/view_schedule"
                 android:layout_alignParentRight="true" />

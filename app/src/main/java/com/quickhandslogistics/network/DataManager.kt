@@ -62,6 +62,11 @@ object DataManager : AppConstant {
         return MultipartBody.Part.createFormData(variableName, file.name, requestBody)
     }
 
+    fun createMultiPartBodyImage(file: File, variableName: String): MultipartBody.Part {
+        val requestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+        return MultipartBody.Part.createFormData(variableName, file.name, requestBody)
+    }
+
     fun isSuccessResponse(isSuccessful: Boolean, body: BaseResponse?, errorBody: ResponseBody?, onFinishedListener: BaseContract.Model.OnFinishedListener): Boolean {
         var isSuccessResponse = false
 

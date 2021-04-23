@@ -1,6 +1,7 @@
 package com.quickhandslogistics.contracts.workSheet
 
 import com.quickhandslogistics.contracts.BaseContract
+import com.quickhandslogistics.data.workSheet.PauseTimeRequest
 
 class AddLumperTimeWorkSheetItemContract {
     interface Model {
@@ -9,8 +10,7 @@ class AddLumperTimeWorkSheetItemContract {
             workItemId: String,
             selectedStartTime: Long,
             selectedEndTime: Long,
-            selectedBreakInTime: Long,
-            selectedBreakOutTime: Long,
+            breakTimeRequestList: ArrayList<PauseTimeRequest>,
             waitingTime: String,
             onFinishedListener1: Int,
             onFinishedListener: OnFinishedListener
@@ -37,8 +37,7 @@ class AddLumperTimeWorkSheetItemContract {
             workItemId: String,
             selectedStartTime: Long,
             selectedEndTime: Long,
-            selectedBreakInTime: Long,
-            selectedBreakOutTime: Long,
+            breakTimeRequestList: ArrayList<PauseTimeRequest>,
             waitingTime: String,
             percentageTime: Int
         )

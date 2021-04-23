@@ -1,5 +1,6 @@
 package com.quickhandslogistics.views.scheduleTime
 
+import LeadWorkInfo
 import android.app.Activity
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
@@ -32,6 +33,8 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCH
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_NOTES
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
+import kotlinx.android.synthetic.main.activity_request_lumpers.*
+import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.*
 import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.textViewTitle
 import kotlinx.android.synthetic.main.bottom_sheet_schdule_time_fragement.*
 import kotlinx.android.synthetic.main.content_dashboard.*
@@ -44,6 +47,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     private var onFragmentInteractionListener: DashBoardContract.View.OnFragmentInteractionListener? = null
     private var scheduleTimeSelectedDate: String? = null
+    private var leadWorkInfo: LeadWorkInfo? = null
     private var selectedTime: Long = 0
     private var timeInMillis: Long = 0
     private var selectedDatePosition: Int = 0
@@ -52,6 +56,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     private var scheduleTimeNotes: String? = null
     private var dateString: String? = null
     private var isSavedState: Boolean = false
+    private var isPriviousTab: Boolean = false
     private var selectedDate: Date = Date()
     private var tempLumperIds: ArrayList<String> = ArrayList()
     private var scheduleTimeDetailList: ArrayList<ScheduleTimeDetail> = ArrayList()
@@ -70,6 +75,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         const val SELECTED_DATE_POSITION_SCHEDULE_TIME = "SELECTED_DATE_POSITION_SCHEDULE_TIME"
         const val EDIT_SCHEDULE_LUMPER = "EDIT_SCHEDULE_LUMPER"
         const val CANCEL_SCHEDULE_LUMPER = "CANCEL_SCHEDULE_LUMPER"
+        const val LUMPER_WORK_INFO = "LUMPER_WORK_INFO"
     }
 
     override fun onAttach(context: Context) {
@@ -85,6 +91,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
         arguments?.let { bundle ->
             scheduleTimeSelectedDate = bundle.getString(DashBoardActivity.ARG_SCHEDULE_TIME_SELECTED_DATE)
+            isPriviousTab = bundle.getBoolean(DashBoardActivity.PRIVIOUS_TAB, false)
         }
 
         // Setup Calendar Dates
@@ -154,6 +161,10 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                 dateString = savedInstanceState.getString(DATE_HEADER_SCHEDULE_TIME)!!
                 showDateString(dateString!!)
             }
+            if (savedInstanceState.containsKey(LUMPER_WORK_INFO)) {
+                leadWorkInfo = savedInstanceState.getParcelable(LUMPER_WORK_INFO)
+                showLeadInfo(leadWorkInfo)
+            }
             if (savedInstanceState.containsKey(NOTE_SCHEDULE_TIME)) {
                 scheduleTimeNotes = savedInstanceState.getString(NOTE_SCHEDULE_TIME)!!
                 showNotesData(scheduleTimeNotes!!)
@@ -195,6 +206,8 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             outState.putString(NOTE_SCHEDULE_TIME, scheduleTimeNotes)
         if (dateString != null)
             outState.putString(DATE_HEADER_SCHEDULE_TIME, dateString)
+        if (leadWorkInfo!=null)
+            outState.putParcelable(LUMPER_WORK_INFO, leadWorkInfo)
         super.onSaveInstanceState(outState)
     }
 
@@ -237,8 +250,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     }
 
     private fun showBottomSheetWithData(record: ScheduleTimeDetail, operation: String) {
+        constraintLayoutBottomSheetScheduleLumper.visibility=View.VISIBLE
         when(operation){
             EDIT_SCHEDULE_LUMPER->{
+                editTextNote.setText("")
+                editTextNoteGroup.setText("")
                 record.let {
                     textViewTitle.text = getString(R.string.edit_time_note)
                     linearLayoutCancelLumper.visibility=View.GONE
@@ -248,6 +264,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
             }
             CANCEL_SCHEDULE_LUMPER->{
+                editTextReason.setText("")
                 record.let {
                     textViewTitle.text = getString(R.string.cancel_lumper)
                     linearLayoutCancelLumper.visibility=View.VISIBLE
@@ -269,7 +286,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
     private fun setLumperDetails(record: ScheduleTimeDetail) {
         UIUtils.showEmployeeProfileImage(context!!, record.lumperInfo!!.profileImageUrl, circleImageViewLumperProfile)
-        UIUtils.updateProfileBorder(context!!, tempLumperIds.contains(record.lumperInfo!!.id), circleImageViewLumperProfile)
+        UIUtils.updateProfileBorder(context!!, record.lumperInfo!!.isTemporaryAssigned, circleImageViewLumperProfile)
         textViewLumpersName.setText( UIUtils.getEmployeeFullName(record.lumperInfo!!))
         textViewLumperId.text = UIUtils.getDisplayEmployeeID(record.lumperInfo!!)
         timeInMillis= DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, record.reportingTimeAndDay)
@@ -303,6 +320,8 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     }
 
     private fun closeBottomSheet() {
+        AppUtils.hideSoftKeyboard(activity!!)
+        constraintLayoutBottomSheetScheduleLumper.visibility=View.GONE
         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetBackground.visibility = View.GONE
     }
@@ -357,8 +376,6 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         CustomProgressBar.getInstance().showWarningDialog(getString(R.string.cancel_request_lumper), context!!, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 closeBottomSheet()
-
-
             }
             override fun onCancelClick() {
             }
@@ -420,8 +437,8 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
 
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
 
-        if (leadProfile?.buildingDetailData != null) {
-            textViewBuildingName.text = leadProfile?.buildingDetailData?.buildingName!!.capitalize()
+        if (leadProfile?.buildingDetailData?.get(0) != null) {
+            textViewBuildingName.text = leadProfile?.buildingDetailData?.get(0)?.buildingName!!.capitalize()
             textViewDept.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), UIUtils.getDisplayEmployeeDepartment(leadProfile))
             textViewShift.text = UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile.shift?.capitalize().toString())
         } else {
@@ -429,6 +446,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             appBarView.visibility = View.GONE
         }
 
+    }
+
+    override fun showLeadInfo(leadWorkInfo: LeadWorkInfo?) {
+        this.leadWorkInfo=leadWorkInfo
+        textViewScheduleView.isEnabled = leadWorkInfo != null && leadWorkInfo.totalContainers!! > 0
     }
 
     override fun showAPIErrorMessage(message: String) {
@@ -451,7 +473,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         invalidateScheduleButton()
         scheduleTimeAdapter.updateLumpersData(scheduleTimeDetailList, tempLumperIds,scheduleTimeNotes,isPastDate)
 
-        if (!scheduleTimeSelectedDate.isNullOrEmpty()) {
+        if (!scheduleTimeSelectedDate.isNullOrEmpty() && !isPriviousTab) {
             scheduleTimeSelectedDate = ""
             buttonRequestLumpers.performClick()
         }
@@ -491,7 +513,9 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     }
 
     private fun showViewScheduleDialog() {
-        CustomeDialog.showWorkScheduleDialog(activity, resources,"Lead Notes ", selectedDate)
+        leadWorkInfo?.let {
+            CustomerDialog.showWorkScheduleDialog(activity, resources, leadWorkInfo)
+        }
     }
 
     /** Calendar Listeners */
@@ -532,7 +556,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             return
         }
 
-        CustomeDialog.showLeadNoteDialog(activity, "Lead Notes ", item.notesForLumper,notes, resources.getString(R.string.individual_note), resources.getString(R.string.group_notes))
+        CustomerDialog.showLeadNoteDialog(activity, "Lead Notes ", item.notesForLumper,notes, resources.getString(R.string.individual_note), resources.getString(R.string.group_notes))
 //        CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), notes, fragmentActivity!!)
     }
 

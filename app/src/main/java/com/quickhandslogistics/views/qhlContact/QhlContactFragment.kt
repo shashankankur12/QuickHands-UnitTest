@@ -74,7 +74,7 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
 
             if (savedInstanceState.containsKey(HEADER_INFO)) {
                 leadProfileData = savedInstanceState.getParcelable(HEADER_INFO)
-                showQhlHeaderInfo(null)
+                showQhlHeaderInfo(leadProfileData)
             }
 
 

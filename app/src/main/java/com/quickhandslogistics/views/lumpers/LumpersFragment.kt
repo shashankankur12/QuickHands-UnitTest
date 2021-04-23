@@ -210,4 +210,15 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
                 }
             })
     }
+
+    override fun message(name: String, email: String) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
+        val emailIntent =
+            Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", email, null))
+        startActivity(Intent.createChooser(emailIntent, "Send email..."))
+    }
 }

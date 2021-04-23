@@ -36,25 +36,16 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUI
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETER_VALUES
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import kotlinx.android.synthetic.main.activity_lumper_work_detail.*
-import kotlinx.android.synthetic.main.activity_lumper_work_detail.mainConstraintLayout
 import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.*
-import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.textViewLunchTime
-import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
 import kotlinx.android.synthetic.main.content_lumper_work_detail.*
-import kotlinx.android.synthetic.main.content_lumper_work_detail.buttonCancelRequest
-import kotlinx.android.synthetic.main.content_lumper_work_detail.buttonSave
-import kotlinx.android.synthetic.main.content_lumper_work_detail.circleImageViewProfile
 import kotlinx.android.synthetic.main.content_lumper_work_detail.layoutSaveCancelButton
-import kotlinx.android.synthetic.main.content_lumper_work_detail.textViewEmployeeId
-import kotlinx.android.synthetic.main.content_lumper_work_detail.textViewLumperName
+import kotlinx.android.synthetic.main.content_lumper_work_detail.textViewLunchTime
 import kotlinx.android.synthetic.main.content_lumper_work_detail.textViewShiftTime
 import kotlinx.android.synthetic.main.custome_dashbord_toolbar.*
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlinx.android.synthetic.main.bottom_sheet_lumper_work_detail.constraintLayoutBottomSheetRequestLumpers as constraintLayoutBottomSheetRequestLumpers1
-import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.linearLayout as linearLayout1
-import kotlinx.android.synthetic.main.content_lumper_work_detail.viewAttendanceStatus as viewAttendanceStatus1
+
 
 class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWorkDetailContract.View,
     LumperWorkDetailContract.View.OnAdapterItemClickListener, TextWatcher {
@@ -139,7 +130,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     }
 
     private fun initializeUI() {
-        sheetBehavior = BottomSheetBehavior.from(constraintLayoutBottomSheetRequestLumpers1)
+        sheetBehavior = BottomSheetBehavior.from(constraintLayoutBottomSheetRequestLumpers)
         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
         lumpersInfo?.let { employeeData ->

@@ -54,7 +54,7 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
         var buildingDetailData= leadProfile?.buildingDetailData
 
-        buildingDetailData?.let { buildingDetailList.add(it) }
+        buildingDetailData?.get(0)?.let { buildingDetailList.add(it) }
 
         customerJobReportAdapter.updateLumpersData(buildingDetailList)
     }

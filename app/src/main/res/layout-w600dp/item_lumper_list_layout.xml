@@ -11,8 +11,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/_10ssp"
-        android:paddingBottom="@dimen/_10ssp"
-        android:layout_marginStart="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_5ssp"
+        android:layout_marginStart="@dimen/_5sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/constraintLayoutCall"
         app:layout_constraintTop_toTopOf="parent">
@@ -51,7 +51,7 @@
         style="@style/valuesSmallTextViewTheme"
         android:layout_width="0dp"
         android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginTop="@dimen/_1sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:text="(Emp ID: 1001)"
         android:textColor="@color/textBlack"
@@ -65,7 +65,7 @@
         style="@style/valuesSmallTextViewTheme"
         android:layout_width="0dp"
         android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginTop="@dimen/_1sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="Shift Hours: 9:00am to 6:00pm"
@@ -79,22 +79,22 @@
         android:id="@+id/constraintLayoutCall"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/_1sdp"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@color/message_background"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/constraintLayoutMessage">
+        app:layout_constraintEnd_toStartOf="@+id/viewBar">
 
         <ImageView
             android:id="@+id/imageViewCall"
             android:layout_width="@dimen/_18ssp"
             android:layout_height="@dimen/_18ssp"
             android:src="@drawable/ic_call"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             app:layout_constraintBottom_toTopOf="@+id/textViewCallTime"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/textWhite" />
 
         <TextView
             android:id="@+id/textViewCallTime"
@@ -111,11 +111,20 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <View
+        android:id="@+id/viewBar"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/constraintLayoutMessage"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/textWhite"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayoutMessage"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/_1sdp"
+        android:layout_marginStart="@dimen/_1sdp"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@color/message_background"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -126,11 +135,12 @@
             android:layout_width="@dimen/_18ssp"
             android:layout_height="@dimen/_18ssp"
             android:src="@drawable/ic_message_chat"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             app:layout_constraintBottom_toTopOf="@+id/textViewMessageTime"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/textWhite" />
 
         <TextView
             android:id="@+id/textViewMessageTime"

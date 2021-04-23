@@ -21,7 +21,6 @@ import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.ConnectionDetector
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.lumpers.LumperDetailActivity
-import com.quickhandslogistics.views.lumpers.LumperDetailActivity.Companion.ARG_LUMPER_PRESENT
 import com.quickhandslogistics.views.schedule.AddWorkItemLumpersActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE
@@ -90,7 +89,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
             layoutManager = linearLayoutManager
             val dividerItemDecoration = DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
-            workSheetItemDetailLumpersAdapter = WorkSheetItemDetailLumpersAdapter(this@WorkSheetItemDetailLumpersFragment)
+            workSheetItemDetailLumpersAdapter = WorkSheetItemDetailLumpersAdapter( resources, this@WorkSheetItemDetailLumpersFragment)
             adapter = workSheetItemDetailLumpersAdapter
         }
 
@@ -162,7 +161,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
 //            totalCases = getTotalCases(workItemDetail?.buildingOps),
 //            isCompleted = workItemDetail!!.isCompleted
 //        )
-//        buttonAddLumpers.visibility = View.GONE
+        buttonAddLumpers.visibility = View.GONE
     }
 
 
@@ -214,7 +213,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         bundle.putString(ARG_WORK_ITEM_ID, workItemDetail?.id)
         bundle.putString(TOTAL_CASES, getTotalCases(workItemDetail?.buildingOps))
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
-        bundle.putBoolean(ARG_LUMPER_PRESENT, employeeData?.attendanceDetail?.isPresent!!)
+//        bundle.putBoolean(ARG_LUMPER_PRESENT, employeeData?.attendanceDetail?.isPresent!!)
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_TIMING_DATA, timingData)
         bundle.putStringArrayList(TEMP_LUMPER_IDS, tempLumperIds)
         startIntent(AddLumperTimeWorkSheetItemActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
@@ -224,6 +223,23 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         if (!ConnectionDetector.isNetworkConnected(activity)) {
             ConnectionDetector.createSnackBar(activity)
             return
+
+        }
+
+        val tempLumperIds = ArrayList<String>()
+        val selectedLumperIdsList = ArrayList<String>()
+
+        if (!tempLumperIds.isNullOrEmpty() && tempLumperIds.contains(employeeData.id!!)) {
+            tempLumperIds.add(employeeData.id!!)
+        } else {
+            selectedLumperIdsList.add(employeeData.id!!)
+        }
+
+        employeeData.id?.let {
+            onFragmentInteractionListener?.removeLumperFromSchedule(
+                selectedLumperIdsList,
+                tempLumperIds
+            )
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.quickhandslogistics.contracts.workSheet
 
 import com.quickhandslogistics.contracts.BaseContract
+import com.quickhandslogistics.data.workSheet.ContainerGroupNote
 import com.quickhandslogistics.data.workSheet.WorkSheetListAPIResponse
 
 class WorkSheetContract {
@@ -8,6 +9,7 @@ class WorkSheetContract {
         fun fetchHeaderInfo(onFinishedListener: OnFinishedListener)
         fun fetchWorkSheetList(onFinishedListener: OnFinishedListener)
         fun saveGroupNoteData(onFinishedListener: OnFinishedListener,containerIds: ArrayList<String>, containerType: String, customerNote: String, qhlNote: String)
+        fun updateGroupNoteData(onFinishedListener: OnFinishedListener,containerIds: ArrayList<String>, containerType: String, customerNote: String, qhlNote: String, groupNoteId: String)
         fun removeNote(onFinishedListener: OnFinishedListener, id: String)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
@@ -31,7 +33,11 @@ class WorkSheetContract {
 
         interface OnFragmentInteractionListener {
             fun fetchWorkSheetList()
-            fun showBottomSheetGroupNote(containerIds: ArrayList<String>, containerType: String)
+            fun showBottomSheetGroupNote(
+                groupNote: ContainerGroupNote?,
+                containerIds: ArrayList<String>,
+                containerType: String
+            )
             fun showGroupNote(noteForCustomer: String, noteForQHL: String)
             fun removeGroupNote(id: String?)
         }
@@ -40,6 +46,7 @@ class WorkSheetContract {
     interface Presenter : BaseContract.Presenter {
         fun fetchWorkSheetList()
         fun saveGroupNoteData(containerIds: ArrayList<String>, containerType: String, customerNote: String, qhlNote: String)
+        fun updateGroupNoteData(groupNoteId: String, containerIds: ArrayList<String>, containerType: String, customerNote: String, qhlNote: String)
         fun removeNote(id: String)
     }
 }

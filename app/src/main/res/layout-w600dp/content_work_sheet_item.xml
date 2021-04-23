@@ -33,6 +33,35 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewAddGroupNote"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <TextView
+        android:id="@+id/textViewEditGroupNote"
+        style="@style/editTextViewTheme"
+        android:layout_width="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginBottom="@dimen/_4sdp"
+        android:text=""
+        android:textSize="@dimen/_11ssp"
+        android:visibility="gone"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:drawableStart="@drawable/edit_icon_selector"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAddGroupNote"
+        app:layout_constraintEnd_toStartOf="@+id/textViewDeleteGroupNote" />
+
+    <TextView
+        android:id="@+id/textViewDeleteGroupNote"
+        style="@style/editTextViewTheme"
+        android:layout_width="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginBottom="@dimen/_4sdp"
+        android:text=""
+        android:visibility="gone"
+        android:textSize="@dimen/_11ssp"
+        android:drawableStart="@drawable/cancel_icon_selector"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAddGroupNote"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewWorkSheet"
         android:layout_width="0dp"

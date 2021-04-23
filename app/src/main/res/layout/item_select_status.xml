@@ -11,7 +11,7 @@
         android:id="@+id/imageViewAdd"
         android:layout_width="@dimen/_22sdp"
         android:layout_height="@dimen/_22sdp"
-        android:src="@drawable/ic_add_lumer_tick"
+        android:src="@drawable/ic_add_lumper_green_tick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -20,9 +20,10 @@
     <TextView
         android:id="@+id/textViewDescription"
         style="@style/valuesVerySmallTextViewTheme"
-        android:layout_width="0dp"
-        android:layout_marginHorizontal="@dimen/_8sdp"
+        android:paddingHorizontal="@dimen/_6sdp"
         android:textColor="@color/textBlack"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.62"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/imageViewAdd"
         app:layout_constraintStart_toEndOf="@+id/textViewStatus"
@@ -31,11 +32,13 @@
     <TextView
         android:id="@+id/textViewStatus"
         style="@style/valuesBigTextViewTheme"
-        android:layout_width="wrap_content"
+
         android:text="@string/in_progress"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.28"
         android:textColor="@color/textBlack"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/textViewDescription"
+        app:layout_constraintEnd_toStartOf="@+id/textViewDescription"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

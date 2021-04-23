@@ -31,7 +31,7 @@
         android:id="@+id/imageViewAdd"
         android:layout_width="@dimen/_22sdp"
         android:layout_height="@dimen/_22sdp"
-        android:src="@drawable/ic_add_lumer_tick"
+        android:src="@drawable/ic_add_lumper_green_tick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

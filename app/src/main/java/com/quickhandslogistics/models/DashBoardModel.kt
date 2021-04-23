@@ -40,9 +40,9 @@ class DashBoardModel(private val sharedPref: SharedPref) : DashBoardContract.Mod
 
     override fun processLeadProfileData(leadProfileData: LeadProfileData, onFinishedListener: DashBoardContract.Model.OnFinishedListener) {
         sharedPref.setClassObject(PREFERENCE_LEAD_PROFILE, leadProfileData)
-        leadProfileData.buildingDetailData?.parameters?.let {
+        leadProfileData.buildingDetailData?.get(0)?.parameters?.let {
             sharedPref.setClassObject(PREFERENCE_BUILDING_DETAILS, it) }
-        sharedPref.setString(AppConstant.PREFERENCE_BUILDING_ID, leadProfileData.buildingDetailData?.id)
+        sharedPref.setString(AppConstant.PREFERENCE_BUILDING_ID, leadProfileData.buildingDetailData?.get(0)?.id)
         onFinishedListener.onLoadLeadProfile(leadProfileData)
     }
 

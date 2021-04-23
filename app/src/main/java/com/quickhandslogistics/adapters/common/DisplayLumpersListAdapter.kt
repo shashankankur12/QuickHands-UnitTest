@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.lumpers.LumpersContract
 import com.quickhandslogistics.controls.CustomTextView
+import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SharedPref
 import com.quickhandslogistics.utils.UIUtils
 import de.hdodenhof.circleimageview.CircleImageView
@@ -53,10 +55,14 @@ class DisplayLumpersListAdapter(
         private val imageViewCall: CircleImageView = view.imageViewCall
 
         fun bind(employeeData: EmployeeData) {
+            val leadProfile = DateUtils.sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+            var buildingId = ""
+            leadProfile?.buildingDetailData?.get(0)?.id?.let { id ->
+                buildingId = id
+            }
             UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
-            var buildingId =if (!sharedPref.getString(AppConstant.PREFERENCE_BUILDING_ID).isNullOrEmpty()) sharedPref.getString(
-                AppConstant.PREFERENCE_BUILDING_ID) else ""
-            UIUtils.updateProfileBorder(context, !buildingId.equals(employeeData.buildingIdAsLumper), circleImageViewProfile)
+            UIUtils.updateProfileBorder(context,
+                buildingId != employeeData.buildingIdAsLumper, circleImageViewProfile)
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
             textViewShiftHours.text = UIUtils.getDisplayShiftHours(employeeData)

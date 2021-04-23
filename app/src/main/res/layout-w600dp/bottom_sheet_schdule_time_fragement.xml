@@ -183,7 +183,7 @@
             android:id="@+id/linearLayoutNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:visibility="visible"
@@ -201,6 +201,7 @@
 
             <TextView
                 style="@style/titleTextViewTheme"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:text="@string/group_note" />
 
             <EditText

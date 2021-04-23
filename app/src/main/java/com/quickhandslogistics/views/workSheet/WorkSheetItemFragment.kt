@@ -122,10 +122,6 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
                 textViewEmptyData.visibility =
                     if (workSheetItemAdapter.itemCount == 0) View.VISIBLE else View.GONE
                 setVisibility()
-//                textViewAddGroupNote.visibility =
-//                    if (workSheetItemAdapter.itemCount > 0 && (workItemType == getString(R.string.cancel) ||workItemType == getString(R.string.unfinished)||workItemType == getString(R.string.not_open))) View.VISIBLE else View.GONE
-//                textViewShowGroupNote.visibility =
-//                    if (workSheetItemAdapter.itemCount > 0 && (workItemType == getString(R.string.cancel)||workItemType == getString(R.string.unfinished)||workItemType == getString(R.string.not_open))) View.VISIBLE else View.GONE
             }
         })
 
@@ -156,6 +152,8 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
 
         textViewAddGroupNote.setOnClickListener(this)
         textViewShowGroupNote.setOnClickListener(this)
+        textViewEditGroupNote.setOnClickListener(this)
+        textViewDeleteGroupNote.setOnClickListener(this)
         textViewShowGroupNote.setOnLongClickListener(this)
     }
 
@@ -164,29 +162,43 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
             if (groupNotes != null) {
                 textViewAddGroupNote.visibility = View.GONE
                 textViewShowGroupNote.visibility = View.VISIBLE
+                textViewEditGroupNote.visibility = View.VISIBLE
+                textViewDeleteGroupNote.visibility = View.VISIBLE
             } else {
                 textViewAddGroupNote.visibility = View.VISIBLE
                 textViewShowGroupNote.visibility = View.GONE
+                textViewEditGroupNote.visibility = View.GONE
+                textViewDeleteGroupNote.visibility = View.GONE
             }
         } else if (workSheetItemAdapter.getItemList().size > 0 && (workItemType == getString(R.string.unfinished))) {
             if (groupNotes != null) {
                 textViewAddGroupNote.visibility = View.GONE
                 textViewShowGroupNote.visibility = View.VISIBLE
+                textViewEditGroupNote.visibility = View.VISIBLE
+                textViewDeleteGroupNote.visibility = View.VISIBLE
             } else {
                 textViewAddGroupNote.visibility = View.VISIBLE
                 textViewShowGroupNote.visibility = View.GONE
+                textViewEditGroupNote.visibility = View.GONE
+                textViewDeleteGroupNote.visibility = View.GONE
             }
         } else if (workSheetItemAdapter.getItemList().size > 0 && (workItemType == getString(R.string.not_open))) {
             if (groupNotes != null) {
                 textViewAddGroupNote.visibility = View.GONE
                 textViewShowGroupNote.visibility = View.VISIBLE
+                textViewEditGroupNote.visibility = View.VISIBLE
+                textViewDeleteGroupNote.visibility = View.VISIBLE
             } else {
                 textViewAddGroupNote.visibility = View.VISIBLE
                 textViewShowGroupNote.visibility = View.GONE
+                textViewEditGroupNote.visibility = View.GONE
+                textViewDeleteGroupNote.visibility = View.GONE
             }
         }else{
             textViewAddGroupNote.visibility = View.GONE
             textViewShowGroupNote.visibility = View.GONE
+            textViewEditGroupNote.visibility = View.GONE
+            textViewDeleteGroupNote.visibility = View.GONE
         }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -261,7 +273,7 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
                 }
 
                 if (!containerIds.isNullOrEmpty())
-                onFragmentInteractionListener?.showBottomSheetGroupNote(containerIds, containerType)
+                onFragmentInteractionListener?.showBottomSheetGroupNote( null, containerIds, containerType)
             }
             textViewShowGroupNote.id->{
                 groupNotes?.let {
@@ -270,6 +282,30 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
                     onFragmentInteractionListener?.showGroupNote(noteForCustomer!!, noteForQhl!!)
                 }
 
+            }
+            textViewDeleteGroupNote.id->{
+                groupNotes?.let {
+                    onFragmentInteractionListener?.removeGroupNote(it.id)
+                }
+            }
+            textViewEditGroupNote.id->{
+                val containerIds:ArrayList<String> = ArrayList()
+                var containerType:String =""
+                when (workItemType) {
+                    getString(R.string.cancel) -> {
+                        containerType="CANCELLED"
+                    }
+                    getString(R.string.unfinished) -> {
+                        containerType="UNFINISHED"
+                    }
+                    getString(R.string.not_open) -> {
+                        containerType="NOTOPEN"
+                    }
+                }
+                workSheetItemAdapter.getItemList().forEach {
+                    it.id?.let { it1 -> containerIds.add(it1) }
+                }
+                onFragmentInteractionListener?.showBottomSheetGroupNote(groupNotes, containerIds, containerType)
             }
         }
     }
