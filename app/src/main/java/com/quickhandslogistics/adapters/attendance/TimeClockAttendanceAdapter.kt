@@ -5,9 +5,11 @@ import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.SparseBooleanArray
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.util.keyIterator
@@ -71,7 +73,8 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
     }
 
     inner class ViewHolder(view: View, private val context: Context) :
-        RecyclerView.ViewHolder(view), View.OnClickListener, TextWatcher, View.OnLongClickListener {
+        RecyclerView.ViewHolder(view), View.OnClickListener, TextWatcher, View.OnLongClickListener,
+        TextView.OnEditorActionListener {
 
         private val textViewLumperName: TextView = view.textViewLumperName
         private val viewAttendanceStatus: View = view.viewAttendanceStatus
@@ -180,6 +183,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
 
             checkBoxAttendance.setOnClickListener(this)
             editTextNotes.addTextChangedListener(this)
+            editTextNotes.setOnEditorActionListener(this)
 
             if (!checkBoxAttendance.isChecked) {
                 textViewCheckBoxStatus.text = context.getString(R.string.mark_present)
@@ -301,6 +305,15 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        }
+
+        override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (getSelectedItemCount() ==0)
+                onAdapterClick.onSaveNote()
+                return true
+            }
+            return false
         }
     }
 

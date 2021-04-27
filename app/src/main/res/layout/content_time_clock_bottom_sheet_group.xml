@@ -63,16 +63,17 @@
             android:id="@+id/layoutTimeGroup"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginVertical="@dimen/_10sdp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight=".5" />
 
             <Button
                 android:id="@+id/buttonClockInGroup"
@@ -84,7 +85,7 @@
             <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight=".5" />
 
             <Button
                 android:id="@+id/buttonLunchInGroup"
@@ -95,12 +96,8 @@
             <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight=".5" />
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/buttonLunchOutGroup"
@@ -112,7 +109,7 @@
             <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight=".5" />
             <Button
                 android:id="@+id/buttonClockOutGroup"
                 style="@style/positiveButtonTheme"
@@ -123,7 +120,7 @@
             <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight=".5" />
         </LinearLayout>
 
 

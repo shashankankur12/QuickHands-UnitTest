@@ -29,15 +29,9 @@ import com.quickhandslogistics.views.DashBoardActivity
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.lumperSheet.LumperSheetFragment
 import kotlinx.android.synthetic.main.bottom_sheet_add_attendance_time.*
-import kotlinx.android.synthetic.main.content_schedule_time_fragment.*
 import kotlinx.android.synthetic.main.content_time_clock_attendance.*
-import kotlinx.android.synthetic.main.content_time_clock_attendance.editTextSearch
-import kotlinx.android.synthetic.main.content_time_clock_attendance.imageViewCancel
-import kotlinx.android.synthetic.main.content_time_clock_attendance.mainConstraintLayout
-import kotlinx.android.synthetic.main.content_time_clock_attendance.textViewEmptyData
 import kotlinx.android.synthetic.main.content_time_clock_bottom_sheet.*
 import kotlinx.android.synthetic.main.content_time_clock_bottom_sheet_group.*
-import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
 import kotlinx.android.synthetic.main.fragment_time_clock_attendance.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -87,7 +81,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(LumperSheetFragment.SELECTED_DATE_POSITION)) {
                 datePosition = savedInstanceState.getInt(LumperSheetFragment.SELECTED_DATE_POSITION)!!
-                singleRowCalendarLumperSheet.select(datePosition)
+                singleRowCalendarTimeClock.select(datePosition)
             }
             if (savedInstanceState.containsKey(TIME_CLOCK_DEPT_SELECTED_HEADER)) {
                 dept = savedInstanceState.getString(TIME_CLOCK_DEPT_SELECTED_HEADER)!!
@@ -622,6 +616,12 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         if (timeClockAttendanceAdapter.getSelectedItemCount() > 0) {
             onRowLongClicked(itemPosition)
         }
+    }
+
+    override fun onSaveNote() {
+        imageViewCancel.performClick()
+        val updatedData = timeClockAttendanceAdapter.getUpdatedData()
+        timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct())
     }
 
     override fun onDataChanges(): Boolean {

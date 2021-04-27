@@ -30,6 +30,7 @@ class TimeClockAttendanceContract {
             fun onAddNotes(updatedDataSize: Int)
             fun onRowLongClicked(itemPosition: Int)
             fun onRowClicked(itemPosition: Int)
+            fun onSaveNote()
         }
         interface fragmentDataListener {
             fun onDataChanges(): Boolean

@@ -76,11 +76,11 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_17sdp"
         android:src="@drawable/ic_cancel"
-        android:tint="@color/colorLightGrey"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/editTextSearch"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editTextSearch" />
+        app:layout_constraintTop_toTopOf="@+id/editTextSearch"
+        app:tint="@color/colorLightGrey" />
 
     <LinearLayout
         android:layout_width="0dp"

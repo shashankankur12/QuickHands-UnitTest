@@ -12,9 +12,9 @@
         android:background="@color/buildingTitle"
         android:orientation="horizontal"
         android:paddingStart="@dimen/_10ssp"
-        android:paddingTop="@dimen/_10ssp"
+        android:paddingTop="@dimen/_8ssp"
         android:paddingEnd="@dimen/_10ssp"
-        android:paddingBottom="@dimen/_10ssp"
+        android:paddingBottom="@dimen/_8ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -63,10 +63,11 @@
             android:id="@+id/layoutTimeGroup"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginVertical="@dimen/_10sdp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <Space
@@ -77,7 +78,6 @@
             <Button
                 android:id="@+id/buttonClockInGroup"
                 style="@style/positiveButtonTheme"
-                android:layout_width="@dimen/_90sdp"
                 android:layout_height="wrap_content"
                 android:text="@string/clock_in"
                 />
@@ -90,7 +90,6 @@
             <Button
                 android:id="@+id/buttonLunchInGroup"
                 style="@style/positiveButtonThemeYellow"
-                android:layout_width="@dimen/_90sdp"
                 android:layout_height="wrap_content"
                 android:text="@string/out_to_lunch"
                 />
@@ -99,16 +98,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/buttonLunchOutGroup"
                 style="@style/positiveButtonThemeYellow"
                 android:layout_height="wrap_content"
-                android:layout_width="@dimen/_90sdp"
                 android:text="@string/back_to_work"
                  />
 
@@ -119,7 +113,7 @@
             <Button
                 android:id="@+id/buttonClockOutGroup"
                 style="@style/positiveButtonTheme"
-                android:layout_width="@dimen/_90sdp"
+
                 android:layout_height="wrap_content"
                 android:text="@string/clock_out"
                  />
