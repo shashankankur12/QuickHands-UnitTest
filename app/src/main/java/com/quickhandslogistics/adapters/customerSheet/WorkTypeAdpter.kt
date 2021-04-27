@@ -63,9 +63,9 @@ class WorkTypeAdpter(
 
             workItemDetail.forEach {
                 when {
-                    it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> dropItem.add(it)
-                    it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> outboundItme.add(it)
-                    it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> liveLodeItem.add(it)
+                    it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> dropItem.add(it)
+                    it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> outboundItme.add(it)
+                    it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> liveLodeItem.add(it)
                 }
             }
             if(adapterPosition.equals(0)){
@@ -105,19 +105,20 @@ class WorkTypeAdpter(
         }
 
         private fun setAdaptet(leadProfile: LeadProfileData?, workItemDetail: ArrayList<WorkItemDetail>) {
-            var perameterAdapter = PerameterAdapter(leadProfile?.buildingDetailData?.parameters!!)
+            var perameterAdapter = PerameterAdapter(leadProfile?.buildingDetailData?.get(0)?.parameters!!)
             val layoutManager1 = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             recycelrViewLiveLodeHeader.layoutManager=layoutManager1
             recycelrViewLiveLodeHeader.adapter=perameterAdapter
 
-            var dropContentAdapter= CommanContentAdapter(workItemDetail,leadProfile?.buildingDetailData?.parameters!!)
+            var dropContentAdapter= CommanContentAdapter(workItemDetail,
+                leadProfile?.buildingDetailData?.get(0)!!.parameters!!)
             val layoutManager3 = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             recycelrViewLiveLodeItem.layoutManager=layoutManager3
             recycelrViewLiveLodeItem.adapter=dropContentAdapter
 
             var outBoundContentNoteAdapter= CustomerNoteAdaptet(
                 workItemDetail,
-                leadProfile?.buildingDetailData?.parameters!!
+                leadProfile?.buildingDetailData?.get(0)?.parameters!!
             )
             val layoutManager4 = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             recycelrViewLiveLoadNote.layoutManager=layoutManager4

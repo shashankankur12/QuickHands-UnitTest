@@ -47,8 +47,8 @@ class ScheduledWorkItemDetailPresenter(
 
     override fun onSuccess(response: WorkItemDetailAPIResponse) {
         scheduledWorkItemDetailView?.hideProgressDialog()
-        response.data?.workItemDetail?.let { workItemDetail ->
-            scheduledWorkItemDetailView?.showWorkItemDetail(workItemDetail)
-        }
+//        response.data?.workItemDetail?.let { workItemDetail ->
+//            scheduledWorkItemDetailView?.showWorkItemDetail(workItemDetail)
+//        }
     }
 }

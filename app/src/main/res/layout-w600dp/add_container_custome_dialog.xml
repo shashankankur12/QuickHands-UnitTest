@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/loading"
+    android:layout_width="@dimen/_200sdp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/dialog_background"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/title_text"
+        style="@style/dialogTitleTextViewThemeBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:singleLine="true"
+        android:text="@string/dialog_default_title" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_schedules"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_25sdp"
+                android:nestedScrollingEnabled="false"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+
+                <Button
+                    android:id="@+id/add_button"
+                    style="@style/dialog_blue_button"
+                    android:layout_height="35dp"
+                    android:background="@drawable/round_button_red_selector"
+                    android:text="@string/add" />
+                <Button
+                    android:id="@+id/cancel_button"
+                    style="@style/dialog_blue_button"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="@dimen/_20ssp"
+                    android:textColor="@color/buttonRed"
+                    android:background="@drawable/round_button_negative"
+                    android:text="@string/cancel" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

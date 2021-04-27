@@ -6,19 +6,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.workSheet.WorkSheetPagerAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetContract
-import com.quickhandslogistics.data.customerSheet.CustomerSheetData
+import com.quickhandslogistics.controls.Quintuple
 import com.quickhandslogistics.data.schedule.WorkItemDetail
+import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
+import com.quickhandslogistics.data.workSheet.ContainerGroupNote
 import com.quickhandslogistics.data.workSheet.WorkSheetListAPIResponse
 import com.quickhandslogistics.presenters.workSheet.WorkSheetPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.utils.ScheduleUtils.getGroupNoteList
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
+import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.*
+import kotlinx.android.synthetic.main.bottom_work_sheet_item.*
+import kotlinx.android.synthetic.main.bottom_work_sheet_item.textViewTitle
+import kotlinx.android.synthetic.main.content_work_sheet.*
 import kotlinx.android.synthetic.main.fragment_work_sheet.*
 
 class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContract.View.OnFragmentInteractionListener,
@@ -34,6 +42,9 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     private lateinit var dept: String
     private lateinit var companyName: String
     private lateinit var customerGroupNote:Triple<Pair<ArrayList<String>,ArrayList<String>>, ArrayList<String>, ArrayList<String>>
+    private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    private var containerIds: ArrayList<String> = ArrayList()
+    private var containerType= ""
 
     companion object {
         const val WORKSHEET_DETAIL = "WORKSHEET_DETAIL"
@@ -62,7 +73,15 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        sheetBehavior = BottomSheetBehavior.from(constraintLayoutWorkSheetItem)
+        sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
         textViewGroupNote.setOnClickListener(this)
+        bottomSheetBackground.setOnClickListener(this)
+        buttonCancelGroupNote.setOnClickListener(this)
+        buttonSaveGroupNote.setOnClickListener(this)
+
+
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(WORKSHEET_DATE_SELECTED_HEADER)) {
                 date = savedInstanceState.getString(WORKSHEET_DATE_SELECTED_HEADER)!!
@@ -94,8 +113,8 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
             workSheetPresenter.fetchWorkSheetList()
         }
         refreshData()
+        closeBottomSheet()
     }
-
 
     private fun refreshData() {
 
@@ -134,21 +153,19 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         onFragmentInteractionListener = null
     }
 
-    private fun initializeViewPager(
-        allWorkItemLists: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>? = null,
-        customerSheetData: CustomerSheetData? = null, selectedTime: Long? = null
-    ) {
+    private fun initializeViewPager(allWorkItemLists: Quintuple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>? = null) {
         adapter = if (allWorkItemLists != null) {
-            WorkSheetPagerAdapter(childFragmentManager, resources, allWorkItemLists)
+            WorkSheetPagerAdapter(childFragmentManager, resources, allWorkItemLists, data.containerGroupNote, data.unfinishedNotes, data.notOpenNotes)
         } else {
             WorkSheetPagerAdapter(childFragmentManager, resources)
         }
         viewPagerWorkSheet.offscreenPageLimit = adapter?.count!!
         viewPagerWorkSheet.adapter = adapter
         tabLayoutWorkSheet.setupWithViewPager(viewPagerWorkSheet)
+
     }
 
-    private fun createDifferentListData(data: WorkSheetListAPIResponse.Data): Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>> {
+    private fun createDifferentListData(data: WorkSheetListAPIResponse.Data): Quintuple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>> {
         val onGoingWorkItems = ArrayList<WorkItemDetail>()
         onGoingWorkItems.addAll(data.inProgress!!)
         onGoingWorkItems.addAll(data.onHold!!)
@@ -158,16 +175,35 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         allWorkItems.addAll(onGoingWorkItems)
         allWorkItems.addAll(data.cancelled!!)
         allWorkItems.addAll(data.completed!!)
-        textViewTotalCount.text = String.format(getString(R.string.total_containers_s), allWorkItems.size)
+        textViewTotalCount.text = UIUtils.getSpannableText(getString(R.string.total_container_bold), allWorkItems.size.toString())
 
         val workItemTypeCounts = ScheduleUtils.getWorkItemTypeCounts(allWorkItems)
 
-        textViewLiveLoadsCount.text = String.format(getString(R.string.live_loads_s), workItemTypeCounts.first)
-        textViewDropsCount.text = String.format(getString(R.string.drops_s), workItemTypeCounts.second)
-        textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
+        if (workItemTypeCounts.first > 0) {
+            textViewLiveLoadsCount.visibility = View.VISIBLE
+            textViewLiveLoadsCount.text =
+                String.format(getString(R.string.live_loads_s), workItemTypeCounts.first)
+        } else textViewLiveLoadsCount.visibility = View.GONE
 
+        if (workItemTypeCounts.second > 0) {
+            textViewDropsCount.visibility = View.VISIBLE
+            textViewDropsCount.text =
+                String.format(getString(R.string.drops_s), workItemTypeCounts.second)
+        } else textViewDropsCount.visibility = View.GONE
 
-        return Triple(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!))
+        if (workItemTypeCounts.third > 0) {
+            textViewOutBoundsCount.visibility = View.VISIBLE
+            textViewOutBoundsCount.text =
+                String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
+        } else textViewOutBoundsCount.visibility = View.GONE
+
+        if (data.unfinished?.size!! > 0) {
+            textViewUnfinishedCount.visibility = View.VISIBLE
+            textViewUnfinishedCount.text =
+                String.format(getString(R.string.unfinished_s), data.unfinished?.size)
+        } else textViewUnfinishedCount.visibility = View.GONE
+
+        return Quintuple(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!), getSortList(data.unfinished!!), ArrayList())
     }
 
     private fun resetUI() {
@@ -180,12 +216,37 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         textViewLiveLoadsCount.text = ""
         textViewDropsCount.text = ""
         textViewOutBoundsCount.text = ""
-        adapter?.updateWorkItemsList(ArrayList(), ArrayList(), ArrayList())
+        textViewUnfinishedCount.text = ""
+        textViewGroupNote.isEnabled=false
+        adapter?.updateWorkItemsList(
+            ArrayList(),
+            ArrayList(),
+            ArrayList(),
+            ArrayList(),
+            null,
+            null,
+            null
+        )
+    }
+
+
+    private fun showBottomSheetWithData(record: RequestLumpersRecord? = null) {
+
+    }
+
+    private fun closeBottomSheet() {
+        AppUtils.hideSoftKeyboard(activity!!)
+        bottomSheetBackground.visibility=View.GONE
+        sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        constraintLayoutWorkSheetItem.visibility = View.GONE
     }
 
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
-        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+        if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
+        } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+
         swipe_pull_refresh?.isRefreshing = false
         resetUI()
         onFragmentInteractionListener?.invalidateCancelAllSchedulesOption(false)
@@ -215,15 +276,36 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         allWorkItems.addAll(onGoingWorkItems)
         allWorkItems.addAll(data.cancelled!!)
         allWorkItems.addAll(data.completed!!)
-        textViewTotalCount.text = String.format(getString(R.string.total_containers_s), allWorkItems.size)
+        textViewTotalCount.text = UIUtils.getSpannableText(getString(R.string.total_container_bold), allWorkItems.size.toString())
 
         val workItemTypeCounts = ScheduleUtils.getWorkItemTypeCounts(allWorkItems)
 
-        textViewLiveLoadsCount.text = String.format(getString(R.string.live_loads_s), workItemTypeCounts.first)
-        textViewDropsCount.text = String.format(getString(R.string.drops_s), workItemTypeCounts.second)
-        textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
+        if (workItemTypeCounts.first > 0) {
+            textViewLiveLoadsCount.visibility = View.VISIBLE
+            textViewLiveLoadsCount.text =
+                String.format(getString(R.string.live_loads_s), workItemTypeCounts.first)
+        } else textViewLiveLoadsCount.visibility = View.GONE
 
-        adapter?.updateWorkItemsList(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!))
+        if (workItemTypeCounts.second > 0) {
+            textViewDropsCount.visibility = View.VISIBLE
+            textViewDropsCount.text =
+                String.format(getString(R.string.drops_s), workItemTypeCounts.second)
+        } else textViewDropsCount.visibility = View.GONE
+
+        if (workItemTypeCounts.third > 0) {
+            textViewOutBoundsCount.visibility = View.VISIBLE
+            textViewOutBoundsCount.text =
+                String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
+        } else textViewOutBoundsCount.visibility = View.GONE
+
+        if (data.unfinished?.size!! > 0) {
+            textViewUnfinishedCount.visibility = View.VISIBLE
+            textViewUnfinishedCount.text =
+                String.format(getString(R.string.unfinished_s), data.unfinished?.size)
+        } else textViewUnfinishedCount.visibility = View.GONE
+
+
+        adapter?.updateWorkItemsList(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!), getSortList(data.unfinished!!), data.containerGroupNote, data.unfinishedNotes, data.notOpenNotes)
     }
 
     private fun getSortList(workItemsList: ArrayList<WorkItemDetail>): ArrayList<WorkItemDetail> {
@@ -234,13 +316,13 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
 
         workItemsList.forEach {
             when {
-                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> {
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> {
                     liveList.add(it)
                 }
-                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> {
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> {
                     inboundList.add(it)
                 }
-                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> {
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> {
                     outBoundList.add(it)
                 }
             }
@@ -263,6 +345,14 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         textViewWorkItemDept.text = UIUtils.getSpannedText(dept)
     }
 
+    override fun successGroupNoteSave(message: String) {
+        CustomProgressBar.getInstance().showSuccessDialog(message, fragmentActivity!!, object : CustomDialogListener {
+            override fun onConfirmClick() {
+                workSheetPresenter.fetchWorkSheetList()
+            }
+        })
+    }
+
     override fun showLoginScreen() {
         startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
@@ -276,17 +366,112 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         workSheetPresenter.fetchWorkSheetList()
     }
 
+    override fun showBottomSheetGroupNote(groupNote: ContainerGroupNote?, containerIds: ArrayList<String>, containerType: String) {
+        constraintLayoutWorkSheetItem.visibility=View.VISIBLE
+        this.containerIds.clear()
+        this.containerType=""
+        groupNote?.also {
+            buttonSaveGroupNote.setText(R.string.update)
+            textViewTitle.setText(R.string.update_group_notes)
+            textViewTitle.setTag(R.id.note, groupNote.id)
+            editTextQHLCustomerNotes.setText(groupNote.noteForCustomer)
+            editTextQHLNotes.setText(groupNote.noteForQHL)
+        }?:run {
+            buttonSaveGroupNote.setText(R.string.save)
+            textViewTitle.setText(R.string.group_note)
+            textViewTitle.setTag(R.id.note, "")
+            editTextQHLCustomerNotes.setText("")
+            editTextQHLNotes.setText("")
+        }
+
+        this.containerType=containerType
+        this.containerIds=containerIds
+
+        if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+            sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            bottomSheetBackground.visibility = View.VISIBLE
+        } else {
+            closeBottomSheet()
+        }
+    }
+
+    override fun showGroupNote(noteForCustomer: String, noteForQHL: String) {
+        CustomerDialog.showLeadNoteDialog(activity, "Group Notes ",noteForCustomer , noteForQHL, resources.getString(R.string.notes_for_customer), resources.getString(R.string.notes_for_qhl))
+
+    }
+
+    override fun removeGroupNote(id: String?) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
+        CustomProgressBar.getInstance().showWarningDialog(getString(R.string.warning_alert_message_group_note), fragmentActivity!!, object : CustomDialogWarningListener {
+            override fun onConfirmClick() {
+                id?.let { workSheetPresenter.removeNote(it) }
+            }
+
+            override fun onCancelClick() {
+            }
+        })
+
+    }
+
+
     override fun onClick(view: View?) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
         when(view!!.id){
             textViewGroupNote.id->{
-                if (!ConnectionDetector.isNetworkConnected(activity)) {
-                    ConnectionDetector.createSnackBar(activity)
-                    return
+                if (customerGroupNote!=null&& (customerGroupNote.first.first.size>0 ||customerGroupNote.second.size>0|| customerGroupNote.third.size>0|| customerGroupNote.first.second.size>0))
+                CustomerDialog.showGroupNoteDialog(activity, "Customer Notes :", customerGroupNote)
+
+            }
+            bottomSheetBackground.id->{closeBottomSheet()}
+            buttonCancelGroupNote.id->{closeBottomSheet()}
+            buttonSaveGroupNote.id->{
+                val cancelId :ArrayList<String> = ArrayList()
+                data.cancelled?.forEach {
+                    it.id?.let { it1 -> cancelId.add(it1) }
                 }
 
-                if (customerGroupNote!=null&& (customerGroupNote.first.first.size>0 ||customerGroupNote.second.size>0|| customerGroupNote.third.size>0|| customerGroupNote.first.second.size>0))
-                CustomeDialog.showGroupNoteDialog(activity, "Customer Notes :", customerGroupNote)
+                if (!cancelId.isNullOrEmpty()) {
+                    saveGroupNote(cancelId)
+                }
+            }
+        }
+    }
 
+    private fun saveGroupNote(cancelled: ArrayList<String>) {
+        val customerNote= editTextQHLCustomerNotes.text.toString()
+        val qhlNote= editTextQHLNotes.text.toString()
+        val groupNoteId = textViewTitle.getTag(R.id.note) as String?
+
+        when {
+            customerNote.isNullOrEmpty() -> {
+                CustomProgressBar.getInstance().showValidationErrorDialog(resources.getString(R.string.group_customer_note_error_message), activity!!)
+            }
+            qhlNote.isNullOrEmpty() -> {
+                CustomProgressBar.getInstance().showValidationErrorDialog(resources.getString(R.string.group_qhl_note_error_message), activity!!)
+            }
+            else -> {
+                closeBottomSheet()
+                if (groupNoteId.isNullOrEmpty())
+                    workSheetPresenter.saveGroupNoteData(
+                        containerIds,
+                        containerType,
+                        customerNote,
+                        qhlNote
+                    )
+                else workSheetPresenter.updateGroupNoteData(
+                    groupNoteId!!,
+                    containerIds,
+                    containerType,
+                    customerNote,
+                    qhlNote
+                )
             }
         }
     }

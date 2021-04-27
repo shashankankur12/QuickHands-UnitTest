@@ -8,15 +8,6 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_edit_schedule_time">
 
-    <TextView
-        android:id="@+id/textViewDate"
-        style="@style/valuesTextViewTheme"
-        android:layout_width="0dp"
-        android:layout_marginStart="@dimen/_12sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header" />
-
     <EditText
         android:id="@+id/editTextSearch"
         style="@style/searchEditTextTheme"
@@ -27,7 +18,7 @@
         android:layout_marginBottom="@dimen/_12sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDate" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageViewCancel"
@@ -35,11 +26,11 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_17sdp"
         android:src="@drawable/ic_cancel"
-        android:tint="@color/colorLightGrey"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/editTextSearch"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editTextSearch" />
+        app:layout_constraintTop_toTopOf="@+id/editTextSearch"
+        app:tint="@color/colorLightGrey" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
@@ -72,7 +63,7 @@
                     android:layout_gravity="center_vertical"
                     android:padding="@dimen/_2sdp"
                     android:src="@drawable/ic_person_add"
-                    android:tint="@color/buttonRed" />
+                    app:tint="@color/buttonRed" />
 
                 <Space
                     android:layout_width="0dp"

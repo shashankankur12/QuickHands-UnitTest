@@ -69,7 +69,7 @@ class ScheduleTimeAdapter(private val onAdapterClick: ScheduleTimeContract.View.
             val employeeData = scheduleTimeDetail.lumperInfo
             employeeData?.let {
                 UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
-                UIUtils.updateProfileBorder(context, tempLumperIds.contains(employeeData.id), circleImageViewProfile)
+                UIUtils.updateProfileBorder(context, employeeData.isTemporaryAssigned, circleImageViewProfile)
                 textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
                 textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
                 viewAttendanceStatus.setBackgroundResource(if (scheduleTimeDetail.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)

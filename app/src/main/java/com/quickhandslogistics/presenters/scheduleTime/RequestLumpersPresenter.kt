@@ -6,14 +6,12 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.scheduleTime.RequestLumpersContract
 import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersListAPIResponse
-import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
 import com.quickhandslogistics.models.scheduleTime.RequestLumpersModel
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.ScheduleUtils.getSortRequestLumper
 import com.quickhandslogistics.utils.SharedPref
 import java.util.*
-import kotlin.collections.ArrayList
 
 class RequestLumpersPresenter(private var requestLumpersView: RequestLumpersContract.View?, private val resources: Resources) :
     RequestLumpersContract.Presenter, RequestLumpersContract.Model.OnFinishedListener {
@@ -33,9 +31,9 @@ class RequestLumpersPresenter(private var requestLumpersView: RequestLumpersCont
         requestLumpersModel.fetchAllRequestsByDate(selectedDate, this)
     }
 
-    override fun createNewRequestForLumpers(requiredLumperCount: String, notesDM: String, date: Date) {
+    override fun createNewRequestForLumpers(requiredLumperCount: String, notesDM: String, date: Date, noteLumper: String, startTime: String) {
         requestLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        requestLumpersModel.createNewRequestForLumpers(requiredLumperCount, notesDM, date, this)
+        requestLumpersModel.createNewRequestForLumpers(requiredLumperCount, notesDM, date, noteLumper, startTime, this)
     }
 
     override fun cancelRequestForLumpers(requestId: String, date: Date) {
@@ -43,9 +41,16 @@ class RequestLumpersPresenter(private var requestLumpersView: RequestLumpersCont
         requestLumpersModel.cancelRequestForLumpers(requestId, date, this)
     }
 
-    override fun updateRequestForLumpers(requestId: String, requiredLumperCount: String, notesDM: String, date: Date) {
+    override fun updateRequestForLumpers(
+        requestId: String,
+        requiredLumperCount: String,
+        notesDM: String,
+        date: Date,
+        noteLumper: String,
+        startTime: String
+    ) {
         requestLumpersView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        requestLumpersModel.updateRequestForLumpers(requestId, requiredLumperCount, notesDM, date, this)
+        requestLumpersModel.updateRequestForLumpers(requestId, requiredLumperCount, notesDM, date, noteLumper, startTime, this)
     }
 
     /** Model Result Listeners */

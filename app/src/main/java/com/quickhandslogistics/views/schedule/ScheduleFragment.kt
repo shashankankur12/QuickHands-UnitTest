@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
@@ -17,14 +16,16 @@ import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
-import com.quickhandslogistics.data.schedule.ScheduleDetail
+import com.quickhandslogistics.data.schedule.ScheduleDetailData
 import com.quickhandslogistics.presenters.schedule.SchedulePresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
+import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract.View.OnAdapterItemClickListener, CalendarUtils.CalendarSelectionListener {
@@ -36,7 +37,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     private var selectedTime: Long = 0
     private var currentDatePosition: Int = 0
     private lateinit var availableDates: List<Date>
-    private var workItemsList: ArrayList<ScheduleDetail> = ArrayList<ScheduleDetail>()
+    private var workItemsList: ArrayList<ScheduleDetailData> = ArrayList()
     private var selectedDate: Date = Date()
     private var dateString: String? = null
     private var isSavedState: Boolean = false
@@ -220,12 +221,11 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         textViewDate.visibility = View.GONE
 
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
-
-        if (leadProfile?.buildingDetailData != null) {
-            textViewBuildingName.text = leadProfile?.buildingDetailData?.buildingName!!.capitalize()
+        if (leadProfile?.buildingDetailData?.get(0) != null) {
+            textViewBuildingName.text = leadProfile?.buildingDetailData?.get(0)?.buildingName!!.capitalize()
             textViewDept.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), UIUtils.getDisplayEmployeeDepartment(leadProfile))
             textViewShift.text = UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile.shift?.capitalize().toString())
-            textViewLeadNumber.text = UIUtils.getSpannableText(getString(R.string.bar_header_leads), leadProfile.buildingDetailData?.leadIds!!.size.toString())
+            textViewLeadNumber.text = UIUtils.getSpannableText(getString(R.string.bar_header_leads), leadProfile.buildingDetailData?.get(0)?.leadIds!!.size.toString())
         } else {
             layoutWorkScheduleInfo.visibility = View.GONE
             appBarView.visibility = View.GONE
@@ -243,15 +243,16 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
     }
 
-    override fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<ScheduleDetail>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int) {
+    override fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<ScheduleDetailData>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int) {
         this.selectedDate = selectedDate
         this.workItemsList = workItemsList
         this.currentPageIndex = currentPageIndex
 
         selectedTime = selectedDate.time
+        if(!workItemsList[0].liveLoads.isNullOrEmpty()|| !workItemsList[0].drops.isNullOrEmpty() || !workItemsList[0].outbounds.isNullOrEmpty())
         scheduleAdapter.updateList(workItemsList, currentPageIndex)
 
-        if (!workItemsList.isNullOrEmpty()) {
+        if (!workItemsList.isNullOrEmpty() && (!workItemsList[0].liveLoads.isNullOrEmpty()|| !workItemsList[0].drops.isNullOrEmpty() || !workItemsList[0].outbounds.isNullOrEmpty())) {
             textViewEmptyData.visibility = View.GONE
             recyclerViewSchedule.visibility = View.VISIBLE
         } else {
@@ -265,7 +266,10 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     override fun showAPIErrorMessage(message: String) {
         recyclerViewSchedule.visibility = View.GONE
         textViewEmptyData.visibility = View.VISIBLE
-        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+
+        if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
+        } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
     override fun showEmptyData() {
@@ -279,7 +283,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     }
 
     /** Adapter Listeners */
-    override fun onScheduleItemClick(scheduleDetail: ScheduleDetail) {
+    override fun onScheduleItemClick(scheduleDetail: ScheduleDetailData) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {
             ConnectionDetector.createSnackBar(activity)
             return
@@ -288,7 +292,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         val bundle = Bundle()
         bundle.putBoolean(ARG_ALLOW_UPDATE, DateUtils.isCurrentDate(selectedTime))
         bundle.putBoolean(ARG_IS_FUTURE_DATE, DateUtils.isFutureDate(selectedTime))
-        bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleDetail.scheduleIdentity)
+        bundle.putString(ARG_SCHEDULE_IDENTITY, scheduleDetail.scheduleDepartment)
         bundle.putLong(ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
         startIntent(WorkScheduleActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }

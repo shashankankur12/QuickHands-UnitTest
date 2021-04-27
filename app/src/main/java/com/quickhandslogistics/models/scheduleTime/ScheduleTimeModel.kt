@@ -3,13 +3,12 @@ package com.quickhandslogistics.models.scheduleTime
 import android.util.Log
 import com.quickhandslogistics.contracts.scheduleTime.ScheduleTimeContract
 import com.quickhandslogistics.data.BaseResponse
-import com.quickhandslogistics.data.dashboard.LeadProfileData
+import com.quickhandslogistics.data.scheduleTime.leadinfo.GetLeadInfoResponse
 import com.quickhandslogistics.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeNoteRequest
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.DataManager.getAuthToken
 import com.quickhandslogistics.network.DataManager.isSuccessResponse
-import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SharedPref
 import com.quickhandslogistics.views.scheduleTime.ScheduleTimeFragment.Companion.CANCEL_SCHEDULE_LUMPER
@@ -22,8 +21,6 @@ import java.util.*
 class ScheduleTimeModel(private val sharedPref: SharedPref) : ScheduleTimeContract.Model {
 
     override fun fetchHeaderInfo(selectedDate: Date, onFinishedListener: ScheduleTimeContract.Model.OnFinishedListener) {
-        val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
-
         val date = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
         onFinishedListener.onSuccessGetHeaderInfo(date)
     }
@@ -45,7 +42,7 @@ class ScheduleTimeModel(private val sharedPref: SharedPref) : ScheduleTimeContra
         })
     }
 
-    override fun cancelScheduleLumpers(lumperId: String, date: Date, onFinishedListener: ScheduleTimeContract.Model.OnFinishedListener) {
+    override fun cancelScheduleLumpers(lumperId: String, date: Date, cancelReason: String, onFinishedListener: ScheduleTimeContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, date)
 
         DataManager.getService().cancelScheduleLumper(getAuthToken(), lumperId, dateString).enqueue(object : Callback<BaseResponse> {
@@ -79,6 +76,23 @@ class ScheduleTimeModel(private val sharedPref: SharedPref) : ScheduleTimeContra
 
             override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
                 Log.e(RequestLumpersModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
+    }
+
+    override fun fetchLeadScheduleByDate(selectedDate: Date, onFinishedListener: ScheduleTimeContract.Model.OnFinishedListener) {
+        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
+
+        DataManager.getService().getLeadWorkInfo(getAuthToken(), dateString).enqueue(object : Callback<GetLeadInfoResponse> {
+            override fun onResponse(call: Call<GetLeadInfoResponse>, response: Response<GetLeadInfoResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessLeadInfo(response.body()!!)
+                }
+            }
+
+            override fun onFailure(call: Call<GetLeadInfoResponse>, t: Throwable) {
+                Log.e(ScheduleTimeModel::class.simpleName, t.localizedMessage!!)
                 onFinishedListener.onFailure()
             }
         })

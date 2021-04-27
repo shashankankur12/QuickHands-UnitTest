@@ -95,6 +95,7 @@
             <Button
                 android:id="@+id/buttonClockIn"
                 style="@style/positiveButtonTheme"
+                android:layout_width="@dimen/_110sdp"
                 android:layout_height="wrap_content"
                 android:text="@string/clock_in" />
 
@@ -108,6 +109,7 @@
             <Button
                 android:id="@+id/buttonClockOut"
                 style="@style/positiveButtonTheme"
+                android:layout_width="@dimen/_110sdp"
                 android:layout_height="wrap_content"
                 android:text="@string/clock_out" />
 
@@ -151,6 +153,7 @@
             <Button
                 android:id="@+id/buttonLunchIn"
                 style="@style/positiveButtonThemeYellow"
+                android:layout_width="@dimen/_110sdp"
                 android:layout_height="wrap_content"
                 android:text="@string/out_to_lunch" />
 
@@ -164,6 +167,7 @@
             <Button
                 android:id="@+id/buttonLunchOut"
                 style="@style/positiveButtonThemeYellow"
+                android:layout_width="@dimen/_110sdp"
                 android:layout_height="wrap_content"
                 android:text="@string/back_to_work" />
 

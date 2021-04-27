@@ -8,6 +8,7 @@ import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.data.attendance.AttendanceDetail
 import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.workSheet.WorkItemScheduleDetails
 
 class WorkItemDetail() : Parcelable {
     @SerializedName("id")
@@ -18,9 +19,21 @@ class WorkItemDetail() : Parcelable {
     @Expose
     var workItemType: String? = null
 
+    @SerializedName("type")
+    @Expose
+    var type: String? = null
+
     @SerializedName("sequence")
     @Expose
     var sequence: Int? = null
+
+    @SerializedName("quantity")
+    @Expose
+    var quantity: Int? = null
+
+    @SerializedName("label")
+    @Expose
+    var label: String? = null
 
     @SerializedName("createdBy")
     @Expose
@@ -91,7 +104,11 @@ class WorkItemDetail() : Parcelable {
 
     @SerializedName("buildingThisWorkItemAssignedTo")
     @Expose
-    var buildingDetailData: BuildingDetailData? = null
+    var buildingDetailData: String? = null
+
+    @SerializedName("schedule")
+    @Expose
+    var schedule: WorkItemScheduleDetails? = null
 
     @SerializedName("lumperThisWorkItemAssignedTo")
     @Expose
@@ -109,7 +126,10 @@ class WorkItemDetail() : Parcelable {
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         workItemType = parcel.readString()
+        type = parcel.readString()
+        label = parcel.readString()
         sequence = parcel.readValue(Int::class.java.classLoader) as? Int
+        quantity = parcel.readValue(Int::class.java.classLoader) as? Int
         createdBy = parcel.readString()
         startTime = parcel.readString()
         scheduleIdentity = parcel.readString()
@@ -126,7 +146,8 @@ class WorkItemDetail() : Parcelable {
         createdAt = parcel.readString()
         updatedAt = parcel.readString()
         numberOfDrops = parcel.readValue(Int::class.java.classLoader) as? Int
-        buildingDetailData = parcel.readParcelable(BuildingDetailData::class.java.classLoader)
+        buildingDetailData = parcel.readString()
+        schedule = parcel.readParcelable(BuildingDetailData::class.java.classLoader)
         assignedLumpersList = parcel.createTypedArrayList(EmployeeData)
         attendanceDetail = parcel.readParcelable(AttendanceDetail::class.java.classLoader)
 //        buildingOps = HashMap()
@@ -147,7 +168,10 @@ class WorkItemDetail() : Parcelable {
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
         parcel.writeString(workItemType)
+        parcel.writeString(type)
+        parcel.writeString(label)
         parcel.writeValue(sequence)
+        parcel.writeValue(quantity)
         parcel.writeString(createdBy)
         parcel.writeString(startTime)
         parcel.writeString(scheduleIdentity)
@@ -164,7 +188,8 @@ class WorkItemDetail() : Parcelable {
         parcel.writeString(createdAt)
         parcel.writeString(updatedAt)
         parcel.writeValue(numberOfDrops)
-        parcel.writeParcelable(buildingDetailData, flags)
+        parcel.writeString(buildingDetailData)
+        parcel.writeParcelable(schedule, flags)
         parcel.writeTypedList(assignedLumpersList)
         parcel.writeParcelable(attendanceDetail, flags)
         /*buildingOps?.let { data ->

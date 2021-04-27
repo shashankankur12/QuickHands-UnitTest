@@ -5,7 +5,8 @@ import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.schedule.WorkScheduleContract
 import com.quickhandslogistics.data.ErrorResponse
-import com.quickhandslogistics.data.schedule.ScheduleDetailAPIResponse
+import com.quickhandslogistics.data.schedule.ScheduleDetailData
+import com.quickhandslogistics.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.models.schedule.WorkScheduleModel
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
@@ -21,10 +22,10 @@ class WorkSchedulePresenter (private var workSheetView: WorkScheduleContract.Vie
         workSheetView = null
     }
 
-    override fun fetchWorkSheetList(scheduleIdentityId: String, selectedDate: Date) {
+    override fun fetchWorkSheetList(scheduleDepartment: String, selectedDate: Date) {
         workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         workSheetModel.fetchHeaderInfo(selectedDate,this)
-        workSheetModel.fetchScheduleDetail(scheduleIdentityId, selectedDate, this)
+        workSheetModel.fetchScheduleDetail(scheduleDepartment, selectedDate, this)
     }
 
     /** Model Result Listeners */
@@ -46,7 +47,7 @@ class WorkSchedulePresenter (private var workSheetView: WorkScheduleContract.Vie
         }
     }
 
-    override fun onSuccessFetchWorkSheet(scheduleDetailAPIResponse: ScheduleDetailAPIResponse) {
+    override fun onSuccessFetchWorkSheet(scheduleDetailAPIResponse: ScheduleListAPIResponse) {
         workSheetView?.hideProgressDialog()
 //        workSheetListAPIResponse.data?.let { data ->
 //
@@ -68,7 +69,17 @@ class WorkSchedulePresenter (private var workSheetView: WorkScheduleContract.Vie
 //            })
 //
 //
-            workSheetView?.showWorkSheets(scheduleDetailAPIResponse.data?.schedules)
+        var data = ScheduleDetailData()
+        scheduleDetailAPIResponse.data!!.scheduleDetailsList?.let { it1 ->
+            it1.forEach { scheduleDetail ->
+                if (!scheduleDetail.drops.isNullOrEmpty() || !scheduleDetail.liveLoads.isNullOrEmpty() || !scheduleDetail.outbounds.isNullOrEmpty())
+                    data = scheduleDetail
+
+            }
+        }
+
+        workSheetView?.showWorkSheets(data)
+
 //        }
     }
 

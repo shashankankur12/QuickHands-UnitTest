@@ -18,6 +18,7 @@ import com.quickhandslogistics.presenters.reports.TimeClockReportPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
+import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.content_lumper_job_report.*
 import kotlinx.android.synthetic.main.layout_date_filter.*
 import kotlinx.android.synthetic.main.layout_report_type.*
@@ -188,7 +189,7 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
     private fun updateSelectAllSectionUI() {
         val selectedCount = timeClockReportAdapter.getSelectedLumperIdsList().size
         if (selectedCount == timeClockReportAdapter.itemCount && timeClockReportAdapter.itemCount>0) {
-            imageViewSelectAll.setImageResource(R.drawable.ic_add_lumer_tick)
+            imageViewSelectAll.setImageResource(R.drawable.ic_add_lumper_green_tick)
           //  textViewSelectAll.text = getString(R.string.unselect_all)
         } else {
             imageViewSelectAll.setImageResource(R.drawable.ic_add_lumer_tick_blank)
@@ -353,7 +354,9 @@ class TimeClockReportActivity : BaseActivity(), View.OnClickListener, TimeClockR
 
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
-        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
+        if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            CustomProgressBar.getInstance().showValidationErrorDialog(message, activity!!)
+        } else SnackBarFactory.createSnackBar(activity!!, mainConstraintLayout, message)
     }
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {

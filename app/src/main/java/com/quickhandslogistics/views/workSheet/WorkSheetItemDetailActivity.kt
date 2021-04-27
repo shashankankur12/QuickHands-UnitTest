@@ -1,5 +1,6 @@
 package com.quickhandslogistics.views.workSheet
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -11,8 +12,9 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.workSheet.WorkSheetItemDetailPagerAdapter
 import com.quickhandslogistics.adapters.workSheet.WorkSheetItemStatusAdapter
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
-import com.quickhandslogistics.data.schedule.ScheduleWorkItem
+import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
+import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 import com.quickhandslogistics.presenters.workSheet.WorkSheetItemDetailPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
@@ -22,15 +24,16 @@ import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WOR
 import kotlinx.android.synthetic.main.activity_work_sheet_item_detail.*
 import kotlinx.android.synthetic.main.bottom_sheet_select_status.*
 import kotlinx.android.synthetic.main.content_work_sheet_item_detail.*
+import okhttp3.MultipartBody
 import kotlinx.android.synthetic.main.content_work_sheet_item_detail.textViewWorkSheetNote as textViewWorkSheetNote1
 
 class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSheetItemDetailContract.View,
-    WorkSheetItemDetailContract.View.OnAdapterItemClickListener, WorkSheetItemDetailContract.View.OnFragmentInteractionListener {
+        WorkSheetItemDetailContract.View.OnAdapterItemClickListener, WorkSheetItemDetailContract.View.OnFragmentInteractionListener {
 
     private var workItemId: String = ""
     private var workItemTypeDisplayName: String = ""
-    private var workItemDetail: ScheduleWorkItem = ScheduleWorkItem()
-    private var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule> = ArrayList<LumpersTimeSchedule>()
+    private var workItemDetail: WorkItemContainerDetails = WorkItemContainerDetails()
+    private var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule> = ArrayList()
     private var tempLumperIds: ArrayList<String> = ArrayList()
 
     private lateinit var workSheetItemDetailPresenter: WorkSheetItemDetailPresenter
@@ -60,17 +63,13 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(LUMPER_TIME_SCHEDULE)) {
-                lumpersTimeSchedule =
-                    savedInstanceState.getParcelableArrayList(
-                        LUMPER_TIME_SCHEDULE
-                    )!!
+                lumpersTimeSchedule = savedInstanceState.getParcelableArrayList(LUMPER_TIME_SCHEDULE)!!
             }
             if (savedInstanceState.containsKey(TEMP_LUMPER_ID_LIST)) tempLumperIds =
-                savedInstanceState.getStringArrayList(TEMP_LUMPER_ID_LIST)!!
+                    savedInstanceState.getStringArrayList(TEMP_LUMPER_ID_LIST)!!
             if (savedInstanceState.containsKey(WORK_DETAIL_LIST)) {
-                workItemDetail =
-                    savedInstanceState.getParcelable(WORK_DETAIL_LIST)!!
-                showWorkItemDetail(workItemDetail, lumpersTimeSchedule, tempLumperIds)
+                workItemDetail = savedInstanceState.getParcelable(WORK_DETAIL_LIST)!!
+//                showWorkItemDetail(workItemDetail, lumpersTimeSchedule, tempLumperIds)
                 val allWorkItemLists = createDifferentListData(workItemDetail)
                 initializeUI(allWorkItemLists, tempLumperIds, lumpersTimeSchedule)
             }
@@ -86,34 +85,52 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if (workItemDetail != null)
-            outState.putParcelable(WORK_DETAIL_LIST, workItemDetail)
-        if (lumpersTimeSchedule != null)
-            outState.putParcelableArrayList(LUMPER_TIME_SCHEDULE, lumpersTimeSchedule)
-        if (tempLumperIds != null)
-            outState.putStringArrayList(TEMP_LUMPER_ID_LIST, tempLumperIds)
+        outState.putParcelable(WORK_DETAIL_LIST, workItemDetail)
+        outState.putParcelableArrayList(LUMPER_TIME_SCHEDULE, lumpersTimeSchedule)
+        outState.putStringArrayList(TEMP_LUMPER_ID_LIST, tempLumperIds)
         super.onSaveInstanceState(outState)
     }
 
-    private fun createDifferentListData(workItemDetail: ScheduleWorkItem): ScheduleWorkItem {
-        textViewStartTime.text = String.format(getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
+    private fun createDifferentListData(workItemDetail: WorkItemContainerDetails): WorkItemContainerDetails {
+        textViewStartTime.text = UIUtils.getSpannableText(getString(R.string.start_time_bold), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime).toString())
 
         when (workItemTypeDisplayName) {
-            getString(R.string.drops) -> textViewDropItems.text = String.format(getString(R.string.no_of_drops_s), workItemDetail.sequence)
-            getString(R.string.live_loads) -> textViewDropItems.text = String.format(getString(R.string.live_load_s), workItemDetail.sequence)
-            else -> textViewDropItems.text = String.format(getString(R.string.out_bound_s), workItemDetail.sequence)
+            getString(R.string.drops) -> textViewDropItems.text = String.format(
+                getString(R.string.no_of_drops_s),
+                workItemDetail.quantity
+            )
+            getString(R.string.live_loads) -> textViewDropItems.text = String.format(
+                getString(R.string.live_load_s),
+                workItemDetail.quantity
+            )
+            else -> textViewDropItems.text = String.format(
+                getString(R.string.out_bound_s),
+                workItemDetail.quantity
+            )
         }
 
         if (!workItemDetail.status.isNullOrEmpty()) {
             updateStatusBackground(workItemDetail.status!!)
         }
+
+        textViewIsScheduleLead.visibility=if (workItemDetail.isScheduledByLead!!) View.VISIBLE else View.GONE
         return workItemDetail
     }
 
-    private fun initializeUI(allWorkItem: ScheduleWorkItem? = null, tampLumpId: ArrayList<String>? = null, lumperTimeSchedule: ArrayList<LumpersTimeSchedule>? = null) {
+    private fun initializeUI(
+        allWorkItem: WorkItemContainerDetails? = null,
+        tampLumpId: ArrayList<String>? = null,
+        lumperTimeSchedule: ArrayList<LumpersTimeSchedule>? = null
+    ) {
 
         workSheetItemDetailPagerAdapter = if (allWorkItem != null)
-            WorkSheetItemDetailPagerAdapter(supportFragmentManager, resources, allWorkItem, tampLumpId, lumperTimeSchedule)
+            WorkSheetItemDetailPagerAdapter(
+                supportFragmentManager,
+                resources,
+                allWorkItem,
+                tampLumpId,
+                lumperTimeSchedule
+            )
         else
             WorkSheetItemDetailPagerAdapter(supportFragmentManager, resources)
         viewPagerWorkSheetDetail.offscreenPageLimit = workSheetItemDetailPagerAdapter?.count!!
@@ -126,9 +143,15 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         recyclerViewStatus.apply {
             val linearLayoutManager = LinearLayoutManager(activity)
             layoutManager = linearLayoutManager
-            val dividerItemDecoration = DividerItemDecoration(activity, linearLayoutManager.orientation)
+            val dividerItemDecoration = DividerItemDecoration(
+                activity,
+                linearLayoutManager.orientation
+            )
             addItemDecoration(dividerItemDecoration)
-            workSheetItemStatusAdapter = WorkSheetItemStatusAdapter(resources, this@WorkSheetItemDetailActivity)
+            workSheetItemStatusAdapter = WorkSheetItemStatusAdapter(
+                resources,
+                this@WorkSheetItemDetailActivity
+            )
             adapter = workSheetItemStatusAdapter
         }
 
@@ -162,7 +185,10 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
                 bottomSheetBackgroundStatus.id -> closeBottomSheet()
                 textViewStatus.id -> {
                     if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-                        workSheetItemStatusAdapter?.updateInitialStatus(textViewStatus.text.toString(), workItemDetail.isCompleted!!)
+                        workSheetItemStatusAdapter?.updateInitialStatus(
+                            textViewStatus.text.toString(),
+                            workItemDetail.isCompleted!!
+                        )
                         sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                         bottomSheetBackgroundStatus.visibility = View.VISIBLE
                     } else {
@@ -170,12 +196,22 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
                     }
 
                 }
-                textViewWorkSheetNote1.id->{
-                    if(!workItemDetail.scheduleNote.isNullOrEmpty() &&  !workItemDetail.scheduleNote.equals("NA")) {
+                textViewWorkSheetNote1.id -> {
+                    if (!workItemDetail.schedule?.scheduleNote.isNullOrEmpty() && !workItemDetail.schedule?.scheduleNote.equals(
+                            "NA"
+                        )
+                    ) {
                         val title =
-                            ScheduleUtils.scheduleNotePopupTitle(workItemDetail, resources)
+                            ScheduleUtils.scheduleNotePopupTitle(
+                                workItemDetail.schedule,
+                                resources
+                            )
                         CustomProgressBar.getInstance()
-                            .showInfoDialog(title, workItemDetail.scheduleNote!!, this)
+                            .showInfoDialog(
+                                title,
+                                workItemDetail.schedule?.scheduleNote!!,
+                                this
+                            )
                     }
                 }
             }
@@ -185,34 +221,57 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
-
         workSheetItemDetailPagerAdapter?.showEmptyData()
     }
 
-    override fun showWorkItemDetail(workItemDetail: ScheduleWorkItem, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?, tempLumperIds: ArrayList<String>) {
-        this.lumpersTimeSchedule = lumpersTimeSchedule!!
+    override fun showWorkItemDetail(
+        workItemDetail: WorkItemContainerDetails,
+        lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?
+    ) {
+        lumpersTimeSchedule?.let {
+            this.lumpersTimeSchedule = it
+        }
 
         this.workItemDetail = workItemDetail
         this.tempLumperIds = tempLumperIds
-        textViewStartTime.text = String.format(getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
-        if (!workItemDetail.scheduleNote.isNullOrEmpty() && !workItemDetail.scheduleNote.equals("NA")) {
-            textViewWorkSheetNote1.isEnabled=true
-            textViewWorkSheetNote1.text = ScheduleUtils.scheduleTypeNote(workItemDetail, resources)
-        } else {
-            textViewWorkSheetNote1.isEnabled=false
+        textViewStartTime.text = UIUtils.getSpannableText(getString(R.string.start_time_bold),
+            DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime).toString()
+        )
+        if (workItemDetail.schedule!=null) {
+            textViewWorkSheetNote1.text = ScheduleUtils.scheduleTypeNote(
+                workItemDetail.schedule,
+                resources
+            )
         }
+        textViewWorkSheetNote1.isEnabled=!workItemDetail.schedule?.scheduleNote.isNullOrEmpty() && !workItemDetail.schedule?.scheduleNote.equals(
+            "NA"
+        )
 
         when (workItemTypeDisplayName) {
-            getString(R.string.drops) -> textViewDropItems.text = String.format(getString(R.string.no_of_drops_s), workItemDetail.sequence)
-            getString(R.string.live_loads) -> textViewDropItems.text = String.format(getString(R.string.live_load_s), workItemDetail.sequence)
-            else -> textViewDropItems.text = String.format(getString(R.string.out_bound_s), workItemDetail.sequence)
+            getString(R.string.drops) -> textViewDropItems.text = String.format(
+                getString(R.string.no_of_drops_s),
+                workItemDetail.quantity
+            )
+            getString(R.string.live_loads) -> textViewDropItems.text = String.format(
+                getString(R.string.live_load_s),
+                workItemDetail.quantity
+            )
+            else -> textViewDropItems.text = String.format(
+                getString(R.string.out_bound_s),
+                workItemDetail.quantity
+            )
         }
 
         if (!workItemDetail.status.isNullOrEmpty()) {
             updateStatusBackground(workItemDetail.status!!)
         }
+        textViewIsScheduleLead.visibility=if (workItemDetail.isScheduledByLead!!) View.VISIBLE else View.GONE
 
-        workSheetItemDetailPagerAdapter?.showWorkItemData(workItemDetail, lumpersTimeSchedule, tempLumperIds)
+        workSheetItemDetailPagerAdapter?.showWorkItemData(
+            workItemDetail,
+            lumpersTimeSchedule,
+            tempLumperIds
+        )
     }
 
     override fun statusChangedSuccessfully() {
@@ -231,16 +290,28 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         }
 
         isDataSave(true)
-        CustomProgressBar.getInstance().showSuccessDialog( getString(R.string.notes_saved_success_alert_message), activity, object : CustomDialogListener {
-            override fun onConfirmClick() {
+        CustomProgressBar.getInstance().showSuccessDialog(
+            getString(R.string.notes_saved_success_alert_message),
+            activity,
+            object : CustomDialogListener {
+                override fun onConfirmClick() {
 
-            }
-        })
+                }
+            })
 //        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, getString(R.string.notes_saved_success_alert_message))
     }
 
     override fun showLoginScreen() {
-        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
+        startIntent(
+            LoginActivity::class.java, isFinish = true, flags = arrayOf(
+                Intent.FLAG_ACTIVITY_CLEAR_TASK,
+                Intent.FLAG_ACTIVITY_NEW_TASK
+            )
+        )
+    }
+
+    override fun onSuccessUploadImage(imageUrl: String) {
+        workSheetItemDetailPagerAdapter?.updateUploadedImage(imageUrl)
     }
 
     /** Adapter Listeners */
@@ -251,8 +322,9 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         }
 
         if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
-            val filledParameterCount = ScheduleUtils.getFilledBuildingParametersCounts(workItemDetail)
-            val parameters = ScheduleUtils.getBuildingParametersList(workItemDetail.buildingDetailData)
+            val leadProfile = DateUtils.sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+            val filledParameterCount = ScheduleUtils.getFilledBuildingParametersCounts(workItemDetail, leadProfile?.buildingDetailData?.get(0))
+            val parameters = ScheduleUtils.getBuildingParametersList(leadProfile?.buildingDetailData?.get(0))
 
             if (workItemDetail.buildingOps.isNullOrEmpty() || filledParameterCount != parameters.size) {
                 CustomProgressBar.getInstance().showErrorDialog(getString(R.string.fill_building_parameters_message), activity)
@@ -262,15 +334,15 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
                 CustomProgressBar.getInstance().showErrorDialog(getString(R.string.assign_lumpers_message), activity)
                 closeBottomSheet()
                 return
-            }else {
-                if (lumpersTimeSchedule.isNullOrEmpty()|| lumpersTimeSchedule.size< workItemDetail!!.assignedLumpersList!!.size ){
-                   var message =getString(R.string.assign_lumpers_endtime_starttime_message)
+            } else {
+                if (lumpersTimeSchedule.isNullOrEmpty() || lumpersTimeSchedule.size < workItemDetail!!.assignedLumpersList!!.size) {
+                    val message = getString(R.string.assign_lumpers_endtime_starttime_message)
                     CustomProgressBar.getInstance().showErrorDialog(message, this.activity)
                     closeBottomSheet()
                     return
-                }else if(!lumpersTimeSchedule.isNullOrEmpty()) {
-                    var message =getStartTimeCount(lumpersTimeSchedule)
-                    if (!message.isNullOrEmpty()) {
+                } else if (!lumpersTimeSchedule.isNullOrEmpty()) {
+                    val message = getStartTimeCount(lumpersTimeSchedule)
+                    if (message.isNotEmpty()) {
                         CustomProgressBar.getInstance().showErrorDialog(message, this.activity)
                         closeBottomSheet()
                         return
@@ -278,37 +350,39 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
                 }
 
             }
+        } else if (AppConstant.WORK_ITEM_STATUS_UNFINISHED == status) {
+            closeBottomSheet()
+            CustomBottomSheetDialog.unfinishedBottomSheetDialog(
+                activity,
+                object : CustomBottomSheetDialog.IDialogOnClick {
+                    override fun onSendRequest(dialog: Dialog) {
+                        dialog.dismiss()
+                        workSheetItemDetailPresenter.changeWorkItemStatus(workItemId, status)
+                    }
+                })
+            return
         }
 
         var message = getString(R.string.change_status_alert_message)
         if (status == AppConstant.WORK_ITEM_STATUS_CANCELLED || status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
             message = getString(R.string.change_status_permanently_alert_message)
         }
-//        CustomProgressBar.getInstance().showWarningDialog(message, activity, object : CustomDialogWarningListener {
-//            override fun onConfirmClick() {
-                closeBottomSheet()
-                workSheetItemDetailPresenter.changeWorkItemStatus(workItemId, status)
-//            }
-//
-//            override fun onCancelClick() {
-//                workSheetItemStatusAdapter?.updateInitialStatus(textViewStatus.text.toString(), workItemDetail.isCompleted!!)
-//            }
-//        })
+        closeBottomSheet()
+        workSheetItemDetailPresenter.changeWorkItemStatus(workItemId, status)
     }
 
     private fun getStartTimeCount(lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>): String {
         var message = ""
         lumpersTimeSchedule.forEach {
             if (it.startTime.isNullOrEmpty() || it.endTime.isNullOrEmpty()) {
-                message =getString(R.string.assign_lumpers_endtime_starttime_message)
-            }else if (!it.breakTimeStart.isNullOrEmpty()&& it.breakTimeEnd.isNullOrEmpty()){
-                message =getString(R.string.assign_lumpers_bracktime_message)
-            }
-            else if (it.partWorkDone.isNullOrEmpty() || it.partWorkDone!!.toInt()==0){
-                message =getString(R.string.assign_work_done_message)
+                message = getString(R.string.assign_lumpers_endtime_starttime_message)
+            } else if (!it.breakTimeStart.isNullOrEmpty() && it.breakTimeEnd.isNullOrEmpty()) {
+                message = getString(R.string.assign_lumpers_bracktime_message)
+            } else if (it.partWorkDone.isNullOrEmpty() || it.partWorkDone!!.toInt() == 0) {
+                message = getString(R.string.assign_work_done_message)
             }
         }
-        return message;
+        return message
     }
 
     /** Child Fragment Interaction Listeners */
@@ -324,16 +398,37 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         workSheetItemDetailPresenter.fetchWorkItemDetail(workItemId)
     }
 
-    override fun updateWorkItemNotes(notesQHLCustomer: String, notesQHL: String) {
+    override fun updateWorkItemNotes(notesQHLCustomer: String, notesQHL: String, noteImageArrayList: ArrayList<String>) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {
             ConnectionDetector.createSnackBar(activity)
             return
         }
-
-        workSheetItemDetailPresenter.updateWorkItemNotes(workItemId, notesQHLCustomer, notesQHL)
+        workSheetItemDetailPresenter.updateWorkItemNotes(workItemId, notesQHLCustomer, notesQHL, noteImageArrayList)
     }
 
     override fun dataChanged(isChanged: Boolean) {
         if (isChanged) isDataSave(false) else isDataSave(true)
+    }
+
+    override fun removeLumperFromSchedule(
+        lumperIds: ArrayList<String>,
+        tempLumperIds: ArrayList<String>
+    ) {
+
+        CustomProgressBar.getInstance().showWarningDialog(
+            getString(R.string.remove_lumper_warning),
+            activity,
+            object : CustomDialogWarningListener {
+                override fun onConfirmClick() {
+                    workSheetItemDetailPresenter.removeLumper(lumperIds, tempLumperIds, workItemId)
+                }
+
+                override fun onCancelClick() {
+                }
+            })
+    }
+
+    override fun uploadNoteImage(imageFileName: MultipartBody.Part) {
+        workSheetItemDetailPresenter.uploadNoteImage(imageFileName)
     }
 }

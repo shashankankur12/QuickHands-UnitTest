@@ -52,10 +52,10 @@ class CustomProgressBar {
     fun showMessageDialog(message: String, activityContext: Context) {
         val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.NORMAL_TYPE)
         progressDialog.titleText = ""
-        progressDialog.showTitleText(false)
         progressDialog.contentText = message.capitalize()
         progressDialog.confirmText = activityContext.getString(R.string.ok)
         progressDialog.show()
+        progressDialog.showTitleText(false)
         progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
         progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
         updateButtonsUI(progressDialog, activityContext)
@@ -146,6 +146,19 @@ class CustomProgressBar {
             listener.onCancelClick()
         }
         progressDialog.show()
+        progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewThemeBlack)
+        progressDialog.setContentTextAppearance(R.style.dialogTitleTextViewThemeBlack)
+        updateButtonsUI(progressDialog, activityContext)
+    }
+
+
+    fun showErrorWarningDialog(message: String = "", activityContext: Context) {
+        val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.WARNING_TYPE)
+        progressDialog.titleText = ""
+        progressDialog.contentText = message.capitalize()
+        progressDialog.confirmText = activityContext.getString(R.string.ok)
+        progressDialog.show()
+        progressDialog.showTitleText(false)
         progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
         progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
         updateButtonsUI(progressDialog, activityContext)
@@ -169,6 +182,18 @@ class CustomProgressBar {
         progressDialog.show()
         progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
         progressDialog.setContentTextAppearance(R.style.dialogContentTextViewTheme)
+        updateButtonsUI(progressDialog, activityContext)
+    }
+
+    fun showValidationErrorDialog(message: String, activityContext: Context) {
+        val progressDialog = SweetAlertDialog(activityContext, SweetAlertDialog.ERROR_TYPE)
+        progressDialog.titleText = activityContext.getString(R.string.error)
+        progressDialog.contentText = message.capitalize()
+        progressDialog.confirmText = activityContext.getString(R.string.ok)
+        progressDialog.show()
+        progressDialog.showTitleText(false)
+        progressDialog.setTitleTextAppearance(R.style.dialogTitleTextViewTheme)
+        progressDialog.setContentTextAppearance(R.style.dialogContentTextViewSmall)
         updateButtonsUI(progressDialog, activityContext)
     }
 

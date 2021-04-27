@@ -7,34 +7,38 @@
     android:orientation="vertical"
     android:padding="@dimen/_8ssp">
 
+    <ImageView
+        android:id="@+id/imageViewAdd"
+        android:layout_width="@dimen/_18sdp"
+        android:layout_height="@dimen/_18sdp"
+        android:src="@drawable/ic_add_lumper_green_tick"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/content_description" />
+
+    <TextView
+        android:id="@+id/textViewDescription"
+        style="@style/valuesVerySmallTextViewTheme"
+        android:layout_width="0dp"
+        android:paddingHorizontal="@dimen/_6sdp"
+        android:textColor="@color/textBlack"
+        app:layout_constraintWidth_percent="0.70"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/imageViewAdd"
+        app:layout_constraintStart_toEndOf="@+id/textViewStatus"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textViewStatus"
         style="@style/valuesBigTextViewTheme"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:text="@string/in_progress"
+        app:layout_constraintWidth_percent="0.25"
         android:textColor="@color/textBlack"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/textViewDescription"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textViewDescription"
-        style="@style/valuesVerySmallTextViewTheme"
-        android:layout_width="0dp"
-        android:textColor="@color/textBlack"
-        android:layout_marginHorizontal="@dimen/_8sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/imageViewAdd"
-        app:layout_constraintStart_toEndOf="@+id/textViewStatus"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageViewAdd"
-        android:layout_width="@dimen/_18sdp"
-        android:layout_height="@dimen/_18sdp"
-        android:src="@drawable/ic_add_lumer_tick"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

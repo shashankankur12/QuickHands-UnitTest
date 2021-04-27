@@ -1,6 +1,8 @@
 package com.quickhandslogistics.network
 
+import com.quickhandslogistics.contracts.workSheet.UploadImageResponse
 import com.quickhandslogistics.data.BaseResponse
+import com.quickhandslogistics.data.addContainer.AddContainerRequest
 import com.quickhandslogistics.data.attendance.AttendanceDetail
 import com.quickhandslogistics.data.attendance.GetAttendanceAPIResponse
 import com.quickhandslogistics.data.buildingOperations.BuildingOperationAPIResponse
@@ -14,11 +16,15 @@ import com.quickhandslogistics.data.login.LoginResponse
 import com.quickhandslogistics.data.lumperSheet.LumperSheetListAPIResponse
 import com.quickhandslogistics.data.lumperSheet.LumperWorkDetailAPIResponse
 import com.quickhandslogistics.data.lumperSheet.SubmitLumperSheetRequest
+import com.quickhandslogistics.data.lumpers.BuildingDetailsResponse
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
+import com.quickhandslogistics.data.qhlContact.QhlContactListResponse
+import com.quickhandslogistics.data.qhlContact.QhlOfficeInfoResponse
 import com.quickhandslogistics.data.reports.ReportRequest
 import com.quickhandslogistics.data.reports.ReportResponse
 import com.quickhandslogistics.data.schedule.*
 import com.quickhandslogistics.data.scheduleTime.*
+import com.quickhandslogistics.data.scheduleTime.leadinfo.GetLeadInfoResponse
 import com.quickhandslogistics.data.workSheet.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -48,10 +54,18 @@ interface IApiInterface {
         @Query("page") page: Int, @Query("pageSize") pageSize: Int
     ): Call<ScheduleListAPIResponse>
 
+
+    @GET("schedule/lookup/date")
+    fun getSchedulesDetails(
+        @Header("Authorization") auth: String, @Query("date") date: String, @Query("department") department: String,
+        @Query("page") page: Int, @Query("pageSize") pageSize: Int
+    ): Call<ScheduleListAPIResponse>
+
+
     @GET("schedule/unscheduled")
     fun getUnSchedulesList(@Header("Authorization") auth: String): Call<UnScheduleListAPIResponse>
 
-    @GET("schedule/identity/{scheduleIdentityId}")
+    @GET("schedule/{scheduleIdentityId}")
     fun getScheduleDetail(
         @Header("Authorization") auth: String, @Path("scheduleIdentityId") scheduleIdentityId: String, @Query("day") day: String
     ): Call<ScheduleDetailAPIResponse>
@@ -59,9 +73,20 @@ interface IApiInterface {
     @GET("schedule/{workItemId}")
     fun getWorkItemDetail(@Header("Authorization") auth: String, @Path("workItemId") workItemId: String): Call<WorkItemDetailAPIResponse>
 
-    @PUT("schedule/lumper/{workItemId}")
+    @GET("schedule/work-item/{workItemId}")
+    fun getWorkItemContainerDetail(@Header("Authorization") auth: String, @Path("workItemId") workItemId: String): Call<WorkItemDetailAPIResponse>
+
+    @PUT("schedule/lumpers")
     fun assignLumpers(
-        @Header("Authorization") auth: String, @Path("workItemId") workItemId: String, @Body request: AssignLumpersRequest
+        @Header("Authorization") auth: String, @Query("containerId") containerId: String, @Body request: AssignLumpersRequest
+    ): Call<BaseResponse>
+
+    @HTTP(method = "DELETE", path = "schedule/lumpers", hasBody = true)
+    fun removeLumperFromWork(@Header("Authorization") auth: String, @Query("containerId") containerId: String, @Body request: AssignLumpersRequest
+    ): Call<BaseResponse>
+
+        @POST("employees/lead/add-schedule")
+    fun addSchedulesWorkItem(@Header("Authorization") auth: String, @Body request: AddContainerRequest
     ): Call<BaseResponse>
     /////////////////////////////////////////////////////////////
 
@@ -71,7 +96,7 @@ interface IApiInterface {
 
     @POST("schedule/{workItemId}/operations")
     fun saveBuildingOperationsDetail(
-        @Header("Authorization") auth: String, @Path("workItemId") workItemId: String, @Body request: HashMap<String, String>
+        @Header("Authorization") auth: String, @Path("workItemId") workItemId: String, @Body request: BuildingOperationRequest
     ): Call<BaseResponse>
     /////////////////////////////////////////////////////////////
 
@@ -90,6 +115,9 @@ interface IApiInterface {
     @GET("employees/scheduled/lumpers")
     fun getScheduleTimeList(@Header("Authorization") auth: String, @Query("day") day: String): Call<GetScheduleTimeAPIResponse>
 
+    @GET("employees/lead/work-info")
+    fun getLeadWorkInfo(@Header("Authorization") auth: String, @Query("day") day: String): Call<GetLeadInfoResponse>
+
     @POST("employees/schedule/lumpers")
     fun saveScheduleTimeDetails(@Header("Authorization") auth: String, @Body request: ScheduleTimeRequest): Call<BaseResponse>
 
@@ -104,7 +132,7 @@ interface IApiInterface {
         @Header("Authorization") auth: String, @Path("requestId") requestId: String, @Body request: RequestLumpersRequest
     ): Call<BaseResponse>
 
-    @POST("employees/requests/cancel")
+    @POST("employees/lumpers-request/cancel")
     fun cancelRequestLumpers(@Header("Authorization") auth: String, @Body request: CancelRequestLumpersRequest): Call<BaseResponse>
 
     @DELETE("employees/scheduled/lumpers/{lumperId}")
@@ -136,6 +164,18 @@ interface IApiInterface {
     fun cancelAllSchedules(
         @Header("Authorization") auth: String, @Path("day") day: String, @Body request: CancelAllSchedulesRequest
     ): Call<BaseResponse>
+
+    @POST("schedule/notes")
+    fun saveGroupNoteSchedules(@Header("Authorization") auth: String, @Query("day") day: String, @Body request: SaveNoteWorkItemRequest
+    ): Call<BaseResponse>
+
+    @PUT("schedule/notes/{noteId}")
+    fun updateGroupNoteSchedules(@Header("Authorization") auth: String, @Path("noteId") noteId: String, @Body request: UpdateGroupNoteRequest
+    ): Call<BaseResponse>
+
+    @DELETE("schedule/notes")
+    fun saveGroupNoteSchedules(@Header("Authorization") auth: String, @Query("id") id: String): Call<BaseResponse>
+
     /////////////////////////////////////////////////////////////
 
     // Customer Sheet /////////////////////////////////////////////////
@@ -195,4 +235,30 @@ interface IApiInterface {
     @GET("employees/lead/lumpers/date-range")
     fun getAllLumpersSelectedDates(@Header("Authorization") auth: String, @Query("dayStart") dayStart: String, @Query("dayEnd") dayEnd: String): Call<LumperListAPIResponse>
     /////////////////////////////////////////////////////////////
+
+    //QHL Contact////////////////////////////////////////////////
+    @GET("employees/lead/qhl-contacts")
+    fun getQhlContactList(@Header("Authorization") auth: String): Call<QhlContactListResponse>
+
+    @GET("employees/admin/office")
+    fun getQhlOfficeInfo(@Header("Authorization") auth: String): Call<QhlOfficeInfoResponse>
+    ////////////////////////////////////////////////////////////
+
+    //Customer Contact/////////////////////////////////////////
+    @GET("employees/lead/customer-contacts")
+    fun getCustomerContactList(@Header("Authorization") auth: String): Call<QhlContactListResponse>
+    ////////////////////////////////////////////////////////////
+
+    //Upload Image/////////////////////////////////////////////
+    @Multipart
+    @POST("employees/upload/image")
+    fun uploadImage(@Header("Authorization") auth: String, @Part image: MultipartBody.Part): Call<UploadImageResponse>
+    ///////////////////////////////////////////////////////////
+
+    //Building Details////////////////////////////////////////
+    @GET("employees/lead/buildings/{buildingId}")
+    fun getBuildingDetails(@Header("Authorization") auth: String, @Path("buildingId") buildingId: String
+    ): Call<BuildingDetailsResponse>
+
+
 }

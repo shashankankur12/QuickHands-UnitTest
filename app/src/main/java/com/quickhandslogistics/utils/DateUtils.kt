@@ -18,7 +18,7 @@ class DateUtils {
         const val PATTERN_DATE_DISPLAY_CUSTOMER_SHEET= "MM/dd/yyyy"
         const val PATTERN_MONTH_DAY_DISPLAY = "MMMM dd, yyyy"
         const val PATTERN_DATE_TIME_DISPLAY = "dd MMM yyyy, HH:mm a"
-        private const val PATTERN_TIME = "hh:mm a"
+        const val PATTERN_TIME = "hh:mm a"
 
         var sharedPref: SharedPref = SharedPref.getInstance()
 
@@ -129,7 +129,7 @@ class DateUtils {
         fun getDateTimeCalculeted(morningPunchIn: String, eveningPunchOut: String): String {
             val punchIn= convertUTCDateStringToMilliseconds(PATTERN_API_RESPONSE, morningPunchIn)
             val punchOut= convertUTCDateStringToMilliseconds(PATTERN_API_RESPONSE, eveningPunchOut)
-            val diffrence=punchOut-punchIn
+            val diffrence = punchOut - punchIn
 
             return String.format("%s H %s M",
                 (diffrence / (1000 * 60 * 60) % 24),
@@ -138,21 +138,22 @@ class DateUtils {
         }
 
 
-        fun getDateTimeCalculetedLong(morningPunchIn: Long, eveningPunchOut: Long): String {
-            val diffrence=eveningPunchOut-morningPunchIn
-
+        fun getDateTimeCalculatedLong(morningPunchIn: Long, eveningPunchOut: Long): String {
+            val difference = eveningPunchOut - morningPunchIn
             return String.format("%s H %s M",
-                (diffrence / (1000 * 60 * 60) % 24),
-                (diffrence / (1000 * 60) % 60)
+                    (difference / (1000 * 60 * 60) % 24),
+                    (difference / (1000 * 60) % 60)
             )
         }
+
+        fun getDateTimeCalculatedLong(difference: Long): String = String.format("%s H %s M", (difference / (1000 * 60 * 60) % 24), (difference / (1000 * 60) % 60))
 
         fun convertDateStringToTime(patternDate: String, dateString: String? = ""): String {
             val dateStringValue = ValueUtils.getDefaultOrValue(dateString)
 
-            val dateFormatFrom = SimpleDateFormat(patternDate)
+            val dateFormatFrom = SimpleDateFormat(patternDate, Locale.getDefault())
             dateFormatFrom.timeZone = TimeZone.getTimeZone("UTC")
-            val dateFormatTo = SimpleDateFormat(PATTERN_TIME)
+            val dateFormatTo = SimpleDateFormat(PATTERN_TIME, Locale.getDefault())
             try {
                 val date = dateFormatFrom.parse(dateStringValue)
                 date?.let {
@@ -179,10 +180,8 @@ class DateUtils {
             return dateStringValue
         }
 
-
-
         fun convertMillisecondsToTimeString(milliseconds: Long): String {
-            val dateFormatTo = SimpleDateFormat(PATTERN_TIME)
+            val dateFormatTo = SimpleDateFormat(PATTERN_TIME, Locale.getDefault())
             return dateFormatTo.format(Date(milliseconds))
         }
 
@@ -253,13 +252,13 @@ class DateUtils {
                 var shiftDetail: ShiftDetail? = null
                 when (leadProfile.shift) {
                     AppConstant.EMPLOYEE_SHIFT_MORNING -> {
-                        shiftDetail = leadProfile.buildingDetailData?.morningShift
+                        shiftDetail = leadProfile.buildingDetailData?.get(0)?.morningShift
                     }
                     AppConstant.EMPLOYEE_SHIFT_SWING -> {
-                        shiftDetail = leadProfile.buildingDetailData?.swingShift
+                        shiftDetail = leadProfile.buildingDetailData?.get(0)?.swingShift
                     }
                     AppConstant.EMPLOYEE_SHIFT_NIGHT -> {
-                        shiftDetail = leadProfile.buildingDetailData?.nightShift
+                        shiftDetail = leadProfile.buildingDetailData?.get(0)?.nightShift
                     }
                 }
                 val date = calculateDateByShiftStartTime(
@@ -283,13 +282,13 @@ class DateUtils {
                 var shiftDetail: ShiftDetail? = null
                 when (leadProfile.shift) {
                     AppConstant.EMPLOYEE_SHIFT_MORNING -> {
-                        shiftDetail = leadProfile.buildingDetailData?.morningShift
+                        shiftDetail = leadProfile.buildingDetailData?.get(0)?.morningShift
                     }
                     AppConstant.EMPLOYEE_SHIFT_SWING -> {
-                        shiftDetail = leadProfile.buildingDetailData?.swingShift
+                        shiftDetail = leadProfile.buildingDetailData?.get(0)?.swingShift
                     }
                     AppConstant.EMPLOYEE_SHIFT_NIGHT -> {
-                        shiftDetail = leadProfile.buildingDetailData?.nightShift
+                        shiftDetail = leadProfile.buildingDetailData?.get(0)?.nightShift
                     }
                 }
                 date = calculateDateByShiftStartTime(shiftDetail, originalDate, leadProfile.shift)

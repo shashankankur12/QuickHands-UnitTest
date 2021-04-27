@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/appBackground">
+
+    <com.quickhandslogistics.controls.CustomTextView
+        android:id="@+id/textViewCompanyName"
+        style="@style/titleBigTextViewTheme"
+        android:layout_width="match_parent"
+        android:layout_marginStart="@dimen/_12ssp"
+        android:layout_marginEnd="@dimen/_12ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.quickhandslogistics.controls.CustomTextView
+        android:id="@+id/textViewWorkItemsDate"
+        style="@style/valuesTextViewTheme"
+        android:layout_marginStart="@dimen/_12ssp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginEnd="@dimen/_12ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCompanyName" />
+
+    <LinearLayout
+        android:id="@+id/shiftLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="@dimen/_12ssp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginEnd="@dimen/_12ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemsDate" >
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewWorkItemShift"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewWorkItemDept"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/countNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="@dimen/_12ssp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginEnd="@dimen/_12ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shiftLayout" >
+
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewTotalCount"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewGroupNote"
+            app:layout_constraintTop_toBottomOf="@+id/shiftLayout" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <com.quickhandslogistics.controls.CustomTextView
+                android:id="@+id/textViewGroupNote"
+                style="@style/noteTextViewTheme"
+                android:layout_width="wrap_content"
+                android:text="@string/customer_notes"
+                android:layout_gravity="start"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/scheduleDetail"
+                app:layout_constraintStart_toEndOf="@+id/textViewTotalCount"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/shiftLayout" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/flexboxLayoutCounts"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_12ssp"
+        android:layout_marginEnd="@dimen/_12ssp"
+        app:flexWrap="wrap"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/countNote">
+
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewUnfinishedCount"
+            style="@style/darkYellowChipTheme"
+            android:textSize="@dimen/_9ssp"
+            android:layout_marginTop="@dimen/_6sdp" />
+
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewOutBoundsCount"
+            style="@style/blueChipTheme"
+            android:textSize="@dimen/_9ssp"
+            android:layout_marginStart="@dimen/_2ssp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginEnd="@dimen/_2ssp" />
+
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewLiveLoadsCount"
+            style="@style/blueChipTheme"
+            android:textSize="@dimen/_9ssp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginEnd="@dimen/_2ssp" />
+
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewDropsCount"
+            style="@style/blueChipTheme"
+            android:textSize="@dimen/_9ssp"
+            android:layout_marginTop="@dimen/_6sdp" />
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <LinearLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/white_background"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/_12ssp"
+        android:paddingTop="@dimen/_2ssp"
+        android:paddingEnd="@dimen/_12ssp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/flexboxLayoutCounts">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayoutWorkSheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabGravity="fill"
+            app:tabMode="scrollable"
+            app:tabMaxWidth="0dp"
+            app:tabIndicatorColor="@color/buttonRed"
+            app:tabIndicatorFullWidth="true"
+            app:tabPadding="@dimen/_6sdp"
+            app:tabSelectedTextColor="@color/textBlack"
+            app:tabTextAppearance="@style/TabTextAppearance"
+            app:tabTextColor="@color/detailHeader" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/greyDivider" />
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_pull_refresh"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_weight="1"
+            android:layout_height="0dp">
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPagerWorkSheet"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

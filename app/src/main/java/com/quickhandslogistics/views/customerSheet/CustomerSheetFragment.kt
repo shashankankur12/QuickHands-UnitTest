@@ -39,7 +39,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_customer_sheet_fragement.text
 import kotlinx.android.synthetic.main.customer_sheet_content.*
 import kotlinx.android.synthetic.main.customer_sheet_content.textViewBuildingName
 import kotlinx.android.synthetic.main.customer_sheet_contner.*
-import kotlinx.android.synthetic.main.fragment_customer_sheet.bottomSheetBackground
+import kotlinx.android.synthetic.main.fragment_customer_sheet.*
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
@@ -240,7 +240,9 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
     }
 
     override fun showAPIErrorMessage(message: String) {
-        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+        if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
+        } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
 
         // Reset Whole Screen Data
         textViewCompanyName.text = ""
@@ -289,7 +291,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
     private fun buildingDetails(scheduleDetails: CustomerSheetScheduleDetails, customerSheet: CustomerSheetData?) {
 
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
-        leadProfile?.buildingDetailData?.let {
+        leadProfile?.buildingDetailData?.get(0)?.let {
             textViewBuildingName.text=  it.buildingName!!.capitalize()+ " \n"+it.buildingAddress!!.capitalize() +", \n"+it.buildingCity+", "+it.buildingState +" "+it .buildingZipcode
         }
         textViewHeaderBar.text= UIUtils.getSpannableText(getString(R.string.date),DateUtils.getDateString(PATTERN_DATE_DISPLAY_CUSTOMER_SHEET, selectedDate))

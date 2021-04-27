@@ -13,23 +13,22 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.workSheet.WorkSheetItemAdapter
 import com.quickhandslogistics.contracts.workSheet.WorkSheetContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemContract
+import com.quickhandslogistics.controls.Quintuple
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
-import com.quickhandslogistics.data.workSheet.WorkSheetListAPIResponse
-import com.quickhandslogistics.views.BaseFragment
-import com.quickhandslogistics.views.common.DisplayLumpersListActivity
-import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
-import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
+import com.quickhandslogistics.data.workSheet.ContainerGroupNote
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.ConnectionDetector
 import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.ScheduleUtils
-import com.quickhandslogistics.views.customerSheet.CustomerSheetContainersFragment
-import kotlinx.android.synthetic.main.fragment_work_sheet_item.*
-import kotlin.collections.ArrayList
+import com.quickhandslogistics.views.BaseFragment
+import com.quickhandslogistics.views.common.DisplayLumpersListActivity
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
+import kotlinx.android.synthetic.main.content_work_sheet_item.*
 
-class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapterItemClickListener {
+class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapterItemClickListener, View.OnClickListener, View.OnLongClickListener {
 
     private var onFragmentInteractionListener: WorkSheetContract.View.OnFragmentInteractionListener? = null
 
@@ -37,6 +36,9 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
     private var onGoingWorkItems = java.util.ArrayList<WorkItemDetail>()
     private var cancelledWorkItems = java.util.ArrayList<WorkItemDetail>()
     private var completedWorkItems = java.util.ArrayList<WorkItemDetail>()
+    private var unfinishedWorkItems = java.util.ArrayList<WorkItemDetail>()
+    private var notDoneWorkItems = java.util.ArrayList<WorkItemDetail>()
+    private var groupNotes: ContainerGroupNote? =null
 
     private lateinit var workSheetItemAdapter: WorkSheetItemAdapter
 
@@ -45,10 +47,16 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
         private const val ARG_ONGOING_ITEMS = "ARG_ONGOING_ITEMS"
         private const val ARG_CANCELLED_ITEMS = "ARG_CANCELLED_ITEMS"
         private const val ARG_COMPLETED_ITEMS = "ARG_COMPLETED_ITEMS"
+        private const val ARG_UNFINISHED_ITEMS = "ARG_UNFINISHED_ITEMS"
+        private const val ARG_NOT_DONE_ITEMS = "ARG_NOT_DONE_ITEMS"
+        private const val ARG_NOTE_DATA = "ARG_NOTE_DATA"
 
         @JvmStatic
         fun newInstance(
-            workItemType: String, allWorkItemLists: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>?) = WorkSheetItemFragment()
+            workItemType: String,
+            allWorkItemLists: Quintuple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>?,
+            containerGroupNote: ContainerGroupNote?=null
+        ) = WorkSheetItemFragment()
             .apply {
                 arguments = Bundle().apply {
                     putString(ARG_WORK_ITEM_TYPE, workItemType)
@@ -56,7 +64,12 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
                         putParcelableArrayList(ARG_ONGOING_ITEMS, allWorkItemLists.first)
                         putParcelableArrayList(ARG_CANCELLED_ITEMS, allWorkItemLists.second)
                         putParcelableArrayList(ARG_COMPLETED_ITEMS, allWorkItemLists.third)
+                        putParcelableArrayList(ARG_UNFINISHED_ITEMS, allWorkItemLists.fourth)
+                        putParcelableArrayList(ARG_NOT_DONE_ITEMS, allWorkItemLists.fifth)
                     }
+                   if (containerGroupNote!=null){
+                      putParcelable(ARG_NOTE_DATA, containerGroupNote)
+                   }
                 }
             }
     }
@@ -73,12 +86,18 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
         arguments?.let {
             workItemType = it.getString(ARG_WORK_ITEM_TYPE, "")
             if (it.containsKey(ARG_ONGOING_ITEMS))
-            onGoingWorkItems = it.getParcelableArrayList(ARG_ONGOING_ITEMS)!!
+                onGoingWorkItems = it.getParcelableArrayList(ARG_ONGOING_ITEMS)!!
             if (it.containsKey(ARG_CANCELLED_ITEMS))
-            cancelledWorkItems = it.getParcelableArrayList(ARG_CANCELLED_ITEMS)!!
+                cancelledWorkItems = it.getParcelableArrayList(ARG_CANCELLED_ITEMS)!!
             if (it.containsKey(ARG_COMPLETED_ITEMS))
+                completedWorkItems = it.getParcelableArrayList(ARG_COMPLETED_ITEMS)!!
+            if (it.containsKey(ARG_UNFINISHED_ITEMS))
+                unfinishedWorkItems = it.getParcelableArrayList(ARG_UNFINISHED_ITEMS)!!
+            if (it.containsKey(ARG_NOT_DONE_ITEMS))
+                notDoneWorkItems = it.getParcelableArrayList(ARG_NOT_DONE_ITEMS)!!
 
-            completedWorkItems = it.getParcelableArrayList(ARG_COMPLETED_ITEMS)!!
+            if (it.containsKey(ARG_NOTE_DATA))
+                groupNotes = it.getParcelable<ContainerGroupNote>(ARG_NOTE_DATA) as ContainerGroupNote
         }
     }
 
@@ -100,23 +119,88 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
             RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                textViewEmptyData.visibility = if (workSheetItemAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                textViewEmptyData.visibility =
+                    if (workSheetItemAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                setVisibility()
             }
         })
 
         textViewEmptyData.text = when (workItemType) {
             getString(R.string.ongoing) -> getString(R.string.empty_containers_list_ongoing_info_message)
-            getString(R.string.cancelled) -> getString(R.string.empty_containers_list_cancelled_info_message)
-            else -> getString(R.string.empty_containers_list_completed_info_message)
+            getString(R.string.cancel) -> getString(R.string.empty_containers_list_cancelled_info_message)
+            getString(R.string.complete) -> getString(R.string.empty_containers_list_completed_info_message)
+            getString(R.string.unfinished) -> getString(R.string.empty_containers_list_unfinished_info_message)
+            else -> getString(R.string.empty_containers_list_not_done_info_message)
         }
-        when(workItemType){
-            getString(R.string.ongoing) ->  updateWorkItemsList(onGoingWorkItems)
-            getString(R.string.cancelled) ->  updateWorkItemsList(cancelledWorkItems)
-            else ->updateWorkItemsList(completedWorkItems)
+        when (workItemType) {
+            getString(R.string.ongoing) -> {
+                updateWorkItemsList(onGoingWorkItems)
+            }
+            getString(R.string.cancel) -> {
+                updateWorkItemsList(cancelledWorkItems,groupNotes)
 
+            }
+            getString(R.string.complete) -> {
+                updateWorkItemsList(completedWorkItems)
+
+            }
+            getString(R.string.unfinished) -> {
+                updateWorkItemsList(unfinishedWorkItems,groupNotes)
+            }
+            else -> updateWorkItemsList(notDoneWorkItems)
         }
+
+        textViewAddGroupNote.setOnClickListener(this)
+        textViewShowGroupNote.setOnClickListener(this)
+        textViewEditGroupNote.setOnClickListener(this)
+        textViewDeleteGroupNote.setOnClickListener(this)
+        textViewShowGroupNote.setOnLongClickListener(this)
     }
 
+    fun setVisibility() {
+        if (workSheetItemAdapter.getItemList().size > 0 && (workItemType == getString(R.string.cancel))) {
+            if (groupNotes != null) {
+                textViewAddGroupNote.visibility = View.GONE
+                textViewShowGroupNote.visibility = View.VISIBLE
+                textViewEditGroupNote.visibility = View.VISIBLE
+                textViewDeleteGroupNote.visibility = View.VISIBLE
+            } else {
+                textViewAddGroupNote.visibility = View.VISIBLE
+                textViewShowGroupNote.visibility = View.GONE
+                textViewEditGroupNote.visibility = View.GONE
+                textViewDeleteGroupNote.visibility = View.GONE
+            }
+        } else if (workSheetItemAdapter.getItemList().size > 0 && (workItemType == getString(R.string.unfinished))) {
+            if (groupNotes != null) {
+                textViewAddGroupNote.visibility = View.GONE
+                textViewShowGroupNote.visibility = View.VISIBLE
+                textViewEditGroupNote.visibility = View.VISIBLE
+                textViewDeleteGroupNote.visibility = View.VISIBLE
+            } else {
+                textViewAddGroupNote.visibility = View.VISIBLE
+                textViewShowGroupNote.visibility = View.GONE
+                textViewEditGroupNote.visibility = View.GONE
+                textViewDeleteGroupNote.visibility = View.GONE
+            }
+        } else if (workSheetItemAdapter.getItemList().size > 0 && (workItemType == getString(R.string.not_open))) {
+            if (groupNotes != null) {
+                textViewAddGroupNote.visibility = View.GONE
+                textViewShowGroupNote.visibility = View.VISIBLE
+                textViewEditGroupNote.visibility = View.VISIBLE
+                textViewDeleteGroupNote.visibility = View.VISIBLE
+            } else {
+                textViewAddGroupNote.visibility = View.VISIBLE
+                textViewShowGroupNote.visibility = View.GONE
+                textViewEditGroupNote.visibility = View.GONE
+                textViewDeleteGroupNote.visibility = View.GONE
+            }
+        }else{
+            textViewAddGroupNote.visibility = View.GONE
+            textViewShowGroupNote.visibility = View.GONE
+            textViewEditGroupNote.visibility = View.GONE
+            textViewDeleteGroupNote.visibility = View.GONE
+        }
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
@@ -124,9 +208,12 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
         }
     }
 
-    fun updateWorkItemsList(workItemsList: ArrayList<WorkItemDetail>) {
+    fun updateWorkItemsList(
+        workItemsList: ArrayList<WorkItemDetail>, notOpenNotes: ContainerGroupNote?= null) {
+        this.groupNotes=notOpenNotes
         workSheetItemAdapter.updateList(workItemsList)
     }
+
 
     /** Adapter Listeners */
     override fun onItemClick(workItemId: String, workItemTypeDisplayName: String) {
@@ -158,10 +245,85 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
             return
         }
 
-        workItemDetail.scheduleNote?.let {
-            val title= ScheduleUtils.scheduleTypeNotePopupTitle(workItemDetail, resources)
+        workItemDetail.schedule?.scheduleNote?.let {
+            val title= ScheduleUtils.scheduleNotePopupTitle(workItemDetail.schedule, resources)
             CustomProgressBar.getInstance().showInfoDialog(title, it, fragmentActivity!!)
         }
 
+    }
+
+    override fun onClick(view: View?) {
+        when(view!!.id){
+            textViewAddGroupNote.id->{
+                val containerIds:ArrayList<String> = ArrayList()
+                var containerType:String =""
+                when (workItemType) {
+                    getString(R.string.cancel) -> {
+                        containerType="CANCELLED"
+                    }
+                    getString(R.string.unfinished) -> {
+                        containerType="UNFINISHED"
+                    }
+                    getString(R.string.not_open) -> {
+                        containerType="NOTOPEN"
+                    }
+                }
+                workSheetItemAdapter.getItemList().forEach {
+                    it.id?.let { it1 -> containerIds.add(it1) }
+                }
+
+                if (!containerIds.isNullOrEmpty())
+                onFragmentInteractionListener?.showBottomSheetGroupNote( null, containerIds, containerType)
+            }
+            textViewShowGroupNote.id->{
+                groupNotes?.let {
+                    val noteForCustomer= if(!it.noteForCustomer.isNullOrEmpty()) it.noteForCustomer?.capitalize()else "N/A"
+                    val noteForQhl= if(!it.noteForQHL.isNullOrEmpty()) it.noteForQHL?.capitalize()else "N/A"
+                    onFragmentInteractionListener?.showGroupNote(noteForCustomer!!, noteForQhl!!)
+                }
+
+            }
+            textViewDeleteGroupNote.id->{
+                groupNotes?.let {
+                    onFragmentInteractionListener?.removeGroupNote(it.id)
+                }
+            }
+            textViewEditGroupNote.id->{
+                val containerIds:ArrayList<String> = ArrayList()
+                var containerType:String =""
+                when (workItemType) {
+                    getString(R.string.cancel) -> {
+                        containerType="CANCELLED"
+                    }
+                    getString(R.string.unfinished) -> {
+                        containerType="UNFINISHED"
+                    }
+                    getString(R.string.not_open) -> {
+                        containerType="NOTOPEN"
+                    }
+                }
+                workSheetItemAdapter.getItemList().forEach {
+                    it.id?.let { it1 -> containerIds.add(it1) }
+                }
+                onFragmentInteractionListener?.showBottomSheetGroupNote(groupNotes, containerIds, containerType)
+            }
+        }
+    }
+
+    override fun onLongClick(view: View?): Boolean {
+        view?.let {
+            return when (view.id) {
+                textViewShowGroupNote.id -> {
+                    groupNotes?.let {
+                    onFragmentInteractionListener?.removeGroupNote(it.id)
+                    }
+                    return true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
+        return false
     }
 }

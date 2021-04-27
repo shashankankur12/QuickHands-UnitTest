@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayoutWorkSheetItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:elevation="50dp"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    tools:showIn="@layout/fragment_work_sheet_item">
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        style="@style/titleBigTextViewTheme"
+        android:layout_width="0dp"
+        android:gravity="center"
+        android:paddingTop="@dimen/_8ssp"
+        android:paddingBottom="@dimen/_8ssp"
+        android:text="@string/group_notes"
+        android:background="@drawable/schedule_item_background"
+        android:textColor="@color/textBlack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/linearLayoutEditLumper"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/_8sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
+        android:layout_marginTop="@dimen/_8sdp">
+
+        <LinearLayout
+            android:id="@+id/layoutCustomerNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@drawable/schedule_item_background"
+            android:orientation="vertical"
+            android:padding="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                style="@style/titleTextViewTheme"
+                android:text="@string/notes_for_customer" />
+
+            <EditText
+                android:id="@+id/editTextQHLCustomerNotes"
+                style="@style/notesEditTextTheme" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutQHLNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:background="@drawable/schedule_item_background"
+            android:orientation="vertical"
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutCustomerNotes">
+
+            <TextView
+                style="@style/titleTextViewTheme"
+                android:text="@string/notes_for_qhl" />
+
+            <EditText
+                android:id="@+id/editTextQHLNotes"
+                style="@style/notesEditTextTheme" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutUpdateCancle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonSaveGroupNote"
+                style="@style/positiveRoundButtonTheme"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:text="@string/save" />
+
+            <Button
+                android:id="@+id/buttonCancelGroupNote"
+                style="@style/negativeRoundButtonTheme"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:text="@string/cancel" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

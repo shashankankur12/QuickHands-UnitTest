@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_8sdp"
+    android:background="@drawable/schedule_item_background"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:id="@+id/relativeLayoutSide"
+        android:layout_width="@dimen/_6ssp"
+        android:layout_height="0dp"
+        android:background="@drawable/schedule_item_stroke_scheduled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:padding="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:id="@+id/textViewContainerType"
+            style="@style/titleBigTextViewThemeHeader"
+            android:layout_width="0dp"
+            android:textStyle="bold"
+            android:text="@string/out_bound"
+            app:layout_constraintEnd_toStartOf="@+id/textViewRemove"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewRemove"
+            style="@style/baseChipTheme"
+            android:text="X"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:background="@drawable/add_container_item_status"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewQuantity"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="wrap_content"
+            android:text="@string/quantity"
+            android:layout_marginTop="@dimen/_8sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/editTextQuantity"
+            app:layout_constraintTop_toBottomOf="@+id/textViewRemove" />
+
+        <EditText
+            android:id="@+id/editTextQuantity"
+            style="@style/notesEditTextTheme"
+            android:layout_width="0dp"
+            android:textSize="@dimen/_10ssp"
+            android:inputType="number"
+
+            android:maxLength="2"
+            android:textAlignment="center"
+            android:layout_marginStart="@dimen/_2sdp"
+            app:layout_constraintTop_toBottomOf="@+id/textViewRemove"
+            app:layout_constraintStart_toEndOf="@+id/textViewQuantity"
+            app:layout_constraintEnd_toStartOf="@+id/textViewStartTime" />
+        <com.quickhandslogistics.controls.CustomTextView
+            android:id="@+id/textViewStartTime"
+            style="@style/valuesTextViewTheme"
+            android:layout_width="wrap_content"
+            android:text="@string/start_time_add_container"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            app:layout_constraintStart_toEndOf="@+id/editTextQuantity"
+            app:layout_constraintEnd_toStartOf="@+id/editTextStartTime"
+            app:layout_constraintTop_toBottomOf="@+id/textViewRemove" />
+
+        <EditText
+            android:id="@+id/editTextStartTime"
+            style="@style/notesEditTextTheme"
+            android:layout_width="0dp"
+            android:textSize="@dimen/_10ssp"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:focusable="false"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@+id/textViewRemove"
+            app:layout_constraintStart_toEndOf="@+id/textViewStartTime"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/_10ssp"
+        android:paddingBottom="@dimen/_5ssp"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/constraintLayoutCall"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageViewProfile"
+        style="@style/circularImageViewTheme"
+        app:civ_border_color="@android:color/holo_orange_light"
+        app:civ_border_width="3dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/viewAttendanceStatus"
+        android:layout_width="@dimen/_8sdp"
+        android:layout_height="@dimen/_8sdp"
+        android:background="@drawable/online_dot"
+        android:translationX="-2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/circleImageViewProfile"
+        app:layout_constraintEnd_toEndOf="@+id/circleImageViewProfile" />
+
+    <TextView
+        android:id="@+id/textViewLumperName"
+        style="@style/titleTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="John Snow"
+        android:textColor="@color/textBlack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.quickhandslogistics.controls.CustomTextView
+        android:id="@+id/textViewEmployeeId"
+        style="@style/valuesSmallTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="(Emp ID: 1001)"
+        android:textColor="@color/textBlack"
+        app:emptyDataVisibility="empty_gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
+
+    <com.quickhandslogistics.controls.CustomTextView
+        android:id="@+id/textViewShiftHours"
+        style="@style/valuesSmallTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Shift Hours: 9:00am to 6:00pm"
+        android:textColor="@color/detailHeader"
+        app:emptyDataVisibility="empty_gone"
+        app:layout_constraintStart_toEndOf="@id/circleImageViewProfile"
+        app:layout_constraintTop_toBottomOf="@id/textViewEmployeeId" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutCall"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/message_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/viewBar">
+
+        <ImageView
+            android:id="@+id/imageViewCall"
+            android:layout_width="@dimen/_18ssp"
+            android:layout_height="@dimen/_18ssp"
+            android:src="@drawable/ic_call"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintBottom_toTopOf="@+id/textViewCallTime"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/textWhite" />
+
+        <TextView
+            android:id="@+id/textViewCallTime"
+            style="@style/valuesVerySmallTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="13:12 AM"
+            android:textColor="@color/textWhite"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewCall"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/viewBar"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/constraintLayoutMessage"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/textWhite"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutMessage"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/_1sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/message_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewMessage"
+            android:layout_width="@dimen/_18ssp"
+            android:layout_height="@dimen/_18ssp"
+            android:src="@drawable/ic_message_chat"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintBottom_toTopOf="@+id/textViewMessageTime"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/textWhite" />
+
+        <TextView
+            android:id="@+id/textViewMessageTime"
+            style="@style/valuesVerySmallTextViewTheme"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="13:12 AM"
+            android:textColor="@color/textWhite"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewMessage"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

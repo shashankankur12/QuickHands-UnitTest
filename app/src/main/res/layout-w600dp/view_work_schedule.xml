@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/loading"
+    android:layout_width="450dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_background"
+    android:padding="10dp">
+    <TextView
+        android:id="@+id/title_text"
+        style="@style/dialogTitleTextViewThemeBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="@string/dialog_default_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/schedule_item_background">
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutSide"
+                    android:layout_width="@dimen/_6ssp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/schedule_item_stroke_in_progress"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:padding="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <TextView
+                        android:id="@+id/textViewScheduleType"
+                        style="@style/titleSmallTextViewTheme"
+                        android:layout_width="0dp"
+                        android:textStyle="normal"
+                        app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textViewStatus"
+                        style="@style/baseChipTheme"
+                        android:layout_width="wrap_content"
+                        android:paddingHorizontal="@dimen/_1ssp"
+                        android:paddingVertical="@dimen/_2ssp"
+                        android:textSize="@dimen/_9ssp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.quickhandslogistics.controls.CustomTextView
+                        android:id="@+id/textViewScheduleOutBound"
+                        style="@style/valuesSmallTextViewTheme"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/textViewScheduleOutBoundStartTime"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />
+                    <com.quickhandslogistics.controls.CustomTextView
+                        android:id="@+id/textViewScheduleOutBoundStartTime"
+                        style="@style/valuesSmallTextViewTheme"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        app:layout_constraintStart_toEndOf="@+id/textViewScheduleOutBound"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />
+
+                    <com.quickhandslogistics.controls.CustomTextView
+                        android:id="@+id/textViewScheduleLiveLoad"
+                        style="@style/valuesSmallTextViewTheme"
+                        android:layout_marginTop="@dimen/_1sdp"
+                        android:layout_width="0dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/textViewScheduleLiveLoadStartTime"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleOutBound" />
+                    <com.quickhandslogistics.controls.CustomTextView
+                        android:id="@+id/textViewScheduleLiveLoadStartTime"
+                        style="@style/valuesSmallTextViewTheme"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/_1sdp"
+                        app:layout_constraintStart_toEndOf="@+id/textViewScheduleLiveLoad"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleOutBound" />
+
+                    <com.quickhandslogistics.controls.CustomTextView
+                        android:id="@+id/textViewScheduleDrops"
+                        style="@style/valuesSmallTextViewTheme"
+                        android:layout_marginTop="@dimen/_1sdp"
+                        android:layout_width="0dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/textViewScheduleDropsStartTime"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleLiveLoad" />
+                    <com.quickhandslogistics.controls.CustomTextView
+                        android:id="@+id/textViewScheduleDropsStartTime"
+                        style="@style/valuesSmallTextViewTheme"
+                        android:layout_marginTop="@dimen/_1sdp"
+                        android:layout_width="0dp"
+                        app:layout_constraintStart_toEndOf="@+id/textViewScheduleDrops"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleLiveLoad" />
+
+                    <com.quickhandslogistics.controls.CustomTextView
+                        android:id="@+id/textViewScheduleUnfinished"
+                        style="@style/valuesSmallTextViewTheme"
+                        android:layout_marginTop="@dimen/_1sdp"
+                        android:layout_width="0dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/textViewScheduleUnfinishedStartTime"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleDrops" />
+                    <com.quickhandslogistics.controls.CustomTextView
+                        android:id="@+id/textViewScheduleUnfinishedStartTime"
+                        style="@style/valuesSmallTextViewTheme"
+                        android:layout_marginTop="@dimen/_1sdp"
+                        android:layout_width="0dp"
+                        app:layout_constraintStart_toEndOf="@+id/textViewScheduleUnfinished"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleDrops" />
+
+                    <com.quickhandslogistics.controls.CustomTextView
+                        android:id="@+id/textViewWorkItemsCount"
+                        style="@style/valuesSmallTextViewTheme"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        app:layout_constraintEnd_toStartOf="@+id/textViewWorkItemsLeadName"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleUnfinished" />
+
+                    <com.quickhandslogistics.controls.CustomTextView
+                        android:id="@+id/textViewWorkItemsLeadName"
+                        style="@style/valuesSmallTextViewTheme"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        app:layout_constraintStart_toEndOf="@+id/textViewWorkItemsCount"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleUnfinished" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12ssp"
+                android:gravity="center">
+
+
+                <Button
+                    android:id="@+id/confirm_button"
+                    style="@style/dialog_blue_button"
+                    android:background="@drawable/round_button_red_selector"
+                    android:text="@string/dialog_ok" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+</LinearLayout>

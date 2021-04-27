@@ -18,17 +18,21 @@ import kotlinx.android.synthetic.main.item_add_lumpers.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AddWorkItemLumperAdapter(
-    private var assignedLumpersList: ArrayList<EmployeeData>, private val onAdapterClick: AddWorkItemLumpersContract.View.OnAdapterItemClickListener
-) : Adapter<AddWorkItemLumperAdapter.ViewHolder>() {
+class AddWorkItemLumperAdapter(private var assignedLumpersList: ArrayList<EmployeeData>, private val onAdapterClick: AddWorkItemLumpersContract.View.OnAdapterItemClickListener) : Adapter<AddWorkItemLumperAdapter.ViewHolder>() {
 
     private var searchEnabled = false
     private var searchTerm = ""
-
     private var employeeDataList: ArrayList<EmployeeData> = ArrayList()
     private var filteredEmployeeDataList: ArrayList<EmployeeData> = ArrayList()
-
     private var selectedLumperIdsList: ArrayList<String> = ArrayList()
+    private var assignedLumperIdsList: ArrayList<String> = ArrayList()
+
+    init {
+        for (scheduleTimeDetail in assignedLumpersList) {
+            assignedLumperIdsList.add(scheduleTimeDetail.id!!)
+        }
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_add_lumpers, parent, false)
@@ -64,11 +68,14 @@ class AddWorkItemLumperAdapter(
             textViewShiftHours.text = UIUtils.getDisplayShiftHours(employeeData)
             viewAttendanceStatus.setBackgroundResource(if (employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
 
-
-            if (selectedLumperIdsList.contains(employeeData.id!!)) {
-                imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick)
+            if (assignedLumperIdsList.contains(employeeData.id)){
+                imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick_disabled)
             } else {
-                imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick_blank)
+                if (selectedLumperIdsList.contains(employeeData.id!!)) {
+                    imageViewAdd.setImageResource(R.drawable.ic_add_lumper_green_tick)
+                } else {
+                    imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick_blank)
+                }
             }
 
             itemView.setOnClickListener(this)
@@ -79,13 +86,15 @@ class AddWorkItemLumperAdapter(
                 when (view.id) {
                     itemView.id -> {
                         val employeeData = getItem(adapterPosition)
-                        if (selectedLumperIdsList.contains(employeeData.id!!)) {
-                            selectedLumperIdsList.remove(employeeData.id!!)
-                        } else {
-                            selectedLumperIdsList.add(employeeData.id!!)
+                        if (!assignedLumperIdsList.contains(employeeData.id!!)) {
+                            if (selectedLumperIdsList.contains(employeeData.id!!)) {
+                                selectedLumperIdsList.remove(employeeData.id!!)
+                            } else {
+                                selectedLumperIdsList.add(employeeData.id!!)
+                            }
+                            onAdapterClick.onSelectLumper(selectedLumperIdsList.size)
+                            notifyDataSetChanged()
                         }
-                        onAdapterClick.onSelectLumper(selectedLumperIdsList.size)
-                        notifyDataSetChanged()
                     }
                 }
             }

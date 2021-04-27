@@ -5,6 +5,7 @@ import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.workSheet.AddLumperTimeWorkSheetItemContract
 import com.quickhandslogistics.data.ErrorResponse
+import com.quickhandslogistics.data.workSheet.PauseTimeRequest
 import com.quickhandslogistics.models.workSheet.AddLumperTimeWorkSheetItemModel
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
@@ -25,15 +26,14 @@ class AddLumperTimeWorkSheetItemPresenter(
         workItemId: String,
         selectedStartTime: Long,
         selectedEndTime: Long,
-        selectedBreakInTime: Long,
-        selectedBreakOutTime: Long,
+        breakTimeRequestList: ArrayList<PauseTimeRequest>,
         waitingTime: String,
         partWorkDone: Int
     ) {
         addLumperTimeWorkSheetItemView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         addLumperTimeWorkSheetItemModel.saveLumperTimings(
             id, workItemId, selectedStartTime, selectedEndTime,
-            selectedBreakInTime, selectedBreakOutTime, waitingTime, partWorkDone, this
+            breakTimeRequestList, waitingTime, partWorkDone, this
         )
     }
 

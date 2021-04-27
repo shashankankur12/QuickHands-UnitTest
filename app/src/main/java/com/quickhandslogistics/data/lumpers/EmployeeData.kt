@@ -11,6 +11,10 @@ open class EmployeeData() : Parcelable {
     @Expose
     var id: String? = null
 
+    @SerializedName("lumperId")
+    @Expose
+    var lumperId: String? = null
+
     @SerializedName("email")
     @Expose
     var email: String? = null
@@ -22,6 +26,10 @@ open class EmployeeData() : Parcelable {
     @SerializedName("lastName")
     @Expose
     var lastName: String? = null
+
+    @SerializedName("fullName")
+    @Expose
+    var fullName: String? = null
 
     @SerializedName("phone")
     @Expose
@@ -79,7 +87,7 @@ open class EmployeeData() : Parcelable {
     var primaryBuilding: String? = null
     @SerializedName("buildingAssignedAsLumper")
     @Expose
-    var buildingAssignedAsLumper: BuildingDetailData? = null
+    var buildingAssignedAsLumper: ArrayList<BuildingDetailData>? = null
 
     @SerializedName("abilityToTravelBetweenBuildings")
     @Expose
@@ -109,6 +117,14 @@ open class EmployeeData() : Parcelable {
     @Expose
     var lastDayWorked: String? = null
 
+    @SerializedName("originalBuildingId")
+    @Expose
+    var originalBuildingId: String? = null
+
+    @SerializedName("tempBuildingId")
+    @Expose
+    var tempBuildingId: String? = null
+
     @SerializedName("fullTime")
     @Expose
     var fullTime: Boolean? = null
@@ -120,6 +136,7 @@ open class EmployeeData() : Parcelable {
         email = parcel.readString()
         firstName = parcel.readString()
         lastName = parcel.readString()
+        fullName = parcel.readString()
         phone = parcel.readString()
         department = parcel.readString()
         isActive = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
@@ -133,8 +150,10 @@ open class EmployeeData() : Parcelable {
         shiftHours = parcel.readString()
         workSchedule = parcel.readString()
         title = parcel.readString()
+        originalBuildingId = parcel.readString()
+        tempBuildingId = parcel.readString()
         primaryBuilding = parcel.readString()
-        buildingAssignedAsLumper= parcel.readValue(BuildingDetailData::class.java.classLoader) as BuildingDetailData?
+        buildingAssignedAsLumper= parcel.createTypedArrayList(BuildingDetailData)
         abilityToTravelBetweenBuildings = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         milesRadiusFromPrimaryBuilding = parcel.readString()
         buildingIdAsLumper = parcel.readString()
@@ -142,6 +161,7 @@ open class EmployeeData() : Parcelable {
         jobDescription = parcel.readString()
         scheduleNotes = parcel.readString()
         lastDayWorked = parcel.readString()
+        lumperId = parcel.readString()
         fullTime = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         isTemporaryAssigned = parcel.readValue(Boolean::class.java.classLoader) as Boolean
     }
@@ -151,6 +171,7 @@ open class EmployeeData() : Parcelable {
         parcel.writeString(email)
         parcel.writeString(firstName)
         parcel.writeString(lastName)
+        parcel.writeString(fullName)
         parcel.writeString(phone)
         parcel.writeString(department)
         parcel.writeValue(isActive)
@@ -164,6 +185,8 @@ open class EmployeeData() : Parcelable {
         parcel.writeString(shiftHours)
         parcel.writeString(workSchedule)
         parcel.writeString(title)
+        parcel.writeString(tempBuildingId)
+        parcel.writeString(originalBuildingId)
         parcel.writeString(primaryBuilding)
         parcel.writeValue(buildingAssignedAsLumper)
         parcel.writeValue(abilityToTravelBetweenBuildings)
@@ -173,6 +196,7 @@ open class EmployeeData() : Parcelable {
         parcel.writeString(jobDescription)
         parcel.writeString(scheduleNotes)
         parcel.writeString(lastDayWorked)
+        parcel.writeString(lumperId)
         parcel.writeValue(fullTime)
         parcel.writeValue(isTemporaryAssigned)
     }

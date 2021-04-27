@@ -5,6 +5,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 
 class BuildingDetailData() : Parcelable {
     @SerializedName("id")
@@ -91,6 +92,11 @@ class BuildingDetailData() : Parcelable {
     @Expose
     var districtManager: EmployeeData? = null
 
+    @SerializedName("leads")
+    @Expose
+    var leads: ArrayList<EmployeeData>? = null
+        get() = if (field.isNullOrEmpty()) ArrayList() else field
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         buildingName = parcel.readString()
@@ -113,6 +119,7 @@ class BuildingDetailData() : Parcelable {
         updatedAt = parcel.readString()
         customerDetail = parcel.readParcelable(CustomerDetail::class.java.classLoader)
         districtManager = parcel.readParcelable(EmployeeData::class.java.classLoader)
+        leads = parcel.createTypedArrayList(EmployeeData)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -137,6 +144,7 @@ class BuildingDetailData() : Parcelable {
         parcel.writeString(updatedAt)
         parcel.writeParcelable(customerDetail, flags)
         parcel.writeParcelable(districtManager, flags)
+        parcel.writeTypedList(leads)
     }
 
     override fun describeContents(): Int {

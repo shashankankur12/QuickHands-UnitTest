@@ -1,24 +1,42 @@
 package com.quickhandslogistics.views.schedule
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener
+import com.google.android.material.tabs.TabLayout
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.schedule.WorkSchedulePagerAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
 import com.quickhandslogistics.contracts.schedule.WorkScheduleContract
+import com.quickhandslogistics.controls.Quintuple
 import com.quickhandslogistics.data.customerSheet.CustomerSheetData
-import com.quickhandslogistics.data.schedule.ScheduleDetail
+import com.quickhandslogistics.data.schedule.ScheduleDetailData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.presenters.schedule.WorkSchedulePresenter
 import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.DateUtils.Companion.getDateString
 import com.quickhandslogistics.views.BaseActivity
+import com.quickhandslogistics.views.DashBoardActivity
 import com.quickhandslogistics.views.LoginActivity
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.*
 import kotlinx.android.synthetic.main.work_schedule_container.*
+import kotlinx.android.synthetic.main.work_schedule_container.mainConstraintLayout
+import kotlinx.android.synthetic.main.work_schedule_container.swipe_pull_refresh
+import kotlinx.android.synthetic.main.work_schedule_container.tabLayoutWorkSheet
+import kotlinx.android.synthetic.main.work_schedule_container.textViewCompanyName
+import kotlinx.android.synthetic.main.work_schedule_container.textViewDropsCount
+import kotlinx.android.synthetic.main.work_schedule_container.textViewGroupNote
+import kotlinx.android.synthetic.main.work_schedule_container.textViewLiveLoadsCount
+import kotlinx.android.synthetic.main.work_schedule_container.textViewOutBoundsCount
+import kotlinx.android.synthetic.main.work_schedule_container.textViewTotalCount
+import kotlinx.android.synthetic.main.work_schedule_container.textViewUnfinishedCount
+import kotlinx.android.synthetic.main.work_schedule_container.textViewWorkItemDept
+import kotlinx.android.synthetic.main.work_schedule_container.textViewWorkItemShift
+import kotlinx.android.synthetic.main.work_schedule_container.textViewWorkItemsDate
+import kotlinx.android.synthetic.main.work_schedule_container.viewPagerWorkSheet
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -30,14 +48,14 @@ View.OnClickListener   {
 
     private lateinit var workSheetPresenter: WorkSchedulePresenter
     private var adapter: WorkSchedulePagerAdapter? = null
-    private var data: ScheduleDetail = ScheduleDetail()
+    private var data: ScheduleDetailData = ScheduleDetailData()
     private lateinit var date: String
     private lateinit var shift: String
     private lateinit var dept: String
     private lateinit var companyName: String
     private var selectedTime: Long = 0
     private var scheduleIdentity = ""
-    private lateinit var customerGroupNote:Triple<Pair<ArrayList<String>,ArrayList<String>>, ArrayList<String>, ArrayList<String>>
+    private lateinit var customerGroupNote:Triple<Pair<ArrayList<String>, ArrayList<String>>, ArrayList<String>, ArrayList<String>>
 
     companion object {
         const val WORKSHEET_DETAIL = "WORKSHEET_DETAIL"
@@ -62,7 +80,12 @@ View.OnClickListener   {
         workSheetPresenter = WorkSchedulePresenter(this, resources, sharedPref)
 
 
+        if(DateUtils.isFutureDate(selectedTime)){
+            buttonScheduleLumper.visibility=View.VISIBLE
+        }else buttonScheduleLumper.visibility=View.GONE
+
         textViewGroupNote.setOnClickListener(this)
+        buttonScheduleLumper.setOnClickListener(this)
         savedInstanceState?.also {
             if (savedInstanceState.containsKey(WORKSHEET_DATE_SELECTED_HEADER)) {
                 date = savedInstanceState.getString(WORKSHEET_DATE_SELECTED_HEADER)!!
@@ -81,9 +104,7 @@ View.OnClickListener   {
                 showHeaderInfo(companyName, date, shift, dept)
             }
             if (savedInstanceState.containsKey(WORKSHEET_DETAIL)) {
-                data = savedInstanceState.getParcelable<ScheduleDetail>(
-                    WORKSHEET_DETAIL
-                ) as ScheduleDetail
+                data = savedInstanceState.getParcelable<ScheduleDetailData>(WORKSHEET_DETAIL) as ScheduleDetailData
                 showWorkSheets(data)
 
                 val allWorkItemLists = createDifferentListData(data)
@@ -135,13 +156,18 @@ View.OnClickListener   {
 
 
     private fun initializeViewPager(
-        allWorkItemLists: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>? = null,
+        allWorkItemLists: Quintuple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>? = null,
         customerSheetData: CustomerSheetData? = null, selectedTime: Long? = null
     ) {
         adapter = if (allWorkItemLists != null) {
-            WorkSchedulePagerAdapter(supportFragmentManager, resources, this.selectedTime, allWorkItemLists)
+            WorkSchedulePagerAdapter(
+                supportFragmentManager,
+                resources,
+                this.selectedTime,
+                allWorkItemLists
+            )
         } else {
-            WorkSchedulePagerAdapter(supportFragmentManager, resources,this.selectedTime)
+            WorkSchedulePagerAdapter(supportFragmentManager, resources, this.selectedTime)
         }
         viewPagerWorkSheet.offscreenPageLimit = adapter?.count!!
         viewPagerWorkSheet.adapter = adapter
@@ -155,27 +181,30 @@ View.OnClickListener   {
             viewPagerWorkSheet.pagingEnabled =false
             (tabLayoutWorkSheet.getChildAt(0) as ViewGroup).getChildAt(2).isEnabled = false
             (tabLayoutWorkSheet.getChildAt(0) as ViewGroup).getChildAt(1).isEnabled = false
-        }else{
-            viewPagerWorkSheet.pagingEnabled =true        }
+            (tabLayoutWorkSheet.getChildAt(0) as ViewGroup).getChildAt(3).isEnabled = false
+            (tabLayoutWorkSheet.getChildAt(0) as ViewGroup).getChildAt(4).isEnabled = false
+        }else if (!DateUtils.isCurrentDate(selectedTime) && !DateUtils.isFutureDate(selectedTime)) {
+            viewPagerWorkSheet.pagingEnabled =false
+            (tabLayoutWorkSheet.getChildAt(0) as ViewGroup).getChildAt(0).isEnabled = false
+            (tabLayoutWorkSheet.getChildAt(0) as ViewGroup).getChildAt(2).isEnabled = false
+            (tabLayoutWorkSheet.getChildAt(0) as ViewGroup).getChildAt(3).isEnabled = false
+            (tabLayoutWorkSheet.getChildAt(0) as ViewGroup).getChildAt(4).isEnabled = false
+            val tab: TabLayout.Tab? = tabLayoutWorkSheet.getTabAt(1)
+            tab?.select()
+        }else viewPagerWorkSheet.pagingEnabled =true
     }
 
-    private fun createDifferentListData(data: ScheduleDetail): Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>> {
-
-        textViewTotalCount.text = String.format(getString(R.string.total_containers_s), data.totalNumberOfWorkItems)
-
-
-        textViewLiveLoadsCount.text = String.format(getString(R.string.live_loads_s), data?.scheduleTypes?.liveLoads?.size)
-        textViewDropsCount.text = String.format(getString(R.string.drops_s), data?.scheduleTypes?.drops?.size)
-        textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), data?.scheduleTypes?.outbounds?.size)
-
+    private fun createDifferentListData(data: ScheduleDetailData): Quintuple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>> {
         var allWorkItem:ArrayList<WorkItemDetail> = ArrayList()
-        data?.scheduleTypes?.outbounds?.let { allWorkItem.addAll(it) }
-        data?.scheduleTypes?.liveLoads?.let { allWorkItem.addAll(it) }
-        data?.scheduleTypes?.drops?.let { allWorkItem.addAll(it) }
+        data?.outbounds?.let { allWorkItem.addAll(it) }
+        data?.liveLoads?.let { allWorkItem.addAll(it) }
+        data?.drops?.let { allWorkItem.addAll(it) }
 
         var onGoingWorkItems:ArrayList<WorkItemDetail> = ArrayList()
         var cancelled:ArrayList<WorkItemDetail> = ArrayList()
         var completed:ArrayList<WorkItemDetail> = ArrayList()
+        var unfinished:ArrayList<WorkItemDetail> = ArrayList()
+        var notDone:ArrayList<WorkItemDetail> = ArrayList()
 
         allWorkItem.forEach {
             when {
@@ -185,15 +214,56 @@ View.OnClickListener   {
                 it.status.equals(AppConstant.WORK_ITEM_STATUS_CANCELLED) -> {
                     cancelled.add(it)
                 }
-                it.status.equals(AppConstant.WORK_ITEM_STATUS_IN_PROGRESS) || it.status.equals(AppConstant.WORK_ITEM_STATUS_SCHEDULED) ||it.status.equals(AppConstant.WORK_ITEM_STATUS_ON_HOLD) -> {
+                it.status.equals(AppConstant.WORK_ITEM_STATUS_UNFINISHED) -> {
+                    unfinished.add(it)
+                }
+                it.status.equals(AppConstant.WORK_ITEM_STATUS_NOT_OPEN) -> {
+                    notDone.add(it)
+                }
+                it.status.equals(AppConstant.WORK_ITEM_STATUS_IN_PROGRESS) || it.status.equals(
+                    AppConstant.WORK_ITEM_STATUS_SCHEDULED
+                ) || it.status.equals(AppConstant.WORK_ITEM_STATUS_ON_HOLD) -> {
                     onGoingWorkItems.add(it)
                 }
             }
         }
 
+        textViewTotalCount.text = UIUtils.getSpannableText(
+            getString(R.string.total_container_bold),
+            (allWorkItem.size).toString()
+        )
 
-        return Triple(getSortList(onGoingWorkItems), getSortList(cancelled), getSortList(completed))
+        val workItemTypeCounts = ScheduleUtils.getWorkItemTypeCounts(allWorkItem)
 
+        if (workItemTypeCounts.first > 0) {
+            textViewLiveLoadsCount.visibility = View.VISIBLE
+            textViewLiveLoadsCount.text =
+                String.format(getString(R.string.live_loads_s), workItemTypeCounts.first)
+        } else textViewLiveLoadsCount.visibility = View.GONE
+
+        if (workItemTypeCounts.second > 0) {
+            textViewDropsCount.visibility = View.VISIBLE
+            textViewDropsCount.text =
+                String.format(getString(R.string.drops_s), workItemTypeCounts.second)
+        } else textViewDropsCount.visibility = View.GONE
+
+        if (workItemTypeCounts.third > 0) {
+            textViewOutBoundsCount.visibility = View.VISIBLE
+            textViewOutBoundsCount.text =
+                String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
+        } else textViewOutBoundsCount.visibility = View.GONE
+
+        if (unfinished?.size!! > 0) {
+            textViewUnfinishedCount.visibility = View.VISIBLE
+            textViewUnfinishedCount.text =
+                String.format(getString(R.string.unfinished_s), unfinished?.size)
+        } else textViewUnfinishedCount.visibility = View.GONE
+
+        return Quintuple(
+            getSortList(onGoingWorkItems), getSortList(cancelled), getSortList(
+                completed
+            ), getSortList(unfinished), getSortList(notDone)
+        )
     }
 
     private fun resetUI() {
@@ -206,7 +276,29 @@ View.OnClickListener   {
         textViewLiveLoadsCount.text = ""
         textViewDropsCount.text = ""
         textViewOutBoundsCount.text = ""
-        adapter?.updateWorkItemsList(ArrayList(), ArrayList(), ArrayList(), selectedTime)
+        textViewUnfinishedCount.text = ""
+        adapter?.updateWorkItemsList(
+            ArrayList(),
+            ArrayList(),
+            ArrayList(),
+            ArrayList(),
+            ArrayList(),
+            selectedTime
+        )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
+            if (singleRowCalendarScheduleTime.getSelectedDates().isNotEmpty()) {
+                if (!ConnectionDetector.isNetworkConnected(activity)) {
+                    ConnectionDetector.createSnackBar(activity)
+                    return
+                }
+
+                workSheetPresenter.fetchWorkSheetList(scheduleIdentity, Date(selectedTime))
+            }
+        }
     }
 
     /** Presenter Listeners */
@@ -217,27 +309,22 @@ View.OnClickListener   {
         onFragmentInteractionListener?.invalidateCancelAllSchedulesOption(false)
     }
 
-    override fun showWorkSheets(data: ScheduleDetail?) {
+    override fun showWorkSheets(data: ScheduleDetailData) {
         this.data = data!!
         swipe_pull_refresh?.isRefreshing = false
-
         customerGroupNote= ScheduleUtils.getGroupNoteListWorkSchedule(data)
         textViewGroupNote.isEnabled = (customerGroupNote!=null&& (customerGroupNote.first.first.size>0 ||customerGroupNote.second.size>0|| customerGroupNote.third.size>0||customerGroupNote.first.second.size>0 ))
 
-        textViewTotalCount.text = String.format(getString(R.string.total_containers_s), data?.totalNumberOfWorkItems)
-
-        textViewLiveLoadsCount.text = String.format(getString(R.string.live_loads_s), data?.scheduleTypes?.liveLoads?.size)
-        textViewDropsCount.text = String.format(getString(R.string.drops_s), data?.scheduleTypes?.drops?.size)
-        textViewOutBoundsCount.text = String.format(getString(R.string.out_bounds_s), data?.scheduleTypes?.outbounds?.size)
-
         var allWorkItem:ArrayList<WorkItemDetail> = ArrayList()
-        data?.scheduleTypes?.outbounds?.let { allWorkItem.addAll(it) }
-        data?.scheduleTypes?.liveLoads?.let { allWorkItem.addAll(it) }
-        data?.scheduleTypes?.drops?.let { allWorkItem.addAll(it) }
+        data?.outbounds?.let { allWorkItem.addAll(it) }
+        data?.liveLoads?.let { allWorkItem.addAll(it) }
+        data?.drops?.let { allWorkItem.addAll(it) }
 
         var onGoingWorkItems:ArrayList<WorkItemDetail> = ArrayList()
         var cancelled:ArrayList<WorkItemDetail> = ArrayList()
         var completed:ArrayList<WorkItemDetail> = ArrayList()
+        var unfinished:ArrayList<WorkItemDetail> = ArrayList()
+        var notOpen:ArrayList<WorkItemDetail> = ArrayList()
 
         allWorkItem.forEach {
             when {
@@ -247,17 +334,56 @@ View.OnClickListener   {
                 it.status.equals(AppConstant.WORK_ITEM_STATUS_CANCELLED) -> {
                     cancelled.add(it)
                 }
-                it.status.equals(AppConstant.WORK_ITEM_STATUS_IN_PROGRESS) || it.status.equals(AppConstant.WORK_ITEM_STATUS_SCHEDULED) ||it.status.equals(AppConstant.WORK_ITEM_STATUS_ON_HOLD) -> {
+                it.status.equals(AppConstant.WORK_ITEM_STATUS_UNFINISHED) -> {
+                    unfinished.add(it)
+                }
+                it.status.equals(AppConstant.WORK_ITEM_STATUS_NOT_OPEN) -> {
+                    notOpen.add(it)
+                }
+                it.status.equals(AppConstant.WORK_ITEM_STATUS_IN_PROGRESS) || it.status.equals(
+                    AppConstant.WORK_ITEM_STATUS_SCHEDULED
+                ) || it.status.equals(AppConstant.WORK_ITEM_STATUS_ON_HOLD) -> {
                     onGoingWorkItems.add(it)
                 }
             }
         }
 
+        textViewTotalCount.text = UIUtils.getSpannableText(
+            getString(R.string.total_container_bold),
+            (allWorkItem.size).toString()
+        )
 
+        val workItemTypeCounts = ScheduleUtils.getWorkItemTypeCounts(allWorkItem)
 
+        if (workItemTypeCounts.first > 0) {
+            textViewLiveLoadsCount.visibility = View.VISIBLE
+            textViewLiveLoadsCount.text =
+                String.format(getString(R.string.live_loads_s), workItemTypeCounts.first)
+        } else textViewLiveLoadsCount.visibility = View.GONE
 
-        adapter?.updateWorkItemsList(getSortList(onGoingWorkItems), getSortList(cancelled!!), getSortList(completed!!), selectedTime)
+        if (workItemTypeCounts.second > 0) {
+            textViewDropsCount.visibility = View.VISIBLE
+            textViewDropsCount.text =
+                String.format(getString(R.string.drops_s), workItemTypeCounts.second)
+        } else textViewDropsCount.visibility = View.GONE
 
+        if (workItemTypeCounts.third > 0) {
+            textViewOutBoundsCount.visibility = View.VISIBLE
+            textViewOutBoundsCount.text =
+                String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
+        } else textViewOutBoundsCount.visibility = View.GONE
+
+        if (unfinished?.size!! > 0) {
+            textViewUnfinishedCount.visibility = View.VISIBLE
+            textViewUnfinishedCount.text =
+                String.format(getString(R.string.unfinished_s), unfinished?.size)
+        } else textViewUnfinishedCount.visibility = View.GONE
+
+        adapter?.updateWorkItemsList(
+            getSortList(onGoingWorkItems), getSortList(cancelled!!), getSortList(
+                completed!!
+            ), getSortList(unfinished), getSortList(notOpen), selectedTime
+        )
     }
 
     private fun getSortList(workItemsList: ArrayList<WorkItemDetail>): ArrayList<WorkItemDetail> {
@@ -268,13 +394,13 @@ View.OnClickListener   {
 
         workItemsList.forEach {
             when {
-                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> {
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> {
                     liveList.add(it)
                 }
-                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> {
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> {
                     inboundList.add(it)
                 }
-                it.workItemType.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> {
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> {
                     outBoundList.add(it)
                 }
             }
@@ -298,7 +424,12 @@ View.OnClickListener   {
     }
 
     override fun showLoginScreen() {
-        startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
+        startIntent(
+            LoginActivity::class.java, isFinish = true, flags = arrayOf(
+                Intent.FLAG_ACTIVITY_CLEAR_TASK,
+                Intent.FLAG_ACTIVITY_NEW_TASK
+            )
+        )
     }
 
     /** Child Fragment Interaction Listeners */
@@ -313,15 +444,32 @@ View.OnClickListener   {
 
     override fun onClick(view: View?) {
         when(view!!.id){
-            textViewGroupNote.id->{
+            textViewGroupNote.id -> {
                 if (!ConnectionDetector.isNetworkConnected(activity)) {
                     ConnectionDetector.createSnackBar(activity)
                     return
                 }
 
-                if (customerGroupNote!=null&& (customerGroupNote.first.first.size>0 ||customerGroupNote.second.size>0|| customerGroupNote.third.size>0|| customerGroupNote.first.second.size>0))
-                    CustomeDialog.showGroupNoteDialog(activity, "Customer Notes :", customerGroupNote)
+                if (customerGroupNote != null && (customerGroupNote.first.first.size > 0 || customerGroupNote.second.size > 0 || customerGroupNote.third.size > 0 || customerGroupNote.first.second.size > 0))
+                    CustomerDialog.showGroupNoteDialog(
+                        activity,
+                        "Customer Notes :",
+                        customerGroupNote
+                    )
 
+            }
+            buttonScheduleLumper.id -> {
+                if (!ConnectionDetector.isNetworkConnected(activity)) {
+                    ConnectionDetector.createSnackBar(activity)
+                    return
+                }
+
+                val bundle = Bundle()
+                bundle.putString(DashBoardActivity.ARG_SHOW_TAB_NAME, getString(R.string.scheduled_lumpers))
+                bundle.putString(DashBoardActivity.ARG_SCHEDULE_TIME_SELECTED_DATE, getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER,Date(selectedTime)))
+                bundle.putBoolean(DashBoardActivity.PRIVIOUS_TAB, true)
+                startIntent(DashBoardActivity::class.java, bundle = bundle)
+                finish()
             }
         }
     }

@@ -95,9 +95,9 @@ class DisplayLumpersListActivity : BaseActivity(), View.OnClickListener, TextWat
 
     /** Adapter Listeners */
     override fun onItemClick(employeeData: EmployeeData) {
-        val bundle = Bundle()
-        bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
-        startIntent(LumperDetailActivity::class.java, bundle = bundle)
+//        val bundle = Bundle()
+//        bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_DATA, employeeData)
+//        startIntent(LumperDetailActivity::class.java, bundle = bundle)
     }
 
     override fun onPhoneViewClick(lumperName: String, phone: String) {
@@ -109,5 +109,8 @@ class DisplayLumpersListActivity : BaseActivity(), View.OnClickListener, TextWat
             override fun onCancelClick() {
             }
         })
+    }
+
+    override fun message(name: String, mNumber: String) {
     }
 }

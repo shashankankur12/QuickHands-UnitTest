@@ -14,16 +14,14 @@ import com.quickhandslogistics.contracts.scheduleTime.ChooseLumpersContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.presenters.scheduleTime.ChooseLumpersPresenter
-import com.quickhandslogistics.utils.AppUtils
-import com.quickhandslogistics.utils.CustomDialogWarningListener
-import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity.Companion.ARG_LUMPERS_LIST
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_TIME_LIST
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import kotlinx.android.synthetic.main.content_choose_lumper.*
+import kotlinx.android.synthetic.main.content_dashboard.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -175,7 +173,9 @@ class ChooseLumpersActivity : BaseActivity(), View.OnClickListener, TextWatcher,
 
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
-        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
+        if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            CustomProgressBar.getInstance().showValidationErrorDialog(message, activity!!)
+        } else SnackBarFactory.createSnackBar(activity!!, mainConstraintLayout, message)
     }
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {

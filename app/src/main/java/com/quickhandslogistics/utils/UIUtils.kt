@@ -112,7 +112,7 @@ object UIUtils {
         employeeData?.let {
             if (!employeeData.department.isNullOrEmpty()) {
                 displayDepartment = when (employeeData.department) {
-                    AppConstant.EMPLOYEE_DEPARTMENT_BOTH -> "Operations "
+                    AppConstant.EMPLOYEE_DEPARTMENT_BOTH -> "Operation "
                     AppConstant.EMPLOYEE_DEPARTMENT_INBOUND -> "Receiving "
                     AppConstant.EMPLOYEE_DEPARTMENT_OUTBOUND -> "Shipping"
                     else -> employeeData.department!!
@@ -139,6 +139,19 @@ object UIUtils {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = cm.activeNetworkInfo
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting
+    }
+
+    fun formetMobileNumber(original: String): String? {
+        val isbnStr = StringBuilder()
+        for (i in original.indices) {
+            when (i) {
+                0 -> { isbnStr.append("(") }
+                3 -> { isbnStr.append(") ") }
+                6 -> { isbnStr.append(" - ") }
+            }
+            isbnStr.append(original[i])
+        }
+        return isbnStr.toString()
     }
 }
 

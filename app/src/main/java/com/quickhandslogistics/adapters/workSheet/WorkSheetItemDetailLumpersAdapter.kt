@@ -1,29 +1,36 @@
 package com.quickhandslogistics.adapters.workSheet
 
 import android.content.Context
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailLumpersContract
 import com.quickhandslogistics.controls.CustomTextView
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
+import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
+import com.quickhandslogistics.data.workSheet.PauseTime
+import com.quickhandslogistics.data.workSheet.PauseTimeRequest
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.convertDateStringToTime
+import com.quickhandslogistics.utils.DateUtils.Companion.sharedPref
 import com.quickhandslogistics.utils.ScheduleUtils.calculatePercent
 import com.quickhandslogistics.utils.UIUtils
+import com.quickhandslogistics.utils.ValueUtils
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import com.quickhandslogistics.utils.ValueUtils.isNumeric
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_work_item_detail_lumper_time.view.*
 
-class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetItemDetailLumpersContract.View.OnAdapterItemClickListener) :
+class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, private var onAdapterClick: WorkSheetItemDetailLumpersContract.View.OnAdapterItemClickListener) :
     Adapter<WorkSheetItemDetailLumpersAdapter.ViewHolder>() {
 
     private var workItemStatus = ""
@@ -54,7 +61,7 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
 
         private val textViewLumperName: TextView = view.textViewLumperName
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
-        private val linearLayoutLumperTime: LinearLayout = view.linearLayoutLumperTime as LinearLayout
+        private val linearLayoutLumperTime: ConstraintLayout = view.linearLayoutLumperTime as ConstraintLayout
         private val textViewEmployeeId: CustomTextView = view.textViewEmployeeId
         private val textViewAddTime: TextView = view.textViewAddTime
         private val textViewWorkTime: TextView = view.textViewWorkTime
@@ -62,10 +69,24 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
         private val textViewBreakTime: TextView = view.textViewBreakTime
         private val textViewWorkDone: TextView = view.textViewWorkDone
         private val viewAttendanceStatus: View = view.viewAttendanceStatus
+        private val imageViewCancelLumper: ImageView = view.imageViewCancelLumper
 
         fun bind(employeeData: LumperAttendanceData) {
-            UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)
-            UIUtils.updateProfileBorder(context, tempLumperIds.contains(employeeData.id), circleImageViewProfile)
+            val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+            var buildingId = ""
+            leadProfile?.buildingDetailData?.get(0)?.id?.let { id ->
+                buildingId = id
+            }
+            UIUtils.showEmployeeProfileImage(
+                context,
+                employeeData.profileImageUrl,
+                circleImageViewProfile
+            )
+            UIUtils.updateProfileBorder(
+                context,
+                buildingId != employeeData.buildingIdAsLumper,
+                circleImageViewProfile
+            )
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
             ishaseClockOut(employeeData)
@@ -76,41 +97,44 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
                     val startTime = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.startTime)
                     val endTime = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.endTime)
                     if (startTime.isNotEmpty() && endTime.isNotEmpty())
-                        textViewWorkTime.text = String.format("%s - %s : %s",  startTime ,  endTime ,DateUtils.getDateTimeCalculeted(timingDetail.startTime!!, timingDetail.endTime!!))
-                    else textViewWorkTime.text = String.format("%s - %s", if (startTime.isNotEmpty()) startTime else "NA", if (endTime.isNotEmpty()) endTime else "NA")
+                        textViewWorkTime.text = String.format("%s - %s ; %s", startTime, endTime, DateUtils.getDateTimeCalculeted(timingDetail.startTime!!, timingDetail.endTime!!))
+                    else textViewWorkTime.text = String.format("%s - %s", if (startTime.isNotEmpty()) startTime else AppConstant.NOTES_NOT_AVAILABLE,
+                        if (endTime.isNotEmpty()) endTime else AppConstant.NOTES_NOT_AVAILABLE
+                    )
 
                     val waitingTime = getDefaultOrValue(timingDetail.waitingTime)
                     if (waitingTime.isNotEmpty() && waitingTime.toInt() != 0) {
-                        textViewWaitingTime.text = String.format("%s Min", waitingTime)
+                        val waitingTimeHours = ValueUtils.getHoursFromMinutes(timingDetail.waitingTime)
+                        val waitingTimeMinutes = ValueUtils.getRemainingMinutes(timingDetail.waitingTime)
+                        textViewWaitingTime.text = String.format("%s H %s M", waitingTimeHours, waitingTimeMinutes )
                     } else {
-                        textViewWaitingTime.text = "NA"
+                        textViewWaitingTime.text = AppConstant.NOTES_NOT_AVAILABLE
                     }
 
-                    val breakTimeStart = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeStart)
-                    val breakTimeEnd = convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeEnd)
-                    if (breakTimeStart.isNotEmpty() && breakTimeEnd.isNotEmpty())
-                        textViewBreakTime.text = String.format("%s - %s :%s", breakTimeStart , breakTimeEnd,DateUtils.getDateTimeCalculeted(timingDetail.breakTimeStart!!, timingDetail.breakTimeEnd!!))
-                    else textViewBreakTime.text = String.format("%s - %s", if (breakTimeStart.isNotEmpty()) breakTimeStart else "NA", if (breakTimeEnd.isNotEmpty()) breakTimeEnd else "NA")
+                    var mBreakTimeList = getBreakTimeList(timingDetail.breakTimes)
+                    if (mBreakTimeList.isNotEmpty() && checkStartEndTime(mBreakTimeList)) {
+                        showPauseTimeDuration(mBreakTimeList, textViewBreakTime)
+                    } else textViewBreakTime.text = AppConstant.NOTES_NOT_AVAILABLE
 
                     if (!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt() != 0) {
                         if (!totalCases.isNullOrEmpty() && isNumeric(totalCases)) {
                             val parcetage = String.format("%.2f", calculatePercent(timingDetail.partWorkDone!!, totalCases)) + "%"
-                            textViewWorkDone.text = String.format("%s / %s : %s", timingDetail.partWorkDone, totalCases, parcetage)
-                        }
+                            textViewWorkDone.text = String.format("%s / %s ; %s", timingDetail.partWorkDone, totalCases, parcetage) }
                     } else {
-                        textViewWorkDone.text = "NA"
+                        textViewWorkDone.text = AppConstant.NOTES_NOT_AVAILABLE
                     }
                 }
             } else {
-                textViewWorkTime.text = "NA - NA"
-                textViewWaitingTime.text = "NA"
-                textViewWorkDone.text = "NA"
-                textViewBreakTime.text = "NA - NA"
+                textViewWorkTime.text = "${AppConstant.NOTES_NOT_AVAILABLE} - ${AppConstant.NOTES_NOT_AVAILABLE}"
+                textViewWaitingTime.text = AppConstant.NOTES_NOT_AVAILABLE
+                textViewWorkDone.text = AppConstant.NOTES_NOT_AVAILABLE
+                textViewBreakTime.text = "${AppConstant.NOTES_NOT_AVAILABLE} - ${AppConstant.NOTES_NOT_AVAILABLE}"
             }
 
             changeAddButtonVisibility()
             textViewAddTime.setOnClickListener(this)
             linearLayoutLumperTime.setOnClickListener(this)
+            imageViewCancelLumper.setOnClickListener(this)
         }
 
         private fun ishaseClockOut(lumperAttendance: LumperAttendanceData) {
@@ -122,6 +146,46 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
 
                 }else viewAttendanceStatus.setBackgroundResource( R.drawable.offline_dot)
             }
+        }
+
+        private fun getBreakTimeList(breakTimes: ArrayList<PauseTime>?): ArrayList<PauseTimeRequest> {
+            val pauseTimeList: ArrayList<PauseTimeRequest> = ArrayList()
+            breakTimes?.let {
+                it.forEach {
+                    val breakTime = PauseTimeRequest()
+                    breakTime.startTime = convertInitialTime(it.startTime)
+                    breakTime.endTime = convertInitialTime(it.endTime)
+                    pauseTimeList.add(breakTime)
+                }
+            }
+            return pauseTimeList
+        }
+
+        private fun convertInitialTime(dateStamp: String?): Long {
+            var milliseconds: Long = 0
+            val time = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, dateStamp)
+            if (time.isNotEmpty()) {
+                val currentDateString = DateUtils.convertUTCDateStringToLocalDateString(
+                    DateUtils.PATTERN_API_RESPONSE,
+                    dateStamp
+                )
+                milliseconds = DateUtils.getMillisecondsFromDateString(
+                    DateUtils.PATTERN_API_RESPONSE,
+                    currentDateString
+                )
+            }
+            return milliseconds
+        }
+
+        private fun showPauseTimeDuration(
+            mBreakTimeList: ArrayList<PauseTimeRequest>,
+            textViewBreakTime: TextView
+        ) {
+            var dateTime: Long = 0
+            for (pauseTime in mBreakTimeList) {
+                dateTime += (pauseTime.endTime!! - pauseTime.startTime!!)
+            }
+            textViewBreakTime.text = "${DateUtils.getDateTimeCalculatedLong(dateTime)}"
         }
 
         private fun changeAddButtonVisibility() {
@@ -143,9 +207,24 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
                         val timingData = timingsData[employeeData.id]
                         onAdapterClick.onAddTimeClick(employeeData, timingData)
                     }
+                    imageViewCancelLumper.id->{
+                        val employeeData = getItem(adapterPosition)
+                        onAdapterClick.onRemoveLumperClick(employeeData, adapterPosition)
+                    }
                 }
             }
         }
+    }
+
+    private fun checkStartEndTime(mBreakTimeList: ArrayList<PauseTimeRequest>): Boolean {
+        var isValid = true
+        mBreakTimeList.forEach {
+            if (it.startTime == 0L || it.endTime == 0L) {
+                isValid = false
+                return@forEach
+            }
+        }
+        return isValid
     }
 
     fun updateList(lumperList: ArrayList<LumperAttendanceData>?, timingsData: LinkedHashMap<String, LumpersTimeSchedule>, status: String? = "", tempLumperIds: ArrayList<String>, totalCases: String?, isCompleted: Boolean?) {
@@ -156,8 +235,8 @@ class WorkSheetItemDetailLumpersAdapter(private var onAdapterClick: WorkSheetIte
             this.timingsData.putAll(timingsData)
         }
         this.workItemStatus = getDefaultOrValue(status)
-        this.totalCases=getDefaultOrValue(totalCases)
-        this.isCompleted= getDefaultOrValue(isCompleted)
+        this.totalCases = getDefaultOrValue(totalCases)
+        this.isCompleted = getDefaultOrValue(isCompleted)
 
         this.tempLumperIds.clear()
         this.tempLumperIds.addAll(tempLumperIds)

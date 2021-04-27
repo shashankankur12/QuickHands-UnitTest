@@ -17,8 +17,17 @@ public class PermissionUtil {
         return ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 
+    public static boolean checkCameraStorage(Activity activity) {
+        return (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+    }
+
     public static void requestStorage(Activity activity) {
         requestStorage(activity, null);
+    }
+    public static void requestCameraStorage(Activity activity) {
+        requestCameraStorage(activity, null);
     }
 
     private static void requestStorage(Activity activity, Fragment fragment) {
@@ -29,6 +38,23 @@ public class PermissionUtil {
                 ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
             } else {
                 fragment.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+            }
+        }
+    }
+
+
+    private static void requestCameraStorage(Activity activity, Fragment fragment) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            CustomProgressBar.Companion.getInstance().showErrorDialog(activity.getString(R.string.use_external_storage_alert_message), activity);
+        }else if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.CAMERA)) {
+            CustomProgressBar.Companion.getInstance().showErrorDialog(activity.getString(R.string.use_external_storage_alert_message), activity);
+        }else if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            CustomProgressBar.Companion.getInstance().showErrorDialog(activity.getString(R.string.use_external_storage_alert_message), activity);
+        } else {
+            if (fragment == null) {
+                ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+            } else {
+                fragment.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
             }
         }
     }
@@ -51,4 +77,6 @@ public class PermissionUtil {
 
         return ret;
     }
+
+
 }

@@ -67,8 +67,8 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
     }
 
     private fun showEmailDialog() {
-        val name = UIUtils.getEmployeeFullName(employeeData?.buildingDetailData?.districtManager)
-        employeeData?.buildingDetailData?.districtManager?.email?.let { email ->
+        val name = UIUtils.getEmployeeFullName(employeeData?.buildingDetailData?.get(0)?.districtManager)
+        employeeData?.buildingDetailData?.get(0)?.districtManager?.email?.let { email ->
             CustomProgressBar.getInstance().showWarningDialog(String.format(getString(R.string.email_lumper_alert_message), name),
                 activity, object : CustomDialogWarningListener {
                     override fun onConfirmClick() {
@@ -115,14 +115,14 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
         this.employeeData = employeeData
         UIUtils.showEmployeeProfileImage(activity, employeeData, circleImageViewProfile)
         textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
-        if (!employeeData.buildingDetailData?.buildingName.isNullOrEmpty() && !employeeData.role.isNullOrEmpty()) {
+        if (!employeeData.buildingDetailData?.get(0)?.buildingName.isNullOrEmpty() && !employeeData.role.isNullOrEmpty()) {
             textViewCompanyName.text =
-                employeeData.role!!.capitalize() + " at " + employeeData.buildingDetailData?.buildingName!!.capitalize()
+                employeeData.role!!.capitalize() + " at " + employeeData.buildingDetailData?.get(0)?.buildingName!!.capitalize()
         } else textViewCompanyName.visibility = View.GONE
 
         textViewEmailAddress.text = if (!employeeData.email.isNullOrEmpty()) employeeData.email else "---"
-        val phoneNumber = UIUtils.getDisplayPhoneNumber(employeeData)
-        textViewPhoneNumber.text = if (phoneNumber.isNotEmpty()) phoneNumber else "---"
+        val phoneNumber =if (!employeeData.phone.isNullOrEmpty())UIUtils.formetMobileNumber(employeeData.phone!!)else "---"
+        textViewPhoneNumber.text = phoneNumber
 
         textViewEmployeeId.text = if (!employeeData.employeeId.isNullOrEmpty()) employeeData.employeeId else "---"
         textViewRole.text = if (!employeeData.role.isNullOrEmpty()) employeeData.role!!.capitalize() else "---"
@@ -134,8 +134,8 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
         textViewScheduleNote.text = if (!employeeData.scheduleNotes.isNullOrEmpty()) UIUtils.getSpannedText(getString(R.string.schedule_note) + employeeData.scheduleNotes) else UIUtils.getSpannedText(getString(R.string.schedule_note_lead))
         textViewAvailability.text = if (employeeData.fullTime!!) getString(R.string.full_time_ud) else getString(R.string.part_time_ud)
 
-        textViewBuildingName.text = if (!employeeData.buildingDetailData?.buildingName.isNullOrEmpty()) employeeData.buildingDetailData?.buildingName!!.capitalize() else "---"
-        textViewCustomerName.text = if (!employeeData.buildingDetailData?.customerDetail?.companyAdminName.isNullOrEmpty()) employeeData.buildingDetailData?.customerDetail?.companyAdminName!!.capitalize() else "---"
+        textViewBuildingName.text = if (!employeeData.buildingDetailData?.get(0)?.buildingName.isNullOrEmpty()) employeeData.buildingDetailData?.get(0)?.buildingName!!.capitalize() else "---"
+        textViewCustomerName.text = if (!employeeData.buildingDetailData?.get(0)?.customerDetail?.name.isNullOrEmpty()) employeeData.buildingDetailData?.get(0)?.customerDetail?.name!!.capitalize() else "---"
     }
 
 }

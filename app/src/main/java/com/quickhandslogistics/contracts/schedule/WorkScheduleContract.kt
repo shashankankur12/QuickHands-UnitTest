@@ -1,8 +1,8 @@
 package com.quickhandslogistics.contracts.schedule
 
 import com.quickhandslogistics.contracts.BaseContract
-import com.quickhandslogistics.data.schedule.ScheduleDetail
-import com.quickhandslogistics.data.schedule.ScheduleDetailAPIResponse
+import com.quickhandslogistics.data.schedule.ScheduleDetailData
+import com.quickhandslogistics.data.schedule.ScheduleListAPIResponse
 import java.util.*
 
 class WorkScheduleContract {
@@ -14,14 +14,14 @@ class WorkScheduleContract {
         fun fetchScheduleDetail(scheduleIdentityId: String, selectedDate: Date, onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
-            fun onSuccessFetchWorkSheet(scheduleDetailAPIResponse: ScheduleDetailAPIResponse)
+            fun onSuccessFetchWorkSheet(scheduleDetailAPIResponse: ScheduleListAPIResponse)
             fun onSuccessGetHeaderInfo(companyName: String, date: String, shift:String, dept: String)
         }
     }
 
     interface View : BaseContract.View {
         fun showAPIErrorMessage(message: String)
-        fun showWorkSheets(scheduleDetailAPIResponse: ScheduleDetail?)
+        fun showWorkSheets(scheduleDetailAPIResponse: ScheduleDetailData)
         fun showHeaderInfo(companyName: String, date: String, shift: String, dept: String)
         fun showLoginScreen()
 

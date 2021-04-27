@@ -6,6 +6,7 @@
 
     <color name="colorLightGrey">#808080</color>
     <color name="colorGrey">#d3d3d3</color>
+    <color name="disableGrey">#8E8E8E</color>
     <color name="colorTextGrey">#345173</color>
 
     <color name="textWhite">#fefefe</color>
@@ -28,7 +29,12 @@
     <color name="startTimeBackground">#ecf0f6</color>
     <color name="fabBackgroundOverlay">#5C000000</color>
     <color name="online">#53d769</color>
+    <color name="in_progress">#00AE1D</color>
+    <color name="partial_color">#009819</color>
+    <color name="unfinished">#94A300</color>
     <color name="hypertext_color">#6597E3</color>
+    <color name="message_background">#4B97E6</color>
+    <color name="dark_sky_blue">#3776B6</color>
     <color name="colorOpaque">#00000000</color>
 
     <color name="row_activated">#D8D7D7</color>

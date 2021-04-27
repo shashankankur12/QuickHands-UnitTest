@@ -17,6 +17,7 @@ import com.quickhandslogistics.presenters.reports.LumperJobReportPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
+import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.content_lumper_job_report.*
 import kotlinx.android.synthetic.main.layout_date_filter.*
 import kotlinx.android.synthetic.main.layout_report_type.*
@@ -197,7 +198,7 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
     private fun updateSelectAllSectionUI() {
         val selectedCount = lumperJobReportAdapter.getSelectedLumperIdsList().size
         if (selectedCount == lumperJobReportAdapter.itemCount && lumperJobReportAdapter.itemCount>0) {
-            imageViewSelectAll.setImageResource(R.drawable.ic_add_lumer_tick)
+            imageViewSelectAll.setImageResource(R.drawable.ic_add_lumper_green_tick)
         //    textViewSelectAll.text = getString(R.string.unselect_all)
         } else {
             imageViewSelectAll.setImageResource(R.drawable.ic_add_lumer_tick_blank)
@@ -346,7 +347,9 @@ class LumperJobReportActivity : BaseActivity(), View.OnClickListener, LumperJobR
 
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
-        SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
+        if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            CustomProgressBar.getInstance().showValidationErrorDialog(message, activity!!)
+        } else SnackBarFactory.createSnackBar(activity!!, mainConstraintLayout, message)
     }
 
     override fun showLumpersData(employeeDataList: ArrayList<EmployeeData>) {

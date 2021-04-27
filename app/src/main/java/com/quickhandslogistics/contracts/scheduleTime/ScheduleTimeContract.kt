@@ -1,17 +1,19 @@
 package com.quickhandslogistics.contracts.scheduleTime
 
+import LeadWorkInfo
 import com.quickhandslogistics.contracts.BaseContract
+import com.quickhandslogistics.data.scheduleTime.leadinfo.GetLeadInfoResponse
 import com.quickhandslogistics.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeNoteRequest
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ScheduleTimeContract {
     interface Model {
         fun fetchHeaderInfo(selectedDate: Date, onFinishedListener: OnFinishedListener)
         fun fetchSchedulesTimeByDate(selectedDate: Date, onFinishedListener: OnFinishedListener)
-        fun cancelScheduleLumpers(lumperId: String, date: Date, onFinishedListener:OnFinishedListener)
+        fun fetchLeadScheduleByDate(selectedDate: Date, onFinishedListener: OnFinishedListener)
+        fun cancelScheduleLumpers(lumperId: String, date: Date, cancelReason: String, onFinishedListener: OnFinishedListener)
         fun editScheduleLumpers(
             lumperId: String,
             date: Date,
@@ -22,6 +24,7 @@ class ScheduleTimeContract {
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(selectedDate: Date, scheduleTimeAPIResponse: GetScheduleTimeAPIResponse)
+            fun onSuccessLeadInfo(getLeadInfoResponse: GetLeadInfoResponse)
             fun onSuccessGetHeaderInfo(dateString: String)
             fun onSuccessRequest(date: Date, cancelScheduleLumper: String)
         }
@@ -29,6 +32,7 @@ class ScheduleTimeContract {
 
     interface View : BaseContract.View {
         fun showDateString(dateString: String)
+        fun showLeadInfo(leadWorkInfo: LeadWorkInfo?)
         fun showAPIErrorMessage(message: String)
         fun showNotesData(notes: String?)
         fun showSuccessDialog(message:String, date: Date)
@@ -59,7 +63,7 @@ class ScheduleTimeContract {
 
     interface Presenter : BaseContract.Presenter {
         fun getSchedulesTimeByDate(date: Date)
-        fun cancelScheduleLumpers(lumperId: String, date: Date)
+        fun cancelScheduleLumpers(lumperId: String, date: Date, cancelReason: String)
         fun editScheduleLumpers(
             lumperId: String,
             date: Date,

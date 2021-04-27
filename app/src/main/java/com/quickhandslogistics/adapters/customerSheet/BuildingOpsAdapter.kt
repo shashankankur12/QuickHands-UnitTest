@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.utils.AppConstant
 import kotlinx.android.synthetic.main.item_customer_sheet_table.view.*
 import java.util.ArrayList
 import java.util.HashMap
@@ -52,7 +53,7 @@ class BuildingOpsAdapter(buildingOps: HashMap<String, String>?, parameters: Arra
         private val textViewValue: TextView = view.textViewItem
 
         fun bind(pair: Pair<String, String?>) {
-            textViewValue.text = if (!pair.second.isNullOrEmpty()) pair.second else "NA"
+            textViewValue.text = if (!pair.second.isNullOrEmpty()) pair.second else AppConstant.NOTES_NOT_AVAILABLE
         }
     }
 }

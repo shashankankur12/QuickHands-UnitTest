@@ -4,5 +4,5 @@
     <corners
         android:bottomRightRadius="12dp"
         android:topRightRadius="12dp" />
-    <solid android:color="@android:color/holo_green_light" />
+    <solid android:color="@color/online" />
 </shape>
