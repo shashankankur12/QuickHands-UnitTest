@@ -46,24 +46,24 @@ class WorkItemAdapter(
 
     inner class CustomeViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-        var textViewStatusitme: TextView = itemView.findViewById(R.id.textViewStatusitme)
-        var recycelrViewStatusType: RecyclerView = itemView.findViewById(R.id.recycelrViewStatusType)
+        var textViewStatusItem: TextView = itemView.findViewById(R.id.textViewStatusItem)
+        var recyclerViewStatus: RecyclerView = itemView.findViewById(R.id.recyclerViewStatus)
 
         fun bind(workItemDetail: ArrayList<WorkItemDetail>) {
-            if(adapterPosition.equals(0)){
-                textViewStatusitme.text=String.format("Complete : %s", workItemDetail.size )
+            if(adapterPosition == 0){
+                textViewStatusItem.text=String.format("Complete : %s", workItemDetail.size )
                 val completed=getCompletedItemArray(workItemDetail)
                 if (completed.size>0)
                 setAdapter(completed)
 
-            }else if(adapterPosition.equals(1)){
-                textViewStatusitme.text=String.format("Cancel : %s", workItemDetail.size )
+            }else if(adapterPosition == 1){
+                textViewStatusItem.text=String.format("Cancel : %s", workItemDetail.size )
                 val cancel= getCompletedItemArray(workItemDetail)
                 if (cancel.size>0)
                 setAdapter(cancel)
 
-            }else if (adapterPosition.equals(2)){
-                textViewStatusitme.text=String.format("Schedule : %s", workItemDetail.size )
+            }else if (adapterPosition == 2){
+                textViewStatusItem.text=String.format("Schedule : %s", workItemDetail.size )
                 var schedule=getCompletedItemArray(workItemDetail )
                 if (schedule.size>0)
                 setAdapter(schedule)
@@ -76,13 +76,13 @@ class WorkItemAdapter(
         private fun setAdapter(ongoing: ArrayList<ArrayList<WorkItemDetail>>) {
             val workItemAdapter= WorkTypeAdpter(resources, customerSheetFragment.context, ongoing)
             val layoutManager = LinearLayoutManager(customerSheetFragment.context, LinearLayoutManager.VERTICAL, false)
-            recycelrViewStatusType.layoutManager=layoutManager
-            recycelrViewStatusType.adapter=workItemAdapter
+            recyclerViewStatus.layoutManager=layoutManager
+            recyclerViewStatus.adapter=workItemAdapter
         }
     }
 
     fun getCompletedItemArray(workItemDetail: ArrayList<WorkItemDetail>):ArrayList<ArrayList<WorkItemDetail>>  {
-        val outboundItme = ArrayList<WorkItemDetail>()
+        val outboundItem = ArrayList<WorkItemDetail>()
         val liveLodeItem = ArrayList<WorkItemDetail>()
         val dropItem = ArrayList<WorkItemDetail>()
         val itemType = ArrayList<ArrayList<WorkItemDetail>>()
@@ -90,11 +90,11 @@ class WorkItemAdapter(
         workItemDetail.forEach {
             when {
                 it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> dropItem.add(it)
-                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> outboundItme.add(it)
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> outboundItem.add(it)
                 it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> liveLodeItem.add(it)
             }
         }
-        itemType.add(outboundItme)
+        itemType.add(outboundItem)
         itemType.add(liveLodeItem)
         itemType.add(dropItem)
 

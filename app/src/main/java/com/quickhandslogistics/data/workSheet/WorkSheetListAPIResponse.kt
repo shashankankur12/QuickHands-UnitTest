@@ -45,6 +45,11 @@ class WorkSheetListAPIResponse : BaseResponse() {
         var unfinished: ArrayList<WorkItemDetail>? = null
             get() = if (!field.isNullOrEmpty()) field else ArrayList()
 
+        @SerializedName("notopen")
+        @Expose
+        var notOpen: ArrayList<WorkItemDetail>? = null
+            get() = if (!field.isNullOrEmpty()) field else ArrayList()
+
         @SerializedName("cancelledNotes")
         @Expose
         var containerGroupNote: ContainerGroupNote? = null
@@ -64,6 +69,7 @@ class WorkSheetListAPIResponse : BaseResponse() {
             scheduled = parcel.createTypedArrayList(WorkItemDetail)
             completed = parcel.createTypedArrayList(WorkItemDetail)
             unfinished = parcel.createTypedArrayList(WorkItemDetail)
+            notOpen = parcel.createTypedArrayList(WorkItemDetail)
             containerGroupNote= parcel.readValue(ContainerGroupNote::class.java.classLoader) as ContainerGroupNote?
             unfinishedNotes= parcel.readValue(ContainerGroupNote::class.java.classLoader) as ContainerGroupNote?
             notOpenNotes= parcel.readValue(ContainerGroupNote::class.java.classLoader) as ContainerGroupNote?
@@ -76,6 +82,7 @@ class WorkSheetListAPIResponse : BaseResponse() {
             parcel.writeTypedList(scheduled)
             parcel.writeTypedList(completed)
             parcel.writeTypedList(unfinished)
+            parcel.writeTypedList(notOpen)
             parcel.writeValue(containerGroupNote)
             parcel.writeValue(unfinishedNotes)
             parcel.writeValue(notOpenNotes)

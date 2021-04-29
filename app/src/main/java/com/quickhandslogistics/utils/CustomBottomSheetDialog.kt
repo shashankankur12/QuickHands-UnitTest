@@ -18,22 +18,17 @@ object CustomBottomSheetDialog {
     fun unfinishedBottomSheetDialog(context: Context, contractView: IDialogOnClick) {
         val unFinishedBottomSheet = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
         unFinishedBottomSheet.setContentView(R.layout.bottom_sheet_unfinished_container)
-        val dateForCompletionText =
-            unFinishedBottomSheet.findViewById<TextView>(R.id.dateForCompletionText)
-        val startTimeText = unFinishedBottomSheet.findViewById<TextView>(R.id.startTimeText)
-        val departmentText = unFinishedBottomSheet.findViewById<TextView>(R.id.departmentText)
-        val shiftText = unFinishedBottomSheet.findViewById<TextView>(R.id.shiftText)
+        val dateForCompletionText=unFinishedBottomSheet.findViewById<TextView>(R.id.dateForCompletionText)
+        val startTimeText=unFinishedBottomSheet.findViewById<TextView>(R.id.startTimeText)
+        val departmentText=unFinishedBottomSheet.findViewById<TextView>(R.id.departmentText)
+        val shiftText=unFinishedBottomSheet.findViewById<TextView>(R.id.shiftText)
 
-        val leadProfile = sharedPref.getClassObject(
-            AppConstant.PREFERENCE_LEAD_PROFILE,
-            LeadProfileData::class.java
-        ) as LeadProfileData?
+        val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
 
-        shiftText?.text = leadProfile?.shift?.capitalize()
-        departmentText?.text = UIUtils.getDisplayEmployeeDepartment(leadProfile)
+        shiftText?.text= leadProfile?.shift?.capitalize()
+        departmentText?.text =  UIUtils.getDisplayEmployeeDepartment(leadProfile)
 
-        dateForCompletionText?.text =
-            DateUtils.getDateString(DateUtils.PATTERN_MONTH_DAY_DISPLAY, Date())
+        dateForCompletionText?.text= DateUtils.getDateString(DateUtils.PATTERN_MONTH_DAY_DISPLAY, Date())
         dateForCompletionText?.setOnClickListener {
             ReportUtils.showDatePicker(Date(), context, object : ReportUtils.OnDateSetListener {
                 override fun onDateSet(selected: Date) {
@@ -43,7 +38,7 @@ object CustomBottomSheetDialog {
             })
         }
 
-        startTimeText?.text = DateUtils.convertMillisecondsToTimeString(Date().time)
+        startTimeText?.text = DateUtils.convertMillisecondsToTimeString(Date().time )
         startTimeText?.setOnClickListener {
             val calendar = Calendar.getInstance()
             calendar.timeInMillis = Date().time
@@ -54,16 +49,14 @@ object CustomBottomSheetDialog {
                 context, TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
                     calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                     calendar.set(Calendar.MINUTE, minute)
-                    startTimeText.text =
-                        DateUtils.convertMillisecondsToTimeString(calendar.timeInMillis)
+                    startTimeText.text = DateUtils.convertMillisecondsToTimeString(calendar.timeInMillis)
                 }, mHour, mMinute, false
             ).show()
         }
 
-        unFinishedBottomSheet.findViewById<Button>(R.id.buttonCancelBottomSheet)
-            ?.setOnClickListener { unFinishedBottomSheet.dismiss() }
+        unFinishedBottomSheet.findViewById<Button>(R.id.buttonCancelBottomSheet)?.setOnClickListener { unFinishedBottomSheet.dismiss() }
         unFinishedBottomSheet.findViewById<Button>(R.id.buttonSubmit)?.setOnClickListener {
-            contractView.onSendRequest(unFinishedBottomSheet)
+            contractView?.onSendRequest(unFinishedBottomSheet)
         }
         unFinishedBottomSheet.show()
     }
@@ -150,8 +143,33 @@ object CustomBottomSheetDialog {
         lumperRequestBottomSheet.show()
     }
 
-    interface IDialogOnClick {
-        fun onSendRequest(dialog: Dialog)
+    fun requestCorrectionBottomSheetDialog(context: Context, contractView: IDialogRequestCorrectionClick) {
+        val unFinishedBottomSheet = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
+        unFinishedBottomSheet.setContentView(R.layout.bottumsheet_request_correction)
+        val textViewTitle = unFinishedBottomSheet.findViewById<TextView>(R.id.textViewTitle)
+        val editTextCorrection =
+            unFinishedBottomSheet.findViewById<EditText>(R.id.editTextCorrection)
+
+        unFinishedBottomSheet.findViewById<Button>(R.id.buttonCancelCorrection)
+            ?.setOnClickListener { unFinishedBottomSheet.dismiss() }
+        unFinishedBottomSheet.findViewById<Button>(R.id.buttonSubmitCorrection)
+            ?.setOnClickListener {
+                if (!editTextCorrection?.text.isNullOrEmpty())
+                    contractView.onSendRequest(unFinishedBottomSheet, editTextCorrection?.text.toString())
+                else CustomProgressBar.getInstance().showValidationErrorDialog(
+                    context.getString(R.string.request_correction_message),
+                    context
+                )
+            }
+        unFinishedBottomSheet.show()
+    }
+
+    interface IDialogOnClick{
+        fun onSendRequest( dialog: Dialog)
+    }
+
+    interface IDialogRequestCorrectionClick{
+        fun onSendRequest( dialog: Dialog, request :String )
     }
 
     interface IDialogOnLumperRequestClick{

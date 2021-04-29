@@ -185,6 +185,9 @@ class WorkSheetItemStatusAdapter(private val resources: Resources, private val o
         }else if (initialStatus.equals(resources.getString(R.string.completed))){
             this.initialDisplayStatus = resources.getString(R.string.complete)
             selectedDisplayStatus = resources.getString(R.string.complete)
+        }else if (initialStatus.equals(resources.getString(R.string.not_opens))){
+            this.initialDisplayStatus = resources.getString(R.string.not_open)
+            selectedDisplayStatus = resources.getString(R.string.not_open)
         }else{
             this.initialDisplayStatus = initialStatus
             selectedDisplayStatus = initialStatus

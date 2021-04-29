@@ -264,12 +264,12 @@
                         <TextView
                             android:id="@+id/editTextNotes"
                             android:layout_width="0dp"
+                            style="@style/valuesSmallTextViewThemeHeader"
                             android:layout_height="wrap_content"
                             android:gravity="top"
                             android:text="@string/note"
                             android:padding="@dimen/_8sdp"
-                            android:layout_weight="1"
-                            android:textSize="@dimen/_12ssp" />
+                            android:layout_weight="1"/>
 
                         <RelativeLayout
                             android:id="@+id/layoutEditLumerNote"

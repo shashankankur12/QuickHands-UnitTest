@@ -290,14 +290,12 @@ View.OnClickListener   {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
-            if (singleRowCalendarScheduleTime.getSelectedDates().isNotEmpty()) {
-                if (!ConnectionDetector.isNetworkConnected(activity)) {
+            if (!ConnectionDetector.isNetworkConnected(activity)) {
                     ConnectionDetector.createSnackBar(activity)
                     return
                 }
 
                 workSheetPresenter.fetchWorkSheetList(scheduleIdentity, Date(selectedTime))
-            }
         }
     }
 

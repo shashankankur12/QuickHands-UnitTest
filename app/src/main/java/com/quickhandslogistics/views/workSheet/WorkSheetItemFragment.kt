@@ -24,9 +24,12 @@ import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
+import com.quickhandslogistics.views.schedule.ScheduleFragment
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
 import kotlinx.android.synthetic.main.content_work_sheet_item.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapterItemClickListener, View.OnClickListener, View.OnLongClickListener {
 
@@ -225,6 +228,7 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
         val bundle = Bundle()
         bundle.putString(ARG_WORK_ITEM_ID, workItemId)
         bundle.putString(ARG_WORK_ITEM_TYPE_DISPLAY_NAME, workItemTypeDisplayName)
+        bundle.putLong(ScheduleFragment.ARG_SELECTED_DATE_MILLISECONDS, Date().time)
         startIntent(WorkSheetItemDetailActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }
 

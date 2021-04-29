@@ -83,6 +83,7 @@ class WorkSheetPagerAdapter(
         cancelledWorkItems: ArrayList<WorkItemDetail>,
         completedWorkItems: ArrayList<WorkItemDetail>,
         unfinishedWorkItems: ArrayList<WorkItemDetail>,
+        notOpenWorkItems: ArrayList<WorkItemDetail>,
         cancelNote: ContainerGroupNote?,
         unfinishedNotes: ContainerGroupNote?,
         notOpenNotes: ContainerGroupNote?
@@ -91,13 +92,13 @@ class WorkSheetPagerAdapter(
         cancelledWorkItemsCount = cancelledWorkItems.size
         completedWorkItemsCount = completedWorkItems.size
         unfinishedWorkItemsCount = unfinishedWorkItems.size
-        notOpenWorkItemsCount = 0
+        notOpenWorkItemsCount = notOpenWorkItems.size
 
         ongoingFragment.updateWorkItemsList(onGoingWorkItems)
         cancelledFragment.updateWorkItemsList(cancelledWorkItems, cancelNote)
         completedFragment.updateWorkItemsList(completedWorkItems)
         unfinishedFragment.updateWorkItemsList(unfinishedWorkItems, unfinishedNotes)
-        notOpenFragment.updateWorkItemsList(ArrayList(), notOpenNotes)
+        notOpenFragment.updateWorkItemsList(notOpenWorkItems, notOpenNotes)
 
         notifyDataSetChanged()
     }

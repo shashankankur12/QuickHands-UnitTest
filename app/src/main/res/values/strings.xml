@@ -179,6 +179,7 @@
     <string name="bulk_action">Bulk Action</string>
     <string name="scheduled">Scheduled</string>
     <string name="schedule_s">Schedule</string>
+    <string name="not_opens">NOTOPEN</string>
     <string name="scheduled_description">(Work on container has not started)</string>
     <string name="scheduled_time_s">Scheduled Time: %s</string>
     <string name="schedule_detail">Work Schedule Detail</string>
@@ -303,6 +304,9 @@
         <item>Take Photo</item>
         <item>Cancel</item>
     </string-array>
+    <string name="request_correction">Request Corrections</string>
+    <string name="request_correction_title">What are the corrections?</string>
+    <string name="container_parameter">Container Parameter</string>
 
     <!--No Record Messages-->
     <string name="empty_add_work_item_lumpers_info_message">No Lumpers are available. Go to Time-Clock section and clock them in.</string>
@@ -397,6 +401,7 @@
     <string name="group_customer_note_error_message">Please enter customer note.  \n</string>
     <string name="group_qhl_note_error_message">Please enter QHL note.  \n</string>
     <string name="lumper_waiting_message">Waiting time should be greater the zero</string>
+    <string name="request_correction_message">Please enter the request for correction</string>
 
     <!--Info Messages-->
     <string name="enter_employee_id_info_message">Employee ID</string>

@@ -194,16 +194,16 @@ interface IApiInterface {
     /////////////////////////////////////////////////////////////
 
     // Lumper Sheet /////////////////////////////////////////////////
-    @GET("employees/siginfo/lumpers")
+    @GET("employees/lumper-signature")
     fun getLumperSheetList(@Header("Authorization") auth: String, @Query("day") day: String): Call<LumperSheetListAPIResponse>
 
-    @GET("employees/daily/worksheet")
+    @GET("employees/daily/lumpers-worksheet")
     fun getLumperWorkDetail(
         @Header("Authorization") auth: String, @Query("day") day: String, @Query("lumperId") lumperId: String
     ): Call<LumperWorkDetailAPIResponse>
 
     @Multipart
-    @POST("employees/sig/lumper")
+    @POST("employees/lumper-signature")
     fun saveLumperSignature(
         @Header("Authorization") auth: String, @Part("day") day: RequestBody,
         @Part("lumperId") lumperId: RequestBody, @Part signature: MultipartBody.Part

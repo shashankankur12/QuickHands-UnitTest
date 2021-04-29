@@ -1,6 +1,7 @@
 package com.quickhandslogistics.views.lumperSheet
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -144,7 +145,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         recyclerViewLumperWork.apply {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            lumperWorkDetailAdapter = LumperWorkDetailAdapter(resources, sharedPref, this@LumperWorkDetailActivity)
+            lumperWorkDetailAdapter = LumperWorkDetailAdapter(resources, sharedPref,this@LumperWorkDetailActivity,  this@LumperWorkDetailActivity)
             adapter = lumperWorkDetailAdapter
         }
 
@@ -559,6 +560,31 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         notes?.let {
             CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), notes, activity)
         }
+    }
+
+    override fun requestCorrection(workId: String?) {
+        CustomBottomSheetDialog.requestCorrectionBottomSheetDialog(
+            activity, object : CustomBottomSheetDialog.IDialogRequestCorrectionClick {
+                override fun onSendRequest(dialog: Dialog, request: String) {
+                    dialog.dismiss()
+                }
+            })
+    }
+
+    override fun cancelRequestCorrection(id: String?) {
+        if (!ConnectionDetector.isNetworkConnected(this)) {
+            ConnectionDetector.createSnackBar(this)
+            return
+        }
+
+        CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
+            override fun onConfirmClick() {
+
+            }
+
+            override fun onCancelClick() {
+            }
+        })
     }
 
     override fun afterTextChanged(text: Editable?) {

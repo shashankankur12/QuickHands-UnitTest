@@ -19,6 +19,7 @@ import com.quickhandslogistics.presenters.workSheet.WorkSheetItemDetailPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
 import kotlinx.android.synthetic.main.activity_work_sheet_item_detail.*
@@ -35,7 +36,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     private var workItemDetail: WorkItemContainerDetails = WorkItemContainerDetails()
     private var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule> = ArrayList()
     private var tempLumperIds: ArrayList<String> = ArrayList()
-
+    private var selectedTime: Long = 0
     private lateinit var workSheetItemDetailPresenter: WorkSheetItemDetailPresenter
     private var workSheetItemStatusAdapter: WorkSheetItemStatusAdapter? = null
     private var workSheetItemDetailPagerAdapter: WorkSheetItemDetailPagerAdapter? = null
@@ -57,6 +58,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         intent.extras?.let { it ->
             workItemId = it.getString(ARG_WORK_ITEM_ID, "")
             workItemTypeDisplayName = it.getString(ARG_WORK_ITEM_TYPE_DISPLAY_NAME, "")
+            selectedTime = it.getLong(ARG_SELECTED_DATE_MILLISECONDS)
         }
 
         workSheetItemDetailPresenter = WorkSheetItemDetailPresenter(this, resources)
@@ -158,6 +160,8 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         textViewStatus.setOnClickListener(this)
         textViewWorkSheetNote1.setOnClickListener(this)
         bottomSheetBackgroundStatus.setOnClickListener(this)
+
+        textViewStatus.isEnabled = DateUtils.isCurrentDate(selectedTime)
     }
 
     private fun updateStatusBackground(status: String) {

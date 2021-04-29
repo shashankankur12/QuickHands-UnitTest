@@ -203,7 +203,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
                 String.format(getString(R.string.unfinished_s), data.unfinished?.size)
         } else textViewUnfinishedCount.visibility = View.GONE
 
-        return Quintuple(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!), getSortList(data.unfinished!!), ArrayList())
+        return Quintuple(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!), getSortList(data.unfinished!!), getSortList(data.notOpen!!))
     }
 
     private fun resetUI() {
@@ -219,6 +219,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         textViewUnfinishedCount.text = ""
         textViewGroupNote.isEnabled=false
         adapter?.updateWorkItemsList(
+            ArrayList(),
             ArrayList(),
             ArrayList(),
             ArrayList(),
@@ -305,7 +306,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         } else textViewUnfinishedCount.visibility = View.GONE
 
 
-        adapter?.updateWorkItemsList(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!), getSortList(data.unfinished!!), data.containerGroupNote, data.unfinishedNotes, data.notOpenNotes)
+        adapter?.updateWorkItemsList(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!), getSortList(data.unfinished!!),getSortList(data.notOpen!!), data.containerGroupNote, data.unfinishedNotes, data.notOpenNotes)
     }
 
     private fun getSortList(workItemsList: ArrayList<WorkItemDetail>): ArrayList<WorkItemDetail> {

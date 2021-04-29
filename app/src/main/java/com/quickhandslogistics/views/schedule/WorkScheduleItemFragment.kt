@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.schedule.ScheduleWorkSheetItemAdapter
 import com.quickhandslogistics.contracts.schedule.ScheduleWorkItemContract
+import com.quickhandslogistics.contracts.schedule.WorkScheduleContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetContract
 import com.quickhandslogistics.controls.Quintuple
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
@@ -26,7 +27,7 @@ import kotlinx.android.synthetic.main.content_work_sheet_item.*
 
 class WorkScheduleItemFragment : BaseFragment(), ScheduleWorkItemContract.View.OnAdapterItemClickListener {
 
-    private var onFragmentInteractionListener: WorkSheetContract.View.OnFragmentInteractionListener? = null
+    private var onFragmentInteractionListener: WorkScheduleContract.View.OnFragmentInteractionListener? = null
 
     private var workItemType: String = ""
     private var selectedTime: Long = 0
@@ -72,8 +73,8 @@ class WorkScheduleItemFragment : BaseFragment(), ScheduleWorkItemContract.View.O
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (parentFragment is WorkSheetContract.View.OnFragmentInteractionListener) {
-            onFragmentInteractionListener = parentFragment as WorkSheetContract.View.OnFragmentInteractionListener
+        if (activity is WorkScheduleContract.View.OnFragmentInteractionListener) {
+            onFragmentInteractionListener = activity as WorkScheduleContract.View.OnFragmentInteractionListener
         }
     }
 
@@ -167,6 +168,7 @@ class WorkScheduleItemFragment : BaseFragment(), ScheduleWorkItemContract.View.O
             val bundle = Bundle()
             bundle.putString(ScheduleFragment.ARG_WORK_ITEM_ID, workItemId)
             bundle.putString(ScheduleFragment.ARG_WORK_ITEM_TYPE_DISPLAY_NAME, workItemTypeDisplayName)
+            bundle.putLong(ScheduleFragment.ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
             startIntent(WorkSheetItemDetailActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
         }
     }

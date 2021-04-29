@@ -154,13 +154,13 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
     }
 
     fun showEmptyData() {
-//        workSheetItemDetailLumpersAdapter.updateList(
-//            ArrayList(),
-//            LinkedHashMap(),
-//            tempLumperIds = ArrayList(),
-//            totalCases = getTotalCases(workItemDetail?.buildingOps),
-//            isCompleted = workItemDetail!!.isCompleted
-//        )
+        workSheetItemDetailLumpersAdapter.updateList(
+            ArrayList(),
+            LinkedHashMap(),
+            tempLumperIds = ArrayList(),
+            totalCases = getTotalCases(workItemDetail?.buildingOps),
+            isCompleted = workItemDetail!!.isCompleted
+        )
         buttonAddLumpers.visibility = View.GONE
     }
 

@@ -14,7 +14,7 @@
         android:paddingVertical="@dimen/_2sdp"
         android:paddingHorizontal="@dimen/_5sdp">
         <TextView
-            android:id="@+id/textViewStatusitme"
+            android:id="@+id/textViewStatusItem"
             android:layout_width="match_parent"
             style="@style/valuesSmallTextViewTheme"
             android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
 
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycelrViewStatusType"
+        android:id="@+id/recyclerViewStatus"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:nestedScrollingEnabled="false"/>

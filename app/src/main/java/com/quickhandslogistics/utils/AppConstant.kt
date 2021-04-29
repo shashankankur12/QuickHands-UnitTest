@@ -40,7 +40,7 @@ interface AppConstant {
         const val WORK_ITEM_SHOW_MORE = "SHOW MORE STATUS"
         const val WORK_ITEM_SHOW_LESS = "SHOW LESS STATUS"
         const val WORK_ITEM_STATUS_UNFINISHED = "UNFINISHED"
-        const val WORK_ITEM_STATUS_NOT_OPEN = "NOT-OPEN"
+        const val WORK_ITEM_STATUS_NOT_OPEN = "NOTOPEN"
 
         // Employee Department Enums
             const val EMPLOYEE_DEPARTMENT_INBOUND = "RECEIVING"

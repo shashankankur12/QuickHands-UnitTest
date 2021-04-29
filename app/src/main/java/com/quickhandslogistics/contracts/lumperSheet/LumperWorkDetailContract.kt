@@ -36,6 +36,8 @@ class LumperWorkDetailContract {
         interface OnAdapterItemClickListener {
             fun onBOItemClick(workItemDetail: WorkItemDetail, parameters: ArrayList<String>)
             fun onNotesItemClick(notes: String?)
+            fun requestCorrection(workId: String?)
+            fun cancelRequestCorrection(id: String?)
         }
     }
 

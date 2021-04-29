@@ -1,5 +1,6 @@
 package com.quickhandslogistics.adapters.lumperSheet
 
+import android.content.Context
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
@@ -16,13 +17,14 @@ import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.utils.ScheduleUtils.calculatePercent
 import com.quickhandslogistics.utils.ValueUtils.isNumeric
+import kotlinx.android.synthetic.main.content_work_sheet_item_detail.*
 import kotlinx.android.synthetic.main.item_lumper_work_detail.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 
 class LumperWorkDetailAdapter(
-        private val resources: Resources, private val sharedPref: SharedPref,
+        private val resources: Resources, private val sharedPref: SharedPref, private var context : Context,
         private var adapterItemClickListener: LumperWorkDetailContract.View.OnAdapterItemClickListener
 ) :
     RecyclerView.Adapter<LumperWorkDetailAdapter.ViewHolder>() {
@@ -62,6 +64,10 @@ class LumperWorkDetailAdapter(
         private val textViewWaitingTime: TextView = itemView.textViewWaitingTime
         private val textViewBreakTime: TextView = itemView.textViewBreakTime
         private val textViewWorkDone: TextView = itemView.textViewWorkDone
+        private val textViewRequestCorrection: TextView = itemView.textViewRequestCorrection
+        private val textViewCancelCorrection: TextView = itemView.textViewCancelCorrection
+        private val textViewUpdateCorrection: TextView = itemView.textViewUpdateCorrection
+        private val textViewScheduleNote: TextView = itemView.textViewScheduleNote
 
         var parameters = ArrayList<String>()
 
@@ -75,13 +81,42 @@ class LumperWorkDetailAdapter(
             clickableViewBO.setOnClickListener(this)
             linearLayoutCustomerNotes.setOnClickListener(this)
             linearLayoutQHLNotes.setOnClickListener(this)
+            textViewRequestCorrection.setOnClickListener(this)
+            textViewCancelCorrection.setOnClickListener(this)
+            textViewUpdateCorrection.setOnClickListener(this)
+            textViewScheduleNote.setOnClickListener(this)
         }
 
         fun bind(lumperDaySheet: LumperDaySheet) {
             var totalcase =""
             lumperDaySheet.workItemDetail?.let { workItemDetail ->
-                val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplay(workItemDetail.type, resources)
-                textViewWorkItemType.text = workItemDetail.type?.toLowerCase()?.capitalize()
+                val container = when (workItemDetail.type) {
+                    AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND -> {
+                        resources.getString(R.string.out_bound_bold_has)
+                    }
+                    AppConstant.WORKSHEET_WORK_ITEM_LIVE -> {
+                        resources.getString(R.string.live_load_bold_has)
+                    }
+                    else -> {
+                        resources.getString(R.string.no_of_drops_bold_has)
+                    }
+                }
+                workItemDetail.label?.let {
+                    textViewWorkItemType.text = UIUtils.getSpannableText(container, it)
+                }
+
+                if (workItemDetail.schedule!=null) {
+                    textViewScheduleNote.text = ScheduleUtils.scheduleTypeNote(
+                        workItemDetail.schedule,
+                        resources
+                    )
+                }
+                textViewScheduleNote.isEnabled=!workItemDetail.schedule?.scheduleNote.isNullOrEmpty() && !workItemDetail.schedule?.scheduleNote.equals(
+                    "NA"
+                )
+
+//                val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplay(workItemDetail.type, resources)
+//                textViewWorkItemType.text = workItemDetail.type?.toLowerCase()?.capitalize()
                 textViewStartTime.text = String.format(resources.getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
 
                 if (!workItemDetail.notesQHLCustomer.isNullOrEmpty() && workItemDetail.notesQHLCustomer != AppConstant.NOTES_NOT_AVAILABLE) {
@@ -163,6 +198,45 @@ class LumperWorkDetailAdapter(
                         val lumperDaySheet = getItem(adapterPosition)
                         lumperDaySheet.workItemDetail?.let { workItemDetail ->
                             adapterItemClickListener.onNotesItemClick(workItemDetail.notesQHL)
+                        }
+                    }
+                    textViewRequestCorrection.id -> {
+                        val lumperDaySheet = getItem(adapterPosition)
+                        lumperDaySheet.workItemDetail?.let { workItemDetail ->
+                            adapterItemClickListener.requestCorrection(workItemDetail.id)
+                        }
+                    }
+                    textViewCancelCorrection.id -> {
+                        val lumperDaySheet = getItem(adapterPosition)
+                        lumperDaySheet.workItemDetail?.let { workItemDetail ->
+                            adapterItemClickListener.cancelRequestCorrection(workItemDetail.id)
+                        }
+                    }
+                    textViewUpdateCorrection.id -> {
+                        val lumperDaySheet = getItem(adapterPosition)
+                        lumperDaySheet.workItemDetail?.let { workItemDetail ->
+                            adapterItemClickListener.requestCorrection(workItemDetail.id)
+                        }
+                    }
+                    textViewScheduleNote.id -> {
+                        val lumperDaySheet = getItem(adapterPosition)
+                        lumperDaySheet.workItemDetail?.let { workItemDetail ->
+                            if (!workItemDetail.schedule?.scheduleNote.isNullOrEmpty() && !workItemDetail.schedule?.scheduleNote.equals(
+                                    "NA"
+                                )
+                            ) {
+                                val title =
+                                    ScheduleUtils.scheduleNotePopupTitle(
+                                        workItemDetail.schedule,
+                                        resources
+                                    )
+                                CustomProgressBar.getInstance()
+                                    .showInfoDialog(
+                                        title,
+                                        workItemDetail.schedule?.scheduleNote!!,
+                                        context
+                                    )
+                            }
                         }
                     }
                     else -> {

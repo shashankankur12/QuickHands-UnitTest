@@ -91,6 +91,8 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
             ishaseClockOut(employeeData)
 
+            imageViewCancelLumper.visibility= if (workItemStatus.equals(AppConstant.WORK_ITEM_STATUS_COMPLETED)) View.GONE else View.VISIBLE
+
             if (timingsData.containsKey(employeeData.id)) {
                 val timingDetail = timingsData[employeeData.id]
                 timingDetail?.let {

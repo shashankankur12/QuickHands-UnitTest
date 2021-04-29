@@ -36,8 +36,11 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, CustomerSheetContract.View.OnFragmentInteractionListener, CustomerSheetContract.View.fragmentDataListener, View.OnClickListener {
-    private var onFragmentInteractionListener: DashBoardContract.View.OnFragmentInteractionListener? = null
+class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
+    CustomerSheetContract.View.OnFragmentInteractionListener,
+    CustomerSheetContract.View.fragmentDataListener, View.OnClickListener {
+    private var onFragmentInteractionListener: DashBoardContract.View.OnFragmentInteractionListener? =
+        null
     private var selectedTime: Long = 0
     private lateinit var availableDates: List<Date>
     private var customerSheetScheduleDetails: CustomerSheetScheduleDetails? = null
@@ -83,7 +86,11 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         availableDates = CalendarUtils.getPastCalendarDates()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_customer_sheet, container, false)
     }
 
@@ -98,7 +105,10 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
                 selectedDatePosition = savedInstanceState.getInt(SELECTED_DATE_POSITION)
             }
 
-            if (savedInstanceState.containsKey(COMPANY_NAME) && savedInstanceState.containsKey(DATE_STRING)) {
+            if (savedInstanceState.containsKey(COMPANY_NAME) && savedInstanceState.containsKey(
+                    DATE_STRING
+                )
+            ) {
                 companyName = savedInstanceState.getString(COMPANY_NAME)!!
                 date = savedInstanceState.getString(DATE_STRING)!!
 
@@ -109,7 +119,10 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
                 localCustomerSheetData = savedInstanceState.getParcelable(LOCAL_CUSTOMER_SHEET_DATA)
             }
 
-            if (savedInstanceState.containsKey(SCHEDULE_DETAIL) && savedInstanceState.containsKey(DATE) && savedInstanceState.containsKey(CUSTOMER_SHEET)) {
+            if (savedInstanceState.containsKey(SCHEDULE_DETAIL) && savedInstanceState.containsKey(
+                    DATE
+                ) && savedInstanceState.containsKey(CUSTOMER_SHEET)
+            ) {
                 customerSheetScheduleDetails = savedInstanceState.getParcelable(SCHEDULE_DETAIL)
                 selectedDate = savedInstanceState.getSerializable(DATE) as Date
                 customerSheetData = savedInstanceState.getParcelable(CUSTOMER_SHEET)
@@ -184,7 +197,11 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         buttonSignature.isEnabled = false
     }
 
-    override fun showCustomerSheets(scheduleDetails: CustomerSheetScheduleDetails, customerSheet: CustomerSheetData?, selectedDate: Date) {
+    override fun showCustomerSheets(
+        scheduleDetails: CustomerSheetScheduleDetails,
+        customerSheet: CustomerSheetData?,
+        selectedDate: Date
+    ) {
         this.selectedDate = selectedDate
         this.customerSheetScheduleDetails = scheduleDetails
         this.customerSheetData = customerSheet
@@ -214,12 +231,28 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         textViewCustomerNote.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
-    private fun buildingDetails(scheduleDetails: CustomerSheetScheduleDetails, customerSheet: CustomerSheetData?) {
-        val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
-        textViewBuildingName.text =UIUtils.buildingFullAddress(leadProfile?.buildingDetailData)
-        textViewHeaderBar.text = UIUtils.getSpannableText(getString(R.string.date), DateUtils.getDateString(PATTERN_DATE_DISPLAY_CUSTOMER_SHEET, selectedDate))
-        textViewShiftName.text = UIUtils.getSpannableText(getString(R.string.bar_header_shift), UIUtils.capitalizeString(leadProfile?.shift))
-        textViewDepartmentName.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), UIUtils.getDisplayEmployeeDepartment(leadProfile))
+    private fun buildingDetails(
+        scheduleDetails: CustomerSheetScheduleDetails,
+        customerSheet: CustomerSheetData?
+    ) {
+        val leadProfile = sharedPref.getClassObject(
+            AppConstant.PREFERENCE_LEAD_PROFILE,
+            LeadProfileData::class.java
+        ) as LeadProfileData?
+        textViewBuildingName.text =
+            UIUtils.buildingFullAddress(leadProfile?.buildingDetailData?.get(0))
+        textViewHeaderBar.text = UIUtils.getSpannableText(
+            getString(R.string.date),
+            DateUtils.getDateString(PATTERN_DATE_DISPLAY_CUSTOMER_SHEET, selectedDate)
+        )
+        textViewShiftName.text = UIUtils.getSpannableText(
+            getString(R.string.bar_header_shift),
+            UIUtils.capitalizeString(leadProfile?.shift)
+        )
+        textViewDepartmentName.text = UIUtils.getSpannableText(
+            getString(R.string.bar_header_dept),
+            UIUtils.getDisplayEmployeeDepartment(leadProfile)
+        )
 
         val onGoingWorkItems = ArrayList<WorkItemDetail>()
         onGoingWorkItems.addAll(scheduleDetails.inProgress!!)
@@ -229,7 +262,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         val workItemDetailList = ArrayList<ArrayList<WorkItemDetail>>()
         workItemDetailList.add(scheduleDetails.completed!!)
         workItemDetailList.add(scheduleDetails.cancelled!!)
-        workItemDetailList.add(onGoingWorkItems)
+//        workItemDetailList.add(onGoingWorkItems)
 
         workItemAdapter.update(workItemDetailList)
 
@@ -338,10 +371,13 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
-                buttonSignature.id ->  showBottomSheetWithData(customerSheetData)
+                buttonSignature.id -> showBottomSheetWithData(customerSheetData)
                 bottomSheetBackground.id -> closeBottomSheet()
                 buttonCancel.id -> closeBottomSheet()
-                textViewAddSignature.id -> startIntent(AddSignatureActivity::class.java, requestCode = AppConstant.REQUEST_CODE_CHANGED)
+                textViewAddSignature.id -> startIntent(
+                    AddSignatureActivity::class.java,
+                    requestCode = AppConstant.REQUEST_CODE_CHANGED
+                )
                 buttonSubmit.id -> submitCustomerSheet()
                 textViewWorkItemsDate.id -> showStartDatePicker()
 
@@ -364,9 +400,9 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
     }
 
     private fun updateSelectedDateText(selectedTime: Long) {
-        selectedTime?.also { date ->
-            textViewWorkItemsDate1.text= DateUtils.getDateString(PATTERN_NORMAL, Date(selectedTime))
-                customerSheetPresenter.getCustomerSheetByDate(Date(selectedTime))
+        selectedTime.also { date ->
+            textViewWorkItemsDate.text = DateUtils.getDateString(PATTERN_NORMAL, Date(selectedTime))
+            customerSheetPresenter.getCustomerSheetByDate(Date(selectedTime))
 
         }
     }
@@ -484,7 +520,11 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View, Custom
         }
     }
 
-    private fun showConfirmationDialog(message: String, customerName: String, notesCustomer: String) {
+    private fun showConfirmationDialog(
+        message: String,
+        customerName: String,
+        notesCustomer: String
+    ) {
         closeBottomSheet()
         val customerId = buttonSubmit.getTag(R.id.requestLumperId) as String?
         saveCustomerSheet(customerName, notesCustomer, signatureFilePath, customerId!!)

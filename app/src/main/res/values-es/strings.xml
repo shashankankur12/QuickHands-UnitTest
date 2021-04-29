@@ -177,6 +177,7 @@
     <string name="bulk_action">Bulk Action</string>
     <string name="scheduled">Scheduled</string>
     <string name="schedule_s">Schedule</string>
+    <string name="not_opens">NOTOPEN</string>
     <string name="scheduled_description">(Work on container has not started)</string>
     <string name="scheduled_time_s">Scheduled Time: %s</string>
     <string name="schedule_detail">Work Schedule Detail</string>
@@ -303,6 +304,9 @@
         <item>Take Photo</item>
         <item>Cancel</item>
     </string-array>
+    <string name="request_correction">Request Corrections</string>
+    <string name="request_correction_title">What are the corrections?</string>
+    <string name="container_parameter">Container Parameter</string>
 
     <!--No Record Messages-->
     <string name="empty_add_work_item_lumpers_info_message">This building doesn\'t have any lumpers present for the selected date. Please mark lumpers attendance in \'Time-Clock Attendance\' section for selecting them. \n</string>
@@ -397,6 +401,7 @@
     <string name="updtae_status_after_signature_message">Customer signature submitted You can\'t update the status</string>
     <string name="add_container_error_message">A container card has partial information. Fill it completely or remove it before you can Add. \n</string>
     <string name="lumper_waiting_message">Waiting time should be greater the zero</string>
+    <string name="request_correction_message">Please enter the request for correction</string>
 
     <!--Info Messages-->
     <string name="enter_employee_id_info_message">Employee ID</string>
