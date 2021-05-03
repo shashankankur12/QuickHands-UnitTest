@@ -123,6 +123,10 @@ class WorkItemDetail() : Parcelable {
     @Expose
     var buildingOps: HashMap<String, String>? = null
 
+    @SerializedName("buildingParams")
+    @Expose
+    var buildingParams: ArrayList<String>? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         workItemType = parcel.readString()
@@ -150,6 +154,7 @@ class WorkItemDetail() : Parcelable {
         schedule = parcel.readParcelable(BuildingDetailData::class.java.classLoader)
         assignedLumpersList = parcel.createTypedArrayList(EmployeeData)
         attendanceDetail = parcel.readParcelable(AttendanceDetail::class.java.classLoader)
+        buildingParams = parcel.createStringArrayList()
 //        buildingOps = HashMap()
 //        readFromParcel(parcel)
     }
@@ -187,6 +192,7 @@ class WorkItemDetail() : Parcelable {
         parcel.writeValue(isCompleted)
         parcel.writeString(createdAt)
         parcel.writeString(updatedAt)
+        parcel.writeStringList(buildingParams)
         parcel.writeValue(numberOfDrops)
         parcel.writeString(buildingDetailData)
         parcel.writeParcelable(schedule, flags)

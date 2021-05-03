@@ -26,6 +26,7 @@
     <string name="building_name_lead">Building : </string>
     <string name="building_operations">Building Operations</string>
     <string name="cancel">Cancel</string>
+    <string name="cancel_header">Cancel : %s</string>
     <string name="cancel_all_work_schedules">Cancel All Work Schedules</string>
     <string name="cancel_request">Cancel Request</string>
     <string name="cancelled">Cancelled</string>
@@ -33,7 +34,9 @@
     <string name="show_more">Show more status</string>
     <string name="show_less">Show less status</string>
     <string name="unfinished">Unfinished</string>
+    <string name="unfinished_header">Unfinished : %s</string>
     <string name="not_open">Not-Open</string>
+    <string name="not_open_header">Not-Open : %s</string>
     <string name="cancelled_description">(Customer cancelled a scheduled container)</string>
     <string name="psuse_time_description">(Lumper has to pause work on this container to work on another but will return.)</string>
     <string name="unfinished_description">(Work started but not finished during this shift)</string>
@@ -276,6 +279,7 @@
     <string name="request_not_approved_bold"><![CDATA[<b> Request Not Approved:</b>]]> %s</string>
     <string name="date_day">Date</string>
     <string name="complete_a">Complete %s</string>
+    <string name="complete_header">Complete : %s</string>
     <string name="requested_lumper_info">%s. %s (Emp ID:%s): %s</string>
     <string name="submitted">Submitted</string>
     <string name="requirement">Requirements</string>
@@ -423,6 +427,8 @@
     <string name="work_sheet_lumper_message">Lumpers have been Clocked-In</string>
     <string name="work_sheet_cancel_header_message">Clock-In all lumpers who are present before submitting. Add a note if needed</string>
     <string name="add_container_header_message">Add containers to today\'s schedule</string>
+    <string name="cancel_note_header_message">These are containers that were schedule and customer ask to cancel</string>
+    <string name="not_open_note_header_message">These are containers that were schedule and mark as not open</string>
 
     <!--Lumper Timing Warnings-->
     <string name="work_start_less_work_end_warning_message">Work\'s Start Time should be less than End Time</string>

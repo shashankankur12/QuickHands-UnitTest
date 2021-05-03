@@ -8,27 +8,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.utils.AppConstant
-import kotlin.collections.ArrayList
+import kotlinx.android.synthetic.main.item_content_note.view.*
 
 class CustomerNoteAdaptet(
     workItemDetail: ArrayList<WorkItemDetail>,
     parameters: ArrayList<String>
-) : RecyclerView.Adapter<CustomerNoteAdaptet.CustomeViewHolder>() {
+) : RecyclerView.Adapter<CustomerNoteAdaptet.CustomViewHolder>() {
     private var onGoingWorkItems = workItemDetail
     private val parameters: ArrayList<String> = parameters
 
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): CustomeViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): CustomViewHolder {
         val itemView = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.item_content_note, viewGroup, false)
-        return CustomeViewHolder(itemView)
+        return CustomViewHolder(itemView)
     }
 
     private fun getItem(position: Int): WorkItemDetail {
         return onGoingWorkItems[position]
     }
 
-    override fun onBindViewHolder(viewHolder: CustomeViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: CustomViewHolder, position: Int) {
         viewHolder.bind(getItem(position))
     }
 
@@ -48,21 +48,20 @@ class CustomerNoteAdaptet(
         notifyDataSetChanged()
     }
 
-    inner class CustomeViewHolder(itemView: View) :
+    inner class CustomViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-        var textViewItemDoor: TextView = itemView.findViewById(R.id.textViewItemDoor)
-        var textViewItemContainer: TextView = itemView.findViewById(R.id.textViewItemContainer)
-        var textViewItemContainerNote: TextView = itemView.findViewById(R.id.textViewItemContainerNote)
+        var textViewItemDoor: TextView = itemView.textViewItemDoor
+        var textViewItemContainer: TextView = itemView.textViewItemContainer
+        var textViewItemContainerNote: TextView = itemView.textViewItemContainerNote
 
         fun bind(workItemDetail: WorkItemDetail) {
-            if (!workItemDetail.notesQHL.isNullOrEmpty()){
-
-                textViewItemContainerNote.text=workItemDetail.notesQHL
-                textViewItemDoor.text=if(!workItemDetail.buildingOps.isNullOrEmpty()) workItemDetail.buildingOps!![parameters[0]] else AppConstant.NOTES_NOT_AVAILABLE
-                textViewItemContainer.text= if(!workItemDetail.buildingOps.isNullOrEmpty())workItemDetail.buildingOps!![parameters[1]] else AppConstant.NOTES_NOT_AVAILABLE
-
+            if (!workItemDetail.notesQHL.isNullOrEmpty()) {
+                textViewItemContainerNote.text = workItemDetail.notesQHL
+                textViewItemDoor.text =
+                    if (!workItemDetail.buildingOps.isNullOrEmpty()) workItemDetail.buildingOps!![parameters[0]] else AppConstant.NOTES_NOT_AVAILABLE
+                textViewItemContainer.text =
+                    if (!workItemDetail.buildingOps.isNullOrEmpty()) workItemDetail.buildingOps!![parameters[1]] else AppConstant.NOTES_NOT_AVAILABLE
             }
-
         }
     }
 

@@ -12,7 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.quickhandslogistics.R
-import com.quickhandslogistics.adapters.customerSheet.WorkItemAdapter
+import com.quickhandslogistics.adapters.customerSheet.ParameterAdapter
+import com.quickhandslogistics.adapters.customerSheet.WorkTypeAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
 import com.quickhandslogistics.contracts.customerSheet.CustomerSheetContract
 import com.quickhandslogistics.data.customerSheet.CustomerSheetData
@@ -51,12 +52,12 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
     private var signatureFilePath = ""
     private var localCustomerSheetData: LocalCustomerSheetData? = null
     private var isSavedState: Boolean = false
-    private var isSaveddata: Boolean = true
+    private var isSavedData: Boolean = true
     private var selectedDatePosition: Int = 0
     private var inCompleteWorkItemsCount: Int = 0
     private var workItemsCount: Int = 0
     private lateinit var customerSheetPresenter: CustomerSheetPresenter
-    private lateinit var workItemAdapter: WorkItemAdapter
+    private lateinit var workItemAdapter: WorkTypeAdapter
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
     companion object {
@@ -73,7 +74,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         super.onAttach(context)
         if (context is DashBoardContract.View.OnFragmentInteractionListener) {
             onFragmentInteractionListener = context
-            isSaveddata = true
+            isSavedData = true
         }
     }
 
@@ -167,11 +168,6 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         buttonSubmit.setOnClickListener(this)
         textViewWorkItemsDate.setOnClickListener(this)
 
-        // set adaptor
-        workItemAdapter = WorkItemAdapter(resources, this)
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        recyclerViewItem.layoutManager = layoutManager
-        recyclerViewItem.adapter = workItemAdapter
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -210,18 +206,22 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         selectedTime = selectedDate.time
 
         val onGoingWorkItems = ArrayList<WorkItemDetail>()
-        onGoingWorkItems.addAll(scheduleDetails.inProgress!!)
-        onGoingWorkItems.addAll(scheduleDetails.onHold!!)
-        onGoingWorkItems.addAll(scheduleDetails.scheduled!!)
+        scheduleDetails.inProgress?.let { onGoingWorkItems.addAll(it) }
+        scheduleDetails.onHold?.let { onGoingWorkItems.addAll(it) }
+        scheduleDetails.scheduled?.let { onGoingWorkItems.addAll(it) }
 
         val allWorkItems = ArrayList<WorkItemDetail>()
         allWorkItems.addAll(onGoingWorkItems)
-        allWorkItems.addAll(scheduleDetails.cancelled!!)
-        allWorkItems.addAll(scheduleDetails.completed!!)
-        textViewTotalCount.text =
-            String.format(getString(R.string.total_containers_s), allWorkItems.size)
+        scheduleDetails.cancelled?.let { allWorkItems.addAll(it) }
+        scheduleDetails.completed?.let { allWorkItems.addAll(it) }
+        scheduleDetails.unfinished?.let { allWorkItems.addAll(it) }
+        scheduleDetails.notOpen?.let { allWorkItems.addAll(it) }
+
         workItemsCount = allWorkItems.size
         inCompleteWorkItemsCount = onGoingWorkItems.size
+
+        textViewTotalCount.text =
+            String.format(getString(R.string.total_containers_s), allWorkItems.size)
         buildingDetails(scheduleDetails, customerSheet)
     }
 
@@ -235,36 +235,101 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         scheduleDetails: CustomerSheetScheduleDetails,
         customerSheet: CustomerSheetData?
     ) {
-        val leadProfile = sharedPref.getClassObject(
-            AppConstant.PREFERENCE_LEAD_PROFILE,
-            LeadProfileData::class.java
-        ) as LeadProfileData?
-        textViewBuildingName.text =
-            UIUtils.buildingFullAddress(leadProfile?.buildingDetailData?.get(0))
-        textViewHeaderBar.text = UIUtils.getSpannableText(
-            getString(R.string.date),
-            DateUtils.getDateString(PATTERN_DATE_DISPLAY_CUSTOMER_SHEET, selectedDate)
-        )
-        textViewShiftName.text = UIUtils.getSpannableText(
-            getString(R.string.bar_header_shift),
-            UIUtils.capitalizeString(leadProfile?.shift)
-        )
-        textViewDepartmentName.text = UIUtils.getSpannableText(
-            getString(R.string.bar_header_dept),
-            UIUtils.getDisplayEmployeeDepartment(leadProfile)
-        )
+        setHeaderData()
 
-        val onGoingWorkItems = ArrayList<WorkItemDetail>()
-        onGoingWorkItems.addAll(scheduleDetails.inProgress!!)
-        onGoingWorkItems.addAll(scheduleDetails.onHold!!)
-        onGoingWorkItems.addAll(scheduleDetails.scheduled!!)
+        //for complete section in sheet
+        textViewStatusComplete.text =
+            String.format(getString(R.string.complete_header), scheduleDetails.completed?.size)
+        recyclerViewItem.apply {
+            workItemAdapter = WorkTypeAdapter(
+                resources,
+                context,
+                ScheduleUtils.getCustomerSheetItemArray(scheduleDetails.completed),
+                true
+            )
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = workItemAdapter
+        }
 
-        val workItemDetailList = ArrayList<ArrayList<WorkItemDetail>>()
-        workItemDetailList.add(scheduleDetails.completed!!)
-        workItemDetailList.add(scheduleDetails.cancelled!!)
-//        workItemDetailList.add(onGoingWorkItems)
+        //for cancel section in sheet
+        textViewStatusCancel.text =
+            String.format(getString(R.string.cancel_header), scheduleDetails.cancelled?.size)
+        recyclerViewItemCancelHeader.apply {
+            layoutManager =
+                LinearLayoutManager(fragmentActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = ParameterAdapter(getItemTypeList())
+        }
+        recyclerViewItemCancel.apply {
+            layoutManager =
+                LinearLayoutManager(fragmentActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter =
+                ParameterAdapter(ScheduleUtils.getSheetItemCountArray(scheduleDetails.cancelled))
+        }
 
-        workItemAdapter.update(workItemDetailList)
+        if (scheduleDetails.containerGroupNote?.noteForCustomer != null) {
+            layoutCancelNote.visibility = View.VISIBLE
+            textViewCancelNote.text =
+                scheduleDetails.containerGroupNote?.noteForCustomer?.capitalize()
+        } else layoutCancelNote.visibility = View.GONE
+
+        //for unfinished section in sheet
+        textViewStatusUnfinished.text =
+            String.format(getString(R.string.unfinished_header), scheduleDetails.unfinished?.size)
+        recyclerViewItemUnfinished.apply {
+            workItemAdapter = WorkTypeAdapter(
+                resources,
+                context!!,
+                ScheduleUtils.getCustomerSheetItemArray(scheduleDetails.unfinished!!),
+                false
+            )
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = workItemAdapter
+        }
+
+        if (scheduleDetails.unfinishedNotes?.noteForCustomer != null) {
+            layoutUnfinishedNote.visibility = View.VISIBLE
+            textViewUnfinishedNote.text =
+                scheduleDetails.unfinishedNotes?.noteForCustomer?.capitalize()
+        } else layoutUnfinishedNote.visibility = View.GONE
+
+        //for not open section in sheet
+        textViewStatusNotOpen.text =
+            String.format(getString(R.string.not_open_header), scheduleDetails.notOpen?.size)
+        recyclerViewItemNotOpenHeader.apply {
+            layoutManager =
+                LinearLayoutManager(fragmentActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = ParameterAdapter(getItemTypeList())
+        }
+        recyclerViewItemNotOpen.apply {
+            layoutManager =
+                LinearLayoutManager(fragmentActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter =
+                ParameterAdapter(ScheduleUtils.getSheetItemCountArray(scheduleDetails.notOpen))
+        }
+
+        if (scheduleDetails.notOpenNotes?.noteForCustomer != null) {
+            layoutNotOpenNote.visibility = View.VISIBLE
+            textViewNotOpenNote.text = scheduleDetails.notOpenNotes?.noteForCustomer?.capitalize()
+        } else layoutNotOpenNote.visibility = View.GONE
+
+
+        recyclerViewItemNotOpenHeader.visibility =
+            if (!scheduleDetails.notOpen.isNullOrEmpty()) View.VISIBLE else View.GONE
+        recyclerViewItemNotOpen.visibility =
+            if (!scheduleDetails.notOpen.isNullOrEmpty()) View.VISIBLE else View.GONE
+        textViewNotOpenHeader.visibility =
+            if (!scheduleDetails.notOpen.isNullOrEmpty()) View.VISIBLE else View.GONE
+        recyclerViewItemUnfinished.visibility =
+            if (!scheduleDetails.unfinished.isNullOrEmpty()) View.VISIBLE else View.GONE
+        recyclerViewItemCancel.visibility =
+            if (!scheduleDetails.cancelled.isNullOrEmpty()) View.VISIBLE else View.GONE
+        recyclerViewItemCancelHeader.visibility =
+            if (!scheduleDetails.cancelled.isNullOrEmpty()) View.VISIBLE else View.GONE
+        textViewCancelHeader.visibility =
+            if (!scheduleDetails.cancelled.isNullOrEmpty()) View.VISIBLE else View.GONE
+        recyclerViewItem.visibility =
+            if (!scheduleDetails.completed.isNullOrEmpty()) View.VISIBLE else View.GONE
+
 
         customerSheet?.also {
             layoutBarCustomerDetail.visibility = View.VISIBLE
@@ -295,6 +360,35 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
             buttonSignature.background = resources.getDrawable(R.drawable.round_button_red)
         }
 
+    }
+
+    private fun getItemTypeList(): ArrayList<String> {
+        val itemList = ArrayList<String>()
+        itemList.add(resources.getString(R.string.out_bound))
+        itemList.add(resources.getString(R.string.live_load))
+        itemList.add(resources.getString(R.string.drop))
+        return itemList
+    }
+
+    private fun setHeaderData() {
+        val leadProfile = sharedPref.getClassObject(
+            AppConstant.PREFERENCE_LEAD_PROFILE,
+            LeadProfileData::class.java
+        ) as LeadProfileData?
+        textViewBuildingName.text =
+            UIUtils.buildingFullAddress(leadProfile?.buildingDetailData?.get(0))
+        textViewHeaderBar.text = UIUtils.getSpannableText(
+            getString(R.string.date),
+            DateUtils.getDateString(PATTERN_DATE_DISPLAY_CUSTOMER_SHEET, selectedDate)
+        )
+        textViewShiftName.text = UIUtils.getSpannableText(
+            getString(R.string.bar_header_shift),
+            UIUtils.capitalizeString(leadProfile?.shift)
+        )
+        textViewDepartmentName.text = UIUtils.getSpannableText(
+            getString(R.string.bar_header_dept),
+            UIUtils.getDisplayEmployeeDepartment(leadProfile)
+        )
     }
 
     override fun showHeaderInfo(companyName: String, date: String) {
@@ -352,7 +446,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
     }
 
     override fun isDataSave(isDataSave: Boolean) {
-        isSaveddata = isDataSave
+        isSavedData = isDataSave
     }
 
     override fun onDataChanges(): Boolean {
@@ -360,7 +454,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         if (customerSheetData != null && customerSheetData!!.isSigned!!.equals(true)) {
             isDataChanged = false
         } else {
-            if (!isSaveddata) {
+            if (!isSavedData) {
                 isDataChanged = true
             } else false
         }

@@ -550,7 +550,6 @@ object ScheduleUtils {
 
     }
 
-
     fun sortAccordingly(parameters: ArrayList<String>): ArrayList<String> {
         val sortedPerameter : ArrayList<String> = ArrayList()
         val sortedSubPerameter : ArrayList<String> = ArrayList()
@@ -612,7 +611,6 @@ object ScheduleUtils {
         return shortedList
     }
 
-
     fun sortLumperList(lumperList: ArrayList<LumpersInfo>?): ArrayList<LumpersInfo> {
         return if (!lumperList.isNullOrEmpty()) {
             lumperList.sortWith(Comparator { lumper1, lumper2 ->
@@ -646,6 +644,48 @@ object ScheduleUtils {
 
         }
         return scheduleLumperList.distinctBy { it.id }
+    }
+
+    fun getSheetItemCountArray(workItem: ArrayList<WorkItemDetail>?): ArrayList<String> {
+        val itemCount1= ArrayList<String>()
+        val outboundItem1 = ArrayList<WorkItemDetail>()
+        val liveLodeItem1= ArrayList<WorkItemDetail>()
+        val dropItem1 = ArrayList<WorkItemDetail>()
+
+        workItem?.forEach { item ->
+            when {
+                item.type.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> dropItem1.add(item)
+                item.type.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> outboundItem1.add(item)
+                item.type.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> liveLodeItem1.add(item)
+            }
+
+        }
+
+        itemCount1.add(outboundItem1.size.toString())
+        itemCount1.add(liveLodeItem1.size.toString())
+        itemCount1.add(dropItem1.size.toString())
+        return itemCount1
+    }
+
+   fun getCustomerSheetItemArray(workItemDetail: ArrayList<WorkItemDetail>?): ArrayList<ArrayList<WorkItemDetail>> {
+        val outboundItem = ArrayList<WorkItemDetail>()
+        val liveLodeItem = ArrayList<WorkItemDetail>()
+        val dropItem = ArrayList<WorkItemDetail>()
+        val itemType = ArrayList<ArrayList<WorkItemDetail>>()
+
+       workItemDetail?.forEach {
+           when {
+               it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> dropItem.add(it)
+               it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> outboundItem.add(it)
+               it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> liveLodeItem.add(it)
+           }
+       }
+        itemType.add(outboundItem)
+        itemType.add(liveLodeItem)
+        itemType.add(dropItem)
+
+        return itemType
+
     }
 
 }

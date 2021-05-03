@@ -7,26 +7,25 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.data.schedule.WorkItemDetail
-import kotlin.collections.ArrayList
 
 class CommanContentAdapter(
     workItemDetail: ArrayList<WorkItemDetail>,
     parameters: ArrayList<String>
-) : RecyclerView.Adapter<CommanContentAdapter.CustomeViewHolder>() {
+) : RecyclerView.Adapter<CommanContentAdapter.CustomViewHolder>() {
     private var onGoingWorkItems = workItemDetail
     private val parameters: ArrayList<String> = parameters
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): CustomeViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): CustomViewHolder {
         val itemView = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.item_content_recycler, viewGroup, false)
-        return CustomeViewHolder(itemView)
+        return CustomViewHolder(itemView)
     }
 
     private fun getItem(position: Int): WorkItemDetail {
         return onGoingWorkItems[position]
     }
 
-    override fun onBindViewHolder(viewHolder: CustomeViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: CustomViewHolder, position: Int) {
         viewHolder.bind(getItem(position))
     }
 
@@ -44,29 +43,24 @@ class CommanContentAdapter(
             this.parameters.addAll(parameters)
         }
         notifyDataSetChanged()
-
     }
 
-    inner class CustomeViewHolder(itemView: View) :
+    inner class CustomViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-        var recycelrViewContentItem: RecyclerView = itemView.findViewById(R.id.recycelrViewContentItem)
-        init {
+        var recyclerViewContentItem: RecyclerView =
+            itemView.findViewById(R.id.recyclerViewContentItem)
 
-            recycelrViewContentItem.apply {
+        init {
+            recyclerViewContentItem.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
-            recycelrViewContentItem.isNestedScrollingEnabled=false
-
+            recyclerViewContentItem.isNestedScrollingEnabled = false
         }
 
         fun bind(workItemDetail: WorkItemDetail) {
-
-                recycelrViewContentItem.adapter = BuildingOpsAdapter(workItemDetail.buildingOps, parameters)
-
+            recyclerViewContentItem.adapter =
+                BuildingOpsAdapter(workItemDetail.buildingOps, parameters)
         }
-
-
-
     }
 
 }
