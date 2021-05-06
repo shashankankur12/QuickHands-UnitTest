@@ -406,6 +406,9 @@
     <string name="group_qhl_note_error_message">Please enter QHL note.  \n</string>
     <string name="lumper_waiting_message">Waiting time should be greater the zero</string>
     <string name="request_correction_message">Please enter the request for correction</string>
+    <string name="unfinished_popup_error_message">The following parameter need to be filled out before a container can be mark \'unfinished\'</string>
+    <string name="unfinished_container_error_message"><![CDATA[<b>Container Perameters:</b>]]> \n Door, Container # and Cases</string>
+    <string name="unfinished_lumper_error_message"><![CDATA[<b>Lumper Perameters:</b>]]> \n All fields for all assigned lumper</string>
 
     <!--Info Messages-->
     <string name="enter_employee_id_info_message">Employee ID</string>

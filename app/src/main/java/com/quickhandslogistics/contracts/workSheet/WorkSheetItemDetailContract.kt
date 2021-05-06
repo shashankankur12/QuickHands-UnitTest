@@ -1,11 +1,12 @@
 package com.quickhandslogistics.contracts.workSheet
 
 import com.quickhandslogistics.contracts.BaseContract
-import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.schedule.WorkItemDetailAPIResponse
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 import okhttp3.MultipartBody
+import java.util.*
+import kotlin.collections.ArrayList
 
 class WorkSheetItemDetailContract {
     interface Model {
@@ -13,6 +14,8 @@ class WorkSheetItemDetailContract {
         fun changeWorkItemStatus(
             workItemId: String,
             status: String,
+            selectedDate: Date? =null,
+            selectedTime: Long? =null,
             onFinishedListener: OnFinishedListener
         )
 
@@ -39,7 +42,8 @@ class WorkSheetItemDetailContract {
         fun showAPIErrorMessage(message: String)
         fun showWorkItemDetail(
             container: WorkItemContainerDetails,
-            lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?
+            lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?,
+            buildingParams: ArrayList<String>?
         )
 
         fun statusChangedSuccessfully()
@@ -66,7 +70,12 @@ class WorkSheetItemDetailContract {
 
     interface Presenter : BaseContract.Presenter {
         fun fetchWorkItemDetail(workItemId: String)
-        fun changeWorkItemStatus(workItemId: String, status: String)
+        fun changeWorkItemStatus(
+            workItemId: String,
+            status: String,
+            selectedDate: Date? =null,
+            selectedTime: Long? =null
+        )
         fun updateWorkItemNotes(
             workItemId: String,
             notesQHLCustomer: String,

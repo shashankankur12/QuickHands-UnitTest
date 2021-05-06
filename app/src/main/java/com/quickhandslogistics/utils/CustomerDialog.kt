@@ -385,6 +385,31 @@ object CustomerDialog : AppConstant {
         dialog.show()
     }
 
+
+    fun showUnfinishedErrorDialog(activity: Activity ) {
+        mActivity = activity
+        val dialog =
+            getDialog(R.layout.unfinished_error_dialog, activity)
+        //        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        val window = dialog.window
+        window!!.setLayout(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        window.setBackgroundDrawableResource(android.R.color.transparent)
+        val headTitle: TextView = dialog.findViewById(R.id.header_title)
+        val parametersTitle: TextView = dialog.findViewById(R.id.parameter_title)
+        val lumperTitle: TextView = dialog.findViewById(R.id.lumper_title)
+        val confirm = dialog.findViewById<Button>(R.id.confirm_button)
+
+        headTitle.text= activity.getString(R.string.unfinished_popup_error_message)
+        parametersTitle.text=  UIUtils.getSpannedText(activity.getString(R.string.unfinished_container_error_message))
+        lumperTitle.text= UIUtils.getSpannedText(activity.getString(R.string.unfinished_lumper_error_message))
+
+        confirm.setOnClickListener { dialog.dismiss() }
+        dialog.show()
+    }
+
      fun openZoomImageDialog(url: String, activity: Activity) {
         val dialog = getDialog(R.layout.dialog_zoom_image, activity)
 

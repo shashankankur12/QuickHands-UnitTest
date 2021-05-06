@@ -5,13 +5,14 @@ import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.workSheet.UploadImageResponse
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
-import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.schedule.WorkItemDetailAPIResponse
 import com.quickhandslogistics.models.workSheet.WorkSheetItemDetailModel
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
 import okhttp3.MultipartBody
+import java.util.*
+import kotlin.collections.ArrayList
 
 class WorkSheetItemDetailPresenter(private var workSheetItemDetailView: WorkSheetItemDetailContract.View?, private val resources: Resources) :
     WorkSheetItemDetailContract.Presenter, WorkSheetItemDetailContract.Model.OnFinishedListener {
@@ -28,9 +29,16 @@ class WorkSheetItemDetailPresenter(private var workSheetItemDetailView: WorkShee
         workSheetItemDetailModel.fetchWorkItemDetail(workItemId, this)
     }
 
-    override fun changeWorkItemStatus(workItemId: String, status: String) {
+
+
+    override fun changeWorkItemStatus(
+        workItemId: String,
+        status: String,
+        selectedDate: Date?,
+        selectedTime: Long?
+    ) {
         workSheetItemDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        workSheetItemDetailModel.changeWorkItemStatus(workItemId, status, this)
+        workSheetItemDetailModel.changeWorkItemStatus(workItemId, status, selectedDate, selectedTime,  this)
     }
 
     override fun updateWorkItemNotes(
@@ -75,7 +83,7 @@ class WorkSheetItemDetailPresenter(private var workSheetItemDetailView: WorkShee
     override fun onSuccess(response: WorkItemDetailAPIResponse) {
         workSheetItemDetailView?.hideProgressDialog()
         response.data?.container?.let { container ->
-            workSheetItemDetailView?.showWorkItemDetail(container, response.data?.lumpersTimeSchedule)
+            workSheetItemDetailView?.showWorkItemDetail(container, response.data?.lumpersTimeSchedule, response.data?.buildingParams)
         }
     }
 

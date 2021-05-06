@@ -32,8 +32,8 @@ interface AppConstant {
         const val NOTIFICATION_TYPE_LEAD_BUILDING_REMOVED = "lead-building-removed"
 
         // API Enums
-        const val WORK_ITEM_STATUS_ON_HOLD = "ON-HOLD"
-        const val WORK_ITEM_STATUS_IN_PROGRESS = "IN-PROGRESS"
+        const val WORK_ITEM_STATUS_ON_HOLD = "ONHOLD"
+        const val WORK_ITEM_STATUS_IN_PROGRESS = "INPROGRESS"
         const val WORK_ITEM_STATUS_COMPLETED = "COMPLETED"
         const val WORK_ITEM_STATUS_CANCELLED = "CANCELLED"
         const val WORK_ITEM_STATUS_SCHEDULED = "SCHEDULED"

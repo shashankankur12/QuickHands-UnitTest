@@ -499,18 +499,17 @@ object ScheduleUtils {
         return Triple(Pair(dailyNoteList, customNoteList),weeklyNoteList ,monthlyNoteList)
     }
 
-    fun getBuildingParametersList(buildingDetailData: BuildingDetailData ?): ArrayList<String> {
+    fun getBuildingParametersList(buildingParams: ArrayList<String> ?): ArrayList<String> {
         val parameters = ArrayList<String>()
 
-        buildingDetailData?.let { buildingDetailData ->
-            if (!buildingDetailData.parameters.isNullOrEmpty()) {
-                parameters.addAll(buildingDetailData.parameters!!)
+            if (!buildingParams.isNullOrEmpty()) {
+                parameters.addAll(buildingParams)
             }
-        }
+
         return parameters
     }
 
-    fun getFilledBuildingParametersCounts(workItemDetail: WorkItemContainerDetails, buildingDetailData: BuildingDetailData?): Int {
+    fun getFilledBuildingParametersCounts(workItemDetail: WorkItemContainerDetails, buildingDetailData: ArrayList<String>?): Int {
         var count = 0
         val parameters = getBuildingParametersList(buildingDetailData)
 

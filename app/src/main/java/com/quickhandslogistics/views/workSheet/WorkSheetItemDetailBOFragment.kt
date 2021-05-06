@@ -12,12 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.common.ContainerDetailAdapter
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
-import com.quickhandslogistics.data.dashboard.BuildingDetailData
-import com.quickhandslogistics.data.dashboard.LeadProfileData
-import com.quickhandslogistics.data.schedule.ScheduleWorkItem
-import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
-import com.quickhandslogistics.presenters.LeadProfilePresenter
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.buildingOperations.BuildingOperationsActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_BUILDING_PARAMETERS
@@ -37,12 +32,14 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
 
     companion object {
         private const val WORK_DETALS = "WORK_DETALS"
+        private const val BUILDING_PARAMETER = "BUILDING_PARAMETER"
         @JvmStatic
-        fun newInstance(allWorkItem: WorkItemContainerDetails?) = WorkSheetItemDetailBOFragment()
+        fun newInstance(allWorkItem: WorkItemContainerDetails?, buildingParams: ArrayList<String>?) = WorkSheetItemDetailBOFragment()
             .apply {
                 arguments = Bundle().apply {
                     if(allWorkItem!=null){
                         putParcelable(WORK_DETALS, allWorkItem)
+                        putStringArrayList(BUILDING_PARAMETER, buildingParams)
                     }
                 }
             }
@@ -52,6 +49,7 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         arguments?.let {
             workItemDetail = it.getParcelable<WorkItemContainerDetails>(WORK_DETALS)
+            buildingDetailData = it.getStringArrayList(BUILDING_PARAMETER)
         }
     }
 
@@ -89,7 +87,7 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
         })
 
         buttonUpdate.setOnClickListener(this)
-        workItemDetail?.let { showBuildingOperationsData(it) }
+        workItemDetail?.let { showBuildingOperationsData(it, buildingDetailData) }
 
     }
 
@@ -105,9 +103,12 @@ class WorkSheetItemDetailBOFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-    fun showBuildingOperationsData(workItemDetail: WorkItemContainerDetails) {
+    fun showBuildingOperationsData(
+        workItemDetail: WorkItemContainerDetails,
+        buildingParams: ArrayList<String>?
+    ) {
         this.workItemDetail = workItemDetail
-        buildingDetailData = sharedPref.getClassObject(AppConstant.PREFERENCE_BUILDING_DETAILS, ArrayList::class.java) as ArrayList<String>?
+        buildingDetailData = buildingParams
 
         workItemDetail.status?.let { status ->
             if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED || status == AppConstant.WORK_ITEM_STATUS_CANCELLED) {

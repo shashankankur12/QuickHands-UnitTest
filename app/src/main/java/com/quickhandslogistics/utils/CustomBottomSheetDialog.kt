@@ -22,6 +22,8 @@ object CustomBottomSheetDialog {
         val startTimeText=unFinishedBottomSheet.findViewById<TextView>(R.id.startTimeText)
         val departmentText=unFinishedBottomSheet.findViewById<TextView>(R.id.departmentText)
         val shiftText=unFinishedBottomSheet.findViewById<TextView>(R.id.shiftText)
+        var selectedDate=Date()
+        var selectedTime=Date().time
 
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
 
@@ -30,10 +32,11 @@ object CustomBottomSheetDialog {
 
         dateForCompletionText?.text= DateUtils.getDateString(DateUtils.PATTERN_MONTH_DAY_DISPLAY, Date())
         dateForCompletionText?.setOnClickListener {
-            ReportUtils.showDatePicker(Date(), context, object : ReportUtils.OnDateSetListener {
+            ReportUtils.showDatePicker(selectedDate, context, object : ReportUtils.OnDateSetListener {
                 override fun onDateSet(selected: Date) {
                     dateForCompletionText.text =
                         DateUtils.getDateString(DateUtils.PATTERN_MONTH_DAY_DISPLAY, selected)
+                    selectedDate=selected
                 }
             })
         }
@@ -41,7 +44,7 @@ object CustomBottomSheetDialog {
         startTimeText?.text = DateUtils.convertMillisecondsToTimeString(Date().time )
         startTimeText?.setOnClickListener {
             val calendar = Calendar.getInstance()
-            calendar.timeInMillis = Date().time
+            calendar.timeInMillis =selectedTime
             val mHour = calendar.get(Calendar.HOUR_OF_DAY)
             val mMinute = calendar.get(Calendar.MINUTE)
 
@@ -50,13 +53,14 @@ object CustomBottomSheetDialog {
                     calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                     calendar.set(Calendar.MINUTE, minute)
                     startTimeText.text = DateUtils.convertMillisecondsToTimeString(calendar.timeInMillis)
+                    selectedTime= calendar.timeInMillis
                 }, mHour, mMinute, false
             ).show()
         }
 
         unFinishedBottomSheet.findViewById<Button>(R.id.buttonCancelBottomSheet)?.setOnClickListener { unFinishedBottomSheet.dismiss() }
         unFinishedBottomSheet.findViewById<Button>(R.id.buttonSubmit)?.setOnClickListener {
-            contractView?.onSendRequest(unFinishedBottomSheet)
+            contractView?.onSendRequest(unFinishedBottomSheet, selectedDate, selectedTime)
         }
         unFinishedBottomSheet.show()
     }
@@ -165,7 +169,7 @@ object CustomBottomSheetDialog {
     }
 
     interface IDialogOnClick{
-        fun onSendRequest( dialog: Dialog)
+        fun onSendRequest(dialog: Dialog, selectedDate: Date, selectedTime: Long)
     }
 
     interface IDialogRequestCorrectionClick{

@@ -88,6 +88,9 @@ class WorkItemContainerDetails() : Parcelable {
     @Expose
     var attachmentsList: List<String>? = null
 
+    @SerializedName("buildingParams")
+    @Expose
+    var buildingParams: ArrayList<String>? = null
 
 
 
@@ -156,6 +159,7 @@ class WorkItemContainerDetails() : Parcelable {
         assignedLumpersList = parcel.readArrayList(LumperAttendanceData::class.java.classLoader) as ArrayList<LumperAttendanceData>
         attendanceDetail = parcel.readParcelable(AttendanceDetail::class.java.classLoader)
         attachmentsList = parcel.createStringArrayList()
+        buildingParams = parcel.createStringArrayList()
 //        buildingOps = HashMap()
 //        readFromParcel(parcel)
     }
@@ -187,6 +191,7 @@ class WorkItemContainerDetails() : Parcelable {
         parcel.writeTypedList(assignedLumpersList)
         parcel.writeParcelable(attendanceDetail, flags)
         parcel.writeStringList(attachmentsList)
+        parcel.writeStringList(buildingParams)
         /*buildingOps?.let { data ->
             parcel.writeInt(data.size)
             for (s in data.keys) {
