@@ -19,6 +19,7 @@ class WorkSheetItemDetailPagerAdapter(
     tempLumperIds: ArrayList<String>? = null,
     lumperTimeSchedule: ArrayList<LumpersTimeSchedule>? = null,
     buildingParams: ArrayList<String>? = null
+
 ) :
     FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 

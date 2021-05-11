@@ -5,10 +5,12 @@ import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.data.ErrorResponse
+import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.schedule.ScheduleDetailData
 import com.quickhandslogistics.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.models.schedule.ScheduleModel
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SharedPref
 import com.quickhandslogistics.utils.ValueUtils
 import java.util.*
@@ -84,11 +86,14 @@ class SchedulePresenter(private var scheduleView: ScheduleContract.View?, privat
 //        }
 
         workItemsList.forEach {
-            if (!it.outbounds.isNullOrEmpty()&&it.liveLoads.isNullOrEmpty()&& it.drops.isNullOrEmpty()&& deptDetail != AppConstant.EMPLOYEE_DEPARTMENT_BOTH)
-                it.scheduleDepartment=AppConstant.EMPLOYEE_DEPARTMENT_OUTBOUND
-            else if (!it.liveLoads.isNullOrEmpty()&& !it.drops.isNullOrEmpty()&& it.outbounds.isNullOrEmpty()&& deptDetail != AppConstant.EMPLOYEE_DEPARTMENT_BOTH)
-                it.scheduleDepartment=AppConstant.EMPLOYEE_DEPARTMENT_INBOUND
-            else  it.scheduleDepartment=AppConstant.EMPLOYEE_DEPARTMENT_BOTH
+            val leadProfile = DateUtils.sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+            val leadDept = leadProfile?.department
+            if (leadDept != AppConstant.EMPLOYEE_DEPARTMENT_BOTH) {
+                if (!it.outbounds.isNullOrEmpty() && it.liveLoads.isNullOrEmpty() && it.drops.isNullOrEmpty() && deptDetail != AppConstant.EMPLOYEE_DEPARTMENT_BOTH)
+                    it.scheduleDepartment = AppConstant.EMPLOYEE_DEPARTMENT_OUTBOUND
+                else if (!it.liveLoads.isNullOrEmpty() && !it.drops.isNullOrEmpty() && it.outbounds.isNullOrEmpty() && deptDetail != AppConstant.EMPLOYEE_DEPARTMENT_BOTH)
+                    it.scheduleDepartment = AppConstant.EMPLOYEE_DEPARTMENT_INBOUND
+            } else it.scheduleDepartment = AppConstant.EMPLOYEE_DEPARTMENT_BOTH
         }
 
         val totalPagesCount = ValueUtils.getDefaultOrValue(scheduleListAPIResponse.data?.pageCount)

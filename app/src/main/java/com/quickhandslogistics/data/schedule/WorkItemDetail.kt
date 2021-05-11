@@ -35,6 +35,10 @@ class WorkItemDetail() : Parcelable {
     @Expose
     var label: String? = null
 
+    @SerializedName("origin")
+    @Expose
+    var origin: String? = null
+
     @SerializedName("createdBy")
     @Expose
     var createdBy: String? = null
@@ -115,6 +119,11 @@ class WorkItemDetail() : Parcelable {
     var assignedLumpersList: ArrayList<EmployeeData>? = null
         get() = ScheduleUtils.sortEmployeesList(field)
 
+    @SerializedName("previouslyWorkedLumper")
+    @Expose
+    var previouslyWorkedLumper: ArrayList<EmployeeData>? = null
+        get() = ScheduleUtils.sortEmployeesList(field)
+
     @SerializedName("lumperAttendance")
     @Expose
     var attendanceDetail: AttendanceDetail? = null
@@ -139,6 +148,7 @@ class WorkItemDetail() : Parcelable {
         scheduleIdentity = parcel.readString()
         scheduledFrom = parcel.readString()
         scheduleNote = parcel.readString()
+        origin = parcel.readString()
         endDateForThisWorkItem = parcel.readString()
         status = parcel.readString()
         notesQHL = parcel.readString()
@@ -153,6 +163,7 @@ class WorkItemDetail() : Parcelable {
         buildingDetailData = parcel.readString()
         schedule = parcel.readParcelable(BuildingDetailData::class.java.classLoader)
         assignedLumpersList = parcel.createTypedArrayList(EmployeeData)
+        previouslyWorkedLumper = parcel.createTypedArrayList(EmployeeData)
         attendanceDetail = parcel.readParcelable(AttendanceDetail::class.java.classLoader)
         buildingParams = parcel.createStringArrayList()
 //        buildingOps = HashMap()
@@ -185,6 +196,7 @@ class WorkItemDetail() : Parcelable {
         parcel.writeString(endDateForThisWorkItem)
         parcel.writeString(status)
         parcel.writeString(notesQHL)
+        parcel.writeString(origin)
         parcel.writeString(notesQHLCustomer)
         parcel.writeValue(isScheduledByLead)
         parcel.writeValue(scheduleForWeek)
@@ -197,6 +209,7 @@ class WorkItemDetail() : Parcelable {
         parcel.writeString(buildingDetailData)
         parcel.writeParcelable(schedule, flags)
         parcel.writeTypedList(assignedLumpersList)
+        parcel.writeTypedList(previouslyWorkedLumper)
         parcel.writeParcelable(attendanceDetail, flags)
         /*buildingOps?.let { data ->
             parcel.writeInt(data.size)

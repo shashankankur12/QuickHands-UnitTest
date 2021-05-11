@@ -26,6 +26,7 @@ import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ORIGIN
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
 import kotlinx.android.synthetic.main.content_work_sheet_item.*
 import java.util.*
@@ -219,7 +220,7 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
 
 
     /** Adapter Listeners */
-    override fun onItemClick(workItemId: String, workItemTypeDisplayName: String) {
+    override fun onItemClick(workItemId: String, workItemTypeDisplayName: String, origin: String?) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {
             ConnectionDetector.createSnackBar(activity)
             return
@@ -228,6 +229,7 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
         val bundle = Bundle()
         bundle.putString(ARG_WORK_ITEM_ID, workItemId)
         bundle.putString(ARG_WORK_ITEM_TYPE_DISPLAY_NAME, workItemTypeDisplayName)
+        bundle.putString(ARG_WORK_ITEM_ORIGIN, origin)
         bundle.putLong(ScheduleFragment.ARG_SELECTED_DATE_MILLISECONDS, Date().time)
         startIntent(WorkSheetItemDetailActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }

@@ -230,11 +230,6 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         )
     }
 
-
-    private fun showBottomSheetWithData(record: RequestLumpersRecord? = null) {
-
-    }
-
     private fun closeBottomSheet() {
         AppUtils.hideSoftKeyboard(activity!!)
         bottomSheetBackground.visibility=View.GONE
@@ -417,7 +412,6 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         })
 
     }
-
 
     override fun onClick(view: View?) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {

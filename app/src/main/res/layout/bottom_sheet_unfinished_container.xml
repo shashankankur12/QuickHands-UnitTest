@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:minHeight="@dimen/_250sdp"
+    android:layout_height="wrap_content"
     android:background="@color/textWhite"
-    android:layout_height="wrap_content">
+    android:minHeight="@dimen/_250sdp">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/materialTextView"
+        style="@style/titleBigTextViewTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/scheduleItemBackground"
@@ -16,7 +16,6 @@
         android:padding="@dimen/_10sdp"
         android:text="@string/unfinished_container"
         android:textColor="@color/textBlack"
-        style="@style/titleBigTextViewTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,8 +25,8 @@
         style="@style/valuesTextViewTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:background="@drawable/schedule_item_background_rect"
         android:paddingHorizontal="@dimen/_15sdp"
         android:paddingVertical="@dimen/_2sdp"
@@ -40,10 +39,10 @@
         android:id="@+id/dateOfCompletionLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_5sdp"
-        android:paddingVertical="@dimen/_12sdp"
         android:background="@drawable/schedule_item_background_rect"
+        android:paddingHorizontal="@dimen/_15sdp"
+        android:paddingVertical="@dimen/_12sdp"
         app:layout_constraintEnd_toEndOf="@id/unfinishedBottomSheetText"
         app:layout_constraintStart_toStartOf="@id/unfinishedBottomSheetText"
         app:layout_constraintTop_toBottomOf="@id/unfinishedBottomSheetText">
@@ -78,8 +77,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
-        android:paddingHorizontal="@dimen/_15sdp"
         android:background="@drawable/schedule_item_background_rect"
+        android:paddingHorizontal="@dimen/_15sdp"
         android:paddingVertical="@dimen/_12sdp"
         app:layout_constraintEnd_toEndOf="@+id/dateOfCompletionLayout"
         app:layout_constraintStart_toStartOf="@+id/dateOfCompletionLayout"
@@ -98,8 +97,8 @@
 
         <TextView
             android:id="@+id/departmentText"
-            android:layout_width="0dp"
             style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/schedule_item_background"
             android:gravity="end"
@@ -115,8 +114,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
-        android:paddingHorizontal="@dimen/_15sdp"
         android:background="@drawable/schedule_item_background_rect"
+        android:paddingHorizontal="@dimen/_15sdp"
         android:paddingVertical="@dimen/_12sdp"
         app:layout_constraintEnd_toEndOf="@+id/dateOfCompletionLayout"
         app:layout_constraintStart_toStartOf="@+id/dateOfCompletionLayout"
@@ -124,10 +123,10 @@
 
         <TextView
             android:id="@+id/shiftHeading"
+            style="@style/titleTextViewTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/schedule_item_background"
-            style="@style/titleTextViewTheme"
             android:text="@string/shift"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -135,8 +134,8 @@
 
         <TextView
             android:id="@+id/shiftText"
-            android:layout_width="0dp"
             style="@style/valuesTextViewTheme"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/schedule_item_background"
             android:gravity="end"
@@ -153,17 +152,17 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
         android:background="@drawable/schedule_item_background_rect"
-        android:paddingVertical="@dimen/_15sdp"
         android:paddingHorizontal="@dimen/_12sdp"
+        android:paddingVertical="@dimen/_15sdp"
         app:layout_constraintEnd_toEndOf="@+id/dateOfCompletionLayout"
         app:layout_constraintStart_toStartOf="@+id/dateOfCompletionLayout"
         app:layout_constraintTop_toBottomOf="@id/shiftLayout">
 
         <TextView
             android:id="@+id/startTimeHeading"
+            style="@style/titleTextViewTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/titleTextViewTheme"
             android:background="@drawable/schedule_item_background"
             android:text="@string/start_time"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -172,9 +171,9 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/startTimeText"
+            style="@style/valuesTextViewTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            style="@style/valuesTextViewTheme"
             android:background="@drawable/schedule_item_background"
             android:gravity="end"
             app:layout_constraintBottom_toBottomOf="@id/startTimeHeading"
@@ -188,9 +187,9 @@
         android:id="@+id/layoutSaveCancelButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
         android:orientation="horizontal"
         android:padding="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/startTimeLayout">
 

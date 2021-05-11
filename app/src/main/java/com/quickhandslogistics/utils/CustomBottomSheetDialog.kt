@@ -22,26 +22,38 @@ object CustomBottomSheetDialog {
         val startTimeText=unFinishedBottomSheet.findViewById<TextView>(R.id.startTimeText)
         val departmentText=unFinishedBottomSheet.findViewById<TextView>(R.id.departmentText)
         val shiftText=unFinishedBottomSheet.findViewById<TextView>(R.id.shiftText)
-        var selectedDate=Date()
+        val calendar = Calendar.getInstance()
+        var selectedDate :Date
         var selectedTime=Date().time
 
-        val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+//        calendar.add(Calendar.DAY_OF_YEAR, 1)
+        selectedDate=calendar.time
+        val leadProfile = sharedPref.getClassObject(
+            AppConstant.PREFERENCE_LEAD_PROFILE,
+            LeadProfileData::class.java
+        ) as LeadProfileData?
 
         shiftText?.text= leadProfile?.shift?.capitalize()
         departmentText?.text =  UIUtils.getDisplayEmployeeDepartment(leadProfile)
 
-        dateForCompletionText?.text= DateUtils.getDateString(DateUtils.PATTERN_MONTH_DAY_DISPLAY, Date())
+        dateForCompletionText?.text= DateUtils.getDateString(
+            DateUtils.PATTERN_MONTH_DAY_DISPLAY,
+            selectedDate
+        )
         dateForCompletionText?.setOnClickListener {
-            ReportUtils.showDatePicker(selectedDate, context, object : ReportUtils.OnDateSetListener {
-                override fun onDateSet(selected: Date) {
-                    dateForCompletionText.text =
-                        DateUtils.getDateString(DateUtils.PATTERN_MONTH_DAY_DISPLAY, selected)
-                    selectedDate=selected
-                }
-            })
+            ReportUtils.showTomorrowDatePicker(
+                selectedDate,
+                context,
+                object : ReportUtils.OnDateSetListener {
+                    override fun onDateSet(selected: Date) {
+                        dateForCompletionText.text =
+                            DateUtils.getDateString(DateUtils.PATTERN_MONTH_DAY_DISPLAY, selected)
+                        selectedDate = selected
+                    }
+                })
         }
 
-        startTimeText?.text = DateUtils.convertMillisecondsToTimeString(Date().time )
+        startTimeText?.text = DateUtils.convertMillisecondsToTimeString(Date().time)
         startTimeText?.setOnClickListener {
             val calendar = Calendar.getInstance()
             calendar.timeInMillis =selectedTime
@@ -52,8 +64,9 @@ object CustomBottomSheetDialog {
                 context, TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
                     calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                     calendar.set(Calendar.MINUTE, minute)
-                    startTimeText.text = DateUtils.convertMillisecondsToTimeString(calendar.timeInMillis)
-                    selectedTime= calendar.timeInMillis
+                    startTimeText.text =
+                        DateUtils.convertMillisecondsToTimeString(calendar.timeInMillis)
+                    selectedTime = calendar.timeInMillis
                 }, mHour, mMinute, false
             ).show()
         }
@@ -66,7 +79,11 @@ object CustomBottomSheetDialog {
     }
     
     
-    fun createUpdateLumperRequest(context: Context, record: RequestLumpersRecord? = null, contractView: IDialogOnLumperRequestClick){
+    fun createUpdateLumperRequest(
+        context: Context,
+        record: RequestLumpersRecord? = null,
+        contractView: IDialogOnLumperRequestClick
+    ){
         val lumperRequestBottomSheet = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
         lumperRequestBottomSheet.setContentView(R.layout.bottom_sheet_create_lumper_request)
         val textViewTitle=lumperRequestBottomSheet.findViewById<TextView>(R.id.textViewTitle)
@@ -114,7 +131,7 @@ object CustomBottomSheetDialog {
                     calendar.set(Calendar.MINUTE, minute)
                     textViewStartTime.text =
                         DateUtils.convertMillisecondsToTimeString(calendar.timeInMillis)
-                    startTime=calendar.timeInMillis
+                    startTime = calendar.timeInMillis
                 }, mHour, mMinute, false
             ).show() }
         buttonSubmit?.setOnClickListener {
@@ -124,22 +141,44 @@ object CustomBottomSheetDialog {
             val startTimeText = textViewStartTime?.text.toString()
             when {
                 requiredLumperCount.isEmpty() -> {
-                    CustomProgressBar.getInstance().showValidationErrorDialog(context.getString(R.string.request_lumper_number_message), context)
+                    CustomProgressBar.getInstance().showValidationErrorDialog(
+                        context.getString(R.string.request_lumper_number_message),
+                        context
+                    )
                 }
                 notesDM.isEmpty() -> {
-                    CustomProgressBar.getInstance().showValidationErrorDialog(context.getString(R.string.request_lumper_DM_note_message), context)
+                    CustomProgressBar.getInstance().showValidationErrorDialog(
+                        context.getString(R.string.request_lumper_DM_note_message),
+                        context
+                    )
                 }
                 noteLumper.isEmpty() -> {
-                    CustomProgressBar.getInstance().showValidationErrorDialog(context.getString(R.string.request_lumper_lumper_note_message), context)
+                    CustomProgressBar.getInstance().showValidationErrorDialog(
+                        context.getString(R.string.request_lumper_lumper_note_message),
+                        context
+                    )
                 }
                 startTimeText.isEmpty() -> {
-                    CustomProgressBar.getInstance().showValidationErrorDialog(context.getString(R.string.request_lumper_start_time_message), context)
+                    CustomProgressBar.getInstance().showValidationErrorDialog(
+                        context.getString(R.string.request_lumper_start_time_message),
+                        context
+                    )
                 }
                 requiredLumperCount.toInt()==0 -> {
-                    CustomProgressBar.getInstance().showValidationErrorDialog(context.getString(R.string.request_valid_message), context)
+                    CustomProgressBar.getInstance().showValidationErrorDialog(
+                        context.getString(R.string.request_valid_message),
+                        context
+                    )
                 }
                 else -> {
-                    contractView.onSendLumperRequest(lumperRequestBottomSheet, requiredLumperCount, notesDM, noteLumper, startTime, lumperId)
+                    contractView.onSendLumperRequest(
+                        lumperRequestBottomSheet,
+                        requiredLumperCount,
+                        notesDM,
+                        noteLumper,
+                        startTime,
+                        lumperId
+                    )
                 }
             }
 
@@ -147,7 +186,10 @@ object CustomBottomSheetDialog {
         lumperRequestBottomSheet.show()
     }
 
-    fun requestCorrectionBottomSheetDialog(context: Context, contractView: IDialogRequestCorrectionClick) {
+    fun requestCorrectionBottomSheetDialog(
+        context: Context,
+        contractView: IDialogRequestCorrectionClick
+    ) {
         val unFinishedBottomSheet = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
         unFinishedBottomSheet.setContentView(R.layout.bottumsheet_request_correction)
         val textViewTitle = unFinishedBottomSheet.findViewById<TextView>(R.id.textViewTitle)
@@ -159,7 +201,10 @@ object CustomBottomSheetDialog {
         unFinishedBottomSheet.findViewById<Button>(R.id.buttonSubmitCorrection)
             ?.setOnClickListener {
                 if (!editTextCorrection?.text.isNullOrEmpty())
-                    contractView.onSendRequest(unFinishedBottomSheet, editTextCorrection?.text.toString())
+                    contractView.onSendRequest(
+                        unFinishedBottomSheet,
+                        editTextCorrection?.text.toString()
+                    )
                 else CustomProgressBar.getInstance().showValidationErrorDialog(
                     context.getString(R.string.request_correction_message),
                     context
@@ -173,7 +218,7 @@ object CustomBottomSheetDialog {
     }
 
     interface IDialogRequestCorrectionClick{
-        fun onSendRequest( dialog: Dialog, request :String )
+        fun onSendRequest(dialog: Dialog, request: String)
     }
 
     interface IDialogOnLumperRequestClick{

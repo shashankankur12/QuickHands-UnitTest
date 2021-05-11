@@ -29,8 +29,6 @@ class WorkSheetItemDetailPresenter(private var workSheetItemDetailView: WorkShee
         workSheetItemDetailModel.fetchWorkItemDetail(workItemId, this)
     }
 
-
-
     override fun changeWorkItemStatus(
         workItemId: String,
         status: String,

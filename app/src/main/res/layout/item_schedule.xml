@@ -28,7 +28,7 @@
             android:id="@+id/textViewBuildingName"
             style="@style/titleBigTextViewThemeHeader"
             android:layout_width="0dp"
-            android:textStyle="normal"
+            android:fontFamily="sans-serif"
             app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -31,6 +31,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
     private var onFragmentInteractionListener: WorkSheetItemDetailContract.View.OnFragmentInteractionListener? = null
 
     private lateinit var workSheetItemDetailLumpersAdapter: WorkSheetItemDetailLumpersAdapter
+    private lateinit var workSheetItemDetailOldLumpersAdapter: WorkSheetItemDetailLumpersAdapter
 
     private var workItemDetail: WorkItemContainerDetails? = null
     private  var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule> = ArrayList<LumpersTimeSchedule>()
@@ -93,10 +94,25 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
             adapter = workSheetItemDetailLumpersAdapter
         }
 
+        recyclerViewOldLumpers.apply {
+            val linearLayoutManager = LinearLayoutManager(fragmentActivity!!)
+            layoutManager = linearLayoutManager
+            val dividerItemDecoration = DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
+            addItemDecoration(dividerItemDecoration)
+            workSheetItemDetailOldLumpersAdapter = WorkSheetItemDetailLumpersAdapter( resources, this@WorkSheetItemDetailLumpersFragment)
+            adapter = workSheetItemDetailOldLumpersAdapter
+        }
+
         workSheetItemDetailLumpersAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                textViewEmptyData.visibility = if (workSheetItemDetailLumpersAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                textViewEmptyData.visibility = if (workSheetItemDetailLumpersAdapter.itemCount == 0 && workSheetItemDetailOldLumpersAdapter.itemCount == 0) View.VISIBLE else View.GONE
+            }
+        })
+        workSheetItemDetailOldLumpersAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                textViewEmptyData.visibility = if (workSheetItemDetailLumpersAdapter.itemCount == 0 && workSheetItemDetailOldLumpersAdapter.itemCount == 0) View.VISIBLE else View.GONE
             }
         })
 
@@ -134,8 +150,9 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
             }
         }
 
-        workSheetItemDetailLumpersAdapter.updateList(workItemDetail.assignedLumpersList, timingsData, workItemDetail.status, tempLumperIds, getTotalCases(workItemDetail?.buildingOps), workItemDetail.isCompleted)
+        workSheetItemDetailLumpersAdapter.updateList(workItemDetail.assignedLumpersList, timingsData, workItemDetail.status, tempLumperIds, getTotalCases(workItemDetail?.buildingOps), workItemDetail.isCompleted, false)
 
+        setOldLumperDetails(workItemDetail, lumpersTimeSchedule)
 //        if (workItemDetail.assignedLumpersList.isNullOrEmpty()) {
 //            buttonAddLumpers.text = getString(R.string.add_lumpers)
 //        } else {
@@ -153,13 +170,34 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         }
     }
 
+    private fun setOldLumperDetails(workItemDetail: WorkItemContainerDetails, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?) {
+        workItemDetail.oldWork?.let {
+            val timingsData = LinkedHashMap<String, LumpersTimeSchedule>()
+            it.assignedLumpersList?.let { assignedLumpersList ->
+                if (!it.lumpersTimeSchedule.isNullOrEmpty()) {
+                    for (lumper in assignedLumpersList) {
+                        for (timing in it.lumpersTimeSchedule!!) {
+                            if (lumper.id == timing.lumperId) {
+                                timingsData[lumper.id!!] = timing
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+
+            workSheetItemDetailOldLumpersAdapter.updateList(it.assignedLumpersList, timingsData, workItemDetail.status, tempLumperIds, getTotalCases(workItemDetail.buildingOps), workItemDetail.isCompleted, true)
+        }
+    }
+
     fun showEmptyData() {
         workSheetItemDetailLumpersAdapter.updateList(
             ArrayList(),
             LinkedHashMap(),
             tempLumperIds = ArrayList(),
             totalCases = getTotalCases(workItemDetail?.buildingOps),
-            isCompleted = workItemDetail!!.isCompleted
+            isCompleted = workItemDetail!!.isCompleted,
+            isOldWork = false
         )
         buttonAddLumpers.visibility = View.GONE
     }

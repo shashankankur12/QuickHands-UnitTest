@@ -105,6 +105,10 @@ interface AppConstant {
         const val MY_PERMISSIONS_REQUEST_CAMERA = 100
         const val MY_PERMISSIONS_REQUEST_GALLERY = 200
 
+        //container origin
+        const val SCHEDULE_CONTAINER_ORIGIN_USUAL = "USUAL"
+        const val SCHEDULE_CONTAINER_ORIGIN_RESUME = "RESUMED"
+
 
     }
 }

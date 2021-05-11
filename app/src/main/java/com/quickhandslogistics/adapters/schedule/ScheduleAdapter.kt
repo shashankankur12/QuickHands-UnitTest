@@ -15,20 +15,23 @@ import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetailData
+import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.AppConstant.Companion.EMPLOYEE_DEPARTMENT_INBOUND
 import com.quickhandslogistics.utils.AppConstant.Companion.EMPLOYEE_DEPARTMENT_OUTBOUND
-import com.quickhandslogistics.utils.AppConstant.Companion.VIEW_DETAILS
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.sharedPref
 import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.UIUtils
 import kotlinx.android.synthetic.main.item_schedule.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ScheduleAdapter(private val resources: Resources, var adapterItemClickListener: ScheduleContract.View.OnAdapterItemClickListener) :
     RecyclerView.Adapter<ScheduleAdapter.ViewHolder>() {
 
     private var workItemsList: ArrayList<ScheduleDetailData> = ArrayList()
+    private var selectedDate: Date = Date()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_schedule, viewGroup, false)
@@ -74,6 +77,23 @@ class ScheduleAdapter(private val resources: Resources, var adapterItemClickList
         fun bind(scheduleDetail: ScheduleDetailData) {
             val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
             textViewBuildingName.text = UIUtils.getSpannableText(resources.getString(R.string.department_full),"${scheduleDetail.scheduleDepartment.toLowerCase().capitalize()}s")
+            if (!DateUtils.isCurrentDate(selectedDate.time) && !DateUtils.isFutureDate(selectedDate.time)) {
+                if (checkAllContainerComplete(scheduleDetail)) {
+                    textViewStatus.text = resources.getString(R.string.completed)
+                    textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
+                    relativeLayoutSide?.setBackgroundResource(R.drawable.schedule_item_stroke_completed)
+                } else {
+                    textViewStatus.text = resources.getString(R.string.pending)
+                    textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
+                    relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_on_hold)
+                }
+
+            } else {
+                textViewStatus.text = resources.getString(R.string.view_details)
+                textViewStatus.setBackgroundResource(R.drawable.chip_background_scheduled)
+                relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_scheduled)
+            }
+
             textViewScheduleType.text = String.format(resources.getString(R.string.out_bound_s),scheduleDetail.outbounds?.size.toString())
             textViewScheduleTypeLiveLoad.text = String.format(resources.getString(R.string.live_load_s),scheduleDetail.liveLoads?.size.toString())
             textViewScheduleTypeDrops.text = String.format(resources.getString(R.string.drops_s),scheduleDetail.drops?.size.toString())
@@ -93,7 +113,7 @@ class ScheduleAdapter(private val resources: Resources, var adapterItemClickList
                 textViewScheduleTypeDropsStartTime.text=DateUtils.convertMillisecondsToTimeString((scheduleDetail.drops!![0].startTime)!!.toLong())
 //            if (scheduleDetail.drops!!.size>0 && !scheduleDetail.drops!![0].startTime.isNullOrEmpty())
 //            textViewScheduleTypeUnfinishedStartTime.text=DateUtils.convertMillisecondsToTimeString((scheduleDetail.drops!![0].startTime)!!.toLong())
-            ScheduleUtils.changeStatusUIByValue(resources, VIEW_DETAILS, textViewStatus, relativeLayoutSide)
+//            ScheduleUtils.changeStatusUIByValue(resources, VIEW_DETAILS, textViewStatus, relativeLayoutSide)
 
             val assignedLumperList=ScheduleUtils.getAssignedLumperList(scheduleDetail) as ArrayList<EmployeeData>
             recyclerViewLumpersImagesList.apply {
@@ -135,13 +155,31 @@ class ScheduleAdapter(private val resources: Resources, var adapterItemClickList
         }
     }
 
+    private fun checkAllContainerComplete(scheduleDetail: ScheduleDetailData): Boolean {
+        var allWorkItem =ArrayList<WorkItemDetail>()
+        var allContainerDone= true
+        scheduleDetail.drops?.let { allWorkItem.addAll(it) }
+        scheduleDetail.liveLoads?.let { allWorkItem.addAll(it) }
+        scheduleDetail.outbounds?.let { allWorkItem.addAll(it) }
+        allWorkItem.forEach {
+            if (it.isCompleted ==false)
+                allContainerDone=false
+
+        }
+        return allContainerDone
+    }
 
 
-    fun updateList(scheduledData: ArrayList<ScheduleDetailData>, currentPageIndex: Int) {
+    fun updateList(
+        scheduledData: ArrayList<ScheduleDetailData>,
+        currentPageIndex: Int,
+        selectedDate: Date
+    ) {
         if (currentPageIndex == 1) {
             this.workItemsList.clear()
         }
         this.workItemsList.addAll(scheduledData)
+        this.selectedDate= selectedDate
         notifyDataSetChanged()
     }
 }

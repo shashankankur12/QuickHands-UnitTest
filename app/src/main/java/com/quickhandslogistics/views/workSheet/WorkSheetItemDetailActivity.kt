@@ -20,6 +20,7 @@ import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ORIGIN
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
 import kotlinx.android.synthetic.main.activity_work_sheet_item_detail.*
 import kotlinx.android.synthetic.main.bottom_sheet_select_status.*
@@ -34,6 +35,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
     private var workItemId: String = ""
     private var workItemTypeDisplayName: String = ""
+    private var origin: String = ""
     private var workItemDetail: WorkItemContainerDetails = WorkItemContainerDetails()
     private var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule> = ArrayList()
     private var tempLumperIds: ArrayList<String> = ArrayList()
@@ -60,6 +62,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
         intent.extras?.let { it ->
             workItemId = it.getString(ARG_WORK_ITEM_ID, "")
+            origin = it.getString(ARG_WORK_ITEM_ORIGIN, "")
             workItemTypeDisplayName = it.getString(ARG_WORK_ITEM_TYPE_DISPLAY_NAME, "")
             selectedTime = it.getLong(ARG_SELECTED_DATE_MILLISECONDS)
         }
@@ -104,18 +107,17 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         textViewStartTime.text = UIUtils.getSpannableText(getString(R.string.start_time_bold), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime).toString())
 
         when (workItemTypeDisplayName) {
-            getString(R.string.drops) -> textViewDropItems.text = String.format(
-                getString(R.string.no_of_drops_s),
-                workItemDetail.quantity
-            )
-            getString(R.string.live_loads) -> textViewDropItems.text = String.format(
-                getString(R.string.live_load_s),
-                workItemDetail.quantity
-            )
-            else -> textViewDropItems.text = String.format(
-                getString(R.string.out_bound_s),
-                workItemDetail.quantity
-            )
+            getString(R.string.drops) -> textViewDropItems.text = if (origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                    UIUtils.getSpannableText(resources.getString(R.string.unfinished_no_of_drops_bold_has),workItemDetail.quantity.toString())
+                } else  UIUtils.getSpannableText(resources.getString(R.string.no_of_drops_bold_has), workItemDetail.quantity.toString())
+
+            getString(R.string.live_loads) -> textViewDropItems.text = if (origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                     UIUtils.getSpannableText(resources.getString(R.string.unfinished_live_load_bold_has), workItemDetail.quantity.toString())
+                } else UIUtils.getSpannableText(resources.getString(R.string.live_load_bold_has), workItemDetail.quantity.toString())
+
+            else -> textViewDropItems.text = if (origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                 UIUtils.getSpannableText(resources.getString(R.string.unfinished_out_bound_bold_has), workItemDetail.quantity.toString())
+            } else UIUtils.getSpannableText(resources.getString(R.string.out_bound_bold_has), workItemDetail.quantity.toString())
         }
 
         if (!workItemDetail.status.isNullOrEmpty()) {
@@ -268,18 +270,17 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         )
 
         when (workItemTypeDisplayName) {
-            getString(R.string.drops) -> textViewDropItems.text = String.format(
-                getString(R.string.no_of_drops_s),
-                workItemDetail.quantity
-            )
-            getString(R.string.live_loads) -> textViewDropItems.text = String.format(
-                getString(R.string.live_load_s),
-                workItemDetail.quantity
-            )
-            else -> textViewDropItems.text = String.format(
-                getString(R.string.out_bound_s),
-                workItemDetail.quantity
-            )
+            getString(R.string.drops) -> textViewDropItems.text = if (origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                UIUtils.getSpannableText(resources.getString(R.string.unfinished_no_of_drops_bold_has),workItemDetail.quantity.toString())
+            } else  UIUtils.getSpannableText(resources.getString(R.string.no_of_drops_bold_has), workItemDetail.quantity.toString())
+
+            getString(R.string.live_loads) -> textViewDropItems.text = if (origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                UIUtils.getSpannableText(resources.getString(R.string.unfinished_live_load_bold_has), workItemDetail.quantity.toString())
+            } else UIUtils.getSpannableText(resources.getString(R.string.live_load_bold_has), workItemDetail.quantity.toString())
+
+            else -> textViewDropItems.text = if (origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                UIUtils.getSpannableText(resources.getString(R.string.unfinished_out_bound_bold_has), workItemDetail.quantity.toString())
+            } else UIUtils.getSpannableText(resources.getString(R.string.out_bound_bold_has), workItemDetail.quantity.toString())
         }
 
         if (!workItemDetail.status.isNullOrEmpty()) {

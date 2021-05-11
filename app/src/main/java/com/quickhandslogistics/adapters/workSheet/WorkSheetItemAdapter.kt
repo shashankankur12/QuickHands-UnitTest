@@ -15,10 +15,9 @@ import com.quickhandslogistics.contracts.common.LumperImagesContract
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
-import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.utils.ScheduleUtils
-import com.quickhandslogistics.utils.SharedPref
-import com.quickhandslogistics.utils.UIUtils
+import com.quickhandslogistics.utils.*
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
+import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_DATE_DISPLAY_CUSTOMER_SHEET
 import kotlinx.android.synthetic.main.item_work_sheet.view.*
 
 class WorkSheetItemAdapter(private val resources: Resources, private val sharedPref: SharedPref, var adapterItemClickListener: WorkSheetItemContract.View.OnAdapterItemClickListener) :
@@ -65,6 +64,10 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
 //                addItemDecoration(OverlapDecoration())
             }
 
+            recyclerViewUnfinishedLumper.apply {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            }
+
             itemView.setOnClickListener(this)
         }
 
@@ -73,9 +76,31 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
                (workItemDetail.startTime)?.let { UIUtils.getSpannableText(resources.getString(R.string.start_time_bold), DateUtils.convertMillisecondsToUTCTimeString(it)!!)}
 
             when (ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.type, resources)) {
-                resources.getString(R.string.drops) -> textViewNoOfDrops.text =  UIUtils.getSpannableText(resources.getString(R.string.no_of_drops_bold_has), workItemDetail.label.toString())
-                resources.getString(R.string.live_loads) -> textViewNoOfDrops.text = UIUtils.getSpannableText(resources.getString(R.string.live_load_bold_has), workItemDetail.label.toString())
-                else -> textViewNoOfDrops.text = UIUtils.getSpannableText(resources.getString(R.string.out_bound_bold_has), workItemDetail.label.toString())
+                resources.getString(R.string.drops) -> {
+                    if (workItemDetail.origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                        textViewNoOfDrops.text = UIUtils.getSpannableText(resources.getString(R.string.unfinished_no_of_drops_bold_has), workItemDetail.label.toString())
+                    } else textViewNoOfDrops.text = UIUtils.getSpannableText(resources.getString(R.string.no_of_drops_bold_has), workItemDetail.label.toString())
+                }
+                resources.getString(R.string.live_loads) -> if (workItemDetail.origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                    textViewNoOfDrops.text = UIUtils.getSpannableText(resources.getString(R.string.unfinished_live_load_bold_has), workItemDetail.label.toString())
+                } else textViewNoOfDrops.text = UIUtils.getSpannableText(resources.getString(R.string.live_load_bold_has), workItemDetail.label.toString())
+                else ->if (workItemDetail.origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                    textViewNoOfDrops.text = UIUtils.getSpannableText(resources.getString(R.string.unfinished_out_bound_bold_has), workItemDetail.label.toString())
+                } else textViewNoOfDrops.text = UIUtils.getSpannableText(resources.getString(R.string.out_bound_bold_has), workItemDetail.label.toString())
+            }
+
+            if (workItemDetail.origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME){
+                containerUnfinishedDetails.visibility= View.VISIBLE
+                textViewUnfinishedDate.text= workItemDetail.createdAt?.let {
+                    DateUtils.changeDateString(PATTERN_API_RESPONSE, PATTERN_DATE_DISPLAY_CUSTOMER_SHEET,
+                        it
+                    )
+                }
+                workItemDetail.previouslyWorkedLumper?.let { imagesList ->
+                    recyclerViewUnfinishedLumper.adapter = LumperImagesAdapter(imagesList, sharedPref,this@ViewHolder)
+                }
+            }else{
+                containerUnfinishedDetails.visibility= View.GONE
             }
 
             var doorValue: String? = null
@@ -112,7 +137,8 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
                     itemView.id -> {
                         val workItemDetail = getItem(adapterPosition)
                         val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.type, resources)
-                        adapterItemClickListener.onItemClick(workItemDetail.id!!, workItemTypeDisplayName)
+                        val origin =if (workItemDetail.origin!=null) workItemDetail.origin else ""
+                        adapterItemClickListener.onItemClick(workItemDetail.id!!, workItemTypeDisplayName ,origin)
                     }
                     textViewWorkSheetNote.id->{
                         if (!getItem(adapterPosition).schedule?.scheduleNote.isNullOrEmpty() && !getItem(adapterPosition).schedule?.scheduleNote!!.equals("NA"))
