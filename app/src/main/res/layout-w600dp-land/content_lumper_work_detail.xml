@@ -203,8 +203,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_marginTop="@dimen/_2sdp"
                                 android:drawablePadding="@dimen/_5sdp"
-                                android:gravity="center_vertical"
-                                android:text="Total Time:" />
+                                android:gravity="center_vertical"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -234,8 +233,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_marginTop="@dimen/_2sdp"
                                 android:drawablePadding="@dimen/_5sdp"
-                                android:gravity="center_vertical"
-                                android:text="Total Time :" />
+                                android:gravity="center_vertical" />
                         </LinearLayout>
 
                         <RelativeLayout

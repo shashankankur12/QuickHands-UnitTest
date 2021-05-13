@@ -114,7 +114,7 @@
     <string name="last_name">Last Name</string>
     <string name="live_load_s">Live Load: %s</string>
     <string name="live_load_bold_has"><![CDATA[<b>Live Load: </b>]]> #%s</string>
-    <string name="unfinished_live_load_bold_has"><![CDATA[<b>(UF)Live Load: </b>]]> #%s</string>
+    <string name="unfinished_live_load_bold_has"><![CDATA[<b>(U)Live Load: </b>]]> #%s</string>
     <string name="live_loads">Live Loads</string>
     <string name="live_load">Live Load</string>
     <string name="live_load_added">Live Load (Added)</string>
@@ -136,7 +136,7 @@
     <string name="no_of_drops_s">Drop: %s</string>
     <string name="no_of_drops_bold"><![CDATA[<b> Drop:</b>]]> %s</string>
     <string name="no_of_drops_bold_has"><![CDATA[<b> Drop:</b>]]> #%s</string>
-    <string name="unfinished_no_of_drops_bold_has"><![CDATA[<b>(UF)Drop:</b>]]> #%s</string>
+    <string name="unfinished_no_of_drops_bold_has"><![CDATA[<b>(U)Drop:</b>]]> #%s</string>
     <string name="no_time_logged_in_yet">No time logged in yet</string>
     <string name="note">Note</string>
     <string name="note_header">Note :</string>
@@ -152,7 +152,7 @@
     <string name="ongoing_s">Ongoing: %s</string>
     <string name="out_bound_s">Outbound: %s</string>
     <string name="out_bound_bold_has"><![CDATA[<b>Outbound:</b>]]> #%s</string>
-    <string name="unfinished_out_bound_bold_has"><![CDATA[<b>(UF)Outbound:</b>]]> #%s</string>
+    <string name="unfinished_out_bound_bold_has"><![CDATA[<b>(U)Outbound:</b>]]> #%s</string>
     <string name="out_bounds">Outbounds</string>
     <string name="out_bound">Outbound</string>
     <string name="out_bound_added">Outbound (Added)</string>

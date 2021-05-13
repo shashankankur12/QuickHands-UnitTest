@@ -80,7 +80,7 @@ object ReportUtils {
 
     fun showTomorrowDatePicker(startDate1: Date?, context: Context, listener: OnDateSetListener) {
         val calendar = Calendar.getInstance()
-//        calendar.add(Calendar.DAY_OF_YEAR,1)
+        calendar.add(Calendar.DAY_OF_YEAR,1)
         startDate1?.let { date ->
             calendar.time = date
         }
@@ -90,7 +90,7 @@ object ReportUtils {
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
 
         val startCalendar = Calendar.getInstance()
-//        startCalendar.add(Calendar.DAY_OF_YEAR,1)
+        startCalendar.add(Calendar.DAY_OF_YEAR,1)
         picker.datePicker.minDate = startCalendar.timeInMillis
 
         picker.show()

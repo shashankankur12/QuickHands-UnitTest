@@ -26,7 +26,7 @@ object CustomBottomSheetDialog {
         var selectedDate :Date
         var selectedTime=Date().time
 
-//        calendar.add(Calendar.DAY_OF_YEAR, 1)
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
         selectedDate=calendar.time
         val leadProfile = sharedPref.getClassObject(
             AppConstant.PREFERENCE_LEAD_PROFILE,

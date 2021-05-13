@@ -461,7 +461,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         var inCompleteWorkItemsCount = 0
         for (lumperDaySheet in lumperDaySheetList) {
             if (lumperDaySheet.workItemDetail?.status != AppConstant.WORK_ITEM_STATUS_COMPLETED
-                && lumperDaySheet.workItemDetail?.status != AppConstant.WORK_ITEM_STATUS_CANCELLED
+                && lumperDaySheet.workItemDetail?.status != AppConstant.WORK_ITEM_STATUS_CANCELLED&& lumperDaySheet.workItemDetail?.status != AppConstant.WORK_ITEM_STATUS_UNFINISHED
             ) {
                 inCompleteWorkItemsCount++
             }

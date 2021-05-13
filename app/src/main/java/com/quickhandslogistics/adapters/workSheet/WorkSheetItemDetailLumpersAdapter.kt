@@ -248,7 +248,7 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
                         }
                     }
                     imageViewCancelLumper.id->{
-                        if (isOldWork) {
+                        if (!isOldWork) {
                             val employeeData = getItem(adapterPosition)
                             onAdapterClick.onRemoveLumperClick(employeeData, adapterPosition)
                         }

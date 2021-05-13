@@ -107,7 +107,7 @@ View.OnClickListener   {
                 data = savedInstanceState.getParcelable<ScheduleDetailData>(WORKSHEET_DETAIL) as ScheduleDetailData
                 showWorkSheets(data)
 
-                val allWorkItemLists = createDifferentListData(data)
+                val allWorkItemLists = ScheduleUtils.createDifferentListData(data)
                 initializeViewPager(allWorkItemLists)
             }
         } ?: run {
@@ -194,78 +194,6 @@ View.OnClickListener   {
         }else viewPagerWorkSheet.pagingEnabled =true
     }
 
-    private fun createDifferentListData(data: ScheduleDetailData): Quintuple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>> {
-        var allWorkItem:ArrayList<WorkItemDetail> = ArrayList()
-        data?.outbounds?.let { allWorkItem.addAll(it) }
-        data?.liveLoads?.let { allWorkItem.addAll(it) }
-        data?.drops?.let { allWorkItem.addAll(it) }
-
-        var onGoingWorkItems:ArrayList<WorkItemDetail> = ArrayList()
-        var cancelled:ArrayList<WorkItemDetail> = ArrayList()
-        var completed:ArrayList<WorkItemDetail> = ArrayList()
-        var unfinished:ArrayList<WorkItemDetail> = ArrayList()
-        var notDone:ArrayList<WorkItemDetail> = ArrayList()
-
-        allWorkItem.forEach {
-            when {
-                it.status.equals(AppConstant.WORK_ITEM_STATUS_COMPLETED) -> {
-                    completed.add(it)
-                }
-                it.status.equals(AppConstant.WORK_ITEM_STATUS_CANCELLED) -> {
-                    cancelled.add(it)
-                }
-                it.status.equals(AppConstant.WORK_ITEM_STATUS_UNFINISHED) -> {
-                    unfinished.add(it)
-                }
-                it.status.equals(AppConstant.WORK_ITEM_STATUS_NOT_OPEN) -> {
-                    notDone.add(it)
-                }
-                it.status.equals(AppConstant.WORK_ITEM_STATUS_IN_PROGRESS) || it.status.equals(
-                    AppConstant.WORK_ITEM_STATUS_SCHEDULED
-                ) || it.status.equals(AppConstant.WORK_ITEM_STATUS_ON_HOLD) -> {
-                    onGoingWorkItems.add(it)
-                }
-            }
-        }
-
-        textViewTotalCount.text = UIUtils.getSpannableText(
-            getString(R.string.total_container_bold),
-            (allWorkItem.size).toString()
-        )
-
-        val workItemTypeCounts = ScheduleUtils.getWorkItemTypeCounts(allWorkItem)
-
-        if (workItemTypeCounts.first > 0) {
-            textViewLiveLoadsCount.visibility = View.VISIBLE
-            textViewLiveLoadsCount.text =
-                String.format(getString(R.string.live_loads_s), workItemTypeCounts.first)
-        } else textViewLiveLoadsCount.visibility = View.GONE
-
-        if (workItemTypeCounts.second > 0) {
-            textViewDropsCount.visibility = View.VISIBLE
-            textViewDropsCount.text =
-                String.format(getString(R.string.drops_s), workItemTypeCounts.second)
-        } else textViewDropsCount.visibility = View.GONE
-
-        if (workItemTypeCounts.third > 0) {
-            textViewOutBoundsCount.visibility = View.VISIBLE
-            textViewOutBoundsCount.text =
-                String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
-        } else textViewOutBoundsCount.visibility = View.GONE
-
-        if (unfinished?.size!! > 0) {
-            textViewUnfinishedCount.visibility = View.VISIBLE
-            textViewUnfinishedCount.text =
-                String.format(getString(R.string.unfinished_s), unfinished?.size)
-        } else textViewUnfinishedCount.visibility = View.GONE
-
-        return Quintuple(
-            getSortList(onGoingWorkItems), getSortList(cancelled), getSortList(
-                completed
-            ), getSortList(unfinished), getSortList(notDone)
-        )
-    }
-
     private fun resetUI() {
         // Reset Whole Screen Data
         textViewCompanyName.text = ""
@@ -308,51 +236,19 @@ View.OnClickListener   {
     }
 
     override fun showWorkSheets(data: ScheduleDetailData) {
-        this.data = data!!
+        this.data = data
         swipe_pull_refresh?.isRefreshing = false
         customerGroupNote= ScheduleUtils.getGroupNoteListWorkSchedule(data)
         textViewGroupNote.isEnabled = (customerGroupNote!=null&& (customerGroupNote.first.first.size>0 ||customerGroupNote.second.size>0|| customerGroupNote.third.size>0||customerGroupNote.first.second.size>0 ))
 
-        var allWorkItem:ArrayList<WorkItemDetail> = ArrayList()
-        data?.outbounds?.let { allWorkItem.addAll(it) }
-        data?.liveLoads?.let { allWorkItem.addAll(it) }
-        data?.drops?.let { allWorkItem.addAll(it) }
-
-        var onGoingWorkItems:ArrayList<WorkItemDetail> = ArrayList()
-        var cancelled:ArrayList<WorkItemDetail> = ArrayList()
-        var completed:ArrayList<WorkItemDetail> = ArrayList()
-        var unfinished:ArrayList<WorkItemDetail> = ArrayList()
-        var notOpen:ArrayList<WorkItemDetail> = ArrayList()
-
-        allWorkItem.forEach {
-            when {
-                it.status.equals(AppConstant.WORK_ITEM_STATUS_COMPLETED) -> {
-                    completed.add(it)
-                }
-                it.status.equals(AppConstant.WORK_ITEM_STATUS_CANCELLED) -> {
-                    cancelled.add(it)
-                }
-                it.status.equals(AppConstant.WORK_ITEM_STATUS_UNFINISHED) -> {
-                    unfinished.add(it)
-                }
-                it.status.equals(AppConstant.WORK_ITEM_STATUS_NOT_OPEN) -> {
-                    notOpen.add(it)
-                }
-                it.status.equals(AppConstant.WORK_ITEM_STATUS_IN_PROGRESS) || it.status.equals(
-                    AppConstant.WORK_ITEM_STATUS_SCHEDULED
-                ) || it.status.equals(AppConstant.WORK_ITEM_STATUS_ON_HOLD) -> {
-                    onGoingWorkItems.add(it)
-                }
-            }
-        }
-
-        textViewTotalCount.text = UIUtils.getSpannableText(
-            getString(R.string.total_container_bold),
-            (allWorkItem.size).toString()
-        )
+        val allScheduleItem =ScheduleUtils.createDifferentListData(data)
+        val allWorkItem:ArrayList<WorkItemDetail> = ArrayList()
+        allWorkItem.addAll(allScheduleItem.first)
+        allWorkItem.addAll(allScheduleItem.second)
+        allWorkItem.addAll(allScheduleItem.third)
+        allWorkItem.addAll(allScheduleItem.fifth)
 
         val workItemTypeCounts = ScheduleUtils.getWorkItemTypeCounts(allWorkItem)
-
         if (workItemTypeCounts.first > 0) {
             textViewLiveLoadsCount.visibility = View.VISIBLE
             textViewLiveLoadsCount.text =
@@ -371,42 +267,24 @@ View.OnClickListener   {
                 String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
         } else textViewOutBoundsCount.visibility = View.GONE
 
-        if (unfinished?.size!! > 0) {
+        if (allScheduleItem.fourth.size > 0) {
             textViewUnfinishedCount.visibility = View.VISIBLE
             textViewUnfinishedCount.text =
-                String.format(getString(R.string.unfinished_s), unfinished?.size)
+                String.format(getString(R.string.unfinished_s), allScheduleItem.fourth.size)
         } else textViewUnfinishedCount.visibility = View.GONE
 
-        adapter?.updateWorkItemsList(
-            getSortList(onGoingWorkItems), getSortList(cancelled!!), getSortList(
-                completed!!
-            ), getSortList(unfinished), getSortList(notOpen), selectedTime
+        allWorkItem.addAll(allScheduleItem.fourth)
+        textViewTotalCount.text = UIUtils.getSpannableText(
+            getString(R.string.total_container_bold),
+            (allWorkItem.size).toString()
         )
-    }
 
-    private fun getSortList(workItemsList: ArrayList<WorkItemDetail>): ArrayList<WorkItemDetail> {
-        var inboundList: ArrayList<WorkItemDetail> = ArrayList()
-        var outBoundList: ArrayList<WorkItemDetail> = ArrayList()
-        var liveList: ArrayList<WorkItemDetail> = ArrayList()
-        var sortedList: ArrayList<WorkItemDetail> = ArrayList()
 
-        workItemsList.forEach {
-            when {
-                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> {
-                    liveList.add(it)
-                }
-                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> {
-                    inboundList.add(it)
-                }
-                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> {
-                    outBoundList.add(it)
-                }
-            }
-        }
-        sortedList.addAll(outBoundList)
-        sortedList.addAll(liveList)
-        sortedList.addAll(inboundList)
-        return sortedList
+        adapter?.updateWorkItemsList(
+            allScheduleItem.first, allScheduleItem.second,
+                allScheduleItem.third
+            , allScheduleItem.fourth, allScheduleItem.fifth, selectedTime
+        )
     }
 
     override fun showHeaderInfo(companyName: String, date: String, shift: String, dept: String) {

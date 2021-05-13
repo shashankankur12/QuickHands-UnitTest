@@ -15,7 +15,7 @@ class ScheduleContract {
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(
                 selectedDate: Date,
-                scheduleListAPIResponse: ScheduleListAPIResponse,
+                scheduleListAPIResponse: ScheduleListAPIResponse?,
                 currentPageIndex: Int,
                 deptDetail: String
             )

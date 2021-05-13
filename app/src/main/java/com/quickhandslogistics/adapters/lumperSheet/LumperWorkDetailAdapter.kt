@@ -17,7 +17,6 @@ import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.utils.ScheduleUtils.calculatePercent
 import com.quickhandslogistics.utils.ValueUtils.isNumeric
-import kotlinx.android.synthetic.main.content_work_sheet_item_detail.*
 import kotlinx.android.synthetic.main.item_lumper_work_detail.view.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -68,6 +67,7 @@ class LumperWorkDetailAdapter(
         private val textViewCancelCorrection: TextView = itemView.textViewCancelCorrection
         private val textViewUpdateCorrection: TextView = itemView.textViewUpdateCorrection
         private val textViewScheduleNote: TextView = itemView.textViewScheduleNote
+        private val textViewIsScheduleLead: TextView = itemView.textViewIsScheduleLead
 
         var parameters = ArrayList<String>()
 
@@ -88,17 +88,24 @@ class LumperWorkDetailAdapter(
         }
 
         fun bind(lumperDaySheet: LumperDaySheet) {
-            var totalcase =""
+            var totalcase = ""
             lumperDaySheet.workItemDetail?.let { workItemDetail ->
                 val container = when (workItemDetail.type) {
                     AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND -> {
-                        resources.getString(R.string.out_bound_bold_has)
+                        if (workItemDetail.origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                            resources.getString(R.string.unfinished_out_bound_bold_has)
+                        } else resources.getString(R.string.out_bound_bold_has)
+
                     }
                     AppConstant.WORKSHEET_WORK_ITEM_LIVE -> {
-                        resources.getString(R.string.live_load_bold_has)
+                        if (workItemDetail.origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                            resources.getString(R.string.unfinished_live_load_bold_has)
+                        } else resources.getString(R.string.live_load_bold_has)
                     }
                     else -> {
-                        resources.getString(R.string.no_of_drops_bold_has)
+                        if (workItemDetail.origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                            resources.getString(R.string.unfinished_no_of_drops_bold_has)
+                        } else resources.getString(R.string.no_of_drops_bold_has)
                     }
                 }
                 workItemDetail.label?.let {
@@ -143,7 +150,7 @@ class LumperWorkDetailAdapter(
                 }
                 var cases=getTotalCases(workItemDetail.buildingOps)
                 totalcase = if (!cases.isNullOrEmpty() && isNumeric(cases!!)) cases else ""
-
+                textViewIsScheduleLead.visibility = if (workItemDetail.isScheduledByLead!!) View.VISIBLE else View.GONE
             }
 
             lumperDaySheet.lumpersTimeSchedule?.let { timingDetail ->

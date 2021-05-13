@@ -30,7 +30,7 @@ class ScheduleModel(private val sharedPref: SharedPref) : ScheduleContract.Model
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
                     val deptDetail =  UIUtils.getDisplayEmployeeDepartment(leadProfile)
-                    onFinishedListener.onSuccess(selectedDate, response.body()!!, pageIndex, deptDetail)
+                    onFinishedListener.onSuccess(selectedDate, response.body(), pageIndex, deptDetail)
                 }
             }
 

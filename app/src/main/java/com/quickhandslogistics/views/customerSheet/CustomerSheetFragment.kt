@@ -221,7 +221,10 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         inCompleteWorkItemsCount = onGoingWorkItems.size
 
         textViewTotalCount.text =
-            String.format(getString(R.string.total_containers_s), allWorkItems.size)
+            String.format(
+                getString(R.string.total_containers_s),
+                (allWorkItems.size - onGoingWorkItems.size)
+            )
         buildingDetails(scheduleDetails, customerSheet)
     }
 

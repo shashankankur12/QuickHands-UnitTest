@@ -51,9 +51,9 @@ class SchedulePresenter(private var scheduleView: ScheduleContract.View?, privat
         }
     }
 
-    override fun onSuccess(selectedDate: Date, scheduleListAPIResponse: ScheduleListAPIResponse, currentPageIndex: Int, deptDetail: String) {
+    override fun onSuccess(selectedDate: Date, scheduleListAPIResponse: ScheduleListAPIResponse?, currentPageIndex: Int, deptDetail: String) {
         val workItemsList = ArrayList<ScheduleDetailData>()
-        scheduleListAPIResponse.data?.scheduleDetailsList?.let {
+        scheduleListAPIResponse?.data?.scheduleDetailsList?.let {
             workItemsList.addAll(it)
         }
 
@@ -96,8 +96,8 @@ class SchedulePresenter(private var scheduleView: ScheduleContract.View?, privat
             } else it.scheduleDepartment = AppConstant.EMPLOYEE_DEPARTMENT_BOTH
         }
 
-        val totalPagesCount = ValueUtils.getDefaultOrValue(scheduleListAPIResponse.data?.pageCount)
-        val nextPageIndex = ValueUtils.getDefaultOrValue(scheduleListAPIResponse.data?.next)
+        val totalPagesCount = ValueUtils.getDefaultOrValue(scheduleListAPIResponse?.data?.pageCount)
+        val nextPageIndex = ValueUtils.getDefaultOrValue(scheduleListAPIResponse?.data?.next)
 
         if (workItemsList.size > 0) {
             scheduleView?.showScheduleData(selectedDate, workItemsList, totalPagesCount, nextPageIndex, currentPageIndex)

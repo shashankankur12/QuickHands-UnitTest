@@ -119,10 +119,9 @@ class WorkItemDetail() : Parcelable {
     var assignedLumpersList: ArrayList<EmployeeData>? = null
         get() = ScheduleUtils.sortEmployeesList(field)
 
-    @SerializedName("previouslyWorkedLumper")
+    @SerializedName("oldWork")
     @Expose
-    var previouslyWorkedLumper: ArrayList<EmployeeData>? = null
-        get() = ScheduleUtils.sortEmployeesList(field)
+    var oldWork: WorkItemDetail? = null
 
     @SerializedName("lumperAttendance")
     @Expose
@@ -163,8 +162,8 @@ class WorkItemDetail() : Parcelable {
         buildingDetailData = parcel.readString()
         schedule = parcel.readParcelable(BuildingDetailData::class.java.classLoader)
         assignedLumpersList = parcel.createTypedArrayList(EmployeeData)
-        previouslyWorkedLumper = parcel.createTypedArrayList(EmployeeData)
         attendanceDetail = parcel.readParcelable(AttendanceDetail::class.java.classLoader)
+        oldWork = parcel.readParcelable(WorkItemDetail::class.java.classLoader)
         buildingParams = parcel.createStringArrayList()
 //        buildingOps = HashMap()
 //        readFromParcel(parcel)
@@ -209,8 +208,8 @@ class WorkItemDetail() : Parcelable {
         parcel.writeString(buildingDetailData)
         parcel.writeParcelable(schedule, flags)
         parcel.writeTypedList(assignedLumpersList)
-        parcel.writeTypedList(previouslyWorkedLumper)
         parcel.writeParcelable(attendanceDetail, flags)
+        parcel.writeParcelable(oldWork, flags)
         /*buildingOps?.let { data ->
             parcel.writeInt(data.size)
             for (s in data.keys) {

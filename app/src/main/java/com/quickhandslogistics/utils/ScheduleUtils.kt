@@ -5,8 +5,8 @@ import android.text.Spanned
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.quickhandslogistics.R
+import com.quickhandslogistics.controls.Quintuple
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
-import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
 import com.quickhandslogistics.data.lumperSheet.LumpersInfo
@@ -666,19 +666,19 @@ object ScheduleUtils {
         return itemCount1
     }
 
-   fun getCustomerSheetItemArray(workItemDetail: ArrayList<WorkItemDetail>?): ArrayList<ArrayList<WorkItemDetail>> {
+    fun getCustomerSheetItemArray(workItemDetail: ArrayList<WorkItemDetail>?): ArrayList<ArrayList<WorkItemDetail>> {
         val outboundItem = ArrayList<WorkItemDetail>()
         val liveLodeItem = ArrayList<WorkItemDetail>()
         val dropItem = ArrayList<WorkItemDetail>()
         val itemType = ArrayList<ArrayList<WorkItemDetail>>()
 
-       workItemDetail?.forEach {
-           when {
-               it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> dropItem.add(it)
-               it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> outboundItem.add(it)
-               it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> liveLodeItem.add(it)
-           }
-       }
+        workItemDetail?.forEach {
+            when {
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> dropItem.add(it)
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> outboundItem.add(it)
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> liveLodeItem.add(it)
+            }
+        }
         itemType.add(outboundItem)
         itemType.add(liveLodeItem)
         itemType.add(dropItem)
@@ -687,4 +687,120 @@ object ScheduleUtils {
 
     }
 
+    fun createDifferentListData(data: ScheduleDetailData): Quintuple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>> {
+        val allWorkItem:ArrayList<WorkItemDetail> = ArrayList()
+        data.outbounds?.let { allWorkItem.addAll(it) }
+        data.liveLoads?.let { allWorkItem.addAll(it) }
+        data.drops?.let { allWorkItem.addAll(it) }
+
+        val onGoingWorkItems:ArrayList<WorkItemDetail> = ArrayList()
+        val cancelled:ArrayList<WorkItemDetail> = ArrayList()
+        val completed:ArrayList<WorkItemDetail> = ArrayList()
+        val unfinished:ArrayList<WorkItemDetail> = ArrayList()
+        val notDone:ArrayList<WorkItemDetail> = ArrayList()
+
+        allWorkItem.forEach {
+            when {
+                it.status.equals(AppConstant.WORK_ITEM_STATUS_COMPLETED) -> {
+                    completed.add(it)
+                }
+                it.status.equals(AppConstant.WORK_ITEM_STATUS_CANCELLED) -> {
+                    cancelled.add(it)
+                }
+                it.status.equals(AppConstant.WORK_ITEM_STATUS_UNFINISHED) -> {
+                    unfinished.add(it)
+                }
+                it.status.equals(AppConstant.WORK_ITEM_STATUS_NOT_OPEN) -> {
+                    notDone.add(it)
+                }
+                it.status.equals(AppConstant.WORK_ITEM_STATUS_IN_PROGRESS) || it.status.equals(
+                    AppConstant.WORK_ITEM_STATUS_SCHEDULED
+                ) || it.status.equals(AppConstant.WORK_ITEM_STATUS_ON_HOLD) -> {
+                    onGoingWorkItems.add(it)
+                }
+            }
+        }
+
+        return Quintuple(
+            getSortList(onGoingWorkItems), getSortList(cancelled), getSortList(
+                completed
+            ), getSortList(unfinished), getSortList(notDone)
+        )
+    }
+
+    private fun getSortList(workItemsList: ArrayList<WorkItemDetail>): ArrayList<WorkItemDetail> {
+        val inboundList: ArrayList<WorkItemDetail> = ArrayList()
+        val outBoundList: ArrayList<WorkItemDetail> = ArrayList()
+        val liveList: ArrayList<WorkItemDetail> = ArrayList()
+        val sortedList: ArrayList<WorkItemDetail> = ArrayList()
+
+        workItemsList.forEach {
+            when {
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> {
+                    liveList.add(it)
+                }
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> {
+                    inboundList.add(it)
+                }
+                it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> {
+                    outBoundList.add(it)
+                }
+            }
+        }
+        sortedList.addAll(outBoundList)
+        sortedList.addAll(liveList)
+        sortedList.addAll(inboundList)
+        return sortedList
+    }
+
+    fun getScheduleFilterList(workItemData: ArrayList<WorkItemDetail>): Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>  {
+        val outbounds: ArrayList<WorkItemDetail> = ArrayList()
+        val liveLoad: ArrayList<WorkItemDetail> = ArrayList()
+        val drop: ArrayList<WorkItemDetail> = ArrayList()
+
+        workItemData.forEach { workItemData ->
+            workItemData.type?.let {
+                when (it) {
+                    AppConstant.WORKSHEET_WORK_ITEM_LIVE->{liveLoad.add(workItemData)}
+                    AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND -> {outbounds.add(workItemData)}
+                    else -> {drop.add(workItemData)}
+                }
+            }
+        }
+        return Triple(outbounds,liveLoad ,drop)
+    }
+
+    fun setContainerTypeHeader(workItemDetail: WorkItemDetail, resources: Resources, textViewNoOfDrops: TextView) {
+        when (getWorkItemTypeDisplayName(workItemDetail.type, resources)) {
+            resources.getString(R.string.drops) -> {
+                if (workItemDetail.origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                    textViewNoOfDrops.text = UIUtils.getSpannableText(
+                        resources.getString(R.string.unfinished_no_of_drops_bold_has),
+                        workItemDetail.label.toString()
+                    )
+                } else textViewNoOfDrops.text = UIUtils.getSpannableText(
+                    resources.getString(R.string.no_of_drops_bold_has),
+                    workItemDetail.label.toString()
+                )
+            }
+            resources.getString(R.string.live_loads) -> if (workItemDetail.origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                textViewNoOfDrops.text = UIUtils.getSpannableText(
+                    resources.getString(R.string.unfinished_live_load_bold_has),
+                    workItemDetail.label.toString()
+                )
+            } else textViewNoOfDrops.text = UIUtils.getSpannableText(
+                resources.getString(R.string.live_load_bold_has),
+                workItemDetail.label.toString()
+            )
+            else -> if (workItemDetail.origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                textViewNoOfDrops.text = UIUtils.getSpannableText(
+                    resources.getString(R.string.unfinished_out_bound_bold_has),
+                    workItemDetail.label.toString()
+                )
+            } else textViewNoOfDrops.text = UIUtils.getSpannableText(
+                resources.getString(R.string.out_bound_bold_has),
+                workItemDetail.label.toString()
+            )
+        }
+    }
 }
