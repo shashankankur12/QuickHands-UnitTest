@@ -1,17 +1,22 @@
 package com.quickhandslogistics.adapters.schedule
 
+import android.content.Context
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.common.LumperImagesAdapter
 import com.quickhandslogistics.contracts.common.LumperImagesContract
 import com.quickhandslogistics.contracts.schedule.ScheduleContract
+import com.quickhandslogistics.data.customerSheet.CustomerSheet
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.ScheduleDetailData
@@ -23,11 +28,13 @@ import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.sharedPref
 import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.UIUtils
+import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.bottom_sheet_customer_sheet_fragement.*
 import kotlinx.android.synthetic.main.item_schedule.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ScheduleAdapter(private val resources: Resources, var adapterItemClickListener: ScheduleContract.View.OnAdapterItemClickListener) :
+class ScheduleAdapter(private val resources: Resources, private val context: Context, var adapterItemClickListener: ScheduleContract.View.OnAdapterItemClickListener) :
     RecyclerView.Adapter<ScheduleAdapter.ViewHolder>() {
 
     private var workItemsList: ArrayList<ScheduleDetailData> = ArrayList()
@@ -66,6 +73,11 @@ class ScheduleAdapter(private val resources: Resources, var adapterItemClickList
         private val textViewScheduleTypeUnfinishedStartTime: TextView = itemView.textViewScheduleTypeUnfinishedStartTime
         private val recyclerViewLumpersImagesList: RecyclerView = itemView.recyclerViewLumpersImagesList
         private val relativeLayoutSide: RelativeLayout = itemView.relativeLayoutSide
+        private val layoutCustomerSignature: ConstraintLayout = itemView.layoutCustomerSignature
+        private val textViewCustomerNote: TextView = itemView.textViewCustomerNote
+        private val textViewCustomerName: TextView = itemView.textViewCustomerName
+        private val imageViewSignature: ImageView = itemView.imageViewSignature
+        private val circleImageViewArrow: CircleImageView = itemView.circleImageViewArrow
 
         init {
             recyclerViewLumpersImagesList.apply {
@@ -78,16 +90,18 @@ class ScheduleAdapter(private val resources: Resources, var adapterItemClickList
             val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
             textViewBuildingName.text = UIUtils.getSpannableText(resources.getString(R.string.department_full),"${scheduleDetail.scheduleDepartment.toLowerCase().capitalize()}s")
             if (!DateUtils.isCurrentDate(selectedDate.time) && !DateUtils.isFutureDate(selectedDate.time)) {
-                if (checkAllContainerComplete(scheduleDetail)) {
+                if (checkAllContainerComplete(scheduleDetail.customerSheet)) {
                     textViewStatus.text = resources.getString(R.string.completed)
                     textViewStatus.setBackgroundResource(R.drawable.chip_background_completed)
-                    relativeLayoutSide?.setBackgroundResource(R.drawable.schedule_item_stroke_completed)
+                    relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_completed)
+                    layoutCustomerSignature.visibility=View.VISIBLE
+                    setCustomerSheetDetails(scheduleDetail.customerSheet)
                 } else {
                     textViewStatus.text = resources.getString(R.string.pending)
                     textViewStatus.setBackgroundResource(R.drawable.chip_background_on_hold)
                     relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_on_hold)
+                    layoutCustomerSignature.visibility=View.GONE
                 }
-
             } else {
                 textViewStatus.text = resources.getString(R.string.view_details)
                 textViewStatus.setBackgroundResource(R.drawable.chip_background_scheduled)
@@ -100,16 +114,17 @@ class ScheduleAdapter(private val resources: Resources, var adapterItemClickList
             allWorkItem.addAll(allScheduleItem.second)
             allWorkItem.addAll(allScheduleItem.third)
             allWorkItem.addAll(allScheduleItem.fifth)
+
             val scheduleWorkItem=ScheduleUtils.getScheduleFilterList(allWorkItem)
             allWorkItem.addAll(allScheduleItem.fourth)
             textViewScheduleType.text = String.format(resources.getString(R.string.out_bound_s),scheduleWorkItem.first.size)
             textViewScheduleTypeLiveLoad.text = String.format(resources.getString(R.string.live_load_s),scheduleWorkItem.second.size)
             textViewScheduleTypeDrops.text = String.format(resources.getString(R.string.drops_s),scheduleWorkItem.third.size)
             textViewScheduleTypeUnfinished.text = String.format(resources.getString(R.string.unfinished_drop),allScheduleItem.fourth.size)
-
             textViewWorkItemsCount.text = String.format(resources.getString(R.string.total_containers_s),allWorkItem.size)
+
             leadProfile?.buildingDetailData?.get(0)?.leads?.let {
-                val leadName= getDepartmentlead(it, scheduleDetail.scheduleDepartment)
+                val leadName= getDepartmentLead(it, scheduleDetail.scheduleDepartment)
                 textViewWorkItemsLeadName.text = String.format(resources.getString(R.string.lead_name),leadName)
             }
 
@@ -122,24 +137,31 @@ class ScheduleAdapter(private val resources: Resources, var adapterItemClickList
             if (allScheduleItem.fourth.size>0 && !allScheduleItem.fourth[0].startTime.isNullOrEmpty())
             textViewScheduleTypeUnfinishedStartTime.text=DateUtils.convertMillisecondsToTimeString((allScheduleItem.fourth[0].startTime)!!.toLong())
             else textViewScheduleTypeUnfinishedStartTime.visibility=View.GONE
-//            ScheduleUtils.changeStatusUIByValue(resources, VIEW_DETAILS, textViewStatus, relativeLayoutSide)
 
-            val assignedLumperList=ScheduleUtils.getAssignedLumperList(scheduleDetail) as ArrayList<EmployeeData>
+            val assignedLumperList = ScheduleUtils.getAssignedLumperList(scheduleDetail) as ArrayList<EmployeeData>
+            circleImageViewArrow.visibility = if (assignedLumperList.size > 0) View.VISIBLE else View.GONE
             recyclerViewLumpersImagesList.apply {
-                adapter = LumperImagesAdapter(assignedLumperList , sharedPref,this@ViewHolder)
+                adapter = LumperImagesAdapter(assignedLumperList, sharedPref, this@ViewHolder)
             }
 
-            if (scheduleDetail.scheduleDepartment==(EMPLOYEE_DEPARTMENT_INBOUND)){
-                textViewScheduleType.visibility=View.GONE
-                textViewScheduleTypeStartTime.visibility=View.GONE
-            }else if (scheduleDetail.scheduleDepartment == EMPLOYEE_DEPARTMENT_OUTBOUND){
-                textViewScheduleTypeLiveLoad.visibility=View.GONE
-                textViewScheduleTypeDrops.visibility=View.GONE
-                textViewScheduleTypeLiveLoadStartTime.visibility=View.GONE
-                textViewScheduleTypeDropsStartTime.visibility=View.GONE
+            if (scheduleDetail.scheduleDepartment == (EMPLOYEE_DEPARTMENT_INBOUND)) {
+                textViewScheduleType.visibility = View.GONE
+                textViewScheduleTypeStartTime.visibility = View.GONE
+            } else if (scheduleDetail.scheduleDepartment == EMPLOYEE_DEPARTMENT_OUTBOUND) {
+                textViewScheduleTypeLiveLoad.visibility = View.GONE
+                textViewScheduleTypeDrops.visibility = View.GONE
+                textViewScheduleTypeLiveLoadStartTime.visibility = View.GONE
+                textViewScheduleTypeDropsStartTime.visibility = View.GONE
             }
-
             itemView.setOnClickListener(this)
+        }
+
+        private fun setCustomerSheetDetails(customerSheet: CustomerSheet?) {
+            customerSheet?.let { sheetData ->
+                sheetData.note?.let { textViewCustomerNote.text = it.capitalize() }
+                sheetData.customerRepresentativeName?.let { textViewCustomerName.text = it.capitalize() }
+                sheetData.signatureUrl?.let { Glide.with(context).load(it).into(imageViewSignature) }
+            }
         }
 
         override fun onClick(view: View?) {
@@ -154,30 +176,23 @@ class ScheduleAdapter(private val resources: Resources, var adapterItemClickList
             adapterItemClickListener.onLumperImagesClick(lumpersList)
         }
 
-        private fun getDepartmentlead(leads: ArrayList<EmployeeData>, scheduleDepartment: String): String? {
-            var leadName=""
+        private fun getDepartmentLead(leads: ArrayList<EmployeeData>, scheduleDepartment: String): String? {
+            var leadName = ""
             leads.forEach {
                 if (it.department.equals(scheduleDepartment, ignoreCase = true))
-                    leadName= it.fullName!!
+                    leadName = it.fullName!!
             }
-        return leadName
+            return leadName
+        }
+
+        private fun checkAllContainerComplete(customerSheet: CustomerSheet?): Boolean {
+            var allContainerDone = false
+            customerSheet?.isSigned?.let {
+                allContainerDone = true
+            }
+            return allContainerDone
         }
     }
-
-    private fun checkAllContainerComplete(scheduleDetail: ScheduleDetailData): Boolean {
-        var allWorkItem =ArrayList<WorkItemDetail>()
-        var allContainerDone= true
-        scheduleDetail.drops?.let { allWorkItem.addAll(it) }
-        scheduleDetail.liveLoads?.let { allWorkItem.addAll(it) }
-        scheduleDetail.outbounds?.let { allWorkItem.addAll(it) }
-        allWorkItem.forEach {
-            if (it.isCompleted ==false)
-                allContainerDone=false
-
-        }
-        return allContainerDone
-    }
-
 
     fun updateList(
         scheduledData: ArrayList<ScheduleDetailData>,
@@ -188,7 +203,7 @@ class ScheduleAdapter(private val resources: Resources, var adapterItemClickList
             this.workItemsList.clear()
         }
         this.workItemsList.addAll(scheduledData)
-        this.selectedDate= selectedDate
+        this.selectedDate = selectedDate
         notifyDataSetChanged()
     }
 }

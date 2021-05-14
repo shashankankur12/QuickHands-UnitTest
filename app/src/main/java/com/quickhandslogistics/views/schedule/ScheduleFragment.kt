@@ -103,9 +103,9 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         super.onViewCreated(view, savedInstanceState)
 
         recyclerViewSchedule.apply {
-            layoutManager = LinearLayoutManager(fragmentActivity!!)
+            layoutManager = LinearLayoutManager(fragmentActivity)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            scheduleAdapter = ScheduleAdapter(resources, this@ScheduleFragment)
+            scheduleAdapter = ScheduleAdapter(resources, context, this@ScheduleFragment)
             adapter = scheduleAdapter
             addOnScrollListener(onScrollListener)
         }
