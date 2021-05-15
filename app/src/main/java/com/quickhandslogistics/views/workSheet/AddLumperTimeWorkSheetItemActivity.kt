@@ -38,12 +38,10 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private var totalCases: String = ""
     private var employeeData: EmployeeData? = null
     private var employeeTimingData: LumpersTimeSchedule? = null
-
     private var initialStartTime: Long = 0
     private var initialEndTime: Long = 0
     private var initialBreakInTime: Long = 0
     private var initialBreakOutTime: Long = 0
-
     private var selectedStartTime: Long = 0
     private var selectedEndTime: Long = 0
     private var selectedBreakInTime: Long = 0
@@ -54,6 +52,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private var isLumperPresent: Boolean = false
     private var isTimeSelected: Boolean = false
     private lateinit var watcher: TextWatcher
+    private var selectedTime: Long = 0
     private var tempLumperIds: ArrayList<String> = ArrayList()
 
     private lateinit var addLumperTimeWorkSheetItemPresenter: AddLumperTimeWorkSheetItemPresenter
@@ -74,6 +73,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
                     it.getParcelable(ARG_LUMPER_TIMING_DATA) as LumpersTimeSchedule?
                 tempLumperIds =
                     it.getStringArrayList(WorkSheetItemDetailLumpersFragment.TEMP_LUMPER_IDS) as ArrayList<String>
+                selectedTime = it.getLong(WorkSheetItemDetailLumpersFragment.SCHEDULE_SELECTED_TIME)
             }
         }
 
@@ -83,6 +83,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun initializeUI() {
+        waitingTimeDisableInPastDat()
         employeeData?.let { employeeData ->
             val leadProfile = DateUtils.sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
             var buildingId = ""
@@ -355,6 +356,14 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private fun lumpercaseVisibility() {
         editTextCasesLumpers.isEnabled =
             editTextWaitingTime.isEnabled || editTextWaitingTimeMinutes.isEnabled || buttonStartTime.isEnabled || buttonEndTime.isEnabled || buttonBreakInTime.isEnabled || buttonBreakOutTime.isEnabled
+    }
+
+    private fun waitingTimeDisableInPastDat() {
+        editTextWaitingTime.isEnabled =
+            (DateUtils.isCurrentDate(selectedTime) || DateUtils.isFutureDate(selectedTime))
+        editTextWaitingTimeMinutes.isEnabled =
+            (DateUtils.isCurrentDate(selectedTime) || DateUtils.isFutureDate(selectedTime))
+
     }
 
     private fun updateInitialTime(dateStamp: String?, buttonTime: Button): Long {

@@ -33,6 +33,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
+                    android:id="@+id/textViewCustomerNoteHeader"
                     style="@style/titleTextViewTheme"
                     android:text="@string/notes_for_customer" />
 

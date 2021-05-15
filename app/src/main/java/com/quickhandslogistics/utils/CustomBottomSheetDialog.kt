@@ -1,5 +1,6 @@
 package com.quickhandslogistics.utils
 
+import android.app.Activity
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
@@ -25,21 +26,17 @@ object CustomBottomSheetDialog {
         val calendar = Calendar.getInstance()
         var selectedDate :Date
         var selectedTime=Date().time
+        val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
 
         calendar.add(Calendar.DAY_OF_YEAR, 1)
         selectedDate=calendar.time
-        val leadProfile = sharedPref.getClassObject(
-            AppConstant.PREFERENCE_LEAD_PROFILE,
-            LeadProfileData::class.java
-        ) as LeadProfileData?
-
         shiftText?.text= leadProfile?.shift?.capitalize()
         departmentText?.text =  UIUtils.getDisplayEmployeeDepartment(leadProfile)
-
         dateForCompletionText?.text= DateUtils.getDateString(
             DateUtils.PATTERN_MONTH_DAY_DISPLAY,
             selectedDate
         )
+
         dateForCompletionText?.setOnClickListener {
             ReportUtils.showTomorrowDatePicker(
                 selectedDate,
@@ -186,15 +183,11 @@ object CustomBottomSheetDialog {
         lumperRequestBottomSheet.show()
     }
 
-    fun requestCorrectionBottomSheetDialog(
-        context: Context,
-        contractView: IDialogRequestCorrectionClick
-    ) {
+    fun requestCorrectionBottomSheetDialog(context: Context, contractView: IDialogRequestCorrectionClick) {
         val unFinishedBottomSheet = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
         unFinishedBottomSheet.setContentView(R.layout.bottumsheet_request_correction)
         val textViewTitle = unFinishedBottomSheet.findViewById<TextView>(R.id.textViewTitle)
-        val editTextCorrection =
-            unFinishedBottomSheet.findViewById<EditText>(R.id.editTextCorrection)
+        val editTextCorrection = unFinishedBottomSheet.findViewById<EditText>(R.id.editTextCorrection)
 
         unFinishedBottomSheet.findViewById<Button>(R.id.buttonCancelCorrection)
             ?.setOnClickListener { unFinishedBottomSheet.dismiss() }

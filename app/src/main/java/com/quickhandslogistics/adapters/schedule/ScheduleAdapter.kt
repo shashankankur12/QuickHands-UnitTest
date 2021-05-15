@@ -106,6 +106,7 @@ class ScheduleAdapter(private val resources: Resources, private val context: Con
                 textViewStatus.text = resources.getString(R.string.view_details)
                 textViewStatus.setBackgroundResource(R.drawable.chip_background_scheduled)
                 relativeLayoutSide.setBackgroundResource(R.drawable.schedule_item_stroke_scheduled)
+                layoutCustomerSignature.visibility=View.GONE
             }
 
             val allScheduleItem =ScheduleUtils.createDifferentListData(scheduleDetail)

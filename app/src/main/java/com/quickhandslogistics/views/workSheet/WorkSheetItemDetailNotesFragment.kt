@@ -16,6 +16,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.workSheet.WorkSheetDetailsNoteImageAdapter
@@ -46,18 +47,23 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
     private val myBitmap: Bitmap? = null
     private var mPictureImagePath = ""
     private var mImgFile: File? = null
+    private var selectedTime: Long = 0
 
     companion object {
         private const val NOTE_WORK_DETALS = "NOTE_WORK_DETALS"
         private const val SCHEDULE_CUSTOMER_NOTE = "SCHEDULE_CUSTOMER_NOTE"
         private const val SCHEDULE_QHL_NOTE = "SCHEDULE_QHL_NOTE"
         private const val SCHEDULE_ATTACHMENT_LIST = "SCHEDULE_ATTACHMENT_LIST"
+        private const val SCHEDULE_SELECTED_TIME= "SCHEDULE_SELECTED_TIME"
         @JvmStatic
-        fun newInstance(allWorkItem: WorkItemContainerDetails?) = WorkSheetItemDetailNotesFragment()
+        fun newInstance(allWorkItem: WorkItemContainerDetails?, selectedTime: Long) = WorkSheetItemDetailNotesFragment()
             .apply {
                 arguments = Bundle().apply {
                     if(allWorkItem!=null){
                         putParcelable(NOTE_WORK_DETALS, allWorkItem)
+                    }
+                    if(selectedTime!=null){
+                        putLong(SCHEDULE_SELECTED_TIME, selectedTime)
                     }
                 }
             }
@@ -74,6 +80,7 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
         super.onCreate(savedInstanceState)
         arguments?.let {
             workItemDetail = it.getParcelable<WorkItemContainerDetails>(NOTE_WORK_DETALS)
+            selectedTime = it.getLong(SCHEDULE_SELECTED_TIME)
         }
     }
 
@@ -120,18 +127,30 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
         }
 
         workItemDetail.status?.let { status ->
-            if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED || status == AppConstant.WORK_ITEM_STATUS_CANCELLED) {
+            if (!DateUtils.isCurrentDate(selectedTime) && !DateUtils.isFutureDate(selectedTime)) {
                 editTextQHLCustomerNotes.isEnabled = false
-                editTextQHLNotes.isEnabled = false
-                buttonSubmit.visibility = View.GONE
-                addImageButton.visibility = View.GONE
-                isCompleteOrCancel=true
-            } else {
-                editTextQHLCustomerNotes.isEnabled = true
+                layoutCustomerNotes.background = ContextCompat.getDrawable(fragmentActivity!!, R.drawable.schedule_item_background_grey)
+                editTextQHLCustomerNotes.setTextColor(ContextCompat.getColor(fragmentActivity!!, R.color.detailHeader))
+                textViewCustomerNoteHeader.setTextColor(ContextCompat.getColor(fragmentActivity!!, R.color.detailHeader))
                 editTextQHLNotes.isEnabled = true
                 buttonSubmit.visibility = View.VISIBLE
                 addImageButton.visibility = View.VISIBLE
-                isCompleteOrCancel=false
+                isCompleteOrCancel =
+                    (status == AppConstant.WORK_ITEM_STATUS_COMPLETED || status == AppConstant.WORK_ITEM_STATUS_CANCELLED)
+            } else {
+                if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED || status == AppConstant.WORK_ITEM_STATUS_CANCELLED) {
+                    editTextQHLCustomerNotes.isEnabled = false
+                    editTextQHLNotes.isEnabled = false
+                    buttonSubmit.visibility = View.GONE
+                    addImageButton.visibility = View.GONE
+                    isCompleteOrCancel = true
+                } else {
+                    editTextQHLCustomerNotes.isEnabled = true
+                    editTextQHLNotes.isEnabled = true
+                    buttonSubmit.visibility = View.VISIBLE
+                    addImageButton.visibility = View.VISIBLE
+                    isCompleteOrCancel = false
+                }
             }
         }
 

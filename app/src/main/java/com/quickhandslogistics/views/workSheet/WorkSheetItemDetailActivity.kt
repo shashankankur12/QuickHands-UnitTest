@@ -128,17 +128,12 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         return workItemDetail
     }
 
-    private fun initializeUI(
-        allWorkItem: WorkItemContainerDetails? = null,
-        tampLumpId: ArrayList<String>? = null,
-        lumperTimeSchedule: ArrayList<LumpersTimeSchedule>? = null,
-        buildingParams: ArrayList<String>? = null
-    ) {
-
+    private fun initializeUI(allWorkItem: WorkItemContainerDetails? = null, tampLumpId: ArrayList<String>? = null, lumperTimeSchedule: ArrayList<LumpersTimeSchedule>? = null, buildingParams: ArrayList<String>? = null) {
         workSheetItemDetailPagerAdapter = if (allWorkItem != null)
             WorkSheetItemDetailPagerAdapter(
                 supportFragmentManager,
                 resources,
+                selectedTime,
                 allWorkItem,
                 tampLumpId,
                 lumperTimeSchedule,
@@ -147,7 +142,8 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         else
             WorkSheetItemDetailPagerAdapter(
                 supportFragmentManager,
-                resources
+                resources,
+                selectedTime
             )
         viewPagerWorkSheetDetail.offscreenPageLimit = workSheetItemDetailPagerAdapter?.count!!
         viewPagerWorkSheetDetail.adapter = workSheetItemDetailPagerAdapter
@@ -171,7 +167,9 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
             adapter = workSheetItemStatusAdapter
         }
 
+        textViewRequestCorrection.visibility= if (!DateUtils.isFutureDate(selectedTime) && !DateUtils.isCurrentDate(selectedTime)) View.VISIBLE else View.GONE
         textViewStatus.setOnClickListener(this)
+        textViewRequestCorrection.setOnClickListener(this)
         textViewWorkSheetNote1.setOnClickListener(this)
         bottomSheetBackgroundStatus.setOnClickListener(this)
 
@@ -192,6 +190,17 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         bottomSheetBackgroundStatus.visibility = View.GONE
     }
 
+    private fun requestCorrection(workId: String?) {
+        if (!workId.isNullOrEmpty())
+            CustomBottomSheetDialog.requestCorrectionBottomSheetDialog(
+                activity, object : CustomBottomSheetDialog.IDialogRequestCorrectionClick {
+                    override fun onSendRequest(dialog: Dialog, request: String) {
+                        dialog.dismiss()
+                    }
+                })
+        AppUtils.hideSoftKeyboard(this)
+    }
+
     override fun onClick(view: View?) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {
             ConnectionDetector.createSnackBar(activity)
@@ -201,6 +210,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         view?.let {
             when (view.id) {
                 bottomSheetBackgroundStatus.id -> closeBottomSheet()
+                textViewRequestCorrection.id -> requestCorrection(workItemId)
                 textViewStatus.id -> {
                     if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
                         workSheetItemStatusAdapter?.updateInitialStatus(

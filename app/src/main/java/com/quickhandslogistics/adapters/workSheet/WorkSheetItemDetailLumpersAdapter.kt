@@ -41,6 +41,7 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
     private var totalCases = ""
     private var isCompleted: Boolean= false
     private var isOldWork: Boolean= false
+    private var selectedTime: Long= 0
     private var tempLumperIds = ArrayList<String>()
     private var lumperList = ArrayList<LumperAttendanceData>()
     private var timingsData = HashMap<String, LumpersTimeSchedule>()
@@ -100,7 +101,7 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
             )
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
-            ishaseClockOut(employeeData)
+            ishHasClockOut(employeeData)
             imageViewCancelLumper.visibility= if (workItemStatus == AppConstant.WORK_ITEM_STATUS_COMPLETED || isOldWork) View.GONE else View.VISIBLE
             checkForOldData()
 
@@ -150,10 +151,19 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
                 textViewBreakTime.text = "${AppConstant.NOTES_NOT_AVAILABLE} - ${AppConstant.NOTES_NOT_AVAILABLE}"
             }
 
+            checkPastDayWorkTime()
             changeAddButtonVisibility()
             textViewAddTime.setOnClickListener(this)
             linearLayoutLumperTime.setOnClickListener(this)
             imageViewCancelLumper.setOnClickListener(this)
+        }
+
+        private fun checkPastDayWorkTime() {
+            if (!DateUtils.isCurrentDate(selectedTime) && !DateUtils.isFutureDate(selectedTime) && !isOldWork) {
+                val color=ContextCompat.getColor(context, R.color.detailHeader)
+                waitingTimeHeader.setTextColor(color)
+                textViewWaitingTime.setTextColor(color)
+            }
         }
 
         private fun checkForOldData() {
@@ -175,7 +185,7 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
             }
         }
 
-        private fun ishaseClockOut(lumperAttendance: LumperAttendanceData) {
+        private fun ishHasClockOut(lumperAttendance: LumperAttendanceData) {
             lumperAttendance.attendanceDetail?.let {
                 if (it.isPresent!! && !it.morningPunchIn.isNullOrEmpty() && it.eveningPunchOut.isNullOrEmpty()){
                     viewAttendanceStatus.setBackgroundResource( R.drawable.online_dot )
@@ -269,7 +279,16 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
         return isValid
     }
 
-    fun updateList(lumperList: ArrayList<LumperAttendanceData>?, timingsData: LinkedHashMap<String, LumpersTimeSchedule>, status: String? = "", tempLumperIds: ArrayList<String>, totalCases: String?, isCompleted: Boolean?, isOldWork:Boolean?) {
+    fun updateList(
+        lumperList: ArrayList<LumperAttendanceData>?,
+        timingsData: LinkedHashMap<String, LumpersTimeSchedule>,
+        status: String? = "",
+        tempLumperIds: ArrayList<String>,
+        totalCases: String?,
+        isCompleted: Boolean?,
+        isOldWork: Boolean?,
+        selectedTime: Long
+    ) {
         this.timingsData.clear()
         this.lumperList.clear()
         lumperList?.let {
@@ -279,6 +298,7 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
         this.workItemStatus = getDefaultOrValue(status)
         this.totalCases = getDefaultOrValue(totalCases)
         this.isOldWork = getDefaultOrValue(isOldWork)
+        this.selectedTime=selectedTime
 
         this.tempLumperIds.clear()
         this.tempLumperIds.addAll(tempLumperIds)
