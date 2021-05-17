@@ -10,7 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.*
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.util.keyIterator
 import androidx.recyclerview.widget.RecyclerView
@@ -45,15 +48,14 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
 
     private var searchEnabled = false
     private var searchTerm = ""
-
     private var lumperAttendanceList: ArrayList<LumperAttendanceData> = ArrayList()
     private var lumperAttendanceFilteredList: ArrayList<LumperAttendanceData> = ArrayList()
     private var updateData: HashMap<String, AttendanceDetail> = HashMap()
-
     private val selectedItems = SparseBooleanArray()
     private val animationItemsIndex = SparseBooleanArray()
     private var reverseAllAnimations = false
     private var currentSelectedIndex = -1
+    private var selectedTime: Long = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_time_clock_attendance, parent, false)
@@ -262,7 +264,8 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
                             return
                         }
 
-                        onAdapterClick.onAddTimeClick(getItem(adapterPosition), adapterPosition)
+                        if (DateUtils.isFutureDate(selectedTime) || DateUtils.isCurrentDate(selectedTime))
+                            onAdapterClick.onAddTimeClick(getItem(adapterPosition), adapterPosition)
                     }
                     checkBoxAttendance.id -> {
                         if (!ConnectionDetector.isNetworkConnected(context)) {
@@ -276,13 +279,15 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
 //
 //                        //Update in Local List Object to show changes on UId
 //                        getItem(adapterPosition).attendanceDetail?.isPresent = isChecked
-                        if (getSelectedItemCount() > 0){
-                            onAdapterClick.onRowClicked(adapterPosition)
-                        }else{
-                            onAdapterClick.onRowLongClicked(adapterPosition)
-                        }
+                        if (DateUtils.isFutureDate(selectedTime) || DateUtils.isCurrentDate(selectedTime)) {
+                            if (getSelectedItemCount() > 0) {
+                                onAdapterClick.onRowClicked(adapterPosition)
+                            } else {
+                                onAdapterClick.onRowLongClicked(adapterPosition)
+                            }
 
-                        notifyDataSetChanged()
+                            notifyDataSetChanged()
+                        }
                     }
                 }
             }
@@ -348,10 +353,11 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
         notifyDataSetChanged()
     }
 
-    fun updateList(lumperAttendanceList: ArrayList<LumperAttendanceData>) {
+    fun updateList(lumperAttendanceList: ArrayList<LumperAttendanceData>, selectedTime: Long) {
         this.updateData.clear()
         this.lumperAttendanceList.clear()
         this.lumperAttendanceList.addAll(lumperAttendanceList)
+        this.selectedTime=selectedTime
         notifyDataSetChanged()
     }
 

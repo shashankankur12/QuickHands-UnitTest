@@ -12,6 +12,8 @@ import com.quickhandslogistics.models.attendance.TimeClockAttendanceModel
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.SharedPref
+import java.util.*
+import kotlin.collections.ArrayList
 
 class TimeClockAttendancePresenter(private var timeClockAttendanceView: TimeClockAttendanceContract.View?, private val resources: Resources, sharedPref: SharedPref) :
     TimeClockAttendanceContract.Presenter, TimeClockAttendanceContract.Model.OnFinishedListener {
@@ -23,10 +25,10 @@ class TimeClockAttendancePresenter(private var timeClockAttendanceView: TimeCloc
         timeClockAttendanceView = null
     }
 
-    override fun fetchAttendanceList() {
+    override fun fetchAttendanceList(selectedTime: Date) {
         timeClockAttendanceView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         timeClockAttendanceModel.fetchHeaderInfo(this)
-        timeClockAttendanceModel.fetchLumpersAttendanceList(this)
+        timeClockAttendanceModel.fetchLumpersAttendanceList(selectedTime, this)
     }
 
     override fun saveAttendanceDetails(attendanceDetailList: List<AttendanceDetail>) {
@@ -57,14 +59,14 @@ class TimeClockAttendancePresenter(private var timeClockAttendanceView: TimeCloc
         timeClockAttendanceView?.showHeaderInfo(date, shift, dept)
     }
 
-    override fun onSuccessGetList(response: GetAttendanceAPIResponse) {
+    override fun onSuccessGetList(response: GetAttendanceAPIResponse?, selectedTime: Date) {
         timeClockAttendanceView?.hideProgressDialog()
 
         val allLumpersList = ArrayList<LumperAttendanceData>()
-        allLumpersList.addAll(response.data?.permanentLumpersList!!)
-        allLumpersList.addAll(response.data?.temporaryLumpers!!)
+        response?.data?.permanentLumpersList?.let { allLumpersList.addAll(it) }
+        response?.data?.temporaryLumpers?.let { allLumpersList.addAll(it) }
 
-        timeClockAttendanceView?.showLumpersAttendance(ScheduleUtils.getSortedAttendenceData(allLumpersList))
+        timeClockAttendanceView?.showLumpersAttendance(ScheduleUtils.getSortedAttendenceData(allLumpersList), selectedTime)
     }
 
     override fun onSuccessSaveDate() {

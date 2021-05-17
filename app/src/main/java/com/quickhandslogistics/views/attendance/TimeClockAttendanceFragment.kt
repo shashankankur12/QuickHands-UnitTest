@@ -97,7 +97,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             if (savedInstanceState.containsKey(LUMPER_ATTENDANCE_LIST)) {
                 lumperAttendanceList =
                     savedInstanceState.getParcelableArrayList(LUMPER_ATTENDANCE_LIST)!!
-                showLumpersAttendance(lumperAttendanceList)
+                showLumpersAttendance(lumperAttendanceList, Date(selectedTime))
             }
         } ?: run {
             if (!ConnectionDetector.isNetworkConnected(activity)) {
@@ -501,9 +501,13 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         }
     }
 
-    override fun showLumpersAttendance(lumperAttendanceList: ArrayList<LumperAttendanceData>) {
+    override fun showLumpersAttendance(
+        lumperAttendanceList: ArrayList<LumperAttendanceData>,
+        selectedTime: Date
+    ) {
         this.lumperAttendanceList=lumperAttendanceList
-        timeClockAttendanceAdapter.updateList(lumperAttendanceList)
+        this.selectedTime=selectedTime.time
+        timeClockAttendanceAdapter.updateList(lumperAttendanceList,  this.selectedTime)
         if (lumperAttendanceList.size > 0) {
             textViewEmptyData.visibility = View.GONE
             recyclerViewLumpers.visibility = View.VISIBLE
@@ -520,7 +524,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             return
         }
 
-        timeClockAttendancePresenter.fetchAttendanceList()
+        timeClockAttendancePresenter.fetchAttendanceList(Date(selectedTime))
 //        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.attendance_saved_success_message),
 //            fragmentActivity!!, object : CustomDialogListener {
 //                override fun onConfirmClick() {
@@ -635,7 +639,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             return
         }
 
-        timeClockAttendancePresenter.fetchAttendanceList()
+        timeClockAttendancePresenter.fetchAttendanceList(date)
         datePosition = position
 
     }

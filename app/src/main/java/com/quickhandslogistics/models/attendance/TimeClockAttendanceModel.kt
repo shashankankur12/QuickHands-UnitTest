@@ -14,6 +14,7 @@ import com.quickhandslogistics.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class TimeClockAttendanceModel(private val sharedPref: SharedPref) : TimeClockAttendanceContract.Model {
 
@@ -25,13 +26,13 @@ class TimeClockAttendanceModel(private val sharedPref: SharedPref) : TimeClockAt
         onFinishedListener.onSuccessGetHeaderInfo(date, shiftDetail, deptDetail)
     }
 
-    override fun fetchLumpersAttendanceList(onFinishedListener: TimeClockAttendanceContract.Model.OnFinishedListener) {
-        val dateString = DateUtils.getCurrentDateStringByEmployeeShift()
-
+    override fun fetchLumpersAttendanceList(selectedTime: Date, onFinishedListener: TimeClockAttendanceContract.Model.OnFinishedListener) {
+//        val dateString = DateUtils.getCurrentDateStringByEmployeeShift()
+        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedTime)
         DataManager.getService().getAttendanceList(getAuthToken(), dateString).enqueue(object : Callback<GetAttendanceAPIResponse> {
             override fun onResponse(call: Call<GetAttendanceAPIResponse>, response: Response<GetAttendanceAPIResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
-                    onFinishedListener.onSuccessGetList(response.body()!!)
+                    onFinishedListener.onSuccessGetList(response.body(), selectedTime)
                 }
             }
 
