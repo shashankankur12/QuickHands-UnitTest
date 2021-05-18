@@ -261,4 +261,9 @@ interface IApiInterface {
     ): Call<BuildingDetailsResponse>
 
 
+    //past future date calender details
+    @GET("employees/lumpers-availability")
+    fun getSchedulePastFutureDate(@Header("Authorization") auth: String): Call<GetPastFutureDateResponse>
+
+
 }

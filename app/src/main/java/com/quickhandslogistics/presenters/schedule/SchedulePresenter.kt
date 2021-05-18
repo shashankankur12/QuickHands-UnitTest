@@ -6,6 +6,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.dashboard.LeadProfileData
+import com.quickhandslogistics.data.schedule.GetPastFutureDateResponse
 import com.quickhandslogistics.data.schedule.ScheduleDetailData
 import com.quickhandslogistics.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.models.schedule.ScheduleModel
@@ -28,6 +29,7 @@ class SchedulePresenter(private var scheduleView: ScheduleContract.View?, privat
 
     override fun getScheduledWorkItemsByDate(date: Date, pageIndex: Int) {
         scheduleView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        scheduleModel.fetchPastFutureDate( this)
         scheduleModel.fetchHeaderInfo(date, this)
         scheduleModel.fetchSchedulesByDate(date, pageIndex, this)
     }
@@ -110,5 +112,11 @@ class SchedulePresenter(private var scheduleView: ScheduleContract.View?, privat
 
     override fun onSuccessGetHeaderInfo(dateString: String) {
         scheduleView?.showDateString(dateString)
+    }
+
+    override fun onSuccessPastFutureDate(response: GetPastFutureDateResponse?) {
+      response?.data?.let {
+          scheduleView?.showPastFutureDate(it)
+      }
     }
 }

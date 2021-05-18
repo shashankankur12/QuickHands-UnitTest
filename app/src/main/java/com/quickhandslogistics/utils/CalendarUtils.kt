@@ -9,11 +9,14 @@ import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
 import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
 import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
 import com.quickhandslogistics.R
+import com.quickhandslogistics.data.schedule.PastFutureDates
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.*
 import kotlinx.android.synthetic.main.item_calendar_view.view.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 object CalendarUtils {
-
+   var pastFutureDatesNew: ArrayList<PastFutureDates> = ArrayList()
     fun initializeCalendarView(context: Context, calendarView: SingleRowCalendar, dates: List<Date>, listener: CalendarSelectionListener) {
         val myCalendarViewManager = object : CalendarViewManager {
             override fun bindDataToCalendarView(holder: SingleRowCalendarAdapter.CalendarViewHolder, date: Date, position: Int, isSelected: Boolean) {
@@ -24,14 +27,27 @@ object CalendarUtils {
                     holder.itemView.tv_date_calendar_item.setTextColor(Color.WHITE)
                     holder.itemView.tv_date_calendar_item.setBackgroundResource(R.drawable.selected_calendar_item_background)
                 } else {
-                    holder.itemView.tv_date_calendar_item.setTextColor(ContextCompat.getColor(context, R.color.detailHeader))
-                    holder.itemView.tv_date_calendar_item.setBackgroundColor(Color.TRANSPARENT)
+                    when (getPastFutureCode(pastFutureDatesNew, date)) {
+                        1 -> {
+                            holder.itemView.tv_date_calendar_item.setTextColor(ContextCompat.getColor(context, R.color.temp_lumper_background))
+                            holder.itemView.tv_date_calendar_item.setBackgroundColor(Color.TRANSPARENT)
+                        }
+                        2 -> {
+                            holder.itemView.tv_date_calendar_item.setTextColor(ContextCompat.getColor(context, R.color.dark_grey))
+                            holder.itemView.tv_date_calendar_item.setBackgroundColor(Color.TRANSPARENT)
+                        }
+                        else -> {
+                            holder.itemView.tv_date_calendar_item.setTextColor(ContextCompat.getColor(context, R.color.colorLightGrey))
+                            holder.itemView.tv_date_calendar_item.setBackgroundColor(Color.TRANSPARENT)
+                        }
+                    }
                 }
             }
 
             override fun setCalendarViewResourceId(position: Int, date: Date, isSelected: Boolean): Int {
                 return R.layout.item_calendar_view
             }
+
         }
 
         val myCalendarChangesObserver = object : CalendarChangesObserver {
@@ -49,7 +65,7 @@ object CalendarUtils {
             }
         }
 
-        calendarView.apply {
+       calendarView.apply {
             calendarViewManager = myCalendarViewManager
             calendarChangesObserver = myCalendarChangesObserver
             calendarSelectionManager = mySelectionManager
@@ -57,6 +73,18 @@ object CalendarUtils {
             init()
             scrollToPosition(dates.size - 1)
         }
+    }
+
+    private fun getPastFutureCode(pastFutureDates: ArrayList<PastFutureDates>, date: Date): Int {
+        var code=0
+
+        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER,date)
+        pastFutureDates.forEach {
+            if(it.day?.equals(dateString)!!){
+                code= it.code!!
+            }
+        }
+        return code
     }
 
     /**

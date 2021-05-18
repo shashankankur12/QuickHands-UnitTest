@@ -16,6 +16,7 @@ import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.schedule.PastFutureDates
 import com.quickhandslogistics.data.schedule.ScheduleDetailData
 import com.quickhandslogistics.presenters.schedule.SchedulePresenter
 import com.quickhandslogistics.utils.*
@@ -23,7 +24,15 @@ import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
 import kotlinx.android.synthetic.main.content_dashboard.*
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
+import kotlinx.android.synthetic.main.fragment_schedule.appBarView
+import kotlinx.android.synthetic.main.fragment_schedule.layoutWorkScheduleInfo
+import kotlinx.android.synthetic.main.fragment_schedule.mainConstraintLayout
+import kotlinx.android.synthetic.main.fragment_schedule.textViewBuildingName
+import kotlinx.android.synthetic.main.fragment_schedule.textViewDept
+import kotlinx.android.synthetic.main.fragment_schedule.textViewEmptyData
+import kotlinx.android.synthetic.main.fragment_schedule.textViewShift
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -37,6 +46,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     private var selectedTime: Long = 0
     private var currentDatePosition: Int = 0
     private lateinit var availableDates: List<Date>
+    private var pastFutureDates: ArrayList<PastFutureDates> = ArrayList()
     private var workItemsList: ArrayList<ScheduleDetailData> = ArrayList()
     private var selectedDate: Date = Date()
     private var dateString: String? = null
@@ -93,6 +103,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         val pair = CalendarUtils.getPastFutureCalendarDates()
         availableDates = pair.first
         currentDatePosition = pair.second
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -142,7 +153,6 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
             isSavedState = false
             singleRowCalendarSchedule.select(if (currentDatePosition != 0) currentDatePosition else availableDates.size - 1)
         }
-
 
     }
 
@@ -271,6 +281,13 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
             CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
         } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+    }
+
+    override fun showPastFutureDate(pastFutureDate: ArrayList<PastFutureDates>) {
+        isSavedState = true
+        this.pastFutureDates= pastFutureDate
+        CalendarUtils.pastFutureDatesNew=pastFutureDates
+        singleRowCalendarSchedule.adapter?.notifyDataSetChanged()
     }
 
     override fun showEmptyData() {

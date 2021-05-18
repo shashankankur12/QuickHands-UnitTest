@@ -22,6 +22,7 @@ import com.quickhandslogistics.adapters.scheduleTime.ScheduleTimeAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
 import com.quickhandslogistics.contracts.scheduleTime.ScheduleTimeContract
 import com.quickhandslogistics.data.dashboard.LeadProfileData
+import com.quickhandslogistics.data.schedule.PastFutureDates
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeNoteRequest
 import com.quickhandslogistics.presenters.scheduleTime.ScheduleTimePresenter
@@ -60,7 +61,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     private var selectedDate: Date = Date()
     private var tempLumperIds: ArrayList<String> = ArrayList()
     private var scheduleTimeDetailList: ArrayList<ScheduleTimeDetail> = ArrayList()
-
+    private var pastFutureDates: ArrayList<PastFutureDates> = ArrayList()
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var availableDates: List<Date>
     private lateinit var scheduleTimeAdapter: ScheduleTimeAdapter
@@ -154,7 +155,8 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         textViewScheduleView.setOnClickListener(this)
         textViewCancelAllSchedule.setOnClickListener(this)
 
-        CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarScheduleTime, availableDates, this)
+        CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarScheduleTime, availableDates, this
+        )
         savedInstanceState?.also {
             isSavedState = true
             if (savedInstanceState.containsKey(DATE_HEADER_SCHEDULE_TIME)) {
@@ -226,6 +228,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                 }
 
                 scheduleTimePresenter.getSchedulesTimeByDate(singleRowCalendarScheduleTime.getSelectedDates()[0])
+
             }
         }
     }
@@ -479,6 +482,14 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         }
 
         textViewCancelAllSchedule.isEnabled =mScheduleTimeDetailList.size>0
+    }
+
+
+    override fun showPastFutureDate(pastFutureDate: ArrayList<PastFutureDates>) {
+        isSavedState = true
+        this.pastFutureDates= pastFutureDate
+        CalendarUtils.pastFutureDatesNew=pastFutureDates
+        singleRowCalendarScheduleTime.adapter?.notifyDataSetChanged()
     }
 
     override fun showNotesData(notes: String?) {

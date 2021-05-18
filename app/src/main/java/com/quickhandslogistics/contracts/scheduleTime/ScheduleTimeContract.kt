@@ -2,6 +2,9 @@ package com.quickhandslogistics.contracts.scheduleTime
 
 import LeadWorkInfo
 import com.quickhandslogistics.contracts.BaseContract
+import com.quickhandslogistics.contracts.schedule.ScheduleContract
+import com.quickhandslogistics.data.schedule.GetPastFutureDateResponse
+import com.quickhandslogistics.data.schedule.PastFutureDates
 import com.quickhandslogistics.data.scheduleTime.leadinfo.GetLeadInfoResponse
 import com.quickhandslogistics.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
@@ -13,6 +16,7 @@ class ScheduleTimeContract {
         fun fetchHeaderInfo(selectedDate: Date, onFinishedListener: OnFinishedListener)
         fun fetchSchedulesTimeByDate(selectedDate: Date, onFinishedListener: OnFinishedListener)
         fun fetchLeadScheduleByDate(selectedDate: Date, onFinishedListener: OnFinishedListener)
+        fun fetchPastFutureDate(onFinishedListener: OnFinishedListener)
         fun cancelScheduleLumpers(lumperId: String, date: Date, cancelReason: String, onFinishedListener: OnFinishedListener)
         fun editScheduleLumpers(
             lumperId: String,
@@ -27,6 +31,7 @@ class ScheduleTimeContract {
             fun onSuccessLeadInfo(getLeadInfoResponse: GetLeadInfoResponse)
             fun onSuccessGetHeaderInfo(dateString: String)
             fun onSuccessRequest(date: Date, cancelScheduleLumper: String)
+            fun onSuccessPastFutureDate(response: GetPastFutureDateResponse?)
         }
     }
 
@@ -36,6 +41,7 @@ class ScheduleTimeContract {
         fun showAPIErrorMessage(message: String)
         fun showNotesData(notes: String?)
         fun showSuccessDialog(message:String, date: Date)
+        fun showPastFutureDate(message: ArrayList<PastFutureDates>)
         fun showScheduleTimeData(
             selectedDate: Date,
             scheduleTimeDetailList: ArrayList<ScheduleTimeDetail>,

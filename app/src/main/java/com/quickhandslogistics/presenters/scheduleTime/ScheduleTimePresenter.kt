@@ -5,6 +5,7 @@ import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.scheduleTime.ScheduleTimeContract
 import com.quickhandslogistics.data.ErrorResponse
+import com.quickhandslogistics.data.schedule.GetPastFutureDateResponse
 import com.quickhandslogistics.data.scheduleTime.leadinfo.GetLeadInfoResponse
 import com.quickhandslogistics.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
@@ -28,6 +29,7 @@ class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.V
 
     override fun getSchedulesTimeByDate(date: Date) {
         scheduleTimeView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        scheduleTimeModel.fetchPastFutureDate( this)
         scheduleTimeModel.fetchHeaderInfo(date, this)
         scheduleTimeModel.fetchSchedulesTimeByDate(date, this)
         scheduleTimeModel.fetchLeadScheduleByDate(date, this)
@@ -104,5 +106,11 @@ class ScheduleTimePresenter(private var scheduleTimeView: ScheduleTimeContract.V
             scheduleTimeView?.showSuccessDialog(resources.getString(R.string.request_cancel_success_message), date)
         else
             scheduleTimeView?.showSuccessDialog(resources.getString(R.string.request_update_success_message), date)
+    }
+
+    override fun onSuccessPastFutureDate(response: GetPastFutureDateResponse?) {
+        response?.data?.let {
+            scheduleTimeView?.showPastFutureDate(it)
+        }
     }
 }
