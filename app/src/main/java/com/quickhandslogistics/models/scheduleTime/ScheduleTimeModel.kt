@@ -102,7 +102,7 @@ class ScheduleTimeModel(private val sharedPref: SharedPref) : ScheduleTimeContra
     }
 
     override fun fetchPastFutureDate(onFinishedListener: ScheduleTimeContract.Model.OnFinishedListener) {
-        DataManager.getService().getSchedulePastFutureDate(getAuthToken()).enqueue(object : Callback<GetPastFutureDateResponse> {
+        DataManager.getService().scheduleTimePastFutureDate(getAuthToken()).enqueue(object : Callback<GetPastFutureDateResponse> {
             override fun onResponse(call: Call<GetPastFutureDateResponse>, response: Response<GetPastFutureDateResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onSuccessPastFutureDate(response.body())

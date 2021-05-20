@@ -24,7 +24,7 @@ class WorkScheduleModel (private val sharedPref: SharedPref) : WorkScheduleContr
         }
         val date = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, date)
         val shiftDetail = ScheduleUtils.getShiftDetailString(leadProfile)
-        val deptDetail = "${ ResourceManager.getInstance().getString(R.string.dept_bold)} ${ UIUtils.getDisplayEmployeeDepartment(leadProfile)}"
+        val deptDetail = "${ ResourceManager.getInstance().getString(R.string.dept_bold)} ${ UIUtils.getDisplayEmployeeDepartmentHeader(leadProfile)}"
         onFinishedListener.onSuccessGetHeaderInfo(companyName, date, shiftDetail,deptDetail)
     }
 

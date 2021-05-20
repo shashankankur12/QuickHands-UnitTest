@@ -262,8 +262,14 @@ interface IApiInterface {
 
 
     //past future date calender details
+    @GET("schedule/lookup-availability")
+    fun schedulePastFutureDate(@Header("Authorization") auth: String): Call<GetPastFutureDateResponse>
+
     @GET("employees/lumpers-availability")
-    fun getSchedulePastFutureDate(@Header("Authorization") auth: String): Call<GetPastFutureDateResponse>
+    fun lumperSheetPastFutureDate(@Header("Authorization") auth: String): Call<GetPastFutureDateResponse>
+
+    @GET("employees/lumpers-availability")
+    fun scheduleTimePastFutureDate(@Header("Authorization") auth: String): Call<GetPastFutureDateResponse>
 
 
 }

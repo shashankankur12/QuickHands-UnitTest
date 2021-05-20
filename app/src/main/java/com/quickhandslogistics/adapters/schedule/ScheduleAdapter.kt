@@ -131,10 +131,13 @@ class ScheduleAdapter(private val resources: Resources, private val context: Con
 
             if (scheduleWorkItem.first.size>0 && !scheduleWorkItem.first[0].startTime.isNullOrEmpty())
                 textViewScheduleTypeStartTime.text=DateUtils.convertMillisecondsToTimeString((scheduleWorkItem.first[0].startTime)!!.toLong())
+            else textViewScheduleTypeStartTime.visibility=View.GONE
             if (scheduleWorkItem.second.size>0 && !scheduleWorkItem.second[0].startTime.isNullOrEmpty())
                 textViewScheduleTypeLiveLoadStartTime.text=DateUtils.convertMillisecondsToTimeString((scheduleWorkItem.second[0].startTime)!!.toLong())
+            else textViewScheduleTypeLiveLoadStartTime.visibility=View.GONE
             if (scheduleWorkItem.third.size>0 && !scheduleWorkItem.third[0].startTime.isNullOrEmpty())
                 textViewScheduleTypeDropsStartTime.text=DateUtils.convertMillisecondsToTimeString((scheduleWorkItem.third[0].startTime)!!.toLong())
+            else textViewScheduleTypeDropsStartTime.visibility=View.GONE
             if (allScheduleItem.fourth.size>0 && !allScheduleItem.fourth[0].startTime.isNullOrEmpty())
             textViewScheduleTypeUnfinishedStartTime.text=DateUtils.convertMillisecondsToTimeString((allScheduleItem.fourth[0].startTime)!!.toLong())
             else textViewScheduleTypeUnfinishedStartTime.visibility=View.GONE

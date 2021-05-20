@@ -241,19 +241,19 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         if (workItemTypeCounts.first > 0) {
             textViewLiveLoadsCount.visibility = View.VISIBLE
             textViewLiveLoadsCount.text =
-                String.format(getString(R.string.live_loads_s), workItemTypeCounts.first)
+                String.format(getString(R.string.live_load_s), workItemTypeCounts.first)
         } else textViewLiveLoadsCount.visibility = View.GONE
 
         if (workItemTypeCounts.second > 0) {
             textViewDropsCount.visibility = View.VISIBLE
             textViewDropsCount.text =
-                String.format(getString(R.string.drops_s), workItemTypeCounts.second)
+                String.format(getString(R.string.drops_value), workItemTypeCounts.second)
         } else textViewDropsCount.visibility = View.GONE
 
         if (workItemTypeCounts.third > 0) {
             textViewOutBoundsCount.visibility = View.VISIBLE
             textViewOutBoundsCount.text =
-                String.format(getString(R.string.out_bounds_s), workItemTypeCounts.third)
+                String.format(getString(R.string.out_bound_s), workItemTypeCounts.third)
         } else textViewOutBoundsCount.visibility = View.GONE
 
         if (data.unfinished?.size!! > 0) {

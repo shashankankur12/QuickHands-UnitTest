@@ -21,7 +21,7 @@ class TimeClockAttendanceModel(private val sharedPref: SharedPref) : TimeClockAt
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
         val date = DateUtils.getCurrentDateStringByEmployeeShift(pattern = DateUtils.PATTERN_NORMAL)
         val shiftDetail = ScheduleUtils.getShiftDetailString(leadProfile)
-        val deptDetail = "${ ResourceManager.getInstance().getString(R.string.dept_bold)} ${ UIUtils.getDisplayEmployeeDepartment(leadProfile)}"
+        val deptDetail = "${ ResourceManager.getInstance().getString(R.string.dept_bold)} ${ UIUtils.getDisplayEmployeeDepartmentHeader(leadProfile)}"
         onFinishedListener.onSuccessGetHeaderInfo(date, shiftDetail, deptDetail)
     }
 

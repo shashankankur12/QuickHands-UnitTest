@@ -314,6 +314,7 @@
     <string name="request_correction">Request Corrections</string>
     <string name="request_correction_title">What are the corrections?</string>
     <string name="container_parameter">Container Parameter</string>
+    <string name="containers_added">Containers added.</string>
 
     <!--No Record Messages-->
     <string name="empty_add_work_item_lumpers_info_message">No Lumpers are available. Go to Time-Clock section and clock them in.</string>

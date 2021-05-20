@@ -172,12 +172,21 @@ object CustomerDialog : AppConstant {
             PATTERN_NORMAL,
             leadWorkInfo?.date!!
         )
-        textViewScheduleType.text = leadWorkInfo.department?.let {
-            UIUtils.getSpannableText(
+        val dept = if (!leadWorkInfo.department.isNullOrEmpty()) {
+             when (leadWorkInfo.department) {
+                AppConstant.EMPLOYEE_DEPARTMENT_BOTH -> "Operations "
+                AppConstant.EMPLOYEE_DEPARTMENT_INBOUND -> "Receiving "
+                AppConstant.EMPLOYEE_DEPARTMENT_OUTBOUND -> "Shipping"
+                else -> leadWorkInfo.department!!
+            }
+        } else ""
+
+
+        textViewScheduleType.text= UIUtils.getSpannableText(
                 resources.getString(R.string.department_full),
-                it.toLowerCase().capitalize()
+                dept
             )
-        }
+
         textViewWorkItemsCount.text = String.format(
             resources.getString(R.string.total_containers_s),
             leadWorkInfo.totalContainers

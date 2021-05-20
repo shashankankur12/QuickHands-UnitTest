@@ -31,7 +31,7 @@ object CustomBottomSheetDialog {
         calendar.add(Calendar.DAY_OF_YEAR, 1)
         selectedDate=calendar.time
         shiftText?.text= leadProfile?.shift?.capitalize()
-        departmentText?.text =  UIUtils.getDisplayEmployeeDepartment(leadProfile)
+        departmentText?.text =  UIUtils.getDisplayEmployeeDepartmentHeader(leadProfile)
         dateForCompletionText?.text= DateUtils.getDateString(
             DateUtils.PATTERN_MONTH_DAY_DISPLAY,
             selectedDate

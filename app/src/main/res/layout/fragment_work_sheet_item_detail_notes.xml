@@ -76,12 +76,11 @@
 
     <ImageView
         android:id="@+id/addImageButton"
-        android:layout_width="@dimen/_40sdp"
-        android:layout_height="@dimen/_40sdp"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/ic_camera_button"
-        app:tint="@color/buildingTitle" />
+        android:src="@drawable/ic_camera_button" />
 
     <Button
         android:id="@+id/buttonSubmit"

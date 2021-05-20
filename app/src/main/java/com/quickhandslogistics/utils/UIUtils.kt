@@ -124,6 +124,21 @@ object UIUtils {
         return displayDepartment
     }
 
+    fun getDisplayEmployeeDepartmentHeader(employeeData: EmployeeData?): String {
+        var displayDepartment = ""
+        employeeData?.let {
+            if (!employeeData.department.isNullOrEmpty()) {
+                displayDepartment = when (employeeData.department) {
+                    AppConstant.EMPLOYEE_DEPARTMENT_BOTH -> "Operations "
+                    AppConstant.EMPLOYEE_DEPARTMENT_INBOUND -> "Receiving "
+                    AppConstant.EMPLOYEE_DEPARTMENT_OUTBOUND -> "Shipping"
+                    else -> employeeData.department!!
+                }
+            }
+        }
+        return displayDepartment
+    }
+
     fun getSpannedText(text: String): Spanned? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT)

@@ -26,7 +26,7 @@ class LumperSheetModel(private val sharedPref: SharedPref) : LumperSheetContract
 
         val date = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
         val shiftDetail = ScheduleUtils.getShiftDetailString(leadProfile)
-        val deptDetail = "${ ResourceManager.getInstance().getString(R.string.dept_bold)} ${ UIUtils.getDisplayEmployeeDepartment(leadProfile)}"
+        val deptDetail = "${ ResourceManager.getInstance().getString(R.string.dept_bold)} ${ UIUtils.getDisplayEmployeeDepartmentHeader(leadProfile)}"
         onFinishedListener.onSuccessGetHeaderInfo(date, shiftDetail, deptDetail)
     }
 
@@ -65,7 +65,7 @@ class LumperSheetModel(private val sharedPref: SharedPref) : LumperSheetContract
     }
 
     override fun fetchPastFutureDate(onFinishedListener: LumperSheetContract.Model.OnFinishedListener) {
-        DataManager.getService().getSchedulePastFutureDate(getAuthToken()).enqueue(object : Callback<GetPastFutureDateResponse> {
+        DataManager.getService().lumperSheetPastFutureDate(getAuthToken()).enqueue(object : Callback<GetPastFutureDateResponse> {
             override fun onResponse(call: Call<GetPastFutureDateResponse>, response: Response<GetPastFutureDateResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onSuccessPastFutureDate(response.body())

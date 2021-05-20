@@ -390,7 +390,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         )
         textViewDepartmentName.text = UIUtils.getSpannableText(
             getString(R.string.bar_header_dept),
-            UIUtils.getDisplayEmployeeDepartment(leadProfile)
+            UIUtils.getDisplayEmployeeDepartmentHeader(leadProfile)
         )
     }
 

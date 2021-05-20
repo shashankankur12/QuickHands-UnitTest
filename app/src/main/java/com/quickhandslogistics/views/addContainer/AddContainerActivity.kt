@@ -113,6 +113,8 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener,
         textViewAddOutBound.setOnClickListener(this)
         textViewAddLiveLode.setOnClickListener(this)
         textViewAddDrop.setOnClickListener(this)
+        mainConstraintLayout.setOnClickListener(this)
+        nestedScrollView.setOnClickListener(this)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -335,6 +337,11 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener,
                 headerBackImage.id -> {
                     super.onBackPressed()
                 }
+                mainConstraintLayout.id -> {
+                    AppUtils.hideSoftKeyboard(this)
+                }nestedScrollView.id -> {
+                    AppUtils.hideSoftKeyboard(this)
+                }
             }
         }
 
@@ -346,7 +353,7 @@ class AddContainerActivity : BaseActivity(), View.OnClickListener,
     }
 
     override fun addWorkScheduleFinished(message: String) {
-        CustomProgressBar.getInstance().showSuccessDialog(message, activity, object :
+        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.containers_added), activity, object :
             CustomDialogListener {
             override fun onConfirmClick() {
                 setResult(RESULT_OK)
