@@ -27,34 +27,45 @@ import com.quickhandslogistics.utils.DateUtils.Companion.convertDateStringToTime
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.DashBoardActivity
 import com.quickhandslogistics.views.LoginActivity
+import com.quickhandslogistics.views.lumperSheet.LumperSheetFragment
 import kotlinx.android.synthetic.main.bottom_sheet_add_attendance_time.*
-import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.content_time_clock_attendance.*
+import kotlinx.android.synthetic.main.content_time_clock_bottom_sheet.*
+import kotlinx.android.synthetic.main.content_time_clock_bottom_sheet_group.*
 import kotlinx.android.synthetic.main.fragment_time_clock_attendance.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWatcher,
     TimeClockAttendanceContract.View, TimeClockAttendanceContract.View.OnAdapterItemClickListener, TimeClockAttendanceContract.View.fragmentDataListener,
-    View.OnLongClickListener {
+    View.OnLongClickListener, CalendarUtils.CalendarSelectionListener {
 
     private lateinit var timeClockAttendancePresenter: TimeClockAttendancePresenter
     private lateinit var timeClockAttendanceAdapter: TimeClockAttendanceAdapter
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private  var lumperAttendanceList: ArrayList<LumperAttendanceData> =ArrayList()
-
+    private lateinit var availableDates: List<Date>
     private lateinit var date: String
     private var shift: String = ""
     private var dept: String = ""
+    private var selectedTime: Long = 0
+    private var datePosition: Int = 0
 
     companion object {
         const val LUMPER_ATTENDANCE_LIST = "LUMPER_ATTENDANCE_LIST"
         const val TIME_CLOCK_DATE_SELECTED_HEADER = "TIME_CLOCK_DATE_SELECTED_HEADER"
         const val TIME_CLOCK_DEPT_SELECTED_HEADER = "TIME_CLOCK_DEPT_SELECTED_HEADER"
         const val TIME_CLOCK_SHIFT_SELECTED_HEADER = "TIME_CLOCK_SHIFT_SELECTED_HEADER"
+        const val SELECTED_DATE_POSITION = "SELECTED_DATE_POSITION"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         timeClockAttendancePresenter = TimeClockAttendancePresenter(this, resources, sharedPref)
+
+        // Setup Calendar Dates
+        selectedTime = Date().time
+        availableDates = CalendarUtils.getPastCalendarDates()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -65,8 +76,13 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         super.onViewCreated(view, savedInstanceState)
 
         initializeUI()
+        CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarTimeClock, availableDates, this)
 
         savedInstanceState?.also {
+            if (savedInstanceState.containsKey(LumperSheetFragment.SELECTED_DATE_POSITION)) {
+                datePosition = savedInstanceState.getInt(LumperSheetFragment.SELECTED_DATE_POSITION)!!
+                singleRowCalendarTimeClock.select(datePosition)
+            }
             if (savedInstanceState.containsKey(TIME_CLOCK_DEPT_SELECTED_HEADER)) {
                 dept = savedInstanceState.getString(TIME_CLOCK_DEPT_SELECTED_HEADER)!!
             }
@@ -81,7 +97,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             if (savedInstanceState.containsKey(LUMPER_ATTENDANCE_LIST)) {
                 lumperAttendanceList =
                     savedInstanceState.getParcelableArrayList(LUMPER_ATTENDANCE_LIST)!!
-                showLumpersAttendance(lumperAttendanceList)
+                showLumpersAttendance(lumperAttendanceList, Date(selectedTime))
             }
         } ?: run {
             if (!ConnectionDetector.isNetworkConnected(activity)) {
@@ -89,7 +105,8 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
                 return
             }
 
-            timeClockAttendancePresenter.fetchAttendanceList()
+            singleRowCalendarTimeClock.select(availableDates.size - 1)
+
         }
     }
 
@@ -107,6 +124,8 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             outState.putString(TIME_CLOCK_DEPT_SELECTED_HEADER, dept)
         if (!shift.isNullOrEmpty())
             outState.putString(TIME_CLOCK_SHIFT_SELECTED_HEADER, shift)
+        if (datePosition != null)
+            outState.putInt(LumperSheetFragment.SELECTED_DATE_POSITION, datePosition)
         super.onSaveInstanceState(outState)
     }
 
@@ -140,9 +159,13 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         buttonAddTime.setOnClickListener(this)
 
         buttonClockIn.setOnClickListener(this)
+        buttonClockInGroup.setOnClickListener(this)
         buttonClockOut.setOnClickListener(this)
+        buttonClockOutGroup.setOnClickListener(this)
         buttonLunchIn.setOnClickListener(this)
+        buttonLunchInGroup.setOnClickListener(this)
         buttonLunchOut.setOnClickListener(this)
+        buttonLunchOutGroup.setOnClickListener(this)
         bottomSheetBackground.setOnClickListener(this)
         mainCoordinatorLayout.setOnClickListener(this)
 
@@ -176,6 +199,8 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     private fun showTimePickerLayoutForMultipleLumpers() {
         if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
             bottom_sheet.visibility=View.VISIBLE
+            constraintRootSingle.visibility=View.GONE
+            constraintRootGroup.visibility=View.VISIBLE
             var isClockInEditable = true
             var isClockOutEditable = true
             var isLunchInEditable = true
@@ -187,7 +212,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             var hasAllPreSavedLunchOutTime = true
 
             val list = timeClockAttendanceAdapter.getSelectedItems()
-            textViewLName.text=getString(R.string.bulk_action)
+            textViewLNameGroup.text=getString(R.string.bulk_action)
             for (lumperAttendanceData in list) {
                 // Check Clock-In Time
                 val clockInTime = convertDateStringToTime(PATTERN_API_RESPONSE, lumperAttendanceData.attendanceDetail?.morningPunchIn)
@@ -226,31 +251,31 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
                 }
             }
 
-            buttonClockIn.text = getString(R.string.clock_in)
-            buttonClockIn.isEnabled = isClockInEditable
+            buttonClockInGroup.text = getString(R.string.clock_in)
+            buttonClockInGroup.isEnabled = isClockInEditable
 
             /* ClockOut Button will only be enabled in these cases:
                 1. All the selected items ClockIn Time is Punched
                 2. All the selected items LunchIn Time is Not Punched
                 3. All the selected items LunchIn Time & LunchOut Time are both punched */
-            buttonClockOut.text = getString(R.string.clock_out)
+            buttonClockOutGroup.text = getString(R.string.clock_out)
             val isEnabledClockOut = isClockOutEditable && !isClockInEditable && (isLunchInEditable || !(!isLunchInEditable && isLunchOutEditable))
-            buttonClockOut.isEnabled = isEnabledClockOut && hasAllPreSavedClockInTime &&
+            buttonClockOutGroup.isEnabled = isEnabledClockOut && hasAllPreSavedClockInTime &&
                     ((hasAllPreSavedLunchInTime && hasAllPreSavedLunchOutTime) || (!hasAllPreSavedLunchInTime && !hasAllPreSavedLunchOutTime))
 
             /* LunchIn Button will only be enabled in these cases:
                 1. All the selected items ClockIn Time is Punched
                 2. All the selected items ClockOut Time is Not Punched */
-            buttonLunchIn.text = getString(R.string.out_to_lunch)
+            buttonLunchInGroup.text = getString(R.string.out_to_lunch)
             val isEnabledLunchIn = isLunchInEditable && !isClockInEditable && isClockOutEditable
-            buttonLunchIn.isEnabled = isEnabledLunchIn && hasAllPreSavedClockInTime
+            buttonLunchInGroup.isEnabled = isEnabledLunchIn && hasAllPreSavedClockInTime
 
             /* LunchOut Button will only be enabled in these cases:
                 1. All the selected items LunchIn Time is Punched
                 2. All the selected items ClockIn Time is Punched */
-            buttonLunchOut.text = getString(R.string.back_to_work)
+            buttonLunchOutGroup.text = getString(R.string.back_to_work)
             val isEnabledLunchOut = isLunchOutEditable && !isLunchInEditable && !isClockInEditable
-            buttonLunchOut.isEnabled = isEnabledLunchOut && hasAllPreSavedClockInTime && hasAllPreSavedLunchInTime
+            buttonLunchOutGroup.isEnabled = isEnabledLunchOut && hasAllPreSavedClockInTime && hasAllPreSavedLunchInTime
 
             sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             bottomSheetBackground.visibility = View.VISIBLE
@@ -368,9 +393,13 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
                 bottomSheetBackground.id -> closeBottomSheet()
                 mainCoordinatorLayout.id -> {AppUtils.hideSoftKeyboard(activity!!)}
                 buttonClockIn.id -> clockInButtonClicked()
+                buttonClockInGroup.id -> clockInButtonClicked()
                 buttonClockOut.id -> clockOutButtonClicked()
+                buttonClockOutGroup.id -> clockOutButtonClicked()
                 buttonLunchIn.id -> lunchInButtonClicked()
+                buttonLunchInGroup.id -> lunchInButtonClicked()
                 buttonLunchOut.id -> lunchOutButtonClicked()
+                buttonLunchOutGroup.id -> lunchOutButtonClicked()
                 buttonSave.id -> showConfirmationDialog()
                 buttonAddTime.id -> showTimePickerLayoutForMultipleLumpers()
                 imageViewCancel.id -> {
@@ -462,10 +491,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
-        if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
-            CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
-        } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainCoordinatorLayout, message)
-
+        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
         if (message.equals(getString(R.string.attendece_api_error_message))){
             recyclerViewLumpers.visibility = View.VISIBLE
             textViewEmptyData.visibility = View.GONE
@@ -475,9 +501,13 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         }
     }
 
-    override fun showLumpersAttendance(lumperAttendanceList: ArrayList<LumperAttendanceData>) {
+    override fun showLumpersAttendance(
+        lumperAttendanceList: ArrayList<LumperAttendanceData>,
+        selectedTime: Date
+    ) {
         this.lumperAttendanceList=lumperAttendanceList
-        timeClockAttendanceAdapter.updateList(lumperAttendanceList)
+        this.selectedTime=selectedTime.time
+        timeClockAttendanceAdapter.updateList(lumperAttendanceList,  this.selectedTime)
         if (lumperAttendanceList.size > 0) {
             textViewEmptyData.visibility = View.GONE
             recyclerViewLumpers.visibility = View.VISIBLE
@@ -494,7 +524,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             return
         }
 
-        timeClockAttendancePresenter.fetchAttendanceList()
+        timeClockAttendancePresenter.fetchAttendanceList(Date(selectedTime))
 //        CustomProgressBar.getInstance().showSuccessDialog(getString(R.string.attendance_saved_success_message),
 //            fragmentActivity!!, object : CustomDialogListener {
 //                override fun onConfirmClick() {
@@ -524,6 +554,8 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     override fun onAddTimeClick(lumperAttendanceData: LumperAttendanceData, itemPosition: Int) {
         if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
             bottom_sheet.visibility=View.VISIBLE
+            constraintRootSingle.visibility=View.VISIBLE
+            constraintRootGroup.visibility=View.GONE
             sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             bottomSheetBackground.visibility = View.VISIBLE
             bottomSheetBackground.setTag(R.id.attendancePosition, itemPosition)
@@ -590,9 +622,26 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         }
     }
 
+    override fun onSaveNote() {
+        imageViewCancel.performClick()
+        val updatedData = timeClockAttendanceAdapter.getUpdatedData()
+        timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct())
+    }
+
     override fun onDataChanges(): Boolean {
         val updatedData = timeClockAttendanceAdapter.getUpdatedData()
         return updatedData.size > 0
+    }
+
+    override fun onSelectCalendarDate(date: Date, selected: Boolean, position: Int) {
+        if (!ConnectionDetector.isNetworkConnected(activity)) {
+            ConnectionDetector.createSnackBar(activity)
+            return
+        }
+
+        timeClockAttendancePresenter.fetchAttendanceList(date)
+        datePosition = position
+
     }
 
 
