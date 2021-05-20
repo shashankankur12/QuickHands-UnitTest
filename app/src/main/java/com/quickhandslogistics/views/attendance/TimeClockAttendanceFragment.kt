@@ -16,6 +16,7 @@ import com.quickhandslogistics.adapters.attendance.TimeClockAttendanceAdapter
 import com.quickhandslogistics.contracts.attendance.TimeClockAttendanceContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
+import com.quickhandslogistics.data.schedule.PastFutureDates
 import com.quickhandslogistics.presenters.attendance.TimeClockAttendancePresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_EVENING_PUNCH_OUT
@@ -30,8 +31,13 @@ import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.lumperSheet.LumperSheetFragment
 import kotlinx.android.synthetic.main.bottom_sheet_add_attendance_time.*
 import kotlinx.android.synthetic.main.content_time_clock_attendance.*
+import kotlinx.android.synthetic.main.content_time_clock_attendance.editTextSearch
+import kotlinx.android.synthetic.main.content_time_clock_attendance.imageViewCancel
+import kotlinx.android.synthetic.main.content_time_clock_attendance.mainConstraintLayout
+import kotlinx.android.synthetic.main.content_time_clock_attendance.textViewEmptyData
 import kotlinx.android.synthetic.main.content_time_clock_bottom_sheet.*
 import kotlinx.android.synthetic.main.content_time_clock_bottom_sheet_group.*
+import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
 import kotlinx.android.synthetic.main.fragment_time_clock_attendance.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -50,6 +56,8 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     private var dept: String = ""
     private var selectedTime: Long = 0
     private var datePosition: Int = 0
+    private var isSavedState: Boolean = false
+    private var pastFutureDates: ArrayList<PastFutureDates> = ArrayList()
 
     companion object {
         const val LUMPER_ATTENDANCE_LIST = "LUMPER_ATTENDANCE_LIST"
@@ -79,6 +87,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarTimeClock, availableDates, this)
 
         savedInstanceState?.also {
+            isSavedState=true
             if (savedInstanceState.containsKey(LumperSheetFragment.SELECTED_DATE_POSITION)) {
                 datePosition = savedInstanceState.getInt(LumperSheetFragment.SELECTED_DATE_POSITION)!!
                 singleRowCalendarTimeClock.select(datePosition)
@@ -104,7 +113,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
                 ConnectionDetector.createSnackBar(activity)
                 return
             }
-
+            isSavedState=false
             singleRowCalendarTimeClock.select(availableDates.size - 1)
 
         }
@@ -310,7 +319,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
             imageViewCancel.performClick()
             val updatedData = timeClockAttendanceAdapter.getUpdatedData()
-            timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct())
+            timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct(), Date(selectedTime))
         }
     }
 
@@ -328,7 +337,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
             imageViewCancel.performClick()
             val updatedData = timeClockAttendanceAdapter.getUpdatedData()
-            timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct())
+            timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct(), Date(selectedTime))
         }
     }
 
@@ -346,7 +355,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
             imageViewCancel.performClick()
             val updatedData = timeClockAttendanceAdapter.getUpdatedData()
-            timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct())
+            timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct(), Date(selectedTime))
         }
     }
 
@@ -364,7 +373,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
             imageViewCancel.performClick()
             val updatedData = timeClockAttendanceAdapter.getUpdatedData()
-            timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct())
+            timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct(), Date(selectedTime))
         }
     }
 
@@ -373,7 +382,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             override fun onConfirmClick() {
                 imageViewCancel.performClick()
                 val updatedData = timeClockAttendanceAdapter.getUpdatedData()
-                timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct())
+                timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct(), Date(selectedTime))
             }
 
             override fun onCancelClick() {
@@ -501,6 +510,13 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         }
     }
 
+    override fun showPastFutureDate(pastFutureDate: ArrayList<PastFutureDates>) {
+        isSavedState = true
+        this.pastFutureDates= pastFutureDate
+        CalendarUtils.pastFutureDatesNew=pastFutureDates
+        singleRowCalendarTimeClock.adapter?.notifyDataSetChanged()
+    }
+
     override fun showLumpersAttendance(
         lumperAttendanceList: ArrayList<LumperAttendanceData>,
         selectedTime: Date
@@ -625,7 +641,7 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
     override fun onSaveNote() {
         imageViewCancel.performClick()
         val updatedData = timeClockAttendanceAdapter.getUpdatedData()
-        timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct())
+        timeClockAttendancePresenter.saveAttendanceDetails(updatedData.values.distinct(), Date(selectedTime))
     }
 
     override fun onDataChanges(): Boolean {
@@ -638,11 +654,11 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
             ConnectionDetector.createSnackBar(activity)
             return
         }
+        if (!isSavedState)
+            timeClockAttendancePresenter.fetchAttendanceList(date)
 
-        timeClockAttendancePresenter.fetchAttendanceList(date)
+        isSavedState = false
         datePosition = position
 
     }
-
-
 }

@@ -98,8 +98,6 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
         notesImageRecycler.apply {
             val linearLayoutManager = GridLayoutManager(fragmentActivity!!, 3)
             layoutManager = linearLayoutManager
-//            val dividerItemDecoration = DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
-//            addItemDecoration(dividerItemDecoration)
             workSheetItemDetailNotesImageAdapter = WorkSheetDetailsNoteImageAdapter(this@WorkSheetItemDetailNotesFragment)
             adapter = workSheetItemDetailNotesImageAdapter
         }
@@ -312,6 +310,14 @@ class WorkSheetItemDetailNotesFragment : BaseFragment(), View.OnClickListener, T
 
     override fun onImageClick(imageUrl: String) {
        CustomerDialog.openZoomImageDialog(imageUrl,activity!!)
+    }
+
+    override fun removeImage(adapterPosition: Int) {
+        if (imageStringArray.isNotEmpty()) {
+            imageStringArray.removeAt(adapterPosition)
+
+            workSheetItemDetailNotesImageAdapter.updateList(imageStringArray, isCompleteOrCancel)
+        }
     }
 
     fun updateImageList(imageUrl: String) {

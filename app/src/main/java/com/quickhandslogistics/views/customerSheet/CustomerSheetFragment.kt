@@ -23,8 +23,6 @@ import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.presenters.customerSheet.CustomerSheetPresenter
 import com.quickhandslogistics.utils.*
-import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_DATE_DISPLAY_CUSTOMER_SHEET
-import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.common.AddSignatureActivity
@@ -98,7 +96,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        textViewWorkItemsDate.text = DateUtils.getDateString(PATTERN_NORMAL, Date(selectedTime))
+        textViewWorkItemsDate.text = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, Date(selectedTime))
         initializeView()
         savedInstanceState?.also {
             isSavedState = true
@@ -130,7 +128,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
 
                 selectedTime = selectedDate.time
                 textViewWorkItemsDate.text =
-                    DateUtils.getDateString(PATTERN_NORMAL, Date(selectedTime))
+                    DateUtils.getDateString(DateUtils.PATTERN_NORMAL, Date(selectedTime))
                 showCustomerSheets(customerSheetScheduleDetails!!, customerSheetData, selectedDate)
 
             }
@@ -382,7 +380,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
             UIUtils.buildingFullAddress(leadProfile?.buildingDetailData?.get(0))
         textViewHeaderBar.text = UIUtils.getSpannableText(
             getString(R.string.date),
-            DateUtils.getDateString(PATTERN_DATE_DISPLAY_CUSTOMER_SHEET, selectedDate)
+            DateUtils.getDateString(DateUtils.PATTERN_DATE_DISPLAY_CUSTOMER_SHEET, selectedDate)
         )
         textViewShiftName.text = UIUtils.getSpannableText(
             getString(R.string.bar_header_shift),
@@ -498,7 +496,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
 
     private fun updateSelectedDateText(selectedTime: Long) {
         selectedTime.also { date ->
-            textViewWorkItemsDate.text = DateUtils.getDateString(PATTERN_NORMAL, Date(selectedTime))
+            textViewWorkItemsDate.text = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, Date(selectedTime))
             customerSheetPresenter.getCustomerSheetByDate(Date(selectedTime))
 
         }

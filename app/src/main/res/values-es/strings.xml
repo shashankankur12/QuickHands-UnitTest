@@ -216,6 +216,7 @@
     <string name="date_started">Date Started: %s</string>
     <string name="start_time_add_container">Schedule Time:</string>
     <string name="start_time_bold"><![CDATA[<b>Start Time: </b>]]> %s</string>
+    <string name="start_date_bold"><![CDATA[<b>Date Started: </b>]]> %s</string>
     <string name="submit">Submit</string>
     <string name="add">Add</string>
     <string name="success">Success</string>
@@ -337,7 +338,7 @@
     <string name="empty_containers_list_cancelled_info_message">There are no Cancelled containers.</string>
     <string name="empty_containers_list_completed_info_message">There are no Completed containers.</string>
     <string name="empty_containers_list_unfinished_info_message">There are no Unfinished containers.</string>
-    <string name="empty_containers_list_not_done_info_message">There are no Not-Done containers.</string>
+    <string name="empty_containers_list_not_done_info_message">There are no Not-Open containers.</string>
     <string name="empty_lumper_list_message">There are no lumpers assigned to this shift/department. Please contact your District Manager.</string>
     <string name="attendece_api_error_message">All morning punch in must be from today only</string>
     <string name="group_customer_note_error_message">Please enter customer note.  \n</string>

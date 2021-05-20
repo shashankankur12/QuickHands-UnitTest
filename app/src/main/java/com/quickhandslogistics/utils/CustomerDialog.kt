@@ -4,11 +4,8 @@ import LeadWorkInfo
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
-import android.content.Intent
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
-import android.provider.MediaStore
-import android.provider.MediaStore.ACTION_IMAGE_CAPTURE
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -26,10 +23,6 @@ import com.jsibbold.zoomage.ZoomageView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.addContainer.AddScheduleDialogAdapter
 import com.quickhandslogistics.data.addContainer.ContainerDetails
-import com.quickhandslogistics.utils.AppConstant.Companion.MY_PERMISSIONS_REQUEST_GALLERY
-import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
-import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
-import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_TIME
 import java.util.*
 
 @SuppressLint("StaticFieldLeak")
@@ -168,8 +161,7 @@ object CustomerDialog : AppConstant {
         val confirm = dialog.findViewById<Button>(R.id.confirm_button)
 
         titleTextView.text = DateUtils.changeDateString(
-            PATTERN_API_RESPONSE,
-            PATTERN_NORMAL,
+            DateUtils.PATTERN_API_RESPONSE, DateUtils.PATTERN_NORMAL,
             leadWorkInfo?.date!!
         )
         val dept = if (!leadWorkInfo.department.isNullOrEmpty()) {
@@ -210,17 +202,17 @@ object CustomerDialog : AppConstant {
             if (!leadWorkInfo.outbounds?.time.isNullOrEmpty())
                 outBoundTime = if (leadWorkInfo.live?.time!!.size>1)
                     "${DateUtils.changeUTCDateStringToLocalDateString(
-                        PATTERN_API_RESPONSE,
-                        PATTERN_TIME,
+                            DateUtils.PATTERN_API_RESPONSE,
+                            DateUtils.PATTERN_TIME,
                         leadWorkInfo.outbounds?.time!![0]
                     )}; ${DateUtils.changeUTCDateStringToLocalDateString(
-                        PATTERN_API_RESPONSE,
-                        PATTERN_TIME,
+                            DateUtils.PATTERN_API_RESPONSE,
+                            DateUtils.PATTERN_TIME,
                         leadWorkInfo.outbounds?.time!![1]
                     )} "
                 else DateUtils.changeUTCDateStringToLocalDateString(
-                    PATTERN_API_RESPONSE,
-                    PATTERN_TIME,
+                        DateUtils.PATTERN_API_RESPONSE,
+                        DateUtils.PATTERN_TIME,
                     leadWorkInfo.outbounds?.time!![0]
                 )
                 textViewScheduleOutBoundStartTime.text = outBoundTime
@@ -235,17 +227,17 @@ object CustomerDialog : AppConstant {
             if (!leadWorkInfo.live?.time.isNullOrEmpty()){
                 liveTime = if (leadWorkInfo.live?.time!!.size>1)
                     "${DateUtils.changeUTCDateStringToLocalDateString(
-                        PATTERN_API_RESPONSE,
-                        PATTERN_TIME,
+                            DateUtils.PATTERN_API_RESPONSE,
+                            DateUtils.PATTERN_TIME,
                         leadWorkInfo.live?.time!![0]
                     )}; ${DateUtils.changeUTCDateStringToLocalDateString(
-                        PATTERN_API_RESPONSE,
-                        PATTERN_TIME,
+                            DateUtils.PATTERN_API_RESPONSE,
+                            DateUtils.PATTERN_TIME,
                         leadWorkInfo.live?.time!![1]
                     )} "
                 else DateUtils.changeUTCDateStringToLocalDateString(
-                    PATTERN_API_RESPONSE,
-                    PATTERN_TIME,
+                        DateUtils.PATTERN_API_RESPONSE,
+                        DateUtils.PATTERN_TIME,
                     leadWorkInfo.live?.time!![0]
                 )
             }
@@ -257,8 +249,8 @@ object CustomerDialog : AppConstant {
                 String.format(resources.getString(R.string.drops_s), leadWorkInfo.drops?.count)
             if (!leadWorkInfo.drops?.time.isNullOrEmpty())
                 textViewScheduleDropsStartTime.text = DateUtils.changeUTCDateStringToLocalDateString(
-                    PATTERN_API_RESPONSE,
-                    PATTERN_TIME,
+                        DateUtils.PATTERN_API_RESPONSE,
+                        DateUtils.PATTERN_TIME,
                     leadWorkInfo.drops?.time!!
                 )
         }

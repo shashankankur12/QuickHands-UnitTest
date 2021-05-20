@@ -9,16 +9,16 @@ import java.util.*
 
 class DateUtils {
     companion object {
-        const val PATTERN_NORMAL = "EEEE, MMMM dd, yyyy"
-        const val PATTERN_NORMAL_Week = "EEEE, MMMM dd, yyyy: hh:mm a"
+        const val PATTERN_NORMAL = "EEEE, MMMM d, yyyy"
+        const val PATTERN_NORMAL_Week = "EEEE, MMMM d, yyyy: h:mm a"
         const val PATTERN_API_REQUEST_PARAMETER = "yyyy-MM-dd"
         const val PATTERN_API_RESPONSE = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-        const val PATTERN_DATE_DISPLAY = "dd MMM yyyy"
-        const val PATTERN_DATE_DISPLAY_SHEET= "dd/MM/yyyy"
-        const val PATTERN_DATE_DISPLAY_CUSTOMER_SHEET= "MM/dd/yyyy"
-        const val PATTERN_MONTH_DAY_DISPLAY = "MMMM dd, yyyy"
-        const val PATTERN_DATE_TIME_DISPLAY = "dd MMM yyyy, HH:mm a"
-        const val PATTERN_TIME = "hh:mm a"
+        const val PATTERN_DATE_DISPLAY = "d MMM yyyy"
+        const val PATTERN_DATE_DISPLAY_SHEET= "d/MM/yyyy"
+        const val PATTERN_DATE_DISPLAY_CUSTOMER_SHEET= "MM/d/yyyy"
+        const val PATTERN_MONTH_DAY_DISPLAY = "MMMM d, yyyy"
+        const val PATTERN_DATE_TIME_DISPLAY = "d MMM yyyy, H:mm a"
+        const val PATTERN_TIME = "h:mm a"
 
         var sharedPref: SharedPref = SharedPref.getInstance()
 

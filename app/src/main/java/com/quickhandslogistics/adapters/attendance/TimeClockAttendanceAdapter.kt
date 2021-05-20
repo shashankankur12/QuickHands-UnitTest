@@ -264,7 +264,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
                             return
                         }
 
-                        if (DateUtils.isFutureDate(selectedTime) || DateUtils.isCurrentDate(selectedTime))
+//                        if (DateUtils.isFutureDate(selectedTime) || DateUtils.isCurrentDate(selectedTime))
                             onAdapterClick.onAddTimeClick(getItem(adapterPosition), adapterPosition)
                     }
                     checkBoxAttendance.id -> {
@@ -279,7 +279,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
 //
 //                        //Update in Local List Object to show changes on UId
 //                        getItem(adapterPosition).attendanceDetail?.isPresent = isChecked
-                        if (DateUtils.isFutureDate(selectedTime) || DateUtils.isCurrentDate(selectedTime)) {
+//                        if (DateUtils.isFutureDate(selectedTime) || DateUtils.isCurrentDate(selectedTime)) {
                             if (getSelectedItemCount() > 0) {
                                 onAdapterClick.onRowClicked(adapterPosition)
                             } else {
@@ -287,7 +287,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
                             }
 
                             notifyDataSetChanged()
-                        }
+//                        }
                     }
                 }
             }

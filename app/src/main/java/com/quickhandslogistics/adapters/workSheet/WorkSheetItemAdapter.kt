@@ -76,9 +76,11 @@ class WorkSheetItemAdapter(private val resources: Resources, private val sharedP
             ScheduleUtils.setContainerTypeHeader(workItemDetail, resources,textViewNoOfDrops)
             if (workItemDetail.origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME){
                 containerUnfinishedDetails.visibility= View.VISIBLE
-                textViewUnfinishedDate.text= workItemDetail.createdAt?.let {
-                    DateUtils.changeDateString(PATTERN_API_RESPONSE, PATTERN_DATE_DISPLAY_CUSTOMER_SHEET,
-                        it
+                textViewUnfinishedDate.text = workItemDetail.createdAt?.let {
+                    UIUtils.getSpannableText(resources.getString(R.string.start_date_bold),
+                            DateUtils.changeDateString(PATTERN_API_RESPONSE, PATTERN_DATE_DISPLAY_CUSTOMER_SHEET,
+                                    it
+                            )
                     )
                 }
                 workItemDetail.oldWork?.assignedLumpersList?.let { imagesList ->

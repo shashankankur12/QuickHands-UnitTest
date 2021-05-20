@@ -271,5 +271,8 @@ interface IApiInterface {
     @GET("employees/lumpers-availability")
     fun scheduleTimePastFutureDate(@Header("Authorization") auth: String): Call<GetPastFutureDateResponse>
 
+    @GET("employees/lumpers-availability")
+    fun timeClockPastFutureDate(@Header("Authorization") auth: String): Call<GetPastFutureDateResponse>
+
 
 }

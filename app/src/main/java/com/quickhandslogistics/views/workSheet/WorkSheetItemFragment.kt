@@ -151,7 +151,7 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
             getString(R.string.unfinished) -> {
                 updateWorkItemsList(unfinishedWorkItems,groupNotes)
             }
-            else -> updateWorkItemsList(notDoneWorkItems)
+            else -> updateWorkItemsList(notDoneWorkItems,groupNotes)
         }
 
         textViewAddGroupNote.setOnClickListener(this)
@@ -265,13 +265,13 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
                 var containerType:String =""
                 when (workItemType) {
                     getString(R.string.cancel) -> {
-                        containerType="CANCELLED"
+                        containerType=AppConstant.WORK_ITEM_STATUS_CANCELLED
                     }
                     getString(R.string.unfinished) -> {
-                        containerType="UNFINISHED"
+                        containerType= AppConstant.WORK_ITEM_STATUS_UNFINISHED
                     }
                     getString(R.string.not_open) -> {
-                        containerType="NOTOPEN"
+                        containerType=AppConstant.WORK_ITEM_STATUS_NOT_OPEN
                     }
                 }
                 workSheetItemAdapter.getItemList().forEach {

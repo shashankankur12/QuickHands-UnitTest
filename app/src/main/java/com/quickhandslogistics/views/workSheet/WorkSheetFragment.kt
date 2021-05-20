@@ -390,19 +390,36 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
             bottomSheetBackground.id->{closeBottomSheet()}
             buttonCancelGroupNote.id->{closeBottomSheet()}
             buttonSaveGroupNote.id->{
-                val cancelId :ArrayList<String> = ArrayList()
-                data.cancelled?.forEach {
-                    it.id?.let { it1 -> cancelId.add(it1) }
-                }
-
-                if (!cancelId.isNullOrEmpty()) {
-                    saveGroupNote(cancelId)
-                }
+               getWorkContainerIds()
             }
         }
     }
 
-    private fun saveGroupNote(cancelled: ArrayList<String>) {
+    private fun getWorkContainerIds() {
+        val containerIds :ArrayList<String> = ArrayList()
+        when (containerType) {
+            AppConstant.WORK_ITEM_STATUS_CANCELLED -> {
+                data.cancelled?.forEach {
+                    it.id?.let { it1 -> containerIds.add(it1) }
+                }
+            }
+            AppConstant.WORK_ITEM_STATUS_UNFINISHED -> {
+                data.unfinished?.forEach {
+                    it.id?.let { it1 -> containerIds.add(it1) }
+                }
+            }
+            AppConstant.WORK_ITEM_STATUS_NOT_OPEN -> {
+                data.notOpen?.forEach {
+                    it.id?.let { it1 -> containerIds.add(it1) }
+                }
+            }
+        }
+        if (!containerIds.isNullOrEmpty()) {
+            saveGroupNote(containerIds)
+        }
+    }
+
+    private fun saveGroupNote(containerIds: ArrayList<String>) {
         val customerNote= editTextQHLCustomerNotes.text.toString()
         val qhlNote= editTextQHLNotes.text.toString()
         val groupNoteId = textViewTitle.getTag(R.id.note) as String?
@@ -424,7 +441,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
                         qhlNote
                     )
                 else workSheetPresenter.updateGroupNoteData(
-                    groupNoteId!!,
+                    groupNoteId,
                     containerIds,
                     containerType,
                     customerNote,

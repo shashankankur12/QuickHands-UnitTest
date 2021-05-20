@@ -17,6 +17,7 @@ import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.utils.ScheduleUtils.calculatePercent
 import com.quickhandslogistics.utils.ValueUtils.isNumeric
+import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
 import kotlinx.android.synthetic.main.item_lumper_work_detail.view.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -167,12 +168,16 @@ class LumperWorkDetailAdapter(
                     textViewWaitingTime.text = "NA"
                 }
 
-                val breakTimeStart = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeStart)
-                val breakTimeEnd = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.breakTimeEnd)
+                var dateTime: Long = 0
+                timingDetail.breakTimes?.let {
+                    for (pauseTime in it) {
+                        dateTime += ( DateUtils.getMillisecondsFromDateString(DateUtils.PATTERN_API_RESPONSE, pauseTime.endTime)-DateUtils.getMillisecondsFromDateString(DateUtils.PATTERN_API_RESPONSE, pauseTime.startTime))
+                    }
+                }
+                if (dateTime>0)
+                    textViewBreakTime.text =DateUtils.getDateTimeCalculatedLong(dateTime)
 
-                if (breakTimeStart.isNotEmpty() && breakTimeEnd.isNotEmpty())
-                    textViewBreakTime.text = String.format("%s - %s :%s", breakTimeStart, breakTimeEnd, DateUtils.getDateTimeCalculeted(timingDetail.breakTimeStart!!, timingDetail.breakTimeEnd!!))
-                else textViewBreakTime.text = String.format("%s - %s", if (breakTimeStart.isNotEmpty()) breakTimeStart else "NA", if (breakTimeEnd.isNotEmpty()) breakTimeEnd else "NA")
+                else textViewBreakTime.visibility=View.GONE
 
                 if (!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt()!=0) {
                     if (!totalcase.isNullOrEmpty()) {
@@ -185,6 +190,7 @@ class LumperWorkDetailAdapter(
 
             }
         }
+
 
         override fun onClick(view: View?) {
             view?.let {

@@ -14,8 +14,10 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
 import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.schedule.PastFutureDates
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import de.hdodenhof.circleimageview.CircleImageView
+import java.util.*
 
 object UIUtils {
 
@@ -182,6 +184,26 @@ object UIUtils {
                 "${capitalizeString(it.buildingName)} \n${capitalizeString(it.buildingAddress)} \n ${capitalizeString(it.buildingCity)}, ${it.buildingState}  ${it.buildingZipcode}"
         }
         return fullAddress
+    }
+
+    fun getColorCodeForCalender(pastFutureDates: ArrayList<PastFutureDates>, date: Date, context: Context): Int {
+        return when (CalendarUtils.getPastFutureCode(pastFutureDates, date)) {
+            1 -> {
+                ContextCompat.getColor(context, R.color.temp_lumper_background)
+            }
+            2 -> {
+                ContextCompat.getColor(context, R.color.dark_grey)
+            }
+            4 -> {
+                ContextCompat.getColor(context, R.color.color_yellow)
+            }
+            5 -> {
+                ContextCompat.getColor(context, R.color.sky_blue)
+            }
+            else -> {
+                ContextCompat.getColor(context, R.color.colorLightGrey)
+            }
+        }
     }
 }
 

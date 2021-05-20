@@ -8,6 +8,7 @@ import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.attendance.AttendanceDetail
 import com.quickhandslogistics.data.attendance.GetAttendanceAPIResponse
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
+import com.quickhandslogistics.data.schedule.GetPastFutureDateResponse
 import com.quickhandslogistics.models.attendance.TimeClockAttendanceModel
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.ScheduleUtils
@@ -27,13 +28,14 @@ class TimeClockAttendancePresenter(private var timeClockAttendanceView: TimeCloc
 
     override fun fetchAttendanceList(selectedTime: Date) {
         timeClockAttendanceView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        timeClockAttendanceModel.fetchPastFutureDate(this)
         timeClockAttendanceModel.fetchHeaderInfo(this)
         timeClockAttendanceModel.fetchLumpersAttendanceList(selectedTime, this)
     }
 
-    override fun saveAttendanceDetails(attendanceDetailList: List<AttendanceDetail>) {
+    override fun saveAttendanceDetails(attendanceDetailList: List<AttendanceDetail>, date: Date) {
         timeClockAttendanceView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        timeClockAttendanceModel.saveLumpersAttendanceList(attendanceDetailList, this)
+        timeClockAttendanceModel.saveLumpersAttendanceList(attendanceDetailList, date, this)
     }
 
     /** Model Result Listeners */
@@ -72,5 +74,11 @@ class TimeClockAttendancePresenter(private var timeClockAttendanceView: TimeCloc
     override fun onSuccessSaveDate() {
         timeClockAttendanceView?.hideProgressDialog()
         timeClockAttendanceView?.showDataSavedMessage()
+    }
+
+    override fun onSuccessPastFutureDate(response: GetPastFutureDateResponse?) {
+        response?.data?.let {
+            timeClockAttendanceView?.showPastFutureDate(it)
+        }
     }
 }

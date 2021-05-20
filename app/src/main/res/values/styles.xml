@@ -160,7 +160,7 @@
         <item name="android:fontFamily">sans-serif</item>
     </style>
 
-    <style name="xnotesEditTextTheme" parent="valueEditTextTheme">
+    <style name="notesEditTextTheme" parent="valueEditTextTheme">
         <item name="android:overScrollMode">always</item>
         <item name="android:scrollbarStyle">insideInset</item>
         <item name="android:scrollbars">vertical</item>

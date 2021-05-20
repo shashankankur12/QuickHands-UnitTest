@@ -27,20 +27,9 @@ object CalendarUtils {
                     holder.itemView.tv_date_calendar_item.setTextColor(Color.WHITE)
                     holder.itemView.tv_date_calendar_item.setBackgroundResource(R.drawable.selected_calendar_item_background)
                 } else {
-                    when (getPastFutureCode(pastFutureDatesNew, date)) {
-                        1 -> {
-                            holder.itemView.tv_date_calendar_item.setTextColor(ContextCompat.getColor(context, R.color.temp_lumper_background))
-                            holder.itemView.tv_date_calendar_item.setBackgroundColor(Color.TRANSPARENT)
-                        }
-                        2 -> {
-                            holder.itemView.tv_date_calendar_item.setTextColor(ContextCompat.getColor(context, R.color.dark_grey))
-                            holder.itemView.tv_date_calendar_item.setBackgroundColor(Color.TRANSPARENT)
-                        }
-                        else -> {
-                            holder.itemView.tv_date_calendar_item.setTextColor(ContextCompat.getColor(context, R.color.colorLightGrey))
-                            holder.itemView.tv_date_calendar_item.setBackgroundColor(Color.TRANSPARENT)
-                        }
-                    }
+                    val dateColor= UIUtils.getColorCodeForCalender(pastFutureDatesNew, date,context)
+                    holder.itemView.tv_date_calendar_item.setTextColor(dateColor)
+                    holder.itemView.tv_date_calendar_item.setBackgroundColor(Color.TRANSPARENT)
                 }
             }
 
@@ -75,7 +64,7 @@ object CalendarUtils {
         }
     }
 
-    private fun getPastFutureCode(pastFutureDates: ArrayList<PastFutureDates>, date: Date): Int {
+    fun getPastFutureCode(pastFutureDates: ArrayList<PastFutureDates>, date: Date): Int {
         var code=0
 
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER,date)
