@@ -8,5 +8,5 @@ import com.quickhandslogistics.data.lumperSheet.LumperWorkDetailAPIResponse
 class QhlOfficeInfoResponse : BaseResponse(){
     @SerializedName("data")
     @Expose
-    var data: QhlOfficeInfo? = null
+    var data: ArrayList<QhlOfficeInfo>? = null
 }

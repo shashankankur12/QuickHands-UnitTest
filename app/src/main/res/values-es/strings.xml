@@ -316,6 +316,7 @@
     <string name="request_correction_title">What are the corrections?</string>
     <string name="container_parameter">Container Parameter</string>
     <string name="containers_added">Containers added.</string>
+    <string name="resume_header">Resume: %s</string>
 
     <!--No Record Messages-->
     <string name="empty_add_work_item_lumpers_info_message">This building doesn\'t have any lumpers present for the selected date. Please mark lumpers attendance in \'Time-Clock Attendance\' section for selecting them. \n</string>
@@ -421,7 +422,7 @@
     <string name="forgot_password_info_message">Enter the following information to receive an email with a  link to reset your password.</string>
     <string name="no_of_lumpers_needed">No. of Additional Lumpers Needed</string>
     <string name="additional_lumpers_needed">Additional Lumpers Needed</string>
-    <string name="no_record_found_info_message">No Record Found</string>
+    <string name="no_record_found_info_message">No Result Found</string>
     <string name="custome_report_message">Enter a Date Range first. Then available workers will appear for selection.</string>
     <string name="notes_by_customer">Notes by Customer</string>
     <string name="notes_for_customer">Notes for Customer</string>
@@ -458,7 +459,7 @@
     <string name="hours_h">Hours (H)</string>
     <string name="invalid_hour_message">Hour(s) can\'t be greater than 23</string>
     <string name="invalid_hour_minutes">Minutes(s) can\'t be greater than 59</string>
-    <string name="total_pause_colon">Total Pause : </string>
+    <string name="total_pause_colon">Total Pause: %s</string>
     <string name="content_description">imageView</string>
     <string name="remove_lumper_warning">You want to remove this lumper.</string>
 </resources>

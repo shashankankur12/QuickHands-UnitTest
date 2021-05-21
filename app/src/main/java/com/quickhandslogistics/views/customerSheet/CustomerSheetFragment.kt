@@ -267,7 +267,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
                 ParameterAdapter(ScheduleUtils.getSheetItemCountArray(scheduleDetails.cancelled))
         }
 
-        if (scheduleDetails.containerGroupNote?.noteForCustomer != null) {
+        if (scheduleDetails.containerGroupNote?.noteForCustomer != null && !scheduleDetails.cancelled?.isNullOrEmpty()!!) {
             layoutCancelNote.visibility = View.VISIBLE
             textViewCancelNote.text =
                 scheduleDetails.containerGroupNote?.noteForCustomer?.capitalize()
@@ -287,7 +287,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
             adapter = workItemAdapter
         }
 
-        if (scheduleDetails.unfinishedNotes?.noteForCustomer != null) {
+        if (scheduleDetails.unfinishedNotes?.noteForCustomer != null && !scheduleDetails.unfinished?.isNullOrEmpty()!!) {
             layoutUnfinishedNote.visibility = View.VISIBLE
             textViewUnfinishedNote.text =
                 scheduleDetails.unfinishedNotes?.noteForCustomer?.capitalize()
@@ -308,7 +308,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
                 ParameterAdapter(ScheduleUtils.getSheetItemCountArray(scheduleDetails.notOpen))
         }
 
-        if (scheduleDetails.notOpenNotes?.noteForCustomer != null) {
+        if (scheduleDetails.notOpenNotes?.noteForCustomer != null && !scheduleDetails.notOpen?.isNullOrEmpty()!!) {
             layoutNotOpenNote.visibility = View.VISIBLE
             textViewNotOpenNote.text = scheduleDetails.notOpenNotes?.noteForCustomer?.capitalize()
         } else layoutNotOpenNote.visibility = View.GONE

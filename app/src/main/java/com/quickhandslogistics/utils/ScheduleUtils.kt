@@ -89,6 +89,21 @@ object ScheduleUtils {
         return Triple(liveLoadsCount, dropsCount, outBoundsCount)
     }
 
+    fun getAllWorkItemTypeCounts(allWorkItem: ArrayList<WorkItemDetail>): Quintuple<Int, Int, Int, Int, Int> {
+        val resumedItem = ArrayList<WorkItemDetail>()
+        val workItem = ArrayList<WorkItemDetail>()
+
+        for (workItemDetails in allWorkItem){
+            when(workItemDetails.origin){
+                AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME -> resumedItem.add(workItemDetails)
+                else ->{workItem.add(workItemDetails)}
+            }
+        }
+        val usualItemsCount = getWorkItemTypeCounts(workItem)
+
+        return Quintuple(usualItemsCount.first, usualItemsCount.second, usualItemsCount.third,resumedItem.size, allWorkItem.size)
+    }
+
     fun changeStatusUIByValue(
         resources: Resources, status: String?, textViewStatus: TextView,
         relativeLayoutSide: RelativeLayout? = null, isEditable: Boolean = false
@@ -426,6 +441,8 @@ object ScheduleUtils {
             workItemDetail.addAll(it.inProgress!!)
             workItemDetail.addAll(it.scheduled!!)
             workItemDetail.addAll(it.completed!!)
+            workItemDetail.addAll(it.unfinished!!)
+            workItemDetail.addAll(it.notOpen!!)
         }
 
         workItemDetail.forEach { workItemData ->
@@ -768,6 +785,27 @@ object ScheduleUtils {
             }
         }
         return Triple(outbounds,liveLoad ,drop)
+    }
+
+    fun getAllScheduleFilterList(workItemData: ArrayList<WorkItemDetail>): Quintuple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, Int> {
+        val resumeWorkItem: ArrayList<WorkItemDetail> = ArrayList()
+        val workItem: ArrayList<WorkItemDetail> = ArrayList()
+
+        workItemData.forEach { workItemData ->
+            workItemData.origin?.let {
+                when (it) {
+                    AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME -> {
+                        resumeWorkItem.add(workItemData)
+                    }
+                    else -> {
+                        workItem.add(workItemData)
+                    }
+                }
+            }
+        }
+
+        val usualItemList = getScheduleFilterList(workItem)
+        return Quintuple(usualItemList.first, usualItemList.second, usualItemList.third, resumeWorkItem, workItemData.size)
     }
 
     fun setContainerTypeHeader(workItemDetail: WorkItemDetail, resources: Resources, textViewNoOfDrops: TextView) {

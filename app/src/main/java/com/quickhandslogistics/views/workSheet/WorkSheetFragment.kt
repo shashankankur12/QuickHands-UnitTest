@@ -227,16 +227,18 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         }
 
         val onGoingWorkItems = ArrayList<WorkItemDetail>()
-        onGoingWorkItems.addAll(data.inProgress!!)
-        onGoingWorkItems.addAll(data.onHold!!)
-        onGoingWorkItems.addAll(data.scheduled!!)
+        data.inProgress?.let { onGoingWorkItems.addAll(it) }
+        data.onHold?.let { onGoingWorkItems.addAll(it) }
+        data.scheduled?.let { onGoingWorkItems.addAll(it) }
 
-        val allWorkItems = ArrayList<WorkItemDetail>()
-        allWorkItems.addAll(onGoingWorkItems)
-        allWorkItems.addAll(data.cancelled!!)
-        allWorkItems.addAll(data.completed!!)
-        allWorkItems.addAll(data.notOpen!!)
-        val workItemTypeCounts = ScheduleUtils.getWorkItemTypeCounts(allWorkItems)
+        val allWorkItem = ArrayList<WorkItemDetail>()
+        allWorkItem.addAll(onGoingWorkItems)
+        data.completed?.let { allWorkItem.addAll(it) }
+        data.cancelled?.let { allWorkItem.addAll(it) }
+        data.unfinished?.let { allWorkItem.addAll(it) }
+        data.notOpen?.let { allWorkItem.addAll(it) }
+
+        val workItemTypeCounts = ScheduleUtils.getAllWorkItemTypeCounts(allWorkItem)
 
         if (workItemTypeCounts.first > 0) {
             textViewLiveLoadsCount.visibility = View.VISIBLE
@@ -256,25 +258,24 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
                 String.format(getString(R.string.out_bound_s), workItemTypeCounts.third)
         } else textViewOutBoundsCount.visibility = View.GONE
 
-        if (data.unfinished?.size!! > 0) {
+        if (workItemTypeCounts.fourth > 0) {
             textViewUnfinishedCount.visibility = View.VISIBLE
             textViewUnfinishedCount.text =
-                String.format(getString(R.string.unfinished_s), data.unfinished?.size)
+                String.format(getString(R.string.resume_header), workItemTypeCounts.fourth)
         } else textViewUnfinishedCount.visibility = View.GONE
 
-        allWorkItems.addAll(data.unfinished!!)
-        textViewTotalCount.text = UIUtils.getSpannableText(getString(R.string.total_container_bold), allWorkItems.size.toString())
+        textViewTotalCount.text = UIUtils.getSpannableText(getString(R.string.total_container_bold), workItemTypeCounts.fifth.toString())
 
-        adapter?.updateWorkItemsList(getSortList(onGoingWorkItems), getSortList(data.cancelled!!), getSortList(data.completed!!), getSortList(data.unfinished!!),getSortList(data.notOpen!!), data.containerGroupNote, data.unfinishedNotes, data.notOpenNotes)
+        adapter?.updateWorkItemsList(getSortList(onGoingWorkItems), getSortList(data.cancelled), getSortList(data.completed), getSortList(data.unfinished),getSortList(data.notOpen), data.containerGroupNote, data.unfinishedNotes, data.notOpenNotes)
     }
 
-    private fun getSortList(workItemsList: ArrayList<WorkItemDetail>): ArrayList<WorkItemDetail> {
+    private fun getSortList(workItemsList: ArrayList<WorkItemDetail>?): ArrayList<WorkItemDetail> {
         val inboundList: ArrayList<WorkItemDetail> = ArrayList()
         val outBoundList: ArrayList<WorkItemDetail> = ArrayList()
         val liveList: ArrayList<WorkItemDetail> = ArrayList()
         var sortedList: ArrayList<WorkItemDetail> = ArrayList()
 
-        workItemsList.forEach {
+        workItemsList?.forEach {
             when {
                 it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> {
                     liveList.add(it)

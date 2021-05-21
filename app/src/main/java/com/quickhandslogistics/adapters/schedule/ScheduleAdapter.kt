@@ -114,15 +114,16 @@ class ScheduleAdapter(private val resources: Resources, private val context: Con
             allWorkItem.addAll(allScheduleItem.first)
             allWorkItem.addAll(allScheduleItem.second)
             allWorkItem.addAll(allScheduleItem.third)
+            allWorkItem.addAll(allScheduleItem.fourth)
             allWorkItem.addAll(allScheduleItem.fifth)
 
-            val scheduleWorkItem=ScheduleUtils.getScheduleFilterList(allWorkItem)
-            allWorkItem.addAll(allScheduleItem.fourth)
+            val scheduleWorkItem=ScheduleUtils.getAllScheduleFilterList(allWorkItem)
+
             textViewScheduleType.text = String.format(resources.getString(R.string.out_bound_s),scheduleWorkItem.first.size)
             textViewScheduleTypeLiveLoad.text = String.format(resources.getString(R.string.live_load_s),scheduleWorkItem.second.size)
             textViewScheduleTypeDrops.text = String.format(resources.getString(R.string.drops_s),scheduleWorkItem.third.size)
-            textViewScheduleTypeUnfinished.text = String.format(resources.getString(R.string.unfinished_drop),allScheduleItem.fourth.size)
-            textViewWorkItemsCount.text = String.format(resources.getString(R.string.total_containers_s),allWorkItem.size)
+            textViewScheduleTypeUnfinished.text = String.format(resources.getString(R.string.resume_header),scheduleWorkItem.fourth.size)
+            textViewWorkItemsCount.text = String.format(resources.getString(R.string.total_containers_s),scheduleWorkItem.fifth)
 
             leadProfile?.buildingDetailData?.get(0)?.leads?.let {
                 val leadName= getDepartmentLead(it, scheduleDetail.scheduleDepartment)
@@ -138,8 +139,8 @@ class ScheduleAdapter(private val resources: Resources, private val context: Con
             if (scheduleWorkItem.third.size>0 && !scheduleWorkItem.third[0].startTime.isNullOrEmpty())
                 textViewScheduleTypeDropsStartTime.text=DateUtils.convertMillisecondsToTimeString((scheduleWorkItem.third[0].startTime)!!.toLong())
             else textViewScheduleTypeDropsStartTime.visibility=View.GONE
-            if (allScheduleItem.fourth.size>0 && !allScheduleItem.fourth[0].startTime.isNullOrEmpty())
-            textViewScheduleTypeUnfinishedStartTime.text=DateUtils.convertMillisecondsToTimeString((allScheduleItem.fourth[0].startTime)!!.toLong())
+            if (scheduleWorkItem.fourth.size>0 && !scheduleWorkItem.fourth[0].startTime.isNullOrEmpty())
+            textViewScheduleTypeUnfinishedStartTime.text=DateUtils.convertMillisecondsToTimeString((scheduleWorkItem.fourth[0].startTime)!!.toLong())
             else textViewScheduleTypeUnfinishedStartTime.visibility=View.GONE
 
             val assignedLumperList = ScheduleUtils.getAssignedLumperList(scheduleDetail) as ArrayList<EmployeeData>

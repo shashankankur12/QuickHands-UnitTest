@@ -309,8 +309,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             for (pauseTime in mPauseTimeRequestList) {
                 dateTime += (pauseTime.endTime!! - pauseTime.startTime!!)
             }
-            totalPauseTime.text =
-                getString(R.string.total_pause_colon) + DateUtils.getDateTimeCalculatedLong(dateTime)
+            totalPauseTime.text = String.format( getString(R.string.total_pause_colon) , DateUtils.getDateTimeCalculatedLong(dateTime))
         } else totalPauseTime.visibility = View.GONE
     }
 
@@ -459,8 +458,14 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         }
     }
 
-    private fun chooseTime(listener: OnTimeSetListener) {
+    private fun chooseTime(listener: OnTimeSetListener, selectedTime: Long) {
         val calendar = Calendar.getInstance()
+        if (selectedTime > 0) {
+            calendar.timeInMillis = selectedTime
+        } else {
+            calendar.timeInMillis = Date().time
+        }
+
         val mHour = calendar.get(Calendar.HOUR_OF_DAY)
         val mMinute = calendar.get(Calendar.MINUTE)
         val timePickerDialog = TimePickerDialog(
@@ -510,28 +515,28 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
                         override fun onSelectTime(calendar: Calendar) {
                             onSelectStartTime(calendar)
                         }
-                    })
+                    }, selectedStartTime)
                 }
                 buttonEndTime.id -> {
                     chooseTime(object : OnTimeSetListener {
                         override fun onSelectTime(calendar: Calendar) {
                             onSelectEndTime(calendar)
                         }
-                    })
+                    }, selectedEndTime)
                 }
                 buttonBreakInTime.id -> {
                     chooseTime(object : OnTimeSetListener {
                         override fun onSelectTime(calendar: Calendar) {
                             onSelectBreakInTime(calendar)
                         }
-                    })
+                    }, selectedBreakInTime)
                 }
                 buttonBreakOutTime.id -> {
                     chooseTime(object : OnTimeSetListener {
                         override fun onSelectTime(calendar: Calendar) {
                             onSelectBreakOutTime(calendar)
                         }
-                    })
+                    }, selectedBreakOutTime)
                 }
                 buttonSave.id -> {
                     if (!isPartWorkDoneValid) {

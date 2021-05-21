@@ -246,9 +246,10 @@ View.OnClickListener   {
         allWorkItem.addAll(allScheduleItem.first)
         allWorkItem.addAll(allScheduleItem.second)
         allWorkItem.addAll(allScheduleItem.third)
+        allWorkItem.addAll(allScheduleItem.fourth)
         allWorkItem.addAll(allScheduleItem.fifth)
 
-        val workItemTypeCounts = ScheduleUtils.getWorkItemTypeCounts(allWorkItem)
+        val workItemTypeCounts = ScheduleUtils.getAllWorkItemTypeCounts(allWorkItem)
         if (workItemTypeCounts.first > 0) {
             textViewLiveLoadsCount.visibility = View.VISIBLE
             textViewLiveLoadsCount.text =
@@ -267,16 +268,16 @@ View.OnClickListener   {
                 String.format(getString(R.string.out_bound_s), workItemTypeCounts.third)
         } else textViewOutBoundsCount.visibility = View.GONE
 
-        if (allScheduleItem.fourth.size > 0) {
+        if (workItemTypeCounts.fourth > 0) {
             textViewUnfinishedCount.visibility = View.VISIBLE
             textViewUnfinishedCount.text =
-                String.format(getString(R.string.unfinished_s), allScheduleItem.fourth.size)
+                String.format(getString(R.string.resume_header), workItemTypeCounts.fourth)
         } else textViewUnfinishedCount.visibility = View.GONE
 
-        allWorkItem.addAll(allScheduleItem.fourth)
+
         textViewTotalCount.text = UIUtils.getSpannableText(
             getString(R.string.total_container_bold),
-            (allWorkItem.size).toString()
+            (workItemTypeCounts.fifth).toString()
         )
 
 

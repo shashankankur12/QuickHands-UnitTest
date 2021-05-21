@@ -33,8 +33,9 @@ class QhlContactPresenter(private var qhlContactContractView: QhlContactContract
     }
 
     override fun onSuccessGetHeaderInfo(qhlOfficeInfoResponse: QhlOfficeInfoResponse?) {
-        val qhlOfficeInfo= qhlOfficeInfoResponse?.data
-        qhlContactContractView?.showQhlHeaderInfo(qhlOfficeInfo)
+        val qhlOfficeInfo = qhlOfficeInfoResponse?.data
+        if (!qhlOfficeInfo.isNullOrEmpty())
+            qhlContactContractView?.showQhlHeaderInfo(qhlOfficeInfo[0])
     }
 
     override fun onFailure(message: String) {
