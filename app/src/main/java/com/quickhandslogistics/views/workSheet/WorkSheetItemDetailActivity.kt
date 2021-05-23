@@ -356,6 +356,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         val filledParameterCount = ScheduleUtils.getFilledBuildingParametersCounts(workItemDetail, workItemDetail.buildingParams)
         val parameters = ScheduleUtils.getBuildingParametersList(workItemDetail.buildingParams)
 
+
         if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
             if (workItemDetail.buildingOps.isNullOrEmpty() || filledParameterCount != parameters.size) {
                 CustomProgressBar.getInstance().showErrorDialog(getString(R.string.fill_building_parameters_message), activity)

@@ -313,6 +313,10 @@
         <item>Cancel</item>
     </string-array>
     <string name="request_correction">Request Corrections</string>
+    <string name="pending_correction">Pending Corrections</string>
+    <string name="approved_correction">Approved Corrections</string>
+    <string name="cancel_correction">Cancelled Corrections</string>
+    <string name="rejected_correction">Rejected Corrections</string>
     <string name="request_correction_title">What are the corrections?</string>
     <string name="container_parameter">Container Parameter</string>
     <string name="containers_added">Containers added.</string>

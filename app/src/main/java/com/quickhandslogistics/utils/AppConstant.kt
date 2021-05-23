@@ -79,15 +79,10 @@ interface AppConstant {
         const val ATTENDANCE_LUNCH_PUNCH_OUT = "ATTENDANCE_LUNCH_PUNCH_OUT"
 
         const val NOTES_NOT_AVAILABLE = "N/A"
-
         const val REQUEST_CODE_CHANGED = 101
-
         const val API_PAGE_SIZE = 20
-
         const val LANGUAGE_ENGLISH_CODE = "en-US"
         const val LANGUAGE_SPANISH_CODE = "es"
-
-
         const val VIEW_DETAILS = "VIEW_DETAILS"
 
         //roles
@@ -108,6 +103,12 @@ interface AppConstant {
         //container origin
         const val SCHEDULE_CONTAINER_ORIGIN_USUAL = "USUAL"
         const val SCHEDULE_CONTAINER_ORIGIN_RESUME = "RESUMED"
+
+        //Correction status
+        const val CORRECTION_PENDING = "PENDING"
+        const val CORRECTION_CANCELLED = "CANCELLED"
+        const val CORRECTION_REJECTED = "REJECTED"
+        const val CORRECTION_APPROVED = "APPROVED"
 
 
     }

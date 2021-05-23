@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName
 import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.data.attendance.AttendanceDetail
 import com.quickhandslogistics.data.dashboard.BuildingDetailData
+import com.quickhandslogistics.data.lumperSheet.CorrectionRequest
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.workSheet.WorkItemScheduleDetails
 
@@ -127,6 +128,10 @@ class WorkItemDetail() : Parcelable {
     @Expose
     var attendanceDetail: AttendanceDetail? = null
 
+    @SerializedName("corrections")
+    @Expose
+    var corrections: CorrectionRequest? = null
+
     @SerializedName("buildingOps")
     @Expose
     var buildingOps: HashMap<String, String>? = null
@@ -163,6 +168,7 @@ class WorkItemDetail() : Parcelable {
         schedule = parcel.readParcelable(BuildingDetailData::class.java.classLoader)
         assignedLumpersList = parcel.createTypedArrayList(EmployeeData)
         attendanceDetail = parcel.readParcelable(AttendanceDetail::class.java.classLoader)
+        corrections = parcel.readParcelable(CorrectionRequest::class.java.classLoader)
         oldWork = parcel.readParcelable(WorkItemDetail::class.java.classLoader)
         buildingParams = parcel.createStringArrayList()
 //        buildingOps = HashMap()
@@ -210,6 +216,7 @@ class WorkItemDetail() : Parcelable {
         parcel.writeTypedList(assignedLumpersList)
         parcel.writeParcelable(attendanceDetail, flags)
         parcel.writeParcelable(oldWork, flags)
+        parcel.writeParcelable(corrections, flags)
         /*buildingOps?.let { data ->
             parcel.writeInt(data.size)
             for (s in data.keys) {

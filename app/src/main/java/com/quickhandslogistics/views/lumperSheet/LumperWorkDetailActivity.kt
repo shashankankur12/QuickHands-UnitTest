@@ -9,6 +9,7 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -17,14 +18,12 @@ import com.quickhandslogistics.adapters.lumperSheet.LumperWorkDetailAdapter
 import com.quickhandslogistics.contracts.lumperSheet.LumperWorkDetailContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.attendance.AttendanceDetail
+import com.quickhandslogistics.data.lumperSheet.LumperCorrectionRequest
 import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
 import com.quickhandslogistics.data.lumperSheet.LumpersInfo
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.presenters.lumperSheet.LumperWorkDetailPresenter
 import com.quickhandslogistics.utils.*
-import com.quickhandslogistics.utils.AppConstant.Companion.WORKSHEET_WORK_ITEM_INBOUND
-import com.quickhandslogistics.utils.AppConstant.Companion.WORKSHEET_WORK_ITEM_LIVE
-import com.quickhandslogistics.utils.AppConstant.Companion.WORKSHEET_WORK_ITEM_OUTBOUND
 import com.quickhandslogistics.utils.DateUtils.Companion.getDateTimeCalculeted
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import com.quickhandslogistics.views.BaseActivity
@@ -54,7 +53,6 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     private var signatureFilePath = ""
     private var selectedTime: Long = 0
     private var lumpersInfo: LumpersInfo? = null
-
     private lateinit var lumperWorkDetailPresenter: LumperWorkDetailPresenter
     private lateinit var lumperWorkDetailAdapter: LumperWorkDetailAdapter
     private  var lumperDaySheetList: ArrayList<LumperDaySheet> = ArrayList()
@@ -77,7 +75,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
 //        setupToolbar(getString(R.string.lumper_work_detail))
 
         textViewToolbar.text=getString(R.string.lumper_work_detail)
-        textViewToolbar.setTextColor(resources.getColor(android.R.color.black))
+        textViewToolbar.setTextColor(ContextCompat.getColor(activity, R.color.textBlack))
         toolbar.setNavigationIcon(R.drawable.ic_back_arrow)
         toolbar.setNavigationOnClickListener { onBackPressed() }
         textViewDate.text = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, Date())
@@ -490,6 +488,20 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
             })
     }
 
+    override fun showSuccessCorrection(message: String) {
+        if (!ConnectionDetector.isNetworkConnected(this)) {
+            ConnectionDetector.createSnackBar(this)
+            return
+        }
+
+        CustomProgressBar.getInstance().showSuccessDialog(message,
+                this, object : CustomDialogListener {
+            override fun onConfirmClick() {
+                lumperWorkDetailPresenter.getLumperWorkDetails(getDefaultOrValue(lumpersInfo?.lumperId), Date(selectedTime))
+            }
+        })
+    }
+
     private fun showLumperTimeDetails(lumperAttendanceData: AttendanceDetail) {
         val isPresent = getDefaultOrValue(lumperAttendanceData.isPresent)
         if (isPresent) {
@@ -562,16 +574,22 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         }
     }
 
-    override fun requestCorrection(workId: String?) {
-        CustomBottomSheetDialog.requestCorrectionBottomSheetDialog(
-            activity, object : CustomBottomSheetDialog.IDialogRequestCorrectionClick {
-                override fun onSendRequest(dialog: Dialog, request: String) {
+    override fun requestCorrection(workItem: LumperDaySheet) {
+        val containerId =workItem.lumpersTimeSchedule?.workItemId
+        val lumperId =workItem.lumpersTimeSchedule?.lumperId
+        
+        workItem.workItemDetail?.let {
+            CorrectionRequestBottomSheet.getInstance().newRequestCorrectionBottomSheetDialog(workItem.lumpersTimeSchedule, it.buildingOps, it.notesQHL,
+                    null, it.buildingParams, containerId, lumperId, activity, object : CorrectionRequestBottomSheet.IDialogRequestCorrectionClick {
+                override fun onSendRequest(dialog: Dialog, request: LumperCorrectionRequest, containerId: String) {
+                    lumperWorkDetailPresenter.sendCorrectionRequest(request, containerId)
                     dialog.dismiss()
                 }
             })
+        }
     }
 
-    override fun cancelRequestCorrection(id: String?) {
+    override fun cancelRequestCorrection(id: String) {
         if (!ConnectionDetector.isNetworkConnected(this)) {
             ConnectionDetector.createSnackBar(this)
             return
@@ -579,12 +597,29 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
 
         CustomProgressBar.getInstance().showWarningDialog(activityContext = activity, listener = object : CustomDialogWarningListener {
             override fun onConfirmClick() {
-
+                lumperWorkDetailPresenter.cancelCorrectionRequest(AppConstant.REQUEST_LUMPERS_STATUS_CANCELLED.toUpperCase(), id)
             }
 
             override fun onCancelClick() {
             }
         })
+    }
+
+    override fun updateRequestCorrection(lumperWorkSheet: LumperDaySheet) {
+        lumperWorkSheet.workItemDetail?.let {workDetails ->
+            workDetails.corrections?.let {
+                val containerId =it.containerId
+                val lumperId =it.lumperId
+                CorrectionRequestBottomSheet.getInstance().newRequestCorrectionBottomSheetDialog(it.workTiming, it.containerParameters, it.notesForQHL,
+                        it.correctionNote, workDetails.buildingParams,containerId, lumperId, activity, object : CorrectionRequestBottomSheet.IDialogRequestCorrectionClick {
+                    override fun onSendRequest(dialog: Dialog, request: LumperCorrectionRequest, containerId: String) {
+                        lumperWorkDetailPresenter.sendCorrectionRequest(request, containerId)
+                        dialog.dismiss()
+                    }
+                })
+            }
+
+        }
     }
 
     override fun afterTextChanged(text: Editable?) {

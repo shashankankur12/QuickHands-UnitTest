@@ -5,9 +5,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.quickhandslogistics.data.BaseResponse
-import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
-import java.io.Serializable
 
 class WorkSheetListAPIResponse : BaseResponse() {
     @SerializedName("data")

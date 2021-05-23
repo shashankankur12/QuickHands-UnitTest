@@ -26,6 +26,7 @@ import com.quickhandslogistics.data.schedule.*
 import com.quickhandslogistics.data.scheduleTime.*
 import com.quickhandslogistics.data.scheduleTime.leadinfo.GetLeadInfoResponse
 import com.quickhandslogistics.data.workSheet.*
+import com.quickhandslogistics.data.lumperSheet.LumperCorrectionRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -273,6 +274,15 @@ interface IApiInterface {
 
     @GET("employees/lumpers-availability")
     fun timeClockPastFutureDate(@Header("Authorization") auth: String): Call<GetPastFutureDateResponse>
+    /////////////////////////////////////////////////////////
+
+    //Request Correction/////////////////////////////////////
+
+    @POST("schedule/containers/{id}/correction-requests")
+    fun saveLumperRequestCorrection(@Header("Authorization") auth: String, @Path("id") buildingId: String, @Body request: LumperCorrectionRequest): Call<BaseResponse>
+
+    @PUT("schedule/containers/{id}/correction-requests")
+    fun lumperCancelCorrection(@Header("Authorization") auth: String, @Path("id") buildingId: String, @Body request: ChangeStatusRequest): Call<BaseResponse>
 
 
 }

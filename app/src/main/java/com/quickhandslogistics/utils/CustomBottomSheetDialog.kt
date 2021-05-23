@@ -7,11 +7,19 @@ import android.content.Context
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.quickhandslogistics.R
+import com.quickhandslogistics.adapters.lumperSheet.CorrectionBuildingOpsAdapter
+import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.dashboard.LeadProfileData
+import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
+import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.utils.DateUtils.Companion.sharedPref
+import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
+import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.*
 import java.util.*
 
 object CustomBottomSheetDialog {
@@ -70,7 +78,7 @@ object CustomBottomSheetDialog {
 
         unFinishedBottomSheet.findViewById<Button>(R.id.buttonCancelBottomSheet)?.setOnClickListener { unFinishedBottomSheet.dismiss() }
         unFinishedBottomSheet.findViewById<Button>(R.id.buttonSubmit)?.setOnClickListener {
-            contractView?.onSendRequest(unFinishedBottomSheet, selectedDate, selectedTime)
+            contractView.onSendRequest(unFinishedBottomSheet, selectedDate, selectedTime)
         }
         unFinishedBottomSheet.show()
     }
@@ -91,7 +99,7 @@ object CustomBottomSheetDialog {
         val editTextLumperNotes=lumperRequestBottomSheet.findViewById<EditText>(R.id.editTextLumperNotes)
         val textViewStartTime=lumperRequestBottomSheet.findViewById<TextView>(R.id.textViewStartTime)
         var startTime: Long = Date().time
-        var lumperId: String = ""
+        var lumperId = ""
 
         record?.also {
             textViewTitle?.text = context.getString(R.string.update_request)
@@ -178,7 +186,6 @@ object CustomBottomSheetDialog {
                     )
                 }
             }
-
         }
         lumperRequestBottomSheet.show()
     }
@@ -186,7 +193,7 @@ object CustomBottomSheetDialog {
     fun requestCorrectionBottomSheetDialog(context: Context, contractView: IDialogRequestCorrectionClick) {
         val unFinishedBottomSheet = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
         unFinishedBottomSheet.setContentView(R.layout.bottumsheet_request_correction)
-        val textViewTitle = unFinishedBottomSheet.findViewById<TextView>(R.id.textViewTitle)
+        unFinishedBottomSheet.findViewById<TextView>(R.id.textViewTitle)
         val editTextCorrection = unFinishedBottomSheet.findViewById<EditText>(R.id.editTextCorrection)
 
         unFinishedBottomSheet.findViewById<Button>(R.id.buttonCancelCorrection)

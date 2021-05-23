@@ -13,11 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.customerSheet.ContainerDetailItemAdapter
 import com.quickhandslogistics.contracts.lumperSheet.LumperWorkDetailContract
+import com.quickhandslogistics.data.lumperSheet.CorrectionRequest
 import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.utils.ScheduleUtils.calculatePercent
 import com.quickhandslogistics.utils.ValueUtils.isNumeric
-import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
 import kotlinx.android.synthetic.main.item_lumper_work_detail.view.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -70,14 +70,10 @@ class LumperWorkDetailAdapter(
         private val textViewScheduleNote: TextView = itemView.textViewScheduleNote
         private val textViewIsScheduleLead: TextView = itemView.textViewIsScheduleLead
 
-        var parameters = ArrayList<String>()
-
         init {
             recyclerViewBO.apply {
                 layoutManager = GridLayoutManager(context, 2)
             }
-
-            parameters = ScheduleUtils.getBuildingParametersList(sharedPref)
 
             clickableViewBO.setOnClickListener(this)
             linearLayoutCustomerNotes.setOnClickListener(this)
@@ -122,9 +118,6 @@ class LumperWorkDetailAdapter(
                 textViewScheduleNote.isEnabled=!workItemDetail.schedule?.scheduleNote.isNullOrEmpty() && !workItemDetail.schedule?.scheduleNote.equals(
                     "NA"
                 )
-
-//                val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplay(workItemDetail.type, resources)
-//                textViewWorkItemType.text = workItemDetail.type?.toLowerCase()?.capitalize()
                 textViewStartTime.text = String.format(resources.getString(R.string.start_time_s), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime))
 
                 if (!workItemDetail.notesQHLCustomer.isNullOrEmpty() && workItemDetail.notesQHLCustomer != AppConstant.NOTES_NOT_AVAILABLE) {
@@ -143,15 +136,28 @@ class LumperWorkDetailAdapter(
 
                 ScheduleUtils.changeStatusUIByValue(resources, workItemDetail.status, textViewStatus)
 
-                if (!parameters.isNullOrEmpty()) {
+                if (!workItemDetail.buildingParams.isNullOrEmpty()) {
                     relativeLayoutBO.visibility = View.VISIBLE
-                    recyclerViewBO.adapter = ContainerDetailItemAdapter(workItemDetail.buildingOps, parameters)
+                    recyclerViewBO.adapter = ContainerDetailItemAdapter(workItemDetail.buildingOps, workItemDetail.buildingParams)
                 } else {
                     relativeLayoutBO.visibility = View.GONE
                 }
-                var cases=getTotalCases(workItemDetail.buildingOps)
+                val cases=getTotalCases(workItemDetail.buildingOps)
                 totalcase = if (!cases.isNullOrEmpty() && isNumeric(cases!!)) cases else ""
                 textViewIsScheduleLead.visibility = if (workItemDetail.isScheduledByLead!!) View.VISIBLE else View.GONE
+
+                if (workItemDetail.corrections!=null){
+                    textViewRequestCorrection.isEnabled= false
+                    textViewUpdateCorrection.visibility= View.VISIBLE
+                    textViewCancelCorrection.visibility= View.VISIBLE
+                    setCorrectionStatus(workItemDetail.corrections)
+
+                }else{
+                    textViewRequestCorrection.isEnabled= true
+                    textViewRequestCorrection.text= resources.getString(R.string.request_correction)
+                    textViewUpdateCorrection.visibility= View.GONE
+                    textViewCancelCorrection.visibility= View.GONE
+                }
             }
 
             lumperDaySheet.lumpersTimeSchedule?.let { timingDetail ->
@@ -159,13 +165,15 @@ class LumperWorkDetailAdapter(
                 val endTime = DateUtils.convertDateStringToTime(DateUtils.PATTERN_API_RESPONSE, timingDetail.endTime)
                 if (startTime.isNotEmpty() && endTime.isNotEmpty())
                     textViewWorkTime.text = String.format("%s - %s : %s", startTime, endTime, DateUtils.getDateTimeCalculeted(timingDetail.startTime!!, timingDetail.endTime!!))
-                else textViewWorkTime.text = String.format("%s - %s", if (startTime.isNotEmpty()) startTime else "NA", if (endTime.isNotEmpty()) endTime else "NA")
+                else textViewWorkTime.text = String.format("%s - %s", if (startTime.isNotEmpty()) startTime else AppConstant.NOTES_NOT_AVAILABLE, if (endTime.isNotEmpty()) endTime else AppConstant.NOTES_NOT_AVAILABLE)
 
                 val waitingTime = ValueUtils.getDefaultOrValue(timingDetail.waitingTime)
                 if (waitingTime.isNotEmpty() && waitingTime.toInt() != 0) {
-                    textViewWaitingTime.text = String.format("%s Min", waitingTime)
+                    val waitingTimeHours = ValueUtils.getHoursFromMinutes(timingDetail.waitingTime)
+                    val waitingTimeMinutes = ValueUtils.getRemainingMinutes(timingDetail.waitingTime)
+                    textViewWaitingTime.text = String.format("%s H %s M", waitingTimeHours, waitingTimeMinutes )
                 } else {
-                    textViewWaitingTime.text = "NA"
+                    textViewWaitingTime.text = AppConstant.NOTES_NOT_AVAILABLE
                 }
 
                 var dateTime: Long = 0
@@ -177,7 +185,7 @@ class LumperWorkDetailAdapter(
                 if (dateTime>0)
                     textViewBreakTime.text =DateUtils.getDateTimeCalculatedLong(dateTime)
 
-                else textViewBreakTime.visibility=View.GONE
+                else textViewBreakTime.text=AppConstant.NOTES_NOT_AVAILABLE
 
                 if (!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt()!=0) {
                     if (!totalcase.isNullOrEmpty()) {
@@ -185,20 +193,52 @@ class LumperWorkDetailAdapter(
                         textViewWorkDone.text = String.format("%s / %s : %s", timingDetail.partWorkDone, totalcase, percent)
                     }
                 } else {
-                    textViewWorkDone.text ="NA"
+                    textViewWorkDone.text =AppConstant.NOTES_NOT_AVAILABLE
                 }
 
             }
         }
 
+        private fun setCorrectionStatus(corrections: CorrectionRequest?) {
+        corrections?.status?.let {
+            when(it){
+                AppConstant.CORRECTION_PENDING -> {
+                    updateUiCorrectionTextColor(resources.getString(R.string.pending_correction), resources.getColor(R.color.color_yellow))
+                    updateUICorrection(true)
+                }
+                AppConstant.CORRECTION_REJECTED -> {
+                    updateUiCorrectionTextColor(resources.getString(R.string.rejected_correction), resources.getColor(R.color.detailHeader))
+                    updateUICorrection(false)
+                }
+                AppConstant.CORRECTION_CANCELLED -> {
+                    updateUiCorrectionTextColor(resources.getString(R.string.cancel_correction), resources.getColor(R.color.detailHeader))
+                    updateUICorrection(false)
+                }
+                AppConstant.CORRECTION_APPROVED -> {
+                    updateUiCorrectionTextColor(resources.getString(R.string.approved_correction), resources.getColor(R.color.buildingTitle))
+                    updateUICorrection(false)
+                }
+            }
+        }
+        }
 
+        private fun updateUiCorrectionTextColor(textString: String, color: Int) {
+            textViewRequestCorrection.text= textString
+            textViewRequestCorrection.setTextColor(color)
+        }
+
+        private fun updateUICorrection(isEnable: Boolean) {
+            textViewCancelCorrection.isEnabled= isEnable
+            textViewUpdateCorrection.isEnabled= isEnable
+        }
         override fun onClick(view: View?) {
             view?.let {
                 when (view.id) {
                     clickableViewBO.id -> {
                         val lumperDaySheet = getItem(adapterPosition)
                         lumperDaySheet.workItemDetail?.let { workItemDetail ->
-                            adapterItemClickListener.onBOItemClick(workItemDetail, parameters)
+                            if (!workItemDetail.buildingParams.isNullOrEmpty())
+                                adapterItemClickListener.onBOItemClick(workItemDetail, workItemDetail.buildingParams!!)
                         }
                     }
                     linearLayoutCustomerNotes.id -> {
@@ -215,21 +255,21 @@ class LumperWorkDetailAdapter(
                     }
                     textViewRequestCorrection.id -> {
                         val lumperDaySheet = getItem(adapterPosition)
-                        lumperDaySheet.workItemDetail?.let { workItemDetail ->
-                            adapterItemClickListener.requestCorrection(workItemDetail.id)
-                        }
+//                        lumperDaySheet.workItemDetail?.let { workItemDetail ->
+                            adapterItemClickListener.requestCorrection(lumperDaySheet)
+//                        }
                     }
                     textViewCancelCorrection.id -> {
                         val lumperDaySheet = getItem(adapterPosition)
-                        lumperDaySheet.workItemDetail?.let { workItemDetail ->
-                            adapterItemClickListener.cancelRequestCorrection(workItemDetail.id)
+                        lumperDaySheet.workItemDetail?.id?.let {
+                            adapterItemClickListener.cancelRequestCorrection(it)
                         }
                     }
                     textViewUpdateCorrection.id -> {
                         val lumperDaySheet = getItem(adapterPosition)
-                        lumperDaySheet.workItemDetail?.let { workItemDetail ->
-                            adapterItemClickListener.requestCorrection(workItemDetail.id)
-                        }
+//                        lumperDaySheet?.let { corrections ->
+                            adapterItemClickListener.updateRequestCorrection(lumperDaySheet)
+//                        }
                     }
                     textViewScheduleNote.id -> {
                         val lumperDaySheet = getItem(adapterPosition)

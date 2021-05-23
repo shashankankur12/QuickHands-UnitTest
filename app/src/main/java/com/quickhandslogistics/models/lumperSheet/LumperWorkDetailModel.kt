@@ -1,11 +1,12 @@
 package com.quickhandslogistics.models.lumperSheet
 
 import android.util.Log
-import com.quickhandslogistics.contracts.attendance.TimeClockAttendanceContract
 import com.quickhandslogistics.contracts.lumperSheet.LumperWorkDetailContract
 import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.attendance.AttendanceDetail
+import com.quickhandslogistics.data.lumperSheet.LumperCorrectionRequest
 import com.quickhandslogistics.data.lumperSheet.LumperWorkDetailAPIResponse
+import com.quickhandslogistics.data.workSheet.ChangeStatusRequest
 import com.quickhandslogistics.models.attendance.TimeClockAttendanceModel
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.DataManager.createMultiPartBody
@@ -67,15 +68,44 @@ class LumperWorkDetailModel : LumperWorkDetailContract.Model {
             })
     }
 
-    override fun saveLumpersAttendanceList(
-        attendanceDetailList: List<AttendanceDetail>, onFinishedListener: LumperWorkDetailContract.Model.OnFinishedListener
-    ) {
+    override fun saveLumpersAttendanceList(attendanceDetailList: List<AttendanceDetail>, onFinishedListener: LumperWorkDetailContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getCurrentDateStringByEmployeeShift()
 
         DataManager.getService().saveAttendanceDetails(getAuthToken(), dateString, attendanceDetailList).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onSuccessSaveDate()
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Log.e(TimeClockAttendanceModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
+    }
+
+    override fun sendCorrectionRequest(request: LumperCorrectionRequest, containerId: String, onFinishedListener: LumperWorkDetailContract.Model.OnFinishedListener) {
+        DataManager.getService().saveLumperRequestCorrection(getAuthToken(), containerId, request).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessRequestCorrection(response.body()?.message)
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Log.e(TimeClockAttendanceModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
+    }
+
+    override fun cancelCorrectionRequest(status: String, containerId: String, onFinishedListener: LumperWorkDetailContract.Model.OnFinishedListener) {
+        val statusRequest = ChangeStatusRequest(status)
+        DataManager.getService().lumperCancelCorrection(getAuthToken(), containerId, statusRequest).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessCancelCorrection(response.body()?.message)
                 }
             }
 

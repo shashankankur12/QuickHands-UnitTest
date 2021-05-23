@@ -125,7 +125,7 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
                         textViewWaitingTime.text = AppConstant.NOTES_NOT_AVAILABLE
                     }
 
-                    var mBreakTimeList = getBreakTimeList(timingDetail.breakTimes)
+                    val mBreakTimeList = getBreakTimeList(timingDetail.breakTimes)
                     if (mBreakTimeList.isNotEmpty() && checkStartEndTime(mBreakTimeList)) {
                         showPauseTimeDuration(mBreakTimeList, textViewBreakTime)
                     } else textViewBreakTime.text = AppConstant.NOTES_NOT_AVAILABLE
