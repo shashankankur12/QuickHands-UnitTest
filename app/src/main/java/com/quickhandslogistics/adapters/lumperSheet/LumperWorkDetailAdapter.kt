@@ -162,9 +162,10 @@ class LumperWorkDetailAdapter(
                 }
 
                 if (workItemDetail.isCompleted == true){
-                    textViewWaitingTime.setTextColor(resources.getColor(R.color.greyDivider))
-                    waitingTimeHeader.setTextColor(resources.getColor(R.color.greyDivider))
-                    textViewCustomerNote.setTextColor(resources.getColor(R.color.greyDivider))
+                    textViewWaitingTime.setTextColor(resources.getColor(R.color.detailHeader))
+                    waitingTimeHeader.setTextColor(resources.getColor(R.color.detailHeader))
+                    textViewCustomerNote.setTextColor(resources.getColor(R.color.detailHeader))
+                    noteForCustomerHeader.setTextColor(resources.getColor(R.color.detailHeader))
                 }else {
                     textViewWaitingTime.setTextColor(resources.getColor(R.color.scheduleDetail))
                     textViewCustomerNote.setTextColor(resources.getColor(R.color.scheduleDetail))

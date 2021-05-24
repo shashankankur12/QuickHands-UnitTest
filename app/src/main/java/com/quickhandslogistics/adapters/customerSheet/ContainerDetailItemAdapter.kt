@@ -58,8 +58,8 @@ class ContainerDetailItemAdapter(buildingOps: HashMap<String, String>?, paramete
             textViewValue.text = if (!pair.second.isNullOrEmpty()) pair.second else "---"
 
             if (completed == true){
-                textViewHeader.setTextColor(resources.getColor(R.color.greyDivider))
-                textViewValue.setTextColor(resources.getColor(R.color.greyDivider))
+                textViewHeader.setTextColor(resources.getColor(R.color.detailHeader))
+                textViewValue.setTextColor(resources.getColor(R.color.detailHeader))
             }else{
                 textViewHeader.setTextColor(resources.getColor(R.color.buildingTitle))
                 textViewValue.setTextColor(resources.getColor(R.color.scheduleDetail))
