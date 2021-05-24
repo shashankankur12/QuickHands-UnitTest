@@ -114,7 +114,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
                 editTextWaitingTimeMinutes.setText(waitingTimeMinutes)
 //                editTextWaitingTimeMinutes.isEnabled = false
             }
-            if (!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt() != 0) {
+            if (!timingDetail.partWorkDone.isNullOrEmpty() /*&& timingDetail.partWorkDone!!.toInt() != 0*/) {
                 partWorkDone = timingDetail.partWorkDone!!.toInt()
                 lumpercaseVisibility()
                 editTextCasesLumpers.setText(partWorkDone.toString())
@@ -586,6 +586,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
                 getPercent(text.toString(), totalCases)
                 isDataSave(false)
             } else {
+                isPartWorkDoneValid = true
                 percentWorkDone.text = "0.0%"
                 partWorkDone = 0
                 isDataSave(true)

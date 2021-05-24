@@ -754,12 +754,15 @@ object ScheduleUtils {
         workItemsList.forEach {
             when {
                 it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> {
+                    it.containerNumber = liveList.size + 1
                     liveList.add(it)
                 }
                 it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> {
+                    it.containerNumber = inboundList.size + 1
                     inboundList.add(it)
                 }
                 it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> {
+                    it.containerNumber = outBoundList.size + 1
                     outBoundList.add(it)
                 }
             }
@@ -814,30 +817,30 @@ object ScheduleUtils {
                 if (workItemDetail.origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
                     textViewNoOfDrops.text = UIUtils.getSpannableText(
                         resources.getString(R.string.unfinished_no_of_drops_bold_has),
-                        workItemDetail.label.toString()
+                        workItemDetail.containerNumber.toString()
                     )
                 } else textViewNoOfDrops.text = UIUtils.getSpannableText(
                     resources.getString(R.string.no_of_drops_bold_has),
-                    workItemDetail.label.toString()
+                    workItemDetail.containerNumber.toString()
                 )
             }
             resources.getString(R.string.live_loads) -> if (workItemDetail.origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
                 textViewNoOfDrops.text = UIUtils.getSpannableText(
                     resources.getString(R.string.unfinished_live_load_bold_has),
-                    workItemDetail.label.toString()
+                    workItemDetail.containerNumber.toString()
                 )
             } else textViewNoOfDrops.text = UIUtils.getSpannableText(
                 resources.getString(R.string.live_load_bold_has),
-                workItemDetail.label.toString()
+                workItemDetail.containerNumber.toString()
             )
             else -> if (workItemDetail.origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
                 textViewNoOfDrops.text = UIUtils.getSpannableText(
                     resources.getString(R.string.unfinished_out_bound_bold_has),
-                    workItemDetail.label.toString()
+                    workItemDetail.containerNumber.toString()
                 )
             } else textViewNoOfDrops.text = UIUtils.getSpannableText(
                 resources.getString(R.string.out_bound_bold_has),
-                workItemDetail.label.toString()
+                workItemDetail.containerNumber.toString()
             )
         }
     }

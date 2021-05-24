@@ -71,6 +71,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         const val ARG_WORK_ITEM_ID = "ARG_WORK_ITEM_ID"
         const val ARG_WORK_ITEM_TYPE = "ARG_WORK_ITEM_TYPE"
         const val ARG_WORK_ITEM_TYPE_DISPLAY_NAME = "ARG_WORK_ITEM_TYPE_DISPLAY_NAME"
+        const val ARG_WORK_ITEM_TYPE_DISPLAY_NUMBER = "ARG_WORK_ITEM_TYPE_DISPLAY_NUMBER"
         const val ARG_WORK_ITEM_ORIGIN = "ARG_WORK_ITEM_ORIGIN"
 
         const val ARG_SCHEDULED_TIME_NOTES = "ARG_SCHEDULED_TIME_NOTES"

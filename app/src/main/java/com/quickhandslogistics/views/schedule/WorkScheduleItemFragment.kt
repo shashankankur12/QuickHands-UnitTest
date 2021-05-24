@@ -156,16 +156,19 @@ class WorkScheduleItemFragment : BaseFragment(), ScheduleWorkItemContract.View.O
     }
 
     /** Adapter Listeners */
-    override fun onItemClick(workItemId: String, workItemTypeDisplayName: String, origin: String) {
+    override fun onItemClick(workItem: WorkItemDetail) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {
             ConnectionDetector.createSnackBar(activity)
             return
         }
 
+        val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItem.type, resources)
+        val origin =if (workItem.origin!=null) workItem.origin else ""
         if (!DateUtils.isFutureDate(selectedTime)) {
             val bundle = Bundle()
-            bundle.putString(ScheduleFragment.ARG_WORK_ITEM_ID, workItemId)
+            bundle.putString(ScheduleFragment.ARG_WORK_ITEM_ID, workItem.id)
             bundle.putString(ScheduleFragment.ARG_WORK_ITEM_TYPE_DISPLAY_NAME, workItemTypeDisplayName)
+            bundle.putInt(ScheduleFragment.ARG_WORK_ITEM_TYPE_DISPLAY_NUMBER, workItem.containerNumber)
             bundle.putString(ScheduleFragment.ARG_WORK_ITEM_ORIGIN, origin)
             bundle.putLong(ScheduleFragment.ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
             startIntent(WorkSheetItemDetailActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)

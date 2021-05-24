@@ -278,12 +278,15 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         workItemsList?.forEach {
             when {
                 it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> {
+                    it.containerNumber = liveList.size + 1
                     liveList.add(it)
                 }
                 it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_INBOUND) -> {
+                    it.containerNumber = inboundList.size + 1
                     inboundList.add(it)
                 }
                 it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND) -> {
+                    it.containerNumber = outBoundList.size + 1
                     outBoundList.add(it)
                 }
             }
@@ -293,6 +296,7 @@ class WorkSheetFragment : BaseFragment(), WorkSheetContract.View, WorkSheetContr
         sortedList.addAll(inboundList)
         return sortedList
     }
+
 
     override fun showHeaderInfo(companyName: String, date: String, shift: String, dept: String) {
         this.companyName = companyName

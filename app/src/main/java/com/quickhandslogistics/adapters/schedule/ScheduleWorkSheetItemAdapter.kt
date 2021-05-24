@@ -125,7 +125,7 @@ class ScheduleWorkSheetItemAdapter(private val resources: Resources, private val
                         val workItemDetail = getItem(adapterPosition)
                         val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.type, resources)
                         val origin =if (workItemDetail.origin!=null) workItemDetail.origin else ""
-                        adapterItemClickListener.onItemClick(workItemDetail.id!!, workItemTypeDisplayName, origin!!)
+                        adapterItemClickListener.onItemClick(workItemDetail)
                     }
                     textViewWorkSheetNote.id->{
                         if (!getItem(adapterPosition).schedule?.scheduleNote.isNullOrEmpty() && !getItem(adapterPosition).schedule?.scheduleNote!!.equals("NA"))

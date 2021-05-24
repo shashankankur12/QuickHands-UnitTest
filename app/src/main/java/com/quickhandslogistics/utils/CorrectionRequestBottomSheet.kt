@@ -49,7 +49,7 @@ class CorrectionRequestBottomSheet {
         }
     }
 
-    fun newRequestCorrectionBottomSheetDialog(lumperTimeDetails: LumpersTimeSchedule?, buildingOps: HashMap<String, String>?, qhlNote: String?, correctionNote: String?, buildingParams: ArrayList<String>?, containerId: String?, lumperId :String?, context: Context, contractView: IDialogRequestCorrectionClick) {
+    fun newRequestCorrectionBottomSheetDialog(lumperTimeDetails: LumpersTimeSchedule?, buildingOps: HashMap<String, String>?, qhlNote: String?, correctionNote: String?, buildingParams: ArrayList<String>?, containerId: String?, lumperId: String?, isCompleted: Boolean?, context: Context, contractView: IDialogRequestCorrectionClick) {
 
         mPauseTimeRequestList.clear()
         val unFinishedBottomSheet = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
@@ -67,7 +67,7 @@ class CorrectionRequestBottomSheet {
         }
         buildingOps?.let {
             if (buildingOperationsAdapter != null) {
-                buildingOperationsAdapter?.updateData(it)
+                buildingOperationsAdapter?.updateData(it, isCompleted)
             }
             totalCases=getTotalCases(it)
         }
@@ -82,6 +82,9 @@ class CorrectionRequestBottomSheet {
         }
 
         lumperTimeDetails?.let { timingDetail ->
+            unFinishedBottomSheet.editTextWaitingTime.isEnabled = isCompleted != true
+            unFinishedBottomSheet.editTextWaitingTimeMinutes.isEnabled = isCompleted != true
+
             val waitingTimeHours = ValueUtils.getHoursFromMinutes(timingDetail.waitingTime)
             val waitingTimeMinutes = ValueUtils.getRemainingMinutes(timingDetail.waitingTime)
             if (waitingTimeHours.isNotEmpty() /*&& (0.0 != waitingTimeHours.toDouble() || 0.0 != waitingTimeMinutes.toDouble())*/) {

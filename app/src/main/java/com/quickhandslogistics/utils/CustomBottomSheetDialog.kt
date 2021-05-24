@@ -33,11 +33,13 @@ object CustomBottomSheetDialog {
         val shiftText=unFinishedBottomSheet.findViewById<TextView>(R.id.shiftText)
         val calendar = Calendar.getInstance()
         var selectedDate :Date
-        var selectedTime=Date().time
+        var selectedTime:Long
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
 
         calendar.add(Calendar.DAY_OF_YEAR, 1)
         selectedDate=calendar.time
+        selectedTime= selectedDate.time
+
         shiftText?.text= leadProfile?.shift?.capitalize()
         departmentText?.text =  UIUtils.getDisplayEmployeeDepartmentHeader(leadProfile)
         dateForCompletionText?.text= DateUtils.getDateString(
@@ -54,6 +56,7 @@ object CustomBottomSheetDialog {
                         dateForCompletionText.text =
                             DateUtils.getDateString(DateUtils.PATTERN_MONTH_DAY_DISPLAY, selected)
                         selectedDate = selected
+                        selectedTime= selected.time
                     }
                 })
         }
@@ -61,7 +64,7 @@ object CustomBottomSheetDialog {
         startTimeText?.text = DateUtils.convertMillisecondsToTimeString(Date().time)
         startTimeText?.setOnClickListener {
             val calendar = Calendar.getInstance()
-            calendar.timeInMillis =selectedTime
+            calendar.timeInMillis =selectedDate.time
             val mHour = calendar.get(Calendar.HOUR_OF_DAY)
             val mMinute = calendar.get(Calendar.MINUTE)
 

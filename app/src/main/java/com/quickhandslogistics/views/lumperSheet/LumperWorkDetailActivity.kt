@@ -2,6 +2,7 @@ package com.quickhandslogistics.views.lumperSheet
 
 import android.app.Activity
 import android.app.Dialog
+import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -313,8 +314,9 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     }
 
 
-    private fun clockInButtonClicked() {
-        val selectedStartTime = System.currentTimeMillis()
+
+    private fun clockInButtonClicked(calendar: Calendar) {
+        val selectedStartTime = calendar.timeInMillis
         val lumperEndTime = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.eveningPunchOut)
 
         if (lumperEndTime > 0) {
@@ -328,8 +330,8 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         buttonClockIn.text = DateUtils.convertMillisecondsToTimeString(selectedStartTime)
         updateData[lumpersInfo!!.lumperId]?.isMorningPunchInChanged = true
     }
-    private fun clockOutButtonClicked() {
-        val selectedEndTime = System.currentTimeMillis()
+    private fun clockOutButtonClicked(calendar: Calendar) {
+        val selectedEndTime = calendar.timeInMillis
         val lumperStartTime = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.morningPunchIn)
         val lumperLunchInTime = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.lunchPunchIn)
 
@@ -346,8 +348,8 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         }
     }
 
-    private fun lunchInButtonClicked() {
-        val selectedBreakInTime = System.currentTimeMillis()
+    private fun lunchInButtonClicked(calendar: Calendar) {
+        val selectedBreakInTime = calendar.timeInMillis
         val lumperStartTime = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.morningPunchIn)
         val lumperLunchOutTime = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.lunchPunchOut)
         val lumperEndTime = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.eveningPunchOut)
@@ -369,7 +371,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         updateData[lumpersInfo!!.lumperId]?.isLunchPunchInChanged = true
     }
 
-    private fun lunchOutButtonClicked() {
+    private fun lunchOutButtonClicked(timeInMillis: Long) {
         val selectedBreakOutTime = System.currentTimeMillis()
         val lumperStartTime = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.morningPunchIn)
         val lumperLunchInTime = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.lunchPunchIn)
@@ -432,13 +434,73 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
                 layoutEditLumerNote.id -> showBottomSheetWithData(LUMPER_EDIT_NOTE)
                 bottomSheetBackground.id -> closeBottomSheet()
                 buttonCancelNote.id -> closeBottomSheet()
-                buttonSubmit.id -> {showUpdateConfirmationDialog() }
-                buttonClockIn.id -> clockInButtonClicked()
-                buttonClockOut.id -> clockOutButtonClicked()
-                buttonLunchIn.id -> lunchInButtonClicked()
-                buttonLunchOut.id -> lunchOutButtonClicked()
+                buttonSubmit.id -> {
+                    showUpdateConfirmationDialog()
+                }
+                buttonClockIn.id -> {
+                    val clockInTime = DateUtils.convertUTCDateStringToMilliseconds(
+                            DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData.morningPunchIn
+                    )
+                    chooseTime(object : OnTimeSetListener {
+                        override fun onSelectTime(calendar: Calendar) {
+                            clockInButtonClicked(calendar)
+                        }
+                    }, clockInTime)
+                }
+                buttonClockOut.id -> {
+                    val clockInTime = DateUtils.convertUTCDateStringToMilliseconds(
+                            DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData.eveningPunchOut
+                    )
+                    chooseTime(object : OnTimeSetListener {
+                        override fun onSelectTime(calendar: Calendar) {
+                            clockOutButtonClicked(calendar)
+                        }
+                    }, clockInTime)
+                }
+                buttonLunchIn.id -> {
+                    val clockInTime = DateUtils.convertUTCDateStringToMilliseconds(
+                            DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData.lunchPunchIn
+                    )
+                    chooseTime(object : OnTimeSetListener {
+                        override fun onSelectTime(calendar: Calendar) {
+                            lunchInButtonClicked(calendar)
+                        }
+                    }, clockInTime)
+
+                }
+                buttonLunchOut.id -> {
+                    val clockInTime = DateUtils.convertUTCDateStringToMilliseconds(
+                            DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData.lunchPunchIn
+                    )
+                    chooseTime(object : OnTimeSetListener {
+                        override fun onSelectTime(calendar: Calendar) {
+                            lunchOutButtonClicked(calendar.timeInMillis)
+                        }
+                    }, clockInTime)
+                }
             }
         }
+    }
+
+
+    private fun chooseTime(listener: OnTimeSetListener, selectedTime: Long) {
+        val calendar = Calendar.getInstance()
+        if (selectedTime > 0) {
+            calendar.timeInMillis = selectedTime
+        } else {
+            calendar.timeInMillis = this.selectedTime
+        }
+
+        val mHour = calendar.get(Calendar.HOUR_OF_DAY)
+        val mMinute = calendar.get(Calendar.MINUTE)
+        val timePickerDialog = TimePickerDialog(
+                this, { _, hourOfDay, minute ->
+            calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+            calendar.set(Calendar.MINUTE, minute)
+            listener.onSelectTime(calendar)
+        }, mHour, mMinute, false
+        )
+        timePickerDialog.show()
     }
 
     /** Presenter Listeners */
@@ -541,9 +603,8 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
             else textViewLunchTotalTime.visibility=View.GONE
         }
         if (!lumperAttendanceData.attendanceNote.isNullOrEmpty()) {
-            linearLayout.visibility = View.VISIBLE
             editTextNotes.text = lumperAttendanceData.attendanceNote
-        } else linearLayout.visibility = View.GONE
+        } else editTextNotes.text = AppConstant.NOTES_NOT_AVAILABLE
     }
 
     override fun lumperSignatureSaved() {
@@ -579,8 +640,9 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         val lumperId =workItem.lumpersTimeSchedule?.lumperId
         
         workItem.workItemDetail?.let {
+            val isCompleted =it.isCompleted
             CorrectionRequestBottomSheet.getInstance().newRequestCorrectionBottomSheetDialog(workItem.lumpersTimeSchedule, it.buildingOps, it.notesQHL,
-                    null, it.buildingParams, containerId, lumperId, activity, object : CorrectionRequestBottomSheet.IDialogRequestCorrectionClick {
+                    null, it.buildingParams, containerId, lumperId, isCompleted, activity, object : CorrectionRequestBottomSheet.IDialogRequestCorrectionClick {
                 override fun onSendRequest(dialog: Dialog, request: LumperCorrectionRequest, containerId: String) {
                     lumperWorkDetailPresenter.sendCorrectionRequest(request, containerId)
                     dialog.dismiss()
@@ -607,11 +669,12 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
 
     override fun updateRequestCorrection(lumperWorkSheet: LumperDaySheet) {
         lumperWorkSheet.workItemDetail?.let {workDetails ->
+            val isCompleted =workDetails.isCompleted
             workDetails.corrections?.let {
                 val containerId =it.containerId
                 val lumperId =it.lumperId
                 CorrectionRequestBottomSheet.getInstance().newRequestCorrectionBottomSheetDialog(it.workTiming, it.containerParameters, it.notesForQHL,
-                        it.correctionNote, workDetails.buildingParams,containerId, lumperId, activity, object : CorrectionRequestBottomSheet.IDialogRequestCorrectionClick {
+                        it.correctionNote, workDetails.buildingParams,containerId, lumperId, isCompleted, activity, object : CorrectionRequestBottomSheet.IDialogRequestCorrectionClick {
                     override fun onSendRequest(dialog: Dialog, request: LumperCorrectionRequest, containerId: String) {
                         lumperWorkDetailPresenter.sendCorrectionRequest(request, containerId)
                         dialog.dismiss()
@@ -636,5 +699,9 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
     }
 
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+    }
+
+    interface OnTimeSetListener {
+        fun onSelectTime(calendar: Calendar)
     }
 }

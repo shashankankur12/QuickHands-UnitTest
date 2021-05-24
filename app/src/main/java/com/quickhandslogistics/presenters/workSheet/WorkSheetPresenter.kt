@@ -80,6 +80,12 @@ class WorkSheetPresenter(private var workSheetView: WorkSheetContract.View?, pri
             data.completed?.sortWith(Comparator { workItem1, workItem2 ->
                 workItem1.startTime!!.compareTo(workItem2.startTime!!)
             })
+            data.unfinished?.sortWith(Comparator { workItem1, workItem2 ->
+                workItem1.startTime!!.compareTo(workItem2.startTime!!)
+            })
+            data.notOpen?.sortWith(Comparator { workItem1, workItem2 ->
+                workItem1.startTime!!.compareTo(workItem2.startTime!!)
+            })
 
 
             workSheetView?.showWorkSheets(data)

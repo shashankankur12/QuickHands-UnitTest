@@ -11,18 +11,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
-import com.quickhandslogistics.contracts.buildingOperations.BuildingOperationsContract
-import com.quickhandslogistics.contracts.workSheet.WorkSheetItemContract
-import com.quickhandslogistics.utils.ScheduleUtils
 import kotlinx.android.synthetic.main.item_building_operation.view.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 class CorrectionBuildingOpsAdapter(private var parameters: ArrayList<String> ) : Adapter<CorrectionBuildingOpsAdapter.ViewHolder>() {
 
     private var data = HashMap<String, String>()
     private var orignalData = HashMap<String, String>()
-    var isTextChanged :Boolean= false
+    var isCompleted :Boolean?= false
 
     init {
 //        parameters.sortWith(Comparator { value1: String, value2: String ->
@@ -50,6 +46,7 @@ class CorrectionBuildingOpsAdapter(private var parameters: ArrayList<String> ) :
         private val editTextValue: EditText = view.editTextValue
 
         fun bind() {
+            editTextValue.isEnabled = isCompleted != true
             val header = parameters[adapterPosition]
             textViewHeader.text = header.capitalize()
             if (header.equals("Cases")){
@@ -82,10 +79,11 @@ class CorrectionBuildingOpsAdapter(private var parameters: ArrayList<String> ) :
         }
     }
 
-    fun updateData(data: HashMap<String, String>) {
+    fun updateData(data: HashMap<String, String> ,isCompleted:Boolean?) {
         this.data.clear()
         this.data.putAll(data)
         this.orignalData.putAll(data)
+        this.isCompleted=isCompleted
         notifyDataSetChanged()
     }
 

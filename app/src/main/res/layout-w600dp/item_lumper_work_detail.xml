@@ -149,6 +149,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/waitingTimeHeader"
                     style="@style/titleVerySmallTextViewTheme"
                     android:layout_width="0dp"
                     android:text="@string/waiting_time_s"
@@ -235,6 +236,7 @@
             app:layout_constraintTop_toBottomOf="@id/relativeLayoutBO">
 
             <TextView
+                android:id="@+id/noteForCustomerHeader"
                 style="@style/titleSmallTextViewTheme"
                 android:text="@string/notes_for_customer"
                 android:textColor="@color/scheduleDetail" />

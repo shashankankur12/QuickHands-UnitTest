@@ -140,6 +140,9 @@ class WorkItemDetail() : Parcelable {
     @Expose
     var buildingParams: ArrayList<String>? = null
 
+    @Transient
+    var containerNumber = 0
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         workItemType = parcel.readString()

@@ -6,7 +6,7 @@ import com.quickhandslogistics.data.schedule.WorkItemDetail
 class ScheduleWorkItemContract {
     interface View {
         interface OnAdapterItemClickListener {
-            fun onItemClick(workItemId: String, workItemTypeDisplayName: String, origin: String)
+            fun onItemClick(workItem: WorkItemDetail)
             fun onLumperImagesClick(lumpersList: ArrayList<EmployeeData>)
             fun onNoteClick(workItemDetail: WorkItemDetail)
         }

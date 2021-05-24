@@ -266,7 +266,7 @@ interface IApiInterface {
     @GET("schedule/lookup-availability")
     fun schedulePastFutureDate(@Header("Authorization") auth: String): Call<GetPastFutureDateResponse>
 
-    @GET("employees/lumpers-availability")
+    @GET("employees/lumpers-signature")
     fun lumperSheetPastFutureDate(@Header("Authorization") auth: String): Call<GetPastFutureDateResponse>
 
     @GET("employees/lumpers-availability")
@@ -281,8 +281,9 @@ interface IApiInterface {
     @POST("schedule/containers/{id}/correction-requests")
     fun saveLumperRequestCorrection(@Header("Authorization") auth: String, @Path("id") buildingId: String, @Body request: LumperCorrectionRequest): Call<BaseResponse>
 
-    @PUT("schedule/containers/{id}/correction-requests")
-    fun lumperCancelCorrection(@Header("Authorization") auth: String, @Path("id") buildingId: String, @Body request: ChangeStatusRequest): Call<BaseResponse>
+    @PUT("schedule/containers/correction-requests/{id}")
+    fun lumperCancelCorrection(@Header("Authorization") auth: String, @Path("id") correctionId: String, @Body request: ChangeStatusRequest): Call<BaseResponse>
+    /////////////////////////////////////////////////////////
 
 
 }

@@ -61,6 +61,8 @@ class LumperWorkDetailAdapter(
         private val linearLayoutCustomerNotes: LinearLayout = itemView.linearLayoutCustomerNotes
         private val linearLayoutQHLNotes: LinearLayout = itemView.linearLayoutQHLNotes
         private val textViewWorkTime: TextView = itemView.textViewWorkTime
+        private val waitingTimeHeader: TextView = itemView.waitingTimeHeader
+        private val noteForCustomerHeader: TextView = itemView.noteForCustomerHeader
         private val textViewWaitingTime: TextView = itemView.textViewWaitingTime
         private val textViewBreakTime: TextView = itemView.textViewBreakTime
         private val textViewWorkDone: TextView = itemView.textViewWorkDone
@@ -138,7 +140,7 @@ class LumperWorkDetailAdapter(
 
                 if (!workItemDetail.buildingParams.isNullOrEmpty()) {
                     relativeLayoutBO.visibility = View.VISIBLE
-                    recyclerViewBO.adapter = ContainerDetailItemAdapter(workItemDetail.buildingOps, workItemDetail.buildingParams)
+                    recyclerViewBO.adapter = ContainerDetailItemAdapter(workItemDetail.buildingOps, workItemDetail.buildingParams, workItemDetail.isCompleted, resources)
                 } else {
                     relativeLayoutBO.visibility = View.GONE
                 }
@@ -157,6 +159,17 @@ class LumperWorkDetailAdapter(
                     textViewRequestCorrection.text= resources.getString(R.string.request_correction)
                     textViewUpdateCorrection.visibility= View.GONE
                     textViewCancelCorrection.visibility= View.GONE
+                }
+
+                if (workItemDetail.isCompleted == true){
+                    textViewWaitingTime.setTextColor(resources.getColor(R.color.greyDivider))
+                    waitingTimeHeader.setTextColor(resources.getColor(R.color.greyDivider))
+                    textViewCustomerNote.setTextColor(resources.getColor(R.color.greyDivider))
+                }else {
+                    textViewWaitingTime.setTextColor(resources.getColor(R.color.scheduleDetail))
+                    textViewCustomerNote.setTextColor(resources.getColor(R.color.scheduleDetail))
+                    noteForCustomerHeader.setTextColor(resources.getColor(R.color.scheduleDetail))
+                    waitingTimeHeader.setTextColor(resources.getColor(R.color.buildingTitle))
                 }
             }
 
@@ -255,21 +268,17 @@ class LumperWorkDetailAdapter(
                     }
                     textViewRequestCorrection.id -> {
                         val lumperDaySheet = getItem(adapterPosition)
-//                        lumperDaySheet.workItemDetail?.let { workItemDetail ->
                             adapterItemClickListener.requestCorrection(lumperDaySheet)
-//                        }
                     }
                     textViewCancelCorrection.id -> {
                         val lumperDaySheet = getItem(adapterPosition)
-                        lumperDaySheet.workItemDetail?.id?.let {
+                        lumperDaySheet.workItemDetail?.corrections?.id?.let {
                             adapterItemClickListener.cancelRequestCorrection(it)
                         }
                     }
                     textViewUpdateCorrection.id -> {
                         val lumperDaySheet = getItem(adapterPosition)
-//                        lumperDaySheet?.let { corrections ->
                             adapterItemClickListener.updateRequestCorrection(lumperDaySheet)
-//                        }
                     }
                     textViewScheduleNote.id -> {
                         val lumperDaySheet = getItem(adapterPosition)
