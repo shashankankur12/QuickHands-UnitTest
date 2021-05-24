@@ -23,7 +23,6 @@
         android:theme="@style/AppTheme"
         tools:ignore="LockedOrientationActivity"
         tools:replace="android:allowBackup">
-        <activity android:name=".views.requestCorrection.RequestCorrection"></activity>
         <activity android:name=".views.addContainer.AddContainerActivity" />
         <activity android:name=".views.schedule.WorkScheduleActivity" />
         <activity android:name=".views.buildingOperations.BuildingOperationsActivity" />

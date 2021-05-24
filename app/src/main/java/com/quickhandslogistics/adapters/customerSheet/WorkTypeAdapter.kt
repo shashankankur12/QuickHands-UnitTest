@@ -71,39 +71,43 @@ class WorkTypeAdapter(
                     it.type.equals(AppConstant.WORKSHEET_WORK_ITEM_LIVE) -> liveLodeItem.add(it)
                 }
             }
-            if (adapterPosition == 0) {
-                if (workItemDetail.size > 0) {
-                    textViewLiveLode.visibility = View.VISIBLE
-                    textViewLiveLoadNote.visibility = if (isNoteVisible) View.VISIBLE else View.GONE
-                    textViewLiveLode.text =
-                        String.format(resources.getString(R.string.out_bound_s), outboundItem.size)
-                    setAdapter(leadProfile, workItemDetail)
-                } else {
-                    textViewLiveLode.visibility = View.GONE
-                    textViewLiveLoadNote.visibility = View.GONE
-                }
 
-            } else if (adapterPosition == 1) {
-                if (workItemDetail.size > 0) {
-                    textViewLiveLode.text =
-                        String.format(resources.getString(R.string.live_load_s), liveLodeItem.size)
-                    textViewLiveLode.visibility = View.VISIBLE
-                    textViewLiveLoadNote.visibility = if (isNoteVisible) View.VISIBLE else View.GONE
-                    setAdapter(leadProfile, workItemDetail)
-                } else {
-                    textViewLiveLode.visibility = View.GONE
-                    textViewLiveLoadNote.visibility = View.GONE
+            when (adapterPosition) {
+                0 -> {
+                    if (workItemDetail.size > 0) {
+                        textViewLiveLode.visibility = View.VISIBLE
+                        textViewLiveLoadNote.visibility = if (isNoteVisible) View.VISIBLE else View.GONE
+                        textViewLiveLode.text =
+                                String.format(resources.getString(R.string.out_bound_s), outboundItem.size)
+                        setAdapter(leadProfile, workItemDetail)
+                    } else {
+                        textViewLiveLode.visibility = View.GONE
+                        textViewLiveLoadNote.visibility = View.GONE
+                    }
                 }
-            } else if (adapterPosition == 2) {
-                if (workItemDetail.size > 0) {
-                    textViewLiveLode.visibility = View.VISIBLE
-                    textViewLiveLoadNote.visibility = if (isNoteVisible) View.VISIBLE else View.GONE
-                    textViewLiveLode.text =
-                        String.format(resources.getString(R.string.drops_value), dropItem.size)
-                    setAdapter(leadProfile, workItemDetail)
-                } else {
-                    textViewLiveLode.visibility = View.GONE
-                    textViewLiveLoadNote.visibility = View.GONE
+                1 -> {
+                    if (workItemDetail.size > 0) {
+                        textViewLiveLode.text =
+                                String.format(resources.getString(R.string.live_load_s), liveLodeItem.size)
+                        textViewLiveLode.visibility = View.VISIBLE
+                        textViewLiveLoadNote.visibility = if (isNoteVisible) View.VISIBLE else View.GONE
+                        setAdapter(leadProfile, workItemDetail)
+                    } else {
+                        textViewLiveLode.visibility = View.GONE
+                        textViewLiveLoadNote.visibility = View.GONE
+                    }
+                }
+                2 -> {
+                    if (workItemDetail.size > 0) {
+                        textViewLiveLode.visibility = View.VISIBLE
+                        textViewLiveLoadNote.visibility = if (isNoteVisible) View.VISIBLE else View.GONE
+                        textViewLiveLode.text =
+                                String.format(resources.getString(R.string.drops_value), dropItem.size)
+                        setAdapter(leadProfile, workItemDetail)
+                    } else {
+                        textViewLiveLode.visibility = View.GONE
+                        textViewLiveLoadNote.visibility = View.GONE
+                    }
                 }
             }
             recyclerViewLiveLoadNote.visibility = if (isNoteVisible) View.VISIBLE else View.GONE

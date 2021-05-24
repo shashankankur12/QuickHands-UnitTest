@@ -140,15 +140,15 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
                 }
                 if (isOldWork){
                     textViewLastDate.visibility=View.VISIBLE
-                    textViewLastDate.text=" Work Date :${timingDetail?.createdAt?.let {changeDateString(PATTERN_API_RESPONSE,PATTERN_DATE_DISPLAY_CUSTOMER_SHEET,it)} }"
+                    timingDetail?.createdAt?.let {textViewLastDate.text=resources.getString(R.string.work_date,  changeDateString(PATTERN_API_RESPONSE,PATTERN_DATE_DISPLAY_CUSTOMER_SHEET, it) )}
                 }else{
                     textViewLastDate.visibility=View.GONE
                 }
             } else {
-                textViewWorkTime.text = "${AppConstant.NOTES_NOT_AVAILABLE} - ${AppConstant.NOTES_NOT_AVAILABLE}"
+                textViewWorkTime.text = String.format("%s - %s", AppConstant.NOTES_NOT_AVAILABLE, AppConstant.NOTES_NOT_AVAILABLE)
                 textViewWaitingTime.text = AppConstant.NOTES_NOT_AVAILABLE
                 textViewWorkDone.text = AppConstant.NOTES_NOT_AVAILABLE
-                textViewBreakTime.text = "${AppConstant.NOTES_NOT_AVAILABLE} - ${AppConstant.NOTES_NOT_AVAILABLE}"
+                textViewBreakTime.text = String.format("%s - %s", AppConstant.NOTES_NOT_AVAILABLE, AppConstant.NOTES_NOT_AVAILABLE)
             }
 
             checkPastDayWorkTime()

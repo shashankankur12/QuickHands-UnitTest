@@ -109,10 +109,10 @@ class LumperWorkDetailAdapter(
                     textViewWorkItemType.text = UIUtils.getSpannableText(container, it)
                 }
 
-                if (workItemDetail.schedule!=null) {
+                workItemDetail.schedule?.let {
                     textViewScheduleNote.text = ScheduleUtils.scheduleTypeNote(
-                        workItemDetail.schedule,
-                        resources
+                            it,
+                            resources
                     )
                 }
                 textViewScheduleNote.isEnabled=!workItemDetail.schedule?.scheduleNote.isNullOrEmpty() && !workItemDetail.schedule?.scheduleNote.equals(
