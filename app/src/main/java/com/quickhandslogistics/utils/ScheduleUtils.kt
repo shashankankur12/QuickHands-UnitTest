@@ -481,11 +481,9 @@ object ScheduleUtils {
         val customNoteList: ArrayList<String> = ArrayList()
         val workItemDetail: ArrayList<WorkItemDetail> = ArrayList()
 
-        workItemData?.let{
-            workItemDetail.addAll(it?.liveLoads!!)
-            workItemDetail.addAll(it?.outbounds!!)
-            workItemDetail.addAll(it?.drops!!)
-        }
+        workItemData?.liveLoads?.let{ workItemDetail.addAll(it) }
+        workItemData?.outbounds?.let{ workItemDetail.addAll(it) }
+        workItemData?.drops?.let{ workItemDetail.addAll(it) }
 
         workItemDetail.forEach{workItemData ->
             workItemData.schedule?.let {

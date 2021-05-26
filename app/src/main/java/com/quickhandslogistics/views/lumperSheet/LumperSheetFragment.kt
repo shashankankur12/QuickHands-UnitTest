@@ -228,6 +228,9 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
                     AppUtils.hideSoftKeyboard(fragmentActivity!!)
                 }
                 buttonSubmit.id -> showConfirmationDialog()
+                else ->{
+
+                }
             }
         }
     }

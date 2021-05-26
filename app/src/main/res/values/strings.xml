@@ -180,6 +180,7 @@
     <string name="requested_lumpers_s">Requested Lumpers: %s</string>
     <string name="role">Role</string>
     <string name="role_lead">Role : </string>
+    <string name="lead">Lead</string>
     <string name="save">Save</string>
     <string name="schedule">Work Schedule</string>
     <string name="bulk_action">Bulk Action</string>
@@ -420,6 +421,17 @@
     <string name="unfinished_popup_error_message">The following parameter need to be filled out before a container can be mark \'Unfinished\'</string>
     <string name="unfinished_container_error_message"><![CDATA[<b>Container Perameters:</b>]]> \n Door, Container # and Cases</string>
     <string name="unfinished_lumper_error_message"><![CDATA[<b>Lumper Perameters:</b>]]> \n All fields for all assigned lumpers.</string>
+    <string name="morning_punch_less_then_break_error_message">Lumper Punch-In should be before Lunch-In</string>
+    <string name="morning_punch_less_then_punch_out_error_message">Lumper Punch-In should be before Punch-Out</string>
+    <string name="lunch_in_greater_then_punch_in_error_message">Lumper Lunch-In should be after Punch-In</string>
+    <string name="lunch_in_less_then_punch_out_error_message">Lumper Lunch-In should be before Punch-Out</string>
+    <string name="lunch_in_less_then_lunch_out_error_message">Lumper Lunch-In should be before Lunch-Out</string>
+    <string name="punch_out_less_then_punch_in_error_message">Lumper Punch-Out should be after Punch-In</string>
+    <string name="punch_out_less_then_lunch_in_error_message">Lumper Punch-Out should be after Lunch-In</string>
+    <string name="punch_out_less_then_lunch_out_error_message">Lumper Punch-Out should be after Lunch-Out</string>
+    <string name="lunch_out_less_then_punch_in_error_message">Lumper Lunch-Out should be after Punch-In</string>
+    <string name="lunch_out_less_then_lunch_in_error_message">Lumper Lunch-Out should be after Lunch-In</string>
+    <string name="lunch_out_greater_then_lunch_in_error_message">Lumper Lunch-Out should be before Punch-Out</string>
 
     <!--Info Messages-->
     <string name="enter_employee_id_info_message">Employee ID</string>

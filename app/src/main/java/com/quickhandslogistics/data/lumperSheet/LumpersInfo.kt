@@ -14,6 +14,10 @@ class LumpersInfo() : Parcelable {
     @Expose
     var lumperName: String? = null
 
+    @SerializedName("role")
+    @Expose
+    var role: String? = null
+
     @SerializedName("lumperEmployeeId")
     @Expose
     var lumperEmployeeId: String? = null
@@ -32,6 +36,7 @@ class LumpersInfo() : Parcelable {
     constructor(parcel: Parcel) : this() {
         lumperId = parcel.readString()
         lumperName = parcel.readString()
+        role = parcel.readString()
         lumperEmployeeId = parcel.readString()
         lumperImageUrl = parcel.readString()
         sheetSigned = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
@@ -43,6 +48,7 @@ class LumpersInfo() : Parcelable {
         parcel.writeString(lumperName)
         parcel.writeString(lumperEmployeeId)
         parcel.writeString(lumperImageUrl)
+        parcel.writeString(role)
         parcel.writeValue(sheetSigned)
         parcel.writeValue(isPresent)
     }

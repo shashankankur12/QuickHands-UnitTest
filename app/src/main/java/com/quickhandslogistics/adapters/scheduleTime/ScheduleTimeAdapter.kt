@@ -15,7 +15,6 @@ import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.UIUtils
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.item_lumper_sheet_layout.view.*
 import kotlinx.android.synthetic.main.item_schedule_time.view.*
 import kotlinx.android.synthetic.main.item_schedule_time.view.circleImageViewProfile
 import kotlinx.android.synthetic.main.item_schedule_time.view.textViewEmployeeId

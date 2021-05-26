@@ -6,6 +6,7 @@ import com.quickhandslogistics.utils.AppConstant.Companion.EMPLOYEE_SHIFT_NIGHT
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.roundToInt
 
 class DateUtils {
     companion object {
@@ -131,9 +132,13 @@ class DateUtils {
             val punchOut= convertUTCDateStringToMilliseconds(PATTERN_API_RESPONSE, eveningPunchOut)
             val diffrence = punchOut - punchIn
 
+            val seconds = diffrence / 1000
+            val minutes = seconds / 60
+            val hours = minutes / 60
+            val totalMin = (Math.round(seconds.toDouble()/60 %60)).toInt()
             return String.format("%s H %s M",
-                (diffrence / (1000 * 60 * 60) % 24),
-                (diffrence / (1000 * 60) % 60)
+                    hours,
+                    totalMin
             )
         }
 

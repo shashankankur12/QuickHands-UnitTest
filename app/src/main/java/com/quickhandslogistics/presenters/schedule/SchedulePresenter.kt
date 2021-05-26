@@ -91,9 +91,9 @@ class SchedulePresenter(private var scheduleView: ScheduleContract.View?, privat
             val leadProfile = DateUtils.sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
             val leadDept = leadProfile?.department
             if (leadDept != AppConstant.EMPLOYEE_DEPARTMENT_BOTH) {
-                if (!it.outbounds.isNullOrEmpty() && it.liveLoads.isNullOrEmpty() && it.drops.isNullOrEmpty() && deptDetail != AppConstant.EMPLOYEE_DEPARTMENT_BOTH)
+                if (it.outbounds!=null && it.liveLoads== null && it.drops==null && deptDetail != AppConstant.EMPLOYEE_DEPARTMENT_BOTH)
                     it.scheduleDepartment = AppConstant.EMPLOYEE_DEPARTMENT_OUTBOUND
-                else if (!it.liveLoads.isNullOrEmpty() && !it.drops.isNullOrEmpty() && it.outbounds.isNullOrEmpty() && deptDetail != AppConstant.EMPLOYEE_DEPARTMENT_BOTH)
+                else if (it.liveLoads!=null && it.drops!=null && it.outbounds==null && deptDetail != AppConstant.EMPLOYEE_DEPARTMENT_BOTH)
                     it.scheduleDepartment = AppConstant.EMPLOYEE_DEPARTMENT_INBOUND
             } else it.scheduleDepartment = AppConstant.EMPLOYEE_DEPARTMENT_BOTH
         }

@@ -24,18 +24,15 @@ import com.quickhandslogistics.contracts.attendance.TimeClockAttendanceContract
 import com.quickhandslogistics.controls.CustomTextView
 import com.quickhandslogistics.data.attendance.AttendanceDetail
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_EVENING_PUNCH_OUT
 import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_IS_PRESENT
 import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_LUNCH_PUNCH_IN
 import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_LUNCH_PUNCH_OUT
 import com.quickhandslogistics.utils.AppConstant.Companion.ATTENDANCE_MORNING_PUNCH_IN
-import com.quickhandslogistics.utils.ConnectionDetector
-import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.convertDateStringToTime
 import com.quickhandslogistics.utils.DateUtils.Companion.getDateTimeCalculeted
-import com.quickhandslogistics.utils.FlipAnimatorUtil
-import com.quickhandslogistics.utils.UIUtils
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_time_clock_attendance.view.*
@@ -146,6 +143,7 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
                 }
                 editTextNotes.setText(attendanceDetail.attendanceNote)
                 updateTimeUI(isPresent, lumperAttendance.id!!)
+                roleCheck(lumperAttendance.role)
                 ishaseClockOut(lumperAttendance)
             }
 
@@ -163,6 +161,14 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
             textViewAddTime.visibility = if (textViewAddTime.visibility == View.VISIBLE && selectedItems.size() == 0&& lumperAttendance?.attendanceDetail?.eveningPunchOut == null) View.VISIBLE else View.GONE
             editTextNotes.isEnabled = selectedItems.size() == 0
             layoutCheckBox.visibility = /*if (isSelected) View.VISIBLE else*/ View.GONE
+        }
+
+        private fun roleCheck(role: String?) {
+            if (role.equals(AppConstant.LEADS)) {
+                textViewCheckBoxStatus.visibility = View.VISIBLE
+                textViewCheckBoxStatus.text = context.getString(R.string.lead)
+            } else
+                textViewCheckBoxStatus.visibility = View.GONE
         }
 
         private fun ishaseClockOut(lumperAttendance: LumperAttendanceData) {
@@ -186,15 +192,6 @@ class TimeClockAttendanceAdapter(private var onAdapterClick: TimeClockAttendance
             checkBoxAttendance.setOnClickListener(this)
             editTextNotes.addTextChangedListener(this)
             editTextNotes.setOnEditorActionListener(this)
-
-            if (!checkBoxAttendance.isChecked) {
-                textViewCheckBoxStatus.text = context.getString(R.string.mark_present)
-            } else if (checkBoxAttendance.isEnabled) {
-                textViewCheckBoxStatus.text = context.getString(R.string.change_present)
-            } else {
-                textViewCheckBoxStatus.text = context.getString(R.string.present)
-            }
-            textViewCheckBoxStatus.visibility=View.GONE
         }
 
         private fun applyIconAnimation(position: Int) {

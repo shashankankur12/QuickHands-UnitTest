@@ -30,17 +30,16 @@ class ScheduleDetailData() : Parcelable {
     @SerializedName("live")
     @Expose
     var liveLoads: ArrayList<WorkItemDetail>? = null
-        get() = if (field.isNullOrEmpty()) ArrayList() else field
 
     @SerializedName("drop")
     @Expose
     var drops: ArrayList<WorkItemDetail>? = null
-        get() = if (field.isNullOrEmpty()) ArrayList() else field
+
 
     @SerializedName("outbound")
     @Expose
     var outbounds: ArrayList<WorkItemDetail>? = null
-        get() = if (field.isNullOrEmpty()) ArrayList() else field
+
 
     @SerializedName("scheduleNote")
     @Expose

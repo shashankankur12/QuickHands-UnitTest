@@ -218,7 +218,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
                     if (currentPageIndex != totalPagesCount) {
                         if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
                             currentPageIndex = nextPageIndex
-                            fetchScheduledWorkItems()
+//                            fetchScheduledWorkItems()
                         }
                     }
                 }
@@ -237,7 +237,9 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
             textViewBuildingName.text = leadProfile?.buildingDetailData?.get(0)?.buildingName!!.capitalize()
             textViewDept.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), UIUtils.getDisplayEmployeeDepartmentHeader(leadProfile))
             textViewShift.text = UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile.shift?.capitalize().toString())
-            textViewLeadNumber.text = UIUtils.getSpannableText(getString(R.string.bar_header_leads), leadProfile.buildingDetailData?.get(0)?.leadIds!!.size.toString())
+            leadProfile.buildingDetailData?.get(0)?.leads?.let {
+                textViewLeadNumber.text = UIUtils.getSpannableText(getString(R.string.bar_header_leads), it.size.toString())
+            }
         } else {
             layoutWorkScheduleInfo.visibility = View.GONE
             appBarView.visibility = View.GONE

@@ -69,6 +69,7 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
         private val linearLayoutLumperTime: ConstraintLayout = view.linearLayoutLumperTime as ConstraintLayout
         private val textViewEmployeeId: CustomTextView = view.textViewEmployeeId
+        private val textViewLeadType: CustomTextView = view.textViewLeadType
         private val textViewAddTime: TextView = view.textViewAddTime
         private val textViewWorkTime: TextView = view.textViewWorkTime
         private val textViewWaitingTime: TextView = view.textViewWaitingTime
@@ -104,6 +105,8 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
             ishHasClockOut(employeeData)
             imageViewCancelLumper.visibility= if (workItemStatus == AppConstant.WORK_ITEM_STATUS_COMPLETED || isOldWork) View.GONE else View.VISIBLE
             checkForOldData()
+
+            textViewLeadType.visibility=if (employeeData.role.equals(AppConstant.LEADS)) View.VISIBLE else View.INVISIBLE
 
             if (timingsData.containsKey(employeeData.id)) {
                 val timingDetail = timingsData[employeeData.id]

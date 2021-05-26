@@ -178,6 +178,7 @@
     <string name="requested_lumpers_s">Requested Lumpers: %s</string>
     <string name="role">Role</string>
     <string name="role_lead">Role : </string>
+    <string name="lead">Lead</string>
     <string name="save">Save</string>
     <string name="schedule">Work Schedule</string>
     <string name="bulk_action">Bulk Action</string>
@@ -351,6 +352,14 @@
     <string name="group_qhl_note_error_message">Please enter QHL note.  \n</string>
     <string name="empty_contact_list_message">There are no contact.\n Please inform your district manager.</string>
     <string name="add_container_quantity_message">Container Quantity should be greater then zero.</string>
+    <string name="morning_punch_less_then_break_error_message">Lumper Punch-In should be before Lunch-In</string>
+    <string name="morning_punch_less_then_punch_out_error_message">Lumper Punch-In should be before Punch-Out</string>
+    <string name="lunch_in_greater_then_punch_in_error_message">Lumper Lunch-In should be after Punch-In</string>
+    <string name="lunch_in_less_then_punch_out_error_message">Lumper Lunch-In should be before Punch-Out</string>
+    <string name="lunch_in_less_then_lunch_out_error_message">Lumper Lunch-In should be before Lunch-Out</string>
+    <string name="punch_out_less_then_punch_in_error_message">Lumper Punch-Out should be after Punch-In</string>
+    <string name="punch_out_less_then_lunch_in_error_message">Lumper Punch-Out should be after Lunch-In</string>
+    <string name="punch_out_less_then_lunch_out_error_message">Lumper Punch-Out should be after Lunch-Out</string>
 
     <!--Alert Messages-->
     <string name="are_you_sure_alert_message">Are you sure?</string>
