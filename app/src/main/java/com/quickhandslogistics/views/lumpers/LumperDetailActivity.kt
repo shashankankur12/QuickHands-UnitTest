@@ -44,7 +44,7 @@ class LumperDetailActivity : BaseActivity(), View.OnClickListener, LumperDetails
                 lumperDetailsPresenter.fetchBuildingInfo(it.originalBuildingId)
             else{
                 val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
-                val buildingDetailData: BuildingDetailData = if(!employeeData!!.isTemporaryAssigned) leadProfile?.buildingDetailData?.get(0)!! else employeeData!!.buildingAssignedAsLumper?.get(0)!!
+                val buildingDetailData: BuildingDetailData? = if(!employeeData?.isTemporaryAssigned!!) ScheduleUtils.getBuildingDetailData(leadProfile?.buildingDetailData) else ScheduleUtils.getBuildingDetailData(employeeData?.buildingAssignedAsLumper)
                 initializeUI(buildingDetailData)
             }
 
@@ -53,7 +53,7 @@ class LumperDetailActivity : BaseActivity(), View.OnClickListener, LumperDetails
 
     }
 
-    private fun initializeUI(buildingDetailData: BuildingDetailData) {
+    private fun initializeUI(buildingDetailData: BuildingDetailData?) {
         employeeData?.let { employeeData ->
 //            val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
 //            val buildingDetailData: BuildingDetailData = if(!employeeData.isTemporaryAssigned) leadProfile?.buildingDetailData?.get(0)!! else employeeData.buildingAssignedAsLumper?.get(0)!!
@@ -63,7 +63,7 @@ class LumperDetailActivity : BaseActivity(), View.OnClickListener, LumperDetails
             UIUtils.updateProfileBorder(activity, employeeData.isTemporaryAssigned, circleImageViewProfile)
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
 
-            if (!buildingDetailData.buildingName.isNullOrEmpty() && !employeeData.role.isNullOrEmpty()) {
+            if (!buildingDetailData?.buildingName.isNullOrEmpty() && !employeeData.role.isNullOrEmpty()) {
                 textViewCompanyName.text = "${employeeData.role!!.capitalize()} at ${buildingDetailData?.buildingName!!.capitalize()}"
             } else textViewCompanyName.visibility = View.GONE
 
@@ -78,8 +78,8 @@ class LumperDetailActivity : BaseActivity(), View.OnClickListener, LumperDetails
             textViewScheduleNote.text = if (!employeeData.scheduleNotes.isNullOrEmpty()) UIUtils.getSpannedText(getString(R.string.schedule_note) + employeeData.scheduleNotes) else UIUtils.getSpannedText(getString(R.string.schedule_note_lead))
             textViewAvailability.text = if (employeeData.fullTime == true) getString(R.string.full_time_ud) else getString(R.string.part_time_ud)
             viewAttendanceStatus.setBackgroundResource(if (employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
-            textViewBuildingName.text = if (!buildingDetailData.buildingName.isNullOrEmpty()) buildingDetailData.buildingName!!.capitalize() else "---"
-            textViewCustomerName.text = if (!buildingDetailData.customerDetail?.name.isNullOrEmpty()) buildingDetailData.customerDetail?.name!!.capitalize() else "---"
+            textViewBuildingName.text = if (!buildingDetailData?.buildingName.isNullOrEmpty()) buildingDetailData?.buildingName!!.capitalize() else "---"
+            textViewCustomerName.text = if (!buildingDetailData?.customerDetail?.name.isNullOrEmpty()) buildingDetailData?.customerDetail?.name!!.capitalize() else "---"
 
             //circleImageViewProfile.setOnClickListener(this@LumperDetailActivity)
             textViewPhoneNumber.setOnClickListener(this@LumperDetailActivity)

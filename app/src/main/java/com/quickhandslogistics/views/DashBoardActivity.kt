@@ -273,15 +273,16 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
 
     override fun showLeadProfile(leadProfileData: LeadProfileData) {
         UIUtils.showEmployeeProfileImage(activity, leadProfileData, circleImageViewProfile)
+        val buildingDetailData =ScheduleUtils.getBuildingDetailData(leadProfileData.buildingDetailData)
 
         textViewLeadName.text = UIUtils.getEmployeeFullName(leadProfileData)
         textViewEmail.text =
             if (!leadProfileData.email.isNullOrEmpty()) leadProfileData.email else "-"
         textViewEmployeeId.text =
             if (!leadProfileData.employeeId.isNullOrEmpty()) leadProfileData.employeeId else "-"
-        if (!leadProfileData.buildingDetailData?.get(0)?.buildingName.isNullOrEmpty())
+        if (!buildingDetailData?.buildingName.isNullOrEmpty())
             textViewRole.text =
-                if (!leadProfileData.role.isNullOrEmpty()) "QHL " + leadProfileData.role!!.capitalize() + " at " + leadProfileData?.buildingDetailData?.get(0)?.buildingName?.capitalize() else "-"
+                if (!leadProfileData.role.isNullOrEmpty()) "QHL " + leadProfileData.role!!.capitalize() + " at " + buildingDetailData?.buildingName?.capitalize() else "-"
         else textViewRole.text =
             if (!leadProfileData.role.isNullOrEmpty()) "QHL " + leadProfileData.role!!.capitalize() else "-"
 

@@ -52,9 +52,9 @@ class CustomerReportActivity : BaseActivity(), View.OnClickListener, CustomerRep
 
     private fun getBuildingDetail() {
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
-        var buildingDetailData= leadProfile?.buildingDetailData
+        var buildingDetailData= ScheduleUtils.getBuildingDetailData(leadProfile?.buildingDetailData)
 
-        buildingDetailData?.get(0)?.let { buildingDetailList.add(it) }
+        buildingDetailData?.let { buildingDetailList.add(it) }
 
         customerJobReportAdapter.updateLumpersData(buildingDetailList)
     }

@@ -7,6 +7,7 @@ import android.widget.TextView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.controls.Quintuple
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
+import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
 import com.quickhandslogistics.data.lumperSheet.LumpersInfo
@@ -291,10 +292,11 @@ object ScheduleUtils {
     fun getBuildingParametersList(sharedPref: SharedPref): ArrayList<String> {
         val parameters = ArrayList<String>()
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+        val buildingDetailData= ScheduleUtils.getBuildingDetailData(leadProfile?.buildingDetailData)
 
-        leadProfile?.buildingDetailData?.let { buildingDetailData ->
-            if (!buildingDetailData[0].parameters.isNullOrEmpty()) {
-                parameters.addAll(buildingDetailData[0].parameters!!)
+        buildingDetailData?.let { buildingDetailData ->
+            if (!buildingDetailData.parameters.isNullOrEmpty()) {
+                parameters.addAll(buildingDetailData.parameters!!)
             }
         }
         return parameters
@@ -316,15 +318,16 @@ object ScheduleUtils {
         var shiftEndTime = ""
         leadProfile?.shift?.let { name ->
             shiftName = name.capitalize()
+            val buildingDetailData =ScheduleUtils.getBuildingDetailData(leadProfile?.buildingDetailData)
             val shiftDetail = when (leadProfile.shift) {
                 AppConstant.EMPLOYEE_SHIFT_MORNING -> {
-                    leadProfile.buildingDetailData?.get(0)?.morningShift
+                    buildingDetailData?.morningShift
                 }
                 AppConstant.EMPLOYEE_SHIFT_SWING -> {
-                    leadProfile.buildingDetailData?.get(0)?.swingShift
+                    buildingDetailData?.swingShift
                 }
                 AppConstant.EMPLOYEE_SHIFT_NIGHT -> {
-                    leadProfile.buildingDetailData?.get(0)?.nightShift
+                    buildingDetailData?.nightShift
                 }
                 else -> null
             }
@@ -841,5 +844,9 @@ object ScheduleUtils {
                 workItemDetail.containerNumber.toString()
             )
         }
+    }
+
+    fun getBuildingDetailData(buildingDetailData: ArrayList<BuildingDetailData>?): BuildingDetailData? {
+        return if (!buildingDetailData.isNullOrEmpty()) buildingDetailData[0] else null
     }
 }

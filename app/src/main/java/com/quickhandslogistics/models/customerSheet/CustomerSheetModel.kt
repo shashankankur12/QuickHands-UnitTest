@@ -25,9 +25,9 @@ class CustomerSheetModel(private val sharedPref: SharedPref) : CustomerSheetCont
 
     override fun fetchHeaderInfo(selectedDate: Date, onFinishedListener: CustomerSheetContract.Model.OnFinishedListener) {
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
-
+        val buildingDetailData =ScheduleUtils.getBuildingDetailData(leadProfile?.buildingDetailData)
         var companyName = ""
-        leadProfile?.buildingDetailData?.get(0)?.customerDetail?.name?.let { name ->
+        buildingDetailData?.customerDetail?.name?.let { name ->
             companyName = name
         }
         val date = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)

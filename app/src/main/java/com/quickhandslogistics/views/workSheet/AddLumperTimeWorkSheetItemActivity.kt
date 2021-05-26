@@ -86,8 +86,9 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         waitingTimeDisableInPastDat()
         employeeData?.let { employeeData ->
             val leadProfile = DateUtils.sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+            val buildingDetailData =ScheduleUtils.getBuildingDetailData(leadProfile?.buildingDetailData)
             var buildingId = ""
-            leadProfile?.buildingDetailData?.get(0)?.id?.let { id ->
+            buildingDetailData?.id?.let { id ->
                 buildingId = id
             }
 

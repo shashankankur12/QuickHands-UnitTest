@@ -19,16 +19,13 @@ import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.data.workSheet.PauseTime
 import com.quickhandslogistics.data.workSheet.PauseTimeRequest
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.DateUtils
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
 import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_DATE_DISPLAY_CUSTOMER_SHEET
 import com.quickhandslogistics.utils.DateUtils.Companion.changeDateString
 import com.quickhandslogistics.utils.DateUtils.Companion.convertDateStringToTime
 import com.quickhandslogistics.utils.DateUtils.Companion.sharedPref
 import com.quickhandslogistics.utils.ScheduleUtils.calculatePercent
-import com.quickhandslogistics.utils.UIUtils
-import com.quickhandslogistics.utils.ValueUtils
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import com.quickhandslogistics.utils.ValueUtils.isNumeric
 import de.hdodenhof.circleimageview.CircleImageView
@@ -86,8 +83,9 @@ class WorkSheetItemDetailLumpersAdapter(private val resources: Resources, privat
 
         fun bind(employeeData: LumperAttendanceData) {
             val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+            val buildingDetailData = ScheduleUtils.getBuildingDetailData(leadProfile?.buildingDetailData)
             var buildingId = ""
-            leadProfile?.buildingDetailData?.get(0)?.id?.let { id ->
+            buildingDetailData?.id?.let { id ->
                 buildingId = id
             }
             UIUtils.showEmployeeProfileImage(

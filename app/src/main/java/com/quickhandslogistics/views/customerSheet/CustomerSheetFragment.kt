@@ -372,12 +372,10 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
     }
 
     private fun setHeaderData() {
-        val leadProfile = sharedPref.getClassObject(
-            AppConstant.PREFERENCE_LEAD_PROFILE,
-            LeadProfileData::class.java
-        ) as LeadProfileData?
+        val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+        val buildingDetailData =ScheduleUtils.getBuildingDetailData(leadProfile?.buildingDetailData)
         textViewBuildingName.text =
-            UIUtils.buildingFullAddress(leadProfile?.buildingDetailData?.get(0))
+            UIUtils.buildingFullAddress(buildingDetailData)
         textViewHeaderBar.text = UIUtils.getSpannableText(
             getString(R.string.date),
             DateUtils.getDateString(DateUtils.PATTERN_DATE_DISPLAY_CUSTOMER_SHEET, selectedDate)

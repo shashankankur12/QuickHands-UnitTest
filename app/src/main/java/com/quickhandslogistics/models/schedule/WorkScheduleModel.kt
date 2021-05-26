@@ -17,9 +17,9 @@ class WorkScheduleModel (private val sharedPref: SharedPref) : WorkScheduleContr
 
     override fun fetchHeaderInfo(date: Date, onFinishedListener: WorkScheduleContract.Model.OnFinishedListener) {
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
-
+        val buildingDetailData= ScheduleUtils.getBuildingDetailData(leadProfile?.buildingDetailData)
         var companyName = ""
-        leadProfile?.buildingDetailData?.get(0)?.customerDetail?.name?.let { name ->
+        buildingDetailData?.customerDetail?.name?.let { name ->
             companyName = name
         }
         val date = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, date)

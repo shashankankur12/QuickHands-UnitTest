@@ -88,6 +88,7 @@ class ScheduleAdapter(private val resources: Resources, private val context: Con
 
         fun bind(scheduleDetail: ScheduleDetailData) {
             val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+            val buildingDetailData =ScheduleUtils.getBuildingDetailData(leadProfile?.buildingDetailData)
             textViewBuildingName.text = UIUtils.getSpannableText(resources.getString(R.string.department_full),"${scheduleDetail.scheduleDepartment.toLowerCase().capitalize()}s")
             if (!DateUtils.isCurrentDate(selectedDate.time) && !DateUtils.isFutureDate(selectedDate.time)) {
                 if (checkAllContainerComplete(scheduleDetail.customerSheet)) {
@@ -125,7 +126,7 @@ class ScheduleAdapter(private val resources: Resources, private val context: Con
             textViewScheduleTypeUnfinished.text = String.format(resources.getString(R.string.resume_header),scheduleWorkItem.fourth.size)
             textViewWorkItemsCount.text = String.format(resources.getString(R.string.total_containers_s),scheduleWorkItem.fifth)
 
-            leadProfile?.buildingDetailData?.get(0)?.leads?.let {
+            buildingDetailData?.leads?.let {
                 val leadName= getDepartmentLead(it, scheduleDetail.scheduleDepartment)
                 textViewWorkItemsLeadName.text = String.format(resources.getString(R.string.lead_name),leadName)
             }

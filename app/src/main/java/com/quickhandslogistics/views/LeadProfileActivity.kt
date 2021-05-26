@@ -6,12 +6,10 @@ import android.os.Bundle
 import android.view.View
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.LeadProfileContract
+import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.presenters.LeadProfilePresenter
-import com.quickhandslogistics.utils.ConnectionDetector
-import com.quickhandslogistics.utils.CustomDialogWarningListener
-import com.quickhandslogistics.utils.CustomProgressBar
-import com.quickhandslogistics.utils.UIUtils
+import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.common.FullScreenImageActivity
 import kotlinx.android.synthetic.main.content_lead_profile.*
 
@@ -67,18 +65,26 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
     }
 
     private fun showEmailDialog() {
-        val name = UIUtils.getEmployeeFullName(employeeData?.buildingDetailData?.get(0)?.districtManager)
-        employeeData?.buildingDetailData?.get(0)?.districtManager?.email?.let { email ->
-            CustomProgressBar.getInstance().showWarningDialog(String.format(getString(R.string.email_lumper_alert_message), name),
-                activity, object : CustomDialogWarningListener {
-                    override fun onConfirmClick() {
-                        val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", email, null))
-                        startActivity(Intent.createChooser(emailIntent, "Send email..."))
-                    }
+        val buildingDetailData= ScheduleUtils.getBuildingDetailData(employeeData?.buildingDetailData)
+        if (buildingDetailData != null) {
+            val name =
+                UIUtils.getEmployeeFullName(buildingDetailData?.districtManager)
+            buildingDetailData?.districtManager?.email?.let { email ->
+                CustomProgressBar.getInstance().showWarningDialog(String.format(
+                    getString(R.string.email_lumper_alert_message),
+                    name
+                ),
+                    activity, object : CustomDialogWarningListener {
+                        override fun onConfirmClick() {
+                            val emailIntent =
+                                Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", email, null))
+                            startActivity(Intent.createChooser(emailIntent, "Send email..."))
+                        }
 
-                    override fun onCancelClick() {
-                    }
-                })
+                        override fun onCancelClick() {
+                        }
+                    })
+            }
         }
     }
 
@@ -115,9 +121,10 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
         this.employeeData = employeeData
         UIUtils.showEmployeeProfileImage(activity, employeeData, circleImageViewProfile)
         textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
-        if (!employeeData.buildingDetailData?.get(0)?.buildingName.isNullOrEmpty() && !employeeData.role.isNullOrEmpty()) {
+        val buildingData = ScheduleUtils.getBuildingDetailData(employeeData?.buildingDetailData)
+        if (!buildingData?.buildingName.isNullOrEmpty() && !employeeData.role.isNullOrEmpty()) {
             textViewCompanyName.text =
-                employeeData.role!!.capitalize() + " at " + employeeData.buildingDetailData?.get(0)?.buildingName!!.capitalize()
+                employeeData.role!!.capitalize() + " at " + buildingData?.buildingName!!.capitalize()
         } else textViewCompanyName.visibility = View.GONE
 
         textViewEmailAddress.text = if (!employeeData.email.isNullOrEmpty()) employeeData.email else "---"
@@ -134,8 +141,9 @@ class LeadProfileActivity : BaseActivity(), LeadProfileContract.View, View.OnCli
         textViewScheduleNote.text = if (!employeeData.scheduleNotes.isNullOrEmpty()) UIUtils.getSpannedText(getString(R.string.schedule_note) + employeeData.scheduleNotes) else UIUtils.getSpannedText(getString(R.string.schedule_note_lead))
         textViewAvailability.text = if (employeeData.fullTime!!) getString(R.string.full_time_ud) else getString(R.string.part_time_ud)
 
-        textViewBuildingName.text = if (!employeeData.buildingDetailData?.get(0)?.buildingName.isNullOrEmpty()) employeeData.buildingDetailData?.get(0)?.buildingName!!.capitalize() else "---"
-        textViewCustomerName.text = if (!employeeData.buildingDetailData?.get(0)?.customerDetail?.name.isNullOrEmpty()) employeeData.buildingDetailData?.get(0)?.customerDetail?.name!!.capitalize() else "---"
+        textViewBuildingName.text = if (!buildingData?.buildingName.isNullOrEmpty()) buildingData?.buildingName!!.capitalize() else "---"
+        textViewCustomerName.text = if (!buildingData?.customerDetail?.name.isNullOrEmpty()) buildingData?.customerDetail?.name!!.capitalize() else "---"
     }
+
 
 }

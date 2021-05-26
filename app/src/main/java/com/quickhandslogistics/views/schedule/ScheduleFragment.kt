@@ -233,11 +233,12 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         textViewDate.visibility = View.GONE
 
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
-        if (leadProfile?.buildingDetailData?.get(0) != null) {
-            textViewBuildingName.text = leadProfile?.buildingDetailData?.get(0)?.buildingName!!.capitalize()
+        val buildingDetailData =ScheduleUtils.getBuildingDetailData(leadProfile?.buildingDetailData)
+        if (buildingDetailData != null) {
+            textViewBuildingName.text = buildingDetailData?.buildingName!!.capitalize()
             textViewDept.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), UIUtils.getDisplayEmployeeDepartmentHeader(leadProfile))
-            textViewShift.text = UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile.shift?.capitalize().toString())
-            leadProfile.buildingDetailData?.get(0)?.leads?.let {
+            textViewShift.text = UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile?.shift?.capitalize().toString())
+            buildingDetailData?.leads?.let {
                 textViewLeadNumber.text = UIUtils.getSpannableText(getString(R.string.bar_header_leads), it.size.toString())
             }
         } else {

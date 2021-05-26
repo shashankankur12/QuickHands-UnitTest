@@ -255,15 +255,16 @@ class DateUtils {
             val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
             leadProfile?.let {
                 var shiftDetail: ShiftDetail? = null
+                val buildingDetail =ScheduleUtils.getBuildingDetailData(leadProfile.buildingDetailData)
                 when (leadProfile.shift) {
                     AppConstant.EMPLOYEE_SHIFT_MORNING -> {
-                        shiftDetail = leadProfile.buildingDetailData?.get(0)?.morningShift
+                        shiftDetail = buildingDetail?.morningShift
                     }
                     AppConstant.EMPLOYEE_SHIFT_SWING -> {
-                        shiftDetail = leadProfile.buildingDetailData?.get(0)?.swingShift
+                        shiftDetail = buildingDetail?.swingShift
                     }
                     AppConstant.EMPLOYEE_SHIFT_NIGHT -> {
-                        shiftDetail = leadProfile.buildingDetailData?.get(0)?.nightShift
+                        shiftDetail = buildingDetail?.nightShift
                     }
                 }
                 val date = calculateDateByShiftStartTime(
@@ -285,15 +286,16 @@ class DateUtils {
             val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
             leadProfile?.let {
                 var shiftDetail: ShiftDetail? = null
+                val buildingDetail =ScheduleUtils.getBuildingDetailData(leadProfile.buildingDetailData)
                 when (leadProfile.shift) {
                     AppConstant.EMPLOYEE_SHIFT_MORNING -> {
-                        shiftDetail = leadProfile.buildingDetailData?.get(0)?.morningShift
+                        shiftDetail = buildingDetail?.morningShift
                     }
                     AppConstant.EMPLOYEE_SHIFT_SWING -> {
-                        shiftDetail = leadProfile.buildingDetailData?.get(0)?.swingShift
+                        shiftDetail = buildingDetail?.swingShift
                     }
                     AppConstant.EMPLOYEE_SHIFT_NIGHT -> {
-                        shiftDetail = leadProfile.buildingDetailData?.get(0)?.nightShift
+                        shiftDetail = buildingDetail?.nightShift
                     }
                 }
                 date = calculateDateByShiftStartTime(shiftDetail, originalDate, leadProfile.shift)
