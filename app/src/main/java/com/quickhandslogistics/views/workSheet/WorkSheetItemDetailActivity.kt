@@ -170,7 +170,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
             adapter = workSheetItemStatusAdapter
         }
 
-        textViewRequestCorrection.visibility= if (!DateUtils.isFutureDate(selectedTime) && !DateUtils.isCurrentDate(selectedTime)) View.VISIBLE else View.GONE
+        textViewRequestCorrection.visibility= if (!DateUtils.isFutureDate(selectedTime) && !DateUtils.isCurrentDate(selectedTime)) View.GONE else View.GONE
         textViewStatus.setOnClickListener(this)
         textViewRequestCorrection.setOnClickListener(this)
         textViewWorkSheetNote1.setOnClickListener(this)

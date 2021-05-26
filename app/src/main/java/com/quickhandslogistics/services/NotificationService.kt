@@ -137,6 +137,7 @@ class NotificationService : FirebaseMessagingService() {
             if (channel == null) {
                 val notificationChannel = NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
                 notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+                notificationChannel.setShowBadge(true)
                 notificationManager.createNotificationChannel(notificationChannel)
             }
         }

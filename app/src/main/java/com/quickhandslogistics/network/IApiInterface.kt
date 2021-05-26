@@ -260,19 +260,19 @@ interface IApiInterface {
     @GET("employees/lead/buildings/{buildingId}")
     fun getBuildingDetails(@Header("Authorization") auth: String, @Path("buildingId") buildingId: String
     ): Call<BuildingDetailsResponse>
-
+    ////////////////////////////////////////////////////////
 
     //past future date calender details
-    @GET("schedule/lookup-availability")
+    @GET("schedule/meta/lookup-availability")
     fun schedulePastFutureDate(@Header("Authorization") auth: String): Call<GetPastFutureDateResponse>
 
-    @GET("employees/lumpers-signature")
+    @GET("employees/meta/lumpers-signature")
     fun lumperSheetPastFutureDate(@Header("Authorization") auth: String): Call<GetPastFutureDateResponse>
 
-    @GET("employees/lumpers-availability")
+    @GET("employees/meta/lumpers-availability")
     fun scheduleTimePastFutureDate(@Header("Authorization") auth: String): Call<GetPastFutureDateResponse>
 
-    @GET("employees/lumpers-availability")
+    @GET("employees/meta/lumpers-timeclock")
     fun timeClockPastFutureDate(@Header("Authorization") auth: String): Call<GetPastFutureDateResponse>
     /////////////////////////////////////////////////////////
 

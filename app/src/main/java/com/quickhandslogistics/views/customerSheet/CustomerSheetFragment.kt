@@ -53,6 +53,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
     private var isSavedData: Boolean = true
     private var selectedDatePosition: Int = 0
     private var inCompleteWorkItemsCount: Int = 0
+    private var totalCount: Int = 0
     private var workItemsCount: Int = 0
     private lateinit var customerSheetPresenter: CustomerSheetPresenter
     private lateinit var workItemAdapter: WorkTypeAdapter
@@ -223,7 +224,14 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
                 getString(R.string.total_containers_s),
                 (allWorkItems.size - onGoingWorkItems.size)
             )
+
+         totalCount=  allWorkItems.size
+        signatureButtonEnable(totalCount>0)
         buildingDetails(scheduleDetails, customerSheet)
+    }
+
+    private fun signatureButtonEnable(listHaveData: Boolean) {
+        buttonSignature.isEnabled=  listHaveData
     }
 
     private fun setVisibilityForNote(visible: Boolean) {

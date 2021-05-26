@@ -40,6 +40,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     private var selectedFragmentTitle: String = ""
     private var scheduleTimeNotes: String = ""
     private var isCancelAllScheduleVisible: Boolean = false
+    private var isAddContainerVisible: Boolean = true
      var isShowLeavePopup: Boolean = false
      var isPerformLogout: Boolean = false
      var isPrivousTab: Boolean = false
@@ -110,7 +111,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
             when (selectedFragmentTitle) {
                 getString(R.string.today_s_work_sheet) -> {
                     menu.findItem(R.id.actionCancelAllWork).isVisible = isCancelAllScheduleVisible
-                    menu.findItem(R.id.actionAddContainer).isVisible = true
+                    menu.findItem(R.id.actionAddContainer).isVisible = isAddContainerVisible
                 }
                 getString(R.string.scheduled_lumpers) -> {
                     menu.findItem(R.id.actionNotes).isVisible = scheduleTimeNotes.isNotEmpty()
@@ -341,6 +342,11 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
 
     override fun invalidateCancelAllSchedulesOption(isShown: Boolean) {
         this.isCancelAllScheduleVisible = isShown
+        invalidateOptionsMenu()
+    }
+
+    override fun invalidateAddNoteOption(isShown: Boolean) {
+        this.isAddContainerVisible = isShown
         invalidateOptionsMenu()
     }
 
