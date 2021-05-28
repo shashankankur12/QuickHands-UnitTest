@@ -1,25 +1,16 @@
 package com.quickhandslogistics.utils
 
-import android.app.Activity
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.quickhandslogistics.R
-import com.quickhandslogistics.adapters.lumperSheet.CorrectionBuildingOpsAdapter
-import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.dashboard.LeadProfileData
-import com.quickhandslogistics.data.lumperSheet.LumperDaySheet
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
-import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.utils.DateUtils.Companion.sharedPref
-import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
-import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.*
 import java.util.*
 
 object CustomBottomSheetDialog {
@@ -210,6 +201,30 @@ object CustomBottomSheetDialog {
                     )
                 else CustomProgressBar.getInstance().showValidationErrorDialog(
                     context.getString(R.string.request_correction_message),
+                    context
+                )
+            }
+        unFinishedBottomSheet.show()
+    }
+
+
+    fun sendMessageBottomSheetDialog(context: Context, contractView: IDialogRequestCorrectionClick) {
+        val unFinishedBottomSheet = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
+        unFinishedBottomSheet.setContentView(R.layout.bottumsheet_send_message)
+        unFinishedBottomSheet.findViewById<TextView>(R.id.textViewTitle)
+        val editTextMessage = unFinishedBottomSheet.findViewById<EditText>(R.id.editTextMessage)
+
+        unFinishedBottomSheet.findViewById<Button>(R.id.buttonCancelMessage)
+            ?.setOnClickListener { unFinishedBottomSheet.dismiss() }
+        unFinishedBottomSheet.findViewById<Button>(R.id.buttonSendMessage)
+            ?.setOnClickListener {
+                if (!editTextMessage?.text.isNullOrEmpty())
+                    contractView.onSendRequest(
+                        unFinishedBottomSheet,
+                        editTextMessage?.text.toString()
+                    )
+                else CustomProgressBar.getInstance().showValidationErrorDialog(
+                    context.getString(R.string.please_enter_message_error_message),
                     context
                 )
             }

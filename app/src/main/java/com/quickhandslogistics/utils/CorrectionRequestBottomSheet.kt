@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.quickhandslogistics.R
@@ -55,12 +56,11 @@ class CorrectionRequestBottomSheet {
         val unFinishedBottomSheet = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
         unFinishedBottomSheet.setContentView(R.layout.new_bottum_sheet_request_correction)
 
-
         buildingParams?.let {
             unFinishedBottomSheet.recyclerViewBuildingOperations.apply {
                 layoutManager = LinearLayoutManager(context)
                 addItemDecoration(SpaceDividerItemDecorator(20, 20))
-                buildingOperationsAdapter = CorrectionBuildingOpsAdapter(ScheduleUtils.sortAccordingly(it))
+                buildingOperationsAdapter = CorrectionBuildingOpsAdapter(ScheduleUtils.sortAccordingly(it), context)
                 adapter = buildingOperationsAdapter
             }
 
@@ -79,6 +79,22 @@ class CorrectionRequestBottomSheet {
         correctionNote?.let {
             if (it!= AppConstant.NOTES_NOT_AVAILABLE)
             unFinishedBottomSheet.editTextCorrection.setText(it.capitalize())
+        }
+
+        if(isCompleted == true){
+            unFinishedBottomSheet.editTextWaitingTime.isEnabled =false
+            unFinishedBottomSheet.editTextWaitingTimeMinutes.isEnabled =false
+            unFinishedBottomSheet.textViewWaitingTimeHeader.isEnabled =false
+            unFinishedBottomSheet.hoursTextViewHeading.isEnabled =false
+            unFinishedBottomSheet.minutesTextViewHeading.isEnabled =false
+            unFinishedBottomSheet.layoutLumperWaitingTime.background = ContextCompat.getDrawable(context, R.drawable.schedule_item_background_grey)
+        }else {
+            unFinishedBottomSheet.editTextWaitingTime.isEnabled =true
+            unFinishedBottomSheet.editTextWaitingTimeMinutes.isEnabled =true
+            unFinishedBottomSheet.textViewWaitingTimeHeader.isEnabled =true
+            unFinishedBottomSheet.hoursTextViewHeading.isEnabled =true
+            unFinishedBottomSheet.minutesTextViewHeading.isEnabled =true
+            unFinishedBottomSheet.layoutLumperWaitingTime.background = ContextCompat.getDrawable(context, R.drawable.schedule_item_background)
         }
 
         lumperTimeDetails?.let { timingDetail ->

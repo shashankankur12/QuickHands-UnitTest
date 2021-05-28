@@ -323,6 +323,9 @@
     <string name="containers_added">Containers added.</string>
     <string name="resume_header">Resume: %s</string>
     <string name="work_date">Work Date : %s</string>
+    <string name="message">Message</string>
+    <string name="message_header">What is your message?</string>
+    <string name="send">Send</string>
 
     <!--No Record Messages-->
     <string name="empty_add_work_item_lumpers_info_message">No Lumpers are available. Go to Time-Clock section and clock them in.</string>
@@ -432,6 +435,7 @@
     <string name="lunch_out_less_then_punch_in_error_message">Lumper Lunch-Out should be after Punch-In</string>
     <string name="lunch_out_less_then_lunch_in_error_message">Lumper Lunch-Out should be after Lunch-In</string>
     <string name="lunch_out_greater_then_lunch_in_error_message">Lumper Lunch-Out should be before Punch-Out</string>
+    <string name="please_enter_message_error_message">Please enter your message</string>
 
     <!--Info Messages-->
     <string name="enter_employee_id_info_message">Employee ID</string>

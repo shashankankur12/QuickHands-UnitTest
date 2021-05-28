@@ -1,5 +1,6 @@
 package com.quickhandslogistics.views.customerContact
 
+import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -204,7 +205,14 @@ class CustomerContactFragment : BaseFragment(), CustomerContactContract.View, Vi
             return
         }
 
-        Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
+        activity?.let {
+            CustomBottomSheetDialog.sendMessageBottomSheetDialog(
+                it, object : CustomBottomSheetDialog.IDialogRequestCorrectionClick {
+                    override fun onSendRequest(dialog: Dialog, request: String) {
+                        dialog.dismiss()
+                    }
+                })
+        }
 
     }
 }

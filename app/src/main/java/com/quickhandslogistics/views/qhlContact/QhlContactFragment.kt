@@ -1,5 +1,6 @@
 package com.quickhandslogistics.views.qhlContact
 
+import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -117,8 +118,12 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
         this.leadProfileData = leadProfileData
         leadProfileData?.let {
             phone = it.phone?.replace("+1", "")?.replace("-", "")?.trim()
-            val open = if (!it.opens.isNullOrEmpty()) it.opens else getString(R.string.na)
-            val close = if (!it.closes.isNullOrEmpty()) it.closes else getString(R.string.na)
+            val open = if (!it.opens.isNullOrEmpty()) DateUtils.changeUTCDateStringToLocalDateString(DateUtils.PATTERN_API_RESPONSE, DateUtils.PATTERN_TIME,
+                it.opens!!
+            ) else getString(R.string.na)
+            val close = if (!it.closes.isNullOrEmpty())DateUtils.changeUTCDateStringToLocalDateString(DateUtils.PATTERN_API_RESPONSE, DateUtils.PATTERN_TIME,
+                it.closes!!
+            ) else getString(R.string.na)
             email = leadProfileData.email!!
 
             textViewQhlOfficeName.text = getString(R.string.qhl_office)
@@ -222,7 +227,17 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
             ConnectionDetector.createSnackBar(activity)
             return
         }
-        Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
+
+        activity?.let {
+            CustomBottomSheetDialog.sendMessageBottomSheetDialog(
+                it, object : CustomBottomSheetDialog.IDialogRequestCorrectionClick {
+                    override fun onSendRequest(dialog: Dialog, request: String) {
+                        dialog.dismiss()
+                    }
+                })
+        }
+
+
     }
 
 }

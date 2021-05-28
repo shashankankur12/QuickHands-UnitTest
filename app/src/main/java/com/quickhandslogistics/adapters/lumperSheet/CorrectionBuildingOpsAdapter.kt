@@ -1,5 +1,6 @@
 package com.quickhandslogistics.adapters.lumperSheet
 
+import android.content.Context
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
@@ -7,14 +8,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.quickhandslogistics.R
+import kotlinx.android.synthetic.main.fragment_work_sheet_item_detail_notes.*
 import kotlinx.android.synthetic.main.item_building_operation.view.*
 import java.util.*
 
-class CorrectionBuildingOpsAdapter(private var parameters: ArrayList<String> ) : Adapter<CorrectionBuildingOpsAdapter.ViewHolder>() {
+class CorrectionBuildingOpsAdapter(private var parameters: ArrayList<String>,val context: Context) : Adapter<CorrectionBuildingOpsAdapter.ViewHolder>() {
 
     private var data = HashMap<String, String>()
     private var orignalData = HashMap<String, String>()
@@ -44,9 +48,9 @@ class CorrectionBuildingOpsAdapter(private var parameters: ArrayList<String> ) :
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), TextWatcher {
         private val textViewHeader: TextView = view.textViewHeader
         private val editTextValue: EditText = view.editTextValue
+        private val mainRootLayout: LinearLayout = view.mainRootLayout
 
         fun bind() {
-            editTextValue.isEnabled = isCompleted != true
             val header = parameters[adapterPosition]
             textViewHeader.text = header.capitalize()
             if (header.equals("Cases")){
@@ -61,6 +65,16 @@ class CorrectionBuildingOpsAdapter(private var parameters: ArrayList<String> ) :
                 editTextValue.setText("")
             }
             editTextValue.addTextChangedListener(this)
+
+            if(isCompleted == true){
+                editTextValue.isEnabled =false
+                textViewHeader.isEnabled =false
+                mainRootLayout.background = ContextCompat.getDrawable(context, R.drawable.schedule_item_background_grey)
+            }else {
+                editTextValue.isEnabled =true
+                textViewHeader.isEnabled =true
+                mainRootLayout.background = ContextCompat.getDrawable(context, R.drawable.schedule_item_background)
+            }
         }
 
         override fun afterTextChanged(text: Editable?) {
