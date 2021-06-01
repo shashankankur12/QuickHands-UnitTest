@@ -32,7 +32,7 @@ object CustomerDialog : AppConstant {
         mActivity = activity
         val dialog = Dialog(activity!!)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.window!!.setBackgroundDrawableResource(R.color.colorOpaque)
+        dialog.window?.setBackgroundDrawableResource(R.color.colorOpaque)
         dialog.setCanceledOnTouchOutside(false)
         dialog.setContentView(view)
         val layoutParams = dialog.window!!.attributes
@@ -55,11 +55,11 @@ object CustomerDialog : AppConstant {
             getDialog(R.layout.custome_alert_dialog, activity)
         //        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         val window = dialog.window
-        window!!.setLayout(
+        window?.setLayout(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        window.setBackgroundDrawableResource(android.R.color.transparent)
+        window?.setBackgroundDrawableResource(android.R.color.transparent)
         val titleTextView = dialog.findViewById<TextView>(R.id.title_text)
         val layoutDailyNote = dialog.findViewById<LinearLayout>(R.id.layoutDailyNote)
         val layoutWeeklyNote = dialog.findViewById<LinearLayout>(R.id.layoutWeeklyNote)
@@ -133,11 +133,11 @@ object CustomerDialog : AppConstant {
             getDialog(R.layout.view_work_schedule, activity)
         //        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         val window = dialog.window
-        window!!.setLayout(
+        window?.setLayout(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        window.setBackgroundDrawableResource(android.R.color.transparent)
+        window?.setBackgroundDrawableResource(android.R.color.transparent)
         val titleTextView = dialog.findViewById<TextView>(R.id.title_text)
         val textViewScheduleType = dialog.findViewById<TextView>(R.id.textViewScheduleType)
         val textViewStatus = dialog.findViewById<TextView>(R.id.textViewStatus)
@@ -288,11 +288,11 @@ object CustomerDialog : AppConstant {
             getDialog(R.layout.add_container_custome_dialog, activity)
         //        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         val window = dialog.window
-        window!!.setLayout(
+        window?.setLayout(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        window.setBackgroundDrawableResource(android.R.color.transparent)
+        window?.setBackgroundDrawableResource(android.R.color.transparent)
         val titleTextView = dialog.findViewById<TextView>(R.id.title_text)
         val recyclerViewSchedule = dialog.findViewById<RecyclerView>(R.id.recycler_view_schedules)
         val addButton = dialog.findViewById<Button>(R.id.add_button)
@@ -330,11 +330,11 @@ object CustomerDialog : AppConstant {
             getDialog(R.layout.lead_note_dialog, activity)
         //        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         val window = dialog.window
-        window!!.setLayout(
+        window?.setLayout(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        window.setBackgroundDrawableResource(android.R.color.transparent)
+        window?.setBackgroundDrawableResource(android.R.color.transparent)
         val titleTextView = dialog.findViewById<TextView>(R.id.title_text)
         val layoutIndividualNote = dialog.findViewById<LinearLayout>(R.id.layoutIndividualNote)
         val layoutGroupNote = dialog.findViewById<LinearLayout>(R.id.layoutGroupNote)
@@ -371,11 +371,11 @@ object CustomerDialog : AppConstant {
             getDialog(R.layout.comman_note_dialog, activity)
         //        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         val window = dialog.window
-        window!!.setLayout(
+        window?.setLayout(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        window.setBackgroundDrawableResource(android.R.color.transparent)
+        window?.setBackgroundDrawableResource(android.R.color.transparent)
         val titleTextView = dialog.findViewById<TextView>(R.id.title_text)
         val note: TextView = dialog.findViewById(R.id.individual_note)
         val confirm = dialog.findViewById<Button>(R.id.confirm_button)
@@ -393,11 +393,11 @@ object CustomerDialog : AppConstant {
             getDialog(R.layout.unfinished_error_dialog, activity)
         //        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         val window = dialog.window
-        window!!.setLayout(
+        window?.setLayout(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        window.setBackgroundDrawableResource(android.R.color.transparent)
+        window?.setBackgroundDrawableResource(android.R.color.transparent)
         val headTitle: TextView = dialog.findViewById(R.id.header_title)
         val parametersTitle: TextView = dialog.findViewById(R.id.parameter_title)
         val lumperTitle: TextView = dialog.findViewById(R.id.lumper_title)
@@ -415,11 +415,11 @@ object CustomerDialog : AppConstant {
         val dialog = getDialog(R.layout.dialog_zoom_image, activity)
 
         val window = dialog.window
-        window!!.setLayout(
+        window?.setLayout(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.MATCH_PARENT
         )
-        window.setBackgroundDrawableResource(android.R.color.transparent)
+        window?.setBackgroundDrawableResource(android.R.color.transparent)
         val imageClose = dialog.findViewById<ImageView>(R.id.image_close)
         val imageView: ZoomageView = dialog.findViewById(R.id.imageView)
         val progressBar = dialog.findViewById<ProgressBar>(R.id.progress_bar)

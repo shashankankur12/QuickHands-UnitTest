@@ -205,14 +205,8 @@ class CustomerContactFragment : BaseFragment(), CustomerContactContract.View, Vi
             return
         }
 
-        activity?.let {
-            CustomBottomSheetDialog.sendMessageBottomSheetDialog(
-                it, object : CustomBottomSheetDialog.IDialogRequestCorrectionClick {
-                    override fun onSendRequest(dialog: Dialog, request: String) {
-                        dialog.dismiss()
-                    }
-                })
-        }
+        val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", employeeData.email, null))
+        startActivity(Intent.createChooser(emailIntent, "Send email..."))
 
     }
 }

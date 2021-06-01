@@ -177,6 +177,15 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
         )
     }
 
+    override fun showSuccessMessageSend(message: String) {
+        CustomProgressBar.getInstance().showSuccessDialog(message,
+            fragmentActivity!!, object : CustomDialogListener {
+                override fun onConfirmClick() {
+                    qhlContactPresenter.fetchQhlContactList()
+                }
+            })
+    }
+
     override fun onClick(view: View?) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {
             ConnectionDetector.createSnackBar(activity)
@@ -228,13 +237,17 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
             return
         }
 
-        activity?.let {
-            CustomBottomSheetDialog.sendMessageBottomSheetDialog(
-                it, object : CustomBottomSheetDialog.IDialogRequestCorrectionClick {
-                    override fun onSendRequest(dialog: Dialog, request: String) {
-                        dialog.dismiss()
-                    }
-                })
+        employeeData.id?.let { id ->
+            activity?.let {
+                CustomBottomSheetDialog.sendMessageBottomSheetDialog(
+                    it, object : CustomBottomSheetDialog.IDialogRequestCorrectionClick {
+                        override fun onSendRequest(dialog: Dialog, request: String) {
+                            dialog.dismiss()
+                            qhlContactPresenter.sendCustomerContactMessage(id, request)
+
+                        }
+                    })
+            }
         }
 
 

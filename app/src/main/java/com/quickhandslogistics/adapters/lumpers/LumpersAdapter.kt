@@ -84,8 +84,8 @@ class LumpersAdapter(var adapterItemClickListener: LumpersContract.View.OnAdapte
                     }
                     constraintLayoutMessage.id -> {
                         val lumperData = getItem(adapterPosition)
-                        lumperData.email?.let { email ->
-                            adapterItemClickListener.message(textViewLumperName.text.toString(), email)
+                        lumperData.id?.let { id ->
+                            adapterItemClickListener.message(textViewLumperName.text.toString(), id)
                         }
                     }
                     else -> {

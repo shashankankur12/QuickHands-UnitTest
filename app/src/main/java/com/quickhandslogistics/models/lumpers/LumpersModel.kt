@@ -2,8 +2,11 @@ package com.quickhandslogistics.models.lumpers
 
 import android.util.Log
 import com.quickhandslogistics.contracts.lumpers.LumpersContract
+import com.quickhandslogistics.contracts.qhlContact.QhlContactContract
+import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
+import com.quickhandslogistics.data.qhlContact.ChatMessageRequest
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.DataManager.getAuthToken
 import com.quickhandslogistics.network.DataManager.isSuccessResponse
@@ -35,6 +38,22 @@ class LumpersModel(private val sharedPref: SharedPref) : LumpersContract.Model {
             }
 
             override fun onFailure(call: Call<LumperListAPIResponse>, t: Throwable) {
+                Log.e(LumpersModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
+    }
+
+    override fun sendCustomerContactMessage(id: String, message: String, onFinishedListener: LumpersContract.Model.OnFinishedListener) {
+        val chatMessageRequest= ChatMessageRequest(message)
+        DataManager.getService().contactChat(getAuthToken(), id, chatMessageRequest).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessMessageSend(response.body())
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
                 Log.e(LumpersModel::class.simpleName, t.localizedMessage!!)
                 onFinishedListener.onFailure()
             }

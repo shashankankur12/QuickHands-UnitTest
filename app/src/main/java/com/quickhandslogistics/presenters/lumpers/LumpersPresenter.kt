@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.lumpers.LumpersContract
+import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.lumpers.LumperListAPIResponse
@@ -27,6 +28,11 @@ class LumpersPresenter(private var lumpersView: LumpersContract.View?, private v
         lumpersModel.fetchLumpersList(this)
     }
 
+    override fun sendCustomerContactMessage(id: String, message: String) {
+        lumpersView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        lumpersModel.sendCustomerContactMessage(id, message, this)
+    }
+
     /** Model Result Listeners */
     override fun onFailure(message: String) {
         lumpersView?.hideProgressDialog()
@@ -43,6 +49,13 @@ class LumpersPresenter(private var lumpersView: LumpersContract.View?, private v
         if (!TextUtils.isEmpty(sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN, ""))) {
             sharedPref.performLogout()
             lumpersView?.showLoginScreen()
+        }
+    }
+
+    override fun onSuccessMessageSend(baseResponse: BaseResponse?) {
+        lumpersView?.hideProgressDialog()
+        baseResponse?.message?.let {
+            lumpersView?.showSuccessMessageSend(it)
         }
     }
 
