@@ -142,23 +142,21 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewItem"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layoutStatusComplete" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layoutStatusCancel"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_4sdp"
                 android:background="@color/buildingTitle"
                 android:paddingHorizontal="@dimen/_5sdp"
                 android:paddingVertical="@dimen/_2sdp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerViewItem">
 
@@ -190,21 +188,19 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewItemCancelHeader"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewCancelHeader" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewItemCancel"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerViewItemCancelHeader" />
 
@@ -285,11 +281,10 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewItemUnfinished"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layoutStatUnfinished" />
 
@@ -385,21 +380,19 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewItemNotOpenHeader"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewNotOpenHeader" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewItemNotOpen"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerViewItemNotOpenHeader" />
 

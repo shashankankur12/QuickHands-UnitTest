@@ -30,7 +30,7 @@ class LumpersModel(private val sharedPref: SharedPref) : LumpersContract.Model {
     override fun fetchLumpersList(onFinishedListener: LumpersContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getCurrentDateStringByEmployeeShift()
 
-        DataManager.getService().getAllLumpersData(getAuthToken(), dateString).enqueue(object : Callback<LumperListAPIResponse> {
+        DataManager.getService().getAllLumpersData(getAuthToken(), dateString, true).enqueue(object : Callback<LumperListAPIResponse> {
             override fun onResponse(call: Call<LumperListAPIResponse>, response: Response<LumperListAPIResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onSuccess(response.body()!!)

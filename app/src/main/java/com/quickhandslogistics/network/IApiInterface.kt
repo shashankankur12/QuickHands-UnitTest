@@ -38,7 +38,7 @@ interface IApiInterface {
     fun doLogin(@Body request: LoginRequest): Call<LoginResponse>
 
     @GET("employees/lead/lumpers")
-    fun getAllLumpersData(@Header("Authorization") auth: String, @Query("day") day: String): Call<LumperListAPIResponse>
+    fun getAllLumpersData(@Header("Authorization") auth: String, @Query("day") day: String,  @Query("unavailable") isAvailable: Boolean): Call<LumperListAPIResponse>
 
     @GET("employees/me")
     fun getLeadProfile(@Header("Authorization") auth: String): Call<LeadProfileAPIResponse>

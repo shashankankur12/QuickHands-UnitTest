@@ -238,9 +238,13 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
             textViewBuildingName.text = buildingDetailData?.buildingName!!.capitalize()
             textViewDept.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), UIUtils.getDisplayEmployeeDepartmentHeader(leadProfile))
             textViewShift.text = UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile?.shift?.capitalize().toString())
-            buildingDetailData?.leads?.let {
-                textViewLeadNumber.text = UIUtils.getSpannableText(getString(R.string.bar_header_leads), it.size.toString())
+
+            if(UIUtils.getDisplayEmployeeDepartmentHeader(leadProfile) == "Operations ")
+                textViewLeadNumber.text = UIUtils.getSpannableText(getString(R.string.bar_header_leads), "1")
+            else{
+                textViewLeadNumber.text = UIUtils.getSpannableText(getString(R.string.bar_header_leads), "2")
             }
+
         } else {
             layoutWorkScheduleInfo.visibility = View.GONE
             appBarView.visibility = View.GONE
