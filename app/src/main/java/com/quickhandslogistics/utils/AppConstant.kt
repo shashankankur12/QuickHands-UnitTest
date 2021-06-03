@@ -92,7 +92,6 @@ interface AppConstant {
         const val SUPERVISOR = "supervisor"
         const val LUMPER = "lumper"
 
-
         const val ERROR_MESSAGE = "You don't seem to have a building assigned yet!"
         const val MILTI_PART_FORM_DATA = "image"
         const val IMAGE_PARAM = "file"
@@ -109,7 +108,5 @@ interface AppConstant {
         const val CORRECTION_CANCELLED = "CANCELLED"
         const val CORRECTION_REJECTED = "REJECTED"
         const val CORRECTION_APPROVED = "APPROVED"
-
-
     }
 }

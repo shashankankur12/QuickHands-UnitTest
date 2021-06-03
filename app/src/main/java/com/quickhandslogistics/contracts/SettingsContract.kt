@@ -8,13 +8,13 @@ class SettingsContract {
 
         interface OnFinishedListener {
             fun showSelectedSettings(selectedLanguage: String, notificationEnabled: Boolean)
-            fun restartActivity()
+            fun restartActivity(selectedLanguage: String)
         }
     }
 
     interface View {
         fun showSelectedSettings(selectedLanguage: String, notificationEnabled: Boolean)
-        fun restartActivity()
+        fun restartActivity(selectedLanguage: String)
     }
 
     interface Presenter : BaseContract.Presenter {

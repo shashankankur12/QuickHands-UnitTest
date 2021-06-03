@@ -14,6 +14,7 @@
     <string name="add_same_start_time_for_all">Add Same Start Time for All</string>
     <string name="approved">Approved</string>
     <string name="availability">Availability</string>
+    <string name="availability_header">Availability :</string>
     <string name="back_to_work">Back to Work</string>
     <string name="break_time">Pause Time</string>
     <string name="break_time_s">Pause Time :</string>
@@ -326,6 +327,11 @@
     <string name="message">Message</string>
     <string name="message_header">What is your message?</string>
     <string name="send">Send</string>
+    <string name="customer_header">Customer : </string>
+    <string name="contact">Contact</string>
+    <string name="work_identification">Work Identification</string>
+    <string name="work_schedule_header">Work Schedule</string>
+    <string name="work_location">Work Location</string>
 
     <!--No Record Messages-->
     <string name="empty_add_work_item_lumpers_info_message">No Lumpers are available. Go to Time-Clock section and clock them in.</string>

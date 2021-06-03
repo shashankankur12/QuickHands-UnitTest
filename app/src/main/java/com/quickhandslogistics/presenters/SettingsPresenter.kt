@@ -29,8 +29,8 @@ class SettingsPresenter(
     }
 
     /** Model Result Listeners */
-    override fun restartActivity() {
-        settingsView?.restartActivity()
+    override fun restartActivity(selectedLanguage: String) {
+        settingsView?.restartActivity(selectedLanguage)
     }
 
     override fun showSelectedSettings(selectedLanguage: String, notificationEnabled: Boolean) {

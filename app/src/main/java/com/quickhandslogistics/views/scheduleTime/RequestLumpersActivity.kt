@@ -1,7 +1,6 @@
 package com.quickhandslogistics.views.scheduleTime
 
 import android.app.Dialog
-import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -19,7 +18,6 @@ import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.scheduleTime.RequestLumpersRecord
 import com.quickhandslogistics.presenters.scheduleTime.RequestLumpersPresenter
 import com.quickhandslogistics.utils.*
-import com.quickhandslogistics.utils.AppUtils.Companion.hideSoftKeyboard
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SCHEDULED_LUMPERS_COUNT
@@ -220,7 +218,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     private fun bottomSheetRequestDialog() {
         CustomBottomSheetDialog.createUpdateLumperRequest(
             activity,
-            null, object : CustomBottomSheetDialog.IDialogOnLumperRequestClick {
+            null, selectedTime, object : CustomBottomSheetDialog.IDialogOnLumperRequestClick {
                 override fun onSendLumperRequest(dialog: Dialog, requiredLumper: String, noteForDm: String, noteForLumper: String, startTime: Long, lumperId: String) {
                     dialog.dismiss()
                     showSubmitRequestConfirmationDialog(requiredLumper, noteForDm, noteForLumper, startTime, lumperId)
@@ -286,7 +284,7 @@ class RequestLumpersActivity : BaseActivity(), View.OnClickListener,
     override fun onUpdateItemClick(record: RequestLumpersRecord) {
         CustomBottomSheetDialog.createUpdateLumperRequest(
             activity,
-            record, object : CustomBottomSheetDialog.IDialogOnLumperRequestClick {
+            record, selectedTime, object : CustomBottomSheetDialog.IDialogOnLumperRequestClick {
                 override fun onSendLumperRequest(dialog: Dialog, requiredLumper: String, noteForDm: String, noteForLumper: String, startTime: Long, lumperId: String) {
                     dialog.dismiss()
                     showSubmitRequestConfirmationDialog(requiredLumper, noteForDm, noteForLumper, startTime, lumperId)

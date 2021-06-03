@@ -54,7 +54,7 @@ class DashBoardModel(private val sharedPref: SharedPref) : DashBoardContract.Mod
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     // Clear the local Shared Preference Data
                     sharedPref.performLogout()
-
+                    sharedPref.setString(AppConstant.PREFERENCE_LANGUAGE,AppConstant.LANGUAGE_ENGLISH_CODE)
                     onFinishedListener.onSuccessLogout()
                 }
             }

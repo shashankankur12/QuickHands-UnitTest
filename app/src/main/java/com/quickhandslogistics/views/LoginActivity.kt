@@ -8,9 +8,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.LoginContract
 import com.quickhandslogistics.presenters.LoginPresenter
-import com.quickhandslogistics.utils.AppUtils
-import com.quickhandslogistics.utils.ConnectionDetector
-import com.quickhandslogistics.utils.SnackBarFactory
+import com.quickhandslogistics.utils.*
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
@@ -25,7 +23,6 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
         editTextPassword.transformationMethod = PasswordTransformationMethod()
         textViewForgotPassword.setOnClickListener(this)
         buttonLogin.setOnClickListener(this)
-
         loginPresenter = LoginPresenter(this, resources, sharedPref)
         loginPresenter.loadEmployeeId()
         snackBar = SnackBarFactory.createShortSnackBar(activity, mainConstraintLayout, getString(R.string.press_back_again_to_exit), isShow = false)
@@ -64,6 +61,7 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
     override fun loadEmployeeId(employeeId: String) {
         editTextEmployeeId.setText(employeeId)
         editTextEmployeeId.setSelection(employeeId.length)
+        LanguageManager.setLanguage(this, AppConstant.LANGUAGE_ENGLISH_CODE)
     }
 
     override fun showEmptyEmployeeIdError() {

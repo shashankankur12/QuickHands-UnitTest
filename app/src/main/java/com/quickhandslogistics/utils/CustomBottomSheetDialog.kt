@@ -81,6 +81,7 @@ object CustomBottomSheetDialog {
     fun createUpdateLumperRequest(
         context: Context,
         record: RequestLumpersRecord? = null,
+        selectedTime: Long,
         contractView: IDialogOnLumperRequestClick
     ){
         val lumperRequestBottomSheet = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
@@ -92,7 +93,7 @@ object CustomBottomSheetDialog {
         val editTextDMNotes=lumperRequestBottomSheet.findViewById<EditText>(R.id.editTextDMNotes)
         val editTextLumperNotes=lumperRequestBottomSheet.findViewById<EditText>(R.id.editTextLumperNotes)
         val textViewStartTime=lumperRequestBottomSheet.findViewById<TextView>(R.id.textViewStartTime)
-        var startTime: Long = Date().time
+        var startTime: Long = selectedTime
         var lumperId = ""
 
         record?.also {
