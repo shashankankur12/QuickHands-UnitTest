@@ -291,7 +291,6 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     }
 
     override fun showLoginScreen() {
-        LanguageManager.setLanguage(this,sharedPref.getString(AppConstant.PREFERENCE_LANGUAGE,AppConstant.LANGUAGE_ENGLISH_CODE))
         startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 

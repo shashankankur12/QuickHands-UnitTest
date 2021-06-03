@@ -32,8 +32,13 @@ import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.lumperSheet.LumperSheetFragment
 import kotlinx.android.synthetic.main.bottom_sheet_add_attendance_time.*
 import kotlinx.android.synthetic.main.content_time_clock_attendance.*
+import kotlinx.android.synthetic.main.content_time_clock_attendance.editTextSearch
+import kotlinx.android.synthetic.main.content_time_clock_attendance.imageViewCancel
+import kotlinx.android.synthetic.main.content_time_clock_attendance.mainConstraintLayout
+import kotlinx.android.synthetic.main.content_time_clock_attendance.textViewEmptyData
 import kotlinx.android.synthetic.main.content_time_clock_bottom_sheet.*
 import kotlinx.android.synthetic.main.content_time_clock_bottom_sheet_group.*
+import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
 import kotlinx.android.synthetic.main.fragment_time_clock_attendance.*
 
 import java.util.*
@@ -773,7 +778,10 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
 
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
-        SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+        if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
+        } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+
         if (message.equals(getString(R.string.attendece_api_error_message))) {
             recyclerViewLumpers.visibility = View.VISIBLE
             textViewEmptyData.visibility = View.GONE

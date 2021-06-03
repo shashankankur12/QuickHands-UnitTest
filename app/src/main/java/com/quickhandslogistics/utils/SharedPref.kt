@@ -67,8 +67,10 @@ class SharedPref private constructor(context: Context) : AppConstant {
         // Save the previous employeeId on Logout
         val employeeId = getString(PREFERENCE_EMPLOYEE_ID)
         val token = getString(PREFERENCE_REGISTRATION_TOKEN)
+        val language = getString(AppConstant.PREFERENCE_LANGUAGE, AppConstant.LANGUAGE_ENGLISH_CODE)
         editor.clear().apply()
         setString(PREFERENCE_EMPLOYEE_ID, employeeId)
         setString(PREFERENCE_REGISTRATION_TOKEN, token)
+        setString(AppConstant.PREFERENCE_LANGUAGE, language)
     }
 }

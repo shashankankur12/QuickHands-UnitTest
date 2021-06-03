@@ -19,7 +19,7 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
+        LanguageManager.setLanguage(this, sharedPref.getString(AppConstant.PREFERENCE_LANGUAGE, AppConstant.LANGUAGE_ENGLISH_CODE))
         editTextPassword.transformationMethod = PasswordTransformationMethod()
         textViewForgotPassword.setOnClickListener(this)
         buttonLogin.setOnClickListener(this)
@@ -61,7 +61,6 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
     override fun loadEmployeeId(employeeId: String) {
         editTextEmployeeId.setText(employeeId)
         editTextEmployeeId.setSelection(employeeId.length)
-        LanguageManager.setLanguage(this, AppConstant.LANGUAGE_ENGLISH_CODE)
     }
 
     override fun showEmptyEmployeeIdError() {

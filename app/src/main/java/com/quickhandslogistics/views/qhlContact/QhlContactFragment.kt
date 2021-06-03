@@ -30,6 +30,7 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
     private var qhlContactList: ArrayList<EmployeeData> = ArrayList()
     private var phone: String? = null
     private var email: String = ""
+    private var isShowErrorDialog: Boolean = true
 
     companion object {
         const val QHL_CONTACT_LIST = "QHL_CONTACT_LIST"
@@ -86,6 +87,7 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
             }
 
             qhlContactPresenter.fetchQhlContactList()
+            isShowErrorDialog = true
         }
         textViewQHLContact.setOnClickListener(this)
         textViewQHlEmail.setOnClickListener(this)
@@ -119,10 +121,10 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
         leadProfileData?.let {
             phone = it.phone?.replace("+1", "")?.replace("-", "")?.trim()
             val open = if (!it.opens.isNullOrEmpty()) DateUtils.changeUTCDateStringToLocalDateString(DateUtils.PATTERN_API_RESPONSE, DateUtils.PATTERN_TIME,
-                it.opens!!
+                it.opens!!.replace("\"","")
             ) else getString(R.string.na)
             val close = if (!it.closes.isNullOrEmpty())DateUtils.changeUTCDateStringToLocalDateString(DateUtils.PATTERN_API_RESPONSE, DateUtils.PATTERN_TIME,
-                it.closes!!
+                it.closes!!.replace("\"","")
             ) else getString(R.string.na)
             email = leadProfileData.email!!
 
@@ -142,7 +144,9 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
         textViewEmptyData.visibility = View.VISIBLE
 
         if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            if (isShowErrorDialog)
             CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
+            isShowErrorDialog =false
         } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainRootLayout, message)
     }
 
@@ -182,6 +186,7 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
             fragmentActivity!!, object : CustomDialogListener {
                 override fun onConfirmClick() {
                     qhlContactPresenter.fetchQhlContactList()
+                    isShowErrorDialog = true
                 }
             })
     }
@@ -244,6 +249,7 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
                         override fun onSendRequest(dialog: Dialog, request: String) {
                             dialog.dismiss()
                             qhlContactPresenter.sendCustomerContactMessage(id, request)
+                            isShowErrorDialog = true
 
                         }
                     })

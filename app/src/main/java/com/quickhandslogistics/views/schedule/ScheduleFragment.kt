@@ -42,7 +42,6 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     private var currentPageIndex: Int = 1
     private var nextPageIndex: Int = 1
     private var totalPagesCount: Int = 1
-
     private var selectedTime: Long = 0
     private var currentDatePosition: Int = 0
     private lateinit var availableDates: List<Date>
@@ -51,10 +50,9 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     private var selectedDate: Date = Date()
     private var dateString: String? = null
     private var isSavedState: Boolean = false
+    private var isShowErrorDialog: Boolean = true
     private var datePosition: Int = 0
     private var onFragmentInteractionListener: DashBoardContract.View.OnFragmentInteractionListener? = null
-
-
     private lateinit var schedulePresenter: SchedulePresenter
     private lateinit var scheduleAdapter: ScheduleAdapter
 
@@ -196,6 +194,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
         if (singleRowCalendarSchedule.getSelectedDates().isNotEmpty()) {
             schedulePresenter.getScheduledWorkItemsByDate(singleRowCalendarSchedule.getSelectedDates()[0], currentPageIndex)
+            isShowErrorDialog = true
         }
     }
 
@@ -287,7 +286,9 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         textViewEmptyData.visibility = View.VISIBLE
 
         if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
-            CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
+            if (isShowErrorDialog) CustomProgressBar.getInstance()
+                .showValidationErrorDialog(message, fragmentActivity!!)
+            isShowErrorDialog = false
         } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
@@ -346,6 +347,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
             schedulePresenter.getScheduledWorkItemsByDate(date, currentPageIndex)
         }
         isSavedState = false
+        isShowErrorDialog = true
         datePosition = position
     }
 }

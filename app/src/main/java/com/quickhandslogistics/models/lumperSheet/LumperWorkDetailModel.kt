@@ -102,7 +102,7 @@ class LumperWorkDetailModel : LumperWorkDetailContract.Model {
 
     override fun cancelCorrectionRequest(status: String, containerId: String, onFinishedListener: LumperWorkDetailContract.Model.OnFinishedListener) {
         val statusRequest = ChangeStatusRequest(status)
-        DataManager.getService().lumperCancelCorrection(getAuthToken(), containerId, statusRequest).enqueue(object : Callback<BaseResponse> {
+        DataManager.getService().lumperCancelCorrection(getAuthToken(), containerId).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onSuccessCancelCorrection(response.body()?.message)

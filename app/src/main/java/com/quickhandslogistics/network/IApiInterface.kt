@@ -281,8 +281,8 @@ interface IApiInterface {
     @POST("schedule/containers/{id}/correction-requests")
     fun saveLumperRequestCorrection(@Header("Authorization") auth: String, @Path("id") buildingId: String, @Body request: LumperCorrectionRequest): Call<BaseResponse>
 
-    @PUT("schedule/containers/correction-requests/{id}")
-    fun lumperCancelCorrection(@Header("Authorization") auth: String, @Path("id") correctionId: String, @Body request: ChangeStatusRequest): Call<BaseResponse>
+    @POST("schedule/containers/correction-requests/cancel/{id}")
+    fun lumperCancelCorrection(@Header("Authorization") auth: String, @Path("id") correctionId: String): Call<BaseResponse>
     /////////////////////////////////////////////////////////
 
     //Chats/////////////////////////////////////////////////

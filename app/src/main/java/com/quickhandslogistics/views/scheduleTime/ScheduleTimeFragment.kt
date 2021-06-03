@@ -58,6 +58,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     private var dateString: String? = null
     private var isSavedState: Boolean = false
     private var isPriviousTab: Boolean = false
+    private var isShowErrorDialog: Boolean = true
     private var selectedDate: Date = Date()
     private var tempLumperIds: ArrayList<String> = ArrayList()
     private var scheduleTimeDetailList: ArrayList<ScheduleTimeDetail> = ArrayList()
@@ -228,6 +229,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                 }
 
                 scheduleTimePresenter.getSchedulesTimeByDate(singleRowCalendarScheduleTime.getSelectedDates()[0])
+                isShowErrorDialog= true
 
             }
         }
@@ -401,6 +403,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         }else if (cancelReason.isNullOrEmpty()){
             CustomProgressBar.getInstance().showErrorDialog(getString(R.string.cancel_reason_schedule_lumper), activity!!)
         }
+        isShowErrorDialog= true
     }
 
     private fun showConfirmationDialogEditLumper() {
@@ -415,6 +418,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                 val request = ScheduleTimeNoteRequest(individualNote, groupNote)
                 if (!requestLumperId.isNullOrEmpty() && !requestLumperDate.isNullOrEmpty()) {
                     scheduleTimePresenter.editScheduleLumpers(requestLumperId, selectedDate /*DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, requestLumperDate)*/, timeInMillis, request)
+                    isShowErrorDialog= true
                 }
             }
             override fun onCancelClick() {
@@ -462,7 +466,9 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         textViewEmptyData.visibility = View.VISIBLE
 
         if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            if (isShowErrorDialog)
             CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
+            isShowErrorDialog= false
         } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
@@ -516,6 +522,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         CustomProgressBar.getInstance().showSuccessDialog(message, context!!, object : CustomDialogListener {
             override fun onConfirmClick() {
                 scheduleTimePresenter.getSchedulesTimeByDate(date)
+                isShowErrorDialog= true
             }
         })
     }
@@ -537,9 +544,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             return
         }
 
-        textViewCancelAllSchedule.visibility=if(DateUtils.isFutureDate(date.time)) View.VISIBLE else View.GONE
-                if (!isSavedState)
+        textViewCancelAllSchedule.visibility = if (DateUtils.isFutureDate(date.time)) View.VISIBLE else View.GONE
+        if (!isSavedState) {
             scheduleTimePresenter.getSchedulesTimeByDate(date)
+            isShowErrorDialog = true
+        }
         isSavedState = false
         datePosition = position
     }
@@ -551,7 +560,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             return
         }
 
-        var timeInMillis = DateUtils.convertUTCDateStringToMilliseconds(
+        val timeInMillis = DateUtils.convertUTCDateStringToMilliseconds(
             DateUtils.PATTERN_API_RESPONSE,
             scheduleTimeDetailList[adapterPosition].reportingTimeAndDay
         )

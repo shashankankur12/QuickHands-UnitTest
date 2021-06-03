@@ -251,6 +251,8 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
             CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
         } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+        buttonSubmit.isEnabled =false
+
     }
 
     override fun showDateString(dateString: String, shift: String , dept : String) {
