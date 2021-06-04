@@ -18,7 +18,22 @@ import com.quickhandslogistics.data.lumperSheet.LumperParameterCorrection
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.data.workSheet.PauseTime
 import com.quickhandslogistics.data.workSheet.PauseTimeRequest
+import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
 import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.*
+import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.buttonBreakInTime
+import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.buttonBreakOutTime
+import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.buttonEndTime
+import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.buttonStartTime
+import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.editTextCasesLumpers
+import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.editTextTotalCases
+import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.editTextWaitingTime
+import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.editTextWaitingTimeMinutes
+import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.hoursTextViewHeading
+import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.minutesTextViewHeading
+import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.percentWorkDone
+import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.totalPauseTime
+import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.totalPauseTimeDurationTextView
+import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.totalWorkTime
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -467,11 +482,11 @@ class CorrectionRequestBottomSheet {
             timeRequest.startTime = selectedBreakInTime
             for (it in mPauseTimeRequestList) {
                 if (isTimeSelected)
-                    if (it.startTime!! <= selectedBreakInTime && selectedBreakInTime < it.endTime!!) {
+                    if (it.startTime!! <= selectedBreakInTime  && (it.endTime!= null && selectedBreakInTime < it.endTime!!)) {
                         showErrorDialog("brake in time already available in time slot ", context)
                         return
                     }
-                if (it.startTime != null && it.endTime == null) {
+                if (it.startTime != null && (it.endTime == null || it.endTime == 0L)) {
                     mPauseTimeRequestList.remove(it)
                 }
             }
@@ -499,8 +514,8 @@ class CorrectionRequestBottomSheet {
                             showErrorDialog("break in/out overriding in previous slot ", context)
                             return
                         } else if (it.startTime!! <= selectedBreakInTime && selectedBreakInTime < it.endTime!!) {
-                            showErrorDialog("brake in time already available in time slot ", context)
-                            return
+//                            showErrorDialog("brake in time already available in time slot ", context)
+//                            return
                         } else if (it.startTime!! <= selectedBreakOutTime && selectedBreakOutTime < it.endTime!!) {
                             showErrorDialog(
                                 "brake out time already available in time slot ",
@@ -511,7 +526,7 @@ class CorrectionRequestBottomSheet {
 
                     if (it.endTime == 0L || it.startTime == 0L) {
                         mPauseTimeRequestList.remove(it)
-                    } else if (it.startTime!! == selectedBreakInTime && it.endTime!! == selectedBreakOutTime) {
+                    } else if (it.startTime!! == selectedBreakInTime && selectedBreakOutTime!= 0L) {
                         mPauseTimeRequestList.remove(it)
                     }
                 }
@@ -607,6 +622,7 @@ class CorrectionRequestBottomSheet {
 //            buttonBreakInTime.isEnabled = initialBreakInTime <= 0 && selectedStartTime > 0
 //            buttonBreakOutTime.isEnabled = initialBreakOutTime <= 0 && selectedBreakInTime > 0
 //        }
+        unFinishedBottomSheet.buttonBreakInTime.isEnabled =  selectedStartTime > 0
         unFinishedBottomSheet.buttonEndTime.isEnabled=selectedStartTime>0 && checkBrackout()
         unFinishedBottomSheet.buttonBreakOutTime.isEnabled = initialBreakInTime>0 || selectedBreakInTime>0
         getTimeCalculate(unFinishedBottomSheet, context)

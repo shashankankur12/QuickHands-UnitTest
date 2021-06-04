@@ -19,7 +19,7 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        LanguageManager.setLanguage(this, sharedPref.getString(AppConstant.PREFERENCE_LANGUAGE, AppConstant.LANGUAGE_ENGLISH_CODE))
+
         editTextPassword.transformationMethod = PasswordTransformationMethod()
         textViewForgotPassword.setOnClickListener(this)
         buttonLogin.setOnClickListener(this)
@@ -61,6 +61,7 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
     override fun loadEmployeeId(employeeId: String) {
         editTextEmployeeId.setText(employeeId)
         editTextEmployeeId.setSelection(employeeId.length)
+        LanguageManager.setLanguage(this, sharedPref.getString(AppConstant.PREFERENCE_LANGUAGE, AppConstant.LANGUAGE_ENGLISH_CODE))
     }
 
     override fun showEmptyEmployeeIdError() {
@@ -88,6 +89,7 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
             ConnectionDetector.createSnackBar(activity)
             return
         }
+        LanguageManager.setLanguage(this, sharedPref.getString(AppConstant.PREFERENCE_LANGUAGE, AppConstant.LANGUAGE_ENGLISH_CODE))
 
         startIntent(DashBoardActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }

@@ -15,6 +15,8 @@ import com.quickhandslogistics.presenters.SettingsPresenter
 import com.quickhandslogistics.utils.AppConstant.Companion.LANGUAGE_ENGLISH_CODE
 import com.quickhandslogistics.utils.AppConstant.Companion.LANGUAGE_SPANISH_CODE
 import com.quickhandslogistics.utils.LanguageManager
+import com.quickhandslogistics.utils.SnackBarFactory
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 
 class SettingsFragment : BaseFragment(), SettingsContract.View, View.OnClickListener {
@@ -112,6 +114,10 @@ class SettingsFragment : BaseFragment(), SettingsContract.View, View.OnClickList
     override fun restartActivity(selectedLanguage: String) {
         fragmentActivity?.let { LanguageManager.setLanguage(it, selectedLanguage) }
         ActivityRecreationHelper.recreate(fragmentActivity, false)
+    }
+
+    override fun showAPIErrorMessage(message: String) {
+        fragmentActivity?.let { SnackBarFactory.createSnackBar(it, layoutMain, message) }
     }
 
     override fun showSelectedSettings(selectedLanguage: String, notificationEnabled: Boolean) {

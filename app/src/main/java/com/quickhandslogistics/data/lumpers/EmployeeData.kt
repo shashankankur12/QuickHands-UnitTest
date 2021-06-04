@@ -129,6 +129,10 @@ open class EmployeeData() : Parcelable {
     @Expose
     var fullTime: Boolean? = null
 
+    @SerializedName("preferredLanguage")
+    @Expose
+    var language: String? = null
+
     var isTemporaryAssigned: Boolean = false
 
     constructor(parcel: Parcel) : this() {
@@ -149,6 +153,7 @@ open class EmployeeData() : Parcelable {
         shift = parcel.readString()
         shiftHours = parcel.readString()
         workSchedule = parcel.readString()
+        language = parcel.readString()
         title = parcel.readString()
         originalBuildingId = parcel.readString()
         tempBuildingId = parcel.readString()
@@ -185,6 +190,7 @@ open class EmployeeData() : Parcelable {
         parcel.writeString(shiftHours)
         parcel.writeString(workSchedule)
         parcel.writeString(title)
+        parcel.writeString(language)
         parcel.writeString(tempBuildingId)
         parcel.writeString(originalBuildingId)
         parcel.writeString(primaryBuilding)

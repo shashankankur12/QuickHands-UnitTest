@@ -102,6 +102,9 @@ class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
         val buildingDetailData= ScheduleUtils.getBuildingDetailData(leadProfileData.buildingDetailData)
         sharedPref.setClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, leadProfileData)
         sharedPref.setString(AppConstant.PREFERENCE_BUILDING_ID, buildingDetailData?.id)
+        if (!leadProfileData.language.isNullOrEmpty() && leadProfileData.language.equals(AppConstant.PREFERRED_LANGUAGE_SPANISH)){
+            sharedPref.setString(AppConstant.PREFERENCE_LANGUAGE, AppConstant.LANGUAGE_SPANISH_CODE)
+        }else sharedPref.setString(AppConstant.PREFERENCE_LANGUAGE, AppConstant.LANGUAGE_ENGLISH_CODE)
         onFinishedListener.showNextScreen()
     }
 }

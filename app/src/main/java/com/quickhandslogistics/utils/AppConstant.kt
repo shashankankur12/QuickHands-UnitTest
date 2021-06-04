@@ -108,5 +108,8 @@ interface AppConstant {
         const val CORRECTION_CANCELLED = "CANCELLED"
         const val CORRECTION_REJECTED = "REJECTED"
         const val CORRECTION_APPROVED = "APPROVED"
+        //Preferred Language
+        const val PREFERRED_LANGUAGE_ENGLISH = "ENGLISH"
+        const val PREFERRED_LANGUAGE_SPANISH = "SPANISH"
     }
 }

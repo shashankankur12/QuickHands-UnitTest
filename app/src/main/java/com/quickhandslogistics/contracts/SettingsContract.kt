@@ -6,15 +6,16 @@ class SettingsContract {
         fun saveSelectedLanguage(selectedLanguage: String, listener: OnFinishedListener)
         fun saveNotificationState(checked: Boolean, listener: OnFinishedListener)
 
-        interface OnFinishedListener {
+        interface OnFinishedListener: BaseContract.Model.OnFinishedListener {
             fun showSelectedSettings(selectedLanguage: String, notificationEnabled: Boolean)
             fun restartActivity(selectedLanguage: String)
         }
     }
 
-    interface View {
+    interface View : BaseContract.View{
         fun showSelectedSettings(selectedLanguage: String, notificationEnabled: Boolean)
         fun restartActivity(selectedLanguage: String)
+        fun showAPIErrorMessage(message: String)
     }
 
     interface Presenter : BaseContract.Presenter {

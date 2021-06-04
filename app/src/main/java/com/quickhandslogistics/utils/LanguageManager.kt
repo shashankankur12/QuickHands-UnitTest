@@ -2,10 +2,12 @@ package com.quickhandslogistics.utils
 
 import android.app.Activity
 import android.content.res.Configuration
+import com.franmontiel.localechanger.LocaleChanger
 import java.util.*
 
 object LanguageManager {
     fun setLanguage(activity: Activity, language: String?) {
+        LocaleChanger.setLocale(Locale(language))
         val locale = Locale(language)
         Locale.setDefault(locale)
         val config = Configuration()

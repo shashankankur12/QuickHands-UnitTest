@@ -289,5 +289,8 @@ interface IApiInterface {
     @POST("employees/communicate/{id}")
     fun contactChat(@Header("Authorization") auth: String, @Path("id") buildingId: String, @Body request: ChatMessageRequest): Call<BaseResponse>
 
+    @POST("employees/preferred-language/toggle")
+    fun changeLanguage(@Header("Authorization") auth: String): Call<BaseResponse>
+
 
 }
