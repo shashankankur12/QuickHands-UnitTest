@@ -381,6 +381,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         CustomProgressBar.getInstance().showWarningDialog(getString(R.string.cancel_request_lumper), context!!, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 closeBottomSheet()
+                scheduleTimePresenter.cancelScheduleLumpers(cancelLumperID, selectedDate, null)
             }
             override fun onCancelClick() {
             }
@@ -398,8 +399,10 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         val cancelLumperDate = textViewTitle.getTag(R.id.cancelLumperDay) as String?
         val cancelReason = editTextReason.text.toString()
         if (!cancelLumperId.isNullOrEmpty() && !cancelLumperDate.isNullOrEmpty()&& !cancelReason.isNullOrEmpty()) {
+            var lumperIdArrayList= ArrayList <String>()
+            lumperIdArrayList.add(cancelLumperId)
             closeBottomSheet()
-            scheduleTimePresenter.cancelScheduleLumpers(cancelLumperId, selectedDate, cancelReason/*DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, requestLumperDate)*/)
+            scheduleTimePresenter.cancelScheduleLumpers(lumperIdArrayList, selectedDate, cancelReason)
         }else if (cancelReason.isNullOrEmpty()){
             CustomProgressBar.getInstance().showErrorDialog(getString(R.string.cancel_reason_schedule_lumper), activity!!)
         }

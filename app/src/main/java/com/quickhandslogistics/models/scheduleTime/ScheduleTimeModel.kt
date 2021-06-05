@@ -1,10 +1,10 @@
 package com.quickhandslogistics.models.scheduleTime
 
 import android.util.Log
-import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.contracts.scheduleTime.ScheduleTimeContract
 import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.schedule.GetPastFutureDateResponse
+import com.quickhandslogistics.data.scheduleTime.CancelLumperRequest
 import com.quickhandslogistics.data.scheduleTime.leadinfo.GetLeadInfoResponse
 import com.quickhandslogistics.data.scheduleTime.GetScheduleTimeAPIResponse
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeNoteRequest
@@ -20,6 +20,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ScheduleTimeModel(private val sharedPref: SharedPref) : ScheduleTimeContract.Model {
 
@@ -45,10 +46,11 @@ class ScheduleTimeModel(private val sharedPref: SharedPref) : ScheduleTimeContra
         })
     }
 
-    override fun cancelScheduleLumpers(lumperId: String, date: Date, cancelReason: String, onFinishedListener: ScheduleTimeContract.Model.OnFinishedListener) {
+    override fun cancelScheduleLumpers(lumperId: ArrayList<String>, date: Date, cancelReason: String?, onFinishedListener: ScheduleTimeContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, date)
+        val cancelLumperRequest = CancelLumperRequest(lumperId, cancelReason)
 
-        DataManager.getService().cancelScheduleLumper(getAuthToken(), lumperId, dateString).enqueue(object : Callback<BaseResponse> {
+        DataManager.getService().cancelScheduleLumper(getAuthToken(), dateString,cancelLumperRequest).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onSuccessRequest(date, CANCEL_SCHEDULE_LUMPER)

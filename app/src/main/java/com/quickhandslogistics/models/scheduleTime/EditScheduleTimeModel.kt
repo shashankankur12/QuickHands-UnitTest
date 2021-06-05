@@ -4,6 +4,7 @@ import android.util.Log
 import com.quickhandslogistics.contracts.scheduleTime.EditScheduleTimeContract
 import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.dashboard.LeadProfileData
+import com.quickhandslogistics.data.scheduleTime.CancelLumperRequest
 import com.quickhandslogistics.data.scheduleTime.LumperScheduleTimeData
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeRequest
 import com.quickhandslogistics.network.DataManager
@@ -58,8 +59,11 @@ class EditScheduleTimeModel(private val sharedPref: SharedPref) : EditScheduleTi
 
     override fun cancelScheduleLumpers(lumperId: String, date: Date, position: Int, onFinishedListener: EditScheduleTimeContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, date)
+        val cancelLumperIdList= ArrayList<String>()
+        cancelLumperIdList.add(lumperId)
+        val cancelLumperRequest= CancelLumperRequest(cancelLumperIdList, null)
 
-        DataManager.getService().cancelScheduleLumper(getAuthToken(), lumperId, dateString).enqueue(object : Callback<BaseResponse> {
+        DataManager.getService().cancelScheduleLumper(getAuthToken(), dateString, cancelLumperRequest).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     onFinishedListener.onSuccessRequest(position)

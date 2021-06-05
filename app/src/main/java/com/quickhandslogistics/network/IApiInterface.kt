@@ -137,8 +137,8 @@ interface IApiInterface {
     @POST("employees/lumpers-request/cancel")
     fun cancelRequestLumpers(@Header("Authorization") auth: String, @Body request: CancelRequestLumpersRequest): Call<BaseResponse>
 
-    @DELETE("employees/scheduled/lumpers/{lumperId}")
-    fun cancelScheduleLumper(@Header("Authorization") auth: String, @Path("lumperId") lumperId: String, @Query("day") day: String): Call<BaseResponse>
+    @HTTP(method = "DELETE", path = "employees/scheduled/lumpers", hasBody = true)
+    fun cancelScheduleLumper(@Header("Authorization") auth: String, @Query("day") day: String , @Body request: CancelLumperRequest): Call<BaseResponse>
 
     @PUT("employees/scheduled/lumpers/{lumperId}")
     fun editScheduleLumper(@Header("Authorization") auth: String, @Path("lumperId") lumperId: String, @Query("day") day: String, @Query("reportingTime") reportingTime: Long, @Body request: ScheduleTimeNoteRequest): Call<BaseResponse>
