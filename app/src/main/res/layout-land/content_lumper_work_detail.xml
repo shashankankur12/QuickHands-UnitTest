@@ -239,7 +239,6 @@
                         <RelativeLayout
                             android:id="@+id/layoutEditTimeClock"
                             android:layout_width="wrap_content"
-                            android:visibility="gone"
                             android:layout_height="wrap_content"
                             android:clickable="true" >
                             <ImageView
@@ -276,7 +275,6 @@
                             android:id="@+id/layoutEditLumerNote"
                             android:layout_width="wrap_content"
                             android:padding="@dimen/_8sdp"
-                            android:visibility="gone"
                             android:layout_height="wrap_content"
                             android:clickable="true" >
                             <ImageView

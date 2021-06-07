@@ -240,7 +240,6 @@
                             android:id="@+id/layoutEditTimeClock"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:visibility="visible"
                             android:clickable="true" >
                             <ImageView
                                 android:layout_width="@dimen/_18sdp"
@@ -276,7 +275,6 @@
                             android:id="@+id/layoutEditLumerNote"
                             android:layout_width="wrap_content"
                             android:padding="@dimen/_8sdp"
-                            android:visibility="visible"
                             android:layout_height="wrap_content"
                             android:clickable="true" >
                             <ImageView

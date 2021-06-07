@@ -71,10 +71,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         setContentView(R.layout.activity_lumper_work_detail)
-//        setupToolbar(getString(R.string.lumper_work_detail))
-
         textViewToolbar.text=getString(R.string.lumper_work_detail)
         textViewToolbar.setTextColor(ContextCompat.getColor(activity, R.color.textBlack))
         toolbar.setNavigationIcon(R.drawable.ic_back_arrow)

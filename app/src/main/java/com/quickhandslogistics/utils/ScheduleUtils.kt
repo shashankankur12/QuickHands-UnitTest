@@ -583,8 +583,8 @@ object ScheduleUtils {
             sortedPerameter.add("Cases")
         }
 
-        if (parameters.contains("Items")){
-            sortedPerameter.add("Items")
+        if (parameters.contains("Items/sort")){
+            sortedPerameter.add("Items/sort")
         }
 
         if (parameters.contains("Sort")){
@@ -592,7 +592,7 @@ object ScheduleUtils {
         }
 
         for (it in parameters) {
-            if (!it.equals("Door", ignoreCase = true) && !it.equals("container number", ignoreCase = true) && !it.equals("Cases", ignoreCase = true) && !it.equals("items",ignoreCase = true)&& !it.equals("sort",ignoreCase = true))
+            if (!it.equals("Door", ignoreCase = true) && !it.equals("container number", ignoreCase = true) && !it.equals("Cases", ignoreCase = true) && !it.equals("Items/sort",ignoreCase = true)&& !it.equals("sort",ignoreCase = true))
                 sortedSubPerameter.add(it)
         }
 

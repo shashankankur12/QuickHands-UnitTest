@@ -116,8 +116,8 @@
         app:layout_constraintTop_toTopOf="parent">
         <ImageView
             android:id="@+id/imageViewCall"
-            android:layout_width="@dimen/_22ssp"
-            android:layout_height="@dimen/_22sdp"
+            android:layout_width="@dimen/_18ssp"
+            android:layout_height="@dimen/_18ssp"
             android:src="@drawable/ic_message_chat"
             app:layout_constraintBottom_toTopOf="@+id/textViewMessageTime"
             app:layout_constraintEnd_toEndOf="parent"

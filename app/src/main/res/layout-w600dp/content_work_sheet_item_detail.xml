@@ -20,7 +20,7 @@
 
     <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewDropItems"
-        style="@style/titleBigTextViewTheme"
+        style="@style/titleBigTextViewThemeHeader"
         android:layout_width="wrap_content"
         android:layout_marginStart="@dimen/_12ssp"
         android:layout_marginTop="@dimen/_3ssp"
@@ -30,7 +30,7 @@
 
     <TextView
         android:id="@+id/textViewIsScheduleLead"
-        style="@style/titleBigTextViewTheme"
+        style="@style/titleBigTextViewThemeHeader"
         android:layout_width="0dp"
         android:layout_marginTop="@dimen/_3ssp"
         android:layout_marginHorizontal="@dimen/_4sdp"
