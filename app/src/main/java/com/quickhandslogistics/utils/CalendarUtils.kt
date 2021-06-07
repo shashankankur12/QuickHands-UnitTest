@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.item_calendar_view.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-object CalendarUtils {
+object  CalendarUtils {
    var pastFutureDatesNew: ArrayList<PastFutureDates> = ArrayList()
     fun initializeCalendarView(context: Context, calendarView: SingleRowCalendar, dates: List<Date>, listener: CalendarSelectionListener) {
         val myCalendarViewManager = object : CalendarViewManager {

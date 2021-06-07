@@ -156,8 +156,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         textViewScheduleView.setOnClickListener(this)
         textViewCancelAllSchedule.setOnClickListener(this)
 
-        CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarScheduleTime, availableDates, this
-        )
+        fragmentActivity?.let {
+            CalendarUtils.initializeCalendarView(
+                it, singleRowCalendarScheduleTime, availableDates, this
+            )
+        }
         savedInstanceState?.also {
             isSavedState = true
             if (savedInstanceState.containsKey(DATE_HEADER_SCHEDULE_TIME)) {
@@ -449,7 +452,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         val buildingDetailData =ScheduleUtils.getBuildingDetailData(leadProfile?.buildingDetailData)
 
         if (buildingDetailData != null) {
-            textViewBuildingName.text = buildingDetailData?.buildingName!!.capitalize()
+            textViewBuildingName.text = buildingDetailData.buildingName?.capitalize()
             textViewDept.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), UIUtils.getDisplayEmployeeDepartmentHeader(leadProfile))
             textViewShift.text = UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile?.shift?.capitalize().toString())
         } else {

@@ -322,16 +322,13 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         if (isMultiSelect) {
             timeClockAttendanceAdapter.updateClockInTimeForSelectedPositions(timeCalendar.timeInMillis)
             timeClockAttendanceAdapter.resetAnimationIndex()
-
-            saveMarkedAttendance()
         } else {
             val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
             timeClockAttendanceAdapter.updatePresentRecord(itemPosition, true)
             timeClockAttendanceAdapter.updateClockInTime(itemPosition, timeCalendar.timeInMillis)
-
             imageViewCancel.performClick()
-            saveMarkedAttendance()
         }
+        saveMarkedAttendance()
     }
 
     private fun clockOutButtonClicked(calendar: Calendar) {
@@ -341,15 +338,12 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         if (isMultiSelect) {
             timeClockAttendanceAdapter.updateClockOutTimeForSelectedPositions(calendar.timeInMillis)
             timeClockAttendanceAdapter.resetAnimationIndex()
-
-            saveMarkedAttendance()
         } else {
             val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
             timeClockAttendanceAdapter.updateClockOutTime(itemPosition, calendar.timeInMillis)
-
             imageViewCancel.performClick()
-            saveMarkedAttendance()
         }
+        saveMarkedAttendance()
     }
 
     private fun lunchInButtonClicked(calendar: Calendar) {
@@ -359,14 +353,12 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         if (isMultiSelect) {
             timeClockAttendanceAdapter.updateLunchInTimeForSelectedPositions(calendar.timeInMillis)
             timeClockAttendanceAdapter.resetAnimationIndex()
-            saveMarkedAttendance()
         } else {
             val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
             timeClockAttendanceAdapter.updateLunchInTime(itemPosition, calendar.timeInMillis)
-
             imageViewCancel.performClick()
-            saveMarkedAttendance()
         }
+        saveMarkedAttendance()
     }
 
     private fun lunchOutButtonClicked(calendar: Calendar) {
@@ -376,14 +368,13 @@ class TimeClockAttendanceFragment : BaseFragment(), View.OnClickListener, TextWa
         if (isMultiSelect) {
             timeClockAttendanceAdapter.updateLunchOutTimeForSelectedPositions(calendar.timeInMillis)
             timeClockAttendanceAdapter.resetAnimationIndex()
-            saveMarkedAttendance()
         } else {
             val itemPosition = bottomSheetBackground.getTag(R.id.attendancePosition) as Int
             timeClockAttendanceAdapter.updateLunchOutTime(itemPosition, calendar.timeInMillis)
 
             imageViewCancel.performClick()
-            saveMarkedAttendance()
         }
+        saveMarkedAttendance()
     }
 
     private fun showConfirmationDialog() {

@@ -234,7 +234,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
         val buildingDetailData =ScheduleUtils.getBuildingDetailData(leadProfile?.buildingDetailData)
         if (buildingDetailData != null) {
-            textViewBuildingName.text = buildingDetailData?.buildingName!!.capitalize()
+            textViewBuildingName.text = buildingDetailData?.buildingName?.capitalize()
             textViewDept.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), UIUtils.getDisplayEmployeeDepartmentHeader(leadProfile))
             textViewShift.text = UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile?.shift?.capitalize().toString())
 
@@ -267,16 +267,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         this.currentPageIndex = currentPageIndex
 
         selectedTime = selectedDate.time
-//        if(!workItemsList[0].liveLoads.isNullOrEmpty()|| !workItemsList[0].drops.isNullOrEmpty() || !workItemsList[0].outbounds.isNullOrEmpty())
         scheduleAdapter.updateList(workItemsList, currentPageIndex, selectedDate)
-
-//        if (!workItemsList.isNullOrEmpty() && (!workItemsList[0].liveLoads.isNullOrEmpty()|| !workItemsList[0].drops.isNullOrEmpty() || !workItemsList[0].outbounds.isNullOrEmpty())) {
-//            textViewEmptyData.visibility = View.GONE
-//            recyclerViewSchedule.visibility = View.VISIBLE
-//        } else {
-//            showEmptyData()
-//        }
-
         this.totalPagesCount = totalPagesCount
         this.nextPageIndex = nextPageIndex
     }

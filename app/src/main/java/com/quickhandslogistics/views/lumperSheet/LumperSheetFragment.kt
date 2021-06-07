@@ -86,9 +86,9 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         super.onViewCreated(view, savedInstanceState)
 
         recyclerViewLumpersSheet.apply {
-            val linearLayoutManager = LinearLayoutManager(fragmentActivity!!)
+            val linearLayoutManager = LinearLayoutManager(fragmentActivity)
             layoutManager = linearLayoutManager
-            val dividerItemDecoration = DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
+            val dividerItemDecoration = DividerItemDecoration(fragmentActivity, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
             lumperSheetAdapter = LumperSheetAdapter(resources, this@LumperSheetFragment)
             adapter = lumperSheetAdapter
