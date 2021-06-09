@@ -55,6 +55,9 @@ class DashBoardModel(private val sharedPref: SharedPref) : DashBoardContract.Mod
                     // Clear the local Shared Preference Data
                     sharedPref.performLogout()
                     onFinishedListener.onSuccessLogout()
+                }else if (response.code() == 401){
+                    sharedPref.performLogout()
+                    onFinishedListener.onSuccessLogout()
                 }
             }
 
