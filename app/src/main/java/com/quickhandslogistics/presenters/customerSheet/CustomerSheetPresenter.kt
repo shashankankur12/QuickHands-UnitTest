@@ -28,9 +28,15 @@ class CustomerSheetPresenter(private var workSheetView: CustomerSheetContract.Vi
         customerSheetModel.fetchCustomerSheetList(date, this)
     }
 
-    override fun saveCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String, customerId: String) {
+    override fun saveCustomerSheet(
+        customerName: String,
+        notesCustomer: String,
+        signatureFilePath: String,
+        customerId: String,
+        date: Date
+    ) {
         workSheetView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        customerSheetModel.saveCustomerSheet(customerName, notesCustomer, signatureFilePath, customerId, this)
+        customerSheetModel.saveCustomerSheet(customerName, notesCustomer, signatureFilePath, customerId, date, this)
     }
 
     /** Model Result Listeners */

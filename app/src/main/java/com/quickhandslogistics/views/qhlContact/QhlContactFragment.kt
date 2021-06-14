@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -245,7 +244,7 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
         employeeData.id?.let { id ->
             activity?.let {
                 CustomBottomSheetDialog.sendMessageBottomSheetDialog(
-                    it, object : CustomBottomSheetDialog.IDialogRequestCorrectionClick {
+                    it, object : CustomBottomSheetDialog.IDialogRequestMessageClick {
                         override fun onSendRequest(dialog: Dialog, request: String) {
                             dialog.dismiss()
                             qhlContactPresenter.sendCustomerContactMessage(id, request)

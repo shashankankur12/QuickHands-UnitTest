@@ -52,7 +52,15 @@ class CustomerSheetModel(private val sharedPref: SharedPref) : CustomerSheetCont
         })
     }
 
-    override fun saveCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String, customerId: String, onFinishedListener: CustomerSheetContract.Model.OnFinishedListener) {
+    override fun saveCustomerSheet(
+        customerName: String,
+        notesCustomer: String,
+        signatureFilePath: String,
+        customerId: String,
+        date: Date,
+        onFinishedListener: CustomerSheetContract.Model.OnFinishedListener
+    ) {
+        val date = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, date)
         val nameRequestBody = createRequestBody(customerName)
         val notesRequestBody = createRequestBody(notesCustomer)
         val customerIdBody = createRequestBody(customerId)
@@ -63,7 +71,7 @@ class CustomerSheetModel(private val sharedPref: SharedPref) : CustomerSheetCont
              signatureMultiPartBody = createMultiPartBody(signatureFile, "signature")
         }
 
-        DataManager.getService().saveCustomerSheet(getAuthToken(), nameRequestBody, notesRequestBody, signatureMultiPartBody, customerIdBody)
+        DataManager.getService().saveCustomerSheet(getAuthToken(), date, nameRequestBody, notesRequestBody, signatureMultiPartBody, customerIdBody)
             .enqueue(object : Callback<BaseResponse> {
                 override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                     if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {

@@ -165,7 +165,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
             this.signatureFilePath = signatureFilePath
             Glide.with(activity).load(File(signatureFilePath)).into(imageViewSignature)
             imageViewSignature.visibility = View.VISIBLE
-            textViewAddSignature.visibility = View.GONE
+            textViewAddSignature.visibility = View.VISIBLE
             layoutSaveCancelButton.visibility = View.VISIBLE
             isDataSave(false)
         } else {
@@ -188,13 +188,13 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
             Glide.with(activity).clear(imageViewSignature)
         }
 
-        if (!signed && currentDate && inCompleteWorkItemsCount == 0) {
+        if (/*!signed &&*/ /*currentDate &&*/ inCompleteWorkItemsCount == 0) {
             textViewAddSignature.visibility = View.VISIBLE
         } else {
             textViewAddSignature.visibility = View.GONE
         }
 
-        if (signed || (currentDate && inCompleteWorkItemsCount == 0)) {
+        if (/*signed ||*/ (/*currentDate && */inCompleteWorkItemsCount == 0)) {
             layoutSignature.visibility = View.VISIBLE
         } else {
             layoutSignature.visibility = View.GONE
@@ -639,7 +639,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         workItem.workItemDetail?.let {
             val isCompleted =it.isCompleted
             CorrectionRequestBottomSheet.getInstance().newRequestCorrectionBottomSheetDialog(workItem.lumpersTimeSchedule, it.buildingOps, it.notesQHL,
-                    null, it.buildingParams, containerId, lumperId, isCompleted, activity, object : CorrectionRequestBottomSheet.IDialogRequestCorrectionClick {
+                    null, it.buildingParams, containerId, lumperId, isCompleted, true, selectedTime , activity, object : CorrectionRequestBottomSheet.IDialogRequestCorrectionClick {
                 override fun onSendRequest(dialog: Dialog, request: LumperCorrectionRequest, containerId: String) {
                     lumperWorkDetailPresenter.sendCorrectionRequest(request, containerId)
                     dialog.dismiss()
@@ -671,7 +671,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
                 val containerId =it.containerId
                 val lumperId =it.lumperId
                 CorrectionRequestBottomSheet.getInstance().newRequestCorrectionBottomSheetDialog(it.workTiming, it.containerParameters, it.notesForQHL,
-                        it.correctionNote, workDetails.buildingParams,containerId, lumperId, isCompleted, activity, object : CorrectionRequestBottomSheet.IDialogRequestCorrectionClick {
+                        it.correctionNote, workDetails.buildingParams,containerId, lumperId, isCompleted, true,selectedTime, activity, object : CorrectionRequestBottomSheet.IDialogRequestCorrectionClick {
                     override fun onSendRequest(dialog: Dialog, request: LumperCorrectionRequest, containerId: String) {
                         lumperWorkDetailPresenter.sendCorrectionRequest(request, containerId)
                         dialog.dismiss()
@@ -679,6 +679,22 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
                 })
             }
 
+        }
+    }
+
+    override fun editLumperParams(workItem: LumperDaySheet) {
+        val containerId =workItem.lumpersTimeSchedule?.workItemId
+        val lumperId =workItem.lumpersTimeSchedule?.lumperId
+
+        workItem.workItemDetail?.let {
+            val isCompleted =it.isCompleted
+            CorrectionRequestBottomSheet.getInstance().newRequestCorrectionBottomSheetDialog(workItem.lumpersTimeSchedule, it.buildingOps, it.notesQHL,
+                null, it.buildingParams, containerId, lumperId, isCompleted, false, selectedTime , activity, object : CorrectionRequestBottomSheet.IDialogRequestCorrectionClick {
+                    override fun onSendRequest(dialog: Dialog, request: LumperCorrectionRequest, containerId: String) {
+                        lumperWorkDetailPresenter.editLumperParamsRequest(request, containerId)
+                        dialog.dismiss()
+                    }
+                })
         }
     }
 

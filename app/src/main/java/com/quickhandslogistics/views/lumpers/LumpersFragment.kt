@@ -227,7 +227,7 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
 
         activity?.let {
             CustomBottomSheetDialog.sendMessageBottomSheetDialog(
-                it, object : CustomBottomSheetDialog.IDialogRequestCorrectionClick {
+                it, object : CustomBottomSheetDialog.IDialogRequestMessageClick {
                     override fun onSendRequest(dialog: Dialog, request: String) {
                         dialog.dismiss()
                         lumpersPresenter.sendCustomerContactMessage(id, request)

@@ -40,6 +40,14 @@ import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.textVie
 import kotlinx.android.synthetic.main.bottom_sheet_schdule_time_fragement.*
 import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.content_schedule_time_fragment.*
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.appBarView
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.layoutWorkScheduleInfo
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.mainConstraintLayout
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.textViewBuildingName
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.textViewDept
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.textViewEmptyData
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.textViewShift
+import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.android.synthetic.main.fragment_schedule_time.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -200,7 +208,13 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         } ?: run {
             isSavedState = false
             singleRowCalendarScheduleTime.select(selectedDatePosition)
+            scrollToCenter()
         }
+    }
+
+    private fun scrollToCenter() {
+        if (availableDates.isNotEmpty())
+            singleRowCalendarScheduleTime.scrollToPosition((availableDates.size/3))
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -377,7 +391,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             return
         }
 
-        var cancelLumperID :ArrayList<String> = ArrayList()
+        val cancelLumperID :ArrayList<String> = ArrayList()
         scheduleTimeDetailList.forEach {
             it.lumperInfo?.id?.let { it1 -> cancelLumperID.add(it1) }
         }
@@ -565,16 +579,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             ConnectionDetector.createSnackBar(activity)
             return
         }
-
-        val timeInMillis = DateUtils.convertUTCDateStringToMilliseconds(
-            DateUtils.PATTERN_API_RESPONSE,
-            scheduleTimeDetailList[adapterPosition].reportingTimeAndDay
-        )
-        if (DateUtils.isTwoHourFromCurrentTime(timeInMillis))
-            showBottomSheetWithData(details, EDIT_SCHEDULE_LUMPER)
-        else
-            CustomProgressBar.getInstance()
-                .showMessageDialog(getString(R.string.edit_schedule_lumper_invalidate_message), context!!)
+        showBottomSheetWithData(details, EDIT_SCHEDULE_LUMPER)
     }
 
     override fun onScheduleNoteClick(adapterPosition: Int, notes: String?, item: ScheduleTimeDetail) {
@@ -584,7 +589,6 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         }
 
         CustomerDialog.showLeadNoteDialog(activity, "Lead Notes ", item.notesForLumper,notes, resources.getString(R.string.individual_note), resources.getString(R.string.group_notes))
-//        CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), notes, fragmentActivity!!)
     }
 
     override fun onAddRemoveClick(adapterPosition: Int, details: ScheduleTimeDetail) {
@@ -592,12 +596,6 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             ConnectionDetector.createSnackBar(activity)
             return
         }
-
-        var timeInMillis = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, scheduleTimeDetailList[adapterPosition].reportingTimeAndDay)
-        if (DateUtils.isTwoHourFromCurrentTime(timeInMillis))
-            showBottomSheetWithData(details, CANCEL_SCHEDULE_LUMPER)
-        else
-            CustomProgressBar.getInstance()
-                .showMessageDialog(getString(R.string.cancel_schedule_lumper_invalidate_message), context!!)
+        showBottomSheetWithData(details, CANCEL_SCHEDULE_LUMPER)
     }
 }

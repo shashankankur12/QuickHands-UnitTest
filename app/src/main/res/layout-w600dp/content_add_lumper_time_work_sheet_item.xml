@@ -246,6 +246,19 @@
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
                 <TextView
+                    style="@style/noteTextViewTheme"
+                    android:id="@+id/clearAllPauseTimeImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:text="@string/clear"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+                    app:drawableEndCompat="@drawable/ic_clear_red_small" />
+
+                <TextView
                     android:id="@+id/totalPauseTime"
                     style="@style/valuesSmallTextViewTheme"
                     android:layout_marginTop="@dimen/_6sdp"

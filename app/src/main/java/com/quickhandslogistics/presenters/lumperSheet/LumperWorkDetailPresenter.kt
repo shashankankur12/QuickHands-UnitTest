@@ -43,6 +43,10 @@ class LumperWorkDetailPresenter(private var lumperWorkDetailView: LumperWorkDeta
         lumperWorkDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
         lumperWorkDetailModel.sendCorrectionRequest(request, containerId, this)
     }
+    override fun editLumperParamsRequest(request: LumperCorrectionRequest, containerId: String) {
+        lumperWorkDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        lumperWorkDetailModel.editLumperParamsRequest(request, containerId, this)
+    }
 
     override fun cancelCorrectionRequest(status: String, containerId: String) {
         lumperWorkDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))

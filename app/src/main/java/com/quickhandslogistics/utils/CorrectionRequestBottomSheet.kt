@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.button
 import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.buttonBreakOutTime
 import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.buttonEndTime
 import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.buttonStartTime
+import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.clearAllPauseTimeImageView
 import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.editTextCasesLumpers
 import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.editTextTotalCases
 import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.editTextWaitingTime
@@ -49,6 +50,7 @@ class CorrectionRequestBottomSheet {
     private var selectedBreakOutTime: Long = 0
     private var percentageTime: Double = 0.0
     private var partWorkDone: Int = 0
+    private var selectedTime: Long = 0
     private var isPartWorkDoneValid: Boolean = true
     private var isTimeSelected: Boolean = false
     private val mPauseTimeRequestList: ArrayList<PauseTimeRequest> = ArrayList()
@@ -65,12 +67,28 @@ class CorrectionRequestBottomSheet {
         }
     }
 
-    fun newRequestCorrectionBottomSheetDialog(lumperTimeDetails: LumpersTimeSchedule?, buildingOps: HashMap<String, String>?, qhlNote: String?, correctionNote: String?, buildingParams: ArrayList<String>?, containerId: String?, lumperId: String?, isCompleted: Boolean?, context: Context, contractView: IDialogRequestCorrectionClick) {
+    fun newRequestCorrectionBottomSheetDialog(
+        lumperTimeDetails: LumpersTimeSchedule?,
+        buildingOps: HashMap<String, String>?,
+        qhlNote: String?,
+        correctionNote: String?,
+        buildingParams: ArrayList<String>?,
+        containerId: String?,
+        lumperId: String?,
+        isCompleted: Boolean?,
+        isCorrection: Boolean,
+        selectedTime: Long,
+        context: Context,
+        contractView: IDialogRequestCorrectionClick
+    ) {
 
+        this.selectedTime=selectedTime
         mPauseTimeRequestList.clear()
         val unFinishedBottomSheet = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
         unFinishedBottomSheet.setContentView(R.layout.new_bottum_sheet_request_correction)
 
+        unFinishedBottomSheet.layoutParams.visibility= if (isCorrection) View.GONE else View.VISIBLE
+        unFinishedBottomSheet.layoutCurrectionRequest.visibility= if (!isCorrection) View.GONE else View.VISIBLE
         buildingParams?.let {
             unFinishedBottomSheet.recyclerViewBuildingOperations.apply {
                 layoutManager = LinearLayoutManager(context)
@@ -236,14 +254,26 @@ class CorrectionRequestBottomSheet {
             }, selectedBreakOutTime, context)
         }
 
+        unFinishedBottomSheet.clearAllPauseTimeImageView.setOnClickListener {
+            mPauseTimeRequestList.clear()
+            unFinishedBottomSheet.totalPauseTimeDurationTextView.visibility = View.GONE
+            unFinishedBottomSheet.clearAllPauseTimeImageView?.visibility = View.GONE
+            unFinishedBottomSheet.totalPauseTime.visibility = View.GONE
+            unFinishedBottomSheet.buttonBreakOutTime.text = context.getString(R.string.resume)
+            unFinishedBottomSheet.buttonBreakInTime.text = context.getString(R.string.pause)
+            selectedBreakInTime = 0
+            selectedBreakOutTime = 0
+            updateButtonsUI(unFinishedBottomSheet, context)
+
+        }
         unFinishedBottomSheet.buttonCancelCorrection.setOnClickListener { unFinishedBottomSheet.dismiss() }
         unFinishedBottomSheet.buttonSubmitCorrection.setOnClickListener {
-                sendRequest(buildingParams,unFinishedBottomSheet, contractView, context, containerId, lumperId)
+                sendRequest(buildingParams,unFinishedBottomSheet, contractView, context, containerId, lumperId, isCorrection)
         }
         unFinishedBottomSheet.show()
     }
 
-    private fun sendRequest(buildingParams: ArrayList<String>?, unFinishedBottomSheet: BottomSheetDialog, contractView: IDialogRequestCorrectionClick, context: Context, containerId: String?, lumperId: String?) {
+    private fun sendRequest(buildingParams: ArrayList<String>?, unFinishedBottomSheet: BottomSheetDialog, contractView: IDialogRequestCorrectionClick, context: Context, containerId: String?, lumperId: String?, isCorrection: Boolean) {
         val parameters = ScheduleUtils.getBuildingParametersList(buildingParams)
         val buildingOps=if (buildingOperationsAdapter!= null)buildingOperationsAdapter?.getUpdatedData() else null
         val noteForQhl = unFinishedBottomSheet.editTextQHLNotes?.text.toString()
@@ -259,14 +289,14 @@ class CorrectionRequestBottomSheet {
             }
         }
 
-        if (noteCorrection.isNullOrEmpty()){
+        if (noteCorrection.isNullOrEmpty() && isCorrection){
             CustomProgressBar.getInstance().showValidationErrorDialog(
                     context.getString(R.string.request_correction_message),
                     context)
 
             return
         }
-        if (noteForQhl.isNullOrEmpty()){
+        if (noteForQhl.isNullOrEmpty()&& !isCorrection){
             CustomProgressBar.getInstance().showValidationErrorDialog(
                     context.getString(R.string.group_qhl_note_error_message),
                     context)
@@ -274,7 +304,7 @@ class CorrectionRequestBottomSheet {
             return
         }
 
-        if (buildingOps.isNullOrEmpty() || count != parameters.size) {
+        if (buildingOps.isNullOrEmpty() || count != parameters.size  && !isCorrection) {
             CustomProgressBar.getInstance().showValidationErrorDialog(
                     context.getString(R.string.fill_building_parameters_message),
                     context)
@@ -292,7 +322,7 @@ class CorrectionRequestBottomSheet {
         val timingDetail = LumperParameterCorrection()
         if (selectedStartTime > 0) timingDetail.startTime = selectedStartTime
         if (selectedEndTime > 0) timingDetail.endTime = selectedEndTime
-        if (breakTimeList.size > 0) timingDetail.breakTimeRequests = breakTimeList
+        timingDetail.breakTimeRequests = breakTimeList
         timingDetail.waitingTime = waitingTimeInt
         timingDetail.partWork = partWorkDone
 
@@ -319,7 +349,7 @@ class CorrectionRequestBottomSheet {
         if (selectedTime > 0) {
             calendar.timeInMillis = selectedTime
         } else {
-            calendar.timeInMillis = Date().time
+            calendar.timeInMillis = this.selectedTime
         }
 
         val mHour = calendar.get(Calendar.HOUR_OF_DAY)
@@ -540,6 +570,7 @@ class CorrectionRequestBottomSheet {
 
         if (selectedBreakInTime > 0 && selectedBreakOutTime > 0) {
             unFinishedBottomSheet.totalPauseTime.visibility = View.VISIBLE
+            unFinishedBottomSheet.clearAllPauseTimeImageView.visibility = View.VISIBLE
 //            mPauseTimeRequestList.add(PauseTimeRequest(selectedBreakInTime,selectedBreakOutTime))
             showPauseTimeDuration(context, unFinishedBottomSheet)
             var dateTime: Long = 0

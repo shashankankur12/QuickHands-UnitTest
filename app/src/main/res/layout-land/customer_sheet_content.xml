@@ -446,7 +446,7 @@
                     android:textColor="@color/textBlack"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/layoutNotOpenNote" />
+                    app:layout_constraintTop_toBottomOf="@+id/viewNotOpenNote" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -458,7 +458,7 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerViewItem">
+                app:layout_constraintTop_toBottomOf="@+id/layoutNotOpenNote">
 
                 <TextView
                     android:id="@+id/textViewCustomerSection"

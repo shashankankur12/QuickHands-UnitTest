@@ -151,8 +151,15 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         } ?: run {
             isSavedState = false
             singleRowCalendarSchedule.select(if (currentDatePosition != 0) currentDatePosition else availableDates.size - 1)
+            scrollToCenter()
+
         }
 
+    }
+
+    private fun scrollToCenter() {
+        if (availableDates.isNotEmpty())
+        singleRowCalendarSchedule.scrollToPosition((availableDates.size/3))
     }
 
     override fun onDestroy() {

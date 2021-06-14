@@ -125,8 +125,9 @@
                         android:id="@+id/textViewAddSignature"
                         style="@style/addTextViewTheme"
                         android:layout_gravity="end"
+                        android:paddingTop="@dimen/_4sdp"
+                        android:paddingBottom="@dimen/_4sdp"
                         android:text="@string/signature"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 

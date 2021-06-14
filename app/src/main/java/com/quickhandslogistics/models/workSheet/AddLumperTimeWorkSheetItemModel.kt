@@ -29,7 +29,7 @@ class AddLumperTimeWorkSheetItemModel : AddLumperTimeWorkSheetItemContract.Model
         val timingDetail = TimingDetails()
         if (selectedStartTime > 0) timingDetail.startTime = selectedStartTime
         if (selectedEndTime > 0) timingDetail.endTime = selectedEndTime
-        if (breakTimeRequestList.size > 0) timingDetail.breakTimeRequests = breakTimeRequestList
+        timingDetail.breakTimeRequests = if (!breakTimeRequestList.isNullOrEmpty()) breakTimeRequestList else ArrayList()
         timingDetail.waitingTime = waitingTimeInt
 
 

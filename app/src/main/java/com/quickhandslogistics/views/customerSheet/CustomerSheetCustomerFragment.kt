@@ -216,7 +216,13 @@ class CustomerSheetCustomerFragment : BaseFragment(), View.OnClickListener, Text
         CustomProgressBar.getInstance().showWarningDialog(message, fragmentActivity!!, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 localCustomerSheet = null
-                onFragmentInteractionListener?.saveCustomerSheet(customerName, notesCustomer, signatureFilePath, customerId)
+                onFragmentInteractionListener?.saveCustomerSheet(
+                    customerName,
+                    notesCustomer,
+                    signatureFilePath,
+                    customerId,
+                    Date()
+                )
             }
 
             override fun onCancelClick() {

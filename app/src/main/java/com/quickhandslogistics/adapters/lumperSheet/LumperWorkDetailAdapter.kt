@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -71,6 +72,7 @@ class LumperWorkDetailAdapter(
         private val textViewUpdateCorrection: TextView = itemView.textViewUpdateCorrection
         private val textViewScheduleNote: TextView = itemView.textViewScheduleNote
         private val textViewIsScheduleLead: TextView = itemView.textViewIsScheduleLead
+        private val editLumperParams: ImageView = itemView.editLumperParams
 
         init {
             recyclerViewBO.apply {
@@ -84,6 +86,7 @@ class LumperWorkDetailAdapter(
             textViewCancelCorrection.setOnClickListener(this)
             textViewUpdateCorrection.setOnClickListener(this)
             textViewScheduleNote.setOnClickListener(this)
+            editLumperParams.setOnClickListener(this)
         }
 
         fun bind(lumperDaySheet: LumperDaySheet) {
@@ -270,6 +273,10 @@ class LumperWorkDetailAdapter(
                     textViewRequestCorrection.id -> {
                         val lumperDaySheet = getItem(adapterPosition)
                             adapterItemClickListener.requestCorrection(lumperDaySheet)
+                    }
+                    editLumperParams.id -> {
+                        val lumperDaySheet = getItem(adapterPosition)
+                            adapterItemClickListener.editLumperParams(lumperDaySheet)
                     }
                     textViewCancelCorrection.id -> {
                         val lumperDaySheet = getItem(adapterPosition)

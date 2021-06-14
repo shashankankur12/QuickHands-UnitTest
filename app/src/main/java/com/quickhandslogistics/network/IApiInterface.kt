@@ -188,6 +188,7 @@ interface IApiInterface {
     @POST("customers/sheet")
     fun saveCustomerSheet(
         @Header("Authorization") auth: String,
+        @Query ("day") date: String,
         @Part("customerRepresentativeName") customerRepresentativeName: RequestBody,
         @Part("note") note: RequestBody,
         @Part signature: MultipartBody.Part? = null,
@@ -279,7 +280,10 @@ interface IApiInterface {
 
     //Request Correction/////////////////////////////////////
     @POST("schedule/containers/{id}/correction-requests")
-    fun saveLumperRequestCorrection(@Header("Authorization") auth: String, @Path("id") buildingId: String, @Body request: LumperCorrectionRequest): Call<BaseResponse>
+    fun saveLumperRequestCorrection(@Header("Authorization") auth: String, @Path("id") containerId: String, @Body request: LumperCorrectionRequest): Call<BaseResponse>
+
+    @POST("employees/submit-past-corrections")
+    fun editLumperParams(@Header("Authorization") auth: String, @Query("containerId") containerId: String, @Body request: LumperCorrectionRequest): Call<BaseResponse>
 
     @POST("schedule/containers/correction-requests/cancel/{id}")
     fun lumperCancelCorrection(@Header("Authorization") auth: String, @Path("id") correctionId: String): Call<BaseResponse>

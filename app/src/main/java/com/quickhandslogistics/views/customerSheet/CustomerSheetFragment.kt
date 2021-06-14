@@ -48,6 +48,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
     private var companyName: String = ""
     private var date: String = ""
     private var signatureFilePath = ""
+    private var customerId = ""
     private var localCustomerSheetData: LocalCustomerSheetData? = null
     private var isSavedState: Boolean = false
     private var isSavedData: Boolean = true
@@ -429,13 +430,15 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         customerName: String,
         notesCustomer: String,
         signatureFilePath: String,
-        customerId: String
+        customerId: String,
+        date: Date
     ) {
         customerSheetPresenter.saveCustomerSheet(
             customerName,
             notesCustomer,
             signatureFilePath,
-            customerId
+            customerId,
+            date
         )
     }
 
@@ -514,7 +517,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         customerSheet?.also {
             editTextCustomerName.setText(customerSheet.customerRepresentativeName)
             editTextCustomerNotes.setText(customerSheet.note)
-            buttonSubmit.setTag(R.id.requestLumperId, customerSheet.id)
+            customerSheet.id?.let { customerId=it }
             updateUIVisibility(
                 ValueUtils.getDefaultOrValue(customerSheet.isSigned),
                 isCurrentDate,
@@ -525,7 +528,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
             editTextCustomerName.setText("")
             editTextCustomerNotes.setText("")
             signatureFilePath = ""
-            buttonSubmit.setTag(R.id.requestLumperId, "")
+            customerId =""
             updateUIVisibility(false, isCurrentDate, inCompleteWorkItemsCount)
         }
 
@@ -544,46 +547,52 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         bottomSheetBackground.visibility = View.GONE
     }
 
-    private fun updateUIVisibility(
-        signed: Boolean,
-        currentDate: Boolean,
-        inCompleteWorkItemsCount: Int,
-        signatureUrl: String? = ""
-    ) {
-        buttonSubmit.visibility = if (currentDate) View.VISIBLE else View.GONE
-        textViewSignature.visibility = View.GONE
+    private fun updateUIVisibility(signed: Boolean, currentDate: Boolean, inCompleteWorkItemsCount: Int, signatureUrl: String? = "") {
+//        buttonSubmit.visibility = if (currentDate) View.VISIBLE else View.GONE
+//        textViewSignature.visibility = View.GONE
 
         if (signed) {
             imageViewSignature.visibility = View.VISIBLE
             Glide.with(fragmentActivity!!).load(signatureUrl).into(imageViewSignature)
+
+
+            editTextCustomerName.isEnabled = false
+            editTextCustomerNotes.isEnabled = false
+            buttonSubmit.background = resources.getDrawable(R.drawable.round_button_blue)
+            buttonSubmit.text = getText(R.string.submitted)
         } else {
             imageViewSignature.visibility = View.GONE
             Glide.with(fragmentActivity!!).clear(imageViewSignature)
-        }
 
-        if (!currentDate || signed /*|| inCompleteWorkItemsCount > 0*/) {
-            editTextCustomerName.isEnabled = false
-            editTextCustomerNotes.isEnabled = false
-            buttonSubmit.isEnabled = false
-            if (signed) {
-                buttonSubmit.background = resources.getDrawable(R.drawable.round_button_blue)
-                buttonSubmit.text = getText(R.string.submitted)
-            } else {
-                buttonSubmit.text = getText(R.string.submit)
-            }
-        } else {
+
             editTextCustomerName.isEnabled = true
             editTextCustomerNotes.isEnabled = true
-            buttonSubmit.isEnabled = true
+            buttonSubmit.text = getText(R.string.submit)
         }
 
-        if (!signed && currentDate && inCompleteWorkItemsCount == 0) {
+//        if (!currentDate || signed /*|| inCompleteWorkItemsCount > 0*/) {
+//            editTextCustomerName.isEnabled = false
+//            editTextCustomerNotes.isEnabled = false
+//            buttonSubmit.isEnabled = false
+//            if (signed) {
+//                buttonSubmit.background = resources.getDrawable(R.drawable.round_button_blue)
+//                buttonSubmit.text = getText(R.string.submitted)
+//            } else {
+//                buttonSubmit.text = getText(R.string.submit)
+//            }
+//        } else {
+//            editTextCustomerName.isEnabled = true
+//            editTextCustomerNotes.isEnabled = true
+//
+//        }
+
+        if (/*!signed && currentDate &&*/ inCompleteWorkItemsCount == 0) {
             textViewAddSignature.visibility = View.VISIBLE
         } else {
             textViewAddSignature.visibility = View.GONE
         }
 
-        if (signed || (currentDate && inCompleteWorkItemsCount == 0 && workItemsCount != 0)) {
+        if (/*signed ||*/ (/*currentDate &&*/ inCompleteWorkItemsCount == 0 && workItemsCount != 0)) {
             layoutSignature.visibility = View.VISIBLE
         } else {
             layoutSignature.visibility = View.GONE
@@ -595,11 +604,11 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
             this.signatureFilePath = signatureFilePath
             Glide.with(fragmentActivity!!).load(File(signatureFilePath)).into(imageViewSignature)
             imageViewSignature.visibility = View.VISIBLE
-            textViewAddSignature.visibility = View.GONE
+//            textViewAddSignature.visibility = View.GONE
         } else {
             this.signatureFilePath = ""
             imageViewSignature.visibility = View.GONE
-            textViewAddSignature.visibility = View.VISIBLE
+//            textViewAddSignature.visibility = View.VISIBLE
         }
     }
 
@@ -621,14 +630,9 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         }
     }
 
-    private fun showConfirmationDialog(
-        message: String,
-        customerName: String,
-        notesCustomer: String
-    ) {
+    private fun showConfirmationDialog(message: String, customerName: String, notesCustomer: String) {
         closeBottomSheet()
-        val customerId = buttonSubmit.getTag(R.id.requestLumperId) as String?
-        saveCustomerSheet(customerName, notesCustomer, signatureFilePath, customerId!!)
+        saveCustomerSheet(customerName, notesCustomer, signatureFilePath, customerId, Date(selectedTime))
     }
 
     private fun disableSignature() {

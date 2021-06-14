@@ -15,6 +15,7 @@ class CustomerSheetContract {
             notesCustomer: String,
             signatureFilePath: String,
             customerId: String,
+            date: Date,
             onFinishedListener: OnFinishedListener
         )
 
@@ -37,7 +38,8 @@ class CustomerSheetContract {
                 customerName: String,
                 notesCustomer: String,
                 signatureFilePath: String,
-                customerId: String
+                customerId: String,
+                date: Date
             )
             fun saveSateCustomerSheet(customerName: String, notesCustomer: String, signatureFilePath: String)
             fun isDataSave(isDataSave:Boolean)
@@ -53,7 +55,8 @@ class CustomerSheetContract {
             customerName: String,
             notesCustomer: String,
             signatureFilePath: String,
-            customerId: String
+            customerId: String,
+            date: Date
         )
     }
 }

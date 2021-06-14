@@ -183,6 +183,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         buttonBreakOutTime.setOnClickListener(this)
         buttonSave.setOnClickListener(this)
         buttonCancelRequest.setOnClickListener(this)
+        clearAllPauseTimeImageView.setOnClickListener(this)
     }
 
     private fun updateTimingsDetails(timingDetail: LumpersTimeSchedule) {
@@ -315,6 +316,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
 
     private fun showPauseTimeDuration() {
         totalPauseTimeDurationTextView?.visibility = View.VISIBLE
+        clearAllPauseTimeImageView?.visibility = View.VISIBLE
         totalPauseTimeDurationTextView?.text = null
         mPauseTimeRequestList.forEachIndexed { index, pauseTime ->
             val pauseTimeIn = pauseTime.startTime
@@ -345,6 +347,18 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         if (selectedBreakInTime > 0 && selectedBreakOutTime <= 0)
             return false
         return true
+    }
+
+    private fun clearAllPauseTime() {
+        mPauseTimeRequestList.clear()
+        totalPauseTimeDurationTextView.visibility = View.GONE
+        clearAllPauseTimeImageView?.visibility = View.GONE
+        totalPauseTime.visibility = View.GONE
+        buttonBreakOutTime.text = getString(R.string.resume)
+        buttonBreakInTime.text = getString(R.string.pause)
+        selectedBreakInTime =0
+        selectedBreakOutTime= 0
+        updateButtonsUI()
     }
 
     private fun toggleSaveButtonVisibility() {
@@ -546,6 +560,9 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
                 }
                 buttonCancelRequest.id -> {
                     onBackPressed()
+                }
+                clearAllPauseTimeImageView.id -> {
+                    clearAllPauseTime()
                 }
             }
         }

@@ -15,6 +15,7 @@ class LumperWorkDetailContract {
         fun saveLumperSignature(lumperId: String, date: Date, signatureFilePath: String, onFinishedListener: OnFinishedListener)
         fun saveLumpersAttendanceList(attendanceDetailList: List<AttendanceDetail>, onFinishedListener: OnFinishedListener)
         fun sendCorrectionRequest(request: LumperCorrectionRequest, containerId: String, onFinishedListener: OnFinishedListener)
+        fun editLumperParamsRequest(request: LumperCorrectionRequest, containerId: String, onFinishedListener: OnFinishedListener)
         fun cancelCorrectionRequest(status: String, containerId: String, onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
@@ -44,6 +45,7 @@ class LumperWorkDetailContract {
             fun requestCorrection(lumperDaySheet: LumperDaySheet)
             fun cancelRequestCorrection(id: String)
             fun updateRequestCorrection(correctionRequest: LumperDaySheet)
+            fun editLumperParams(lumperDaySheet: LumperDaySheet)
         }
     }
 
@@ -52,6 +54,7 @@ class LumperWorkDetailContract {
         fun saveLumperSignature(lumperId: String, date: Date, signatureFilePath: String)
         fun saveAttendanceDetails(attendanceDetailList: List<AttendanceDetail>)
         fun sendCorrectionRequest(request: LumperCorrectionRequest, containerId: String)
+        fun editLumperParamsRequest(request: LumperCorrectionRequest, containerId: String)
         fun cancelCorrectionRequest(status: String, containerId: String)
     }
 }

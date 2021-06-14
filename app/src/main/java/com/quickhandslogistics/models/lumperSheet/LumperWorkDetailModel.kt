@@ -100,6 +100,21 @@ class LumperWorkDetailModel : LumperWorkDetailContract.Model {
         })
     }
 
+    override fun editLumperParamsRequest(request: LumperCorrectionRequest, containerId: String, onFinishedListener: LumperWorkDetailContract.Model.OnFinishedListener) {
+        DataManager.getService().editLumperParams(getAuthToken(), containerId, request).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessRequestCorrection(response.body()?.message)
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Log.e(TimeClockAttendanceModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
+    }
+
     override fun cancelCorrectionRequest(status: String, containerId: String, onFinishedListener: LumperWorkDetailContract.Model.OnFinishedListener) {
         val statusRequest = ChangeStatusRequest(status)
         DataManager.getService().lumperCancelCorrection(getAuthToken(), containerId).enqueue(object : Callback<BaseResponse> {

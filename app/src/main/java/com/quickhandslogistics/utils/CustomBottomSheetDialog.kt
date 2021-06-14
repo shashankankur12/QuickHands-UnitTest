@@ -209,7 +209,7 @@ object CustomBottomSheetDialog {
     }
 
 
-    fun sendMessageBottomSheetDialog(context: Context, contractView: IDialogRequestCorrectionClick) {
+    fun sendMessageBottomSheetDialog(context: Context, contractView: IDialogRequestMessageClick) {
         val unFinishedBottomSheet = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
         unFinishedBottomSheet.setContentView(R.layout.bottumsheet_send_message)
         unFinishedBottomSheet.findViewById<TextView>(R.id.textViewTitle)
@@ -234,6 +234,10 @@ object CustomBottomSheetDialog {
 
     interface IDialogOnClick{
         fun onSendRequest(dialog: Dialog, selectedDate: Date, selectedTime: Long)
+    }
+
+    interface IDialogRequestMessageClick{
+        fun onSendRequest(dialog: Dialog, request: String)
     }
 
     interface IDialogRequestCorrectionClick{
