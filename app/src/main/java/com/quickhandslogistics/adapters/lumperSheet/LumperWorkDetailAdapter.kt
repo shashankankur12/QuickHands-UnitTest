@@ -110,8 +110,8 @@ class LumperWorkDetailAdapter(
                         } else resources.getString(R.string.no_of_drops_bold_has)
                     }
                 }
-                workItemDetail.label?.let {
-                    textViewWorkItemType.text = UIUtils.getSpannableText(container, it)
+                workItemDetail.containerNumber?.let {
+                    textViewWorkItemType.text = UIUtils.getSpannableText(container, it.toString())
                 }
 
                 workItemDetail.schedule?.let {
@@ -151,7 +151,7 @@ class LumperWorkDetailAdapter(
                 totalcase = if (!cases.isNullOrEmpty() && isNumeric(cases!!)) cases else ""
                 textViewIsScheduleLead.visibility = if (workItemDetail.isScheduledByLead!!) View.VISIBLE else View.GONE
 
-                if (workItemDetail.corrections!=null){
+                if (workItemDetail.corrections!=null && workItemDetail.corrections?.status == AppConstant.CORRECTION_PENDING ){
                     textViewRequestCorrection.isEnabled= false
                     textViewUpdateCorrection.visibility= View.VISIBLE
                     textViewCancelCorrection.visibility= View.VISIBLE
@@ -160,6 +160,7 @@ class LumperWorkDetailAdapter(
                 }else{
                     textViewRequestCorrection.isEnabled= true
                     textViewRequestCorrection.text= resources.getString(R.string.request_correction)
+                    textViewRequestCorrection.setTextColor(resources.getColor(R.color.buttonRed))
                     textViewUpdateCorrection.visibility= View.GONE
                     textViewCancelCorrection.visibility= View.GONE
                 }

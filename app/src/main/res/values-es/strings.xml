@@ -417,6 +417,7 @@
 
     <!--Error Messages-->
     <string name="customer_sheet_warning_message"><![CDATA[Proporcione tanto el nombre del representante del cliente como su firma.]]></string>
+    <string name="customer_sheet_update_signature"><![CDATA[Actualice la firma del cliente para guardar.]]></string>
     <string name="empty_employee_id_message">Ingrese la identificación del empleado</string>
     <string name="empty_password_message">Por favor, ingrese contraseña</string>
     <string name="fill_building_parameters_message">Complete todos los parámetros del contenedor antes de cambiar el estado a Completado.</string>

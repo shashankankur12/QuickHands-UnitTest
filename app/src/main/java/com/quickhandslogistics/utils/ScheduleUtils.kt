@@ -549,11 +549,20 @@ object ScheduleUtils {
         val filterLumperDaySheetList: ArrayList<LumperDaySheet> =ArrayList()
 
         lumperDaySheetList.forEach {
-            it.workItemDetail?.workItemType.let { type->
-                when (type){
-                    AppConstant.WORKSHEET_WORK_ITEM_LIVE ->{live.add(it) }
-                    AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND ->{outBound.add(it) }
-                    else -> {drop.add(it)}
+            it.workItemDetail?.type.let { type ->
+                when (type) {
+                    AppConstant.WORKSHEET_WORK_ITEM_LIVE -> {
+                        it.workItemDetail?.containerNumber = live.size + 1
+                        live.add(it)
+                    }
+                    AppConstant.WORKSHEET_WORK_ITEM_OUTBOUND -> {
+                        it.workItemDetail?.containerNumber = outBound.size + 1
+                        outBound.add(it)
+                    }
+                    else -> {
+                        it.workItemDetail?.containerNumber = drop.size + 1
+                        drop.add(it)
+                    }
                 }
             }
 

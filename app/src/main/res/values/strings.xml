@@ -403,6 +403,7 @@
 
     <!--Error Messages-->
     <string name="customer_sheet_warning_message"><![CDATA[Please provide both Customer Representative Name & his Signature.]]></string>
+    <string name="customer_sheet_update_signature"><![CDATA[Please update Customer Signature to save.]]></string>
     <string name="empty_employee_id_message">Please enter Employee Id</string>
     <string name="empty_password_message">Please enter Password</string>
     <string name="fill_building_parameters_message">Fill out all container parameter before changing status to Completed.</string>

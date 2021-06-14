@@ -52,6 +52,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
     private var localCustomerSheetData: LocalCustomerSheetData? = null
     private var isSavedState: Boolean = false
     private var isSavedData: Boolean = true
+    private var isSheetSigned: Boolean = false
     private var selectedDatePosition: Int = 0
     private var inCompleteWorkItemsCount: Int = 0
     private var totalCount: Int = 0
@@ -352,6 +353,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
                 setVisibilityForNote(false)
             }
             if (customerSheet.isSigned!!) {
+                isSheetSigned= true
                 Glide.with(fragmentActivity!!).load(customerSheet.signatureUrl)
                     .into(imageViewCustomerSignature)
                 imageViewCustomerSignature.visibility = View.VISIBLE
@@ -359,6 +361,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
                     resources.getDrawable(R.drawable.round_button_red_disabled)
                 buttonSignature.text = getString(R.string.signed)
             } else {
+                isSheetSigned= false
                 imageViewCustomerSignature.visibility = View.GONE
                 buttonSignature.background = resources.getDrawable(R.drawable.round_button_red)
                 buttonSignature.text = getString(R.string.signature)
@@ -565,26 +568,11 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
             Glide.with(fragmentActivity!!).clear(imageViewSignature)
 
 
+            buttonSubmit.background = resources.getDrawable(R.drawable.round_button_red_selector)
             editTextCustomerName.isEnabled = true
             editTextCustomerNotes.isEnabled = true
             buttonSubmit.text = getText(R.string.submit)
         }
-
-//        if (!currentDate || signed /*|| inCompleteWorkItemsCount > 0*/) {
-//            editTextCustomerName.isEnabled = false
-//            editTextCustomerNotes.isEnabled = false
-//            buttonSubmit.isEnabled = false
-//            if (signed) {
-//                buttonSubmit.background = resources.getDrawable(R.drawable.round_button_blue)
-//                buttonSubmit.text = getText(R.string.submitted)
-//            } else {
-//                buttonSubmit.text = getText(R.string.submit)
-//            }
-//        } else {
-//            editTextCustomerName.isEnabled = true
-//            editTextCustomerNotes.isEnabled = true
-//
-//        }
 
         if (/*!signed && currentDate &&*/ inCompleteWorkItemsCount == 0) {
             textViewAddSignature.visibility = View.VISIBLE
@@ -623,6 +611,12 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
             }
             showConfirmationDialog(message, customerName, notesCustomer)
         } else {
+            if (signatureFilePath.isEmpty() && isSheetSigned){
+                CustomProgressBar.getInstance().showErrorDialog(
+                    getString(R.string.customer_sheet_update_signature),
+                    fragmentActivity!!
+                )
+            }else
             CustomProgressBar.getInstance().showErrorDialog(
                 getString(R.string.customer_sheet_warning_message),
                 fragmentActivity!!

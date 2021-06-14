@@ -18,23 +18,7 @@ import com.quickhandslogistics.data.lumperSheet.LumperParameterCorrection
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.data.workSheet.PauseTime
 import com.quickhandslogistics.data.workSheet.PauseTimeRequest
-import kotlinx.android.synthetic.main.content_add_lumper_time_work_sheet_item.*
 import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.*
-import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.buttonBreakInTime
-import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.buttonBreakOutTime
-import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.buttonEndTime
-import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.buttonStartTime
-import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.clearAllPauseTimeImageView
-import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.editTextCasesLumpers
-import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.editTextTotalCases
-import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.editTextWaitingTime
-import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.editTextWaitingTimeMinutes
-import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.hoursTextViewHeading
-import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.minutesTextViewHeading
-import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.percentWorkDone
-import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.totalPauseTime
-import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.totalPauseTimeDurationTextView
-import kotlinx.android.synthetic.main.new_bottum_sheet_request_correction.totalWorkTime
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -89,6 +73,7 @@ class CorrectionRequestBottomSheet {
 
         unFinishedBottomSheet.layoutParams.visibility= if (isCorrection) View.GONE else View.VISIBLE
         unFinishedBottomSheet.layoutCurrectionRequest.visibility= if (!isCorrection) View.GONE else View.VISIBLE
+        unFinishedBottomSheet.textViewTitle.text= if (isCorrection) context.getString(R.string.request_correction)else context.getString(R.string.edit_parameters)
         buildingParams?.let {
             unFinishedBottomSheet.recyclerViewBuildingOperations.apply {
                 layoutManager = LinearLayoutManager(context)
@@ -475,8 +460,14 @@ class CorrectionRequestBottomSheet {
                 val lastItem = it[it.lastIndex]
                 initialBreakInTime = updateInitialTime(lastItem.startTime, unFinishedBottomSheet.buttonBreakInTime)
                 initialBreakOutTime = updateInitialTime(lastItem.endTime, unFinishedBottomSheet.buttonBreakOutTime)
+                getBreakTimeList(it, unFinishedBottomSheet)
+            } else{
+                unFinishedBottomSheet.totalPauseTimeDurationTextView.visibility = View.GONE
+                unFinishedBottomSheet.clearAllPauseTimeImageView?.visibility = View.GONE
+                unFinishedBottomSheet.totalPauseTime.visibility = View.GONE
+                mPauseTimeRequestList.clear()
             }
-            getBreakTimeList(it, unFinishedBottomSheet)
+
         }
 
         selectedStartTime = initialStartTime
@@ -499,10 +490,10 @@ class CorrectionRequestBottomSheet {
         if (0L != initialBreakInTime && 0L != initialBreakOutTime) {
             unFinishedBottomSheet.buttonBreakInTime.text = context.getString(R.string.pause)
             unFinishedBottomSheet.buttonBreakOutTime.text = context.getString(R.string.resume)
-            mPauseTimeRequestList.run {
-//                mPauseTimeRequestList.clear()
-                getPauseTimeCalculate(unFinishedBottomSheet,context)
-            }
+            if (!mPauseTimeRequestList.isNullOrEmpty())
+                mPauseTimeRequestList.run {
+                    getPauseTimeCalculate(unFinishedBottomSheet, context)
+                }
         }
     }
 
