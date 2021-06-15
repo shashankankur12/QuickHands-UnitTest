@@ -252,7 +252,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
-        workSheetItemDetailPagerAdapter?.showEmptyData()
+//        workSheetItemDetailPagerAdapter?.showEmptyData()
     }
 
     override fun showWorkItemDetail(
@@ -266,9 +266,13 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
         this.workItemDetail = workItemDetail
         this.tempLumperIds = tempLumperIds
-        if (buildingParams != null) {
-            this.buildingParams = buildingParams
+        if (!DateUtils.isFutureDate(selectedTime) && !DateUtils.isCurrentDate(selectedTime)) {
+            this.buildingParams =
+                ScheduleUtils.getFilledBuildingOpsParameterList(workItemDetail.buildingOps)
+        } else {
+            buildingParams?.let { this.buildingParams = it }
         }
+
         textViewStartTime.text = UIUtils.getSpannableText(getString(R.string.start_time_bold),
             DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime).toString()
         )
@@ -305,7 +309,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
             workItemDetail,
             lumpersTimeSchedule,
             tempLumperIds,
-            buildingParams
+            this.buildingParams
         )
     }
 
@@ -356,8 +360,8 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
             return
         }
 
-        val filledParameterCount = ScheduleUtils.getFilledBuildingParametersCounts(workItemDetail, workItemDetail.buildingParams)
-        val parameters = ScheduleUtils.getBuildingParametersList(workItemDetail.buildingParams)
+        val filledParameterCount = ScheduleUtils.getFilledBuildingParametersCounts(workItemDetail, buildingParams)
+        val parameters = ScheduleUtils.getBuildingParametersList(buildingParams)
 
 
         if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {

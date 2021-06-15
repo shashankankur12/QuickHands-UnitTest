@@ -34,9 +34,9 @@ class LumperWorkDetailPresenter(private var lumperWorkDetailView: LumperWorkDeta
         lumperWorkDetailModel.saveLumperSignature(lumperId, date, signatureFilePath, this)
     }
 
-    override fun saveAttendanceDetails(attendanceDetailList: List<AttendanceDetail>) {
+    override fun saveAttendanceDetails(attendanceDetailList: List<AttendanceDetail>, date: Date) {
         lumperWorkDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        lumperWorkDetailModel.saveLumpersAttendanceList(attendanceDetailList, this)
+        lumperWorkDetailModel.saveLumpersAttendanceList(attendanceDetailList, date,  this)
     }
 
     override fun sendCorrectionRequest(request: LumperCorrectionRequest, containerId: String) {

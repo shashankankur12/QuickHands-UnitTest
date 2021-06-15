@@ -68,8 +68,12 @@ class LumperWorkDetailModel : LumperWorkDetailContract.Model {
             })
     }
 
-    override fun saveLumpersAttendanceList(attendanceDetailList: List<AttendanceDetail>, onFinishedListener: LumperWorkDetailContract.Model.OnFinishedListener) {
-        val dateString = DateUtils.getCurrentDateStringByEmployeeShift()
+    override fun saveLumpersAttendanceList(
+        attendanceDetailList: List<AttendanceDetail>,
+        date: Date,
+        onFinishedListener: LumperWorkDetailContract.Model.OnFinishedListener
+    ) {
+        val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, date)
 
         DataManager.getService().saveAttendanceDetails(getAuthToken(), dateString, attendanceDetailList).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {

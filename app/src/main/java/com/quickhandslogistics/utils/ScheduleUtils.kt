@@ -23,6 +23,7 @@ import com.quickhandslogistics.data.workSheet.WorkSheetListAPIResponse
 import java.util.*
 import kotlin.Comparator
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 import kotlin.collections.LinkedHashMap
 
 object ScheduleUtils {
@@ -857,5 +858,19 @@ object ScheduleUtils {
 
     fun getBuildingDetailData(buildingDetailData: ArrayList<BuildingDetailData>?): BuildingDetailData? {
         return if (!buildingDetailData.isNullOrEmpty()) buildingDetailData[0] else null
+    }
+
+    fun getFilledBuildingOpsParameterList(buildingOps: HashMap<String, String>?): ArrayList<String> {
+        val buildingParams = ArrayList<String>()
+
+        buildingOps?.let {
+            for (key in buildingOps.keys) {
+                if (!key.isNullOrEmpty() && !buildingParams.contains(key)) {
+                    buildingParams.add(key)
+                }
+            }
+        }
+
+        return buildingParams
     }
 }

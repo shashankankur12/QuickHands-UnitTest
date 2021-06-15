@@ -13,7 +13,11 @@ class LumperWorkDetailContract {
     interface Model {
         fun fetchLumperWorkDetails(lumperId: String, selectedDate: Date, onFinishedListener: OnFinishedListener)
         fun saveLumperSignature(lumperId: String, date: Date, signatureFilePath: String, onFinishedListener: OnFinishedListener)
-        fun saveLumpersAttendanceList(attendanceDetailList: List<AttendanceDetail>, onFinishedListener: OnFinishedListener)
+        fun saveLumpersAttendanceList(
+            attendanceDetailList: List<AttendanceDetail>,
+            date: Date,
+            onFinishedListener: OnFinishedListener
+        )
         fun sendCorrectionRequest(request: LumperCorrectionRequest, containerId: String, onFinishedListener: OnFinishedListener)
         fun editLumperParamsRequest(request: LumperCorrectionRequest, containerId: String, onFinishedListener: OnFinishedListener)
         fun cancelCorrectionRequest(status: String, containerId: String, onFinishedListener: OnFinishedListener)
@@ -52,7 +56,7 @@ class LumperWorkDetailContract {
     interface Presenter : BaseContract.Presenter {
         fun getLumperWorkDetails(lumperId: String, selectedDate: Date)
         fun saveLumperSignature(lumperId: String, date: Date, signatureFilePath: String)
-        fun saveAttendanceDetails(attendanceDetailList: List<AttendanceDetail>)
+        fun saveAttendanceDetails(attendanceDetailList: List<AttendanceDetail>, date: Date)
         fun sendCorrectionRequest(request: LumperCorrectionRequest, containerId: String)
         fun editLumperParamsRequest(request: LumperCorrectionRequest, containerId: String)
         fun cancelCorrectionRequest(status: String, containerId: String)

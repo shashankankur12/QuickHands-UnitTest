@@ -143,7 +143,7 @@ class LumperWorkDetailAdapter(
 
                 if (!workItemDetail.buildingParams.isNullOrEmpty()) {
                     relativeLayoutBO.visibility = View.VISIBLE
-                    recyclerViewBO.adapter = ContainerDetailItemAdapter(workItemDetail.buildingOps, workItemDetail.buildingParams, workItemDetail.isCompleted, resources)
+                    recyclerViewBO.adapter = ContainerDetailItemAdapter(workItemDetail.buildingOps, ScheduleUtils.getFilledBuildingOpsParameterList(workItemDetail.buildingOps), workItemDetail.isCompleted, resources)
                 } else {
                     relativeLayoutBO.visibility = View.GONE
                 }
@@ -256,7 +256,7 @@ class LumperWorkDetailAdapter(
                         val lumperDaySheet = getItem(adapterPosition)
                         lumperDaySheet.workItemDetail?.let { workItemDetail ->
                             if (!workItemDetail.buildingParams.isNullOrEmpty())
-                                adapterItemClickListener.onBOItemClick(workItemDetail, workItemDetail.buildingParams!!)
+                                adapterItemClickListener.onBOItemClick(workItemDetail, ScheduleUtils.getFilledBuildingOpsParameterList(workItemDetail.buildingOps))
                         }
                     }
                     linearLayoutCustomerNotes.id -> {

@@ -284,22 +284,6 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
 
 //        buttonClockIn.isEnabled = isClockInEditable
 
-        /* ClockOut Button will only be enabled in these cases:
-            1. ClockIn Time is Punched
-            2. LunchIn Time is Not Punched
-            3. LunchIn Time & LunchOut Time are punched */
-//        buttonClockOut.isEnabled = isClockOutEditable && !isClockInEditable && (isLunchInEditable || !(!isLunchInEditable && isLunchOutEditable))
-
-        /* LunchIn Button will only be enabled in these cases:
-            1. ClockIn Time is Punched
-            2. ClockOut Time is Not Punched */
-//        buttonLunchIn.isEnabled = isLunchInEditable && !isClockInEditable && isClockOutEditable
-
-        /* LunchOut Button will only be enabled in these cases:
-            1. LunchIn Time is Punched
-            2. ClockIn Time is Punched */
-//        buttonLunchOut.isEnabled = isLunchOutEditable && !isLunchInEditable && !isClockInEditable
-
     }
 
     private fun initiateUpdateRecord(lumperId: String?, isPresent: Boolean = true) {
@@ -368,22 +352,18 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         updateData[lumpersInfo!!.lumperId]?.isLunchPunchInChanged = true
     }
 
-    private fun lunchOutButtonClicked(timeInMillis: Long) {
-        val selectedBreakOutTime = System.currentTimeMillis()
+    private fun lunchOutButtonClicked(calendar: Calendar) {
+        val selectedBreakOutTime = calendar.timeInMillis
         val lumperStartTime = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.morningPunchIn)
         val lumperLunchInTime = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.lunchPunchIn)
         val lumperEndTime = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData?.eveningPunchOut)
 
 
-        if (!DateUtils.isFutureTime(lumperStartTime, lumperLunchInTime)) {
+        if (!DateUtils.isFutureTime(lumperStartTime, selectedBreakOutTime)) {
             showErrorDialog(getString(R.string.break_end_greater_work_start_warning_message))
         } else if (!DateUtils.isFutureTime(lumperLunchInTime, selectedBreakOutTime)) {
             showErrorDialog(getString(R.string.break_end_greater_break_start_warning_message))
-        } else if (lumperEndTime > 0 && !DateUtils.isFutureTime(
-                selectedBreakOutTime,
-                lumperEndTime
-            )
-        ) {
+        } else if (lumperEndTime > 0 && !DateUtils.isFutureTime(selectedBreakOutTime, lumperEndTime)) {
             showErrorDialog(getString(R.string.break_end_less_work_end_warning_message))
         } else {
             initiateUpdateRecord(lumpersInfo!!.lumperId)
@@ -407,7 +387,7 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         CustomProgressBar.getInstance().showWarningDialog(getString(R.string.save_attendance_alert_message), this, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 closeBottomSheet()
-                lumperWorkDetailPresenter.saveAttendanceDetails(updateData.values.distinct())
+                lumperWorkDetailPresenter.saveAttendanceDetails(updateData.values.distinct(), Date(selectedTime))
             }
 
             override fun onCancelClick() {
@@ -467,11 +447,11 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
                 }
                 buttonLunchOut.id -> {
                     val clockInTime = DateUtils.convertUTCDateStringToMilliseconds(
-                            DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData.lunchPunchIn
+                            DateUtils.PATTERN_API_RESPONSE, lumperAttendanceData.lunchPunchOut
                     )
                     chooseTime(object : OnTimeSetListener {
                         override fun onSelectTime(calendar: Calendar) {
-                            lunchOutButtonClicked(calendar.timeInMillis)
+                            lunchOutButtonClicked(calendar)
                         }
                     }, clockInTime)
                 }
@@ -578,9 +558,16 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
                 if (eveningPunchOut.isNotEmpty()) eveningPunchOut else "NA"
             )
 
-            if(!lumperAttendanceData.morningPunchIn.isNullOrEmpty()&& !lumperAttendanceData.eveningPunchOut.isNullOrEmpty())
-                textViewShiftTotalTime.text=String.format("Total Time: %s",getDateTimeCalculeted(lumperAttendanceData.morningPunchIn!!, lumperAttendanceData.eveningPunchOut!!))
-            else textViewLunchTotalTime.visibility=View.GONE
+            if(!lumperAttendanceData.morningPunchIn.isNullOrEmpty()&& !lumperAttendanceData.eveningPunchOut.isNullOrEmpty()) {
+                textViewShiftTotalTime.visibility=View.VISIBLE
+                textViewShiftTotalTime.text = String.format(
+                    "Total Time: %s",
+                    getDateTimeCalculeted(
+                        lumperAttendanceData.morningPunchIn!!,
+                        lumperAttendanceData.eveningPunchOut!!
+                    )
+                )
+            }else textViewShiftTotalTime.visibility=View.GONE
 
             val lunchPunchIn = DateUtils.convertDateStringToTime(
                 DateUtils.PATTERN_API_RESPONSE,
@@ -595,9 +582,16 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
                 if (lunchPunchIn.isNotEmpty()) lunchPunchIn else "NA",
                 if (lunchPunchOut.isNotEmpty()) lunchPunchOut else "NA"
             )
-            if(!lumperAttendanceData.lunchPunchIn.isNullOrEmpty()&&!lumperAttendanceData.lunchPunchOut.isNullOrEmpty())
-                textViewLunchTotalTime.text=String.format("Total Time: %s",getDateTimeCalculeted(lumperAttendanceData.lunchPunchIn!!, lumperAttendanceData.lunchPunchOut!!))
-            else textViewLunchTotalTime.visibility=View.GONE
+            if(!lumperAttendanceData.lunchPunchIn.isNullOrEmpty()&&!lumperAttendanceData.lunchPunchOut.isNullOrEmpty()) {
+                textViewLunchTotalTime.visibility = View.VISIBLE
+                textViewLunchTotalTime.text = String.format(
+                    "Total Time: %s",
+                    getDateTimeCalculeted(
+                        lumperAttendanceData.lunchPunchIn!!,
+                        lumperAttendanceData.lunchPunchOut!!
+                    )
+                )
+            } else textViewLunchTotalTime.visibility=View.GONE
         }
         if (!lumperAttendanceData.attendanceNote.isNullOrEmpty()) {
             editTextNotes.text = lumperAttendanceData.attendanceNote
@@ -638,8 +632,9 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
         
         workItem.workItemDetail?.let {
             val isCompleted =it.isCompleted
+            val submittedParams =ScheduleUtils.getFilledBuildingOpsParameterList(it.buildingOps)
             CorrectionRequestBottomSheet.getInstance().newRequestCorrectionBottomSheetDialog(workItem.lumpersTimeSchedule, it.buildingOps, it.notesQHL,
-                    null, it.buildingParams, containerId, lumperId, isCompleted, true, selectedTime , activity, object : CorrectionRequestBottomSheet.IDialogRequestCorrectionClick {
+                    null, submittedParams, containerId, lumperId, isCompleted, true, selectedTime , activity, object : CorrectionRequestBottomSheet.IDialogRequestCorrectionClick {
                 override fun onSendRequest(dialog: Dialog, request: LumperCorrectionRequest, containerId: String) {
                     lumperWorkDetailPresenter.sendCorrectionRequest(request, containerId)
                     dialog.dismiss()
@@ -670,8 +665,9 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
             workDetails.corrections?.let {
                 val containerId =it.containerId
                 val lumperId =it.lumperId
+                val submittedParams =ScheduleUtils.getFilledBuildingOpsParameterList(workDetails.buildingOps)
                 CorrectionRequestBottomSheet.getInstance().newRequestCorrectionBottomSheetDialog(it.workTiming, it.containerParameters, it.notesForQHL,
-                        it.correctionNote, workDetails.buildingParams,containerId, lumperId, isCompleted, true,selectedTime, activity, object : CorrectionRequestBottomSheet.IDialogRequestCorrectionClick {
+                        it.correctionNote, submittedParams,containerId, lumperId, isCompleted, true,selectedTime, activity, object : CorrectionRequestBottomSheet.IDialogRequestCorrectionClick {
                     override fun onSendRequest(dialog: Dialog, request: LumperCorrectionRequest, containerId: String) {
                         lumperWorkDetailPresenter.sendCorrectionRequest(request, containerId)
                         dialog.dismiss()
@@ -688,8 +684,9 @@ class LumperWorkDetailActivity : BaseActivity(), View.OnClickListener, LumperWor
 
         workItem.workItemDetail?.let {
             val isCompleted =it.isCompleted
+            val submittedParams =ScheduleUtils.getFilledBuildingOpsParameterList(it.buildingOps)
             CorrectionRequestBottomSheet.getInstance().newRequestCorrectionBottomSheetDialog(workItem.lumpersTimeSchedule, it.buildingOps, it.notesQHL,
-                null, it.buildingParams, containerId, lumperId, isCompleted, false, selectedTime , activity, object : CorrectionRequestBottomSheet.IDialogRequestCorrectionClick {
+                null, submittedParams, containerId, lumperId, isCompleted, false, selectedTime , activity, object : CorrectionRequestBottomSheet.IDialogRequestCorrectionClick {
                     override fun onSendRequest(dialog: Dialog, request: LumperCorrectionRequest, containerId: String) {
                         lumperWorkDetailPresenter.editLumperParamsRequest(request, containerId)
                         dialog.dismiss()
