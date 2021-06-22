@@ -15,13 +15,19 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.lumperSheet.LumperSheetAdapter
 import com.quickhandslogistics.contracts.lumperSheet.LumperSheetContract
 import com.quickhandslogistics.data.lumperSheet.LumpersInfo
+import com.quickhandslogistics.data.schedule.PastFutureDates
 import com.quickhandslogistics.presenters.lumperSheet.LumperSheetPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.schedule.ScheduleFragment
 import kotlinx.android.synthetic.main.content_dashboard.*
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.*
 import kotlinx.android.synthetic.main.fragment_lumper_sheet.*
+import kotlinx.android.synthetic.main.fragment_lumper_sheet.editTextSearch
+import kotlinx.android.synthetic.main.fragment_lumper_sheet.imageViewCancel
+import kotlinx.android.synthetic.main.fragment_lumper_sheet.mainConstraintLayout
+import kotlinx.android.synthetic.main.fragment_lumper_sheet.textViewEmptyData
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -39,7 +45,7 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
     private var dept: String =""
     private var datePosition: Int = 0
     private var isSavedState: Boolean = false
-
+    private var pastFutureDates: ArrayList<PastFutureDates> = ArrayList()
     private lateinit var lumperSheetAdapter: LumperSheetAdapter
     private lateinit var lumperSheetPresenter: LumperSheetPresenter
 
@@ -63,6 +69,13 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         // Setup Calendar Dates
         selectedTime = Date().time
         availableDates = CalendarUtils.getPastCalendarDates()
+
+//        availableDates.forEach {
+//            val pastFutureDate= PastFutureDates()
+//            pastFutureDate.day= it
+//            pastFutureDate.code=1
+//            pastFutureDates.add(pastFutureDate)
+//        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -73,9 +86,9 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         super.onViewCreated(view, savedInstanceState)
 
         recyclerViewLumpersSheet.apply {
-            val linearLayoutManager = LinearLayoutManager(fragmentActivity!!)
+            val linearLayoutManager = LinearLayoutManager(fragmentActivity)
             layoutManager = linearLayoutManager
-            val dividerItemDecoration = DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
+            val dividerItemDecoration = DividerItemDecoration(fragmentActivity, linearLayoutManager.orientation)
             addItemDecoration(dividerItemDecoration)
             lumperSheetAdapter = LumperSheetAdapter(resources, this@LumperSheetFragment)
             adapter = lumperSheetAdapter
@@ -92,7 +105,12 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         imageViewCancel.setOnClickListener(this)
         buttonSubmit.setOnClickListener(this)
 
-        CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarLumperSheet, availableDates, this)
+        CalendarUtils.initializeCalendarView(
+            fragmentActivity!!,
+            singleRowCalendarLumperSheet,
+            availableDates,
+            this
+        )
         savedInstanceState?.also {
             isSavedState=true
             if (savedInstanceState.containsKey(SELECTED_DATE_POSITION)) {
@@ -210,6 +228,9 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
                     AppUtils.hideSoftKeyboard(fragmentActivity!!)
                 }
                 buttonSubmit.id -> showConfirmationDialog()
+                else ->{
+
+                }
             }
         }
     }
@@ -230,6 +251,8 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
         if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
             CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
         } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+        buttonSubmit.isEnabled =false
+
     }
 
     override fun showDateString(dateString: String, shift: String , dept : String) {
@@ -297,6 +320,13 @@ class LumperSheetFragment : BaseFragment(), LumperSheetContract.View, TextWatche
             recyclerViewLumpersSheet.visibility = View.GONE
             textViewEmptyData.visibility = View.VISIBLE
         }
+    }
+
+    override fun showPastFutureDate(pastFutureDate: ArrayList<PastFutureDates>) {
+        isSavedState = true
+        this.pastFutureDates= pastFutureDate
+        CalendarUtils.pastFutureDatesNew=pastFutureDates
+        singleRowCalendarLumperSheet.adapter?.notifyDataSetChanged()
     }
 
     override fun sheetSubmittedSuccessfully() {

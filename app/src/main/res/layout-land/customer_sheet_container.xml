@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:showIn="@layout/fragment_customer_sheet">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,28 +15,26 @@
             android:id="@+id/textViewCompanyName"
             style="@style/titleBigTextViewTheme"
             android:layout_width="0dp"
-            android:layout_marginStart="@dimen/_15ssp"
-            android:layout_marginEnd="@dimen/_10ssp"
+            android:layout_marginHorizontal="@dimen/_15ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textViewWorkItemsDate"
+            style="@style/valuesSmallTextViewTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_date_selector"
-            android:drawableStart="@drawable/ic_schedule_calendar"
-            android:drawablePadding="@dimen/_6ssp"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:hint="@string/date_day"
-            android:padding="@dimen/_4sdp"
             android:layout_marginStart="@dimen/_15ssp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginEnd="@dimen/_10ssp"
-            app:layout_constraintTop_toBottomOf="@+id/textViewCompanyName"
+            android:background="@drawable/background_date_selector"
+            android:drawableStart="@drawable/icon_calendar"
+            android:drawablePadding="@dimen/_6ssp"
+            android:gravity="center"
+            android:padding="@dimen/_4sdp"
             app:layout_constraintStart_toStartOf="parent"
-            android:textColor="@color/scheduleDetail"
-            android:textSize="@dimen/_10ssp" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewCompanyName" />
 
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewTotalCount"
@@ -45,39 +43,32 @@
             android:layout_marginStart="@dimen/_15ssp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_10ssp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/buttonSignature"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemsDate" />
+
         <Button
             android:id="@+id/buttonSignature"
             style="@style/positiveRoundButtonTheme"
-            android:textSize="@dimen/_12sdp"
             android:layout_width="wrap_content"
-            android:paddingHorizontal="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_4sdp"
             android:layout_height="@dimen/_30sdp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginEnd="@dimen/_10ssp"
-            app:layout_constraintTop_toBottomOf="@+id/textViewCompanyName"
-            android:text="@string/signature" />
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:text="@string/signature"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewCompanyName" />
 
-        <com.otaliastudios.zoom.ZoomLayout
+        <include
             android:id="@+id/relativeLayout"
+            layout="@layout/customer_sheet_content"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_8sdp"
-            app:transformationGravity="center"
-            app:alignment="top"
-            app:minZoom="1"
-            app:minZoomType="zoom"
-            android:background="@drawable/white_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTotalCount">
-
-            <include layout="@layout/customer_sheet_content"/>
-
-        </com.otaliastudios.zoom.ZoomLayout>
+            app:layout_constraintTop_toBottomOf="@+id/textViewTotalCount" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

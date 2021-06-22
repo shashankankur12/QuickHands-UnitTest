@@ -1,12 +1,12 @@
 package com.quickhandslogistics.views.qhlContact
 
+import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +29,7 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
     private var qhlContactList: ArrayList<EmployeeData> = ArrayList()
     private var phone: String? = null
     private var email: String = ""
+    private var isShowErrorDialog: Boolean = true
 
     companion object {
         const val QHL_CONTACT_LIST = "QHL_CONTACT_LIST"
@@ -85,6 +86,7 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
             }
 
             qhlContactPresenter.fetchQhlContactList()
+            isShowErrorDialog = true
         }
         textViewQHLContact.setOnClickListener(this)
         textViewQHlEmail.setOnClickListener(this)
@@ -117,8 +119,12 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
         this.leadProfileData = leadProfileData
         leadProfileData?.let {
             phone = it.phone?.replace("+1", "")?.replace("-", "")?.trim()
-            val open = if (!it.opens.isNullOrEmpty()) it.opens else getString(R.string.na)
-            val close = if (!it.closes.isNullOrEmpty()) it.closes else getString(R.string.na)
+            val open = if (!it.opens.isNullOrEmpty()) DateUtils.changeUTCDateStringToLocalDateString(DateUtils.PATTERN_API_RESPONSE, DateUtils.PATTERN_TIME,
+                it.opens!!.replace("\"","")
+            ) else getString(R.string.na)
+            val close = if (!it.closes.isNullOrEmpty())DateUtils.changeUTCDateStringToLocalDateString(DateUtils.PATTERN_API_RESPONSE, DateUtils.PATTERN_TIME,
+                it.closes!!.replace("\"","")
+            ) else getString(R.string.na)
             email = leadProfileData.email!!
 
             textViewQhlOfficeName.text = getString(R.string.qhl_office)
@@ -137,7 +143,9 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
         textViewEmptyData.visibility = View.VISIBLE
 
         if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            if (isShowErrorDialog)
             CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
+            isShowErrorDialog =false
         } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainRootLayout, message)
     }
 
@@ -170,6 +178,16 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
             isFinish = true,
             flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK)
         )
+    }
+
+    override fun showSuccessMessageSend(message: String) {
+        CustomProgressBar.getInstance().showSuccessDialog(message,
+            fragmentActivity!!, object : CustomDialogListener {
+                override fun onConfirmClick() {
+                    qhlContactPresenter.fetchQhlContactList()
+                    isShowErrorDialog = true
+                }
+            })
     }
 
     override fun onClick(view: View?) {
@@ -222,7 +240,22 @@ class QhlContactFragment : BaseFragment(), QhlContactContract.View, View.OnClick
             ConnectionDetector.createSnackBar(activity)
             return
         }
-        Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
+
+        employeeData.id?.let { id ->
+            activity?.let {
+                CustomBottomSheetDialog.sendMessageBottomSheetDialog(
+                    it, object : CustomBottomSheetDialog.IDialogRequestMessageClick {
+                        override fun onSendRequest(dialog: Dialog, request: String) {
+                            dialog.dismiss()
+                            qhlContactPresenter.sendCustomerContactMessage(id, request)
+                            isShowErrorDialog = true
+
+                        }
+                    })
+            }
+        }
+
+
     }
 
 }

@@ -24,9 +24,14 @@ import com.quickhandslogistics.utils.CustomProgressBar
 import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
+import com.quickhandslogistics.views.schedule.ScheduleFragment
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ORIGIN
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NUMBER
 import kotlinx.android.synthetic.main.content_work_sheet_item.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapterItemClickListener, View.OnClickListener, View.OnLongClickListener {
 
@@ -147,7 +152,7 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
             getString(R.string.unfinished) -> {
                 updateWorkItemsList(unfinishedWorkItems,groupNotes)
             }
-            else -> updateWorkItemsList(notDoneWorkItems)
+            else -> updateWorkItemsList(notDoneWorkItems,groupNotes)
         }
 
         textViewAddGroupNote.setOnClickListener(this)
@@ -216,15 +221,20 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
 
 
     /** Adapter Listeners */
-    override fun onItemClick(workItemId: String, workItemTypeDisplayName: String) {
+    override fun onItemClick(workItemDetail: WorkItemDetail) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {
             ConnectionDetector.createSnackBar(activity)
             return
         }
 
+        val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItemDetail.type, resources)
+        val origin =if (workItemDetail.origin!=null) workItemDetail.origin else ""
         val bundle = Bundle()
-        bundle.putString(ARG_WORK_ITEM_ID, workItemId)
+        bundle.putString(ARG_WORK_ITEM_ID, workItemDetail.id)
         bundle.putString(ARG_WORK_ITEM_TYPE_DISPLAY_NAME, workItemTypeDisplayName)
+        bundle.putInt(ARG_WORK_ITEM_TYPE_DISPLAY_NUMBER, workItemDetail.containerNumber)
+        bundle.putString(ARG_WORK_ITEM_ORIGIN, origin)
+        bundle.putLong(ScheduleFragment.ARG_SELECTED_DATE_MILLISECONDS, Date().time)
         startIntent(WorkSheetItemDetailActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }
 
@@ -259,13 +269,13 @@ class WorkSheetItemFragment : BaseFragment(), WorkSheetItemContract.View.OnAdapt
                 var containerType:String =""
                 when (workItemType) {
                     getString(R.string.cancel) -> {
-                        containerType="CANCELLED"
+                        containerType=AppConstant.WORK_ITEM_STATUS_CANCELLED
                     }
                     getString(R.string.unfinished) -> {
-                        containerType="UNFINISHED"
+                        containerType= AppConstant.WORK_ITEM_STATUS_UNFINISHED
                     }
                     getString(R.string.not_open) -> {
-                        containerType="NOTOPEN"
+                        containerType=AppConstant.WORK_ITEM_STATUS_NOT_OPEN
                     }
                 }
                 workSheetItemAdapter.getItemList().forEach {

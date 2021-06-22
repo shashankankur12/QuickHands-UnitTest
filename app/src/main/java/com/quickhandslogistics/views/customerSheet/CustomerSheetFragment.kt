@@ -12,7 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.quickhandslogistics.R
-import com.quickhandslogistics.adapters.customerSheet.WorkItemAdapter
+import com.quickhandslogistics.adapters.customerSheet.ParameterAdapter
+import com.quickhandslogistics.adapters.customerSheet.WorkTypeAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
 import com.quickhandslogistics.contracts.customerSheet.CustomerSheetContract
 import com.quickhandslogistics.data.customerSheet.CustomerSheetData
@@ -22,37 +23,23 @@ import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
 import com.quickhandslogistics.presenters.customerSheet.CustomerSheetPresenter
 import com.quickhandslogistics.utils.*
-import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_DATE_DISPLAY_CUSTOMER_SHEET
-import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_DATE_DISPLAY_SHEET
-import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.common.AddSignatureActivity
 import kotlinx.android.synthetic.main.bottom_sheet_customer_sheet_fragement.*
-import kotlinx.android.synthetic.main.bottom_sheet_customer_sheet_fragement.buttonSubmit
-import kotlinx.android.synthetic.main.bottom_sheet_customer_sheet_fragement.editTextCustomerName
-import kotlinx.android.synthetic.main.bottom_sheet_customer_sheet_fragement.editTextCustomerNotes
-import kotlinx.android.synthetic.main.bottom_sheet_customer_sheet_fragement.imageViewSignature
-import kotlinx.android.synthetic.main.bottom_sheet_customer_sheet_fragement.layoutSignature
-import kotlinx.android.synthetic.main.bottom_sheet_customer_sheet_fragement.textViewAddSignature
-import kotlinx.android.synthetic.main.bottom_sheet_customer_sheet_fragement.textViewSignature
+import kotlinx.android.synthetic.main.customer_sheet_container.*
 import kotlinx.android.synthetic.main.customer_sheet_content.*
-import kotlinx.android.synthetic.main.customer_sheet_content.textViewBuildingName
-import kotlinx.android.synthetic.main.customer_sheet_contner.*
 import kotlinx.android.synthetic.main.fragment_customer_sheet.*
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlinx.android.synthetic.main.customer_sheet_contner.textViewWorkItemsDate as textViewWorkItemsDate1
 
 
 class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
-    CustomerSheetContract.View.OnFragmentInteractionListener, CustomerSheetContract.View.fragmentDataListener,
-    View.OnClickListener {
-
+    CustomerSheetContract.View.OnFragmentInteractionListener,
+    CustomerSheetContract.View.fragmentDataListener, View.OnClickListener {
     private var onFragmentInteractionListener: DashBoardContract.View.OnFragmentInteractionListener? =
         null
-
     private var selectedTime: Long = 0
     private lateinit var availableDates: List<Date>
     private var customerSheetScheduleDetails: CustomerSheetScheduleDetails? = null
@@ -61,18 +48,17 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
     private var companyName: String = ""
     private var date: String = ""
     private var signatureFilePath = ""
+    private var customerId = ""
     private var localCustomerSheetData: LocalCustomerSheetData? = null
-
     private var isSavedState: Boolean = false
-    private var isSaveddata: Boolean = true
+    private var isSavedData: Boolean = true
+    private var isSheetSigned: Boolean = false
     private var selectedDatePosition: Int = 0
     private var inCompleteWorkItemsCount: Int = 0
+    private var totalCount: Int = 0
     private var workItemsCount: Int = 0
-
-
     private lateinit var customerSheetPresenter: CustomerSheetPresenter
-//    private lateinit var adapter: CustomerSheetPagerAdapter
-    private lateinit var workItemAdapter: WorkItemAdapter
+    private lateinit var workItemAdapter: WorkTypeAdapter
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
     companion object {
@@ -89,7 +75,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         super.onAttach(context)
         if (context is DashBoardContract.View.OnFragmentInteractionListener) {
             onFragmentInteractionListener = context
-            isSaveddata=true
+            isSavedData = true
         }
     }
 
@@ -113,9 +99,8 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        textViewWorkItemsDate1.text= DateUtils.getDateString(PATTERN_NORMAL, Date(selectedTime))
-        initializeViewPager()
-
+        textViewWorkItemsDate.text = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, Date(selectedTime))
+        initializeView()
         savedInstanceState?.also {
             isSavedState = true
             if (savedInstanceState.containsKey(SELECTED_DATE_POSITION)) {
@@ -145,8 +130,9 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
                 customerSheetData = savedInstanceState.getParcelable(CUSTOMER_SHEET)
 
                 selectedTime = selectedDate.time
-                textViewWorkItemsDate1.text= DateUtils.getDateString(PATTERN_NORMAL, Date(selectedTime))
-                showCustomerSheets(customerSheetScheduleDetails!!,customerSheetData,selectedDate)
+                textViewWorkItemsDate.text =
+                    DateUtils.getDateString(DateUtils.PATTERN_NORMAL, Date(selectedTime))
+                showCustomerSheets(customerSheetScheduleDetails!!, customerSheetData, selectedDate)
 
             }
         } ?: run {
@@ -158,7 +144,6 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         super.onDestroy()
         customerSheetPresenter.onDestroy()
     }
-
 
     override fun onSaveInstanceState(outState: Bundle) {
         if (selectedDate != null && customerSheetScheduleDetails != null) {
@@ -174,69 +159,27 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         super.onSaveInstanceState(outState)
     }
 
-    private fun initializeViewPager(
-        allWorkItemLists: Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>>? = null,
-        customerSheetData: CustomerSheetData? = null,
-        selectedTime: Long? = null,
-        localCustomerSheetData: LocalCustomerSheetData? = null
-    ) {
-
+    private fun initializeView() {
         sheetBehavior = BottomSheetBehavior.from(constraintLayoutBottomSheetCustomerDetails)
         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        buttonSignature.setOnClickListener (this)
-        bottomSheetBackground.setOnClickListener (this)
-        buttonCancel.setOnClickListener (this)
-        textViewAddSignature.setOnClickListener (this)
-        buttonSubmit.setOnClickListener (this)
-        textViewWorkItemsDate1.setOnClickListener (this)
-        workItemAdapter= WorkItemAdapter(resources, this)
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        recycelrViewItem.layoutManager=layoutManager
-        recycelrViewItem.adapter=workItemAdapter
+        buttonSignature.setOnClickListener(this)
+        bottomSheetBackground.setOnClickListener(this)
+        buttonCancel.setOnClickListener(this)
+        textViewAddSignature.setOnClickListener(this)
+        buttonSubmit.setOnClickListener(this)
+        textViewWorkItemsDate.setOnClickListener(this)
 
-
-
-//        adapter = if (allWorkItemLists != null) {
-//            CustomerSheetPagerAdapter(
-//                childFragmentManager,
-//                resources,
-//                allWorkItemLists,
-//                customerSheetData,
-//                selectedTime,
-//                localCustomerSheetData
-//            )
-//        } else {
-//            CustomerSheetPagerAdapter(childFragmentManager, resources)
-//        }
-//        viewPagerCustomerSheet.offscreenPageLimit = adapter.count
-//        viewPagerCustomerSheet.adapter = adapter
-//        tabLayoutCustomerSheet.setupWithViewPager(viewPagerCustomerSheet)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstant.REQUEST_CODE_CHANGED && resultCode == Activity.RESULT_OK) {
             data?.let {
-                val signatureFilePath = data.getStringExtra(AddSignatureActivity.ARG_SIGNATURE_FILE_PATH)
+                val signatureFilePath =
+                    data.getStringExtra(AddSignatureActivity.ARG_SIGNATURE_FILE_PATH)
                 showLocalSignatureOnUI(signatureFilePath)
             }
         }
-    }
-
-    private fun createDifferentListData(scheduleDetails: CustomerSheetScheduleDetails): Triple<ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>, ArrayList<WorkItemDetail>> {
-        val onGoingWorkItems = ArrayList<WorkItemDetail>()
-        onGoingWorkItems.addAll(scheduleDetails.inProgress!!)
-        onGoingWorkItems.addAll(scheduleDetails.onHold!!)
-        onGoingWorkItems.addAll(scheduleDetails.scheduled!!)
-
-        val allWorkItems = ArrayList<WorkItemDetail>()
-        allWorkItems.addAll(onGoingWorkItems)
-        allWorkItems.addAll(scheduleDetails.cancelled!!)
-        allWorkItems.addAll(scheduleDetails.completed!!)
-        textViewTotalCount.text =
-            String.format(getString(R.string.total_containers_s), allWorkItems.size)
-
-        return Triple(onGoingWorkItems, scheduleDetails.cancelled!!, scheduleDetails.completed!!)
     }
 
     override fun showAPIErrorMessage(message: String) {
@@ -246,13 +189,16 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
 
         // Reset Whole Screen Data
         textViewCompanyName.text = ""
-//        textViewWorkItemsDate.text = ""
         textViewTotalCount.text = ""
-        textViewBuildingName.text=""
-        buttonSignature.isEnabled=false
+        textViewBuildingName.text = ""
+        buttonSignature.isEnabled = false
     }
 
-    override fun showCustomerSheets(scheduleDetails: CustomerSheetScheduleDetails, customerSheet: CustomerSheetData?, selectedDate: Date) {
+    override fun showCustomerSheets(
+        scheduleDetails: CustomerSheetScheduleDetails,
+        customerSheet: CustomerSheetData?,
+        selectedDate: Date
+    ) {
         this.selectedDate = selectedDate
         this.customerSheetScheduleDetails = scheduleDetails
         this.customerSheetData = customerSheet
@@ -261,91 +207,205 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         selectedTime = selectedDate.time
 
         val onGoingWorkItems = ArrayList<WorkItemDetail>()
-        onGoingWorkItems.addAll(scheduleDetails.inProgress!!)
-        onGoingWorkItems.addAll(scheduleDetails.onHold!!)
-        onGoingWorkItems.addAll(scheduleDetails.scheduled!!)
+        scheduleDetails.inProgress?.let { onGoingWorkItems.addAll(it) }
+        scheduleDetails.onHold?.let { onGoingWorkItems.addAll(it) }
+        scheduleDetails.scheduled?.let { onGoingWorkItems.addAll(it) }
 
         val allWorkItems = ArrayList<WorkItemDetail>()
         allWorkItems.addAll(onGoingWorkItems)
-        allWorkItems.addAll(scheduleDetails.cancelled!!)
-        allWorkItems.addAll(scheduleDetails.completed!!)
+        scheduleDetails.cancelled?.let { allWorkItems.addAll(it) }
+        scheduleDetails.completed?.let { allWorkItems.addAll(it) }
+        scheduleDetails.unfinished?.let { allWorkItems.addAll(it) }
+        scheduleDetails.notOpen?.let { allWorkItems.addAll(it) }
+
+        workItemsCount = allWorkItems.size
+        inCompleteWorkItemsCount = onGoingWorkItems.size
+
         textViewTotalCount.text =
-            String.format(getString(R.string.total_containers_s), allWorkItems.size)
+            String.format(
+                getString(R.string.total_containers_s),
+                (allWorkItems.size - onGoingWorkItems.size)
+            )
 
-
-//        adapter.updateCustomerSheetList(
-//            onGoingWorkItems,
-//            scheduleDetails.cancelled!!,
-//            scheduleDetails.completed!!,
-//            customerSheet,
-//            selectedTime
-//        )
-
-        workItemsCount= allWorkItems.size
-
-        inCompleteWorkItemsCount=onGoingWorkItems.size
-        buildingDetails(scheduleDetails,customerSheet)
+         totalCount=  allWorkItems.size
+        signatureButtonEnable(totalCount>0)
+        buildingDetails(scheduleDetails, customerSheet)
     }
 
+    private fun signatureButtonEnable(listHaveData: Boolean) {
+        buttonSignature.isEnabled=  listHaveData
+    }
 
-    private fun buildingDetails(scheduleDetails: CustomerSheetScheduleDetails, customerSheet: CustomerSheetData?) {
+    private fun setVisibilityForNote(visible: Boolean) {
+        textViewCustomerNoteHeader.visibility = if (visible) View.VISIBLE else View.GONE
+        viewLine.visibility = if (visible) View.VISIBLE else View.GONE
+        textViewCustomerNote.visibility = if (visible) View.VISIBLE else View.GONE
+    }
 
-        val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
-        leadProfile?.buildingDetailData?.get(0)?.let {
-            textViewBuildingName.text=  it.buildingName!!.capitalize()+ " \n"+it.buildingAddress!!.capitalize() +", \n"+it.buildingCity+", "+it.buildingState +" "+it .buildingZipcode
+    private fun buildingDetails(
+        scheduleDetails: CustomerSheetScheduleDetails,
+        customerSheet: CustomerSheetData?
+    ) {
+        setHeaderData()
+
+        //for complete section in sheet
+        textViewStatusComplete.text =
+            String.format(getString(R.string.complete_header), scheduleDetails.completed?.size)
+        recyclerViewItem.apply {
+            workItemAdapter = WorkTypeAdapter(
+                resources,
+                context,
+                ScheduleUtils.getCustomerSheetItemArray(scheduleDetails.completed),
+                true
+            )
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = workItemAdapter
         }
-        textViewHeaderBar.text= UIUtils.getSpannableText(getString(R.string.date),DateUtils.getDateString(PATTERN_DATE_DISPLAY_CUSTOMER_SHEET, selectedDate))
-        textViewShiftName.text= UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile?.shift!!.capitalize())
-        textViewDepartmentName.text= UIUtils.getSpannableText(getString(R.string.bar_header_dept), leadProfile?.department!!.capitalize())
-        val onGoingWorkItems = ArrayList<WorkItemDetail>()
-        onGoingWorkItems.addAll(scheduleDetails.inProgress!!)
-        onGoingWorkItems.addAll(scheduleDetails.onHold!!)
-        onGoingWorkItems.addAll(scheduleDetails.scheduled!!)
 
-        val workItemDetailList =ArrayList<ArrayList<WorkItemDetail>>()
-        workItemDetailList.add(scheduleDetails.completed!!)
-        workItemDetailList.add(scheduleDetails.cancelled!!)
-        workItemDetailList.add(onGoingWorkItems)
+        //for cancel section in sheet
+        textViewStatusCancel.text =
+            String.format(getString(R.string.cancel_header), scheduleDetails.cancelled?.size)
+        recyclerViewItemCancelHeader.apply {
+            layoutManager =
+                LinearLayoutManager(fragmentActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = ParameterAdapter(getItemTypeList())
+        }
+        recyclerViewItemCancel.apply {
+            layoutManager =
+                LinearLayoutManager(fragmentActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter =
+                ParameterAdapter(ScheduleUtils.getSheetItemCountArray(scheduleDetails.cancelled))
+        }
 
-        workItemAdapter.update(workItemDetailList)
+        if (scheduleDetails.containerGroupNote?.noteForCustomer != null && !scheduleDetails.cancelled?.isNullOrEmpty()!!) {
+            layoutCancelNote.visibility = View.VISIBLE
+            textViewCancelNote.text =
+                scheduleDetails.containerGroupNote?.noteForCustomer?.capitalize()
+        } else layoutCancelNote.visibility = View.GONE
+
+        //for unfinished section in sheet
+        textViewStatusUnfinished.text =
+            String.format(getString(R.string.unfinished_header), scheduleDetails.unfinished?.size)
+        recyclerViewItemUnfinished.apply {
+            workItemAdapter = WorkTypeAdapter(
+                resources,
+                context!!,
+                ScheduleUtils.getCustomerSheetItemArray(scheduleDetails.unfinished!!),
+                false
+            )
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = workItemAdapter
+        }
+
+        if (scheduleDetails.unfinishedNotes?.noteForCustomer != null && !scheduleDetails.unfinished?.isNullOrEmpty()!!) {
+            layoutUnfinishedNote.visibility = View.VISIBLE
+            textViewUnfinishedNote.text =
+                scheduleDetails.unfinishedNotes?.noteForCustomer?.capitalize()
+        } else layoutUnfinishedNote.visibility = View.GONE
+
+        //for not open section in sheet
+        textViewStatusNotOpen.text =
+            String.format(getString(R.string.not_open_header), scheduleDetails.notOpen?.size)
+        recyclerViewItemNotOpenHeader.apply {
+            layoutManager =
+                LinearLayoutManager(fragmentActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = ParameterAdapter(getItemTypeList())
+        }
+        recyclerViewItemNotOpen.apply {
+            layoutManager =
+                LinearLayoutManager(fragmentActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter =
+                ParameterAdapter(ScheduleUtils.getSheetItemCountArray(scheduleDetails.notOpen))
+        }
+
+        if (scheduleDetails.notOpenNotes?.noteForCustomer != null && !scheduleDetails.notOpen?.isNullOrEmpty()!!) {
+            layoutNotOpenNote.visibility = View.VISIBLE
+            textViewNotOpenNote.text = scheduleDetails.notOpenNotes?.noteForCustomer?.capitalize()
+        } else layoutNotOpenNote.visibility = View.GONE
+
+
+        recyclerViewItemNotOpenHeader.visibility =
+            if (!scheduleDetails.notOpen.isNullOrEmpty()) View.VISIBLE else View.GONE
+        recyclerViewItemNotOpen.visibility =
+            if (!scheduleDetails.notOpen.isNullOrEmpty()) View.VISIBLE else View.GONE
+        textViewNotOpenHeader.visibility =
+            if (!scheduleDetails.notOpen.isNullOrEmpty()) View.VISIBLE else View.GONE
+        recyclerViewItemUnfinished.visibility =
+            if (!scheduleDetails.unfinished.isNullOrEmpty()) View.VISIBLE else View.GONE
+        recyclerViewItemCancel.visibility =
+            if (!scheduleDetails.cancelled.isNullOrEmpty()) View.VISIBLE else View.GONE
+        recyclerViewItemCancelHeader.visibility =
+            if (!scheduleDetails.cancelled.isNullOrEmpty()) View.VISIBLE else View.GONE
+        textViewCancelHeader.visibility =
+            if (!scheduleDetails.cancelled.isNullOrEmpty()) View.VISIBLE else View.GONE
+        recyclerViewItem.visibility =
+            if (!scheduleDetails.completed.isNullOrEmpty()) View.VISIBLE else View.GONE
+
 
         customerSheet?.also {
-            layoutBarCustomerDetail.visibility=View.VISIBLE
+            layoutBarCustomerDetail.visibility = View.VISIBLE
 
             textViewCustomerName.text = customerSheet.customerRepresentativeName
-            if (!customerSheet.note.isNullOrEmpty()&& !customerSheet.note.equals("NA")){
+            if (!customerSheet.note.isNullOrEmpty() && !customerSheet.note.equals("NA")) {
                 textViewCustomerNote.text = customerSheet.note
-                layoutBarCustomerNote.visibility=View.VISIBLE
+                setVisibilityForNote(true)
+            } else {
+                setVisibilityForNote(false)
             }
-            else{
-                layoutBarCustomerNote.visibility=View.GONE
-            }
-            if (customerSheet.isSigned!!){
-                Glide.with(fragmentActivity!!).load(customerSheet.signatureUrl).into(imageViewCustomerSignature)
-                imageViewCustomerSignature.visibility=View.VISIBLE
-                buttonSignature.background = resources.getDrawable(R.drawable.round_button_red_disabled)
-                buttonSignature.text=getString(R.string.signed)
-            }else{
-                imageViewCustomerSignature.visibility=View.GONE
+            if (customerSheet.isSigned!!) {
+                isSheetSigned= true
+                Glide.with(fragmentActivity!!).load(customerSheet.signatureUrl)
+                    .into(imageViewCustomerSignature)
+                imageViewCustomerSignature.visibility = View.VISIBLE
+                buttonSignature.background =
+                    resources.getDrawable(R.drawable.round_button_red_disabled)
+                buttonSignature.text = getString(R.string.signed)
+            } else {
+                isSheetSigned= false
+                imageViewCustomerSignature.visibility = View.GONE
                 buttonSignature.background = resources.getDrawable(R.drawable.round_button_red)
-                buttonSignature.text=getString(R.string.signature)
+                buttonSignature.text = getString(R.string.signature)
             }
 
         } ?: run {
-            layoutBarCustomerDetail.visibility=View.GONE
-            buttonSignature.text=getString(R.string.signature)
+            layoutBarCustomerDetail.visibility = View.GONE
+            buttonSignature.text = getString(R.string.signature)
             buttonSignature.background = resources.getDrawable(R.drawable.round_button_red)
         }
 
     }
 
+    private fun getItemTypeList(): ArrayList<String> {
+        val itemList = ArrayList<String>()
+        itemList.add(resources.getString(R.string.out_bound))
+        itemList.add(resources.getString(R.string.live_load))
+        itemList.add(resources.getString(R.string.drop))
+        return itemList
+    }
+
+    private fun setHeaderData() {
+        val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+        val buildingDetailData =ScheduleUtils.getBuildingDetailData(leadProfile?.buildingDetailData)
+        textViewBuildingName.text =
+            UIUtils.buildingFullAddress(buildingDetailData)
+        textViewHeaderBar.text = UIUtils.getSpannableText(
+            getString(R.string.date),
+            DateUtils.getDateString(DateUtils.PATTERN_DATE_DISPLAY_CUSTOMER_SHEET, selectedDate)
+        )
+        textViewShiftName.text = UIUtils.getSpannableText(
+            getString(R.string.bar_header_shift),
+            UIUtils.capitalizeString(leadProfile?.shift)
+        )
+        textViewDepartmentName.text = UIUtils.getSpannableText(
+            getString(R.string.bar_header_dept),
+            UIUtils.getDisplayEmployeeDepartmentHeader(leadProfile)
+        )
+    }
 
     override fun showHeaderInfo(companyName: String, date: String) {
         this.companyName = companyName
         this.date = date
-
         textViewCompanyName.text = companyName.capitalize()
-//        textViewWorkItemsDate.text = UIUtils.getSpannedText(date)
     }
 
     override fun customerSavedSuccessfully() {
@@ -373,13 +433,15 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         customerName: String,
         notesCustomer: String,
         signatureFilePath: String,
-        customerId: String
+        customerId: String,
+        date: Date
     ) {
         customerSheetPresenter.saveCustomerSheet(
             customerName,
             notesCustomer,
             signatureFilePath,
-            customerId
+            customerId,
+            date
         )
     }
 
@@ -397,7 +459,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
     }
 
     override fun isDataSave(isDataSave: Boolean) {
-        isSaveddata = isDataSave
+        isSavedData = isDataSave
     }
 
     override fun onDataChanges(): Boolean {
@@ -405,7 +467,7 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
         if (customerSheetData != null && customerSheetData!!.isSigned!!.equals(true)) {
             isDataChanged = false
         } else {
-            if ( !isSaveddata) {
+            if (!isSavedData) {
                 isDataChanged = true
             } else false
         }
@@ -416,53 +478,60 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
     override fun onClick(view: View?) {
         view?.let {
             when (view.id) {
-                buttonSignature.id -> {
-                    showBottomSheetWithData(customerSheetData)
-                }
-                bottomSheetBackground.id-> closeBottomSheet()
-                buttonCancel.id-> closeBottomSheet()
-                textViewAddSignature.id -> startIntent(AddSignatureActivity::class.java, requestCode = AppConstant.REQUEST_CODE_CHANGED)
-                buttonSubmit.id->submitCustomerSheet()
-                textViewWorkItemsDate1.id->{
-                    showStartDatePicker()
-                }
+                buttonSignature.id -> showBottomSheetWithData(customerSheetData)
+                bottomSheetBackground.id -> closeBottomSheet()
+                buttonCancel.id -> closeBottomSheet()
+                textViewAddSignature.id -> startIntent(
+                    AddSignatureActivity::class.java,
+                    requestCode = AppConstant.REQUEST_CODE_CHANGED
+                )
+                buttonSubmit.id -> submitCustomerSheet()
+                textViewWorkItemsDate.id -> showStartDatePicker()
+
             }
         }
 
     }
 
     private fun showStartDatePicker() {
-        val selectedEndDate=availableDates.get(0)
-        ReportUtils.showDatePicker(Date(selectedTime),selectedEndDate, fragmentActivity!!, object : ReportUtils.OnDateSetListener {
-            override fun onDateSet(selected: Date) {
-                updateSelectedDateText(selected.time)
-            }
-        })
+        val selectedEndDate = availableDates.get(0)
+        ReportUtils.showDatePicker(
+            Date(selectedTime),
+            selectedEndDate,
+            fragmentActivity!!,
+            object : ReportUtils.OnDateSetListener {
+                override fun onDateSet(selected: Date) {
+                    updateSelectedDateText(selected.time)
+                }
+            })
     }
 
     private fun updateSelectedDateText(selectedTime: Long) {
-        selectedTime?.also { date ->
-            textViewWorkItemsDate1.text= DateUtils.getDateString(PATTERN_NORMAL, Date(selectedTime))
-                customerSheetPresenter.getCustomerSheetByDate(Date(selectedTime))
+        selectedTime.also { date ->
+            textViewWorkItemsDate.text = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, Date(selectedTime))
+            customerSheetPresenter.getCustomerSheetByDate(Date(selectedTime))
 
         }
-
     }
 
-
     private fun showBottomSheetWithData(customerSheet: CustomerSheetData?) {
-        constraintLayoutBottomSheetCustomerDetails.visibility=View.VISIBLE
+        constraintLayoutBottomSheetCustomerDetails.visibility = View.VISIBLE
         val isCurrentDate = DateUtils.isCurrentDate(selectedTime)
         customerSheet?.also {
             editTextCustomerName.setText(customerSheet.customerRepresentativeName)
             editTextCustomerNotes.setText(customerSheet.note)
-            buttonSubmit.setTag(R.id.requestLumperId, customerSheet.id)
-            updateUIVisibility(ValueUtils.getDefaultOrValue(customerSheet.isSigned), isCurrentDate, inCompleteWorkItemsCount, customerSheet.signatureUrl)
+            customerSheet.id?.let { customerId=it }
+            updateUIVisibility(
+                ValueUtils.getDefaultOrValue(customerSheet.isSigned),
+                isCurrentDate,
+                inCompleteWorkItemsCount,
+                customerSheet.signatureUrl
+            )
         } ?: run {
             editTextCustomerName.setText("")
             editTextCustomerNotes.setText("")
-            signatureFilePath=""
-            buttonSubmit.setTag(R.id.requestLumperId, "")
+            signatureFilePath = ""
+            customerId =""
             updateUIVisibility(false, isCurrentDate, inCompleteWorkItemsCount)
         }
 
@@ -476,47 +545,42 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
 
     private fun closeBottomSheet() {
         AppUtils.hideSoftKeyboard(activity!!)
-        constraintLayoutBottomSheetCustomerDetails.visibility=View.GONE
+        constraintLayoutBottomSheetCustomerDetails.visibility = View.GONE
         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetBackground.visibility = View.GONE
     }
 
-
     private fun updateUIVisibility(signed: Boolean, currentDate: Boolean, inCompleteWorkItemsCount: Int, signatureUrl: String? = "") {
-        buttonSubmit.visibility = if (currentDate) View.VISIBLE else View.GONE
-        textViewSignature.visibility = View.GONE
+//        buttonSubmit.visibility = if (currentDate) View.VISIBLE else View.GONE
+//        textViewSignature.visibility = View.GONE
 
         if (signed) {
             imageViewSignature.visibility = View.VISIBLE
             Glide.with(fragmentActivity!!).load(signatureUrl).into(imageViewSignature)
+
+
+            editTextCustomerName.isEnabled = false
+            editTextCustomerNotes.isEnabled = false
+            buttonSubmit.background = resources.getDrawable(R.drawable.round_button_blue)
+            buttonSubmit.text = getText(R.string.submitted)
         } else {
             imageViewSignature.visibility = View.GONE
             Glide.with(fragmentActivity!!).clear(imageViewSignature)
-        }
 
-        if (!currentDate || signed /*|| inCompleteWorkItemsCount > 0*/) {
-            editTextCustomerName.isEnabled = false
-            editTextCustomerNotes.isEnabled = false
-            buttonSubmit.isEnabled = false
-            if (signed) {
-                buttonSubmit.background = resources.getDrawable(R.drawable.round_button_blue)
-                buttonSubmit.text = getText(R.string.submitted)
-            } else {
-                buttonSubmit.text = getText(R.string.submit)
-            }
-        } else {
+
+            buttonSubmit.background = resources.getDrawable(R.drawable.round_button_red_selector)
             editTextCustomerName.isEnabled = true
             editTextCustomerNotes.isEnabled = true
-            buttonSubmit.isEnabled = true
+            buttonSubmit.text = getText(R.string.submit)
         }
 
-        if (!signed && currentDate && inCompleteWorkItemsCount == 0) {
+        if (/*!signed && currentDate &&*/ inCompleteWorkItemsCount == 0) {
             textViewAddSignature.visibility = View.VISIBLE
         } else {
             textViewAddSignature.visibility = View.GONE
         }
 
-        if (signed || (currentDate && inCompleteWorkItemsCount == 0 && workItemsCount != 0)) {
+        if (/*signed ||*/ (/*currentDate &&*/ inCompleteWorkItemsCount == 0 && workItemsCount != 0)) {
             layoutSignature.visibility = View.VISIBLE
         } else {
             layoutSignature.visibility = View.GONE
@@ -528,42 +592,44 @@ class CustomerSheetFragment : BaseFragment(), CustomerSheetContract.View,
             this.signatureFilePath = signatureFilePath
             Glide.with(fragmentActivity!!).load(File(signatureFilePath)).into(imageViewSignature)
             imageViewSignature.visibility = View.VISIBLE
-            textViewAddSignature.visibility = View.GONE
+//            textViewAddSignature.visibility = View.GONE
         } else {
             this.signatureFilePath = ""
             imageViewSignature.visibility = View.GONE
-            textViewAddSignature.visibility = View.VISIBLE
+//            textViewAddSignature.visibility = View.VISIBLE
         }
     }
 
     private fun submitCustomerSheet() {
         val customerName = editTextCustomerName.text.toString()
         val notesCustomer = editTextCustomerNotes.text.toString()
-        if (customerName.isNotEmpty()  && (signatureFilePath.isNotEmpty()|| inCompleteWorkItemsCount > 0)) {
+
+        if (customerName.isNotEmpty() && (signatureFilePath.isNotEmpty() || inCompleteWorkItemsCount > 0)) {
             var message = getString(R.string.submit_customer_sheet_alert_message)
             if (notesCustomer.isEmpty()) {
                 message = getString(R.string.submit_customer_sheet_permanently_alert_message)
             }
             showConfirmationDialog(message, customerName, notesCustomer)
         } else {
-            CustomProgressBar.getInstance().showErrorDialog(getString(R.string.customer_sheet_warning_message), fragmentActivity!!)
+            if (signatureFilePath.isEmpty() && isSheetSigned){
+                CustomProgressBar.getInstance().showErrorDialog(
+                    getString(R.string.customer_sheet_update_signature),
+                    fragmentActivity!!
+                )
+            }else
+            CustomProgressBar.getInstance().showErrorDialog(
+                getString(R.string.customer_sheet_warning_message),
+                fragmentActivity!!
+            )
         }
     }
 
     private fun showConfirmationDialog(message: String, customerName: String, notesCustomer: String) {
-//        CustomProgressBar.getInstance().showWarningDialog(message, fragmentActivity!!, object : CustomDialogWarningListener {
-//            override fun onConfirmClick() {
-                closeBottomSheet()
-                val customerId = buttonSubmit.getTag(R.id.requestLumperId) as String?
-                saveCustomerSheet(customerName, notesCustomer, signatureFilePath, customerId!!)
-//            }
-//
-//            override fun onCancelClick() {
-//            }
-//        })
+        closeBottomSheet()
+        saveCustomerSheet(customerName, notesCustomer, signatureFilePath, customerId, Date(selectedTime))
     }
 
-    private fun disableSignature(){
-        textViewBuildingName.text=""
+    private fun disableSignature() {
+        textViewBuildingName.text = ""
     }
 }

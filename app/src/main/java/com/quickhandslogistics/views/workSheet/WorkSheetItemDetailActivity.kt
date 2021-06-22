@@ -12,19 +12,23 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.workSheet.WorkSheetItemDetailPagerAdapter
 import com.quickhandslogistics.adapters.workSheet.WorkSheetItemStatusAdapter
 import com.quickhandslogistics.contracts.workSheet.WorkSheetItemDetailContract
-import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.workSheet.LumpersTimeSchedule
 import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 import com.quickhandslogistics.presenters.workSheet.WorkSheetItemDetailPresenter
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseActivity
 import com.quickhandslogistics.views.LoginActivity
+import com.quickhandslogistics.views.schedule.ScheduleFragment
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_SELECTED_DATE_MILLISECONDS
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ID
+import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_ORIGIN
 import com.quickhandslogistics.views.schedule.ScheduleFragment.Companion.ARG_WORK_ITEM_TYPE_DISPLAY_NAME
 import kotlinx.android.synthetic.main.activity_work_sheet_item_detail.*
 import kotlinx.android.synthetic.main.bottom_sheet_select_status.*
 import kotlinx.android.synthetic.main.content_work_sheet_item_detail.*
 import okhttp3.MultipartBody
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlinx.android.synthetic.main.content_work_sheet_item_detail.textViewWorkSheetNote as textViewWorkSheetNote1
 
 class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSheetItemDetailContract.View,
@@ -32,10 +36,13 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
     private var workItemId: String = ""
     private var workItemTypeDisplayName: String = ""
+    private var origin: String = ""
+    private var containerNumber: Int = 0
     private var workItemDetail: WorkItemContainerDetails = WorkItemContainerDetails()
     private var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule> = ArrayList()
     private var tempLumperIds: ArrayList<String> = ArrayList()
-
+    private var buildingParams: ArrayList<String> = ArrayList()
+    private var selectedTime: Long = 0
     private lateinit var workSheetItemDetailPresenter: WorkSheetItemDetailPresenter
     private var workSheetItemStatusAdapter: WorkSheetItemStatusAdapter? = null
     private var workSheetItemDetailPagerAdapter: WorkSheetItemDetailPagerAdapter? = null
@@ -45,6 +52,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     companion object {
         const val WORK_DETAIL_LIST = "WORK_DETAIL_LIST"
         const val TEMP_LUMPER_ID_LIST = "TEMP_LUMPER_ID_LIST"
+        const val SCHEDULE_BUILDING_PARAMETETER = "SCHEDULE_BUILDING_PARAMETETER"
         const val LUMPER_TIME_SCHEDULE = "LUMPER_TIME_SCHEDULE"
     }
 
@@ -56,7 +64,10 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
         intent.extras?.let { it ->
             workItemId = it.getString(ARG_WORK_ITEM_ID, "")
+            origin = it.getString(ARG_WORK_ITEM_ORIGIN, "")
             workItemTypeDisplayName = it.getString(ARG_WORK_ITEM_TYPE_DISPLAY_NAME, "")
+            selectedTime = it.getLong(ARG_SELECTED_DATE_MILLISECONDS)
+            containerNumber = it.getInt(ScheduleFragment.ARG_WORK_ITEM_TYPE_DISPLAY_NUMBER)
         }
 
         workSheetItemDetailPresenter = WorkSheetItemDetailPresenter(this, resources)
@@ -65,13 +76,16 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
             if (savedInstanceState.containsKey(LUMPER_TIME_SCHEDULE)) {
                 lumpersTimeSchedule = savedInstanceState.getParcelableArrayList(LUMPER_TIME_SCHEDULE)!!
             }
+            if (savedInstanceState.containsKey(SCHEDULE_BUILDING_PARAMETETER)) {
+                buildingParams = savedInstanceState.getStringArrayList(SCHEDULE_BUILDING_PARAMETETER)!!
+            }
             if (savedInstanceState.containsKey(TEMP_LUMPER_ID_LIST)) tempLumperIds =
                     savedInstanceState.getStringArrayList(TEMP_LUMPER_ID_LIST)!!
             if (savedInstanceState.containsKey(WORK_DETAIL_LIST)) {
                 workItemDetail = savedInstanceState.getParcelable(WORK_DETAIL_LIST)!!
 //                showWorkItemDetail(workItemDetail, lumpersTimeSchedule, tempLumperIds)
                 val allWorkItemLists = createDifferentListData(workItemDetail)
-                initializeUI(allWorkItemLists, tempLumperIds, lumpersTimeSchedule)
+                initializeUI(allWorkItemLists, tempLumperIds, lumpersTimeSchedule, buildingParams)
             }
         } ?: run {
             initializeUI()
@@ -88,6 +102,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         outState.putParcelable(WORK_DETAIL_LIST, workItemDetail)
         outState.putParcelableArrayList(LUMPER_TIME_SCHEDULE, lumpersTimeSchedule)
         outState.putStringArrayList(TEMP_LUMPER_ID_LIST, tempLumperIds)
+        outState.putStringArrayList(SCHEDULE_BUILDING_PARAMETETER, buildingParams)
         super.onSaveInstanceState(outState)
     }
 
@@ -95,18 +110,17 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         textViewStartTime.text = UIUtils.getSpannableText(getString(R.string.start_time_bold), DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime).toString())
 
         when (workItemTypeDisplayName) {
-            getString(R.string.drops) -> textViewDropItems.text = String.format(
-                getString(R.string.no_of_drops_s),
-                workItemDetail.quantity
-            )
-            getString(R.string.live_loads) -> textViewDropItems.text = String.format(
-                getString(R.string.live_load_s),
-                workItemDetail.quantity
-            )
-            else -> textViewDropItems.text = String.format(
-                getString(R.string.out_bound_s),
-                workItemDetail.quantity
-            )
+            getString(R.string.drops) -> textViewDropItems.text = if (origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                    UIUtils.getSpannableText(resources.getString(R.string.unfinished_no_of_drops_bold_has),containerNumber.toString())
+                } else  UIUtils.getSpannableText(resources.getString(R.string.no_of_drops_bold_has), containerNumber.toString())
+
+            getString(R.string.live_loads) -> textViewDropItems.text = if (origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                     UIUtils.getSpannableText(resources.getString(R.string.unfinished_live_load_bold_has), containerNumber.toString())
+                } else UIUtils.getSpannableText(resources.getString(R.string.live_load_bold_has), containerNumber.toString())
+
+            else -> textViewDropItems.text = if (origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                 UIUtils.getSpannableText(resources.getString(R.string.unfinished_out_bound_bold_has), containerNumber.toString())
+            } else UIUtils.getSpannableText(resources.getString(R.string.out_bound_bold_has), containerNumber.toString())
         }
 
         if (!workItemDetail.status.isNullOrEmpty()) {
@@ -117,22 +131,23 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         return workItemDetail
     }
 
-    private fun initializeUI(
-        allWorkItem: WorkItemContainerDetails? = null,
-        tampLumpId: ArrayList<String>? = null,
-        lumperTimeSchedule: ArrayList<LumpersTimeSchedule>? = null
-    ) {
-
+    private fun initializeUI(allWorkItem: WorkItemContainerDetails? = null, tampLumpId: ArrayList<String>? = null, lumperTimeSchedule: ArrayList<LumpersTimeSchedule>? = null, buildingParams: ArrayList<String>? = null) {
         workSheetItemDetailPagerAdapter = if (allWorkItem != null)
             WorkSheetItemDetailPagerAdapter(
                 supportFragmentManager,
                 resources,
+                selectedTime,
                 allWorkItem,
                 tampLumpId,
-                lumperTimeSchedule
+                lumperTimeSchedule,
+                buildingParams
             )
         else
-            WorkSheetItemDetailPagerAdapter(supportFragmentManager, resources)
+            WorkSheetItemDetailPagerAdapter(
+                supportFragmentManager,
+                resources,
+                selectedTime
+            )
         viewPagerWorkSheetDetail.offscreenPageLimit = workSheetItemDetailPagerAdapter?.count!!
         viewPagerWorkSheetDetail.adapter = workSheetItemDetailPagerAdapter
         tabLayoutWorkSheetDetail.setupWithViewPager(viewPagerWorkSheetDetail)
@@ -155,9 +170,13 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
             adapter = workSheetItemStatusAdapter
         }
 
+        textViewRequestCorrection.visibility= if (!DateUtils.isFutureDate(selectedTime) && !DateUtils.isCurrentDate(selectedTime)) View.GONE else View.GONE
         textViewStatus.setOnClickListener(this)
+        textViewRequestCorrection.setOnClickListener(this)
         textViewWorkSheetNote1.setOnClickListener(this)
         bottomSheetBackgroundStatus.setOnClickListener(this)
+
+        textViewStatus.isEnabled = DateUtils.isCurrentDate(selectedTime)
     }
 
     private fun updateStatusBackground(status: String) {
@@ -174,6 +193,17 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         bottomSheetBackgroundStatus.visibility = View.GONE
     }
 
+    private fun requestCorrection(workId: String?) {
+        if (!workId.isNullOrEmpty())
+            CustomBottomSheetDialog.requestCorrectionBottomSheetDialog(
+                activity, object : CustomBottomSheetDialog.IDialogRequestCorrectionClick {
+                    override fun onSendRequest(dialog: Dialog, request: String) {
+                        dialog.dismiss()
+                    }
+                })
+        AppUtils.hideSoftKeyboard(this)
+    }
+
     override fun onClick(view: View?) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {
             ConnectionDetector.createSnackBar(activity)
@@ -183,6 +213,7 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         view?.let {
             when (view.id) {
                 bottomSheetBackgroundStatus.id -> closeBottomSheet()
+                textViewRequestCorrection.id -> requestCorrection(workItemId)
                 textViewStatus.id -> {
                     if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
                         workSheetItemStatusAdapter?.updateInitialStatus(
@@ -221,12 +252,13 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
     /** Presenter Listeners */
     override fun showAPIErrorMessage(message: String) {
         SnackBarFactory.createSnackBar(activity, mainConstraintLayout, message)
-        workSheetItemDetailPagerAdapter?.showEmptyData()
+//        workSheetItemDetailPagerAdapter?.showEmptyData()
     }
 
     override fun showWorkItemDetail(
         workItemDetail: WorkItemContainerDetails,
-        lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?
+        lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?,
+        buildingParams: ArrayList<String>?
     ) {
         lumpersTimeSchedule?.let {
             this.lumpersTimeSchedule = it
@@ -234,6 +266,13 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
         this.workItemDetail = workItemDetail
         this.tempLumperIds = tempLumperIds
+        if (!DateUtils.isFutureDate(selectedTime) && !DateUtils.isCurrentDate(selectedTime)) {
+            this.buildingParams =
+                ScheduleUtils.getFilledBuildingOpsParameterList(workItemDetail.buildingOps)
+        } else {
+            buildingParams?.let { this.buildingParams = it }
+        }
+
         textViewStartTime.text = UIUtils.getSpannableText(getString(R.string.start_time_bold),
             DateUtils.convertMillisecondsToUTCTimeString(workItemDetail.startTime).toString()
         )
@@ -248,18 +287,17 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         )
 
         when (workItemTypeDisplayName) {
-            getString(R.string.drops) -> textViewDropItems.text = String.format(
-                getString(R.string.no_of_drops_s),
-                workItemDetail.quantity
-            )
-            getString(R.string.live_loads) -> textViewDropItems.text = String.format(
-                getString(R.string.live_load_s),
-                workItemDetail.quantity
-            )
-            else -> textViewDropItems.text = String.format(
-                getString(R.string.out_bound_s),
-                workItemDetail.quantity
-            )
+            getString(R.string.drops) -> textViewDropItems.text = if (origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                UIUtils.getSpannableText(resources.getString(R.string.unfinished_no_of_drops_bold_has),containerNumber.toString())
+            } else  UIUtils.getSpannableText(resources.getString(R.string.no_of_drops_bold_has),containerNumber.toString())
+
+            getString(R.string.live_loads) -> textViewDropItems.text = if (origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                UIUtils.getSpannableText(resources.getString(R.string.unfinished_live_load_bold_has), containerNumber.toString())
+            } else UIUtils.getSpannableText(resources.getString(R.string.live_load_bold_has), containerNumber.toString())
+
+            else -> textViewDropItems.text = if (origin == AppConstant.SCHEDULE_CONTAINER_ORIGIN_RESUME) {
+                UIUtils.getSpannableText(resources.getString(R.string.unfinished_out_bound_bold_has), containerNumber.toString())
+            } else UIUtils.getSpannableText(resources.getString(R.string.out_bound_bold_has), containerNumber.toString())
         }
 
         if (!workItemDetail.status.isNullOrEmpty()) {
@@ -270,7 +308,8 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
         workSheetItemDetailPagerAdapter?.showWorkItemData(
             workItemDetail,
             lumpersTimeSchedule,
-            tempLumperIds
+            tempLumperIds,
+            this.buildingParams
         )
     }
 
@@ -321,11 +360,11 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
             return
         }
 
-        if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
-            val leadProfile = DateUtils.sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
-            val filledParameterCount = ScheduleUtils.getFilledBuildingParametersCounts(workItemDetail, leadProfile?.buildingDetailData?.get(0))
-            val parameters = ScheduleUtils.getBuildingParametersList(leadProfile?.buildingDetailData?.get(0))
+        val filledParameterCount = ScheduleUtils.getFilledBuildingParametersCounts(workItemDetail, buildingParams)
+        val parameters = ScheduleUtils.getBuildingParametersList(buildingParams)
 
+
+        if (status == AppConstant.WORK_ITEM_STATUS_COMPLETED) {
             if (workItemDetail.buildingOps.isNullOrEmpty() || filledParameterCount != parameters.size) {
                 CustomProgressBar.getInstance().showErrorDialog(getString(R.string.fill_building_parameters_message), activity)
                 closeBottomSheet()
@@ -351,13 +390,36 @@ class WorkSheetItemDetailActivity : BaseActivity(), View.OnClickListener, WorkSh
 
             }
         } else if (AppConstant.WORK_ITEM_STATUS_UNFINISHED == status) {
+            if (workItemDetail.buildingOps.isNullOrEmpty() || filledParameterCount != parameters.size) {
+                CustomerDialog.showUnfinishedErrorDialog(activity)
+                closeBottomSheet()
+                return
+            } else if (workItemDetail.assignedLumpersList.isNullOrEmpty()) {
+                CustomerDialog.showUnfinishedErrorDialog(activity)
+                closeBottomSheet()
+                return
+            } else {
+                if (lumpersTimeSchedule.isNullOrEmpty() || lumpersTimeSchedule.size < workItemDetail!!.assignedLumpersList!!.size) {
+                    CustomerDialog.showUnfinishedErrorDialog(activity)
+                    closeBottomSheet()
+                    return
+                } else if (!lumpersTimeSchedule.isNullOrEmpty()) {
+                    val message = getStartTimeCount(lumpersTimeSchedule)
+                    if (message.isNotEmpty()) {
+                        CustomerDialog.showUnfinishedErrorDialog(activity)
+                        closeBottomSheet()
+                        return
+                    }
+                }
+            }
+
             closeBottomSheet()
             CustomBottomSheetDialog.unfinishedBottomSheetDialog(
                 activity,
                 object : CustomBottomSheetDialog.IDialogOnClick {
-                    override fun onSendRequest(dialog: Dialog) {
+                    override fun onSendRequest(dialog: Dialog, selectedDate: Date, selectedTime: Long) {
                         dialog.dismiss()
-                        workSheetItemDetailPresenter.changeWorkItemStatus(workItemId, status)
+                        workSheetItemDetailPresenter.changeWorkItemStatus(workItemId, status, selectedDate, selectedTime )
                     }
                 })
             return

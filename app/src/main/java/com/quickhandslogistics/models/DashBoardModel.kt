@@ -11,6 +11,7 @@ import com.quickhandslogistics.network.DataManager.isSuccessResponse
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_BUILDING_DETAILS
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_LEAD_PROFILE
+import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.SharedPref
 import retrofit2.Call
 import retrofit2.Callback
@@ -39,10 +40,11 @@ class DashBoardModel(private val sharedPref: SharedPref) : DashBoardContract.Mod
     }
 
     override fun processLeadProfileData(leadProfileData: LeadProfileData, onFinishedListener: DashBoardContract.Model.OnFinishedListener) {
+        val buildingDetailData = ScheduleUtils.getBuildingDetailData(leadProfileData.buildingDetailData)
         sharedPref.setClassObject(PREFERENCE_LEAD_PROFILE, leadProfileData)
-        leadProfileData.buildingDetailData?.get(0)?.parameters?.let {
+        buildingDetailData?.parameters?.let {
             sharedPref.setClassObject(PREFERENCE_BUILDING_DETAILS, it) }
-        sharedPref.setString(AppConstant.PREFERENCE_BUILDING_ID, leadProfileData.buildingDetailData?.get(0)?.id)
+        sharedPref.setString(AppConstant.PREFERENCE_BUILDING_ID, buildingDetailData?.id)
         onFinishedListener.onLoadLeadProfile(leadProfileData)
     }
 
@@ -52,7 +54,9 @@ class DashBoardModel(private val sharedPref: SharedPref) : DashBoardContract.Mod
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     // Clear the local Shared Preference Data
                     sharedPref.performLogout()
-
+                    onFinishedListener.onSuccessLogout()
+                }else if (response.code() == 401){
+                    sharedPref.performLogout()
                     onFinishedListener.onSuccessLogout()
                 }
             }

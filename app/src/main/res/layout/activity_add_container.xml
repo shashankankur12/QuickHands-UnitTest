@@ -15,12 +15,13 @@
         android:id="@+id/viewLine"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_1sdp"
-        app:layout_constraintEnd_toEndOf="parent"
         android:background="@color/editTextBackground"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="@dimen/_8sdp"
@@ -239,19 +240,20 @@
                     style="@style/titleTextViewTheme"
                     android:text="@string/schedule_note_header"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
                     android:id="@+id/editTextScheduleNote"
                     style="@style/notesEditTextTheme"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:imeOptions="actionDone"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/headerScheduleNote"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/headerScheduleNote" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
     <Button

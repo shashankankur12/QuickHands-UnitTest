@@ -15,4 +15,14 @@
     <include
         android:id="@+id/lumperContentDetail"
         layout="@layout/content_lumper_work_detail" />
+
+    <View
+        android:id="@+id/bottomSheetBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/fabBackgroundOverlay"
+        android:visibility="gone" />
+
+    <!-- Adding bottom sheet after main content -->
+    <include layout="@layout/bottom_sheet_lumper_work_detail" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

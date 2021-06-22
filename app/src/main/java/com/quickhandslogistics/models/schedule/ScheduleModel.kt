@@ -3,6 +3,7 @@ package com.quickhandslogistics.models.schedule
 import android.util.Log
 import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.data.dashboard.LeadProfileData
+import com.quickhandslogistics.data.schedule.GetPastFutureDateResponse
 import com.quickhandslogistics.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.DataManager.getAuthToken
@@ -22,6 +23,21 @@ class ScheduleModel(private val sharedPref: SharedPref) : ScheduleContract.Model
         onFinishedListener.onSuccessGetHeaderInfo(date)
     }
 
+    override fun fetchPastFutureDate(onFinishedListener: ScheduleContract.Model.OnFinishedListener) {
+        DataManager.getService().schedulePastFutureDate(getAuthToken()).enqueue(object : Callback<GetPastFutureDateResponse> {
+            override fun onResponse(call: Call<GetPastFutureDateResponse>, response: Response<GetPastFutureDateResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessPastFutureDate(response.body())
+                }
+            }
+
+            override fun onFailure(call: Call<GetPastFutureDateResponse>, t: Throwable) {
+                Log.e(ScheduleModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
+    }
+
     override fun fetchSchedulesByDate(selectedDate: Date, pageIndex: Int, onFinishedListener: ScheduleContract.Model.OnFinishedListener) {
         val dateString = DateUtils.getDateString(DateUtils.PATTERN_API_REQUEST_PARAMETER, selectedDate)
 
@@ -30,7 +46,7 @@ class ScheduleModel(private val sharedPref: SharedPref) : ScheduleContract.Model
                 if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
                     val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
                     val deptDetail =  UIUtils.getDisplayEmployeeDepartment(leadProfile)
-                    onFinishedListener.onSuccess(selectedDate, response.body()!!, pageIndex, deptDetail)
+                    onFinishedListener.onSuccess(selectedDate, response.body(), pageIndex, deptDetail)
                 }
             }
 

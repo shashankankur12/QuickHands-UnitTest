@@ -109,27 +109,26 @@
                     android:layout_width="0dp"
                     android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_1sdp"
-                    android:layout_marginEnd="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
                     android:layout_marginBottom="@dimen/_4sdp"
                     android:textColor="@color/hypertext_color"
                     app:emptyDataVisibility="empty_gone"
-                    app:layout_constraintEnd_toStartOf="@id/textViewQHLContact"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textViewQhlAddress" />
                 <com.quickhandslogistics.controls.CustomTextView
                     android:id="@+id/textViewQHLContact"
                     style="@style/valuesSmallTextViewTheme"
                     android:layout_width="0dp"
+                    android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_1sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:layout_marginBottom="@dimen/_4sdp"
                     android:textColor="@color/hypertext_color"
                     app:emptyDataVisibility="empty_gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textViewQHlEmail"
-                    app:layout_constraintTop_toBottomOf="@id/textViewQhlAddress" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewQHlEmail" />
 
                 <View
                     android:layout_width="match_parent"
@@ -137,7 +136,7 @@
                     android:layout_height="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_6ssp"
                     android:background="@color/gray_btn_bg_color"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewQHlEmail"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewQHLContact"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 

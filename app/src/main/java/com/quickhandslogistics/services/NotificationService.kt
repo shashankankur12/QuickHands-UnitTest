@@ -11,9 +11,11 @@ import android.os.Bundle
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.quickhandslogistics.R
+import com.quickhandslogistics.data.workSheet.ContainerGroupNote
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SharedPref
@@ -71,7 +73,8 @@ class NotificationService : FirebaseMessagingService() {
         }
 
         val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(R.mipmap.ic_launcher).setContentTitle(notificationTitle)
+            .setColor(ContextCompat.getColor(this, R.color.buildingTitle))
+            .setSmallIcon(R.drawable.qhl_chat_logo).setContentTitle(notificationTitle)
             .setStyle(NotificationCompat.BigTextStyle().bigText(notificationContent))
             .setAutoCancel(true)
 
@@ -137,6 +140,7 @@ class NotificationService : FirebaseMessagingService() {
             if (channel == null) {
                 val notificationChannel = NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
                 notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+                notificationChannel.setShowBadge(true)
                 notificationManager.createNotificationChannel(notificationChannel)
             }
         }

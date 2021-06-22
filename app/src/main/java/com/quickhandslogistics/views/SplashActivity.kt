@@ -5,6 +5,8 @@ import android.view.animation.AnimationUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.SplashContract
 import com.quickhandslogistics.presenters.SplashPresenter
+import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.LanguageManager
 import com.quickhandslogistics.utils.SnackBarFactory
 import kotlinx.android.synthetic.main.activity_splash.*
 
@@ -56,11 +58,16 @@ class SplashActivity : BaseActivity(), SplashContract.View {
     }
 
     override fun showNextScreen(isLoggedIn: Boolean) {
+        setSelectedLanguage()
         if (isLoggedIn) {
             startIntent(DashBoardActivity::class.java)
         } else {
             startIntent(LoginActivity::class.java)
         }
         finishAffinity()
+    }
+
+    private fun setSelectedLanguage() {
+        LanguageManager.setLanguage(this, sharedPref.getString(AppConstant.PREFERENCE_LANGUAGE, AppConstant.LANGUAGE_ENGLISH_CODE))
     }
 }

@@ -4,8 +4,11 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.quickhandslogistics.data.customerSheet.CustomerSheet
+import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
+import com.quickhandslogistics.data.workSheet.WorkItemScheduleDetails
 
 class ScheduleDetailData() : Parcelable {
     @SerializedName("scheduleIdentity")
@@ -27,17 +30,16 @@ class ScheduleDetailData() : Parcelable {
     @SerializedName("live")
     @Expose
     var liveLoads: ArrayList<WorkItemDetail>? = null
-        get() = if (field.isNullOrEmpty()) ArrayList() else field
 
     @SerializedName("drop")
     @Expose
     var drops: ArrayList<WorkItemDetail>? = null
-        get() = if (field.isNullOrEmpty()) ArrayList() else field
+
 
     @SerializedName("outbound")
     @Expose
     var outbounds: ArrayList<WorkItemDetail>? = null
-        get() = if (field.isNullOrEmpty()) ArrayList() else field
+
 
     @SerializedName("scheduleNote")
     @Expose
@@ -50,6 +52,10 @@ class ScheduleDetailData() : Parcelable {
     @SerializedName("totalNumberOfWorkItems")
     @Expose
     var totalNumberOfWorkItems: Int? = null
+
+    @SerializedName("customerSheet")
+    @Expose
+    var customerSheet: CustomerSheet? = null
 
     var commonStatus: String = ""
     var scheduleTypeNames: String = ""
@@ -71,6 +77,7 @@ class ScheduleDetailData() : Parcelable {
         scheduleTypeNames = parcel.readString()!!
         scheduleDepartment = parcel.readString()!!
         allAssignedLumpers = parcel.createTypedArrayList(EmployeeData)!!
+        customerSheet = parcel.readParcelable(CustomerSheet::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -88,6 +95,7 @@ class ScheduleDetailData() : Parcelable {
         parcel.writeString(scheduleTypeNames)
         parcel.writeString(scheduleDepartment)
         parcel.writeTypedList(allAssignedLumpers)
+        parcel.writeParcelable(customerSheet, flags)
     }
 
     override fun describeContents(): Int {

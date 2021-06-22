@@ -33,6 +33,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
+                    android:id="@+id/textViewCustomerNoteHeader"
                     style="@style/titleTextViewTheme"
                     android:text="@string/notes_for_customer" />
 
@@ -80,8 +81,7 @@
         android:layout_height="@dimen/_30ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/ic_camera_button"
-        app:tint="@color/scheduleDetail" />
+        android:src="@drawable/ic_camera_button" />
 
     <Button
         android:id="@+id/buttonSubmit"

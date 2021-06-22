@@ -1,0 +1,4 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/color_cursor"  android:state_enabled="true" />
+    <item android:drawable="@drawable/disable_cursor_color" android:state_enabled="false" />
+</selector>

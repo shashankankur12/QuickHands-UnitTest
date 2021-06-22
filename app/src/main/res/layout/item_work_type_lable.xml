@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/layoutLiveLode"
@@ -12,40 +11,42 @@
 
         <TextView
             android:id="@+id/textViewLiveLode"
-            android:layout_width="match_parent"
             style="@style/titleVerySmallTextViewTheme"
-            android:textColor="@color/textBlack"
-            android:layout_height="wrap_content"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textBlack" />
 
     </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycelrViewLiveLodeHeader"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_1sdp"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycelrViewLiveLodeItem"
+        android:id="@+id/recyclerViewLiveLodeHeader"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/_1sdp"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_1sdp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewLiveLodeItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_1sdp" />
 
     <TextView
         android:id="@+id/textViewLiveLoadNote"
+        style="@style/valuesVerySmallTextViewTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/valuesVerySmallTextViewTheme"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:text="@string/notes"
+        android:textAllCaps="true"
         android:textColor="@color/textBlack"
         android:textStyle="bold"
-        android:textAllCaps="true"
-        android:text="@string/notes"
-        android:visibility="gone"
-        android:layout_marginTop="@dimen/_2sdp"/>
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycelrViewLiveLoadNote"
+        android:id="@+id/recyclerViewLiveLoadNote"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="@dimen/_1sdp"
-        android:visibility="gone"
-        android:layout_height="match_parent"/>
+        android:visibility="visible" />
 
 </LinearLayout>

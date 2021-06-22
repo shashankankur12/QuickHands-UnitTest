@@ -12,12 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.schedule.ScheduleWorkSheetItemAdapter
 import com.quickhandslogistics.contracts.schedule.ScheduleWorkItemContract
-import com.quickhandslogistics.contracts.workSheet.WorkSheetContract
+import com.quickhandslogistics.contracts.schedule.WorkScheduleContract
 import com.quickhandslogistics.controls.Quintuple
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.schedule.WorkItemDetail
-import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 import com.quickhandslogistics.utils.*
 import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
@@ -26,7 +25,7 @@ import kotlinx.android.synthetic.main.content_work_sheet_item.*
 
 class WorkScheduleItemFragment : BaseFragment(), ScheduleWorkItemContract.View.OnAdapterItemClickListener {
 
-    private var onFragmentInteractionListener: WorkSheetContract.View.OnFragmentInteractionListener? = null
+    private var onFragmentInteractionListener: WorkScheduleContract.View.OnFragmentInteractionListener? = null
 
     private var workItemType: String = ""
     private var selectedTime: Long = 0
@@ -72,8 +71,8 @@ class WorkScheduleItemFragment : BaseFragment(), ScheduleWorkItemContract.View.O
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (parentFragment is WorkSheetContract.View.OnFragmentInteractionListener) {
-            onFragmentInteractionListener = parentFragment as WorkSheetContract.View.OnFragmentInteractionListener
+        if (activity is WorkScheduleContract.View.OnFragmentInteractionListener) {
+            onFragmentInteractionListener = activity as WorkScheduleContract.View.OnFragmentInteractionListener
         }
     }
 
@@ -157,16 +156,21 @@ class WorkScheduleItemFragment : BaseFragment(), ScheduleWorkItemContract.View.O
     }
 
     /** Adapter Listeners */
-    override fun onItemClick(workItemId: String, workItemTypeDisplayName: String) {
+    override fun onItemClick(workItem: WorkItemDetail) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {
             ConnectionDetector.createSnackBar(activity)
             return
         }
 
+        val workItemTypeDisplayName = ScheduleUtils.getWorkItemTypeDisplayName(workItem.type, resources)
+        val origin =if (workItem.origin!=null) workItem.origin else ""
         if (!DateUtils.isFutureDate(selectedTime)) {
             val bundle = Bundle()
-            bundle.putString(ScheduleFragment.ARG_WORK_ITEM_ID, workItemId)
+            bundle.putString(ScheduleFragment.ARG_WORK_ITEM_ID, workItem.id)
             bundle.putString(ScheduleFragment.ARG_WORK_ITEM_TYPE_DISPLAY_NAME, workItemTypeDisplayName)
+            bundle.putInt(ScheduleFragment.ARG_WORK_ITEM_TYPE_DISPLAY_NUMBER, workItem.containerNumber)
+            bundle.putString(ScheduleFragment.ARG_WORK_ITEM_ORIGIN, origin)
+            bundle.putLong(ScheduleFragment.ARG_SELECTED_DATE_MILLISECONDS, selectedTime)
             startIntent(WorkSheetItemDetailActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
         }
     }

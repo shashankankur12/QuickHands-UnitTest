@@ -32,15 +32,15 @@ interface AppConstant {
         const val NOTIFICATION_TYPE_LEAD_BUILDING_REMOVED = "lead-building-removed"
 
         // API Enums
-        const val WORK_ITEM_STATUS_ON_HOLD = "ON-HOLD"
-        const val WORK_ITEM_STATUS_IN_PROGRESS = "IN-PROGRESS"
+        const val WORK_ITEM_STATUS_ON_HOLD = "ONHOLD"
+        const val WORK_ITEM_STATUS_IN_PROGRESS = "INPROGRESS"
         const val WORK_ITEM_STATUS_COMPLETED = "COMPLETED"
         const val WORK_ITEM_STATUS_CANCELLED = "CANCELLED"
         const val WORK_ITEM_STATUS_SCHEDULED = "SCHEDULED"
         const val WORK_ITEM_SHOW_MORE = "SHOW MORE STATUS"
         const val WORK_ITEM_SHOW_LESS = "SHOW LESS STATUS"
         const val WORK_ITEM_STATUS_UNFINISHED = "UNFINISHED"
-        const val WORK_ITEM_STATUS_NOT_OPEN = "NOT-OPEN"
+        const val WORK_ITEM_STATUS_NOT_OPEN = "NOTOPEN"
 
         // Employee Department Enums
             const val EMPLOYEE_DEPARTMENT_INBOUND = "RECEIVING"
@@ -79,15 +79,10 @@ interface AppConstant {
         const val ATTENDANCE_LUNCH_PUNCH_OUT = "ATTENDANCE_LUNCH_PUNCH_OUT"
 
         const val NOTES_NOT_AVAILABLE = "N/A"
-
         const val REQUEST_CODE_CHANGED = 101
-
         const val API_PAGE_SIZE = 20
-
         const val LANGUAGE_ENGLISH_CODE = "en-US"
         const val LANGUAGE_SPANISH_CODE = "es"
-
-
         const val VIEW_DETAILS = "VIEW_DETAILS"
 
         //roles
@@ -97,7 +92,6 @@ interface AppConstant {
         const val SUPERVISOR = "supervisor"
         const val LUMPER = "lumper"
 
-
         const val ERROR_MESSAGE = "You don't seem to have a building assigned yet!"
         const val MILTI_PART_FORM_DATA = "image"
         const val IMAGE_PARAM = "file"
@@ -105,6 +99,17 @@ interface AppConstant {
         const val MY_PERMISSIONS_REQUEST_CAMERA = 100
         const val MY_PERMISSIONS_REQUEST_GALLERY = 200
 
+        //container origin
+        const val SCHEDULE_CONTAINER_ORIGIN_USUAL = "USUAL"
+        const val SCHEDULE_CONTAINER_ORIGIN_RESUME = "RESUMED"
 
+        //Correction status
+        const val CORRECTION_PENDING = "PENDING"
+        const val CORRECTION_CANCELLED = "CANCELLED"
+        const val CORRECTION_REJECTED = "REJECTED"
+        const val CORRECTION_APPROVED = "APPROVED"
+        //Preferred Language
+        const val PREFERRED_LANGUAGE_ENGLISH = "ENGLISH"
+        const val PREFERRED_LANGUAGE_SPANISH = "SPANISH"
     }
 }

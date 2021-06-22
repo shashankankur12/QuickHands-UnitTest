@@ -12,6 +12,7 @@
         android:src="@drawable/dummy"
         android:scaleType="fitXY"
         android:layout_margin="@dimen/_3ssp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -23,8 +24,7 @@
         android:translationY="-5dp"
         android:src="@drawable/ic_cancel_red"
         app:layout_constraintTop_toTopOf="@+id/noteImage"
-        app:layout_constraintEnd_toEndOf="@+id/noteImage"
-        app:tint="@color/textBlack" />
+        app:layout_constraintEnd_toEndOf="@+id/noteImage" />
 
     <ProgressBar
         android:id="@+id/progressBar"

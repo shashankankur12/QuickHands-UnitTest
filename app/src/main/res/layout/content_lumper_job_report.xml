@@ -63,8 +63,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/_6sdp"
                     android:src="@drawable/ic_cancel"
-                    android:tint="@color/colorLightGrey"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    app:tint="@color/colorLightGrey" />
 
                 <LinearLayout
                     android:id="@+id/linearLayoutSelectAll"

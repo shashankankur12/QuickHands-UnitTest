@@ -50,6 +50,21 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewLumperName" />
 
     <com.quickhandslogistics.controls.CustomTextView
+        android:id="@+id/textViewLeadRole"
+        style="@style/valuesSmallTextViewTheme"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="@string/lead"
+        android:visibility="gone"
+        android:textColor="@color/textBlack"
+        app:emptyDataVisibility="empty_gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/circleImageViewProfile"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEmployeeId" />
+
+    <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewStatus"
         style="@style/baseChipTheme"
         app:layout_constraintBottom_toBottomOf="parent"

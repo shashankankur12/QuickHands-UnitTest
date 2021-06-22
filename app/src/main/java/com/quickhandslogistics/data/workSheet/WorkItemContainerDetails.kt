@@ -79,15 +79,26 @@ class WorkItemContainerDetails() : Parcelable {
     @Expose
     var schedule: WorkItemScheduleDetails? = null
 
+    @SerializedName("oldWork")
+    @Expose
+    var oldWork: WorkItemContainerDetails? = null
+
     @SerializedName("lumperThisWorkItemAssignedTo")
     @Expose
     var assignedLumpersList: ArrayList<LumperAttendanceData>? = null
         get() = ScheduleUtils.sortEmployeesAttendanceList(field)
 
+    @SerializedName("lumpersTimeSchedule")
+    @Expose
+    var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>? = null
+
     @SerializedName("attachments")
     @Expose
     var attachmentsList: List<String>? = null
 
+    @SerializedName("buildingParams")
+    @Expose
+    var buildingParams: ArrayList<String>? = null
 
 
 
@@ -153,9 +164,12 @@ class WorkItemContainerDetails() : Parcelable {
         numberOfDrops = parcel.readValue(Int::class.java.classLoader) as? Int
         buildingThisWorkItemAssignedTo = parcel.readString()
         schedule = parcel.readParcelable(BuildingDetailData::class.java.classLoader)
+        oldWork = parcel.readParcelable(WorkItemContainerDetails::class.java.classLoader)
         assignedLumpersList = parcel.readArrayList(LumperAttendanceData::class.java.classLoader) as ArrayList<LumperAttendanceData>
+        lumpersTimeSchedule = parcel.readArrayList(LumperAttendanceData::class.java.classLoader) as ArrayList<LumpersTimeSchedule>
         attendanceDetail = parcel.readParcelable(AttendanceDetail::class.java.classLoader)
         attachmentsList = parcel.createStringArrayList()
+        buildingParams = parcel.createStringArrayList()
 //        buildingOps = HashMap()
 //        readFromParcel(parcel)
     }
@@ -184,9 +198,12 @@ class WorkItemContainerDetails() : Parcelable {
         parcel.writeValue(numberOfDrops)
         parcel.writeString(buildingThisWorkItemAssignedTo)
         parcel.writeParcelable(schedule, flags)
+        parcel.writeParcelable(oldWork, flags)
         parcel.writeTypedList(assignedLumpersList)
+        parcel.writeTypedList(lumpersTimeSchedule)
         parcel.writeParcelable(attendanceDetail, flags)
         parcel.writeStringList(attachmentsList)
+        parcel.writeStringList(buildingParams)
         /*buildingOps?.let { data ->
             parcel.writeInt(data.size)
             for (s in data.keys) {

@@ -3,10 +3,13 @@ package com.quickhandslogistics.models.lumperSheet
 import android.util.Log
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.lumperSheet.LumperSheetContract
+import com.quickhandslogistics.contracts.scheduleTime.ScheduleTimeContract
 import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumperSheet.LumperSheetListAPIResponse
 import com.quickhandslogistics.data.lumperSheet.SubmitLumperSheetRequest
+import com.quickhandslogistics.data.schedule.GetPastFutureDateResponse
+import com.quickhandslogistics.models.schedule.ScheduleModel
 import com.quickhandslogistics.network.DataManager
 import com.quickhandslogistics.network.DataManager.getAuthToken
 import com.quickhandslogistics.network.DataManager.isSuccessResponse
@@ -23,7 +26,7 @@ class LumperSheetModel(private val sharedPref: SharedPref) : LumperSheetContract
 
         val date = DateUtils.getDateString(DateUtils.PATTERN_NORMAL, selectedDate)
         val shiftDetail = ScheduleUtils.getShiftDetailString(leadProfile)
-        val deptDetail = "${ ResourceManager.getInstance().getString(R.string.dept_bold)} ${ UIUtils.getDisplayEmployeeDepartment(leadProfile)}"
+        val deptDetail = "${ ResourceManager.getInstance().getString(R.string.dept_bold)} ${ UIUtils.getDisplayEmployeeDepartmentHeader(leadProfile)}"
         onFinishedListener.onSuccessGetHeaderInfo(date, shiftDetail, deptDetail)
     }
 
@@ -56,6 +59,21 @@ class LumperSheetModel(private val sharedPref: SharedPref) : LumperSheetContract
 
             override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
                 Log.e(LumperSheetModel::class.simpleName, t.localizedMessage!!)
+                onFinishedListener.onFailure()
+            }
+        })
+    }
+
+    override fun fetchPastFutureDate(onFinishedListener: LumperSheetContract.Model.OnFinishedListener) {
+        DataManager.getService().lumperSheetPastFutureDate(getAuthToken()).enqueue(object : Callback<GetPastFutureDateResponse> {
+            override fun onResponse(call: Call<GetPastFutureDateResponse>, response: Response<GetPastFutureDateResponse>) {
+                if (isSuccessResponse(response.isSuccessful, response.body(), response.errorBody(), onFinishedListener)) {
+                    onFinishedListener.onSuccessPastFutureDate(response.body())
+                }
+            }
+
+            override fun onFailure(call: Call<GetPastFutureDateResponse>, t: Throwable) {
+                Log.e(ScheduleModel::class.simpleName, t.localizedMessage!!)
                 onFinishedListener.onFailure()
             }
         })

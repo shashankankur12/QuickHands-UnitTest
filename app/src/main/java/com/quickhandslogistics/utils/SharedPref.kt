@@ -70,5 +70,6 @@ class SharedPref private constructor(context: Context) : AppConstant {
         editor.clear().apply()
         setString(PREFERENCE_EMPLOYEE_ID, employeeId)
         setString(PREFERENCE_REGISTRATION_TOKEN, token)
+        setString(AppConstant.PREFERENCE_LANGUAGE,  AppConstant.LANGUAGE_ENGLISH_CODE)
     }
 }

@@ -15,6 +15,7 @@ import com.quickhandslogistics.network.DataManager.isSuccessResponse
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_AUTH_TOKEN
 import com.quickhandslogistics.utils.AppConstant.Companion.PREFERENCE_EMPLOYEE_ID
+import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.utils.SharedPref
 import retrofit2.Call
 import retrofit2.Callback
@@ -98,8 +99,12 @@ class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
     }
 
     override fun processLeadProfileData(leadProfileData: LeadProfileData, onFinishedListener: LoginContract.Model.OnFinishedListener) {
+        val buildingDetailData= ScheduleUtils.getBuildingDetailData(leadProfileData.buildingDetailData)
         sharedPref.setClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, leadProfileData)
-        sharedPref.setString(AppConstant.PREFERENCE_BUILDING_ID, leadProfileData.buildingDetailData?.get(0)?.id)
+        sharedPref.setString(AppConstant.PREFERENCE_BUILDING_ID, buildingDetailData?.id)
+        if (!leadProfileData.language.isNullOrEmpty() && leadProfileData.language.equals(AppConstant.PREFERRED_LANGUAGE_SPANISH)){
+            sharedPref.setString(AppConstant.PREFERENCE_LANGUAGE, AppConstant.LANGUAGE_SPANISH_CODE)
+        }else sharedPref.setString(AppConstant.PREFERENCE_LANGUAGE, AppConstant.LANGUAGE_ENGLISH_CODE)
         onFinishedListener.showNextScreen()
     }
 }

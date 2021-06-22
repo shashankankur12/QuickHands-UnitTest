@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.qhlContact.QhlContactContract
+import com.quickhandslogistics.data.BaseResponse
 import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.qhlContact.QhlContactListResponse
 import com.quickhandslogistics.data.qhlContact.QhlOfficeInfoResponse
@@ -25,6 +26,11 @@ class QhlContactPresenter(private var qhlContactContractView: QhlContactContract
         qhlContactModel.fetchQhlContactList(this)
     }
 
+    override fun sendCustomerContactMessage(id: String, message: String) {
+        qhlContactContractView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        qhlContactModel.sendCustomerContactMessage(id, message, this)
+    }
+
     /** Model Result Listeners */
     override fun onSuccess(response: QhlContactListResponse) {
         qhlContactContractView?.hideProgressDialog()
@@ -33,8 +39,16 @@ class QhlContactPresenter(private var qhlContactContractView: QhlContactContract
     }
 
     override fun onSuccessGetHeaderInfo(qhlOfficeInfoResponse: QhlOfficeInfoResponse?) {
-        val qhlOfficeInfo= qhlOfficeInfoResponse?.data
-        qhlContactContractView?.showQhlHeaderInfo(qhlOfficeInfo)
+        val qhlOfficeInfo = qhlOfficeInfoResponse?.data
+        if (!qhlOfficeInfo.isNullOrEmpty())
+            qhlContactContractView?.showQhlHeaderInfo(qhlOfficeInfo[0])
+    }
+
+    override fun onSuccessMessageSend(baseResponse: BaseResponse?) {
+        qhlContactContractView?.hideProgressDialog()
+        baseResponse?.message?.let {
+            qhlContactContractView?.showSuccessMessageSend(it)
+        }
     }
 
     override fun onFailure(message: String) {

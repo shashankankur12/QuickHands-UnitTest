@@ -8,8 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.utils.AppConstant
 import kotlinx.android.synthetic.main.item_customer_sheet_table.view.*
-import java.util.ArrayList
-import java.util.HashMap
+import java.util.*
 
 class BuildingOpsAdapter(buildingOps: HashMap<String, String>?, parameters: ArrayList<String>?) :
     RecyclerView.Adapter<BuildingOpsAdapter.ViewHolder>() {
@@ -31,12 +30,13 @@ class BuildingOpsAdapter(buildingOps: HashMap<String, String>?, parameters: Arra
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_customer_sheet_table, parent, false)
+        val view: View = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_customer_sheet_table, parent, false)
         return ViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        return  parameters.size
+        return parameters.size
     }
 
     private fun getItem(position: Int): Pair<String, String?> {
@@ -53,7 +53,8 @@ class BuildingOpsAdapter(buildingOps: HashMap<String, String>?, parameters: Arra
         private val textViewValue: TextView = view.textViewItem
 
         fun bind(pair: Pair<String, String?>) {
-            textViewValue.text = if (!pair.second.isNullOrEmpty()) pair.second else AppConstant.NOTES_NOT_AVAILABLE
+            textViewValue.text =
+                if (!pair.second.isNullOrEmpty()) pair.second else AppConstant.NOTES_NOT_AVAILABLE
         }
     }
 }

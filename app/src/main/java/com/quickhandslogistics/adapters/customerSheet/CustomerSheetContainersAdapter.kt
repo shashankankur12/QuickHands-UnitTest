@@ -82,7 +82,7 @@ class CustomerSheetContainersAdapter(
 
             if (!parameters.isNullOrEmpty()) {
                 relativeLayoutBO.visibility = View.VISIBLE
-                recyclerViewBO.adapter = ContainerDetailItemAdapter(workItemDetail.buildingOps, parameters)
+                recyclerViewBO.adapter = ContainerDetailItemAdapter(workItemDetail.buildingOps, parameters, workItemDetail.isCompleted, resources)
             } else {
                 relativeLayoutBO.visibility = View.GONE
             }

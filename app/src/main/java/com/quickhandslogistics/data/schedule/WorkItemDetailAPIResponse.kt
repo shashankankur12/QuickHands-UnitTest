@@ -13,8 +13,7 @@ class WorkItemDetailAPIResponse : BaseResponse() {
     var data: Data? = null
 
 
-
-    inner class Data  {
+    inner class Data {
 //        @SerializedName("workItem")
 //        @Expose
 //        var workItemDetail: ScheduleWorkItem? = null
@@ -22,12 +21,18 @@ class WorkItemDetailAPIResponse : BaseResponse() {
         @SerializedName("lumpersTimeSchedule")
         @Expose
         var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>? = null
-//
+
+        //
 //        @SerializedName("tempLumperIds")
 //        @Expose
 //        val tempLumperIds: ArrayList<String>? = null
-//            get() = if (!field.isNullOrEmpty()) field else ArrayList()
-
+//            get() = if (!field.isNullOrEmpty()) field else ArrayList()//
+//
+//
+        @SerializedName("buildingParams")
+        @Expose
+        val buildingParams: ArrayList<String>? = null
+            get() = if (!field.isNullOrEmpty()) field else ArrayList()
 
 
         @SerializedName("container")

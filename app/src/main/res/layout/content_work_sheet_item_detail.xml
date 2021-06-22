@@ -20,7 +20,7 @@
 
     <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textViewDropItems"
-        style="@style/titleBigTextViewTheme"
+        style="@style/titleBigTextViewThemeHeader"
         android:layout_width="wrap_content"
         android:layout_marginStart="@dimen/_15ssp"
         android:layout_marginTop="@dimen/_5ssp"
@@ -30,7 +30,7 @@
 
     <TextView
         android:id="@+id/textViewIsScheduleLead"
-        style="@style/titleBigTextViewTheme"
+        style="@style/titleBigTextViewThemeHeader"
         android:layout_width="0dp"
         android:layout_marginTop="@dimen/_5ssp"
         android:layout_marginHorizontal="@dimen/_4sdp"
@@ -67,8 +67,23 @@
         android:id="@+id/textViewStartTime"
         style="@style/valuesTextViewTheme"
         android:layout_marginStart="@dimen/_15ssp"
-        android:layout_marginEnd="@dimen/_10ssp"
+        android:layout_width="0dp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textViewRequestCorrection"
+        app:layout_constraintTop_toBottomOf="@+id/layoutWorksheetNote" />
+
+    <com.quickhandslogistics.controls.CustomTextView
+        android:id="@+id/textViewRequestCorrection"
+        style="@style/valuesTextViewTheme"
+        android:layout_width="wrap_content"
+        android:textColor="@color/buttonRed"
+        android:layout_marginStart="@dimen/_2ssp"
+        android:layout_marginEnd="@dimen/_10ssp"
+        android:visibility="gone"
+        android:textAlignment="viewEnd"
+        android:text="@string/request_correction"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewStartTime"
         app:layout_constraintTop_toBottomOf="@+id/layoutWorksheetNote" />
 
     <LinearLayout

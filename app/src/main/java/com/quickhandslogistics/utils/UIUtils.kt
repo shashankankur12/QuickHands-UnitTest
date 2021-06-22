@@ -6,14 +6,18 @@ import android.os.Build
 import android.telephony.PhoneNumberUtils
 import android.text.Html
 import android.text.Spanned
+import android.text.TextUtils
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.quickhandslogistics.R
 import com.quickhandslogistics.data.attendance.LumperAttendanceData
+import com.quickhandslogistics.data.dashboard.BuildingDetailData
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.schedule.PastFutureDates
 import com.quickhandslogistics.utils.ValueUtils.getDefaultOrValue
 import de.hdodenhof.circleimageview.CircleImageView
+import java.util.*
 
 object UIUtils {
 
@@ -122,6 +126,21 @@ object UIUtils {
         return displayDepartment
     }
 
+    fun getDisplayEmployeeDepartmentHeader(employeeData: EmployeeData?): String {
+        var displayDepartment = ""
+        employeeData?.let {
+            if (!employeeData.department.isNullOrEmpty()) {
+                displayDepartment = when (employeeData.department) {
+                    AppConstant.EMPLOYEE_DEPARTMENT_BOTH -> "Operations "
+                    AppConstant.EMPLOYEE_DEPARTMENT_INBOUND -> "Receiving "
+                    AppConstant.EMPLOYEE_DEPARTMENT_OUTBOUND -> "Shipping"
+                    else -> employeeData.department!!
+                }
+            }
+        }
+        return displayDepartment
+    }
+
     fun getSpannedText(text: String): Spanned? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT)
@@ -152,6 +171,39 @@ object UIUtils {
             isbnStr.append(original[i])
         }
         return isbnStr.toString()
+    }
+
+    fun capitalizeString(value: String?): String {
+        return if (!TextUtils.isEmpty(value)) value?.toLowerCase()?.capitalize()!! else ""
+    }
+
+    fun buildingFullAddress(buildingDetailData: BuildingDetailData?): String {
+        var fullAddress = ""
+        buildingDetailData?.let {
+            fullAddress =
+                "${capitalizeString(it.buildingName)} \n${capitalizeString(it.buildingAddress)} \n ${capitalizeString(it.buildingCity)}, ${it.buildingState}  ${it.buildingZipcode}"
+        }
+        return fullAddress
+    }
+
+    fun getColorCodeForCalender(pastFutureDates: ArrayList<PastFutureDates>, date: Date, context: Context): Int {
+        return when (CalendarUtils.getPastFutureCode(pastFutureDates, date)) {
+            1 -> {
+                ContextCompat.getColor(context, R.color.temp_lumper_background)
+            }
+            2 -> {
+                ContextCompat.getColor(context, R.color.dark_grey)
+            }
+            4 -> {
+                ContextCompat.getColor(context, R.color.color_yellow)
+            }
+            5 -> {
+                ContextCompat.getColor(context, R.color.sky_blue)
+            }
+            else -> {
+                ContextCompat.getColor(context, R.color.colorLightGrey)
+            }
+        }
     }
 }
 

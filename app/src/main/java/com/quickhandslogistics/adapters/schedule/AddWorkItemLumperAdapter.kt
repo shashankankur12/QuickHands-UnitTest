@@ -66,7 +66,7 @@ class AddWorkItemLumperAdapter(private var assignedLumpersList: ArrayList<Employ
             textViewLumperName.text = UIUtils.getEmployeeFullName(employeeData)
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData)
             textViewShiftHours.text = UIUtils.getDisplayShiftHours(employeeData)
-            viewAttendanceStatus.setBackgroundResource(if (employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
+//            viewAttendanceStatus.setBackgroundResource(if (employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
 
             if (assignedLumperIdsList.contains(employeeData.id)){
                 imageViewAdd.setImageResource(R.drawable.ic_add_lumer_tick_disabled)

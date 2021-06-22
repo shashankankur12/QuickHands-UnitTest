@@ -14,8 +14,9 @@ import com.quickhandslogistics.contracts.SettingsContract
 import com.quickhandslogistics.presenters.SettingsPresenter
 import com.quickhandslogistics.utils.AppConstant.Companion.LANGUAGE_ENGLISH_CODE
 import com.quickhandslogistics.utils.AppConstant.Companion.LANGUAGE_SPANISH_CODE
-import com.quickhandslogistics.utils.CustomDialogWarningListener
-import com.quickhandslogistics.utils.CustomProgressBar
+import com.quickhandslogistics.utils.LanguageManager
+import com.quickhandslogistics.utils.SnackBarFactory
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 
 class SettingsFragment : BaseFragment(), SettingsContract.View, View.OnClickListener {
@@ -29,7 +30,11 @@ class SettingsFragment : BaseFragment(), SettingsContract.View, View.OnClickList
         settingsPresenter = SettingsPresenter(this, resources, sharedPref)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
@@ -73,11 +78,15 @@ class SettingsFragment : BaseFragment(), SettingsContract.View, View.OnClickList
         view?.let {
             when (view.id) {
                 radioBtnEnglish.id -> {
-                    if (selectedLanguage != LANGUAGE_ENGLISH_CODE) showConfirmationDialog(LANGUAGE_ENGLISH_CODE) else {
+                    if (selectedLanguage != LANGUAGE_ENGLISH_CODE) showConfirmationDialog(
+                        LANGUAGE_ENGLISH_CODE
+                    ) else {
                     }
                 }
                 radioBtnSpanish.id -> {
-                    if (selectedLanguage != LANGUAGE_SPANISH_CODE) showConfirmationDialog(LANGUAGE_SPANISH_CODE) else {
+                    if (selectedLanguage != LANGUAGE_SPANISH_CODE) showConfirmationDialog(
+                        LANGUAGE_SPANISH_CODE
+                    ) else {
                     }
                 }
                 switchNotification.id -> {
@@ -102,8 +111,13 @@ class SettingsFragment : BaseFragment(), SettingsContract.View, View.OnClickList
     }
 
     /** Presenter Listeners */
-    override fun restartActivity() {
-        ActivityRecreationHelper.recreate(fragmentActivity!!, false)
+    override fun restartActivity(selectedLanguage: String) {
+        fragmentActivity?.let { LanguageManager.setLanguage(it, selectedLanguage) }
+        ActivityRecreationHelper.recreate(fragmentActivity, false)
+    }
+
+    override fun showAPIErrorMessage(message: String) {
+        fragmentActivity?.let { SnackBarFactory.createSnackBar(it, layoutMain, message) }
     }
 
     override fun showSelectedSettings(selectedLanguage: String, notificationEnabled: Boolean) {

@@ -7,6 +7,7 @@ import com.quickhandslogistics.contracts.lumperSheet.LumperWorkDetailContract
 import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.attendance.AttendanceDetail
 import com.quickhandslogistics.data.lumperSheet.LumperWorkDetailAPIResponse
+import com.quickhandslogistics.data.lumperSheet.LumperCorrectionRequest
 import com.quickhandslogistics.models.lumperSheet.LumperWorkDetailModel
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.ScheduleUtils.getFilteredLumperWorkList
@@ -33,9 +34,23 @@ class LumperWorkDetailPresenter(private var lumperWorkDetailView: LumperWorkDeta
         lumperWorkDetailModel.saveLumperSignature(lumperId, date, signatureFilePath, this)
     }
 
-    override fun saveAttendanceDetails(attendanceDetailList: List<AttendanceDetail>) {
+    override fun saveAttendanceDetails(attendanceDetailList: List<AttendanceDetail>, date: Date) {
         lumperWorkDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        lumperWorkDetailModel.saveLumpersAttendanceList(attendanceDetailList, this)
+        lumperWorkDetailModel.saveLumpersAttendanceList(attendanceDetailList, date,  this)
+    }
+
+    override fun sendCorrectionRequest(request: LumperCorrectionRequest, containerId: String) {
+        lumperWorkDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        lumperWorkDetailModel.sendCorrectionRequest(request, containerId, this)
+    }
+    override fun editLumperParamsRequest(request: LumperCorrectionRequest, containerId: String) {
+        lumperWorkDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        lumperWorkDetailModel.editLumperParamsRequest(request, containerId, this)
+    }
+
+    override fun cancelCorrectionRequest(status: String, containerId: String) {
+        lumperWorkDetailView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        lumperWorkDetailModel.cancelCorrectionRequest(status, containerId, this)
     }
 
     /** Model Result Listeners */
@@ -71,5 +86,16 @@ class LumperWorkDetailPresenter(private var lumperWorkDetailView: LumperWorkDeta
     override fun onSuccessSaveDate() {
         lumperWorkDetailView?.hideProgressDialog()
         lumperWorkDetailView?.showDataSavedMessage()
+    }
+
+    override fun onSuccessRequestCorrection(message: String?) {
+        lumperWorkDetailView?.hideProgressDialog()
+        message?.let { lumperWorkDetailView?.showSuccessCorrection(message) }
+    }
+
+    override fun onSuccessCancelCorrection(message: String?) {
+        lumperWorkDetailView?.hideProgressDialog()
+        message?.let { lumperWorkDetailView?.showSuccessCorrection(message) }
+
     }
 }

@@ -15,15 +15,15 @@
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:hardwareAccelerated="true"
-        tools:replace="android:allowBackup"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:requestLegacyExternalStorage="true"
-        tools:ignore="LockedOrientationActivity">
-        <activity android:name=".views.addContainer.AddContainerActivity"></activity>
+        tools:ignore="LockedOrientationActivity"
+        tools:replace="android:allowBackup">
+        <activity android:name=".views.addContainer.AddContainerActivity" />
         <activity android:name=".views.schedule.WorkScheduleActivity" />
         <activity android:name=".views.buildingOperations.BuildingOperationsActivity" />
         <activity

@@ -38,12 +38,10 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private var totalCases: String = ""
     private var employeeData: EmployeeData? = null
     private var employeeTimingData: LumpersTimeSchedule? = null
-
     private var initialStartTime: Long = 0
     private var initialEndTime: Long = 0
     private var initialBreakInTime: Long = 0
     private var initialBreakOutTime: Long = 0
-
     private var selectedStartTime: Long = 0
     private var selectedEndTime: Long = 0
     private var selectedBreakInTime: Long = 0
@@ -54,6 +52,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private var isLumperPresent: Boolean = false
     private var isTimeSelected: Boolean = false
     private lateinit var watcher: TextWatcher
+    private var selectedTime: Long = 0
     private var tempLumperIds: ArrayList<String> = ArrayList()
 
     private lateinit var addLumperTimeWorkSheetItemPresenter: AddLumperTimeWorkSheetItemPresenter
@@ -74,6 +73,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
                     it.getParcelable(ARG_LUMPER_TIMING_DATA) as LumpersTimeSchedule?
                 tempLumperIds =
                     it.getStringArrayList(WorkSheetItemDetailLumpersFragment.TEMP_LUMPER_IDS) as ArrayList<String>
+                selectedTime = it.getLong(WorkSheetItemDetailLumpersFragment.SCHEDULE_SELECTED_TIME)
             }
         }
 
@@ -83,10 +83,12 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun initializeUI() {
+        waitingTimeDisableInPastDat()
         employeeData?.let { employeeData ->
             val leadProfile = DateUtils.sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+            val buildingDetailData =ScheduleUtils.getBuildingDetailData(leadProfile?.buildingDetailData)
             var buildingId = ""
-            leadProfile?.buildingDetailData?.get(0)?.id?.let { id ->
+            buildingDetailData?.id?.let { id ->
                 buildingId = id
             }
 
@@ -105,15 +107,13 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         employeeTimingData?.let { timingDetail ->
             val waitingTimeHours = ValueUtils.getHoursFromMinutes(timingDetail.waitingTime)
             val waitingTimeMinutes = ValueUtils.getRemainingMinutes(timingDetail.waitingTime)
-            if (waitingTimeHours.isNotEmpty() /*&& (0.0 != waitingTimeHours.toDouble() || 0.0 != waitingTimeMinutes.toDouble())*/) {
+            if (waitingTimeHours.isNotEmpty()) {
                 editTextWaitingTime.setText(waitingTimeHours)
-//                editTextWaitingTime.isEnabled = false
             }
-            if (waitingTimeMinutes.isNotEmpty() /*&& (0.0 != waitingTimeMinutes.toDouble() || 0.0 != waitingTimeHours.toDouble())*/) {
+            if (waitingTimeMinutes.isNotEmpty()) {
                 editTextWaitingTimeMinutes.setText(waitingTimeMinutes)
-//                editTextWaitingTimeMinutes.isEnabled = false
             }
-            if (!timingDetail.partWorkDone.isNullOrEmpty() && timingDetail.partWorkDone!!.toInt() != 0) {
+            if (!timingDetail.partWorkDone.isNullOrEmpty() ) {
                 partWorkDone = timingDetail.partWorkDone!!.toInt()
                 lumpercaseVisibility()
                 editTextCasesLumpers.setText(partWorkDone.toString())
@@ -183,6 +183,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         buttonBreakOutTime.setOnClickListener(this)
         buttonSave.setOnClickListener(this)
         buttonCancelRequest.setOnClickListener(this)
+        clearAllPauseTimeImageView.setOnClickListener(this)
     }
 
     private fun updateTimingsDetails(timingDetail: LumpersTimeSchedule) {
@@ -236,6 +237,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
 //            buttonBreakInTime.isEnabled = initialBreakInTime <= 0 && selectedStartTime > 0
 //            buttonBreakOutTime.isEnabled = initialBreakOutTime <= 0 && selectedBreakInTime > 0
 //        }
+        buttonBreakInTime.isEnabled =  selectedStartTime > 0
         buttonEndTime.isEnabled=selectedStartTime>0 && checkBrackout()
         buttonBreakOutTime.isEnabled = initialBreakInTime>0 || selectedBreakInTime>0
         getTimeCalculate()
@@ -247,11 +249,11 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             timeRequest.startTime = selectedBreakInTime
             for (it in mPauseTimeRequestList) {
                 if (isTimeSelected)
-                    if (it.startTime!! <= selectedBreakInTime && selectedBreakInTime < it.endTime!!) {
+                    if (it.startTime!! <= selectedBreakInTime && (it.endTime!= null && selectedBreakInTime < it.endTime!!)) {
                         showErrorDialog("brake in time already available in time slot ")
                         return
                     }
-                if (it.startTime != null && it.endTime == null) {
+                if (it.startTime != null && (it.endTime == null || it.endTime == 0L)) {
                     mPauseTimeRequestList.remove(it)
                 }
             }
@@ -279,8 +281,8 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
                             showErrorDialog("break in/out overriding in previous slot ")
                             return
                         } else if (it.startTime!! <= selectedBreakInTime && selectedBreakInTime < it.endTime!!) {
-                            showErrorDialog("brake in time already available in time slot ")
-                            return
+//                            showErrorDialog("brake in time already available in time slot ")
+//                            return
                         } else if (it.startTime!! <= selectedBreakOutTime && selectedBreakOutTime < it.endTime!!) {
                             showErrorDialog("brake out time already available in time slot ")
                             return
@@ -288,7 +290,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
 
                     if (it.endTime == 0L || it.startTime == 0L) {
                         mPauseTimeRequestList.remove(it)
-                    } else if (it.startTime!! == selectedBreakInTime && it.endTime!! == selectedBreakOutTime) {
+                    } else if (it.startTime!! == selectedBreakInTime && selectedBreakOutTime!= 0L) {
                         mPauseTimeRequestList.remove(it)
                     }
                 }
@@ -308,13 +310,13 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
             for (pauseTime in mPauseTimeRequestList) {
                 dateTime += (pauseTime.endTime!! - pauseTime.startTime!!)
             }
-            totalPauseTime.text =
-                getString(R.string.total_pause_colon) + DateUtils.getDateTimeCalculatedLong(dateTime)
+            totalPauseTime.text = String.format( getString(R.string.total_pause_colon) , DateUtils.getDateTimeCalculatedLong(dateTime))
         } else totalPauseTime.visibility = View.GONE
     }
 
     private fun showPauseTimeDuration() {
         totalPauseTimeDurationTextView?.visibility = View.VISIBLE
+        clearAllPauseTimeImageView?.visibility = View.VISIBLE
         totalPauseTimeDurationTextView?.text = null
         mPauseTimeRequestList.forEachIndexed { index, pauseTime ->
             val pauseTimeIn = pauseTime.startTime
@@ -347,6 +349,18 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         return true
     }
 
+    private fun clearAllPauseTime() {
+        mPauseTimeRequestList.clear()
+        totalPauseTimeDurationTextView.visibility = View.GONE
+        clearAllPauseTimeImageView?.visibility = View.GONE
+        totalPauseTime.visibility = View.GONE
+        buttonBreakOutTime.text = getString(R.string.resume)
+        buttonBreakInTime.text = getString(R.string.pause)
+        selectedBreakInTime =0
+        selectedBreakOutTime= 0
+        updateButtonsUI()
+    }
+
     private fun toggleSaveButtonVisibility() {
         buttonSave.isEnabled =
             editTextWaitingTime.isEnabled || editTextWaitingTimeMinutes.isEnabled || buttonStartTime.isEnabled || buttonEndTime.isEnabled || buttonBreakInTime.isEnabled || buttonBreakOutTime.isEnabled || editTextCasesLumpers.isEnabled
@@ -355,6 +369,14 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
     private fun lumpercaseVisibility() {
         editTextCasesLumpers.isEnabled =
             editTextWaitingTime.isEnabled || editTextWaitingTimeMinutes.isEnabled || buttonStartTime.isEnabled || buttonEndTime.isEnabled || buttonBreakInTime.isEnabled || buttonBreakOutTime.isEnabled
+    }
+
+    private fun waitingTimeDisableInPastDat() {
+        editTextWaitingTime.isEnabled =
+            (DateUtils.isCurrentDate(selectedTime) || DateUtils.isFutureDate(selectedTime))
+        editTextWaitingTimeMinutes.isEnabled =
+            (DateUtils.isCurrentDate(selectedTime) || DateUtils.isFutureDate(selectedTime))
+
     }
 
     private fun updateInitialTime(dateStamp: String?, buttonTime: Button): Long {
@@ -450,8 +472,14 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
         }
     }
 
-    private fun chooseTime(listener: OnTimeSetListener) {
+    private fun chooseTime(listener: OnTimeSetListener, selectedTime: Long) {
         val calendar = Calendar.getInstance()
+        if (selectedTime > 0) {
+            calendar.timeInMillis = selectedTime
+        } else {
+            calendar.timeInMillis = Date().time
+        }
+
         val mHour = calendar.get(Calendar.HOUR_OF_DAY)
         val mMinute = calendar.get(Calendar.MINUTE)
         val timePickerDialog = TimePickerDialog(
@@ -501,28 +529,28 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
                         override fun onSelectTime(calendar: Calendar) {
                             onSelectStartTime(calendar)
                         }
-                    })
+                    }, selectedStartTime)
                 }
                 buttonEndTime.id -> {
                     chooseTime(object : OnTimeSetListener {
                         override fun onSelectTime(calendar: Calendar) {
                             onSelectEndTime(calendar)
                         }
-                    })
+                    }, selectedEndTime)
                 }
                 buttonBreakInTime.id -> {
                     chooseTime(object : OnTimeSetListener {
                         override fun onSelectTime(calendar: Calendar) {
                             onSelectBreakInTime(calendar)
                         }
-                    })
+                    }, selectedBreakInTime)
                 }
                 buttonBreakOutTime.id -> {
                     chooseTime(object : OnTimeSetListener {
                         override fun onSelectTime(calendar: Calendar) {
                             onSelectBreakOutTime(calendar)
                         }
-                    })
+                    }, selectedBreakOutTime)
                 }
                 buttonSave.id -> {
                     if (!isPartWorkDoneValid) {
@@ -532,6 +560,9 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
                 }
                 buttonCancelRequest.id -> {
                     onBackPressed()
+                }
+                clearAllPauseTimeImageView.id -> {
+                    clearAllPauseTime()
                 }
             }
         }
@@ -572,6 +603,7 @@ class AddLumperTimeWorkSheetItemActivity : BaseActivity(), View.OnClickListener,
                 getPercent(text.toString(), totalCases)
                 isDataSave(false)
             } else {
+                isPartWorkDoneValid = true
                 percentWorkDone.text = "0.0%"
                 partWorkDone = 0
                 isDataSave(true)

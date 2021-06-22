@@ -71,9 +71,7 @@ class CustomerContactAdapter(val resources: Resources, var adapterItemClickListe
                     R.string.na
                 )
             val title =
-                if (!item.title.isNullOrEmpty())item.title else resources.getString(
-                    R.string.na
-                )
+                if (!item.title.isNullOrEmpty())item.title else ""
             textViewCustomerName.text =
                 if (!leadName.isNullOrEmpty()) leadName.capitalize() else resources.getString(R.string.na)
             textViewEmployeeRole.text =

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainRootLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/schedule_item_background"
@@ -8,6 +9,7 @@
 
     <TextView
         android:id="@+id/textViewHeader"
+        android:textColor="@color/hint_color_selector"
         style="@style/titleTextViewTheme"
         android:text="@string/role" />
 

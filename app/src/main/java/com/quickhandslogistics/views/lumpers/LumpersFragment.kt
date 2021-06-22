@@ -1,6 +1,6 @@
 package com.quickhandslogistics.views.lumpers
 
-import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -178,6 +178,14 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
         lumpersAdapter.updateLumpersData(employeeDataList)
     }
 
+    override fun showSuccessMessageSend(message: String) {
+        CustomProgressBar.getInstance().showSuccessDialog(message,
+            fragmentActivity!!, object : CustomDialogListener {
+                override fun onConfirmClick() {
+                    lumpersPresenter.fetchLumpersList()
+                }
+            })
+    }
     override fun showLoginScreen() {
         startIntent(LoginActivity::class.java, isFinish = true, flags = arrayOf(Intent.FLAG_ACTIVITY_CLEAR_TASK, Intent.FLAG_ACTIVITY_NEW_TASK))
     }
@@ -211,14 +219,21 @@ class LumpersFragment : BaseFragment(), LumpersContract.View, TextWatcher, View.
             })
     }
 
-    override fun message(name: String, email: String) {
+    override fun message(name: String, id: String) {
         if (!ConnectionDetector.isNetworkConnected(activity)) {
             ConnectionDetector.createSnackBar(activity)
             return
         }
 
-        val emailIntent =
-            Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", email, null))
-        startActivity(Intent.createChooser(emailIntent, "Send email..."))
+        activity?.let {
+            CustomBottomSheetDialog.sendMessageBottomSheetDialog(
+                it, object : CustomBottomSheetDialog.IDialogRequestMessageClick {
+                    override fun onSendRequest(dialog: Dialog, request: String) {
+                        dialog.dismiss()
+                        lumpersPresenter.sendCustomerContactMessage(id, request)
+
+                    }
+                })
+        }
     }
 }

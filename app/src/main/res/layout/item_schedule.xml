@@ -24,11 +24,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <TextView
             android:id="@+id/textViewBuildingName"
             style="@style/titleBigTextViewThemeHeader"
             android:layout_width="0dp"
-            android:textStyle="normal"
+            android:fontFamily="sans-serif"
             app:layout_constraintEnd_toStartOf="@+id/textViewStatus"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -43,75 +44,79 @@
             android:id="@+id/textViewScheduleType"
             style="@style/valuesTextViewTheme"
             android:layout_width="0dp"
-            android:layout_marginTop="@dimen/_4sdp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/_2sdp"
             app:layout_constraintEnd_toStartOf="@+id/textViewScheduleTypeStartTime"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewBuildingName" />
+
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewScheduleTypeStartTime"
             style="@style/valuesTextViewTheme"
             android:layout_width="0dp"
-            android:layout_marginTop="@dimen/_4sdp"
-            app:layout_constraintStart_toEndOf="@+id/textViewScheduleType"
+            android:layout_marginTop="@dimen/_2sdp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textViewScheduleType"
             app:layout_constraintTop_toBottomOf="@+id/textViewBuildingName" />
 
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewScheduleTypeLiveLoad"
             style="@style/valuesTextViewTheme"
-            android:layout_marginTop="@dimen/_4sdp"
             android:layout_width="0dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/_2sdp"
             app:layout_constraintEnd_toStartOf="@+id/textViewScheduleTypeLiveLoadStartTime"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />
+
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewScheduleTypeLiveLoadStartTime"
             style="@style/valuesTextViewTheme"
             android:layout_width="0dp"
-            android:layout_marginTop="@dimen/_4sdp"
-            app:layout_constraintStart_toEndOf="@+id/textViewScheduleTypeLiveLoad"
+            android:layout_marginTop="@dimen/_2sdp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textViewScheduleTypeLiveLoad"
             app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType" />
 
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewScheduleTypeDrops"
             style="@style/valuesTextViewTheme"
-            android:layout_marginTop="@dimen/_4sdp"
             android:layout_width="0dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/_2sdp"
             app:layout_constraintEnd_toStartOf="@+id/textViewScheduleTypeDropsStartTime"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTypeLiveLoad" />
+
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewScheduleTypeDropsStartTime"
             style="@style/valuesTextViewTheme"
-            android:layout_marginTop="@dimen/_4sdp"
             android:layout_width="0dp"
-            app:layout_constraintStart_toEndOf="@+id/textViewScheduleTypeDrops"
+            android:layout_marginTop="@dimen/_2sdp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textViewScheduleTypeDrops"
             app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTypeLiveLoad" />
 
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewScheduleTypeUnfinished"
             style="@style/valuesTextViewTheme"
-            android:layout_marginTop="@dimen/_4sdp"
             android:layout_width="0dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/_2sdp"
             app:layout_constraintEnd_toStartOf="@+id/textViewScheduleTypeUnfinishedStartTime"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTypeDrops" />
+
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewScheduleTypeUnfinishedStartTime"
             style="@style/valuesTextViewTheme"
-            android:layout_marginTop="@dimen/_4sdp"
             android:layout_width="0dp"
-            app:layout_constraintStart_toEndOf="@+id/textViewScheduleTypeUnfinished"
+            android:layout_marginTop="@dimen/_2sdp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textViewScheduleTypeUnfinished"
             app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTypeDrops" />
 
         <com.quickhandslogistics.controls.CustomTextView
             android:id="@+id/textViewWorkItemsCount"
             style="@style/valuesTextViewTheme"
             android:layout_width="0dp"
-            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginTop="@dimen/_2sdp"
             app:layout_constraintEnd_toStartOf="@+id/textViewWorkItemsLeadName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTypeUnfinished" />
@@ -120,11 +125,10 @@
             android:id="@+id/textViewWorkItemsLeadName"
             style="@style/valuesTextViewTheme"
             android:layout_width="0dp"
-            android:layout_marginTop="@dimen/_4sdp"
-            app:layout_constraintStart_toEndOf="@+id/textViewWorkItemsCount"
+            android:layout_marginTop="@dimen/_2sdp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textViewWorkItemsCount"
             app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTypeUnfinished" />
-
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circleImageViewArrow"
@@ -134,20 +138,70 @@
             app:civ_border_color="@color/circleBackground"
             app:civ_border_width="@dimen/_1sdp"
             app:civ_circle_background_color="@color/circleBackground"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@+id/recyclerViewLumpersImagesList"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewWorkItemsCount" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewLumpersImagesList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_2sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textViewWorkItemsCount" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutCustomerSignature"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2ssp"
+            android:layout_marginEnd="@dimen/_6sdp"
+            android:background="@drawable/notes_item_background"
+            android:paddingHorizontal="@dimen/_6sdp"
+            android:paddingVertical="@dimen/_4sdp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recyclerViewLumpersImagesList">
+
+            <TextView
+                android:id="@+id/customerNoteHeader"
+                style="@style/titleSmallTextViewTheme"
+                android:layout_width="match_parent"
+                android:text="@string/customer_note"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewCustomerNote"
+                style="@style/valuesTextViewTheme"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/customerNoteHeader" />
+
+            <TextView
+                android:id="@+id/textViewCustomerName"
+                style="@style/valuesTextViewTheme"
+                android:layout_width="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageViewSignature"
+                app:layout_constraintTop_toBottomOf="@+id/textViewCustomerNote" />
+
+            <ImageView
+                android:id="@+id/imageViewSignature"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                app:layout_constraintEnd_toStartOf="@+id/textViewCustomerName"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewCustomerNote"
+                app:layout_constraintWidth_percent="0.3" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

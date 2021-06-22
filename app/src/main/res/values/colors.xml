@@ -15,6 +15,7 @@
     <color name="buttonRed">#e30913</color>
     <color name="imageBorder">#E0ECFC</color>
     <color name="detailHeader">#656565</color>
+    <color name="dark_grey">#D7191919</color>
     <color name="searchBackground">#DCE0E6</color>
     <color name="editTextBackground">#E9ECF1</color>
     <color name="navDrawerSelectedItemBackground">#12000000</color>
@@ -35,6 +36,7 @@
     <color name="hypertext_color">#6597E3</color>
     <color name="message_background">#4B97E6</color>
     <color name="dark_sky_blue">#3776B6</color>
+    <color name="sky_blue">#ff33b5e5</color>
     <color name="colorOpaque">#00000000</color>
 
     <color name="row_activated">#D8D7D7</color>

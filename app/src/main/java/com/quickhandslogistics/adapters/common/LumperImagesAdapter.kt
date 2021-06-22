@@ -11,10 +11,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.common.LumperImagesContract
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
-import com.quickhandslogistics.utils.AppConstant
-import com.quickhandslogistics.utils.DateUtils
-import com.quickhandslogistics.utils.SharedPref
-import com.quickhandslogistics.utils.UIUtils
+import com.quickhandslogistics.utils.*
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.content_lumper_work_detail.*
 import kotlinx.android.synthetic.main.item_schdule_lumper_image_list.view.*
@@ -56,8 +53,9 @@ class LumperImagesAdapter(var lumpersList: ArrayList<EmployeeData>, private val 
                 textViewNumber.text = "+${lumpersList.size - 10}"
             } else {
                 val leadProfile = DateUtils.sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+                val buildingDetails= ScheduleUtils.getBuildingDetailData(leadProfile?.buildingDetailData)
                 var buildingId = ""
-                leadProfile?.buildingDetailData?.get(0)?.id?.let { id ->
+                buildingDetails?.id?.let { id ->
                     buildingId = id
                 }
                 UIUtils.showEmployeeProfileImage(context, employeeData.profileImageUrl, circleImageViewProfile)

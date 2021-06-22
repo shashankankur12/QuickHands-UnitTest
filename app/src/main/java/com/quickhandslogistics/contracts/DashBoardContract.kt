@@ -27,6 +27,7 @@ class DashBoardContract {
             fun onNewFragmentReplaced(title: String)
             fun invalidateScheduleTimeNotes(notes: String)
             fun invalidateCancelAllSchedulesOption(isShown: Boolean)
+            fun invalidateAddNoteOption(isShown: Boolean)
             fun onLogoutOptionSelected()
         }
     }

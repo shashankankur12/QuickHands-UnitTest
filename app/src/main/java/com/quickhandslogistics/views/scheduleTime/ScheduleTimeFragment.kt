@@ -22,6 +22,7 @@ import com.quickhandslogistics.adapters.scheduleTime.ScheduleTimeAdapter
 import com.quickhandslogistics.contracts.DashBoardContract
 import com.quickhandslogistics.contracts.scheduleTime.ScheduleTimeContract
 import com.quickhandslogistics.data.dashboard.LeadProfileData
+import com.quickhandslogistics.data.schedule.PastFutureDates
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.data.scheduleTime.ScheduleTimeNoteRequest
 import com.quickhandslogistics.presenters.scheduleTime.ScheduleTimePresenter
@@ -39,6 +40,14 @@ import kotlinx.android.synthetic.main.bottom_sheet_create_lumper_request.textVie
 import kotlinx.android.synthetic.main.bottom_sheet_schdule_time_fragement.*
 import kotlinx.android.synthetic.main.content_dashboard.*
 import kotlinx.android.synthetic.main.content_schedule_time_fragment.*
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.appBarView
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.layoutWorkScheduleInfo
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.mainConstraintLayout
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.textViewBuildingName
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.textViewDept
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.textViewEmptyData
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.textViewShift
+import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.android.synthetic.main.fragment_schedule_time.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -57,10 +66,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
     private var dateString: String? = null
     private var isSavedState: Boolean = false
     private var isPriviousTab: Boolean = false
+    private var isShowErrorDialog: Boolean = true
     private var selectedDate: Date = Date()
     private var tempLumperIds: ArrayList<String> = ArrayList()
     private var scheduleTimeDetailList: ArrayList<ScheduleTimeDetail> = ArrayList()
-
+    private var pastFutureDates: ArrayList<PastFutureDates> = ArrayList()
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var availableDates: List<Date>
     private lateinit var scheduleTimeAdapter: ScheduleTimeAdapter
@@ -154,7 +164,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         textViewScheduleView.setOnClickListener(this)
         textViewCancelAllSchedule.setOnClickListener(this)
 
-        CalendarUtils.initializeCalendarView(fragmentActivity!!, singleRowCalendarScheduleTime, availableDates, this)
+        fragmentActivity?.let {
+            CalendarUtils.initializeCalendarView(
+                it, singleRowCalendarScheduleTime, availableDates, this
+            )
+        }
         savedInstanceState?.also {
             isSavedState = true
             if (savedInstanceState.containsKey(DATE_HEADER_SCHEDULE_TIME)) {
@@ -194,7 +208,13 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         } ?: run {
             isSavedState = false
             singleRowCalendarScheduleTime.select(selectedDatePosition)
+            scrollToCenter()
         }
+    }
+
+    private fun scrollToCenter() {
+        if (availableDates.isNotEmpty())
+            singleRowCalendarScheduleTime.scrollToPosition((availableDates.size/3))
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -226,6 +246,8 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                 }
 
                 scheduleTimePresenter.getSchedulesTimeByDate(singleRowCalendarScheduleTime.getSelectedDates()[0])
+                isShowErrorDialog= true
+
             }
         }
     }
@@ -369,13 +391,14 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             return
         }
 
-        var cancelLumperID :ArrayList<String> = ArrayList()
+        val cancelLumperID :ArrayList<String> = ArrayList()
         scheduleTimeDetailList.forEach {
             it.lumperInfo?.id?.let { it1 -> cancelLumperID.add(it1) }
         }
         CustomProgressBar.getInstance().showWarningDialog(getString(R.string.cancel_request_lumper), context!!, object : CustomDialogWarningListener {
             override fun onConfirmClick() {
                 closeBottomSheet()
+                scheduleTimePresenter.cancelScheduleLumpers(cancelLumperID, selectedDate, null)
             }
             override fun onCancelClick() {
             }
@@ -393,11 +416,14 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         val cancelLumperDate = textViewTitle.getTag(R.id.cancelLumperDay) as String?
         val cancelReason = editTextReason.text.toString()
         if (!cancelLumperId.isNullOrEmpty() && !cancelLumperDate.isNullOrEmpty()&& !cancelReason.isNullOrEmpty()) {
+            var lumperIdArrayList= ArrayList <String>()
+            lumperIdArrayList.add(cancelLumperId)
             closeBottomSheet()
-            scheduleTimePresenter.cancelScheduleLumpers(cancelLumperId, selectedDate, cancelReason/*DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, requestLumperDate)*/)
+            scheduleTimePresenter.cancelScheduleLumpers(lumperIdArrayList, selectedDate, cancelReason)
         }else if (cancelReason.isNullOrEmpty()){
             CustomProgressBar.getInstance().showErrorDialog(getString(R.string.cancel_reason_schedule_lumper), activity!!)
         }
+        isShowErrorDialog= true
     }
 
     private fun showConfirmationDialogEditLumper() {
@@ -412,6 +438,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
                 val request = ScheduleTimeNoteRequest(individualNote, groupNote)
                 if (!requestLumperId.isNullOrEmpty() && !requestLumperDate.isNullOrEmpty()) {
                     scheduleTimePresenter.editScheduleLumpers(requestLumperId, selectedDate /*DateUtils.getDateFromDateString(DateUtils.PATTERN_API_RESPONSE, requestLumperDate)*/, timeInMillis, request)
+                    isShowErrorDialog= true
                 }
             }
             override fun onCancelClick() {
@@ -436,11 +463,12 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         this.dateString = dateString
 
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+        val buildingDetailData =ScheduleUtils.getBuildingDetailData(leadProfile?.buildingDetailData)
 
-        if (leadProfile?.buildingDetailData?.get(0) != null) {
-            textViewBuildingName.text = leadProfile?.buildingDetailData?.get(0)?.buildingName!!.capitalize()
-            textViewDept.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), UIUtils.getDisplayEmployeeDepartment(leadProfile))
-            textViewShift.text = UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile.shift?.capitalize().toString())
+        if (buildingDetailData != null) {
+            textViewBuildingName.text = buildingDetailData.buildingName?.capitalize()
+            textViewDept.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), UIUtils.getDisplayEmployeeDepartmentHeader(leadProfile))
+            textViewShift.text = UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile?.shift?.capitalize().toString())
         } else {
             layoutWorkScheduleInfo.visibility = View.GONE
             appBarView.visibility = View.GONE
@@ -458,7 +486,9 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         textViewEmptyData.visibility = View.VISIBLE
 
         if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
+            if (isShowErrorDialog)
             CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
+            isShowErrorDialog= false
         } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
     }
 
@@ -479,6 +509,14 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         }
 
         textViewCancelAllSchedule.isEnabled =mScheduleTimeDetailList.size>0
+    }
+
+
+    override fun showPastFutureDate(pastFutureDate: ArrayList<PastFutureDates>) {
+        isSavedState = true
+        this.pastFutureDates= pastFutureDate
+        CalendarUtils.pastFutureDatesNew=pastFutureDates
+        singleRowCalendarScheduleTime.adapter?.notifyDataSetChanged()
     }
 
     override fun showNotesData(notes: String?) {
@@ -504,6 +542,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         CustomProgressBar.getInstance().showSuccessDialog(message, context!!, object : CustomDialogListener {
             override fun onConfirmClick() {
                 scheduleTimePresenter.getSchedulesTimeByDate(date)
+                isShowErrorDialog= true
             }
         })
     }
@@ -525,9 +564,11 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             return
         }
 
-        textViewCancelAllSchedule.visibility=if(DateUtils.isFutureDate(date.time)) View.VISIBLE else View.GONE
-                if (!isSavedState)
+        textViewCancelAllSchedule.visibility = if (DateUtils.isFutureDate(date.time)) View.VISIBLE else View.GONE
+        if (!isSavedState) {
             scheduleTimePresenter.getSchedulesTimeByDate(date)
+            isShowErrorDialog = true
+        }
         isSavedState = false
         datePosition = position
     }
@@ -538,16 +579,7 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             ConnectionDetector.createSnackBar(activity)
             return
         }
-
-        var timeInMillis = DateUtils.convertUTCDateStringToMilliseconds(
-            DateUtils.PATTERN_API_RESPONSE,
-            scheduleTimeDetailList[adapterPosition].reportingTimeAndDay
-        )
-        if (DateUtils.isTwoHourFromCurrentTime(timeInMillis))
-            showBottomSheetWithData(details, EDIT_SCHEDULE_LUMPER)
-        else
-            CustomProgressBar.getInstance()
-                .showMessageDialog(getString(R.string.edit_schedule_lumper_invalidate_message), context!!)
+        showBottomSheetWithData(details, EDIT_SCHEDULE_LUMPER)
     }
 
     override fun onScheduleNoteClick(adapterPosition: Int, notes: String?, item: ScheduleTimeDetail) {
@@ -557,7 +589,6 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
         }
 
         CustomerDialog.showLeadNoteDialog(activity, "Lead Notes ", item.notesForLumper,notes, resources.getString(R.string.individual_note), resources.getString(R.string.group_notes))
-//        CustomProgressBar.getInstance().showInfoDialog(getString(R.string.note), notes, fragmentActivity!!)
     }
 
     override fun onAddRemoveClick(adapterPosition: Int, details: ScheduleTimeDetail) {
@@ -565,12 +596,6 @@ class ScheduleTimeFragment : BaseFragment(), TextWatcher, View.OnClickListener, 
             ConnectionDetector.createSnackBar(activity)
             return
         }
-
-        var timeInMillis = DateUtils.convertUTCDateStringToMilliseconds(DateUtils.PATTERN_API_RESPONSE, scheduleTimeDetailList[adapterPosition].reportingTimeAndDay)
-        if (DateUtils.isTwoHourFromCurrentTime(timeInMillis))
-            showBottomSheetWithData(details, CANCEL_SCHEDULE_LUMPER)
-        else
-            CustomProgressBar.getInstance()
-                .showMessageDialog(getString(R.string.cancel_schedule_lumper_invalidate_message), context!!)
+        showBottomSheetWithData(details, CANCEL_SCHEDULE_LUMPER)
     }
 }

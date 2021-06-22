@@ -5,10 +5,13 @@ import android.text.TextUtils
 import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.data.ErrorResponse
+import com.quickhandslogistics.data.dashboard.LeadProfileData
+import com.quickhandslogistics.data.schedule.GetPastFutureDateResponse
 import com.quickhandslogistics.data.schedule.ScheduleDetailData
 import com.quickhandslogistics.data.schedule.ScheduleListAPIResponse
 import com.quickhandslogistics.models.schedule.ScheduleModel
 import com.quickhandslogistics.utils.AppConstant
+import com.quickhandslogistics.utils.DateUtils
 import com.quickhandslogistics.utils.SharedPref
 import com.quickhandslogistics.utils.ValueUtils
 import java.util.*
@@ -26,6 +29,7 @@ class SchedulePresenter(private var scheduleView: ScheduleContract.View?, privat
 
     override fun getScheduledWorkItemsByDate(date: Date, pageIndex: Int) {
         scheduleView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        scheduleModel.fetchPastFutureDate( this)
         scheduleModel.fetchHeaderInfo(date, this)
         scheduleModel.fetchSchedulesByDate(date, pageIndex, this)
     }
@@ -49,9 +53,9 @@ class SchedulePresenter(private var scheduleView: ScheduleContract.View?, privat
         }
     }
 
-    override fun onSuccess(selectedDate: Date, scheduleListAPIResponse: ScheduleListAPIResponse, currentPageIndex: Int, deptDetail: String) {
+    override fun onSuccess(selectedDate: Date, scheduleListAPIResponse: ScheduleListAPIResponse?, currentPageIndex: Int, deptDetail: String) {
         val workItemsList = ArrayList<ScheduleDetailData>()
-        scheduleListAPIResponse.data?.scheduleDetailsList?.let {
+        scheduleListAPIResponse?.data?.scheduleDetailsList?.let {
             workItemsList.addAll(it)
         }
 
@@ -84,15 +88,18 @@ class SchedulePresenter(private var scheduleView: ScheduleContract.View?, privat
 //        }
 
         workItemsList.forEach {
-            if (!it.outbounds.isNullOrEmpty()&&it.liveLoads.isNullOrEmpty()&& it.drops.isNullOrEmpty()&& deptDetail != AppConstant.EMPLOYEE_DEPARTMENT_BOTH)
-                it.scheduleDepartment=AppConstant.EMPLOYEE_DEPARTMENT_OUTBOUND
-            else if (!it.liveLoads.isNullOrEmpty()&& !it.drops.isNullOrEmpty()&& it.outbounds.isNullOrEmpty()&& deptDetail != AppConstant.EMPLOYEE_DEPARTMENT_BOTH)
-                it.scheduleDepartment=AppConstant.EMPLOYEE_DEPARTMENT_INBOUND
-            else  it.scheduleDepartment=AppConstant.EMPLOYEE_DEPARTMENT_BOTH
+            val leadProfile = DateUtils.sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+            val leadDept = leadProfile?.department
+            if (leadDept != AppConstant.EMPLOYEE_DEPARTMENT_BOTH) {
+                if (it.outbounds!=null && it.liveLoads== null && it.drops==null && deptDetail != AppConstant.EMPLOYEE_DEPARTMENT_BOTH)
+                    it.scheduleDepartment = AppConstant.EMPLOYEE_DEPARTMENT_OUTBOUND
+                else if (it.liveLoads!=null && it.drops!=null && it.outbounds==null && deptDetail != AppConstant.EMPLOYEE_DEPARTMENT_BOTH)
+                    it.scheduleDepartment = AppConstant.EMPLOYEE_DEPARTMENT_INBOUND
+            } else it.scheduleDepartment = AppConstant.EMPLOYEE_DEPARTMENT_BOTH
         }
 
-        val totalPagesCount = ValueUtils.getDefaultOrValue(scheduleListAPIResponse.data?.pageCount)
-        val nextPageIndex = ValueUtils.getDefaultOrValue(scheduleListAPIResponse.data?.next)
+        val totalPagesCount = ValueUtils.getDefaultOrValue(scheduleListAPIResponse?.data?.pageCount)
+        val nextPageIndex = ValueUtils.getDefaultOrValue(scheduleListAPIResponse?.data?.next)
 
         if (workItemsList.size > 0) {
             scheduleView?.showScheduleData(selectedDate, workItemsList, totalPagesCount, nextPageIndex, currentPageIndex)
@@ -105,5 +112,11 @@ class SchedulePresenter(private var scheduleView: ScheduleContract.View?, privat
 
     override fun onSuccessGetHeaderInfo(dateString: String) {
         scheduleView?.showDateString(dateString)
+    }
+
+    override fun onSuccessPastFutureDate(response: GetPastFutureDateResponse?) {
+      response?.data?.let {
+          scheduleView?.showPastFutureDate(it)
+      }
     }
 }

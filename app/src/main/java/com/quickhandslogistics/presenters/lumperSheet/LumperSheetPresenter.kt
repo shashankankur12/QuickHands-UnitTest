@@ -7,6 +7,7 @@ import com.quickhandslogistics.contracts.lumperSheet.LumperSheetContract
 import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.lumperSheet.LumperSheetListAPIResponse
 import com.quickhandslogistics.data.lumperSheet.LumpersInfo
+import com.quickhandslogistics.data.schedule.GetPastFutureDateResponse
 import com.quickhandslogistics.models.lumperSheet.LumperSheetModel
 import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.SharedPref
@@ -24,6 +25,7 @@ class LumperSheetPresenter(private var lumperSheetView: LumperSheetContract.View
 
     override fun getLumpersSheetByDate(selectedDate: Date) {
         lumperSheetView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+        lumperSheetModel.fetchPastFutureDate(this)
         lumperSheetModel.fetchHeaderInfo(selectedDate, this)
         lumperSheetModel.fetchLumperSheetList(selectedDate, this)
     }
@@ -76,5 +78,11 @@ class LumperSheetPresenter(private var lumperSheetView: LumperSheetContract.View
 
     override fun onSuccessGetHeaderInfo(dateString: String, shift: String, dept: String) {
         lumperSheetView?.showDateString(dateString, shift, dept)
+    }
+
+    override fun onSuccessPastFutureDate(response: GetPastFutureDateResponse?) {
+        response?.data?.let {
+            lumperSheetView?.showPastFutureDate(it)
+        }
     }
 }

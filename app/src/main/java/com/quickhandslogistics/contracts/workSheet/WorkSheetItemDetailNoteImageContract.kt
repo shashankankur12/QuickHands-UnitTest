@@ -4,6 +4,7 @@ class WorkSheetItemDetailNoteImageContract {
     interface View {
         interface OnAdapterItemClickListener {
             fun onImageClick(imageUrl: String)
+            fun removeImage(adapterPosition: Int)
         }
     }
 }

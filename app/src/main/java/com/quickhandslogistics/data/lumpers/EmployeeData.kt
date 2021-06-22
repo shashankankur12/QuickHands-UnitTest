@@ -50,6 +50,7 @@ open class EmployeeData() : Parcelable {
     @SerializedName("isEmailVerified")
     @Expose
     var isEmailVerified: Boolean? = null
+
     @SerializedName("hasClockedOut")
     @Expose
     var isPresent: Boolean? = null
@@ -85,6 +86,7 @@ open class EmployeeData() : Parcelable {
     @SerializedName("primaryBuilding")
     @Expose
     var primaryBuilding: String? = null
+
     @SerializedName("buildingAssignedAsLumper")
     @Expose
     var buildingAssignedAsLumper: ArrayList<BuildingDetailData>? = null
@@ -129,6 +131,10 @@ open class EmployeeData() : Parcelable {
     @Expose
     var fullTime: Boolean? = null
 
+    @SerializedName("preferredLanguage")
+    @Expose
+    var language: String? = null
+
     var isTemporaryAssigned: Boolean = false
 
     constructor(parcel: Parcel) : this() {
@@ -153,8 +159,9 @@ open class EmployeeData() : Parcelable {
         originalBuildingId = parcel.readString()
         tempBuildingId = parcel.readString()
         primaryBuilding = parcel.readString()
-        buildingAssignedAsLumper= parcel.createTypedArrayList(BuildingDetailData)
-        abilityToTravelBetweenBuildings = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        buildingAssignedAsLumper = parcel.createTypedArrayList(BuildingDetailData)
+        abilityToTravelBetweenBuildings =
+            parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         milesRadiusFromPrimaryBuilding = parcel.readString()
         buildingIdAsLumper = parcel.readString()
         hiringDate = parcel.readString()
@@ -164,6 +171,7 @@ open class EmployeeData() : Parcelable {
         lumperId = parcel.readString()
         fullTime = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         isTemporaryAssigned = parcel.readValue(Boolean::class.java.classLoader) as Boolean
+        language = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -199,6 +207,7 @@ open class EmployeeData() : Parcelable {
         parcel.writeString(lumperId)
         parcel.writeValue(fullTime)
         parcel.writeValue(isTemporaryAssigned)
+        parcel.writeString(language)
     }
 
     override fun describeContents(): Int {

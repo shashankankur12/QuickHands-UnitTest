@@ -86,27 +86,25 @@
         android:text="namit@yopmail.com"
         android:textColor="@color/hypertext_color"
         app:emptyDataVisibility="empty_gone"
-        app:layout_constraintEnd_toStartOf="@id/textVieWContact"
+        app:layout_constraintEnd_toStartOf="@id/constraintViewCall"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewEmployeeShift" />
     <com.quickhandslogistics.controls.CustomTextView
         android:id="@+id/textVieWContact"
         style="@style/valuesSmallTextViewTheme"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_1sdp"
-        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:paddingEnd="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_4sdp"
         android:text="(2233)-456-342"
         android:textColor="@color/hypertext_color"
         app:emptyDataVisibility="empty_gone"
-        android:textAlignment="textEnd"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/constraintViewCall"
-        app:layout_constraintStart_toEndOf="@+id/textViewEmail"
-        app:layout_constraintTop_toBottomOf="@id/textViewEmployeeShift" />
-
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewEmail" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="@dimen/_50sdp"
@@ -121,7 +119,6 @@
             android:layout_width="@dimen/_22ssp"
             android:layout_height="@dimen/_22sdp"
             android:src="@drawable/ic_message_chat"
-            android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintBottom_toTopOf="@+id/textViewMessageTime"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -135,6 +132,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:text="13:12 AM"
+            android:visibility="gone"
             android:layout_marginBottom="@dimen/_10sdp"
             android:textColor="@color/textWhite"
             app:layout_constraintTop_toBottomOf="@+id/imageViewCall"

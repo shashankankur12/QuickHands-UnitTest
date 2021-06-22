@@ -6,19 +6,20 @@ import com.quickhandslogistics.utils.AppConstant.Companion.EMPLOYEE_SHIFT_NIGHT
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.roundToInt
 
 class DateUtils {
     companion object {
-        const val PATTERN_NORMAL = "EEEE, MMMM dd, yyyy"
-        const val PATTERN_NORMAL_Week = "EEEE, MMMM dd, yyyy: hh:mm a"
+        const val PATTERN_NORMAL = "EEEE, MMMM d, yyyy"
+        const val PATTERN_NORMAL_Week = "EEEE, MMMM d, yyyy: h:mm a"
         const val PATTERN_API_REQUEST_PARAMETER = "yyyy-MM-dd"
         const val PATTERN_API_RESPONSE = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-        const val PATTERN_DATE_DISPLAY = "dd MMM yyyy"
-        const val PATTERN_DATE_DISPLAY_SHEET= "dd/MM/yyyy"
-        const val PATTERN_DATE_DISPLAY_CUSTOMER_SHEET= "MM/dd/yyyy"
-        const val PATTERN_MONTH_DAY_DISPLAY = "MMMM dd, yyyy"
-        const val PATTERN_DATE_TIME_DISPLAY = "dd MMM yyyy, HH:mm a"
-        const val PATTERN_TIME = "hh:mm a"
+        const val PATTERN_DATE_DISPLAY = "d MMM yyyy"
+        const val PATTERN_DATE_DISPLAY_SHEET= "d/MM/yyyy"
+        const val PATTERN_DATE_DISPLAY_CUSTOMER_SHEET= "MM/d/yyyy"
+        const val PATTERN_MONTH_DAY_DISPLAY = "MMMM d, yyyy"
+        const val PATTERN_DATE_TIME_DISPLAY = "d MMM yyyy, H:mm a"
+        const val PATTERN_TIME = "h:mm a"
 
         var sharedPref: SharedPref = SharedPref.getInstance()
 
@@ -131,22 +132,36 @@ class DateUtils {
             val punchOut= convertUTCDateStringToMilliseconds(PATTERN_API_RESPONSE, eveningPunchOut)
             val diffrence = punchOut - punchIn
 
+            val seconds = diffrence / 1000
+            val minutes = seconds / 60
+            val hours = minutes / 60
+            val totalMin = (Math.round(seconds.toDouble()/60 %60)).toInt()
             return String.format("%s H %s M",
-                (diffrence / (1000 * 60 * 60) % 24),
-                (diffrence / (1000 * 60) % 60)
+                    hours,
+                    totalMin
             )
         }
 
 
         fun getDateTimeCalculatedLong(morningPunchIn: Long, eveningPunchOut: Long): String {
             val difference = eveningPunchOut - morningPunchIn
+            val seconds = difference / 1000
+            val minutes = seconds / 60
+            val hours = minutes / 60
+            val totalMin = (Math.round(seconds.toDouble()/60 %60)).toInt()
             return String.format("%s H %s M",
-                    (difference / (1000 * 60 * 60) % 24),
-                    (difference / (1000 * 60) % 60)
+                    hours,
+                    totalMin
             )
         }
 
-        fun getDateTimeCalculatedLong(difference: Long): String = String.format("%s H %s M", (difference / (1000 * 60 * 60) % 24), (difference / (1000 * 60) % 60))
+        fun getDateTimeCalculatedLong(difference: Long): String {
+            val seconds = difference / 1000
+            val minutes = seconds / 60
+            val hours = minutes / 60
+            val totalMin = (Math.round(seconds.toDouble()/60 %60)).toInt()
+           return String.format("%s H %s M",hours, totalMin)
+        }
 
         fun convertDateStringToTime(patternDate: String, dateString: String? = ""): String {
             val dateStringValue = ValueUtils.getDefaultOrValue(dateString)
@@ -250,15 +265,16 @@ class DateUtils {
             val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
             leadProfile?.let {
                 var shiftDetail: ShiftDetail? = null
+                val buildingDetail =ScheduleUtils.getBuildingDetailData(leadProfile.buildingDetailData)
                 when (leadProfile.shift) {
                     AppConstant.EMPLOYEE_SHIFT_MORNING -> {
-                        shiftDetail = leadProfile.buildingDetailData?.get(0)?.morningShift
+                        shiftDetail = buildingDetail?.morningShift
                     }
                     AppConstant.EMPLOYEE_SHIFT_SWING -> {
-                        shiftDetail = leadProfile.buildingDetailData?.get(0)?.swingShift
+                        shiftDetail = buildingDetail?.swingShift
                     }
                     AppConstant.EMPLOYEE_SHIFT_NIGHT -> {
-                        shiftDetail = leadProfile.buildingDetailData?.get(0)?.nightShift
+                        shiftDetail = buildingDetail?.nightShift
                     }
                 }
                 val date = calculateDateByShiftStartTime(
@@ -280,15 +296,16 @@ class DateUtils {
             val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
             leadProfile?.let {
                 var shiftDetail: ShiftDetail? = null
+                val buildingDetail =ScheduleUtils.getBuildingDetailData(leadProfile.buildingDetailData)
                 when (leadProfile.shift) {
                     AppConstant.EMPLOYEE_SHIFT_MORNING -> {
-                        shiftDetail = leadProfile.buildingDetailData?.get(0)?.morningShift
+                        shiftDetail = buildingDetail?.morningShift
                     }
                     AppConstant.EMPLOYEE_SHIFT_SWING -> {
-                        shiftDetail = leadProfile.buildingDetailData?.get(0)?.swingShift
+                        shiftDetail = buildingDetail?.swingShift
                     }
                     AppConstant.EMPLOYEE_SHIFT_NIGHT -> {
-                        shiftDetail = leadProfile.buildingDetailData?.get(0)?.nightShift
+                        shiftDetail = buildingDetail?.nightShift
                     }
                 }
                 date = calculateDateByShiftStartTime(shiftDetail, originalDate, leadProfile.shift)

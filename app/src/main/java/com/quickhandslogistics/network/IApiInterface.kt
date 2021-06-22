@@ -26,6 +26,8 @@ import com.quickhandslogistics.data.schedule.*
 import com.quickhandslogistics.data.scheduleTime.*
 import com.quickhandslogistics.data.scheduleTime.leadinfo.GetLeadInfoResponse
 import com.quickhandslogistics.data.workSheet.*
+import com.quickhandslogistics.data.lumperSheet.LumperCorrectionRequest
+import com.quickhandslogistics.data.qhlContact.ChatMessageRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -36,7 +38,7 @@ interface IApiInterface {
     fun doLogin(@Body request: LoginRequest): Call<LoginResponse>
 
     @GET("employees/lead/lumpers")
-    fun getAllLumpersData(@Header("Authorization") auth: String, @Query("day") day: String): Call<LumperListAPIResponse>
+    fun getAllLumpersData(@Header("Authorization") auth: String, @Query("day") day: String,  @Query("unavailable") isAvailable: Boolean): Call<LumperListAPIResponse>
 
     @GET("employees/me")
     fun getLeadProfile(@Header("Authorization") auth: String): Call<LeadProfileAPIResponse>
@@ -135,8 +137,8 @@ interface IApiInterface {
     @POST("employees/lumpers-request/cancel")
     fun cancelRequestLumpers(@Header("Authorization") auth: String, @Body request: CancelRequestLumpersRequest): Call<BaseResponse>
 
-    @DELETE("employees/scheduled/lumpers/{lumperId}")
-    fun cancelScheduleLumper(@Header("Authorization") auth: String, @Path("lumperId") lumperId: String, @Query("day") day: String): Call<BaseResponse>
+    @HTTP(method = "DELETE", path = "employees/scheduled/lumpers", hasBody = true)
+    fun cancelScheduleLumper(@Header("Authorization") auth: String, @Query("day") day: String , @Body request: CancelLumperRequest): Call<BaseResponse>
 
     @PUT("employees/scheduled/lumpers/{lumperId}")
     fun editScheduleLumper(@Header("Authorization") auth: String, @Path("lumperId") lumperId: String, @Query("day") day: String, @Query("reportingTime") reportingTime: Long, @Body request: ScheduleTimeNoteRequest): Call<BaseResponse>
@@ -186,6 +188,7 @@ interface IApiInterface {
     @POST("customers/sheet")
     fun saveCustomerSheet(
         @Header("Authorization") auth: String,
+        @Query ("day") date: String,
         @Part("customerRepresentativeName") customerRepresentativeName: RequestBody,
         @Part("note") note: RequestBody,
         @Part signature: MultipartBody.Part? = null,
@@ -194,16 +197,16 @@ interface IApiInterface {
     /////////////////////////////////////////////////////////////
 
     // Lumper Sheet /////////////////////////////////////////////////
-    @GET("employees/siginfo/lumpers")
+    @GET("employees/lumper-signature")
     fun getLumperSheetList(@Header("Authorization") auth: String, @Query("day") day: String): Call<LumperSheetListAPIResponse>
 
-    @GET("employees/daily/worksheet")
+    @GET("employees/daily/lumpers-worksheet")
     fun getLumperWorkDetail(
         @Header("Authorization") auth: String, @Query("day") day: String, @Query("lumperId") lumperId: String
     ): Call<LumperWorkDetailAPIResponse>
 
     @Multipart
-    @POST("employees/sig/lumper")
+    @POST("employees/lumper-signature")
     fun saveLumperSignature(
         @Header("Authorization") auth: String, @Part("day") day: RequestBody,
         @Part("lumperId") lumperId: RequestBody, @Part signature: MultipartBody.Part
@@ -259,6 +262,39 @@ interface IApiInterface {
     @GET("employees/lead/buildings/{buildingId}")
     fun getBuildingDetails(@Header("Authorization") auth: String, @Path("buildingId") buildingId: String
     ): Call<BuildingDetailsResponse>
+    ////////////////////////////////////////////////////////
+
+    //past future date calender details
+    @GET("schedule/meta/lookup-availability")
+    fun schedulePastFutureDate(@Header("Authorization") auth: String): Call<GetPastFutureDateResponse>
+
+    @GET("employees/meta/lumpers-signature")
+    fun lumperSheetPastFutureDate(@Header("Authorization") auth: String): Call<GetPastFutureDateResponse>
+
+    @GET("employees/meta/lumpers-availability")
+    fun scheduleTimePastFutureDate(@Header("Authorization") auth: String): Call<GetPastFutureDateResponse>
+
+    @GET("employees/meta/lumpers-timeclock")
+    fun timeClockPastFutureDate(@Header("Authorization") auth: String): Call<GetPastFutureDateResponse>
+    /////////////////////////////////////////////////////////
+
+    //Request Correction/////////////////////////////////////
+    @POST("schedule/containers/{id}/correction-requests")
+    fun saveLumperRequestCorrection(@Header("Authorization") auth: String, @Path("id") containerId: String, @Body request: LumperCorrectionRequest): Call<BaseResponse>
+
+    @POST("employees/submit-past-corrections")
+    fun editLumperParams(@Header("Authorization") auth: String, @Query("containerId") containerId: String, @Body request: LumperCorrectionRequest): Call<BaseResponse>
+
+    @POST("schedule/containers/correction-requests/cancel/{id}")
+    fun lumperCancelCorrection(@Header("Authorization") auth: String, @Path("id") correctionId: String): Call<BaseResponse>
+    /////////////////////////////////////////////////////////
+
+    //Chats/////////////////////////////////////////////////
+    @POST("employees/communicate/{id}")
+    fun contactChat(@Header("Authorization") auth: String, @Path("id") buildingId: String, @Body request: ChatMessageRequest): Call<BaseResponse>
+
+    @POST("employees/preferred-language/toggle")
+    fun changeLanguage(@Header("Authorization") auth: String): Call<BaseResponse>
 
 
 }

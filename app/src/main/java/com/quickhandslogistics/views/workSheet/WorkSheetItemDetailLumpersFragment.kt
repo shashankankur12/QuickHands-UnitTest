@@ -29,23 +29,25 @@ import kotlinx.android.synthetic.main.content_work_sheet_item_detail_lumpers.*
 class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener, WorkSheetItemDetailLumpersContract.View.OnAdapterItemClickListener {
 
     private var onFragmentInteractionListener: WorkSheetItemDetailContract.View.OnFragmentInteractionListener? = null
-
     private lateinit var workSheetItemDetailLumpersAdapter: WorkSheetItemDetailLumpersAdapter
-
+    private lateinit var workSheetItemDetailOldLumpersAdapter: WorkSheetItemDetailLumpersAdapter
     private var workItemDetail: WorkItemContainerDetails? = null
     private  var lumpersTimeSchedule: ArrayList<LumpersTimeSchedule> = ArrayList<LumpersTimeSchedule>()
     private var tempLumperIds: ArrayList<String> = ArrayList()
+    private var selectedTime: Long = 0
 
     companion object {
         private const val LUMPER_WORK_DETALS = "LUMPER_WORK_DETALS"
         private const val LUMPER_SCHEDULE = "LUMPER_SCHEDULE"
         internal const val TEMP_LUMPER_IDS = "TEMP_LUMPER_IDS"
         const val TOTAL_CASES = "TOTAL_CASES"
+        const val SCHEDULE_SELECTED_TIME= "SCHEDULE_SELECTED_TIME"
         @JvmStatic
         fun newInstance(
             allWorkItem: WorkItemContainerDetails?,
             lumperTimeSchedule: ArrayList<LumpersTimeSchedule>?,
-            tempLumperIds: ArrayList<String>?
+            tempLumperIds: ArrayList<String>?,
+            selectedTime: Long
         ) = WorkSheetItemDetailLumpersFragment()
             .apply {
                 arguments = Bundle().apply {
@@ -54,6 +56,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
                         putParcelableArrayList(LUMPER_SCHEDULE, lumperTimeSchedule)
                         putStringArrayList(TEMP_LUMPER_IDS, tempLumperIds)
                     }
+                    putLong(SCHEDULE_SELECTED_TIME, selectedTime)
                 }
             }
     }
@@ -74,6 +77,8 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
                 lumpersTimeSchedule = it.getParcelableArrayList(LUMPER_SCHEDULE)!!
             if (it.containsKey(LUMPER_WORK_DETALS))
                 tempLumperIds = it.getStringArrayList(TEMP_LUMPER_IDS)!!
+            if (it.containsKey(SCHEDULE_SELECTED_TIME))
+                selectedTime = it.getLong(SCHEDULE_SELECTED_TIME)
         }
     }
 
@@ -93,10 +98,25 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
             adapter = workSheetItemDetailLumpersAdapter
         }
 
+        recyclerViewOldLumpers.apply {
+            val linearLayoutManager = LinearLayoutManager(fragmentActivity!!)
+            layoutManager = linearLayoutManager
+            val dividerItemDecoration = DividerItemDecoration(fragmentActivity!!, linearLayoutManager.orientation)
+            addItemDecoration(dividerItemDecoration)
+            workSheetItemDetailOldLumpersAdapter = WorkSheetItemDetailLumpersAdapter( resources, this@WorkSheetItemDetailLumpersFragment)
+            adapter = workSheetItemDetailOldLumpersAdapter
+        }
+
         workSheetItemDetailLumpersAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                textViewEmptyData.visibility = if (workSheetItemDetailLumpersAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                textViewEmptyData.visibility = if (workSheetItemDetailLumpersAdapter.itemCount == 0 && workSheetItemDetailOldLumpersAdapter.itemCount == 0) View.VISIBLE else View.GONE
+            }
+        })
+        workSheetItemDetailOldLumpersAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                textViewEmptyData.visibility = if (workSheetItemDetailLumpersAdapter.itemCount == 0 && workSheetItemDetailOldLumpersAdapter.itemCount == 0) View.VISIBLE else View.GONE
             }
         })
 
@@ -134,8 +154,18 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
             }
         }
 
-        workSheetItemDetailLumpersAdapter.updateList(workItemDetail.assignedLumpersList, timingsData, workItemDetail.status, tempLumperIds, getTotalCases(workItemDetail?.buildingOps), workItemDetail.isCompleted)
+        workSheetItemDetailLumpersAdapter.updateList(
+            workItemDetail.assignedLumpersList,
+            timingsData,
+            workItemDetail.status,
+            tempLumperIds,
+            getTotalCases(workItemDetail?.buildingOps),
+            workItemDetail.isCompleted,
+            false,
+            selectedTime
+        )
 
+        setOldLumperDetails(workItemDetail, lumpersTimeSchedule)
 //        if (workItemDetail.assignedLumpersList.isNullOrEmpty()) {
 //            buttonAddLumpers.text = getString(R.string.add_lumpers)
 //        } else {
@@ -153,17 +183,38 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
         }
     }
 
-    fun showEmptyData() {
-//        workSheetItemDetailLumpersAdapter.updateList(
-//            ArrayList(),
-//            LinkedHashMap(),
-//            tempLumperIds = ArrayList(),
-//            totalCases = getTotalCases(workItemDetail?.buildingOps),
-//            isCompleted = workItemDetail!!.isCompleted
-//        )
-        buttonAddLumpers.visibility = View.GONE
+    private fun setOldLumperDetails(workItemDetail: WorkItemContainerDetails, lumpersTimeSchedule: ArrayList<LumpersTimeSchedule>?) {
+        workItemDetail.oldWork?.let {
+            val timingsData = LinkedHashMap<String, LumpersTimeSchedule>()
+            it.assignedLumpersList?.let { assignedLumpersList ->
+                if (!it.lumpersTimeSchedule.isNullOrEmpty()) {
+                    for (lumper in assignedLumpersList) {
+                        for (timing in it.lumpersTimeSchedule!!) {
+                            if (lumper.id == timing.lumperId) {
+                                timingsData[lumper.id!!] = timing
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+
+            workSheetItemDetailOldLumpersAdapter.updateList(it.assignedLumpersList, timingsData, workItemDetail.status, tempLumperIds, getTotalCases(workItemDetail.buildingOps), workItemDetail.isCompleted, true, selectedTime)
+        }
     }
 
+    fun showEmptyData() {
+        workSheetItemDetailLumpersAdapter.updateList(
+            ArrayList(),
+            LinkedHashMap(),
+            tempLumperIds = ArrayList(),
+            totalCases = getTotalCases(workItemDetail?.buildingOps),
+            isCompleted = workItemDetail!!.isCompleted,
+            isOldWork = false,
+            selectedTime = selectedTime
+        )
+        buttonAddLumpers.visibility = View.GONE
+    }
 
     private fun showAddLumpersScreen() {
         workItemDetail?.let { workItemDetail ->
@@ -216,6 +267,7 @@ class WorkSheetItemDetailLumpersFragment : BaseFragment(), View.OnClickListener,
 //        bundle.putBoolean(ARG_LUMPER_PRESENT, employeeData?.attendanceDetail?.isPresent!!)
         bundle.putParcelable(LumperDetailActivity.ARG_LUMPER_TIMING_DATA, timingData)
         bundle.putStringArrayList(TEMP_LUMPER_IDS, tempLumperIds)
+        bundle.putLong(SCHEDULE_SELECTED_TIME, selectedTime)
         startIntent(AddLumperTimeWorkSheetItemActivity::class.java, bundle = bundle, requestCode = AppConstant.REQUEST_CODE_CHANGED)
     }
 

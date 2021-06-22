@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayoutWorkSheetItem"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:elevation="50dp"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:fitsSystemWindows="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/white_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/textViewTitle"
+                style="@style/titleBigTextViewTheme"
+                android:layout_width="match_parent"
+                android:background="@drawable/schedule_item_background"
+                android:gravity="center"
+                android:paddingTop="@dimen/_10ssp"
+                android:paddingBottom="@dimen/_10ssp"
+                android:text="@string/request_correction"
+                android:textColor="@color/textBlack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutParams"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/_15ssp"
+                android:paddingEnd="@dimen/_15ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTitle">
+
+                <TextView
+                    android:id="@+id/textLumperParamsHeader"
+                    style="@style/titleTextViewTheme"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/lumper_parameter"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutLumperWorkTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/schedule_item_background"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textLumperParamsHeader">
+
+                    <TextView
+                        android:id="@+id/workTimeTitle"
+                        style="@style/titleTextViewTheme"
+                        android:text="@string/work_time"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layoutWorkTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/workTimeTitle">
+
+                        <Button
+                            android:id="@+id/buttonStartTime"
+                            style="@style/positiveButtonTheme"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/start_time"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <Button
+                            android:id="@+id/buttonEndTime"
+                            style="@style/positiveButtonTheme"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/end_time"
+                            app:layout_constraintBottom_toBottomOf="@+id/buttonStartTime"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/imageView2"
+                            app:layout_constraintTop_toTopOf="@+id/buttonStartTime" />
+
+                        <ImageView
+                            android:id="@+id/imageView2"
+                            android:layout_width="@dimen/_40sdp"
+                            android:layout_height="@dimen/_22ssp"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.5"
+                            android:src="@drawable/ic_remove_icon"
+                            app:layout_constraintBottom_toBottomOf="@+id/buttonStartTime"
+                            app:layout_constraintEnd_toStartOf="@+id/buttonEndTime"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/buttonStartTime"
+                            app:layout_constraintTop_toTopOf="@+id/buttonStartTime" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/totalWorkTime"
+                        style="@style/valuesSmallTextViewTheme"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/textBlack"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/layoutWorkTime" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutLumperPauseTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/schedule_item_background"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutLumperWorkTime">
+
+                    <TextView
+                        android:id="@+id/pauseTimeHeading"
+                        style="@style/titleTextViewTheme"
+                        android:text="@string/break_time"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/pauseTimeText"
+                        style="@style/valuesVerySmallTextViewTheme"
+                        android:paddingTop="@dimen/_2sdp"
+                        android:paddingBottom="@dimen/_4sdp"
+                        android:text="@string/psuse_time_description"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/pauseTimeHeading" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/linearLayout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/pauseTimeText">
+
+                        <Button
+                            android:id="@+id/buttonBreakInTime"
+                            style="@style/positiveButtonTheme"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/pause"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/imageView"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <Button
+                            android:id="@+id/buttonBreakOutTime"
+                            style="@style/positiveButtonTheme"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/resume"
+                            app:layout_constraintBottom_toBottomOf="@id/buttonBreakInTime"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@id/imageView"
+                            app:layout_constraintTop_toTopOf="@id/buttonBreakInTime" />
+
+                        <ImageView
+                            android:id="@+id/imageView"
+                            android:layout_width="@dimen/_40sdp"
+                            android:layout_height="@dimen/_22ssp"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.5"
+                            android:contentDescription="@string/content_description"
+                            android:src="@drawable/ic_remove_icon"
+                            app:layout_constraintBottom_toBottomOf="@id/buttonBreakInTime"
+                            app:layout_constraintEnd_toStartOf="@id/buttonBreakOutTime"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@id/buttonBreakInTime"
+                            app:layout_constraintTop_toTopOf="@id/buttonBreakInTime" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/totalPauseTimeDurationTextView"
+                        style="@style/valuesTextViewTheme"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+                    <TextView
+                        style="@style/noteTextViewTheme"
+                        android:id="@+id/clearAllPauseTimeImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:text="@string/clear"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+                        app:drawableEndCompat="@drawable/ic_clear_red_small" />
+
+                    <TextView
+                        android:id="@+id/totalPauseTime"
+                        style="@style/valuesSmallTextViewTheme"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/textBlack"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/totalPauseTimeDurationTextView" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutLumperWaitingTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/schedule_item_background"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutLumperPauseTime">
+
+                    <TextView
+                        android:id="@+id/textViewWaitingTimeHeader"
+                        style="@style/titleTextViewTheme"
+                        android:text="@string/waiting_time_in_min"
+                        android:textColor="@color/hint_color_selector"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/editTextWaitingTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:backgroundTint="@color/hint_color_selector"
+                        android:gravity="center"
+                        android:importantForAutofill="no"
+                        android:inputType="number"
+                        android:maxLength="2"
+                        android:minWidth="@dimen/_50sdp"
+                        android:textColor="@color/text_color_selector"
+                        android:textSize="@dimen/_11sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textViewWaitingTimeHeader"
+                        tools:ignore="LabelFor" />
+
+                    <EditText
+                        android:id="@+id/editTextWaitingTimeMinutes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/hint_color_selector"
+                        android:gravity="center"
+                        android:importantForAutofill="no"
+                        android:inputType="number"
+                        android:maxLength="2"
+                        android:minWidth="@dimen/_50sdp"
+                        android:textColor="@color/text_color_selector"
+                        android:textSize="@dimen/_11sdp"
+                        app:layout_constraintEnd_toStartOf="@+id/minutesTextViewHeading"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toEndOf="@+id/hoursTextViewHeading"
+                        app:layout_constraintTop_toBottomOf="@id/textViewWaitingTimeHeader"
+                        tools:ignore="LabelFor" />
+
+                    <TextView
+                        android:id="@+id/hoursTextViewHeading"
+                        style="@style/valuesSmallTextViewTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_5sdp"
+                        android:text="@string/hours_h"
+                        android:textColor="@color/text_color_selector"
+                        app:layout_constraintBaseline_toBaselineOf="@id/editTextWaitingTime"
+                        app:layout_constraintStart_toEndOf="@+id/editTextWaitingTime" />
+
+                    <TextView
+                        android:id="@+id/minutesTextViewHeading"
+                        style="@style/valuesSmallTextViewTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_5sdp"
+                        android:text="@string/minutes_m"
+                        android:textColor="@color/text_color_selector"
+                        app:layout_constraintBaseline_toBaselineOf="@id/editTextWaitingTime"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutlumperWorkDone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/schedule_item_background"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutLumperWaitingTime">
+
+                    <TextView
+                        style="@style/titleTextViewTheme"
+                        android:text="@string/work_done" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textViewShiftTime">
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <LinearLayout
+                            android:layout_width="@dimen/_80sdp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <EditText
+                                android:id="@+id/editTextCasesLumpers"
+                                style="@style/valueEditTextTheme"
+                                android:layout_width="match_parent"
+                                android:digits="0123456789"
+                                android:imeOptions="actionDone"
+                                android:inputType="number"
+                                android:textAlignment="center" />
+
+                            <TextView
+                                style="@style/valuesVerySmallTextViewTheme"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="@string/lumper_cases_text" />
+
+                        </LinearLayout>
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_7sdp"
+                            android:layout_weight="0.5"
+                            android:gravity="center"
+                            android:text="/"
+                            android:textColor="@color/textBlack"
+                            android:textSize="@dimen/_22sdp" />
+
+                        <LinearLayout
+                            android:layout_width="@dimen/_80sdp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <EditText
+                                android:id="@+id/editTextTotalCases"
+                                style="@style/valueEditTextTheme"
+                                android:layout_width="@dimen/_80sdp"
+                                android:inputType="number"
+                                android:textAlignment="center" />
+
+                            <TextView
+                                style="@style/valuesVerySmallTextViewTheme"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text="@string/total_cases_text" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/percentWorkDone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:layout_weight="0.5"
+                            android:gravity="center"
+                            android:text="0.0%"
+                            android:textColor="@color/textBlack"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textBuildingOps"
+                    style="@style/titleTextViewTheme"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/building_operations"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutlumperWorkDone" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewBuildingOperations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10ssp"
+                    android:layout_weight="1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textBuildingOps" />
+
+
+                <TextView
+                    android:id="@+id/textNotesHeader"
+                    style="@style/titleTextViewTheme"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/notes"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewBuildingOperations" />
+
+
+                <LinearLayout
+                    android:id="@+id/layoutCustomerNotes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/schedule_item_background"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textNotesHeader">
+
+                    <TextView
+                        android:id="@+id/textViewCustomerNoteHeader"
+                        style="@style/titleTextViewTheme"
+                        android:text="@string/notes_for_customer" />
+
+                    <EditText
+                        android:id="@+id/editTextQHLCustomerNotes"
+                        style="@style/notesEditTextTheme" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutQHLNotes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/schedule_item_background"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutCustomerNotes">
+
+                    <TextView
+                        style="@style/titleTextViewTheme"
+                        android:text="@string/notes_for_qhl" />
+
+                    <EditText
+                        android:id="@+id/editTextQHLNotes"
+                        style="@style/notesEditTextTheme" />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutCurrectionRequest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15ssp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/schedule_item_background"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutParams">
+
+                <TextView
+                    style="@style/titleTextViewTheme"
+                    android:text="@string/request_correction_title" />
+
+                <EditText
+                    android:id="@+id/editTextCorrection"
+                    style="@style/notesEditTextTheme" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutSaveCancelButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10ssp"
+                android:layout_marginBottom="@dimen/_10ssp"
+                android:paddingStart="@dimen/_15ssp"
+                android:paddingEnd="@dimen/_15ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutCurrectionRequest">
+
+                <Button
+                    android:id="@+id/buttonSubmitCorrection"
+                    style="@style/positiveRoundButtonTheme"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:text="@string/save"
+                    app:layout_constraintEnd_toStartOf="@id/buttonCancelCorrection"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/buttonCancelCorrection"
+                    style="@style/negativeRoundButtonTheme"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:text="@string/cancel"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/buttonSubmitCorrection"
+                    app:layout_constraintTop_toTopOf="@id/buttonSubmitCorrection" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

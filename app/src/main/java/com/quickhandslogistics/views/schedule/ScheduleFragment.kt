@@ -16,6 +16,7 @@ import com.quickhandslogistics.contracts.schedule.ScheduleContract
 import com.quickhandslogistics.controls.SpaceDividerItemDecorator
 import com.quickhandslogistics.data.dashboard.LeadProfileData
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.schedule.PastFutureDates
 import com.quickhandslogistics.data.schedule.ScheduleDetailData
 import com.quickhandslogistics.presenters.schedule.SchedulePresenter
 import com.quickhandslogistics.utils.*
@@ -23,7 +24,15 @@ import com.quickhandslogistics.views.BaseFragment
 import com.quickhandslogistics.views.LoginActivity
 import com.quickhandslogistics.views.common.DisplayLumpersListActivity
 import kotlinx.android.synthetic.main.content_dashboard.*
+import kotlinx.android.synthetic.main.content_schedule_time_fragment.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
+import kotlinx.android.synthetic.main.fragment_schedule.appBarView
+import kotlinx.android.synthetic.main.fragment_schedule.layoutWorkScheduleInfo
+import kotlinx.android.synthetic.main.fragment_schedule.mainConstraintLayout
+import kotlinx.android.synthetic.main.fragment_schedule.textViewBuildingName
+import kotlinx.android.synthetic.main.fragment_schedule.textViewDept
+import kotlinx.android.synthetic.main.fragment_schedule.textViewEmptyData
+import kotlinx.android.synthetic.main.fragment_schedule.textViewShift
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -33,18 +42,17 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
     private var currentPageIndex: Int = 1
     private var nextPageIndex: Int = 1
     private var totalPagesCount: Int = 1
-
     private var selectedTime: Long = 0
     private var currentDatePosition: Int = 0
     private lateinit var availableDates: List<Date>
+    private var pastFutureDates: ArrayList<PastFutureDates> = ArrayList()
     private var workItemsList: ArrayList<ScheduleDetailData> = ArrayList()
     private var selectedDate: Date = Date()
     private var dateString: String? = null
     private var isSavedState: Boolean = false
+    private var isShowErrorDialog: Boolean = true
     private var datePosition: Int = 0
     private var onFragmentInteractionListener: DashBoardContract.View.OnFragmentInteractionListener? = null
-
-
     private lateinit var schedulePresenter: SchedulePresenter
     private lateinit var scheduleAdapter: ScheduleAdapter
 
@@ -61,6 +69,8 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         const val ARG_WORK_ITEM_ID = "ARG_WORK_ITEM_ID"
         const val ARG_WORK_ITEM_TYPE = "ARG_WORK_ITEM_TYPE"
         const val ARG_WORK_ITEM_TYPE_DISPLAY_NAME = "ARG_WORK_ITEM_TYPE_DISPLAY_NAME"
+        const val ARG_WORK_ITEM_TYPE_DISPLAY_NUMBER = "ARG_WORK_ITEM_TYPE_DISPLAY_NUMBER"
+        const val ARG_WORK_ITEM_ORIGIN = "ARG_WORK_ITEM_ORIGIN"
 
         const val ARG_SCHEDULED_TIME_NOTES = "ARG_SCHEDULED_TIME_NOTES"
         const val ARG_SCHEDULED_TIME_LIST = "ARG_SCHEDULED_TIME_LIST"
@@ -92,6 +102,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         val pair = CalendarUtils.getPastFutureCalendarDates()
         availableDates = pair.first
         currentDatePosition = pair.second
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -102,9 +113,9 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         super.onViewCreated(view, savedInstanceState)
 
         recyclerViewSchedule.apply {
-            layoutManager = LinearLayoutManager(fragmentActivity!!)
+            layoutManager = LinearLayoutManager(fragmentActivity)
             addItemDecoration(SpaceDividerItemDecorator(15))
-            scheduleAdapter = ScheduleAdapter(resources, this@ScheduleFragment)
+            scheduleAdapter = ScheduleAdapter(resources, context, this@ScheduleFragment)
             adapter = scheduleAdapter
             addOnScrollListener(onScrollListener)
         }
@@ -140,9 +151,15 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         } ?: run {
             isSavedState = false
             singleRowCalendarSchedule.select(if (currentDatePosition != 0) currentDatePosition else availableDates.size - 1)
+            scrollToCenter()
+
         }
 
+    }
 
+    private fun scrollToCenter() {
+        if (availableDates.isNotEmpty())
+        singleRowCalendarSchedule.scrollToPosition((availableDates.size/3))
     }
 
     override fun onDestroy() {
@@ -184,6 +201,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
 
         if (singleRowCalendarSchedule.getSelectedDates().isNotEmpty()) {
             schedulePresenter.getScheduledWorkItemsByDate(singleRowCalendarSchedule.getSelectedDates()[0], currentPageIndex)
+            isShowErrorDialog = true
         }
     }
 
@@ -206,7 +224,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
                     if (currentPageIndex != totalPagesCount) {
                         if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
                             currentPageIndex = nextPageIndex
-                            fetchScheduledWorkItems()
+//                            fetchScheduledWorkItems()
                         }
                     }
                 }
@@ -221,11 +239,18 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         textViewDate.visibility = View.GONE
 
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
-        if (leadProfile?.buildingDetailData?.get(0) != null) {
-            textViewBuildingName.text = leadProfile?.buildingDetailData?.get(0)?.buildingName!!.capitalize()
-            textViewDept.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), UIUtils.getDisplayEmployeeDepartment(leadProfile))
-            textViewShift.text = UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile.shift?.capitalize().toString())
-            textViewLeadNumber.text = UIUtils.getSpannableText(getString(R.string.bar_header_leads), leadProfile.buildingDetailData?.get(0)?.leadIds!!.size.toString())
+        val buildingDetailData =ScheduleUtils.getBuildingDetailData(leadProfile?.buildingDetailData)
+        if (buildingDetailData != null) {
+            textViewBuildingName.text = buildingDetailData?.buildingName?.capitalize()
+            textViewDept.text = UIUtils.getSpannableText(getString(R.string.bar_header_dept), UIUtils.getDisplayEmployeeDepartmentHeader(leadProfile))
+            textViewShift.text = UIUtils.getSpannableText(getString(R.string.bar_header_shift), leadProfile?.shift?.capitalize().toString())
+
+            if(UIUtils.getDisplayEmployeeDepartmentHeader(leadProfile) == "Operations ")
+                textViewLeadNumber.text = UIUtils.getSpannableText(getString(R.string.bar_header_leads), "1")
+            else{
+                textViewLeadNumber.text = UIUtils.getSpannableText(getString(R.string.bar_header_leads), "2")
+            }
+
         } else {
             layoutWorkScheduleInfo.visibility = View.GONE
             appBarView.visibility = View.GONE
@@ -249,16 +274,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         this.currentPageIndex = currentPageIndex
 
         selectedTime = selectedDate.time
-        if(!workItemsList[0].liveLoads.isNullOrEmpty()|| !workItemsList[0].drops.isNullOrEmpty() || !workItemsList[0].outbounds.isNullOrEmpty())
-        scheduleAdapter.updateList(workItemsList, currentPageIndex)
-
-        if (!workItemsList.isNullOrEmpty() && (!workItemsList[0].liveLoads.isNullOrEmpty()|| !workItemsList[0].drops.isNullOrEmpty() || !workItemsList[0].outbounds.isNullOrEmpty())) {
-            textViewEmptyData.visibility = View.GONE
-            recyclerViewSchedule.visibility = View.VISIBLE
-        } else {
-            showEmptyData()
-        }
-
+        scheduleAdapter.updateList(workItemsList, currentPageIndex, selectedDate)
         this.totalPagesCount = totalPagesCount
         this.nextPageIndex = nextPageIndex
     }
@@ -268,8 +284,17 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
         textViewEmptyData.visibility = View.VISIBLE
 
         if (message.equals(AppConstant.ERROR_MESSAGE, ignoreCase = true)) {
-            CustomProgressBar.getInstance().showValidationErrorDialog(message, fragmentActivity!!)
+            if (isShowErrorDialog) CustomProgressBar.getInstance()
+                .showValidationErrorDialog(message, fragmentActivity!!)
+            isShowErrorDialog = false
         } else SnackBarFactory.createSnackBar(fragmentActivity!!, mainConstraintLayout, message)
+    }
+
+    override fun showPastFutureDate(pastFutureDate: ArrayList<PastFutureDates>) {
+        isSavedState = true
+        this.pastFutureDates= pastFutureDate
+        CalendarUtils.pastFutureDatesNew=pastFutureDates
+        singleRowCalendarSchedule.adapter?.notifyDataSetChanged()
     }
 
     override fun showEmptyData() {
@@ -320,6 +345,7 @@ class ScheduleFragment : BaseFragment(), ScheduleContract.View, ScheduleContract
             schedulePresenter.getScheduledWorkItemsByDate(date, currentPageIndex)
         }
         isSavedState = false
+        isShowErrorDialog = true
         datePosition = position
     }
 }

@@ -124,9 +124,10 @@
                     <TextView
                         android:id="@+id/textViewAddSignature"
                         style="@style/addTextViewTheme"
+                        android:paddingTop="@dimen/_4sdp"
+                        android:paddingBottom="@dimen/_4sdp"
                         android:layout_gravity="end"
                         android:text="@string/signature"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -203,8 +204,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_marginTop="@dimen/_2sdp"
                                 android:drawablePadding="@dimen/_5sdp"
-                                android:gravity="center_vertical"
-                                android:text="Total Time:" />
+                                android:gravity="center_vertical"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -234,15 +234,13 @@
                                 android:layout_width="wrap_content"
                                 android:layout_marginTop="@dimen/_2sdp"
                                 android:drawablePadding="@dimen/_5sdp"
-                                android:gravity="center_vertical"
-                                android:text="Total Time :" />
+                                android:gravity="center_vertical" />
                         </LinearLayout>
 
                         <RelativeLayout
                             android:id="@+id/layoutEditTimeClock"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:visibility="visible"
                             android:clickable="true" >
                             <ImageView
                                 android:layout_width="@dimen/_18sdp"
@@ -268,17 +266,16 @@
                         <TextView
                             android:id="@+id/editTextNotes"
                             android:layout_width="0dp"
+                            style="@style/valuesSmallTextViewThemeHeader"
                             android:layout_height="wrap_content"
                             android:gravity="top"
-                            android:padding="@dimen/_8sdp"
                             android:text="@string/note"
-                            android:layout_weight="1"
-                            android:textSize="@dimen/_12ssp" />
+                            android:padding="@dimen/_8sdp"
+                            android:layout_weight="1"/>
                         <RelativeLayout
                             android:id="@+id/layoutEditLumerNote"
                             android:layout_width="wrap_content"
                             android:padding="@dimen/_8sdp"
-                            android:visibility="visible"
                             android:layout_height="wrap_content"
                             android:clickable="true" >
                             <ImageView

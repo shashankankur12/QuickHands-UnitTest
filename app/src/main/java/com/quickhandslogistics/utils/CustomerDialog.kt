@@ -4,11 +4,8 @@ import LeadWorkInfo
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
-import android.content.Intent
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
-import android.provider.MediaStore
-import android.provider.MediaStore.ACTION_IMAGE_CAPTURE
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -26,10 +23,6 @@ import com.jsibbold.zoomage.ZoomageView
 import com.quickhandslogistics.R
 import com.quickhandslogistics.adapters.addContainer.AddScheduleDialogAdapter
 import com.quickhandslogistics.data.addContainer.ContainerDetails
-import com.quickhandslogistics.utils.AppConstant.Companion.MY_PERMISSIONS_REQUEST_GALLERY
-import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_API_RESPONSE
-import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_NORMAL
-import com.quickhandslogistics.utils.DateUtils.Companion.PATTERN_TIME
 import java.util.*
 
 @SuppressLint("StaticFieldLeak")
@@ -39,7 +32,7 @@ object CustomerDialog : AppConstant {
         mActivity = activity
         val dialog = Dialog(activity!!)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.window!!.setBackgroundDrawableResource(R.color.colorOpaque)
+        dialog.window?.setBackgroundDrawableResource(R.color.colorOpaque)
         dialog.setCanceledOnTouchOutside(false)
         dialog.setContentView(view)
         val layoutParams = dialog.window!!.attributes
@@ -62,11 +55,11 @@ object CustomerDialog : AppConstant {
             getDialog(R.layout.custome_alert_dialog, activity)
         //        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         val window = dialog.window
-        window!!.setLayout(
+        window?.setLayout(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        window.setBackgroundDrawableResource(android.R.color.transparent)
+        window?.setBackgroundDrawableResource(android.R.color.transparent)
         val titleTextView = dialog.findViewById<TextView>(R.id.title_text)
         val layoutDailyNote = dialog.findViewById<LinearLayout>(R.id.layoutDailyNote)
         val layoutWeeklyNote = dialog.findViewById<LinearLayout>(R.id.layoutWeeklyNote)
@@ -140,11 +133,11 @@ object CustomerDialog : AppConstant {
             getDialog(R.layout.view_work_schedule, activity)
         //        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         val window = dialog.window
-        window!!.setLayout(
+        window?.setLayout(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        window.setBackgroundDrawableResource(android.R.color.transparent)
+        window?.setBackgroundDrawableResource(android.R.color.transparent)
         val titleTextView = dialog.findViewById<TextView>(R.id.title_text)
         val textViewScheduleType = dialog.findViewById<TextView>(R.id.textViewScheduleType)
         val textViewStatus = dialog.findViewById<TextView>(R.id.textViewStatus)
@@ -168,16 +161,24 @@ object CustomerDialog : AppConstant {
         val confirm = dialog.findViewById<Button>(R.id.confirm_button)
 
         titleTextView.text = DateUtils.changeDateString(
-            PATTERN_API_RESPONSE,
-            PATTERN_NORMAL,
+            DateUtils.PATTERN_API_RESPONSE, DateUtils.PATTERN_NORMAL,
             leadWorkInfo?.date!!
         )
-        textViewScheduleType.text = leadWorkInfo.department?.let {
-            UIUtils.getSpannableText(
+        val dept = if (!leadWorkInfo.department.isNullOrEmpty()) {
+             when (leadWorkInfo.department) {
+                AppConstant.EMPLOYEE_DEPARTMENT_BOTH -> "Operations "
+                AppConstant.EMPLOYEE_DEPARTMENT_INBOUND -> "Receiving "
+                AppConstant.EMPLOYEE_DEPARTMENT_OUTBOUND -> "Shipping"
+                else -> leadWorkInfo.department!!
+            }
+        } else ""
+
+
+        textViewScheduleType.text= UIUtils.getSpannableText(
                 resources.getString(R.string.department_full),
-                it.toLowerCase().capitalize()
+                dept
             )
-        }
+
         textViewWorkItemsCount.text = String.format(
             resources.getString(R.string.total_containers_s),
             leadWorkInfo.totalContainers
@@ -201,17 +202,17 @@ object CustomerDialog : AppConstant {
             if (!leadWorkInfo.outbounds?.time.isNullOrEmpty())
                 outBoundTime = if (leadWorkInfo.live?.time!!.size>1)
                     "${DateUtils.changeUTCDateStringToLocalDateString(
-                        PATTERN_API_RESPONSE,
-                        PATTERN_TIME,
+                            DateUtils.PATTERN_API_RESPONSE,
+                            DateUtils.PATTERN_TIME,
                         leadWorkInfo.outbounds?.time!![0]
                     )}; ${DateUtils.changeUTCDateStringToLocalDateString(
-                        PATTERN_API_RESPONSE,
-                        PATTERN_TIME,
+                            DateUtils.PATTERN_API_RESPONSE,
+                            DateUtils.PATTERN_TIME,
                         leadWorkInfo.outbounds?.time!![1]
                     )} "
                 else DateUtils.changeUTCDateStringToLocalDateString(
-                    PATTERN_API_RESPONSE,
-                    PATTERN_TIME,
+                        DateUtils.PATTERN_API_RESPONSE,
+                        DateUtils.PATTERN_TIME,
                     leadWorkInfo.outbounds?.time!![0]
                 )
                 textViewScheduleOutBoundStartTime.text = outBoundTime
@@ -226,17 +227,17 @@ object CustomerDialog : AppConstant {
             if (!leadWorkInfo.live?.time.isNullOrEmpty()){
                 liveTime = if (leadWorkInfo.live?.time!!.size>1)
                     "${DateUtils.changeUTCDateStringToLocalDateString(
-                        PATTERN_API_RESPONSE,
-                        PATTERN_TIME,
+                            DateUtils.PATTERN_API_RESPONSE,
+                            DateUtils.PATTERN_TIME,
                         leadWorkInfo.live?.time!![0]
                     )}; ${DateUtils.changeUTCDateStringToLocalDateString(
-                        PATTERN_API_RESPONSE,
-                        PATTERN_TIME,
+                            DateUtils.PATTERN_API_RESPONSE,
+                            DateUtils.PATTERN_TIME,
                         leadWorkInfo.live?.time!![1]
                     )} "
                 else DateUtils.changeUTCDateStringToLocalDateString(
-                    PATTERN_API_RESPONSE,
-                    PATTERN_TIME,
+                        DateUtils.PATTERN_API_RESPONSE,
+                        DateUtils.PATTERN_TIME,
                     leadWorkInfo.live?.time!![0]
                 )
             }
@@ -248,8 +249,8 @@ object CustomerDialog : AppConstant {
                 String.format(resources.getString(R.string.drops_s), leadWorkInfo.drops?.count)
             if (!leadWorkInfo.drops?.time.isNullOrEmpty())
                 textViewScheduleDropsStartTime.text = DateUtils.changeUTCDateStringToLocalDateString(
-                    PATTERN_API_RESPONSE,
-                    PATTERN_TIME,
+                        DateUtils.PATTERN_API_RESPONSE,
+                        DateUtils.PATTERN_TIME,
                     leadWorkInfo.drops?.time!!
                 )
         }
@@ -287,11 +288,11 @@ object CustomerDialog : AppConstant {
             getDialog(R.layout.add_container_custome_dialog, activity)
         //        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         val window = dialog.window
-        window!!.setLayout(
+        window?.setLayout(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        window.setBackgroundDrawableResource(android.R.color.transparent)
+        window?.setBackgroundDrawableResource(android.R.color.transparent)
         val titleTextView = dialog.findViewById<TextView>(R.id.title_text)
         val recyclerViewSchedule = dialog.findViewById<RecyclerView>(R.id.recycler_view_schedules)
         val addButton = dialog.findViewById<Button>(R.id.add_button)
@@ -329,11 +330,11 @@ object CustomerDialog : AppConstant {
             getDialog(R.layout.lead_note_dialog, activity)
         //        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         val window = dialog.window
-        window!!.setLayout(
+        window?.setLayout(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        window.setBackgroundDrawableResource(android.R.color.transparent)
+        window?.setBackgroundDrawableResource(android.R.color.transparent)
         val titleTextView = dialog.findViewById<TextView>(R.id.title_text)
         val layoutIndividualNote = dialog.findViewById<LinearLayout>(R.id.layoutIndividualNote)
         val layoutGroupNote = dialog.findViewById<LinearLayout>(R.id.layoutGroupNote)
@@ -370,11 +371,11 @@ object CustomerDialog : AppConstant {
             getDialog(R.layout.comman_note_dialog, activity)
         //        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         val window = dialog.window
-        window!!.setLayout(
+        window?.setLayout(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        window.setBackgroundDrawableResource(android.R.color.transparent)
+        window?.setBackgroundDrawableResource(android.R.color.transparent)
         val titleTextView = dialog.findViewById<TextView>(R.id.title_text)
         val note: TextView = dialog.findViewById(R.id.individual_note)
         val confirm = dialog.findViewById<Button>(R.id.confirm_button)
@@ -385,15 +386,40 @@ object CustomerDialog : AppConstant {
         dialog.show()
     }
 
+
+    fun showUnfinishedErrorDialog(activity: Activity ) {
+        mActivity = activity
+        val dialog =
+            getDialog(R.layout.unfinished_error_dialog, activity)
+        //        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        val window = dialog.window
+        window?.setLayout(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        window?.setBackgroundDrawableResource(android.R.color.transparent)
+        val headTitle: TextView = dialog.findViewById(R.id.header_title)
+        val parametersTitle: TextView = dialog.findViewById(R.id.parameter_title)
+        val lumperTitle: TextView = dialog.findViewById(R.id.lumper_title)
+        val confirm = dialog.findViewById<Button>(R.id.confirm_button)
+
+        headTitle.text= activity.getString(R.string.unfinished_popup_error_message)
+        parametersTitle.text=  UIUtils.getSpannedText(activity.getString(R.string.unfinished_container_error_message))
+        lumperTitle.text= UIUtils.getSpannedText(activity.getString(R.string.unfinished_lumper_error_message))
+
+        confirm.setOnClickListener { dialog.dismiss() }
+        dialog.show()
+    }
+
      fun openZoomImageDialog(url: String, activity: Activity) {
         val dialog = getDialog(R.layout.dialog_zoom_image, activity)
 
         val window = dialog.window
-        window!!.setLayout(
+        window?.setLayout(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.MATCH_PARENT
         )
-        window.setBackgroundDrawableResource(android.R.color.transparent)
+        window?.setBackgroundDrawableResource(android.R.color.transparent)
         val imageClose = dialog.findViewById<ImageView>(R.id.image_close)
         val imageView: ZoomageView = dialog.findViewById(R.id.imageView)
         val progressBar = dialog.findViewById<ProgressBar>(R.id.progress_bar)

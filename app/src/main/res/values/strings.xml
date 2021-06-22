@@ -14,6 +14,7 @@
     <string name="add_same_start_time_for_all">Add Same Start Time for All</string>
     <string name="approved">Approved</string>
     <string name="availability">Availability</string>
+    <string name="availability_header">Availability :</string>
     <string name="back_to_work">Back to Work</string>
     <string name="break_time">Pause Time</string>
     <string name="break_time_s">Pause Time :</string>
@@ -26,6 +27,7 @@
     <string name="building_name_lead">Building : </string>
     <string name="building_operations">Building Operations</string>
     <string name="cancel">Cancel</string>
+    <string name="cancel_header">Cancel : %s</string>
     <string name="cancel_all_work_schedules">Today\'s Work Cancel</string>
     <string name="cancel_request">Cancel Request</string>
     <string name="cancelled">Cancelled</string>
@@ -33,7 +35,9 @@
     <string name="show_more">Show more status</string>
     <string name="show_less">Show less status</string>
     <string name="unfinished">Unfinished</string>
+    <string name="unfinished_header">Unfinished : %s</string>
     <string name="not_open">Not-Open</string>
+    <string name="not_open_header">Not-Open : %s</string>
     <string name="cancelled_description">(Customer cancelled a scheduled container)</string>
     <string name="psuse_time_description">(Lumper has to pause work on this container to work on another but will return.)</string>
     <string name="cancelled_s">Cancelled: %s</string>
@@ -113,6 +117,7 @@
     <string name="last_name">Last Name</string>
     <string name="live_load_s">Live Load: %s</string>
     <string name="live_load_bold_has"><![CDATA[<b>Live Load: </b>]]> #%s</string>
+    <string name="unfinished_live_load_bold_has"><![CDATA[<b>(U)Live Load: </b>]]> #%s</string>
     <string name="live_loads">Live Loads</string>
     <string name="live_load">Live Load</string>
     <string name="live_load_added">Live Load (Added)</string>
@@ -134,6 +139,7 @@
     <string name="no_of_drops_s">Drop: %s</string>
     <string name="no_of_drops_bold"><![CDATA[<b>Drop:</b>]]> %s</string>
     <string name="no_of_drops_bold_has"><![CDATA[<b>Drop:</b>]]> #%s</string>
+    <string name="unfinished_no_of_drops_bold_has"><![CDATA[<b>(U)Drop:</b>]]> #%s</string>
     <string name="no_time_logged_in_yet">No time logged in yet</string>
     <string name="note">Note</string>
     <string name="note_header">Note :</string>
@@ -149,6 +155,7 @@
     <string name="ongoing_s">Ongoing: %s</string>
     <string name="out_bound_s">Outbound:  %s</string>
     <string name="out_bound_bold_has"><![CDATA[<b>Outbound:</b>]]> #%s</string>
+    <string name="unfinished_out_bound_bold_has"><![CDATA[<b>(U)Outbound:</b>]]> #%s</string>
     <string name="out_bounds">Outbounds</string>
     <string name="out_bound">Outbound</string>
     <string name="out_bound_added">Outbound (Added)</string>
@@ -174,11 +181,13 @@
     <string name="requested_lumpers_s">Requested Lumpers: %s</string>
     <string name="role">Role</string>
     <string name="role_lead">Role : </string>
+    <string name="lead">Lead</string>
     <string name="save">Save</string>
     <string name="schedule">Work Schedule</string>
     <string name="bulk_action">Bulk Action</string>
     <string name="scheduled">Scheduled</string>
     <string name="schedule_s">Schedule</string>
+    <string name="not_opens">NOTOPEN</string>
     <string name="scheduled_description">(Work on container has not started)</string>
     <string name="scheduled_time_s">Scheduled Time: %s</string>
     <string name="schedule_detail">Work Schedule Detail</string>
@@ -212,6 +221,7 @@
     <string name="start_time_s">Start Time: %s</string>
     <string name="start_time_add_container">Schedule Time:</string>
     <string name="start_time_bold"><![CDATA[<b>Start Time: </b>]]> %s</string>
+    <string name="start_date_bold"><![CDATA[<b>Date Started: </b>]]> %s</string>
     <string name="submit">Submit</string>
     <string name="add">Add</string>
     <string name="success">Success</string>
@@ -277,6 +287,7 @@
     <string name="request_not_approved_bold"><![CDATA[<b> Request Not Approved:</b>]]> %s</string>
     <string name="date_day">Date</string>
     <string name="complete_a">Complete %s</string>
+    <string name="complete_header">Complete : %s</string>
     <string name="requested_lumper_info">%s. %s (Emp ID:%s): %s</string>
     <string name="submitted">Submitted</string>
     <string name="requirement">Requirements</string>
@@ -303,6 +314,24 @@
         <item>Take Photo</item>
         <item>Cancel</item>
     </string-array>
+    <string name="request_correction">Request Corrections</string>
+    <string name="pending_correction">Pending Corrections</string>
+    <string name="approved_correction">Approved Corrections</string>
+    <string name="cancel_correction">Cancelled Corrections</string>
+    <string name="rejected_correction">Rejected Corrections</string>
+    <string name="request_correction_title">What are the corrections?</string>
+    <string name="container_parameter">Container Parameter</string>
+    <string name="containers_added">Containers added.</string>
+    <string name="resume_header">Resume: %s</string>
+    <string name="work_date">Work Date : %s</string>
+    <string name="message">Message</string>
+    <string name="message_header">What is your message?</string>
+    <string name="send">Send</string>
+    <string name="customer_header">Customer : </string>
+    <string name="contact">Contact</string>
+    <string name="work_identification">Work Identification</string>
+    <string name="work_schedule_header">Work Schedule</string>
+    <string name="work_location">Work Location</string>
 
     <!--No Record Messages-->
     <string name="empty_add_work_item_lumpers_info_message">No Lumpers are available. Go to Time-Clock section and clock them in.</string>
@@ -325,7 +354,7 @@
     <string name="empty_containers_list_cancelled_info_message">There are no Cancelled containers.</string>
     <string name="empty_containers_list_completed_info_message">There are no Completed containers.</string>
     <string name="empty_containers_list_unfinished_info_message">There are no Unfinished containers.</string>
-    <string name="empty_containers_list_not_done_info_message">There are no Not-Done containers.</string>
+    <string name="empty_containers_list_not_done_info_message">There are no Not-Open containers.</string>
     <string name="empty_lumper_list_message">There are no lumpers assigned to this shift/department. Please contact your District Manager.</string>
     <string name="empty_contact_list_message">There are no contact.\n Please inform your district manager.</string>
     <string name="add_container_quantity_message">Container Quantity should be greater then zero.</string>
@@ -374,6 +403,7 @@
 
     <!--Error Messages-->
     <string name="customer_sheet_warning_message"><![CDATA[Please provide both Customer Representative Name & his Signature.]]></string>
+    <string name="customer_sheet_update_signature"><![CDATA[Please update Customer Signature to save.]]></string>
     <string name="empty_employee_id_message">Please enter Employee Id</string>
     <string name="empty_password_message">Please enter Password</string>
     <string name="fill_building_parameters_message">Fill out all container parameter before changing status to Completed.</string>
@@ -397,6 +427,22 @@
     <string name="group_customer_note_error_message">Please enter customer note.  \n</string>
     <string name="group_qhl_note_error_message">Please enter QHL note.  \n</string>
     <string name="lumper_waiting_message">Waiting time should be greater the zero</string>
+    <string name="request_correction_message">Please enter the request for correction</string>
+    <string name="unfinished_popup_error_message">The following parameter need to be filled out before a container can be mark \'Unfinished\'</string>
+    <string name="unfinished_container_error_message"><![CDATA[<b>Container Perameters:</b>]]> \n Door, Container # and Cases</string>
+    <string name="unfinished_lumper_error_message"><![CDATA[<b>Lumper Perameters:</b>]]> \n All fields for all assigned lumpers.</string>
+    <string name="morning_punch_less_then_break_error_message">Lumper Punch-In should be before Lunch-In</string>
+    <string name="morning_punch_less_then_punch_out_error_message">Lumper Punch-In should be before Punch-Out</string>
+    <string name="lunch_in_greater_then_punch_in_error_message">Lumper Lunch-In should be after Punch-In</string>
+    <string name="lunch_in_less_then_punch_out_error_message">Lumper Lunch-In should be before Punch-Out</string>
+    <string name="lunch_in_less_then_lunch_out_error_message">Lumper Lunch-In should be before Lunch-Out</string>
+    <string name="punch_out_less_then_punch_in_error_message">Lumper Punch-Out should be after Punch-In</string>
+    <string name="punch_out_less_then_lunch_in_error_message">Lumper Punch-Out should be after Lunch-In</string>
+    <string name="punch_out_less_then_lunch_out_error_message">Lumper Punch-Out should be after Lunch-Out</string>
+    <string name="lunch_out_less_then_punch_in_error_message">Lumper Lunch-Out should be after Punch-In</string>
+    <string name="lunch_out_less_then_lunch_in_error_message">Lumper Lunch-Out should be after Lunch-In</string>
+    <string name="lunch_out_greater_then_lunch_in_error_message">Lumper Lunch-Out should be before Punch-Out</string>
+    <string name="please_enter_message_error_message">Please enter your message</string>
 
     <!--Info Messages-->
     <string name="enter_employee_id_info_message">Employee ID</string>
@@ -404,7 +450,7 @@
     <string name="forgot_password_info_message">Enter the following information to receive an email with a  link to reset your password.</string>
     <string name="no_of_lumpers_needed">No. of Additional Lumpers Needed</string>
     <string name="additional_lumpers_needed">Additional Lumpers Needed</string>
-    <string name="no_record_found_info_message">No Record Found</string>
+    <string name="no_record_found_info_message">No Result Found</string>
     <string name="custome_report_message">Enter a Date Range first. Then available workers will appear for selection.</string>
     <string name="notes_by_customer">Notes by Customer</string>
     <string name="notes_for_customer">Notes for Customer</string>
@@ -418,6 +464,8 @@
     <string name="work_sheet_lumper_message">Lumpers have been Clocked-In</string>
     <string name="work_sheet_cancel_header_message">Clock-In all lumpers who are present before submitting. Add a note if needed</string>
     <string name="add_container_header_message">Add containers to today\'s schedule</string>
+    <string name="cancel_note_header_message">These are containers that were schedule and customer ask to cancel</string>
+    <string name="not_open_note_header_message">These are containers that were schedule and mark as not open</string>
 
     <!--Lumper Timing Warnings-->
     <string name="work_start_less_work_end_warning_message">Work\'s Start Time should be less than End Time</string>
@@ -439,7 +487,7 @@
     <string name="hours_h">Hours (H)</string>
     <string name="invalid_hour_message">Hour(s) can\'t be greater than 24</string>
     <string name="invalid_hour_minutes">Minutes(s) can\'t be greater than 60</string>
-    <string name="total_pause_colon">Total Pause : </string>
+    <string name="total_pause_colon">Total Pause: %s</string>
     <string name="content_description">imageView</string>
     <string name="remove_lumper_warning">You want to remove this lumper.</string>
 </resources>

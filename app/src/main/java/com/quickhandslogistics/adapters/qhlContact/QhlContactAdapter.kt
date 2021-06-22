@@ -60,7 +60,7 @@ class QhlContactAdapter(
             val shift =
                 if (!item.shift.isNullOrEmpty()) item.shift?.capitalize() else resources.getString(R.string.na)
             val dept =
-                if (!item.department.isNullOrEmpty()) UIUtils.getDisplayEmployeeDepartment(item) else resources.getString(
+                if (!item.department.isNullOrEmpty()) UIUtils.getDisplayEmployeeDepartmentHeader(item) else resources.getString(
                     R.string.na
                 )
             textViewCustomerName.text =

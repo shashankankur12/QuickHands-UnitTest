@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName
 import com.quickhandslogistics.utils.ScheduleUtils
 import com.quickhandslogistics.data.attendance.AttendanceDetail
 import com.quickhandslogistics.data.dashboard.BuildingDetailData
+import com.quickhandslogistics.data.lumperSheet.CorrectionRequest
 import com.quickhandslogistics.data.lumpers.EmployeeData
 import com.quickhandslogistics.data.workSheet.WorkItemScheduleDetails
 
@@ -34,6 +35,10 @@ class WorkItemDetail() : Parcelable {
     @SerializedName("label")
     @Expose
     var label: String? = null
+
+    @SerializedName("origin")
+    @Expose
+    var origin: String? = null
 
     @SerializedName("createdBy")
     @Expose
@@ -115,13 +120,28 @@ class WorkItemDetail() : Parcelable {
     var assignedLumpersList: ArrayList<EmployeeData>? = null
         get() = ScheduleUtils.sortEmployeesList(field)
 
+    @SerializedName("oldWork")
+    @Expose
+    var oldWork: WorkItemDetail? = null
+
     @SerializedName("lumperAttendance")
     @Expose
     var attendanceDetail: AttendanceDetail? = null
 
+    @SerializedName("corrections")
+    @Expose
+    var corrections: CorrectionRequest? = null
+
     @SerializedName("buildingOps")
     @Expose
     var buildingOps: HashMap<String, String>? = null
+
+    @SerializedName("buildingParams")
+    @Expose
+    var buildingParams: ArrayList<String>? = null
+
+    @Transient
+    var containerNumber = 0
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
@@ -135,6 +155,7 @@ class WorkItemDetail() : Parcelable {
         scheduleIdentity = parcel.readString()
         scheduledFrom = parcel.readString()
         scheduleNote = parcel.readString()
+        origin = parcel.readString()
         endDateForThisWorkItem = parcel.readString()
         status = parcel.readString()
         notesQHL = parcel.readString()
@@ -150,6 +171,9 @@ class WorkItemDetail() : Parcelable {
         schedule = parcel.readParcelable(BuildingDetailData::class.java.classLoader)
         assignedLumpersList = parcel.createTypedArrayList(EmployeeData)
         attendanceDetail = parcel.readParcelable(AttendanceDetail::class.java.classLoader)
+        corrections = parcel.readParcelable(CorrectionRequest::class.java.classLoader)
+        oldWork = parcel.readParcelable(WorkItemDetail::class.java.classLoader)
+        buildingParams = parcel.createStringArrayList()
 //        buildingOps = HashMap()
 //        readFromParcel(parcel)
     }
@@ -180,6 +204,7 @@ class WorkItemDetail() : Parcelable {
         parcel.writeString(endDateForThisWorkItem)
         parcel.writeString(status)
         parcel.writeString(notesQHL)
+        parcel.writeString(origin)
         parcel.writeString(notesQHLCustomer)
         parcel.writeValue(isScheduledByLead)
         parcel.writeValue(scheduleForWeek)
@@ -187,11 +212,14 @@ class WorkItemDetail() : Parcelable {
         parcel.writeValue(isCompleted)
         parcel.writeString(createdAt)
         parcel.writeString(updatedAt)
+        parcel.writeStringList(buildingParams)
         parcel.writeValue(numberOfDrops)
         parcel.writeString(buildingDetailData)
         parcel.writeParcelable(schedule, flags)
         parcel.writeTypedList(assignedLumpersList)
         parcel.writeParcelable(attendanceDetail, flags)
+        parcel.writeParcelable(oldWork, flags)
+        parcel.writeParcelable(corrections, flags)
         /*buildingOps?.let { data ->
             parcel.writeInt(data.size)
             for (s in data.keys) {

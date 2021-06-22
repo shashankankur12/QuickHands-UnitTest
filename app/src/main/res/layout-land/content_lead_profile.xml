@@ -105,7 +105,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="Contact"
+                            android:text="@string/contact"
                             android:textColor="@color/textWhite"
                             android:textSize="@dimen/_14sdp"
                             android:textStyle="bold" />
@@ -193,7 +193,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="Work Identification"
+                            android:text="@string/work_identification"
                             android:textColor="@color/textWhite"
                             android:textSize="@dimen/_14sdp"
                             android:textStyle="bold" />
@@ -345,7 +345,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="Work Schedule"
+                            android:text="@string/work_schedule_header"
                             android:textColor="@color/textWhite"
                             android:textSize="@dimen/_14sdp"
                             android:textStyle="bold" />
@@ -363,7 +363,7 @@
                             style="@style/detailTextHeader"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Availability : "
+                            android:text="@string/availability_header"
                             android:textColor="@color/buildingTitle"
                             android:textStyle="bold" />
 
@@ -491,7 +491,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="Work Location"
+                            android:text="@string/work_location"
                             android:textColor="@color/textWhite"
                             android:textSize="@dimen/_14sdp"
                             android:textStyle="bold" />
@@ -510,7 +510,7 @@
                             style="@style/detailTextHeader"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Customer : "
+                            android:text="@string/customer_header"
                             android:textColor="@color/buildingTitle"
                             android:textStyle="bold" />
 

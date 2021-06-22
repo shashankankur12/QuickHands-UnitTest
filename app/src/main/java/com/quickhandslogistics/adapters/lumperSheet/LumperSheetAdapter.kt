@@ -12,6 +12,7 @@ import com.quickhandslogistics.R
 import com.quickhandslogistics.contracts.lumperSheet.LumperSheetContract
 import com.quickhandslogistics.controls.CustomTextView
 import com.quickhandslogistics.data.lumperSheet.LumpersInfo
+import com.quickhandslogistics.utils.AppConstant
 import com.quickhandslogistics.utils.UIUtils
 import com.quickhandslogistics.utils.ValueUtils
 import de.hdodenhof.circleimageview.CircleImageView
@@ -51,6 +52,7 @@ class LumperSheetAdapter(private var resources: Resources, var adapterItemClickL
         private val textViewLumperName: TextView = view.textViewLumperName
         private val circleImageViewProfile: CircleImageView = view.circleImageViewProfile
         private val textViewEmployeeId: CustomTextView = view.textViewEmployeeId
+        private val textViewLeadRole: CustomTextView = view.textViewLeadRole
         private val textViewStatus: TextView = view.textViewStatus
         private val viewAttendanceStatus: View = view.viewAttendanceStatus
 
@@ -60,6 +62,8 @@ class LumperSheetAdapter(private var resources: Resources, var adapterItemClickL
             textViewLumperName.text = ValueUtils.getDefaultOrValue(employeeData.lumperName).capitalize()
             textViewEmployeeId.text = UIUtils.getDisplayEmployeeID(employeeData.lumperEmployeeId)
             viewAttendanceStatus.setBackgroundResource(if (employeeData.isPresent!!) R.drawable.online_dot else R.drawable.offline_dot)
+            textViewLeadRole.visibility= if (employeeData.role.equals(AppConstant.LEADS)) View.VISIBLE else View.GONE
+            textViewLeadRole.text= if (employeeData.role.equals(AppConstant.LEADS)) employeeData.role?.capitalize() else ""
 
             if (ValueUtils.getDefaultOrValue(employeeData.sheetSigned)) {
                 textViewStatus.text = resources.getString(R.string.signed)

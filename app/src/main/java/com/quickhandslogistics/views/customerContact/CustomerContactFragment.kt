@@ -1,5 +1,6 @@
 package com.quickhandslogistics.views.customerContact
 
+import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -117,12 +118,12 @@ class CustomerContactFragment : BaseFragment(), CustomerContactContract.View, Vi
             phone = it.phone?.replace("+1", "")?.replace("-", "")?.trim()
             textViewCustomerName.text = it.buildingName!!.capitalize()
             textViewCompanyName.text =
-                it.buildingAddress!!.capitalize().trim() + " " + it.buildingCity + ", " + it.buildingState + " " + it.buildingZipcode
+                it.buildingAddress!!.capitalize().trim() + ", " + it.buildingCity + ", " + it.buildingState + " " + it.buildingZipcode
             textViewCompanyContact.text =
                 if (!phone.isNullOrEmpty()) UIUtils.formetMobileNumber(phone!!) else getString(R.string.na)
         }
         activity?.let {
-            Glide.with(it).load(R.drawable.building_image).into(circleImageViewProfile)
+            Glide.with(it).load(R.drawable.building_icon).into(circleImageViewProfile)
         }
     }
 
@@ -204,7 +205,8 @@ class CustomerContactFragment : BaseFragment(), CustomerContactContract.View, Vi
             return
         }
 
-        Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
+        val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", employeeData.email, null))
+        startActivity(Intent.createChooser(emailIntent, "Send email..."))
 
     }
 }

@@ -81,8 +81,7 @@ class WorkSheetDetailsNoteImageAdapter(private var onAdapterClick: WorkSheetItem
                         onAdapterClick.onImageClick(imageUrl)
                     }
                     imageViewRemoveImage.id -> {
-                        imageStringArray.removeAt(adapterPosition)
-                        notifyDataSetChanged()
+                        onAdapterClick.removeImage(adapterPosition)
                     }
                     else -> {
 

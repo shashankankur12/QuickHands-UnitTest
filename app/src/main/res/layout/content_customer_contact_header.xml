@@ -18,7 +18,7 @@
         android:layout_width="@dimen/_70sdp"
         android:layout_height="@dimen/_70sdp"
         android:layout_marginStart="@dimen/_20sdp"
-        android:src="@drawable/dummy"
+        android:src="@drawable/building_icon"
         android:transitionName="@string/transition_name"
         app:civ_border_color="@color/textWhite"
         app:civ_border_width="3dp"

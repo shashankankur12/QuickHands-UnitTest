@@ -21,14 +21,15 @@ class WorkSheetModel(private val sharedPref: SharedPref) : WorkSheetContract.Mod
 
     override fun fetchHeaderInfo(onFinishedListener: WorkSheetContract.Model.OnFinishedListener) {
         val leadProfile = sharedPref.getClassObject(AppConstant.PREFERENCE_LEAD_PROFILE, LeadProfileData::class.java) as LeadProfileData?
+        val buildingDetailData =ScheduleUtils.getBuildingDetailData(leadProfile?.buildingDetailData)
 
         var companyName = ""
-        leadProfile?.buildingDetailData?.get(0)?.customerDetail?.name?.let { name ->
+        buildingDetailData?.customerDetail?.name?.let { name ->
             companyName = name
         }
         val date = DateUtils.getCurrentDateStringByEmployeeShift(pattern = DateUtils.PATTERN_NORMAL)
         val shiftDetail = ScheduleUtils.getShiftDetailString(leadProfile)
-        val deptDetail = "${ ResourceManager.getInstance().getString(R.string.dept_bold)} ${ UIUtils.getDisplayEmployeeDepartment(leadProfile)}"
+        val deptDetail = "${ ResourceManager.getInstance().getString(R.string.dept_bold)} ${ UIUtils.getDisplayEmployeeDepartmentHeader(leadProfile)}"
         onFinishedListener.onSuccessGetHeaderInfo(companyName, date, shiftDetail,deptDetail)
     }
 

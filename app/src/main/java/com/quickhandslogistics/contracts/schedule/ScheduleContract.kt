@@ -2,6 +2,8 @@ package com.quickhandslogistics.contracts.schedule
 
 import com.quickhandslogistics.contracts.BaseContract
 import com.quickhandslogistics.data.lumpers.EmployeeData
+import com.quickhandslogistics.data.schedule.GetPastFutureDateResponse
+import com.quickhandslogistics.data.schedule.PastFutureDates
 import com.quickhandslogistics.data.schedule.ScheduleDetailData
 import com.quickhandslogistics.data.schedule.ScheduleListAPIResponse
 import java.util.*
@@ -10,16 +12,18 @@ import kotlin.collections.ArrayList
 class ScheduleContract {
     interface Model {
         fun fetchHeaderInfo(selectedDate: Date, onFinishedListener: OnFinishedListener)
+        fun fetchPastFutureDate(onFinishedListener: OnFinishedListener)
         fun fetchSchedulesByDate(selectedDate: Date, pageIndex: Int, onFinishedListener: OnFinishedListener)
 
         interface OnFinishedListener : BaseContract.Model.OnFinishedListener {
             fun onSuccess(
                 selectedDate: Date,
-                scheduleListAPIResponse: ScheduleListAPIResponse,
+                scheduleListAPIResponse: ScheduleListAPIResponse?,
                 currentPageIndex: Int,
                 deptDetail: String
             )
             fun onSuccessGetHeaderInfo(dateString: String)
+            fun onSuccessPastFutureDate(response: GetPastFutureDateResponse?)
         }
     }
 
@@ -27,6 +31,7 @@ class ScheduleContract {
         fun showDateString(dateString: String)
         fun showScheduleData(selectedDate: Date, workItemsList: ArrayList<ScheduleDetailData>, totalPagesCount: Int, nextPageIndex: Int, currentPageIndex: Int)
         fun showAPIErrorMessage(message: String)
+        fun showPastFutureDate(message: ArrayList<PastFutureDates>)
         fun showEmptyData()
         fun showLoginScreen()
 
