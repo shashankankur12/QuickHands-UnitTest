@@ -190,7 +190,7 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
     private fun setUpNavigationBar() {
         navDrawer = NavDrawer(this, toolbar, supportFragmentManager.beginTransaction(), this)
         navDrawer?.let {
-            it.addItem(NavDrawer.AppNavDrawerItem(WorkSheetFragment(), R.drawable.ic_sidemenu_dashboard, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.today_s_work_sheet), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(WorkSheetFragment(), R.drawable.menu_work_sheet_icon, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.today_s_work_sheet), showTabName)))
             val scheduleTimeFragment = ScheduleTimeFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_SCHEDULE_TIME_SELECTED_DATE, scheduleTimeSelectedDate)
@@ -198,20 +198,20 @@ class DashBoardActivity : BaseActivity(), View.OnClickListener, DashBoardContrac
                 }
             }
 
-            it.addItem(NavDrawer.AppNavDrawerItem(TimeClockAttendanceFragment(), R.drawable.time_clock_icon, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.time_clock), showTabName)))
-            it.addItem(NavDrawer.AppNavDrawerItem(CustomerSheetFragment(), R.drawable.ic_sidemenu_customer_sheet, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.customer_sheet), showTabName)))
-            it.addItem(NavDrawer.AppNavDrawerItem(LumperSheetFragment(), R.drawable.ic_sidemenu_lumper_sheet, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.l_sheet), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(TimeClockAttendanceFragment(), R.drawable.menu_time_clock_icon, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.time_clock), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(CustomerSheetFragment(), R.drawable.menu_customer_sheet_icon, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.customer_sheet), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(LumperSheetFragment(), R.drawable.menu_lumper_sheet_icon, R.id.linearLayoutTopItems, isShowOnLaunch(getString(R.string.l_sheet), showTabName)))
 
-            it.addItem(NavDrawer.AppNavDrawerItem(ScheduleFragment(), R.drawable.ic_work_schedule, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.schedule), showTabName)))
-            it.addItem(NavDrawer.AppNavDrawerItem(scheduleTimeFragment, R.drawable.ic_sidemenu_schedule, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.scheduled_lumpers), showTabName)))
-            it.addItem(NavDrawer.AppNavDrawerItem(ReportsFragment(), R.drawable.report_icon, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.reports), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(ScheduleFragment(), R.drawable.menu_work_schedule_icon, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.schedule), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(scheduleTimeFragment, R.drawable.menu_schedule_lumper_icon, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.scheduled_lumpers), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(ReportsFragment(), R.drawable.menu_roports_icon, R.id.linearLayoutSecondItems, isShowOnLaunch(getString(R.string.reports), showTabName)))
 
-            it.addItem(NavDrawer.AppNavDrawerItem(LumpersFragment(), R.drawable.ic_sidemenu_lumpers, R.id.linearLayoutThirdItems, isShowOnLaunch(getString(R.string.lumper_contact), showTabName)))
-            it.addItem(NavDrawer.AppNavDrawerItem(QhlContactFragment(), R.drawable.ic_thumbs_up, R.id.linearLayoutThirdItems, isShowOnLaunch(getString(R.string.qhl_contect), showTabName)))
-            it.addItem(NavDrawer.AppNavDrawerItem(CustomerContactFragment(), R.drawable.ic_house, R.id.linearLayoutThirdItems, isShowOnLaunch(getString(R.string.customer_contect), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(LumpersFragment(), R.drawable.menu_lumper_contact_icon, R.id.linearLayoutThirdItems, isShowOnLaunch(getString(R.string.lumper_contact), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(QhlContactFragment(), R.drawable.menu_qhl_contact_icon, R.id.linearLayoutThirdItems, isShowOnLaunch(getString(R.string.qhl_contect), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(CustomerContactFragment(), R.drawable.menu_customer_contact_icon, R.id.linearLayoutThirdItems, isShowOnLaunch(getString(R.string.customer_contect), showTabName)))
 
-            it.addItem(NavDrawer.AppNavDrawerItem(SettingsFragment(), R.drawable.ic_sidemenu_settings, R.id.linearLayoutBottomItems, isShowOnLaunch(getString(R.string.settings), showTabName)))
-            it.addItem(NavDrawer.AppNavDrawerItem(null, R.drawable.ic_sidemenu_logout, R.id.linearLayoutBottomItems, isShowOnLaunch(getString(R.string.logout), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(SettingsFragment(), R.drawable.menu_setting_icon, R.id.linearLayoutBottomItems, isShowOnLaunch(getString(R.string.settings), showTabName)))
+            it.addItem(NavDrawer.AppNavDrawerItem(null, R.drawable.menu_logout_icon, R.id.linearLayoutBottomItems, isShowOnLaunch(getString(R.string.logout), showTabName)))
 
             it.create()
         }
