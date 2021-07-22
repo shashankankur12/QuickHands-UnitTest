@@ -47,9 +47,9 @@ class ForgotPasswordActivity : BaseActivity(), ForgotPasswordContract.View, View
     }
 
     /** Presenter Listeners */
-    override fun showEmptyEmployeeIdError() {
-        editTextEmpId.requestFocus()
-        SnackBarFactory.createSnackBar(activity, mainConstraintPasswordLayout, resources.getString(R.string.empty_employee_id_message))
+    override fun showEmptyEmployeeIdError(message: String) {
+//        editTextEmpId.requestFocus()
+        SnackBarFactory.createSnackBar(activity, mainConstraintPasswordLayout, message)
     }
 
     override fun showAPIErrorMessage(message: String) {

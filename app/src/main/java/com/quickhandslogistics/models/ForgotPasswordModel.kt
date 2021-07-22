@@ -29,12 +29,4 @@ class ForgotPasswordModel : ForgotPasswordContract.Model {
             }
         })
     }
-
-    override fun validatePasswordResetDetails(employeeId: String, onFinishedListener: ForgotPasswordContract.Model.OnFinishedListener) {
-        if (TextUtils.isEmpty(employeeId)) {
-            onFinishedListener.emptyEmployeeId()
-        } else {
-            onFinishedListener.processPasswordReset(employeeId)
-        }
-    }
 }

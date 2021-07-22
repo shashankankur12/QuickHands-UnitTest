@@ -30,23 +30,6 @@ class LoginModel(val sharedPref: SharedPref) : LoginContract.Model {
         }
     }
 
-    override fun validateLoginDetails(employeeLoginId: String, password: String, onFinishedListener: LoginContract.Model.OnFinishedListener) {
-        when {
-            TextUtils.isEmpty(employeeLoginId) -> {
-                onFinishedListener.emptyEmployeeId()
-            }
-            TextUtils.isEmpty(password) -> {
-                onFinishedListener.emptyPassword()
-            }
-            password.length < 8 -> {
-                onFinishedListener.invalidPassword()
-            }
-            else -> {
-                onFinishedListener.processCredentials(employeeLoginId, password)
-            }
-        }
-    }
-
     override fun fetchRegistrationToken(employeeLoginId: String, password: String, onFinishedListener: LoginContract.Model.OnFinishedListener) {
         if (sharedPref.getString(AppConstant.PREFERENCE_REGISTRATION_TOKEN).isEmpty()) {
             FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener { task ->

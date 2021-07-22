@@ -20,10 +20,10 @@ import com.quickhandslogistics.data.scheduleTime.ScheduleTimeDetail
 import com.quickhandslogistics.data.workSheet.WorkItemContainerDetails
 import com.quickhandslogistics.data.workSheet.WorkItemScheduleDetails
 import com.quickhandslogistics.data.workSheet.WorkSheetListAPIResponse
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.Comparator
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 import kotlin.collections.LinkedHashMap
 
 object ScheduleUtils {
@@ -58,7 +58,8 @@ object ScheduleUtils {
             workItemTypeDisplayName = when (workItemType) {
                 "LIVE" -> resources.getString(R.string.live_loads)
                 "DROP" -> resources.getString(R.string.drops)
-                else -> resources.getString(R.string.out_bounds)
+                "OUTBOUND" -> resources.getString(R.string.out_bounds)
+                else -> workItemType
             }
         }
         return workItemTypeDisplayName
@@ -250,9 +251,9 @@ object ScheduleUtils {
         var completedCount = 0
 
         val allWorkItems = ArrayList<WorkItemDetail>()
-        allWorkItems.addAll(scheduleTypes.liveLoads!!)
-        allWorkItems.addAll(scheduleTypes.outbounds!!)
-        allWorkItems.addAll(scheduleTypes.drops!!)
+        scheduleTypes.liveLoads?.let { allWorkItems.addAll(it) }
+        scheduleTypes.outbounds?.let { allWorkItems.addAll(it) }
+        scheduleTypes.drops?.let { allWorkItems.addAll(it) }
 
         for (workItem in allWorkItems) {
             when (workItem.status) {
@@ -333,11 +334,16 @@ object ScheduleUtils {
                 else -> null
             }
             shiftDetail?.let {
-                shiftStartTime = DateUtils.convertMillisecondsToTimeString(shiftDetail.startTime!!)
-                shiftEndTime = DateUtils.convertMillisecondsToTimeString(shiftDetail.endTime!!)
+                shiftStartTime = convertMillisecondsToTimeString(shiftDetail.startTime!!)
+                shiftEndTime = convertMillisecondsToTimeString(shiftDetail.endTime!!)
             }
         }
         return "$shiftName ($shiftStartTime - $shiftEndTime)"
+    }
+
+    fun convertMillisecondsToTimeString(milliseconds: Long): String {
+        val dateFormatTo = SimpleDateFormat(DateUtils.PATTERN_TIME, Locale.getDefault())
+        return dateFormatTo.format(Date(milliseconds))
     }
 
      fun getSortRequestLumper(records: ArrayList<RequestLumpersRecord>): ArrayList<RequestLumpersRecord> {

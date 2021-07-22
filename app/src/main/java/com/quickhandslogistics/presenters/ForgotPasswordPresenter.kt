@@ -7,11 +7,12 @@ import com.quickhandslogistics.contracts.ForgotPasswordContract
 import com.quickhandslogistics.data.ErrorResponse
 import com.quickhandslogistics.data.forgotPassword.ForgotPasswordResponse
 import com.quickhandslogistics.models.ForgotPasswordModel
+import com.quickhandslogistics.utils.ValidationUtils
 
 class ForgotPasswordPresenter(private var passwordView: ForgotPasswordContract.View?, private val resources: Resources) :
     ForgotPasswordContract.Presenter, ForgotPasswordContract.Model.OnFinishedListener {
 
-    private val forgotPasswordModel = ForgotPasswordModel()
+    public var forgotPasswordModel = ForgotPasswordModel()
 
     /** View Listeners */
     override fun onDestroy() {
@@ -19,7 +20,11 @@ class ForgotPasswordPresenter(private var passwordView: ForgotPasswordContract.V
     }
 
     override fun validatePasswordResetDetails(employeeId: String) {
-        forgotPasswordModel.validatePasswordResetDetails(employeeId, this)
+        val isValid = ValidationUtils.getInstance().isValidUserId(employeeId)
+        if (isValid) {
+//            passwordView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
+            forgotPasswordModel.resetPasswordUsingEmpId(employeeId, this)
+        } else passwordView?.showEmptyEmployeeIdError(resources.getString(R.string.empty_employee_id_message))
     }
 
     /** Model Result Listeners */
@@ -36,17 +41,8 @@ class ForgotPasswordPresenter(private var passwordView: ForgotPasswordContract.V
         onFailure(errorCode.message)
     }
 
-    override fun emptyEmployeeId() {
-        passwordView?.showEmptyEmployeeIdError()
-    }
-
     override fun onPasswordResetSuccess(forgotPasswordResponse: ForgotPasswordResponse) {
         passwordView?.hideProgressDialog()
         passwordView?.showAPISuccessMessage(forgotPasswordResponse.message)
-    }
-
-    override fun processPasswordReset(employeeId: String) {
-        passwordView?.showProgressDialog(resources.getString(R.string.api_loading_alert_message))
-        forgotPasswordModel.resetPasswordUsingEmpId(employeeId, this)
     }
 }

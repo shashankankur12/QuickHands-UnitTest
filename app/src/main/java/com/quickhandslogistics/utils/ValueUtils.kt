@@ -28,7 +28,7 @@ object ValueUtils {
 
     fun isNumeric(value: String): Boolean {
         return try {
-            if (value.equals("NaN")) {
+            if (value.equals("NaN", ignoreCase = true)) {
                 return false
             } else {
                 value.toInt()
